@@ -26,7 +26,7 @@ siteDraftsDir: "_drafts/"
 sitePostsDir: "_posts/{year}/"
 # Directory to images from siteLocalDir
 # - E.g. to use the current filename directory, can use {directory}
-siteImagesDir: "images/{year}/{month}/"
+siteImagesDir: "static/images/"
 
 # URLs to tags/posts/categories JSON files
 # https://github.com/zhuochun/md-writer/wiki/Settings-for-Front-Matters
@@ -41,7 +41,7 @@ frontMatterNameCategories: "categories"
 # Filename format of new drafts created
 newDraftFileName: "{slug}{extension}"
 # Filename format of new posts created
-newPostFileName: "{year}-{month}-{day}-{slug}{extension}"
+newPostFileName: "{slug}{extension}"
 
 # Front matter date format, determines the {date} in frontMatter
 frontMatterDate: "{year}-{month}-{day} {hour}:{minute}"
@@ -55,7 +55,7 @@ date: "{date}"
 """
 
 # File extension of posts/drafts
-fileExtension: ".markdown"
+fileExtension: ".md"
 # File slug separator
 slugSeparator: "-"
 
@@ -141,7 +141,7 @@ lineStyles:
 # Image tag template
 imageTag: "![{alt}]({src})"
 # Use relative path to image from the opened file
-relativeImagePath: false
+relativeImagePath: true
 # Rename copyed image based on title/alt
 renameImageOnCopy: false
 

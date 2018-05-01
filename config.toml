@@ -9,7 +9,7 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
 enableMissingTranslationPlaceholders = false
 
-
+enableEmoji = true
 # [Languages]
 # [Languages.en]
 # title = "Documentation for Hugo docDock"
