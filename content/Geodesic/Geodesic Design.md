@@ -1,6 +1,7 @@
 ---
 title: "Geodesic Design"
 excerpt: ""
+weight: -1
 ---
 # An Opinionated Framework
 

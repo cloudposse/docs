@@ -1,6 +1,6 @@
 baseURL = "http://example.org/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "Cloudposse"
 theme = "hugo-theme-docdock"
 pygmentsCodeFences = true
 pygmentsStyle = "monokailight"
@@ -22,10 +22,7 @@ enableEmoji = true
 # languageName = "Français"
 
 
-
-
 [params]
-editURL = "https://github.com/vjeantet/hugo-theme-docdock/edit/master/exampleSite/content/"
 showVisitedLinks = true # default is false
 themeStyle = "flex" # "original" or "flex" # default "flex"
 themeVariant = "" # choose theme variant "green", "gold" , "gray", "blue" (default)
@@ -35,7 +32,7 @@ disableSearch = false # default is false
 disableNavChevron = false # set true to hide next/prev chevron, default is false
 highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
 menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
-enableGitInfo = true
+enableGitInfo = false
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]

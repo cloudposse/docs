@@ -1,5 +1,5 @@
 ---
 title: "Terraform Module Best Practices"
 excerpt: ""
+weight: -1
 ---
-![](/images/66b2538-terraform.png)
