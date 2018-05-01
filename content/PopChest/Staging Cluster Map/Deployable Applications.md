@@ -2,44 +2,22 @@
 title: "Deployable Applications"
 excerpt: ""
 ---
-[block:api-header]
-{
-  "title": "Code step"
-}
-[/block]
+# Code step
 
-[block:api-header]
-{
-  "title": "Build Step"
-}
-[/block]
 
-[block:api-header]
-{
-  "title": "Test Step"
-}
-[/block]
+# Build Step
 
-[block:api-header]
-{
-  "title": "Release Step"
-}
-[/block]
 
-[block:api-header]
-{
-  "title": "Deploy Step"
-}
-[/block]
+# Test Step
 
-[block:api-header]
-{
-  "title": "Operate Step"
-}
-[/block]
 
-[block:api-header]
-{
-  "title": "Monitoring Step"
-}
-[/block]
+# Release Step
+
+
+# Deploy Step
+
+
+# Operate Step
+
+
+# Monitoring Step

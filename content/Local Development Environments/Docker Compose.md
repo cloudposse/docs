@@ -2,21 +2,7 @@
 title: "Docker Compose"
 excerpt: ""
 ---
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/7804914-docker-compose.png",
-        "docker-compose.png",
-        453,
-        261,
-        "#7a93a7"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/7804914-docker-compose.png)
 
 This document compiles “lessons learned” and advice for working with Docker Compose.
 

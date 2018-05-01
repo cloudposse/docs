@@ -27,14 +27,8 @@ kops create -f /conf/kops/manifest.yml
 * [terraform-aws-kops-external-dns](doc:terraform-aws-kops-external-dns) 
 
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "",
-      "language": "text",
-      "name": "init.sh"
-    }
-  ]
-}
-[/block]
+
+##### init.sh
+```text
+
+```

@@ -9,17 +9,56 @@ The EditorConfig enables developers to define and maintain consistent coding sty
 # Example
 
 Place this file in the root of your git repository.
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# top-most EditorConfig file\nroot = true\n\n# Unix-style newlines with a newline ending every file\n[*]\nend_of_line = lf\ninsert_final_newline = true\n\n# Matches multiple files with brace expansion notation\n# Set default charset\n[*.{js,py}]\ncharset = utf-8\n\n# 4 space indentation\n[*.py]\nindent_style = space\nindent_size = 4\n\n# Override for Makefile\n[{Makefile, makefile, GNUmakefile}]\nindent_style = tab\nindent_size = 4\n\n[Makefile.*]\nindent_style = tab\nindent_size = 4\n\n\n# Indentation override for all JS under lib directory\n[lib/**.js]\nindent_style = space\nindent_size = 2\n\n# Matches the exact files either package.json or .travis.yml\n[{package.json,.travis.yml}]\nindent_style = space\nindent_size = 2\n\n[shell]\nindent_style = tab\nindent_size = 4\n\n[*.sh]\nindent_style = tab\nindent_size = 4",
-      "language": "text",
-      "name": ".editorconfig"
-    }
-  ]
-}
-[/block]
+
+##### .editorconfig
+```text
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.{js,py}]
+charset = utf-8
+
+# 4 space indentation
+[*.py]
+indent_style = space
+indent_size = 4
+
+# Override for Makefile
+[{Makefile, makefile, GNUmakefile}]
+indent_style = tab
+indent_size = 4
+
+[Makefile.*]
+indent_style = tab
+indent_size = 4
+
+
+# Indentation override for all JS under lib directory
+[lib/**.js]
+indent_style = space
+indent_size = 2
+
+# Matches the exact files either package.json or .travis.yml
+[{package.json,.travis.yml}]
+indent_style = space
+indent_size = 2
+
+[shell]
+indent_style = tab
+indent_size = 4
+
+[*.sh]
+indent_style = tab
+indent_size = 4
+```
+
 # Editor Plugins
 
 Find all plugins here: http://editorconfig.org/#download

@@ -2,21 +2,7 @@
 title: "Terraform Best Practices"
 excerpt: ""
 ---
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/08bcd99-terraform.png",
-        "terraform.png",
-        1210,
-        418,
-        "#1b1845"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/08bcd99-terraform.png)
 
 # Use Git Workflow
 

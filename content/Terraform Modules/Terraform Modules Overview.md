@@ -2,21 +2,7 @@
 title: "Terraform Modules Overview"
 excerpt: ""
 ---
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/774b11e-terraform.png",
-        "terraform.png",
-        1210,
-        418,
-        "#1b1845"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/774b11e-terraform.png)
 
 Terraform modules are the best way to encapsulate "business logic" and "Best Practices" for provisioning infrastructure. Terraform modules are used almost like functions in `terraform`; that is, they take inputs (aka `variables`) and produce some `outputs`.
 

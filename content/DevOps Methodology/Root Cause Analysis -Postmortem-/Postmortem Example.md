@@ -4,24 +4,15 @@ excerpt: "Example of a well-executed postmortem for Root Cause Analysis"
 ---
 # Incident #1 - Rollout Caused Unplanned Outage (2017-06-29)
 
-[block:parameters]
-{
-  "data": {
-    "0-0": "On-call Engineer",
-    "1-0": "Start Time",
-    "2-0": "End Time",
-    "3-0": "Total Duration",
-    "4-0": "Affected Systems",
-    "1-1": "2018-06-29 12:58 PST",
-    "2-1": "2018-06-29 13:55 PST",
-    "3-1": "39 Minutes",
-    "0-1": "Erik Osterman",
-    "4-1": "Production Web Tier"
-  },
-  "cols": 2,
-  "rows": 5
-}
-[/block]
+
+|||
+|------|------|
+|On-call Engineer|Erik Osterman|
+|Start Time|2018-06-29 12:58 PST|
+|End Time|2018-06-29 13:55 PST|
+|Total Duration|39 Minutes|
+|Affected Systems|Production Web Tier|
+
 
 # Summary
 
@@ -78,37 +69,9 @@ The site experienced the classic cascading failure that affected all components 
 ## Unexplained problems
 
 * During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/e82e21a-image_10.png",
-        "image (10).png",
-        720,
-        678,
-        "#d2d4d6"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/e82e21a-image_10.png)
 * During the rollout, TablePress options got cleared
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/4204bed-image_11.png",
-        "image (11).png",
-        720,
-        432,
-        "#e3e5e5"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/4204bed-image_11.png)
 ## Remediations
 
 List of actions performed to resolve the problem:
@@ -153,171 +116,31 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 
 ### Pingom
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/1f27db8-image_12.png",
-        "image (12).png",
-        148,
-        108,
-        "#e8e8e8"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/1f27db8-image_12.png)
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/89c0050-image_13.png",
-        "image (13).png",
-        380,
-        82,
-        "#e8eae9"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/89c0050-image_13.png)
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/9d3f441-image_14.png",
-        "image (14).png",
-        384,
-        83,
-        "#e8ebea"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/9d3f441-image_14.png)
 ### Elastic Beanstalk
 
 ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/af54926-image_15.png",
-        "image (15).png",
-        1098,
-        598,
-        "#f6f8fa"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/af54926-image_15.png)
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/dc4dbd3-image_16.png",
-        "image (16).png",
-        1104,
-        590,
-        "#f1f5f8"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/dc4dbd3-image_16.png)
 ### RDS 
 
 There were no deadlocks. There was no increase in IOPS (r/w)
 
 #### CPU Utilization spiked.
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/2e1d7be-image_17.png",
-        "image (17).png",
-        640,
-        354,
-        "#f2f6f8"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/2e1d7be-image_17.png)
 #### Connections peaked and maxed out.
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/8f2e7d3-image_18.png",
-        "image (18).png",
-        640,
-        348,
-        "#f7f8f9"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/8f2e7d3-image_18.png)
 #### Selects went through the roof. 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/43dfb04-image_19.png",
-        "image (19).png",
-        640,
-        340,
-        "#f1f6f8"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/43dfb04-image_19.png)
 #### CPU credits were not exhausted, so we had excess capacity
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/7bd6416-image_20.png",
-        "image (20).png",
-        640,
-        351,
-        "#f8f9fa"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/7bd6416-image_20.png)
 #### Commits / Writes went through the roof
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/b7a608c-image_21.png",
-        "image (21).png",
-        891,
-        488,
-        "#f5f7f9"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/b7a608c-image_21.png)
 ## Related Post Mortems
 
 * [Incident #2 - Rollout Caused Unplanned Outage (2017-07-06)](https://cloudposse.quip.com/MkEwAYbanvJ8)

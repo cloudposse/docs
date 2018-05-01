@@ -49,13 +49,10 @@ Avoid sticking every target in the same `Makefile` for the same reason we don't 
 -include tasks/Makefile.*
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "NOTE",
-  "body": "The leading `-` tells `make` not to error if the `tasks/` folder is empty."
-}
-[/block]
+
+##### :information_source: NOTE
+> The leading `-` tells `make` not to error if the `tasks/` folder is empty.
+
 # Define sane defaults for environment variables
 
 No one likes to pass 20 arguments to `make`. Set sane defaults for all variables using the `?=` operator.

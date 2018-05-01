@@ -2,13 +2,10 @@
 title: "Agenda"
 excerpt: ""
 ---
-[block:callout]
-{
-  "type": "danger",
-  "title": "Important",
-  "body": "All examples provided in the documentation will be based on use cases described in **Learn by Example** chapter"
-}
-[/block]
+
+##### :no_entry_sign: Important
+> All examples provided in the documentation will be based on use cases described in **Learn by Example** chapter
+
 Company "Example, LLC" owns a portal `example.com` that provides documentation, roadmaps and examples for a lot of activities we do in real life.
 
 The company wants to migrate to AWS cloud hosting and use Kubernates as containers management and deployment system. 

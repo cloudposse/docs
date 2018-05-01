@@ -2,13 +2,10 @@
 title: "with Kops"
 excerpt: ""
 ---
-[block:callout]
-{
-  "type": "warning",
-  "body": "This assumes you've followed the [Geodesic Quick Start](doc:geodesic-quick-start) guide which covers all the scaffolding necessary to get started.",
-  "title": "Prerequisites"
-}
-[/block]
+
+##### :warning: Prerequisites
+> This assumes you've followed the [Geodesic Quick Start](doc:geodesic-quick-start) guide which covers all the scaffolding necessary to get started.
+
 # Create a cluster
 
 Follow the [Provision a Cluster](doc:provision-a-cluster) process 
@@ -46,38 +43,10 @@ terraform plan
 terraform apply
 ```
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/b5e88dd-joany-staging-kops-state.png",
-        "joany-staging-kops-state.png",
-        1974,
-        1246,
-        "#ecf2ec"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/b5e88dd-joany-staging-kops-state.png)
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/9d5dc1c-joany-staging-kops-state-ssh-keys.png",
-        "joany-staging-kops-state-ssh-keys.png",
-        1340,
-        930,
-        "#f1f5f7"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/9d5dc1c-joany-staging-kops-state-ssh-keys.png)
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `CLUSTER_NAME` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
 # Build Manifest
@@ -124,22 +93,7 @@ You will find the rendered `kops` manifest file `/conf/kops/manifest.yaml`.
 # Launch Cluster
 
 Run `kops create -f manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/b251e2e-kops-create.png",
-        "kops-create.png",
-        1242,
-        526,
-        "#f4f3f3"
-      ],
-      "border": true
-    }
-  ]
-}
-[/block]
+![](/images/b251e2e-kops-create.png)
 Run the following to add the SSH public key to the cluster.
 ```
 kops create secret sshpublickey admin -i /secrets/tf/ssh/joany-staging-kops-us-west-2.pub \
@@ -149,27 +103,13 @@ kops create secret sshpublickey admin -i /secrets/tf/ssh/joany-staging-kops-us-w
 Run the following to provision the AWS resources for the cluster.
 ```
 kops update cluster --name us-west-2.staging.joany.net --yes` 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/944178e-kops-update-cluster.png",
-        "kops-update-cluster.png",
-        2512,
-        1674,
-        "#efefef"
-      ],
-      "border": true
-    }
-  ]
-}
-[/block]
+![](/images/944178e-kops-update-cluster.png)
 All done. The `kops` cluster is now up and running.
-[block:callout]
-{
-  "type": "info",
-  "title": "READ MORE",
-  "body": "For more information, check out the following links:\n\n* https://github.com/cloudposse/geodesic#creating-a-kops-cluster\n* https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md\n* https://github.com/kubernetes/kops/blob/master/docs/security.md\n* https://icicimov.github.io/blog/virtualization/Kubernetes-Cluster-in-AWS-with-Kops"
-}
-[/block]
+
+##### :information_source: READ MORE
+> For more information, check out the following links:
+ >
+ >* https://github.com/cloudposse/geodesic#creating-a-kops-cluster
+ >* https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md
+ >* https://github.com/kubernetes/kops/blob/master/docs/security.md
+ >* https://icicimov.github.io/blog/virtualization/Kubernetes-Cluster-in-AWS-with-Kops

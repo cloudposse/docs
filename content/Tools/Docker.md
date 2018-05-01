@@ -2,21 +2,7 @@
 title: "Docker"
 excerpt: ""
 ---
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/5c0373a-docker.png",
-        "docker.png",
-        792,
-        269,
-        "#2b758b"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/5c0373a-docker.png)
 
 ### Install Docker
 

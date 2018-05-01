@@ -3,16 +3,7 @@ title: "Tmate"
 excerpt: ""
 ---
 # Peer Console Development (tmate)
-[block:image]
-{
-  "images": [
-    {
-      "image": [],
-      "sizing": "80"
-    }
-  ]
-}
-[/block]
+
 Tmate is a way to share a console window or set of console windows. It’s basically a fork of `tmux` that makes sessions network enabled. It doesn’t matter where the participants are located - inbound firewall rules don’t interfere since it’s all outbound connections. 
 
 ![Screencast](https://cloudposse.com/wp-content/uploads/sites/29/2018/01/tmate-linuxdescomplicado.gif)
@@ -53,8 +44,3 @@ ssh q9YsisZyUNtI3rvJcDbG1pAHu@sf1.tmate.io
 `^b + c` create a new window
 `^b + n` move to next window
 `^b + p` move to previous window
-[block:html]
-{
-  "html": "<style>\n  .content-body .magic-block-image .block-display-image-size-80 {\nwidth: 25%;\n  }</style>"
-}
-[/block]

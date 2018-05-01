@@ -24,13 +24,11 @@ docker images -q --filter "dangling=true" | xargs docker rmi
 # Prune everything
 
 The docker system prune command is a shortcut that prunes images, containers, and networks. 
-[block:callout]
-{
-  "type": "info",
-  "body": "* In Docker `17.06.0` and earlier, volumes are also pruned. \n* In Docker `17.06.1` and higher, you must specify the `--volumes` flag for docker system prune to prune volumes.",
-  "title": "NOTE"
-}
-[/block]
+
+##### :information_source: NOTE
+> * In Docker `17.06.0` and earlier, volumes are also pruned. 
+ >* In Docker `17.06.1` and higher, you must specify the `--volumes` flag for docker system prune to prune volumes.
+
 
 ```
 $ docker system prune

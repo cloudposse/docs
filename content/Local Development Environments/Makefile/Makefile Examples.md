@@ -6,21 +6,7 @@ excerpt: ""
 
 # Help Target
 Our standard `help` target. This will automatically generate well-formatted output for any target that has a `##` comment preceding it. 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/7ee92cd-Screen_Shot_2018-04-01_at_12.03.15_AM.png",
-        "Screen Shot 2018-04-01 at 12.03.15 AM.png",
-        1098,
-        164,
-        "#2e312e"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/7ee92cd-Screen_Shot_2018-04-01_at_12.03.15_AM.png)
 Simply add this to your `Makefile` and you'll get this functionality.
 
 ```

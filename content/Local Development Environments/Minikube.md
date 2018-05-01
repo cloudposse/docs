@@ -2,21 +2,7 @@
 title: "Minikube"
 excerpt: ""
 ---
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/a58bf7c-minikube.png",
-        "minikube.png",
-        1044,
-        296,
-        "#629ce8"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/a58bf7c-minikube.png)
 # Setting Up “minikube" on OSX
 
 Just run...

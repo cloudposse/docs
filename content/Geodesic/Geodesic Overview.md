@@ -2,48 +2,24 @@
 title: "Geodesic Overview"
 excerpt: "Geodesic is the fastest way to get up and running with a rock solid, production-grade cloud platform."
 ---
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/638d917-geodesic-small.png",
-        "geodesic-small.png",
-        250,
-        96,
-        "#000000"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/638d917-geodesic-small.png)
 
-[block:parameters]
-{
-  "data": {
-    "0-0": "GitHub Repo",
-    "0-1": "https://github.com/cloudposse/geodesic",
-    "2-0": "Build Status",
-    "2-1": "[![Build Status](https://travis-ci.org/cloudposse/geodesic.svg?branch=master)](https://travis-ci.org/cloudposse/geodesic)",
-    "1-0": "Release",
-    "1-1": "[![Release](https://img.shields.io/github/release/cloudposse/geodesic.svg)](https://github.com/cloudposse/geodesic/releases)"
-  },
-  "cols": 2,
-  "rows": 3
-}
-[/block]
+
+|||
+|------|------|
+|GitHub Repo|https://github.com/cloudposse/geodesic|
+|Release|[![Release](https://img.shields.io/github/release/cloudposse/geodesic.svg)](https://github.com/cloudposse/geodesic/releases)|
+|Build Status|[![Build Status](https://travis-ci.org/cloudposse/geodesic.svg?branch=master)](https://travis-ci.org/cloudposse/geodesic)|
+
 # Introduction
 
 Geodesic provides a fully customizable framework for defining and building world-class cloud infrastructures backed by [AWS](https://aws.amazon.com/) and powered by [kubernetes](https://kubernetes.io/). It couples best-of-breed technologies with engineering best-practices to equip organizations with the tooling that enables clusters to be spun up in record time without compromising security.
 
 # Demo
-[block:callout]
-{
-  "type": "info",
-  "title": "IMPORTANT",
-  "body": "this demo is out-of-date"
-}
-[/block]
+
+##### :information_source: IMPORTANT
+> this demo is out-of-date
+
 ![demo video](https://media.giphy.com/media/26FmS6BRnPVPo2FDq/source.gif)
 
 Geodesic is composed of two parts:
@@ -64,38 +40,22 @@ An organization may choose to leverage all of these components or just the parts
 # Technologies
 
 At its core, Geodesic is a framework for provisioning cloud infrastructure and the applications that sit on top of it. We leverage as many existing tools as possible to facilitate cloud fabrication and administration. We're like the connective tissue that sits between all of the components of a modern cloud.
-[block:parameters]
-{
-  "data": {
-    "0-0": "[`ansible`](http://docs.ansible.com/ansible/latest/index.html)",
-    "0-1": "for automating configuration management. It can configure systems, deploy software, and orchestrate more advanced IT tasks.",
-    "1-1": "for securely storing and accessing AWS credentials in an encrypted vault for the purpose of assuming IAM roles",
-    "1-0": "[`aws-vault`](https://github.com/99designs/aws-vault)",
-    "2-0": "[`aws-cli`](https://github.com/aws/aws-cli/)",
-    "2-1": "for interacting directly with the AWS APIs (E.g. s3, ec2, rds)",
-    "3-0": "[`chamber`](https://github.com/segmentio/chamber)",
-    "3-1": "for managing secrets with AWS SSM+KMS",
-    "4-0": "[`helm`](https://github.com/kubernetes/helm/)",
-    "4-1": "for installing packages like Varnish or Apache on the Kubernetes cluster",
-    "5-0": "[`kops`](https://github.com/kubernetes/kops/)",
-    "5-1": "for Kubernetes cluster orchestration",
-    "6-0": "[`kubectl`](https://kubernetes.io/docs/user-guide/kubectl-overview/)",
-    "6-1": "for controlling kubernetes resources like deployments or load balancers",
-    "7-0": "[`gcloud`, `gsutil`](https://cloud.google.com/sdk/)",
-    "7-1": "for integration with Google Cloud (e.g. GKE, GCE, Google Storage)",
-    "8-0": "[`gomplate`](https://github.com/hairyhenderson/gomplate/)",
-    "8-1": "for template rendering configuration files using the GoLang template engine. Supports lots of local and remote data sources",
-    "9-0": "[`goofys`](https://github.com/kahing/goofys/)",
-    "9-1": "for mounting encrypted S3 buckets that store cluster configurations and secrets",
-    "10-0": "[`packer`](https://github.com/hashicorp/packer/)",
-    "10-1": "for creating identical machine images for multiple platforms",
-    "11-0": "[`terraform`](https://github.com/hashicorp/terraform/)",
-    "11-1": "for provisioning miscellaneous resources on pretty much any cloud"
-  },
-  "cols": 2,
-  "rows": 12
-}
-[/block]
+
+|||
+|------|------|
+|[`ansible`](http://docs.ansible.com/ansible/latest/index.html)|for automating configuration management. It can configure systems, deploy software, and orchestrate more advanced IT tasks.|
+|[`goofys`](https://github.com/kahing/goofys/)|for mounting encrypted S3 buckets that store cluster configurations and secrets|
+|[`packer`](https://github.com/hashicorp/packer/)|for creating identical machine images for multiple platforms|
+|[`terraform`](https://github.com/hashicorp/terraform/)|for provisioning miscellaneous resources on pretty much any cloud|
+|[`aws-vault`](https://github.com/99designs/aws-vault)|for securely storing and accessing AWS credentials in an encrypted vault for the purpose of assuming IAM roles|
+|[`aws-cli`](https://github.com/aws/aws-cli/)|for interacting directly with the AWS APIs (E.g. s3, ec2, rds)|
+|[`chamber`](https://github.com/segmentio/chamber)|for managing secrets with AWS SSM+KMS|
+|[`helm`](https://github.com/kubernetes/helm/)|for installing packages like Varnish or Apache on the Kubernetes cluster|
+|[`kops`](https://github.com/kubernetes/kops/)|for Kubernetes cluster orchestration|
+|[`kubectl`](https://kubernetes.io/docs/user-guide/kubectl-overview/)|for controlling kubernetes resources like deployments or load balancers|
+|[`gcloud`, `gsutil`](https://cloud.google.com/sdk/)|for integration with Google Cloud (e.g. GKE, GCE, Google Storage)|
+|[`gomplate`](https://github.com/hairyhenderson/gomplate/)|for template rendering configuration files using the GoLang template engine. Supports lots of local and remote data sources|
+
 
 # Our Logo
 

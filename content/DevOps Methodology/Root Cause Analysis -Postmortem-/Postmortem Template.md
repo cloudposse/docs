@@ -3,24 +3,15 @@ title: "Postmortem Template"
 excerpt: ""
 ---
 # Incident #1 - Descriptive Name of Incident (2018-06-06)
-[block:parameters]
-{
-  "data": {
-    "0-0": "On-call Engineer",
-    "1-0": "Start Time",
-    "2-0": "End Time",
-    "3-0": "Total Duration",
-    "4-0": "Affected Systems",
-    "1-1": "2018-06-06 12:58 PST",
-    "2-1": "2018-06-06 13:55 PST",
-    "3-1": "39 Minutes",
-    "0-1": "John Doe",
-    "4-1": "Production Web Tier"
-  },
-  "cols": 2,
-  "rows": 5
-}
-[/block]
+
+|||
+|------|------|
+|On-call Engineer|John Doe|
+|Start Time|2018-06-06 12:58 PST|
+|End Time|2018-06-06 13:55 PST|
+|Total Duration|39 Minutes|
+|Affected Systems|Production Web Tier|
+
 # Summary
 
 ## TL;DR

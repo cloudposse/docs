@@ -32,13 +32,10 @@ kops create secret dockerconfig
   --name k8s-cluster.example.com --state s3://example.com
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "READ MORE",
-  "body": "[github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md](https://github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md)"
-}
-[/block]
+
+##### :information_source: READ MORE
+> [github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md](https://github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md)
+
 
 # Kubernetes
 

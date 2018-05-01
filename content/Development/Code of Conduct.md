@@ -46,8 +46,3 @@ This Code of Conduct is adapted from the [Contributor Covenant][homepage], versi
 
 [homepage]: http://contributor-covenant.org
 [version]: http://contributor-covenant.org/version/1/4/
-[block:html]
-{
-  "html": "<style>    \n  .addthis_relatedposts_inline { \n    display: none;\n  }\n</style>"
-}
-[/block]

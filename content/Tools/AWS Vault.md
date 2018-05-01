@@ -3,13 +3,10 @@ title: "AWS Vault"
 excerpt: ""
 ---
 The [`aws-vault`](https://github.com/99designs/aws-vault) by [99 Designs](https://99designs.com/) is a vault for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
-[block:callout]
-{
-  "type": "warning",
-  "title": "IMPORTANT",
-  "body": "The `aws-vault` has no relationship to the HashiCorp Vault."
-}
-[/block]
+
+##### :warning: IMPORTANT
+> The `aws-vault` has no relationship to the HashiCorp Vault.
+
 Features:
 * Encrypted vault for IAM credentials (OSX KeyChain or file)
 * IAM Metadata server (mocks the [EC2 API](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)) to simulate instance profiles for local development
@@ -17,13 +14,10 @@ Features:
 * Variable-length session TTLs
 * Compatible with `~/.aws/config`
 * Automatic logins to AWS Web Console
-[block:callout]
-{
-  "type": "info",
-  "body": "This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).",
-  "title": "NOTE"
-}
-[/block]
+
+##### :information_source: NOTE
+> This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).
+
 # Installation 
  You can install AWS Vault on local allow you to authorize on aws and preform aws cli requrests from host computer
 
@@ -53,13 +47,10 @@ role_arn=arn:aws:iam::29013231371:role/OrganizationAccountAccessRole
 mfa_serial = arn:aws:iam::313021614177:mfa/erik@cloudposse.com
 source_profile=cloudposse
 ```
-[block:callout]
-{
-  "type": "info",
-  "body": "Do not define the source profile in `~/.aws/credentials`; we're going to use `aws-vault add` for that.",
-  "title": "IMPORTANT"
-}
-[/block]
+
+##### :information_source: IMPORTANT
+> Do not define the source profile in `~/.aws/credentials`; we're going to use `aws-vault add` for that.
+
 We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](doc:geodesic) sessions. 
 
 Add the following to your `~/.bashrc`:

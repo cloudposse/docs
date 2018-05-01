@@ -3,22 +3,14 @@ title: "terraform-aws-vault"
 excerpt: ""
 ---
 # Terraform AWS Vault 
-[block:parameters]
-{
-  "data": {
-    "0-0": "GitHub Repo",
-    "1-0": "Terraform Module",
-    "2-0": "Release",
-    "3-0": "Build Status",
-    "0-1": "https://github.com/cloudposse/terraform-aws-vault",
-    "1-1": "Vault AWS Module",
-    "2-1": "[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vault.svg)](https://github.com/cloudposse/terraform-aws-vault/releases)",
-    "3-1": "[![Build Status](https://travis-ci.org/cloudposse/Vault AWS Module.svg?branch=master)](https://travis-ci.org/cloudposse/Vault AWS Module)"
-  },
-  "cols": 2,
-  "rows": 4
-}
-[/block]
+
+|||
+|------|------|
+|GitHub Repo|https://github.com/cloudposse/terraform-aws-vault|
+|Terraform Module|Vault AWS Module|
+|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vault.svg)](https://github.com/cloudposse/terraform-aws-vault/releases)|
+|Build Status|[![Build Status](https://travis-ci.org/cloudposse/Vault AWS Module.svg?branch=master)](https://travis-ci.org/cloudposse/Vault AWS Module)|
+
 This repo contains a Module for how to deploy a [Vault](https://www.vaultproject.io/) cluster on 
 [AWS](https://aws.amazon.com/) using [Terraform](https://www.terraform.io/). Vault is an open source tool for managing secrets. This Module uses [S3](https://aws.amazon.com/s3/) as a [storage 
 backend](https://www.vaultproject.io/docs/configuration/storage/index.html) and a [Consul](https://www.consul.io) server cluster as a [high availability backend](https://www.vaultproject.io/docs/concepts/ha.html):

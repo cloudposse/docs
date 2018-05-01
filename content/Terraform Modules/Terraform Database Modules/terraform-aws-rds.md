@@ -3,22 +3,14 @@ title: "terraform-aws-rds"
 excerpt: "Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances"
 ---
 # Terraform AWS RDS
-[block:parameters]
-{
-  "data": {
-    "0-0": "GitHub Repo",
-    "1-0": "Terraform Module",
-    "2-0": "Release",
-    "3-0": "Build Status",
-    "0-1": "https://github.com/cloudposse/terraform-aws-rds",
-    "1-1": "terraform-aws-rds",
-    "2-1": "[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg)](https://github.com/cloudposse/terraform-aws-rds/releases)",
-    "3-1": "[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-rds.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-rds)"
-  },
-  "cols": 2,
-  "rows": 4
-}
-[/block]
+
+|||
+|------|------|
+|GitHub Repo|https://github.com/cloudposse/terraform-aws-rds|
+|Terraform Module|terraform-aws-rds|
+|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg)](https://github.com/cloudposse/terraform-aws-rds/releases)|
+|Build Status|[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-rds.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-rds)|
+
 The module will create:
 * DB instance (MySQL, Postgres, SQL Server, Oracle)
 * DB Parameter Group

@@ -4,22 +4,7 @@ excerpt: ""
 ---
 We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. GitHub Tags/Releases, Helm Charts, Terraform Modules, Docker Images). 
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/aa35c54-semver.png",
-        "semver.png",
-        378,
-        128,
-        "#000000"
-      ],
-      "caption": "Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)"
-    }
-  ]
-}
-[/block]
+![Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)](/images/aa35c54-semver.png)Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)
 # Semantics
 
 Generally, all of our versions follow this convention: `X.Y.Z` (e.g. `1.2.3`). Sometimes, we'll use this format: `X.Y.Z-branch` when we need to disambiguate between versions existing in multiple branches.

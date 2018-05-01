@@ -21,39 +21,11 @@ The next thing that needs to happen is that the `master` branch is treated as th
 Once a feature is considered ready, the developer submits a Pull Request (or PR) and assigns it to a Subject Matter Expert (SME) or peer for review.
 
 On the surface, this is what a well-formatted Pull Request looks like:
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/e802ae2-image_3.png",
-        "image (3).png",
-        1032,
-        859,
-        "#f8f8f8"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/e802ae2-image_3.png)
 A *Pull Request* allows many things to happen:
 
 * **Title**: A “human readable” title that represents the feature!
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/2d4fce9-image.png",
-        "image.png",
-        617,
-        90,
-        "#e8ebe9"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/2d4fce9-image.png)
 * **Description**: A long description that details ***What*** was changed, ***Why*** it was deemed necessary, and any other ***References*** that might be useful (E.g. Jira ticket)
 
 * **Comments**: let anyone provide arbitrary feedback viewable by everyone.  
@@ -61,85 +33,15 @@ A *Pull Request* allows many things to happen:
 * **Diffs**: show what changed between this feature and the current master branch
 
 * **Formal Code Review Process: ** let multiple people contribute to the code review process by submitting comments on a line-by-line basis. Having these code reviews formally documented serves as an excellent teaching tool. Over time, the reviews become faster and faster as developers learn what is expected.
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/9df4fad-image_2.png",
-        "image (2).png",
-        782,
-        324,
-        "#f2f7f3"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/9df4fad-image_2.png)
 * **Merging**: Once the PR is approved, the developer can squash and merge their code into the master branch. Squashing allows the master branch to have a very clean commit history where every commit corresponds to a PR.
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/2b3e7eb-image_4.png",
-        "image (4).png",
-        795,
-        424,
-        "#e7eded"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/2b3e7eb-image_4.png)
 * **Clean Commit History**: means that every change to the master branch is documented and justified. No one is sneaking in changes.
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/b3dae79-image_5.png",
-        "image (5).png",
-        959,
-        157,
-        "#f2f3f4"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/b3dae79-image_5.png)
 * **History of Features** and when they were added
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/f9a3727-image_7.png",
-        "image (7).png",
-        1005,
-        232,
-        "#f5f5f5"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/f9a3727-image_7.png)
 * **Reverting**: If a feature needs to be removed, with the click of a single button it can be removed from the `master` branch 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/28887e9-image_8.png",
-        "image (8).png",
-        712,
-        50,
-        "#f3f3f5"
-      ]
-    }
-  ]
-}
-[/block]
+![](/images/28887e9-image_8.png)
 # Technical Details
 
 ## Create a Branch

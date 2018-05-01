@@ -3,195 +3,73 @@ title: "terraform-aws-elastic-beanstalk-environment"
 excerpt: "Terraform module to provision AWS Elastic Beanstalk environment"
 ---
 # Terraform AWS Elastic Beanstalk Environment 
-[block:parameters]
-{
-  "data": {
-    "0-0": "GitHub Repo",
-    "1-0": "Terraform Module",
-    "2-0": "Release",
-    "3-0": "Build Status",
-    "0-1": "https://github.com/cloudposse/terraform-aws-elastic-beanstalk-environment",
-    "1-1": "terraform-aws-elastic-beanstalk-environment ",
-    "2-1": "[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-elastic-beanstalk-environment.svg)](https://github.com/cloudposse/terraform-aws-elastic-beanstalk-environment/releases)",
-    "3-1": "[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-elastic-beanstalk-environment.svg)](https://travis-ci.org/cloudposse/terraform-aws-elastic-beanstalk-environment)"
-  },
-  "cols": 2,
-  "rows": 4
-}
-[/block]
+
+|||
+|------|------|
+|GitHub Repo|https://github.com/cloudposse/terraform-aws-elastic-beanstalk-environment|
+|Terraform Module|terraform-aws-elastic-beanstalk-environment |
+|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-elastic-beanstalk-environment.svg)](https://github.com/cloudposse/terraform-aws-elastic-beanstalk-environment/releases)|
+|Build Status|[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-elastic-beanstalk-environment.svg)](https://travis-ci.org/cloudposse/terraform-aws-elastic-beanstalk-environment)|
+
 # Variables
-[block:parameters]
-{
-  "data": {
-    "h-0": "Name",
-    "h-1": "Default",
-    "h-2": "Description",
-    "h-3": "Required",
-    "0-0": "alb_zone_id",
-    "0-1": "{}",
-    "0-2": "ALB zone id",
-    "1-0": "app",
-    "1-1": "__REQUIRED__",
-    "1-2": "EBS application name",
-    "2-2": "Additional attributes (e.g. `policy` or `role`)",
-    "2-1": "[]",
-    "2-0": "attributes",
-    "3-0": "autoscale_lower_bound",
-    "3-1": "\"20\"",
-    "3-2": "Minimum level of autoscale metric to add instance",
-    "4-2": "Maximum instances in charge",
-    "4-1": "\"3\"",
-    "4-0": "autoscale_max",
-    "5-0": "autoscale_min",
-    "5-1": "\"2\"",
-    "5-2": "Minumum instances in charge",
-    "6-2": "Maximum level of autoscale metric to remove instance",
-    "6-1": "\"80\"",
-    "6-0": "autoscale_upper_bound",
-    "7-0": "config_source",
-    "7-1": "\"\"",
-    "7-2": "S3 source for config",
-    "8-2": "Configure a maintenance window for managed actions in UTC",
-    "8-1": "\"Sun:10:00\"",
-    "8-0": "preferred_start_time",
-    "9-0": "update_level",
-    "9-1": "\"minor\"",
-    "9-2": "The highest level of update to apply with managed platform updates. patch for patch version updates only. minor for both minor and patch version updates",
-    "10-2": "Enable weekly instance replacement.",
-    "10-1": "\"true\"",
-    "10-0": "instance_refresh_enabled",
-    "11-2": "Delimiter to be used between `name`, `namespace`, `stage`, etc.",
-    "11-1": "\"-\"",
-    "11-0": "delimiter",
-    "12-0": "env_default_key",
-    "13-0": "env_default_value",
-    "12-1": "\"DEFAULT_ENV_%d\"",
-    "13-1": "\"UNSET\"",
-    "12-2": "Default ENV variable key for Elastic Beanstalk `aws:elasticbeanstalk:application:environment` setting",
-    "13-2": "Default ENV variable value for Elastic Beanstalk `aws:elasticbeanstalk:application:environment` setting",
-    "14-0": "env_vars",
-    "14-1": "{}",
-    "14-2": "Map of custom ENV variables to be provided to the Jenkins application running on Elastic Beanstalk, e.g. `env_vars = { JENKINS_USER = 'admin' JENKINS_PASS = 'xxxxxx' }`",
-    "15-2": "A JSON document describing the environment and instance metrics to publish to CloudWatch [Read more](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/health-enhanced-cloudwatch.html#health-enhanced-cloudwatch-configdocument)",
-    "15-1": "{ \\\"CloudWatchMetrics\\\": {}, \\\"Version\\\": 1} (none)",
-    "15-0": "config_document",
-    "16-0": "healthcheck_url",
-    "16-1": "\"/healthcheck\"",
-    "16-2": "Application Health Check URL. Elastic Beanstalk will call this URL to check the health of the application running on EC2 instances",
-    "17-2": "Enable port 80 (http)",
-    "17-1": "\"false\"",
-    "17-0": "http_listener_enabled",
-    "18-0": "ssh_source_restriction",
-    "18-1": "\"0.0.0.0/0\"",
-    "18-2": "Used to lock down SSH access to the EC2 instances. You can specify a CIDR or a security group id",
-    "19-2": "Instances type",
-    "19-1": "\"t2.micro\"",
-    "19-0": "instance_type",
-    "20-0": "associate_public_ip_address",
-    "20-1": "\"false\"",
-    "20-2": "Specifies whether to launch instances in your VPC with public IP addresses.",
-    "21-2": "Name of SSH key that will be deployed on Elastic Beanstalk and DataPipeline instance. The key should be present in AWS",
-    "21-1": "__REQUIRED__",
-    "21-0": "keypair",
-    "22-0": "root_volume_size",
-    "22-1": "\"8\"",
-    "22-2": "The size of the EBS root volume",
-    "23-2": "The type of the EBS root volume",
-    "23-1": "\"gp2\"",
-    "23-0": "root_volume_type",
-    "24-0": "availability_zones",
-    "24-1": "\"Any 2\"",
-    "24-2": "Choose the    lancer SSL certificate ARN. The certificate must be present in AWS Certificate Manager",
-    "25-2": "Load Balancer type, e.g. 'application' or 'classic'",
-    "25-1": "\"classic\"",
-    "25-0": "loadbalancer_type",
-    "26-2": "Solution name, e.g. 'app' or 'jenkins'",
-    "26-1": "\"app\"",
-    "26-0": "name",
-    "27-0": "namespace",
-    "27-1": "\"global\"",
-    "27-2": "Namespace, which could be your organization name, e.g. 'cp' or 'cloudposse'",
-    "28-2": "Notification endpoint",
-    "28-1": "\"\"",
-    "29-1": "\"email\"",
-    "28-0": "notification_endpoint",
-    "29-0": "notification_protocol",
-    "30-1": "\"\"",
-    "31-1": "\"\"",
-    "29-2": "Notification protocol",
-    "30-2": "Notification topic arn",
-    "30-0": "notification_topic_arn",
-    "31-0": "notification_topic_name",
-    "31-2": "Notification topic name",
-    "32-2": "List of private subnets to place EC2 instances",
-    "32-1": "__REQUIRED__",
-    "33-1": "__REQUIRED__",
-    "34-1": "__REQUIRED__",
-    "32-0": "private_subnets",
-    "33-0": "public_subnets",
-    "34-0": "security_groups",
-    "33-2": "List of public subnets to place Elastic Load Balancer",
-    "34-2": "List of security groups to be allowed to connect to the EC2 instances",
-    "35-0": "solution_stack_name",
-    "36-0": "ssh_listener_enabled",
-    "37-0": "ssh_listener_port",
-    "38-0": "stage",
-    "39-0": "tags",
-    "40-0": "tier",
-    "41-0": "rolling_update_type",
-    "42-0": "updating_max_batch",
-    "43-0": "updating_min_in_service",
-    "44-0": "vpc_id",
-    "45-0": "wait_for_ready_timeout",
-    "46-0": "zone_id",
-    "46-1": "\"\"",
-    "46-2": "Route53 parent zone ID. The module will create sub-domain DNS records in the parent zone for the EB environment",
-    "45-1": "\"20m\"",
-    "44-1": "__REQUIRED__",
-    "44-2": "ID of the VPC in which to provision the AWS resources",
-    "43-2": "Minimum count of instances up during update",
-    "43-1": "\"1\"",
-    "42-1": "\"1\"",
-    "42-2": "Maximum count of instances up during update",
-    "41-1": "\"Health\"",
-    "41-2": "Set it to 'Immutable' to apply the configuration change to a fresh group of instances [Read more](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.rollingupdates.html)",
-    "40-2": "Elastic Beanstalk Environment tier, e.g. ('WebServer', 'Worker')",
-    "40-1": "\"WebServer\"",
-    "39-1": "{}",
-    "39-2": "Additional tags (e.g. `map('BusinessUnit`,`XYZ`)",
-    "38-2": "Stage, e.g. 'prod', 'staging', 'dev', or 'test'",
-    "38-1": "\"default\"",
-    "37-1": "\"22\"",
-    "36-1": "\"false\"",
-    "35-1": "\"\"",
-    "36-2": "Enable ssh port",
-    "37-2": "SSH port",
-    "35-2": "Elastic Beanstalk stack, e.g. Docker, Go, Node, Java, IIS. [Read more](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html)"
-  },
-  "cols": 3,
-  "rows": 48
-}
-[/block]
+
+|Name|Default|Description|Required|
+|------|------|------|------|
+|alb_zone_id|{}|ALB zone id|
+|update_level|"minor"|The highest level of update to apply with managed platform updates. patch for patch version updates only. minor for both minor and patch version updates|
+|instance_refresh_enabled|"true"|Enable weekly instance replacement.|
+|delimiter|"-"|Delimiter to be used between `name`, `namespace`, `stage`, etc.|
+|env_default_key|"DEFAULT_ENV_%d"|Default ENV variable key for Elastic Beanstalk `aws:elasticbeanstalk:application:environment` setting|
+|env_default_value|"UNSET"|Default ENV variable value for Elastic Beanstalk `aws:elasticbeanstalk:application:environment` setting|
+|env_vars|{}|Map of custom ENV variables to be provided to the Jenkins application running on Elastic Beanstalk, e.g. `env_vars = { JENKINS_USER = 'admin' JENKINS_PASS = 'xxxxxx' }`|
+|config_document|{ \"CloudWatchMetrics\": {}, \"Version\": 1} (none)|A JSON document describing the environment and instance metrics to publish to CloudWatch [Read more](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/health-enhanced-cloudwatch.html#health-enhanced-cloudwatch-configdocument)|
+|healthcheck_url|"/healthcheck"|Application Health Check URL. Elastic Beanstalk will call this URL to check the health of the application running on EC2 instances|
+|http_listener_enabled|"false"|Enable port 80 (http)|
+|ssh_source_restriction|"0.0.0.0/0"|Used to lock down SSH access to the EC2 instances. You can specify a CIDR or a security group id|
+|app|__REQUIRED__|EBS application name|
+|instance_type|"t2.micro"|Instances type|
+|associate_public_ip_address|"false"|Specifies whether to launch instances in your VPC with public IP addresses.|
+|keypair|__REQUIRED__|Name of SSH key that will be deployed on Elastic Beanstalk and DataPipeline instance. The key should be present in AWS|
+|root_volume_size|"8"|The size of the EBS root volume|
+|root_volume_type|"gp2"|The type of the EBS root volume|
+|availability_zones|"Any 2"|Choose the    lancer SSL certificate ARN. The certificate must be present in AWS Certificate Manager|
+|loadbalancer_type|"classic"|Load Balancer type, e.g. 'application' or 'classic'|
+|name|"app"|Solution name, e.g. 'app' or 'jenkins'|
+|namespace|"global"|Namespace, which could be your organization name, e.g. 'cp' or 'cloudposse'|
+|notification_endpoint|""|Notification endpoint|
+|attributes|[]|Additional attributes (e.g. `policy` or `role`)|
+|notification_protocol|"email"|Notification protocol|
+|notification_topic_arn|""|Notification topic arn|
+|notification_topic_name|""|Notification topic name|
+|private_subnets|__REQUIRED__|List of private subnets to place EC2 instances|
+|public_subnets|__REQUIRED__|List of public subnets to place Elastic Load Balancer|
+|security_groups|__REQUIRED__|List of security groups to be allowed to connect to the EC2 instances|
+|solution_stack_name|""|Elastic Beanstalk stack, e.g. Docker, Go, Node, Java, IIS. [Read more](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html)|
+|ssh_listener_enabled|"false"|Enable ssh port|
+|ssh_listener_port|"22"|SSH port|
+|stage|"default"|Stage, e.g. 'prod', 'staging', 'dev', or 'test'|
+|autoscale_lower_bound|"20"|Minimum level of autoscale metric to add instance|
+|tags|{}|Additional tags (e.g. `map('BusinessUnit`,`XYZ`)|
+|tier|"WebServer"|Elastic Beanstalk Environment tier, e.g. ('WebServer', 'Worker')|
+|rolling_update_type|"Health"|Set it to 'Immutable' to apply the configuration change to a fresh group of instances [Read more](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.rollingupdates.html)|
+|updating_max_batch|"1"|Maximum count of instances up during update|
+|updating_min_in_service|"1"|Minimum count of instances up during update|
+|vpc_id|__REQUIRED__|ID of the VPC in which to provision the AWS resources|
+|wait_for_ready_timeout|"20m"|
+|zone_id|""|Route53 parent zone ID. The module will create sub-domain DNS records in the parent zone for the EB environment|
+|autoscale_max|"3"|Maximum instances in charge|
+|autoscale_min|"2"|Minumum instances in charge|
+|autoscale_upper_bound|"80"|Maximum level of autoscale metric to remove instance|
+|config_source|""|S3 source for config|
+|preferred_start_time|"Sun:10:00"|Configure a maintenance window for managed actions in UTC|
+
 # Outputs
-[block:parameters]
-{
-  "data": {
-    "0-0": "ec2_instance_profile_role_name",
-    "h-0": "Name",
-    "h-1": "Description",
-    "1-0": "elb_dns_name",
-    "2-0": "elb_zone_id",
-    "3-0": "host",
-    "4-0": "name",
-    "5-0": "security_group_id",
-    "5-1": "Security group id",
-    "4-1": "Name",
-    "3-1": "DNS hostname",
-    "2-1": "ELB zone id",
-    "1-1": "ELB technical host",
-    "0-1": "Instance IAM role name"
-  },
-  "cols": 2,
-  "rows": 6
-}
-[/block]
+
+|Name|Description|
+|------|------|
+|ec2_instance_profile_role_name|Instance IAM role name|
+|elb_dns_name|ELB technical host|
+|elb_zone_id|ELB zone id|
+|host|DNS hostname|
+|name|Name|
+|security_group_id|Security group id|

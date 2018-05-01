@@ -11,10 +11,6 @@ excerpt: "Example of how to structure a document"
 
 # See Also
 
-[block:callout]
-{
-  "type": "info",
-  "title": "READ MORE",
-  "body": "Links to other sites"
-}
-[/block]
+
+##### :information_source: READ MORE
+> Links to other sites
