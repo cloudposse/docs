@@ -1,0 +1,173 @@
+# Markdown-Writer for Atom
+# https://atom.io/packages/markdown-writer
+#
+# To find latest and default configurations, refer to:
+# https://github.com/zhuochun/md-writer/blob/master/lib/config.cson
+#
+# Examples: https://github.com/zhuochun/md-writer/wiki/Settings#example-customizations
+#
+# NOTE 1: After edit, please run command `Window: Reload` or
+#         Use menu: View -> Developer -> Reload Window.
+# NOTE 2: Strings need to be quoted.
+#
+
+# Static engine of your blog
+# - One of: general, html, jekyll, octopress, hexo
+siteEngine: "general"
+# Website URL of your blog
+siteUrl: ""
+
+# Root directory to your blog
+# - Leave it empty to use the current project path (recommended)
+siteLocalDir: ""
+# Directory to drafts from siteLocalDir
+siteDraftsDir: "_drafts/"
+# Directory to posts from siteLocalDir
+sitePostsDir: "_posts/{year}/"
+# Directory to images from siteLocalDir
+# - E.g. to use the current filename directory, can use {directory}
+siteImagesDir: "images/{year}/{month}/"
+
+# URLs to tags/posts/categories JSON files
+# https://github.com/zhuochun/md-writer/wiki/Settings-for-Front-Matters
+urlForPosts: ""
+urlForTags: ""
+urlForCategories: ""
+
+# The front matter key name
+frontMatterNameTags: "tags"
+frontMatterNameCategories: "categories"
+
+# Filename format of new drafts created
+newDraftFileName: "{slug}{extension}"
+# Filename format of new posts created
+newPostFileName: "{year}-{month}-{day}-{slug}{extension}"
+
+# Front matter date format, determines the {date} in frontMatter
+frontMatterDate: "{year}-{month}-{day} {hour}:{minute}"
+# Front matter template
+frontMatter: """
+---
+layout: "{layout}"
+title: "{title}"
+date: "{date}"
+---
+"""
+
+# File extension of posts/drafts
+fileExtension: ".markdown"
+# File slug separator
+slugSeparator: "-"
+
+# Rename filename based on title in front matter when publishing
+publishRenameBasedOnTitle: false
+# Publish keep draft's extension name used
+publishKeepFileExtname: false
+
+# List continuation in the middle of line
+# - Enable to start a new list whenever you press enter in a list
+# - Disable to start a new list only when you press enter at the end of a list
+inlineNewLineContinuation: false
+# Ordered list number continuation
+# - Enable to continue numbers from previous number in ordered lists
+# - Disable to always use 1. as the number in ordered lists
+orderedNewLineNumberContinuation: true
+# Table row continuation
+# - Enable to auto insert table columns when you press enter in a table row
+tableNewLineContinuation: true
+
+# Path to a cson file that stores links added for automatic linking
+# - Config is commented so to use the default `markdown-writer-links.cson` file
+#   under your Atom global config directory
+# siteLinkPath: "set/path/to/links.cson"
+
+# TextStyles and LineStyles
+#
+# - Use `before` and `after` to insert text around the selected text.
+# - Use `regexMatch{Before,After}` when an exact match of the style is needed.
+#   If this regex matched true, the style will be toggled.
+# - Use `regex{Before,After}` when a general match of the style is wanted.
+#   If this regex matched true, the style will be replaced by new style.
+#
+# NOTE
+#
+# - In `regex{Before,After}`, `regexMatch{Before,After}`, DO NOT USE CAPTURE GROUP!
+#   Capture group will break things! USE non-capturing group `(?:)` instead.
+# - When `regexMatch{Before,After}` is not specified, `regex{Before,After}` is used instead.
+# - In nested settings, e.g. codeblock, ul, ol, all the within nested keys need to exists if
+#   you changed one setting.
+#
+textStyles:
+  code:
+    before: "`", after: "`"
+  bold:
+    before: "**", after: "**"
+  italic:
+    before: "_", after: "_"
+  keystroke:
+    before: "<kbd>", after: "</kbd>"
+  strikethrough:
+    before: "~~", after: "~~"
+  codeblock:
+    before: "```\n"
+    after: "\n```"
+    regexBefore: "```(?:[\\w- ]+)?\\r?\\n"
+    regexAfter: "\\r?\\n```"
+
+lineStyles:
+  h1: before: "# "
+  h2: before: "## "
+  h3: before: "### "
+  h4: before: "#### "
+  h5: before: "##### "
+  ul:
+    before: "{ul} "
+    regexMatchBefore: "(?:-|\\*|\\+|\\.)\\s"
+    regexBefore: "(?:-|\\*|\\+|\\.|\\d+[\\.\\)]|[a-zA-Z]+[\\.\\)])\\s"
+  ol:
+    before: "{i}. "
+    regexMatchBefore: "(?:\\d+[\\.\\)]|[a-zA-Z]+[\\.\\)])\\s"
+    regexBefore: "(?:-|\\*|\\+|\\.|\\d+[\\.\\)]|[a-zA-Z]+[\\.\\)])\\s"
+  task:
+    before: "{ul} [ ] "
+    regexMatchBefore: "(?:-|\\*|\\+|\\d+[\\.\\)])\\s+\\[ ]\\s"
+    regexBefore: "(?:-|\\*|\\+|\\d+[\\.\\)]|[a-zA-Z]+[\\.\\)])\\s*(?:\\[[xX ]])?\\s"
+  taskdone:
+    before: "{ul} [x] "
+    regexMatchBefore: "(?:-|\\*|\\+|\\d+[\\.\\)])\\s+\\[[xX]]\\s"
+    regexBefore: "(?:-|\\*|\\+|\\d+[\\.\\)]|[a-zA-Z]+[\\.\\)])\\s*(?:\\[[xX ]])?\\s"
+  blockquote: before: "> "
+
+# Image tag template
+imageTag: "![{alt}]({src})"
+# Use relative path to image from the opened file
+relativeImagePath: false
+# Rename copyed image based on title/alt
+renameImageOnCopy: false
+
+# Inline link tag template
+linkInlineTag: "[{text}]({url})"
+# Reference link tag template
+referenceInlineTag: "[{text}][{label}]"
+referenceDefinitionTag: '{indent}[{label}]: {url} "{title}"'
+# Reference link tag insert position: "paragraph", "article"
+referenceInsertPosition: "paragraph"
+# Reference link tag indent space: 0, 2
+referenceIndentLength: 2
+
+# Footnote tag template
+footnoteReferenceTag: "[^{label}]"
+footnoteDefinitionTag: "[^{label}]: {content}"
+# Footnote definition tag insert position: "paragraph", "article"
+footnoteInsertPosition: "paragraph"
+
+# Table default alignments: "empty", "left", "right", "center"
+tableAlignment: "empty"
+# Insert extra pipes at the beginning and the end of table rows
+tableExtraPipes: false
+
+# Template variables is a key-value map used in template string
+templateVariables:
+  # Bullet for unordered list. add ulBullet1, ulBullet2 if you want different bullet for nested list
+  # https://github.com/zhuochun/md-writer/wiki/Settings#use-different-unorder-list
+  ulBullet: "-"
