@@ -2,3 +2,4 @@ node_modules
 .build-harness
 build-harness/
 public/*
+.gitkeep

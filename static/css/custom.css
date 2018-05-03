@@ -1,16 +1,25 @@
-header {
+body {
+  font-family: 'Proxima Nova','Open Sans',sans-serif;
+}
+
+body > header {
   background-color: #364548;
   color: rgba(255,255,255,0.8);
   height: 4.3rem;
 }
 
-header:after { 
+body > header:after { 
   display: none;
 }
 
-header nav.shortcuts li a {
+body > header nav.shortcuts li a {
   font-size: 14px;
   height: 2rem;
+}
+
+/* fix for empty pages */
+section header {
+  display: none;
 }
 
 header nav.shortcuts li a:hover {
@@ -22,13 +31,55 @@ header nav.shortcuts li a:hover {
   height: 2rem;
 }
 
+ul.menu {
+  border-right: 1px solid #E2E3E3;
+}
 
-article > aside .menu .dd-item.active > div * {
+li.haschildren > div > a {
+	color: #7d7f7f;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: .5px;
+}
+
+article > aside {
+  top: inherit;
+  left: inherit;
+}
+
+body > aside {
+  background-color: transparent;
+}
+
+article > aside .menu .dd-item div a {
+  order: 1;
+}
+
+article > aside .menu .dd-item div i.category-icon {
+  color: #bbb;
+  opacity: .5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+aside#left-sidebar {
+  top: 2.5em;
+  background: white;
+}
+
+article > aside .menu .dd-item li {
+    border-left: 0;
+}
+
+aside#left-sidebar .menu .dd-item.active > div * {
   font-weight: normal;
   border-bottom: 0;
 }
 
-article > aside .menu .dd-item.active > div {
+aside#left-sidebar .menu .dd-item.active > div {
   color: #fff;
   background-color: #364548;
   border-radius: 3px;
@@ -36,8 +87,62 @@ article > aside .menu .dd-item.active > div {
 
 article section.page pre {
     margin: 20px 30px;
-    background-color: #f0f2f4;
     padding: 20px 20px;
     border-radius: 6px;
+    color: #EFF0F0;
     background-color: #364548; 
+}
+
+aside#right-sidebar {
+  width: 300px;
+  background-color: white;
+  top: 2.5em;
+  right: 0px
+}
+
+aside#right-sidebar h3 {
+	padding-left: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    color: #777;
+}
+
+aside#right-sidebar nav {
+    color: #bbb;
+    font-size: 13px;
+    text-decoration: none;
+    border-radius: 2px;
+    padding: 4px 5px 4px 23px;
+
+}
+
+section > h1 {
+  color: #555;
+  font-size: 23px;
+  font-weight: 600;
+}
+
+section > h2 {
+  color: #999;
+  font-size: 21px;
+  font-weight: 300; 
+}
+
+.searchbox {
+  text-align: left;
+}
+.searchbox input {
+  width: 70%;
+}
+
+article section.page h1:first-of-type {
+  text-align: left;
+  font-size: 2.7rem;
+}
+
+article section.page img {
+  margin: 0;
+  max-width: 50%
 }
