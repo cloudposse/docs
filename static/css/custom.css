@@ -12,6 +12,8 @@ body > header {
   width: 100%;
   position: initial;
   margin-bottom: 0;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 body > header:after { 
@@ -28,6 +30,12 @@ section header {
   display: none;
 }
 
+
+header .logo img {
+  width: 174px;
+  height: 40px;
+}
+
 header nav.shortcuts li a:hover {
   border-radius: 3px;
   background-color: rgba(0,0,0,0.03);
@@ -41,7 +49,7 @@ ul.menu {
   border-right: 1px solid #E2E3E3;
 }
 
-li.haschildren > div > a {
+ul.menu > li.haschildren > div > a {
 	color: #7d7f7f;
     text-transform: uppercase;
     font-weight: 600;
@@ -49,9 +57,13 @@ li.haschildren > div > a {
     letter-spacing: .5px;
 }
 
+article {
+  min-height: 40%;
+}
 article > aside {
   top: inherit;
   left: inherit;
+  padding: 0
 }
 
 body > aside {
@@ -72,13 +84,18 @@ article > aside .menu .dd-item div i.category-icon {
   font-size: 20px;
 }
 
+aside#left-sidebar ul {
+  margin-top: 0;
+  padding-right: 20px;
+}
+
 aside#left-sidebar {
-  top: 2.5em;
+  top: 102px;
   background: white;
 }
 
 article > aside .menu .dd-item li {
-    border-left: 0;
+  border-left: 0;
 }
 
 aside#left-sidebar .menu .dd-item.active > div * {
@@ -163,6 +180,11 @@ section > h2 {
   padding-top: 0;
 }
 
+.landing-top {
+  height: 293px;
+  padding: 60px 50px;
+}
+
 .landing-top .searchbox {
   text-align: left;
   -webkit-box-shadow: 0 0 0 5px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.1);
@@ -228,8 +250,9 @@ div.landing-description {
 }
 
 .search-bar {
-    padding-left: 20%;
-    padding-right: 20%;
+  padding-top: 30px;
+  padding-left: 20%;
+  padding-right: 20%;
 }
 
 .search-bar .icon {
@@ -318,4 +341,9 @@ div.landing-description {
   color: #888;
   position: relative;
   left: 26px;
+}
+
+#navigation {
+  border-top: 0;
+  border-bottom: 0;
 }
