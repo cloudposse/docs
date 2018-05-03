@@ -16,7 +16,9 @@
   {{- end}}
 </header>
 <article>
-  {{if not .IsHome}}
+  {{if .IsHome}}
+
+  {{else}}
   <aside id="left-sidebar">
     <ul class="menu">
       {{- if not .Site.Params.disableHomeIcon}}
@@ -34,7 +36,6 @@
       {{- partial "menu-footer.html" . }}
     </section>
   </aside>
-  {{end}}
 
   <section class="page">
     <div class="nav-select">
@@ -63,7 +64,5 @@
         <script type="text/javascript" src="{{"js/search.js" | relURL}}"></script>
       </div>
     {{- end}}
-
-    {{if not .IsHome}}
       <h1 class="title">{{.Title}}</h1>
-    {{end}}
+  {{end}}

@@ -1,3 +1,4 @@
+  {{if not .IsHome}}
   <div class="chevrons">
     {{ partial "next-prev-page.html" . }}
   </div>
@@ -9,6 +10,7 @@
     {{ .TableOfContents }}
   </aside>
   {{ end }}
+  {{end}}
 
 </article>
 <footer>

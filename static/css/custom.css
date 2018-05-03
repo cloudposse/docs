@@ -177,3 +177,18 @@ article section.page table td {
   border-bottom: 0;
   border: 0;
 }
+
+abbr[title]:hover, acronym[title]:hover {
+  cursor: pointer;
+}
+
+abbr[title] {
+  border-bottom: 1px dotted;
+  text-decoration: none;
+}
+
+acronym[title] {
+ text-decoration: none;
+ cursor: pointer;
+}
+
