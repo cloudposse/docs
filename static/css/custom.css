@@ -1,0 +1,24 @@
+header {
+  background-color: #364548;
+  color: rgba(255,255,255,0.8);
+  height: 4.3rem;
+}
+
+header:after { 
+  display: none;
+}
+
+header nav.shortcuts li a {
+  font-size: 14px;
+  height: 2rem;
+}
+
+header nav.shortcuts li a:hover {
+  border-radius: 3px;
+  background-color: rgba(0,0,0,0.03);
+  -webkit-box-shadow: 1px 1px 0 rgba(255,255,255,0.15);
+  box-shadow: 1px 1px 0 rgba(255,255,255,0.15);
+  color: #fff;
+  height: 2rem;
+}
+
