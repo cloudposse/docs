@@ -1,6 +1,7 @@
 ---
 title: "Geodesic"
 excerpt: "Geodesic is the fastest way to get up and running with a rock solid, production-grade cloud platform."
+homepage: true
 ---
 ![](/images/638d917-geodesic-small.png)
 

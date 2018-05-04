@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/head.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/head.html" . }}
+    {{end}}
+  </head>
+
+  {{ if .Slug }} 
+  <body data-url="{{ .RelPermalink }}" class="cloudposse page-{{ .Slug }}">
+  {{ else }}
+  <body data-url="{{ .RelPermalink }}" class="cloudposse no-page-slug">
+  {{ end }}
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/body-beforecontent.html" . }}
+    {{end}}
+    
+    {{ block "main" . }}
+    {{ end }}
+    
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/body-aftercontent.html" . }}
+    {{ end }}
+
+    {{ block "footer" . }}
+    {{ end }}
+
+    {{ partial "custom-footer.html" . }}
+  </body>
+</html>

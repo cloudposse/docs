@@ -1,0 +1,73 @@
+{{- $currentNode := . }}
+{{- if eq .Site.Params.ordersectionsby "title"}}
+  {{- range .Site.Home.Sections.ByTitle}}
+    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1}}
+  {{- end}}
+{{- else}}
+  {{- range .Site.Home.Sections.ByWeight}}
+    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1}}
+  {{- end}}
+{{- end}}
+
+<!-- templates -->
+{{- define "homepage-nav" }}
+  {{- $currentNode := .currentnode }}
+  {{- $depth := .depth }}
+  {{- with .sect}}
+  {{ if lt $depth 4  }}
+    <ul class="category">
+      {{- if .IsSection }}
+      <!-- IsSection -->
+        {{- $numberOfPages := (add (len .Pages) (len .Sections)) }}
+        {{- safeHTML .Params.head}}
+        <li data-nav-id="{{.URL}}" class="dd-item
+            {{- if .IsAncestor $currentNode}} parent{{end}}
+            {{- if ne $numberOfPages 0 }} haschildren{{end}}
+            ">
+          <div>
+            <h3><a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a></h3>
+          </div>
+          {{- if ne $numberOfPages 0 }}
+            <!-- begin A: $numberOfPages ne 0 -->
+            <ul>
+              {{- .Scratch.Set "pages" .Pages }}
+              {{- if .Sections}}
+              {{- .Scratch.Set "pages" (.Pages | union .Sections) }}
+              {{- end}}
+              {{- $pages := (.Scratch.Get "pages") }}
+              {{- if eq .Site.Params.ordersectionsby "title"}}
+                {{- range $pages.ByTitle }}
+                  {{- if and .Params.hidden }}
+                  <!-- hidden -->
+                  {{- else}}
+                  {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" (add $depth 1)}}
+                  {{- end}}
+                {{- end}}
+              {{- else}}
+                {{- range $pages.ByWeight }}
+                  {{- if and .Params.hidden }}
+                  <!-- hidden -->
+                  {{- else}}
+                  {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" (add $depth 1)}}
+                  {{- end}}
+                {{- end}}
+              {{- end}}
+            <!-- end A -->
+            </ul>
+          <!-- end $numberOfPages -->
+          {{- end}}
+        </li>
+      {{- else}}
+        <li data-nav-id="{{.URL}}" class="dd-item {{- if eq .URL $currentNode.URL}} active{{end -}}">
+          <div>
+            <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}</a>
+          </div>
+        </li>
+      <!-- end .IsSection -->
+      {{- end}}
+    </ul>
+  {{end }}
+  <!-- end with -->
+  {{- end}}
+<!-- end define -->
+{{- end}}

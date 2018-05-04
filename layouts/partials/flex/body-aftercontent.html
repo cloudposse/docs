@@ -1,0 +1,57 @@
+  {{if not .IsHome}}
+  <div class="chevrons">
+    {{ partial "next-prev-page.html" . }}
+  </div>
+
+  </section>
+  {{ if and (gt .WordCount 400 ) (ne .Params.toc "false") }}
+  <aside id="right-sidebar">
+    <h3><i class="fa fa-align-left"></i>Table of Contents</h3>
+    {{ .TableOfContents }}
+  </aside>
+  {{ end }}
+  {{end}}
+
+</article>
+<footer>
+
+<div class="footline">
+    {{if .Params.tags }}
+    <div class="tags"> 
+      {{ range $index, $tag := .Params.tags }}
+        <a class="label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}">{{ $tag }}</a>
+      {{ end }}
+    </div>
+    {{end}}
+
+
+    <div>
+{{ $footer := print "_footer." .Lang }}
+{{ range where .Site.Pages "Source.BaseFileName" $footer }}
+  {{ .Content }} 
+{{else}}
+  {{ if .Site.GetPage "page" "_footer.md" }}
+    {{(.Site.GetPage "page" "_footer.md").Content}}
+  {{else}}
+    {{ T "create-footer-md" }}
+  {{end}}
+{{end}}
+    </div>
+
+    {{with .Params.LastModifierDisplayName}}
+    <div class="author">
+        <i class='fa fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a>
+    </div>
+    {{end}}
+
+  {{ if not .Page.Lastmod.IsZero }}
+    <div class="date">
+        <i class='fa fa-calendar'></i> {{T "last-update-on"}} {{ .Page.Lastmod.Format "02/01/2006" }}
+    </div>
+    {{end}}
+
+   </div>
+
+</footer>
+
+{{ partial "flex/scripts.html" . }}

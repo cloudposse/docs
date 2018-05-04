@@ -72,7 +72,7 @@ Config AWS credentials and roles following [Authorization](doc:authorization)
 ##### :warning: Warning
 > Geodesic use [AWS Vault](doc:aws-vault) to authorize on AWS so ensure you add source profile name to [AWS Vault](doc:aws-vault)
 
-## Set default profile in <<glossary:Module>> 
+## Set default profile in Geodesic Module
 
 Add to you module `Dockerfile` :
 
