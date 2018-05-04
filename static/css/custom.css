@@ -394,7 +394,7 @@ div.landing-description {
   border-bottom: 0;
 }
 
-.page-404 section.page h1, .page-404 .searchbox, .excerpt, .github-link {
+.page-404 section.page h1, .page-404 .searchbox, .page-404 .excerpt, .page-404 .github-link {
   display: none;
 }
 

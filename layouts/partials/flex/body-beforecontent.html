@@ -35,6 +35,7 @@
 {{ end }}
 <div class="subnav">
   <div class="container">
+    {{ partial "breadcrumb.html" . }}
     <div class="breadcrumbs">
       <a href="{{.Site.BaseURL}}">Home</a> <i class="fa fa-chevron-right"></i> <a href="{{.Site.BaseURL}}">Home</a>
     </div>
@@ -99,12 +100,12 @@
       </div>
     {{- end}}
       <h1 class="title">{{.Title}}</h1>
+      <div class="github-link">
+        <a href="{{ .Site.Params.editURL }}{{ replace .File.Dir "\\" "/" }}{{ .File.LogicalName }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
+      </div>
       <div class="excerpt">
         {{ if .Params.excerpt }}
         <p>{{ .Params.excerpt }}</p>
         {{ end }}
-      </div>
-      <div class="github-link">
-        <a href="{{ .Site.Params.editURL }}{{ replace .File.Dir "\\" "/" }}{{ .File.LogicalName }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
       </div>
   {{end}}
