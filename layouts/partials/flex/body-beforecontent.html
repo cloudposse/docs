@@ -35,11 +35,10 @@
 {{ end }}
 <div class="subnav">
   <div class="container">
+    {{if not .IsHome}}
     <div class="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
       {{ template "breadcrumb" dict "page" . "value" .Title }}   
     </div>
- 
-    {{if not .IsHome}}
     <div class="searchbox">
       <div class="fa fa-search"></div>
       <input type="text" placeholder="Search" class="search-box">
