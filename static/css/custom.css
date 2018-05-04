@@ -488,7 +488,7 @@ div.landing-description {
   float: left;
   width: 30%;
   height: 200px;
-  overflow: hidden;
+  overflow: scroll;
   margin-right: 35px;
 }
 .homepage ul {
