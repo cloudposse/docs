@@ -78,6 +78,10 @@ article > aside .menu .dd-item div a, article > aside .menu .dd-item div a:hover
   padding-left: 10px;
 }
 
+aside#left-sidebar .menu li.active > div > a:hover {
+  background-color: transparent;
+}
+
 article > aside .menu .dd-item div i.category-icon {
   color: #bbb;
   opacity: .5;
@@ -98,6 +102,7 @@ aside#left-sidebar {
   background: white;
   padding-left: 30px;
 }
+
 
 article > aside .menu .dd-item li {
   border-left: 0;
