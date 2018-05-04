@@ -1,6 +1,7 @@
 ---
 title: "Terraform Best Practices"
 excerpt: ""
+slug: "terraform-best-practices"
 ---
 ![](/images/08bcd99-terraform.png)
 

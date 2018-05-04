@@ -63,7 +63,8 @@ article {
 article > aside {
   top: inherit;
   left: inherit;
-  padding: 0
+  padding: 0;
+  width: 23rem;
 }
 
 body > aside {
@@ -96,6 +97,10 @@ aside#left-sidebar {
 
 article > aside .menu .dd-item li {
   border-left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 
 aside#left-sidebar .menu .dd-item.active > div * {
@@ -109,6 +114,10 @@ aside#left-sidebar .menu .dd-item.active > div {
   border-radius: 3px;
 }
 
+article section {
+    max-width: 1024px;
+}
+
 article section.page pre {
     margin: 20px 30px;
     padding: 20px 20px;
@@ -120,8 +129,9 @@ article section.page pre {
 aside#right-sidebar {
   width: 300px;
   background-color: white;
-  top: 2.5em;
-  right: 0px
+  top: 102px;
+  right: 0px;
+  margin-right: 20px;
 }
 
 aside#right-sidebar h3 {
@@ -131,6 +141,10 @@ aside#right-sidebar h3 {
   font-size: 11px;
   font-weight: 700;
   color: #777;
+}
+
+aside#right-sidebar .fa {
+  margin-right: 5px;
 }
 
 aside#right-sidebar nav {
@@ -199,8 +213,15 @@ section > h2 {
 }
 
 article section.page h1:first-of-type {
+  font-family: 'Proxima Nova','Open Sans',sans-serif;
   text-align: left;
-  font-size: 2.7rem;
+  font-weight: 300;
+  font-size: 30px;
+  margin-bottom: 5px;
+  color: #33383c;
+  line-height: 30px;
+  word-wrap: break-word; 
+  text-transform: none;
 }
 
 article section.page img {
@@ -346,4 +367,36 @@ div.landing-description {
 #navigation {
   border-top: 0;
   border-bottom: 0;
+}
+
+.page-404 section.page h1, .page-404 .searchbox {
+  display: none;
+}
+
+.excerpt {
+  color: #9ea6ad;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 30px;
+}
+
+.excerpt p {
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+.github-link a {
+  float:right;
+  display: inline-block;
+  padding-left: 8px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  color: #777;
+  display: block;
+  margin-top: 2px;
+}
+
+.github-link i {
+  margin-right: 5px;
 }

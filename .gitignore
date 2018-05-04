@@ -3,3 +3,4 @@ node_modules
 build-harness/
 public/*
 .gitkeep
+*.swp

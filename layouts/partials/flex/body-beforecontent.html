@@ -36,7 +36,7 @@
 <div class="subnav">
   <div class="container">
     <div class="breadcrumbs">
-      <a href="#">Home</a>
+      <a href="{{.Site.BaseURL}}">Home</a>
     </div>
     <div class="searchbox">
       <div class="fa fa-search"></div>
@@ -95,4 +95,12 @@
       </div>
     {{- end}}
       <h1 class="title">{{.Title}}</h1>
+      <div class="excerpt">
+        {{ if .Params.excerpt }}
+        <p>{{ .Params.excerpt }}</p>
+        {{ end }}
+      </div>
+      <div class="github-link">
+        <a href="{{ .Site.Params.editURL }}{{ replace .File.Dir "\\" "/" }}{{ .File.LogicalName }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
+      </div>
   {{end}}

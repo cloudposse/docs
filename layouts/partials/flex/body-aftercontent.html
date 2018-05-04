@@ -6,7 +6,7 @@
   </section>
   {{ if and (gt .WordCount 400 ) (ne .Params.toc "false") }}
   <aside id="right-sidebar">
-    <h3>Table of Contents</h3>
+    <h3><i class="fa fa-align-left"></i>Table of Contents</h3>
     {{ .TableOfContents }}
   </aside>
   {{ end }}
@@ -36,11 +36,7 @@
     </div>
     {{end}}
 
-    <div class="github-link">
-      <a href="{{ .Site.Params.editURL }}{{ replace .File.Dir "\\" "/" }}{{ .File.LogicalName }}" target="blank"><i class="fa fa-code-fork"></i>
-        {{T "Edit-this-page"}}</a>
-    </div>
-  </div>
+   </div>
 
 
 	<div>
