@@ -464,4 +464,42 @@ div.landing-description {
   background-image: linear-gradient(-225deg,#50cccc 35%,#45aeca);
 }
 
- 
+.homepage {
+  padding-left: 5%;
+  padding-right: 5%;
+  width: 100%;
+}
+
+.homepage > .category {
+  display: inline-block;
+  float: left;
+  width: 30%;
+  height: 200px;
+  overflow: hidden;
+  margin-right: 35px;
+}
+.homepage ul {
+  display: block;
+  list-style: none;
+} 
+
+.homepage > .category > li > div > h3 {
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  line-height: 2em;
+  margin-bottom: 1em;
+}
+
+.homepage h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 0px;
+}
+
+.homepage  li:not(.haschildren) {
+  padding-left: 5px;
+}
+
+.homepage .category ul li.dd-item {
+  margin-left: 10px;
+}

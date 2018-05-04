@@ -49,7 +49,9 @@
 
 <article>
   {{if .IsHome}}
-
+    <div class="homepage">
+      {{ partial "homepage.html" . }}
+    </div>
   {{else}}
   <aside id="left-sidebar">
     <ul class="menu">
