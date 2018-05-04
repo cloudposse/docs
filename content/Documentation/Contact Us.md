@@ -1,6 +1,7 @@
 ---
 title: "Contact Us"
 excerpt: ""
+parent: "home"
 ---
 
 |||
