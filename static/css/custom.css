@@ -238,11 +238,23 @@ article section.page img {
 }
 
 article section.page table {
-  border: 1px solid #e6e6e6;
+  border: 3px solid #eee;
+  border-radius: 5px;
+  overflow: auto;
+  border-collapse: separate !important;
+  color: #4c555a;
 }
+
 article section.page table td {
   border-bottom: 0;
   border: 0;
+}
+
+article section.page table th {
+  border-bottom: 0;
+  border: 0;
+  text-transform: inherit;
+  font-weight: 300;
 }
 
 abbr[title]:hover, acronym[title]:hover {
@@ -502,4 +514,9 @@ div.landing-description {
 
 .homepage .category ul li.dd-item {
   margin-left: 10px;
+}
+
+thead {
+  background-color: #f9f9f9;
+  border-bottom: 2px solid #eee;
 }
