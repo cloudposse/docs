@@ -124,7 +124,7 @@ ENV TF_VAR_tfstate_region=us-west-2
 ```
 
 ##  Run into the module shell
-Run <<glossary:Module>> shell in [development mode](doc:use#section-development-mode)
+Run Geodesic Shell in [development mode](doc:use#section-development-mode)
 ```bash
 > $CLUSTER_NAME --dev
 ```
@@ -251,7 +251,7 @@ ENV TF_DYNAMODB_TABLE "example-staging-terraform-state-lock"
 ```
 
 ##  Run into the module shell and authorize on AWS
-Run <<glossary:Module>> shell in [development mode](doc:use#section-development-mode)
+Run Geodesic Shell in [development mode](doc:use#section-development-mode)
 ```bash
 > $CLUSTER_NAME --dev
 > assume-role
