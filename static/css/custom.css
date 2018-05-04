@@ -505,6 +505,7 @@ div.landing-description {
   border-bottom: 1px solid #ddd;
   line-height: 2em;
   margin-bottom: 1em;
+  text-transform: none;
 }
 
 .homepage h3 {
