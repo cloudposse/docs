@@ -24,14 +24,14 @@ enableEmoji = true
 
 [params]
 showVisitedLinks = true # default is false
-themeStyle = "flex" # "original" or "flex" # default "flex"
+themeStyle = "flex"
 ordersectionsby = "weight" # ordersectionsby = "title"
 disableHomeIcon = true
 disableSearch = true
 disableNavChevron = false # set true to hide next/prev chevron, default is false
 highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
 menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
-enableGitInfo = false
+enableGitInfo = true
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
