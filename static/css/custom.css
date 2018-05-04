@@ -515,6 +515,7 @@ div.landing-description {
 
 .homepage  li:not(.haschildren) {
   padding-left: 5px;
+  color: #888;
 }
 
 .homepage .category ul li.dd-item {
