@@ -59,7 +59,9 @@ ul.menu > li.haschildren > div > a {
 
 article {
   min-height: 40%;
+  margin-top: 0;
 }
+
 article > aside {
   top: inherit;
   left: inherit;
