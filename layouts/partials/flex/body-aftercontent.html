@@ -14,10 +14,9 @@
 
 </article>
 <footer>
-
-<div class="footline">
+  <div class="footline">
     {{if .Params.tags }}
-    <div class="tags"> 
+    <div class="tags">
       {{ range $index, $tag := .Params.tags }}
         <a class="label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}">{{ $tag }}</a>
       {{ end }}
@@ -25,7 +24,7 @@
     {{end}}
 
 
-    <div>
+    <div class="copyright"> 
 {{ $footer := print "_footer." .Lang }}
 {{ range where .Site.Pages "Source.BaseFileName" $footer }}
   {{ .Content }} 
@@ -44,14 +43,12 @@
     </div>
     {{end}}
 
-  {{ if not .Page.Lastmod.IsZero }}
+    {{ if not .Page.Lastmod.IsZero }}
     <div class="date">
         <i class='fa fa-calendar'></i> {{T "last-update-on"}} {{ .Page.Lastmod.Format "02/01/2006" }}
     </div>
     {{end}}
-
    </div>
-
 </footer>
 
 {{ partial "flex/scripts.html" . }}
