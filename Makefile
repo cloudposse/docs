@@ -1,6 +1,6 @@
 export INSTALL_PATH ?= /usr/local/bin
 export HUGO ?= hugo
-export HUGO_URL ?= http://localhost:1313/
+export HUGO_URL ?= http://localhost.cloudposse.com:1313/
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 

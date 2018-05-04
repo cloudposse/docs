@@ -8,7 +8,7 @@
       {{ partial "flex/head.html" . }}
     {{end}}
   </head>
-  <body data-url="{{ .RelPermalink }}" class="page-404">
+  <body data-url="{{ .RelPermalink }}" class="cloudposse page-404">
     {{if .Site.Params.themeStyle}}
       {{ partial (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
     {{else}}

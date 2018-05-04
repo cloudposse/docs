@@ -36,12 +36,14 @@
 <div class="subnav">
   <div class="container">
     <div class="breadcrumbs">
-      <a href="{{.Site.BaseURL}}">Home</a>
+      <a href="{{.Site.BaseURL}}">Home</a> <i class="fa fa-chevron-right"></i> <a href="{{.Site.BaseURL}}">Home</a>
     </div>
+    {{if not .IsHome}}
     <div class="searchbox">
       <div class="fa fa-search"></div>
       <input type="text" placeholder="Search" class="search-box">
     </div>
+    {{end}}
   </div>
 </div>
 

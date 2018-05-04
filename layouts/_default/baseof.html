@@ -10,9 +10,9 @@
   </head>
 
   {{ if .Slug }} 
-  <body data-url="{{ .RelPermalink }}" class="page-{{ .Slug }}">
+  <body data-url="{{ .RelPermalink }}" class="cloudposse page-{{ .Slug }}">
   {{ else }}
-  <body data-url="{{ .RelPermalink }}" class="no-page-slug">
+  <body data-url="{{ .RelPermalink }}" class="cloudposse no-page-slug">
   {{ end }}
     {{if .Site.Params.themeStyle}}
       {{ partial (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}

@@ -1,4 +1,4 @@
-baseURL = "http://localhost/"
+baseURL = "http://localhost.cloudposse.com:1313/"
 languageCode = "en-us"
 title = "Cloud Posse Developer Hub"
 theme = "hugo-theme-docdock"
@@ -25,7 +25,6 @@ enableEmoji = true
 [params]
 showVisitedLinks = true # default is false
 themeStyle = "flex" # "original" or "flex" # default "flex"
-themeVariant = "gray" # choose theme variant "green", "gold" , "gray", "blue" (default)
 ordersectionsby = "weight" # ordersectionsby = "title"
 disableHomeIcon = true
 disableSearch = true

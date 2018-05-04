@@ -93,7 +93,8 @@ aside#left-sidebar ul {
 }
 
 aside#left-sidebar {
-  top: 102px;
+  position: relative;
+  top: 0;
   background: white;
 }
 
@@ -131,7 +132,8 @@ article section.page pre {
 aside#right-sidebar {
   width: 300px;
   background-color: white;
-  top: 102px;
+  position: relative;
+  top: 0;
   right: 0px;
   margin-right: 20px;
 }
@@ -212,6 +214,10 @@ section > h2 {
 .landing-top .searchbox input {
   width: 100%;
   margin-bottom: 0;
+}
+
+article section.page {
+  margin: 0;
 }
 
 article section.page h1:first-of-type {
@@ -330,6 +336,11 @@ div.landing-description {
   float: left;
 }
 
+.breadcrumbs i {
+  color: #ccc;
+  font-size: 10px;
+}
+
 .subnav .searchbox {
   display: inline;
   float: right;
@@ -371,7 +382,7 @@ div.landing-description {
   border-bottom: 0;
 }
 
-.page-404 section.page h1, .page-404 .searchbox {
+.page-404 section.page h1, .page-404 .searchbox, .excerpt, .github-link {
   display: none;
 }
 
@@ -402,3 +413,55 @@ div.landing-description {
 .github-link i {
   margin-right: 5px;
 }
+
+
+.at-logo {
+  display: none;
+}
+
+.addthis_relatedposts_inline {
+    width: 717px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 86px;
+}
+
+.addthis_relatedposts_inline .at4-recommended .at4-recommended-item {
+  border: 0px;
+}
+
+.addthis-smartlayers .at4-recommended.at-inline .at-h3.at-recommended-label {
+    color: #555;
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.addthis-smartlayers .at4-recommended.at-medium .at4-recommended-item {
+  width: 200px;
+}
+
+.addthis-smartlayers .at4-recommended.at-medium .at4-recommended-item .at4-recommended-item-caption .at-h4 {
+  font-size: 1em;
+}
+
+.calendly-inline-widget iframe, .calendly-badge-widget iframe, .calendly-overlay iframe {
+  border-radius: 10px;
+}
+
+.calendly-overlay .calendly-popup {
+  border-radius: 10px;
+}
+
+.calendly-badge-widget .calendly-badge-content {
+  background-image: linear-gradient(-225deg,#50cccc 35%,#45aeca);
+}
+
+.cloudposse #_hj-f5b2a1eb-9b07_feedback ._hj-f5b2a1eb-9b07_feedback_minimized_label {
+  background-image: linear-gradient(-225deg,#50cccc 35%,#45aeca);
+}
+
+.cloudposse #_hj-f5b2a1eb-9b07_feedback_open_close_phone {
+  background-image: linear-gradient(-225deg,#50cccc 35%,#45aeca);
+}
+
+ 
