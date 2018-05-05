@@ -11,6 +11,6 @@ excerpt: "Example of how to structure a document"
 
 # See Also
 
-
-##### :information_source: READ MORE
-> Links to other sites
+{{% dialog type="info" icon="fa-info-circle" title="References" %}}
+- Links to other sites
+{{% /dialog %}}

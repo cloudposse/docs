@@ -7,8 +7,9 @@ excerpt: ""
 
 Vagrant by HashiCorp is responsbile for setting up development environments under VirtualBox. Vagrant handles all configuration management and makes it easy to share development environments by developers. 
 
-##### :information_source: IMPORTANT
+{{% dialog type="info" icon="fa-info-circle" title="Important" %}}
 > Vagrant is no longer recommended as a means of provisioning local development environments. We recommend using [Docker Compose](doc:docker-compose) instead.
+{{% /dialog %}}
 
 VirtualBox by Oracle is responsible for running Linux Virtual Machines. 
 
