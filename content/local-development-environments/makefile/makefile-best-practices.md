@@ -4,7 +4,7 @@ excerpt: ""
 ---
 # Avoid using Evals
 
-The use of `$(eval ...)` leads to very confusing execution paths, due to the way `make` evaluates a target. When `make` executes a target, it preprocesses all `$(....)` interpolations and renders the template. After that, it executes, line-by-line each command in the target. 
+The use of `$(eval ...)` leads to very confusing execution paths, due to the way `make` evaluates a target. When `make` executes a target, it preprocesses all `$(....)` interpolations and renders the template. After that, it executes, line-by-line each command in the target.
 
 # Namespace targets
 Over time, the number of targets in a `Makefile` will grow. We recommend namespacing all targets.
@@ -40,7 +40,7 @@ docker\:build: docker:deps
 ```
 
 In this example, `make` will silently ignore calling the target dependency of `docker:deps`. Escaping the target dependency (e.g. `docker\:deps`) has no effect.
-  
+
 # Use `include`
 
 Avoid sticking every target in the same `Makefile` for the same reason we don't stick all code in the same source file. We typically recommend adding something like this to the top of our `Makefile`:

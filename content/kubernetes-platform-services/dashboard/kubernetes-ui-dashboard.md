@@ -15,4 +15,4 @@ Explain what it does
 Give `helmfile` stub / example
 
 # Related
-* [Cluster Portal](doc:cluster-portal) for exposing this publically
+* [Cluster Portal](doc:cluster-portal) for exposing this publicly

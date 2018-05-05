@@ -1,4 +1,5 @@
 ---
-title: "Linting"
-excerpt: ""
+title: Linting
+excerpt: ''
+draft: true
 ---

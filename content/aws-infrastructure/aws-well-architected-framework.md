@@ -1,4 +1,5 @@
 ---
-title: "AWS Well-Architected Framework"
-excerpt: ""
+title: AWS Well-Architected Framework
+excerpt: ''
+draft: true
 ---

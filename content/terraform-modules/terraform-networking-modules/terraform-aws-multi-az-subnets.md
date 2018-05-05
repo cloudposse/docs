@@ -1,16 +1,19 @@
 ---
-title: "terraform-aws-multi-az-subnets"
-excerpt: "Terraform module for multi-AZ [`subnets`](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html) provisioning."
+title: terraform-aws-multi-az-subnets
+excerpt: >-
+  Terraform module for multi-AZ
+  [`subnets`](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html)
+  provisioning.
 ---
+
 # Terraform AWS Multi AZ Subnets
 
-|||
-|------|------|
-|GitHub Repo|https://github.com/cloudposse/terraform-aws-multi-az-subnets|
-|Terraform Module|terraform-aws-multi-az-subnets|
-|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-jenkins.svg)](https://github.com/cloudposse/tterraform-aws-multi-az-subnets/releases)|
-|Build Status|[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-multi-az-subnets.svg)](https://travis-ci.org/cloudposse/terraform-aws-multi-az-subnets)|
-
+|                  |                                                                                                                                                                  |
+|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | <https://github.com/cloudposse/terraform-aws-multi-az-subnets>                                                                                                   |
+| Terraform Module | terraform-aws-multi-az-subnets                                                                                                                                   |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-jenkins.svg)](https://github.com/cloudposse/tterraform-aws-multi-az-subnets/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-multi-az-subnets.svg)](https://travis-ci.org/cloudposse/terraform-aws-multi-az-subnets)          |
 
 The module creates private or public subnets in the provided Availability Zones.
 
@@ -20,12 +23,11 @@ The public subnets are routed to the Internet Gateway specified by `var.igw_id`.
 
 The private subnets are routed to the NAT Gateways provided in the `var.az_ngw_ids` map.
 
-
 # Usage
 
+## HCL
 
-##### HCL
-```json
+```hcl
 module "vpc" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
   domain_name                      = "example.com"
@@ -74,35 +76,36 @@ module "private_subnets" {
 
 # Variables
 
-|Name|Default|Description|Required|
-|------|------|------|------|
-|`namespace`|``|Namespace (_e.g._ `cp` or `cloudposse`)|Yes|
-|`vpc_id`|``|VPC ID where subnets are created (_e.g._ `vpc-aceb2723`)|Yes|
-|`cidr_block`|``|Base CIDR block which is divided into subnet CIDR blocks (_e.g._ `10.0.0.0/24`)|No|
-|`igw_id`|``|Only for public subnets. Internet Gateway ID which is used as a default route when creating public subnets (_e.g._ `igw-9c26a123`)|Yes|
-|`public_network_acl_id`|``|ID of Network ACL which is added to the public subnets. If empty, a new ACL will be created|No|
-|`private_network_acl_id`|``|ID of Network ACL which is added to the private subnets. If empty, a new ACL will be created|No|
-|`public_network_acl_egress`|see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf)|Egress rules which are added to the new Public Network ACL|No|
-|`public_network_acl_ingress`|see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf)|Ingress rules which are added to the new Public Network ACL|No|
-|`private_network_acl_egress`|see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf)|Egress rules which are added to the new Private Network ACL|No|
-|`private_network_acl_ingress`|see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf)|Ingress rules which are added to the new Private Network ACL|No|
-|`enabled`|`true`|Set to `false` to prevent the module from creating any resources|No|
-|`stage`|``|Stage (_e.g._ `prod`, `dev`, `staging`)|Yes|
-|`nat_gateway_enabled`|`true`|Flag to enable/disable NAT Gateways creation in public subnets|No|
-|`az_ngw_ids`|{}|Map of AZ names to NAT Gateway IDs which are used as default routes when creating private subnets. Only for private subnets|No|
-|`az_ngw_count`|0|Count of items in the `az_ngw_ids` map. Needs to be explicitly provided since Terraform currently can't use dynamic count on computed resources from different modules. https://github.com/hashicorp/terraform/issues/10857|No|
-|`name`|``|Application or solution name (_e.g._ `myapp`)|Yes|
-|`delimiter`|`-`|Delimiter to use between `name`, `namespace`, `stage`, `attributes`|No|
-|`attributes`|`[]`|Additional attributes (_e.g._ `policy` or `role`)|No|
-|`tags`|`{}`|Additional tags  (_e.g._ `map("BusinessUnit","XYZ")`|No|
-|`max_subnets`|`16`|Maximum number of subnets that can be created. This variable is used for CIDR blocks calculation. MUST be greater than the length of `availability_zones` list|Yes|
-|`availability_zones`|[]|List of Availability Zones (e.g. `["us-east-1a", "us-east-1b", "us-east-1c"]`)|Yes|
-|`type`|`private`|Type of subnets to create (`private` or `public`)|Yes|
+| Name                          |                                                  Default                                                  | Description                                                                                                                                                                                                                 | Required |
+|:------------------------------|:---------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------:|
+| `namespace`                   |                                                    ``                                                     | Namespace (_e.g._ `cp` or `cloudposse`)                                                                                                                                                                                     |   Yes    |
+| `stage`                       |                                                    ``                                                     | Stage (_e.g._ `prod`, `dev`, `staging`)                                                                                                                                                                                     |   Yes    |
+| `name`                        |                                                    ``                                                     | Application or solution name (_e.g._ `myapp`)                                                                                                                                                                               |   Yes    |
+| `delimiter`                   |                                                    `-`                                                    | Delimiter to use between `name`, `namespace`, `stage`, `attributes`                                                                                                                                                         |    No    |
+| `attributes`                  |                                                   `[]`                                                    | Additional attributes (_e.g._ `policy` or `role`)                                                                                                                                                                           |    No    |
+| `tags`                        |                                                   `{}`                                                    | Additional tags  (_e.g._ `map("BusinessUnit","XYZ")`                                                                                                                                                                        |    No    |
+| `max_subnets`                 |                                                   `16`                                                    | Maximum number of subnets that can be created. This variable is used for CIDR blocks calculation. MUST be greater than the length of `availability_zones` list                                                              |   Yes    |
+| `availability_zones`          |                                                    []                                                     | List of Availability Zones (e.g. `["us-east-1a", "us-east-1b", "us-east-1c"]`)                                                                                                                                              |   Yes    |
+| `type`                        |                                                 `private`                                                 | Type of subnets to create (`private` or `public`)                                                                                                                                                                           |   Yes    |
+| `vpc_id`                      |                                                    ``                                                     | VPC ID where subnets are created (_e.g._ `vpc-aceb2723`)                                                                                                                                                                    |   Yes    |
+| `cidr_block`                  |                                                    ``                                                     | Base CIDR block which is divided into subnet CIDR blocks (_e.g._ `10.0.0.0/24`)                                                                                                                                             |    No    |
+| `igw_id`                      |                                                    ``                                                     | Only for public subnets. Internet Gateway ID which is used as a default route when creating public subnets (_e.g._ `igw-9c26a123`)                                                                                          |   Yes    |
+| `public_network_acl_id`       |                                                    ``                                                     | ID of Network ACL which is added to the public subnets. If empty, a new ACL will be created                                                                                                                                 |    No    |
+| `private_network_acl_id`      |                                                    ``                                                     | ID of Network ACL which is added to the private subnets. If empty, a new ACL will be created                                                                                                                                |    No    |
+| `public_network_acl_egress`   | see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf) | Egress rules which are added to the new Public Network ACL                                                                                                                                                                  |    No    |
+| `public_network_acl_ingress`  | see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf) | Ingress rules which are added to the new Public Network ACL                                                                                                                                                                 |    No    |
+| `private_network_acl_egress`  | see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf) | Egress rules which are added to the new Private Network ACL                                                                                                                                                                 |    No    |
+| `private_network_acl_ingress` | see [variables.tf](https://github.com/cloudposse/terraform-aws-multi-az-subnets/blob/master/variables.tf) | Ingress rules which are added to the new Private Network ACL                                                                                                                                                                |    No    |
+| `enabled`                     |                                                  `true`                                                   | Set to `false` to prevent the module from creating any resources                                                                                                                                                            |    No    |
+| `nat_gateway_enabled`         |                                                  `true`                                                   | Flag to enable/disable NAT Gateways creation in public subnets                                                                                                                                                              |    No    |
+| `az_ngw_ids`                  |                                                    {}                                                     | Map of AZ names to NAT Gateway IDs which are used as default routes when creating private subnets. Only for private subnets                                                                                                 |    No    |
+| `az_ngw_count`                |                                                     0                                                     | Count of items in the `az_ngw_ids` map. Needs to be explicitly provided since Terraform currently can't use dynamic count on computed resources from different modules. https://github.com/hashicorp/terraform/issues/10857 |    No    |
+
 
 # Outputs
 
-|Name|Description|
-|------|------|
-|az_subnet_ids|Map of AZ names to subnet IDs|
-|az_route_table_ids|Map of AZ names to Route Table IDs|
-|az_ngw_ids|Map of AZ names to NAT Gateway IDs (only for public subnets)|
+| Name               | Description                                                  |
+|:-------------------|:-------------------------------------------------------------|
+| az_subnet_ids      | Map of AZ names to subnet IDs                                |
+| az_route_table_ids | Map of AZ names to Route Table IDs                           |
+| az_ngw_ids         | Map of AZ names to NAT Gateway IDs (only for public subnets) |

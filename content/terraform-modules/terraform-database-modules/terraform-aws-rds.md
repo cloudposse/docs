@@ -4,12 +4,12 @@ excerpt: "Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/)
 ---
 # Terraform AWS RDS
 
-|||
-|------|------|
-|GitHub Repo|https://github.com/cloudposse/terraform-aws-rds|
-|Terraform Module|terraform-aws-rds|
-|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg)](https://github.com/cloudposse/terraform-aws-rds/releases)|
-|Build Status|[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-rds.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-rds)|
+|                  |                                                                                                                                                |
+|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | https://github.com/cloudposse/terraform-aws-rds                                                                                                |
+| Terraform Module | terraform-aws-rds                                                                                                                              |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg)](https://github.com/cloudposse/terraform-aws-rds/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-rds.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-rds)    |
 
 The module will create:
 * DB instance (MySQL, Postgres, SQL Server, Oracle)

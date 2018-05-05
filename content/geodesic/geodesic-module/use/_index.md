@@ -3,11 +3,12 @@ title: "Use"
 excerpt: ""
 ---
 # Prerequisites
- 
-* Follow the "Quick Start" for [Quick start](doc:geodesic-quick-start) 
 
-##### :information_source: Examples
-> All examples are based on use cases provided in [Agenda](doc:agenda)
+* Follow the "Quick Start" for [Quick start](doc:geodesic-quick-start)
+
+{{% dialog type="info" icon="fa-info-circle" title="Examples" %}}
+All examples are based on use cases provided in [Agenda](doc:agenda)
+{{% /dialog %}}
 
 # Run shell
 
@@ -31,7 +32,7 @@ To build Geodesic Module just run `make build` in the module directory
 
 # Use shell
 
-When you run into the shell you need to authorize on AWS by assuming a correct role and then you can work with tools build in Geodesic Module. 
+When you run into the shell you need to authorize on AWS by assuming a correct role and then you can work with tools build in Geodesic Module.
 
 ##### Example
 ```shell
@@ -41,7 +42,7 @@ When you run into the shell you need to authorize on AWS by assuming a correct r
 # Exposing port 48934
 * Started EC2 metadata service at http://169.254.169.254/latest
          _              _                                              _      
-     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___ 
+     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
     / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
     \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
     |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
@@ -56,7 +57,7 @@ IMPORTANT:
 -> Run 'assume-role' to login to AWS
 ⧉  staging example
 > ❌   (none) ~ ➤  assume-role
-Enter passphrase to unlock /conf/.awsvault/keys/: 
+Enter passphrase to unlock /conf/.awsvault/keys/:
 Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 365322
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 ⧉  staging example

@@ -1,4 +1,5 @@
 ---
-title: "SSM"
-excerpt: ""
+title: SSM
+excerpt: ''
+draft: true
 ---

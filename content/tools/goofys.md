@@ -1,4 +1,5 @@
 ---
-title: "Goofys"
-excerpt: ""
+title: Goofys
+excerpt: ''
+draft: true
 ---

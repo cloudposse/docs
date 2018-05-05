@@ -6,7 +6,7 @@ excerpt: ""
 
 
 
-The GOST Framework is a method of clearly articulating a process for achieving a goal. It does this by decomposing it into it's various parts. It helps distinguish between the objectives, strategies and tactics so that relevant stakeholders can focus on what's relevant to them. 
+The GOST Framework is a method of clearly articulating a process for achieving a goal. It does this by decomposing it into it's various parts. It helps distinguish between the objectives, strategies and tactics so that relevant stakeholders can focus on what's relevant to them.
 
 
 # Goals

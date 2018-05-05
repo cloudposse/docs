@@ -2,7 +2,7 @@
 title: "Helm Quick Start"
 excerpt: ""
 ---
-Helm is a package manager for kubernetes. 
+Helm is a package manager for kubernetes.
 
 There are a vast number of public charts available: https://github.com/kubernetes/charts/
 

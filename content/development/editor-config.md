@@ -1,7 +1,12 @@
 ---
-title: "Editor Config"
-excerpt: ""
+title: Editor Config
+excerpt: ''
+tags:
+  - code style
+  - formatting
+  - .editorconfig
 ---
+
 # Background
 
 The EditorConfig enables developers to define and maintain consistent coding styles between different editors and IDEs. It consists of a simple file format (`.editorconfig`) for defining coding styles such as tabs vs spaces. Most text editors support the format and adhere to defined styles. The config files are easily readable and they work nicely with version control systems.
@@ -10,8 +15,9 @@ The EditorConfig enables developers to define and maintain consistent coding sty
 
 Place this file in the root of your git repository.
 
-##### .editorconfig
-```text
+## .editorconfig
+
+```ini
 # top-most EditorConfig file
 root = true
 
@@ -61,10 +67,11 @@ indent_size = 4
 
 # Editor Plugins
 
-Find all plugins here: http://editorconfig.org/#download
+Find all plugins here: <http://editorconfig.org/#download>
 
-* [Vim](https://github.com/editorconfig/editorconfig-vim#readme)
-* [Visual Studio](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+- [Vim](https://github.com/editorconfig/editorconfig-vim#readme)
+- [Visual Studio](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
 
 # References
-* http://editorconfig.org/
+
+- <http://editorconfig.org/>

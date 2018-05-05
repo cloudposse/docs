@@ -1,13 +1,13 @@
 ---
-title: "Rough Notes"
-excerpt: ""
+title: Rough Notes
+excerpt: ''
+draft: true
 ---
-DevOps infinit loop as a base
 
+DevOps infinity loop as a base
 
+--------------------------------------------------------------------------------
 
-
-------------------------------------
 # Installing All Helm Charts
 
 # Spin up Kops Cluster
@@ -16,7 +16,7 @@ DevOps infinit loop as a base
 
 # Exec into container
 
-# Understanding kube dashboard 
+# Understanding kube dashboard
 
 ## Node Limits (memory & cpu, requested vs limit)
 
