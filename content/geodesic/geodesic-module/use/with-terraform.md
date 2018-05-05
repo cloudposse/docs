@@ -5,7 +5,7 @@ weight: -1
 ---
 # Bootstrap Process
 
-Run this process the very first time you setup the tfstate bucket. 
+Run this process the very first time you setup the tfstate bucket.
 
 **IMPORTANT:** This has already been performed for this account, so this is documented here just for reference.
 
@@ -34,7 +34,7 @@ Then run these commands:
 # Create terraform state bucket
 
 ##### :no_entry_sign: Important
-> To use terraform you need to create terraform state bucket. 
+> To use terraform you need to create terraform state bucket.
  >Follow the instructions to do that.
 
 To create terraform state bucket follow this steps:
@@ -126,19 +126,19 @@ ENV TF_VAR_tfstate_region=us-west-2
 ##  Run into the module shell
 Run Geodesic Shell in [development mode](doc:use#section-development-mode)
 ```bash
-> $CLUSTER_NAME --dev
+> $CLUSTER_NAME
 ```
 
 ##### Example
 ```shell
-> staging.example.com --dev
+> staging.example.com
 # Mounting /home/goruha into container
 # Starting new staging.example.com session from cloudposse/staging.example.com:dev
 # Exposing port 41179
 * Started EC2 metadata service at http://169.254.169.254/latest
 
          _              _                                              _      
-     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___ 
+     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
     / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
     \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
     |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
@@ -166,7 +166,7 @@ assume-role
 ##### Example
 ```shell
 ❌   (none) tfstate-backend ➤  assume-role
-Enter passphrase to unlock /conf/.awsvault/keys/: 
+Enter passphrase to unlock /conf/.awsvault/keys/:
 Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 -> Run 'init-terraform' to use this project
@@ -175,7 +175,7 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
 
 ```
 
-## Apply tfstate-bucket 
+## Apply tfstate-bucket
 
 Change directory to `/conf/tfstate-backet` and run there commands
 ```bash
@@ -253,20 +253,20 @@ ENV TF_DYNAMODB_TABLE "example-staging-terraform-state-lock"
 ##  Run into the module shell and authorize on AWS
 Run Geodesic Shell in [development mode](doc:use#section-development-mode)
 ```bash
-> $CLUSTER_NAME --dev
+> $CLUSTER_NAME
 > assume-role
 ```
 
 ##### Example
 ```shell
-> staging.example.com --dev
+> staging.example.com
 # Mounting /home/goruha into container
 # Starting new staging.example.com session from cloudposse/staging.example.com:dev
 # Exposing port 41179
 * Started EC2 metadata service at http://169.254.169.254/latest
 
          _              _                                              _      
-     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___ 
+     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
     / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
     \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
     |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
@@ -282,7 +282,7 @@ IMPORTANT:
 -> Run 'assume-role' to login to AWS
  ⧉  staging example
 ❌   (none) tfstate-backend ➤  assume-role
-Enter passphrase to unlock /conf/.awsvault/keys/: 
+Enter passphrase to unlock /conf/.awsvault/keys/:
 Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 -> Run 'init-terraform' to use this project
@@ -309,27 +309,17 @@ To provision terraform module create a directory for it in `/conf`
 
 Rebuild the shell container with `make build` command.
 
-##### :information_source: Notice
-> If you run the shell in development mode (with flag `--dev`) you can skip rebuild container
+{{% dialog type="info" icon="fa-info-circle" title="Tip" %}}
+During development, you can skip rebuilding the container and instead work from the `/localhost` folder inside of the container. The `/localhost` folder is the user's `$HOME` folder mounted into the container. Any files on this system will be persisted.
+{{% /dialog %}}
 
 # Run the shell
-```bash 
+```bash
 > $CLUSTER_NAME
 ```
 
-to access your geodesic project shell
-
-##### :information_source: Example
-> If `$CLUSTER_NAME=staging.example.com` run 
- >`> staging.example.com`
-
-
-
-##### :warning: Development mode
-> You can add `--dev` flag when running the shell. 
- >This flag makes project's `/conf` directory be mounted inside of the shell container.
- >This simplifies development loop, skipping the shell container rebuild step.
-
+For example, to access your geodesic project shell do the following.
+If `$CLUSTER_NAME=staging.example.com` simply run the command `staging.example.com`.
 
 # Login to AWS with your MFA device
 ```bash

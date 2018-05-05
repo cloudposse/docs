@@ -28,11 +28,11 @@ Attach a `terraform plan` against current master as a comment to all PRs.
 
 ## Tagging
 
-For the same reason we tag/release regular software projects, we should practice the same rigor around infrastructure. 
+For the same reason we tag/release regular software projects, we should practice the same rigor around infrastructure.
 
 ## Releases
 
-For the same reason we release regular software projects, we should practice the same rigor around infrastructure. The release should include release notes where significant changes went out or a specific upgrade path is required. 
+For the same reason we release regular software projects, we should practice the same rigor around infrastructure. The release should include release notes where significant changes went out or a specific upgrade path is required.
 
 ## CI/CD
 
@@ -41,15 +41,15 @@ Using `atlantis` it’s possible to introduce the standard CI/CD process to mana
 
 # Language
 
-## Use terraform linting 
+## Use terraform linting
 
 Linting helps to ensure a consistent code formatting, improves code quality and catches common errors with syntax.
 
-Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks](doc:terraform-tips-tricks) 
+Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks](doc:terraform-tips-tricks)
 
 ## Use strings for all booleans and boolean comparisons
 
-It is recommended for now to specify boolean values for variables as the strings `"true"` 
+It is recommended for now to specify boolean values for variables as the strings `"true"`
 and `"false"`, to avoid some caveats in the conversion process. The observed uses of booleans will not trigger the edge-cases, but please refer to footnote for details.
 
 Read more:  https://www.terraform.io/docs/configuration/variables.html#booleans
@@ -93,7 +93,7 @@ Using the [`terraform-aws-tfstate-backend`](https://github.com/cloudposse/terraf
 
 ## Use backend with support for state locking
 
-We recommend using the S3 backend with DynamoDB for state locking. 
+We recommend using the S3 backend with DynamoDB for state locking.
 
 **Pro Tip:** Using the [`terraform-aws-tfstate-backend`](https://github.com/cloudposse/terraform-aws-tfstate-backend) this can be easily implemented.
 
@@ -109,7 +109,7 @@ Terraform state is incompatible between versions of cli. We suggest using a cont
 
 Promote reusability of a root module across accounts by not hardcoding backend requirements. Instead, use terraform cli to set the current context.
 
-```
+```hcl
 terraform {
   required_version = ">= 0.11.2"
 
@@ -117,7 +117,7 @@ terraform {
 }
 ```
 
-**Pro Tip:** Use [`init-terraform`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/init-terraform) in [Geodesic](doc:geodesic) 
+**Pro Tip:** Use [`init-terraform`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/init-terraform) in [Geodesic](doc:geodesic)
 
 ## Use one bucket per environment or stage
 

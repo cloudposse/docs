@@ -1,18 +1,16 @@
 ---
-title: "terraform-null-ansible"
-excerpt: "Terraform Module to run ansible playbooks."
+title: terraform-null-ansible
+excerpt: Terraform Module to run ansible playbooks.
 ---
+
 # Terraform Null Ansible
 
-
-
-|||
-|------|------|
-|GitHub Repo|https://github.com/cloudposse/terraform-null-ansible|
-|Terraform Module|terraform-null-ansible|
-|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-null-ansible.svg)](https://github.com/cloudposse/terraform-null-ansible/releases)|
-|Build Status|[![Build Status](https://travis-ci.org/cloudposse/terraform-null-ansible.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-null-ansible)|
-
+|                  |                                                                                                                                                          |
+|:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | <https://github.com/cloudposse/terraform-null-ansible>                                                                                                   |
+| Terraform Module | terraform-null-ansible                                                                                                                                   |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-null-ansible.svg)](https://github.com/cloudposse/terraform-null-ansible/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-null-ansible.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-null-ansible)    |
 
 # Module usage
 
@@ -24,10 +22,11 @@ This will add a dynamic inventory to target the host that needs provisioning.
 
 e.g. `../ansible/playbooks/playbook.yml`
 
-* Create a runtime inventory with an IP address of a host
-* Wait for target host is ready for ssh connection
+- Create a runtime inventory with an IP address of a host
+- Wait for target host is ready for ssh connection
 
-##### playbook.yml
+### playbook.yml
+
 ```yaml
 - --
 - hosts: localhost
@@ -57,12 +56,11 @@ e.g. `../ansible/playbooks/playbook.yml`
       creates: /usr/bin/python
 ```
 
-
 ## Create an aws instance
 
+### HCL
 
-##### HCL
-```json
+```hcl
 module "ansible_provisioner" {
   source                           = "git::https://github.com/cloudposse/terraform-null-ansible.git?ref=master"
   domain_name                      = "example.com"
@@ -70,13 +68,12 @@ module "ansible_provisioner" {
   ttl                              = "300"
 }
 ```
-
 
 ## Apply the provisioner module to this resource
 
+### HCL
 
-##### HCL
-```json
+```hcl
 module "ansible_provisioner" {
   source                           = "git::https://github.com/cloudposse/terraform-null-ansible.git?ref=master"
   domain_name                      = "example.com"
@@ -85,20 +82,19 @@ module "ansible_provisioner" {
 }
 ```
 
-
 # Inputs
 
-|Name|Default|Description|
-|------|------|------|
-|arguments|[]|Arguments|
-|dry_run|"true"|Do dry run|
-|envs|[]|Environment variables|
-|playbook|""|Playbook to run|
+| Name      | Default | Description           |
+|:----------|:--------|:----------------------|
+| arguments | []      | Arguments             |
+| dry_run   | "true"  | Do dry run            |
+| envs      | []      | Environment variables |
+| playbook  | ""      | Playbook to run       |
 
 # Outputs
 
-|||
-|------|------|
-|Name|Description|
-|arguments|Arguments|
-|envs|Environment variables|
+| Name      | Description           |
+|:----------|:----------------------|
+| Name      | Description           |
+| arguments | Arguments             |
+| envs      | Environment variables |

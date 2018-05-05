@@ -1,11 +1,11 @@
 ---
-title: "Pull Requests"
-excerpt: ""
+title: Pull Requests
+excerpt: ''
 ---
-### Submitting a Pull Request
 
-Prior to submitting your pull request, you might want to do a few things to clean up your branch and make it as simple as possible for the original repo's maintainer to test, accept, and merge your work.
-If any commits have been made to the upstream master branch, you should rebase your development branch so that merging it will be a simple fast-forward that won't require any conflict resolution work.
+# Submitting a Pull Request
+
+Prior to submitting your pull request, you might want to do a few things to clean up your branch and make it as simple as possible for the original repo's maintainer to test, accept, and merge your work. If any commits have been made to the upstream master branch, you should rebase your development branch so that merging it will be a simple fast-forward that won't require any conflict resolution work.
 
 ```
 # Fetch upstream master and merge with your repo's master branch
@@ -25,8 +25,7 @@ Once that is happy, push the rebased changes back to the origin.
 git push origin newfeature -f
 ```
 
-Then follow these instructions once you're ready:
-https://help.github.com/articles/creating-a-pull-request/
+Then follow these instructions once you're ready: <https://help.github.com/articles/creating-a-pull-request/>
 
 # Pull Request Template
 
@@ -43,6 +42,6 @@ Use the following markdown template to describe the Pull Request.
 * ...related pull requests, issues, documents, or research...
 ```
 
-**Pro Tip:** Use a `.github/pull_request_template.md` file to automatically populate this template when creating new Pull Requests. 
+**Pro Tip:** Use a `.github/pull_request_template.md` file to automatically populate this template when creating new Pull Requests.
 
-Read more: https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/
+Read more: <https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/>

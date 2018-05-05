@@ -1,6 +1,7 @@
 ---
 title: "external-dns"
 excerpt: "Configure external DNS servers (AWS Route53, Google CloudDNS and others) for Kubernetes Ingresses and Services"
+draft: true
 ---
 ![](/images/61e5a81-external-dns.png)
 

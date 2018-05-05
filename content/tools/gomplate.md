@@ -1,4 +1,5 @@
 ---
-title: "Gomplate"
-excerpt: ""
+title: Gomplate
+excerpt: ''
+draft: true
 ---

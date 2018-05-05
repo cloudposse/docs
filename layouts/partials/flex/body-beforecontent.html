@@ -104,7 +104,7 @@
       </div>
       <div class="excerpt">
         {{ if .Params.excerpt }}
-        <p>{{ .Params.excerpt }}</p>
+        <p>{{ .Params.excerpt | markdownify }}</p>
         {{ end }}
       </div>
   {{end}}

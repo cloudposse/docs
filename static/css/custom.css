@@ -562,3 +562,47 @@ footer .footline .tags, .footline .copyright {
   -webkit-box-shadow: 0 0 0 1px #c9d4d9, 0 2px 2px rgba(0,0,0,0.1);
   box-shadow: 0 0 0 1px #c9d4d9, 0 2px 2px rgba(0,0,0,0.1);
 }
+
+.dialog {
+  border-left: 4px solid #f00;
+  padding-top: 13px;
+  padding-bottom: 1px;
+  padding-left: 23px;
+  margin-left: 31px;
+  margin-bottom: 3em;
+}
+
+.dialog p {
+  font-size: 14px;
+  padding-left: 22px;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.dialog h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.dialog.info, .dialog.info a {
+  background-color: #e3edf2;
+  border-color: #5bc0de;
+  color: rgba(0,0,0,0.5);
+}
+
+.dialog .fa {
+    pointer-events: none;
+    font-size: 18px;
+    opacity: .3;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    filter: alpha(opacity=30);
+    margin-right: 6px;
+    position: relative;
+    top: 1px;
+}
+
+.dialog.info h4 {
+   color: #5bc0de;
+}

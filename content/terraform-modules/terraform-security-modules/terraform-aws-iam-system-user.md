@@ -1,15 +1,22 @@
 ---
-title: "terraform-aws-iam-system-user"
-excerpt: "Terraform Module to provision a basic IAM system user suitable for CI/CD Systems\n(_e.g._ TravisCI, CircleCI, CodeFresh) or systems which are *external* to AWS that cannot leverage [AWS IAM Instance Profiles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html)."
+title: terraform-aws-iam-system-user
+excerpt: >-
+  Terraform Module to provision a basic IAM system user suitable for CI/CD
+  Systems
+
+  (_e.g._ TravisCI, CircleCI, CodeFresh) or systems which are *external* to AWS
+  that cannot leverage [AWS IAM Instance
+  Profiles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html).
 ---
+
 # Terraform AWS IAM System User
 
-|||
-|------|------|
-|GitHub Repo|https://github.com/cloudposse/terraform-aws-iam-system-user|
-|Terraform Module|terraform-aws-iam-system-user|
-|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-iam-system-user.svg)](https://github.com/cloudposse/terraform-aws-iam-system-user/releases)|
-|Build Status|[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-iam-system-user.svg)](https://travis-ci.org/cloudposse/terraform-aws-iam-system-user)|
+|                  |                                                                                                                                                                        |
+|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | <https://github.com/cloudposse/terraform-aws-iam-system-user>                                                                                                          |
+| Terraform Module | terraform-aws-iam-system-user                                                                                                                                          |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-iam-system-user.svg)](https://github.com/cloudposse/terraform-aws-iam-system-user/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-iam-system-user.svg)](https://travis-ci.org/cloudposse/terraform-aws-iam-system-user)                  |
 
 We do not recommend creating IAM users this way for any other purpose.
 
@@ -19,8 +26,9 @@ We do not recommend creating IAM users this way for any other purpose.
 
 Sometimes it's necessary to generate some AWS credentials for a CI/CD system like CircleCi, TravisCI or CodeFresh. Here's how we recommend doing that.
 
-##### HCL
-```json
+### HCL
+
+```hcl
 # Provision a user account for CircleCI to deploy assets
 module "cicd_user" {
   source    = "git::https://github.com/cloudposse/terraform-aws-iam-system-user.git?ref=tags/0.2.2"
@@ -53,11 +61,11 @@ resource "aws_iam_user_policy" "cicd" {
 }
 ```
 
-
 ## Example 2
 
-##### HCL
-```json
+### HCL
+
+```hcl
 data "aws_iam_policy_document" "fluentd_user_policy" {
   statement {
     actions = [
@@ -92,25 +100,25 @@ module "fluentd_user" {
 
 # Variables
 
-|Name|Default|Description|Required|
-|------|------|------|------|
-|`namespace`|``|Namespace (e.g. `cp` or `cloudposse`)|Yes|
-|`policy`|``|User policy in `json` format|No|
-|`stage`|``|Stage (e.g. `prod`, `dev`, `staging`)|Yes|
-|`name`|``|Name  (e.g. `bastion` or `db`)|Yes|
-|`attributes`|`[]`|Additional attributes (e.g. `policy` or `role`)|No|
-|`tags`|`{}`|Additional tags  (e.g. `map("BusinessUnit","XYZ")`|No|
-|`delimiter`|`-`|Delimiter to be used between `name`, `namespace`, `stage`, `arguments`, etc.|No|
-|`force_destroy`|`false`|Destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices.|No|
-|`path`|`/`|Path in which to create the user|No|
-|`enabled`|`true`|Set to `false` to prevent the module from creating any resources|No|
+| Name            | Default | Description                                                                                 | Required |
+|:----------------|:--------|:--------------------------------------------------------------------------------------------|:---------|
+| `namespace`     |         | Namespace (e.g. `cp` or `cloudposse`)                                                       | Yes      |
+| `policy`        |         | User policy in `json` format                                                                | No       |
+| `stage`         |         | Stage (e.g. `prod`, `dev`, `staging`)                                                       | Yes      |
+| `name`          |         | Name (e.g. `bastion` or `db`)                                                               | Yes      |
+| `attributes`    | `[]`    | Additional attributes (e.g. `policy` or `role`)                                             | No       |
+| `tags`          | `{}`    | Additional tags (e.g. `map("BusinessUnit","XYZ")`                                           | No       |
+| `delimiter`     | `-`     | Delimiter to be used between `name`, `namespace`, `stage`, `arguments`, etc.                | No       |
+| `force_destroy` | `false` | Destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices. | No       |
+| `path`          | `/`     | Path in which to create the user                                                            | No       |
+| `enabled`       | `true`  | Set to `false` to prevent the module from creating any resources                            | No       |
 
 # Outputs
 
-|Name|Description|
-|------|------|
-|`user_name`|Normalized IAM user name|
-|`user_arn`|The ARN assigned by AWS for this user|
-|`user_unique_id`|The unique ID assigned by AWS|
-|`access_key_id`|The access key ID|
-|`secret_access_key`|The secret access key. This will be written to the state file in plain-text|
+| Name                | Description                                                                 |
+|:--------------------|:----------------------------------------------------------------------------|
+| `user_name`         | Normalized IAM user name                                                    |
+| `user_arn`          | The ARN assigned by AWS for this user                                       |
+| `user_unique_id`    | The unique ID assigned by AWS                                               |
+| `access_key_id`     | The access key ID                                                           |
+| `secret_access_key` | The secret access key. This will be written to the state file in plain-text |

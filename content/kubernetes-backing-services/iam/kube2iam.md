@@ -1,6 +1,7 @@
 ---
 title: "Kube2IAM"
 excerpt: ""
+draft: true
 ---
 # Synopsis
 

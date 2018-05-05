@@ -3,18 +3,19 @@ title: "Quick start"
 excerpt: "Get up and running quickly with geodesic"
 ---
 # Prerequisites
- 
-* Follow the "Quick Start" for [Local Development Environments](doc:quickstart) 
 
-##### :information_source: Examples
-> All examples are based on use cases provided in [Agenda](doc:agenda)
+* Follow the "Quick Start" for [Local Development Environments](doc:quickstart)
+
+{{% dialog type="info" icon="fa-info-circle" title="Examples" %}}
+All examples are based on use cases provided in [Agenda](doc:agenda)
+{{% /dialog %}}
 
 # Creating a New Module
 
 ## Name New Module
 
-Geodesic new module should have a name. We recommend to follow this pattern ${stage}.${base_host}. 
-Set the name to `$CLUSTER_NAME` environment variable. 
+Geodesic new module should have a name. We recommend to follow this pattern ${stage}.${base_host}.
+Set the name to `$CLUSTER_NAME` environment variable.
 
 Example: `staging.example.com` - where `${stage} = staging` and `${base_host} = example.com`
 
@@ -42,7 +43,7 @@ cd $CLUSTER_NAME
 
 ## Build & Install
 
-Initialize the [Build Harness](doc:build-harness) 
+Initialize the [Build Harness](doc:build-harness)
 
 ```
 make init
@@ -63,11 +64,11 @@ make install
 ## Run the shell
 
 The shell can now be easily started any time by simply running `$CLUSTER_NAME`,  which is a shell script in `/usr/local/bin`. Make sure this path is in your `PATH` environment variable.
-For more information follow [Use](doc:use) 
+For more information follow [Use](doc:use)
 
 # Authorize on AWS
 
-Config AWS credentials and roles following [Authorization](doc:authorization) 
+Config AWS credentials and roles following [Authorization](doc:authorization)
 
 ##### :warning: Warning
 > Geodesic use [AWS Vault](doc:aws-vault) to authorize on AWS so ensure you add source profile name to [AWS Vault](doc:aws-vault)
@@ -83,6 +84,7 @@ ENV AWS_DEFAULT_PROFILE="example-staging-admin"
 
 Run `make docker/build` to rebuild module container
 
-##### :information_source: Note
-> You can install it on local to do the same for development purpose.
- >See [AWS Vault](doc:aws-vault) setup.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+You can install it on local to do the same for development purpose.
+See [AWS Vault](doc:aws-vault) setup.
+{{% /dialog %}}

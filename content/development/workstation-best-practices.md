@@ -1,7 +1,8 @@
 ---
-title: "Workstation Best Practices"
-excerpt: ""
+title: Workstation Best Practices
+excerpt: ''
 ---
+
 # OSX
 
 ## Enable File Vault

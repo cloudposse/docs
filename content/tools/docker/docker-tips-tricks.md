@@ -1,34 +1,38 @@
 ---
-title: "Docker Tips & Tricks"
-excerpt: ""
+title: Docker Tips & Tricks
+excerpt: ''
 ---
-Here's a collection of some nice little hacks for docker. A lot of them are related to house keeping. 
+
+Here's a collection of some nice little hacks for docker. A lot of them are related to house keeping.
 
 # Docker Stats
 
 Produce console stats for all running containers (e.g. like `top`):
+
 ```
 docker stats $(docker ps --format='{{.Names}}'
 ```
 
 # Remove all stopped containers
+
 ```
 docker rm $(docker ps -a -q)
 ```
 
 # Remove all untagged images
+
 ```
 docker images -q --filter "dangling=true" | xargs docker rmi
 ```
 
 # Prune everything
 
-The docker system prune command is a shortcut that prunes images, containers, and networks. 
+The docker system prune command is a shortcut that prunes images, containers, and networks.
 
-##### :information_source: NOTE
-> * In Docker `17.06.0` and earlier, volumes are also pruned. 
- >* In Docker `17.06.1` and higher, you must specify the `--volumes` flag for docker system prune to prune volumes.
-
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+- In Docker `17.06.0` and earlier, volumes are also pruned.
+- In Docker `17.06.1` and higher, you must specify the `--volumes` flag for docker system prune to prune volumes.
+{{% /dialog %}}
 
 ```
 $ docker system prune

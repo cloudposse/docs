@@ -1,23 +1,27 @@
 ---
-title: "terraform-aws-dynamic-subnets"
-excerpt: "Terraform module for public and private [`subnets`](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html) provisioning in existing AWS [`VPC`](https://aws.amazon.com/vpc)"
+title: terraform-aws-dynamic-subnets
+excerpt: >-
+  Terraform module for public and private
+  [`subnets`](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html)
+  provisioning in existing AWS [`VPC`](https://aws.amazon.com/vpc)
 ---
+
 # Terraform AWS Dynamic Subnets
 
-|||
-|------|------|
-|GitHub Repo|https://github.com/cloudposse/terraform-aws-dynamic-subnets|
-|Terraform Module|terraform-aws-dynamic-subnets|
-|Release|[![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamic-subnets.svg)](https://github.com/cloudposse/terraform-aws-dynamic-subnets/releases)|
-|Build Status|[![Build Status](https://travis-ci.org/cloudposse/terraform-aws-dynamic-subnets.svg)](https://travis-ci.org/cloudposse/terraform-aws-dynamic-subnets)|
-
+|                  |                                                                                                                                                                        |
+|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | <https://github.com/cloudposse/terraform-aws-dynamic-subnets>                                                                                                          |
+| Terraform Module | terraform-aws-dynamic-subnets                                                                                                                                          |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamic-subnets.svg)](https://github.com/cloudposse/terraform-aws-dynamic-subnets/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-dynamic-subnets.svg)](https://travis-ci.org/cloudposse/terraform-aws-dynamic-subnets)                  |
 
 # Usage
 
 Include this module in your existing terraform code:
 
-##### HCL
-```json
+## HCL
+
+```hcl
 module "subnets" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
   domain_name                      = "example.com"
@@ -26,34 +30,31 @@ module "subnets" {
 }
 ```
 
+## :information_source: NOTE
 
-
-##### :information_source: NOTE
-> This module is intended for use with existing VPC and existing Internet Gateway.
- >You should use [terraform-aws-vpc](https://github.com/cloudposse/terraform-aws-vpc) module if you plan to use a new (separate) VPC.
+> This module is intended for use with existing VPC and existing Internet Gateway. You should use [terraform-aws-vpc](https://github.com/cloudposse/terraform-aws-vpc) module if you plan to use a new (separate) VPC.
 
 # Variables
 
-|Name|Default|Description|Required|
-|------|------|------|------|
-|namespace|``|Namespace (e.g. `cp` or `cloudposse`)|Yes|
-|availability_zones|[]|The list of Availability Zones where subnets will be created (e.g. `["us-eas-1a", "us-eas-1b"]`)|Yes|
-|public_network_acl_id|``|Network ACL ID that will be added to public subnets.  If empty, a new ACL will be created|No|
-|private_network_acl_id|``|Network ACL ID that will be added to private subnets.  If empty, a new ACL will be created|No|
-|nat_gateway_enabled|`true`|Flag to enable/disable NAT gateways|No|
-|stage|``|Stage (e.g. `prod`, `dev`, `staging`)|Yes|
-|name|``|Name  (e.g. `bastion` or `db`)|Yes|
-|tags|``|Additional tags (e.g. `Key, Value`)|No|
-|region|``|AWS Region where module should operate (e.g. `us-east-1`)|Yes|
-|vpc_id|``|The VPC ID where subnets will be created (e.g. `vpc-aceb2723`)|Yes|
-|cidr_block|``|The base CIDR block which will be divided into subnet CIDR blocks (e.g. `10.0.0.0/16`)|Yes|
-|igw_id|``|The Internet Gateway ID public route table will point to (e.g. `igw-9c26a123`)|Yes|
-|vpc_default_route_table_id|``|The default route table for public subnets. Provides access to the Internet. If not set here, will be created. (e.g. `rtb-f4f0ce12`)|No|
+| Name                       | Default | Description                                                                                                                          | Required |
+|:---------------------------|:--------|:-------------------------------------------------------------------------------------------------------------------------------------|:---------|
+| namespace                  |         | Namespace (e.g. `cp` or `cloudposse`)                                                                                                | Yes      |
+| availability_zones         | []      | The list of Availability Zones where subnets will be created (e.g. `["us-eas-1a", "us-eas-1b"]`)                                     | Yes      |
+| public_network_acl_id      |         | Network ACL ID that will be added to public subnets. If empty, a new ACL will be created                                             | No       |
+| private_network_acl_id     |         | Network ACL ID that will be added to private subnets. If empty, a new ACL will be created                                            | No       |
+| nat_gateway_enabled        | `true`  | Flag to enable/disable NAT gateways                                                                                                  | No       |
+| stage                      |         | Stage (e.g. `prod`, `dev`, `staging`)                                                                                                | Yes      |
+| name                       |         | Name (e.g. `bastion` or `db`)                                                                                                        | Yes      |
+| tags                       |         | Additional tags (e.g. `Key, Value`)                                                                                                  | No       |
+| region                     |         | AWS Region where module should operate (e.g. `us-east-1`)                                                                            | Yes      |
+| vpc_id                     |         | The VPC ID where subnets will be created (e.g. `vpc-aceb2723`)                                                                       | Yes      |
+| cidr_block                 |         | The base CIDR block which will be divided into subnet CIDR blocks (e.g. `10.0.0.0/16`)                                               | Yes      |
+| igw_id                     |         | The Internet Gateway ID public route table will point to (e.g. `igw-9c26a123`)                                                       | Yes      |
+| vpc_default_route_table_id |         | The default route table for public subnets. Provides access to the Internet. If not set here, will be created. (e.g. `rtb-f4f0ce12`) | No       |
 
 # TL;DR
 
-`tf_subnets` creates a set of subnets based on `${var.cidr_block}` input
-and amount of Availability Zones in a region.
+`tf_subnets` creates a set of subnets based on `${var.cidr_block}` input and amount of Availability Zones in a region.
 
 For subnet set calculation `tf_subnets` uses TF [cidrsubnet](https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet-iprange-newbits-netnum-) interpolation.
 
@@ -71,56 +72,73 @@ ${
 
 ## Detailed Explanation
 
-1. Use `${var.cidr_block}` input (if specified) or
-   use a VPC CIDR block `data.aws_vpc.default.cidr_block` (e.g. `10.0.0.0/16`)
+1. Use `${var.cidr_block}` input (if specified) or use a VPC CIDR block `data.aws_vpc.default.cidr_block` (e.g. `10.0.0.0/16`)
 2. Get number of available AZ in the region (e.g. `length(data.aws_availability_zones.available.names)`)
-3. Calculate `newbits`. `newbits` number tells on how many subnets will
-   be CIDR block (input or VPC) divided. `newbits` is an amount of `binary digits`.
+3. Calculate `newbits`. `newbits` number tells on how many subnets will be CIDR block (input or VPC) divided. `newbits` is an amount of `binary digits`.
 
-##### undefined Example
+### undefined Example
+
 > `newbits = 1` - 2 subnets are available (`1 binary digit` allows to count up to `2`)
- >
- >`newbits = 2` - 4 subnets are available (`2 binary digits` allows to count up to `4`)
- >
- >`newbits = 3` - 8 subnets are available (`3 binary digits` allows to count up to `8`)
 
-4. We know, that we have `6` AZs in a `us-east-1` region (see step 2).
+> `newbits = 2` - 4 subnets are available (`2 binary digits` allows to count up to `4`)
 
-5. We need to create `1 public` subnet and `1 private` subnet in each AZ,
-     thus we need to create `12 subnets` in total (`6` AZs * (`1 public` + `1 private`)).
+> `newbits = 3` - 8 subnets are available (`3 binary digits` allows to count up to `8`)
 
-6. We need `4 binary digits` for that ( 2<sup>4</sup> = 16 ).
-    In order to calculate amount of `binary digits` we should use `logarithm`
-    function. We should use logarithm for `base 2` because decimal numbers
-    can be calculated as `powers` of binary number.
-    See [Wiki](https://en.wikipedia.org/wiki/Binary_number#Decimal)
-    for more details
+1. We know, that we have `6` AZs in a `us-east-1` region (see step 2).
 
-##### undefined Example
-> For `12 subnets` we need `3.58` amount `binary digits` (log<sub>2</sub>12)
- >
- >For `16 subnets` we need `4` amount `binary digits` (log<sub>2</sub>16)
- >
- >For `7 subnets` we need `2.81` amount `binary digits` (log<sub>2</sub>7)
- >
- >etc...
+2. We need to create `1 public` subnet and `1 private` subnet in each AZ, thus we need to create `12 subnets` in total (`6` AZs * (`1 public` + `1 private`)).
 
-7. We can't calculate amount `binary digits` using fractional values.
-    We can't round it down because smaller amount `binary digits` is
-    insufficient for required number calculation.
-    Thus we should round it up. See TF [ceil](https://www.terraform.io/docs/configuration/interpolation.html#ceil-float-).
+3. We need `4 binary digits` for that ( 2
 
-##### undefined Example
-> For `12 subnets` we need `4` amount `binary digits` (ceil(log<sub>2</sub>12))
- >
- >For `16 subnets` we need `4` amount `binary digits` (ceil(log<sub>2</sub>16))
- >
- >For `7 subnets` we need `3` amount `binary digits` (ceil(log<sub>2</sub>7))
- >
- >etc...
+  <sup>4</sup>
 
+   = 16 ). In order to calculate amount of `binary digits` we should use `logarithm` function. We should use logarithm for `base 2` because decimal numbers can be calculated as `powers` of binary number. See [Wiki](https://en.wikipedia.org/wiki/Binary_number#Decimal) for more details
 
-8. Assign private subnets according to AZ number (we're using `count.index` for that).
-9. Assign public subnets according to AZ number but with a shift.
-    Using shift number according to the amount of AZs in a region (see step 2)
-    (we're using `length(data.aws_availability_zones.available.names) + count.index` for that)
+### undefined Example
+
+> For `12 subnets` we need `3.58` amount `binary digits` (log
+
+> <sub>2</sub>
+
+> 12)
+
+> For `16 subnets` we need `4` amount `binary digits` (log
+
+> <sub>2</sub>
+
+> 16)
+
+> For `7 subnets` we need `2.81` amount `binary digits` (log
+
+> <sub>2</sub>
+
+> 7)
+
+> etc...
+
+1. We can't calculate amount `binary digits` using fractional values. We can't round it down because smaller amount `binary digits` is insufficient for required number calculation. Thus we should round it up. See TF [ceil](https://www.terraform.io/docs/configuration/interpolation.html#ceil-float-).
+
+### undefined Example
+
+> For `12 subnets` we need `4` amount `binary digits` (ceil(log
+
+> <sub>2</sub>
+
+> 12))
+
+> For `16 subnets` we need `4` amount `binary digits` (ceil(log
+
+> <sub>2</sub>
+
+> 16))
+
+> For `7 subnets` we need `3` amount `binary digits` (ceil(log
+
+> <sub>2</sub>
+
+> 7))
+
+> etc...
+
+1. Assign private subnets according to AZ number (we're using `count.index` for that).
+2. Assign public subnets according to AZ number but with a shift. Using shift number according to the amount of AZs in a region (see step 2) (we're using `length(data.aws_availability_zones.available.names) + count.index` for that)

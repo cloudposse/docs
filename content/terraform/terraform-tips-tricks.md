@@ -6,7 +6,7 @@ excerpt: ""
 
 # Use Pre Commit Hooks for Linting
 
-We strongly urge that all code be linted prior to checking into to git. Running `terraform fmt` on the codebase before committing will accomplish this. 
+We strongly urge that all code be linted prior to checking into to git. Running `terraform fmt` on the codebase before committing will accomplish this.
 
 To set this up so that it happens automatically prior to any commit, configure `git` pre-commit hooks using the `pre-commit` utility.
 
@@ -15,7 +15,7 @@ To set this up so that it happens automatically prior to any commit, configure `
 brew install pre-commit
 ```
 
-Then run `pre-commit install` in a given terraform repo to configure the hooks. 
+Then run `pre-commit install` in a given terraform repo to configure the hooks.
 
 ##### .pre-commit-config.yaml
 ```yaml

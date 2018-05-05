@@ -8,7 +8,7 @@ excerpt: ""
 
 In order to push/pull images from the CodeFresh docker registry, you'll need to login via the command line API. This is a one-time operation, so you won't need to do this very often.
 
-First, obtain your API key by logging into CodeFresh. 
+First, obtain your API key by logging into CodeFresh.
 
 To get it, login into Codefresh and navigate to User Settings in the bottom left corner.
 ![](/images/7f3a5da-Screen_Shot_2018-04-16_at_4.40.57_PM.png)

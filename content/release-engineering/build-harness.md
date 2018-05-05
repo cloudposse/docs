@@ -1,14 +1,15 @@
 ---
-title: "Build Harness"
-excerpt: ""
+title: Build Harness
+excerpt: ''
 ---
+
 The `build-harness` is a collection of [Makefiles](doc:makefile) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
 
-|||
-|------|------|
-|GitHub Repo|https://raw.githubusercontent.com/cloudposse/build-harness|
-|Build Status|[![Build Status](https://travis-ci.org/cloudposse/build-harness.svg)](https://travis-ci.org/cloudposse/build-harness)|
-|Release|[![Release](https://img.shields.io/github/release/cloudposse/build-harness.svg)](https://github.com/cloudposse/build-harness/releases)|
+             |
+------------ | --------------------------------------------------------------------------------------------------------------------------------------
+GitHub Repo  | <https://raw.githubusercontent.com/cloudposse/build-harness>
+Build Status | [![Build Status](https://travis-ci.org/cloudposse/build-harness.svg)](https://travis-ci.org/cloudposse/build-harness)
+Release      | [![Release](https://img.shields.io/github/release/cloudposse/build-harness.svg)](https://github.com/cloudposse/build-harness/releases)
 
 It's designed to work with CI/CD systems such as Travis CI, CircleCI, CodeFresh and Jenkins.
 
@@ -18,7 +19,8 @@ It's 100% Open Source and licensed under [APACHE2](LICENSE).
 
 At the top of your `Makefile` add, the following...
 
-##### Makefile
+## Makefile
+
 ```text
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 ```
@@ -29,25 +31,27 @@ This automatically exposes many new targets that you can leverage throughout you
 
 Run `make help` for a list of available targets.
 
-##### :information_source: NOTE
+## :information_source: NOTE
+
 > The `/` in target names is interchangeable with the `:` in target names
 
 # Real World Examples
 
 We leverage the `build-harness` in nearly every project on our [GitHub](doc:github).
 
-|||
-|------|------|
-|[`github-authorized-keys`](https://github.com/cloudposse/github-authorized-keys/)|A Golang project that leverages `docker/%`, `go/%`, `travis/%` targets|
-|[`charts`](https://github.com/cloudposse/charts/)|A collection of Helm Charts that leverages `docker/%` and `helm/%` targets|
-|[`bastion`](https://github.com/cloudposse/bastion/)|A docker image that leverages `docker/%` and `bash/lint` targets|
-|[`terraform-null-label`](https://github.com/cloudposse/terraform-null-label/)|A terraform module that leverages `terraform/%` targets|
+                                                                                  |
+--------------------------------------------------------------------------------- | --------------------------------------------------------------------------
+[`github-authorized-keys`](https://github.com/cloudposse/github-authorized-keys/) | A Golang project that leverages `docker/%`, `go/%`, `travis/%` targets
+[`charts`](https://github.com/cloudposse/charts/)                                 | A collection of Helm Charts that leverages `docker/%` and `helm/%` targets
+[`bastion`](https://github.com/cloudposse/bastion/)                               | A docker image that leverages `docker/%` and `bash/lint` targets
+[`terraform-null-label`](https://github.com/cloudposse/terraform-null-label/)     | A terraform module that leverages `terraform/%` targets
 
 # Makefile Targets
 
 Running `make help` will produce this helpful output of all available make targets.
 
-##### 
+## #
+
 ```shell
 $ make help
 

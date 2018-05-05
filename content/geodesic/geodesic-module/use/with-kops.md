@@ -8,7 +8,7 @@ excerpt: ""
 
 # Create a cluster
 
-Follow the [Provision a Cluster](doc:provision-a-cluster) process 
+Follow the [Provision a Cluster](doc:provision-a-cluster) process
 
 # Provision Platform Backing Services
 
@@ -25,7 +25,7 @@ and is compiled by running the `build-kops-manifest` script as a `RUN` step in t
 
 Provisioning a `kops` cluster takes three steps:
 
-1. Provision a [terraform-aws-kops-state-backend](doc:terraform-aws-kops-state-backend) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes. 
+1. Provision a [terraform-aws-kops-state-backend](doc:terraform-aws-kops-state-backend) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes.
 2. Update the `Dockerfile` and rebuild/restart the `geodesic` shell to generate a kops manifest file
 3. Launch a kops cluster from the manifest file
 
@@ -102,14 +102,17 @@ kops create secret sshpublickey admin -i /secrets/tf/ssh/joany-staging-kops-us-w
 
 Run the following to provision the AWS resources for the cluster.
 ```
-kops update cluster --name us-west-2.staging.joany.net --yes` 
+kops update cluster --name us-west-2.staging.joany.net --yes
+```
+
 ![](/images/944178e-kops-update-cluster.png)
+
 All done. The `kops` cluster is now up and running.
 
-##### :information_source: READ MORE
-> For more information, check out the following links:
- >
- >* https://github.com/cloudposse/geodesic#creating-a-kops-cluster
- >* https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md
- >* https://github.com/kubernetes/kops/blob/master/docs/security.md
- >* https://icicimov.github.io/blog/virtualization/Kubernetes-Cluster-in-AWS-with-Kops
+{{% dialog type="info" icon="fa-info-circle" title="Read More" %}}
+For more information, check out the following links:
+* https://github.com/cloudposse/geodesic#creating-a-kops-cluster
+* https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md
+* https://github.com/kubernetes/kops/blob/master/docs/security.md
+* https://icicimov.github.io/blog/virtualization/Kubernetes-Cluster-in-AWS-with-Kops
+{{% /dialog %}}

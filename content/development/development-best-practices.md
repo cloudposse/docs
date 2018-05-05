@@ -1,7 +1,8 @@
 ---
-title: "Development Best Practices"
-excerpt: ""
+title: Development Best Practices
+excerpt: ''
 ---
+
 # Linting
 
 # Define `LICENSE` and/or `COPYRIGHT` file
