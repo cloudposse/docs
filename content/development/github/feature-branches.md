@@ -31,7 +31,7 @@ On the surface, this is what a well-formatted Pull Request looks like: ![Pull Re
 - **Merging**: Once the PR is approved, the developer can squash and merge their code into the master branch. Squashing allows the master branch to have a very clean commit history where every commit corresponds to a PR. ![](/assets/2b3e7eb-image_4.png)
 - **Clean Commit History**: means that every change to the master branch is documented and justified. No one is sneaking in changes. ![Clean Commit History](/assets/b3dae79-image_5.png)
 - **History of Features** and when they were added ![History of Features](/assets/f9a3727-image_7.png)
-- **Reverting**: If a feature needs to be removed, with the click of a single button it can be removed from the `master` branch ![](/assets/28887e9-image_8.png)
+- **Reverting**: If a feature needs to be removed, with the click of a single button it can be removed from the `master` branch ![Reverting Changes](/assets/28887e9-image_8.png)
 
   # Technical Details
 
@@ -58,4 +58,4 @@ Now, go to town hacking away. When you're ready, push the changes up to the orig
 git push origin newfeature
 ```
 
-Now check out how to create [Pull Requests](doc:pull-requests)!
+Now check out how to create [Pull Requests]({{< relref "development/github/pull-requests.md" >}})!

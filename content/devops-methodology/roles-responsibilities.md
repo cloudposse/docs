@@ -3,7 +3,7 @@ title: Roles & Responsibilities
 excerpt: ''
 ---
 
-The following matrix outlines various components and responsibilities that establishes who amongst the various teams involved are Responsible, Accountable, Consulted, and Informed for each action or component. We use the [RACI Matrix](doc:raci-matrix) to assign responsibilities.
+The following matrix outlines various components and responsibilities that establishes who amongst the various teams involved are Responsible, Accountable, Consulted, and Informed for each action or component. We use the [RACI Matrix]({{< relref "project-management/raci-matrix.md" >}}) to assign responsibilities.
 
 # Roles
 

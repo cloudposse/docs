@@ -68,7 +68,7 @@ excerpt: ''
 #####
 ```markdown
 [Link Example](https://cloudposse.com)
-`````
+```
 
 [Link Example](https://cloudposse.com)
 
@@ -97,7 +97,7 @@ excerpt: ''
 ## Standard Image
 
 ```markdown
-![Image](https://files.readme.io/40ee68a-cloudposse-64x64.png)
+![Image](/assets/40ee68a-cloudposse-64x64.png)
 ```
 
 ![Image][1]
@@ -111,7 +111,7 @@ excerpt: ''
 ```markdown
 ![Image][1]
 ...other content here...
-[1]: https://files.readme.io/40ee68a-cloudposse-64x64.png
+[1]: /assets/40ee68a-cloudposse-64x64.png
 ```
 
 ![Image][1] ...other content here...
@@ -120,14 +120,14 @@ excerpt: ''
 
 # Code Block
 
-## Code Block
+## Code Block Examples
 
-````markdown
+~~~~
 ```
 $i = 0;
 $i++;
 ```
-`````
+~~~~
 
 ```
 $i = 0;
@@ -142,7 +142,7 @@ $i++;
 - Columns do not need to be neatly formatted.
 - Supports inline Markdown.
 
-##
+## Table Examples
 
 ```markdown
 | Animals | Fruits  |   Coins |
@@ -165,5 +165,5 @@ $i++;
 - <https://help.github.com/articles/basic-writing-and-formatting-syntax/>
 - <https://daringfireball.net/projects/markdown/>
 
-[1]: https://files.readme.io/40ee68a-cloudposse-64x64.png
+[1]: /assets/40ee68a-cloudposse-64x64.png
 [2]: https://google.com
