@@ -568,8 +568,9 @@ footer .footline .tags, .footline .copyright {
   padding-top: 13px;
   padding-bottom: 1px;
   padding-left: 23px;
-  margin-left: 31px;
+  margin-left: 0px;
   margin-bottom: 3em;
+  color: rgba(0,0,0,0.5);
 }
 
 .dialog p {
@@ -577,19 +578,20 @@ footer .footline .tags, .footline .copyright {
   padding-left: 22px;
   padding-bottom: 0;
   padding-top: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.dialog p:empty {
+   display: none;
 }
 
 .dialog h4 {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  margin-top: 2px;
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
-}
-
-.dialog.info, .dialog.info a {
-  background-color: #e3edf2;
-  border-color: #5bc0de;
-  color: rgba(0,0,0,0.5);
 }
 
 .dialog .fa {
@@ -606,3 +608,71 @@ footer .footline .tags, .footline .copyright {
 .dialog.info h4 {
    color: #5bc0de;
 }
+
+.dialog.info, .dialog.info a {
+  background-color: #e3edf2;
+  border-color: #5bc0de;
+}
+
+.dialog.important h4 {
+   color: #d9534f;
+}
+
+.dialog.important, .dialog.important a {
+  background-color: #fdf7f7;
+  border-color: #d9534f;
+}
+
+.dialog.warning h4 {
+   color: #f0ad4e;
+}
+
+.dialog.warning, .dialog.warning a {
+  background-color: #fcf8f2;
+  border-color: #f0ad4e;
+}
+
+.dialog.tip h4 {
+   color: #5bc0de;
+}
+
+.dialog.tip, .dialog.tip a {
+  background-color: #e3edf2;
+  border-color: #5bc0de;
+}
+
+.dialog.code-block {
+  width: 100%;
+  padding-left: 0;
+  margin-left: 0;
+  border-left: 0;
+  padding-top: 0;
+  position:relative;
+  left: -4rem;
+  width: 116%;
+}
+
+.dialog.code-block pre {
+  margin: 0;
+  padding-left: 13px;
+  padding-top: 5px;
+  padding-right: 13px;
+  padding-bottom: 5px;
+}
+
+.dialog.code-block h4 {
+  line-height: 2em;
+  font-size: 15px;
+  color: #333;
+  background-color: #eaeaea;
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+.dialog.code-block, .dialog.code-block a {
+  border-color: transparent;
+  background-color: #f6f6f6;
+  margin-bottom: 2em;
+}
+
+
