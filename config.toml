@@ -61,7 +61,7 @@ weight = 30
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-github'></i> <label>Our GitHub</label>"
 identifier = "github"
-url = "https://github.com/cloudposse/
+url = "https://github.com/cloudposse/"
 weight = 40
 
 [[menu.shortcuts]]
