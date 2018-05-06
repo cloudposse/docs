@@ -1,5 +1,4 @@
 ---
-# Use use `,` to separate multiple terms; use `!` to exclude a term from matching
 title: Infrastructure
 terms: 
 - infrastructure
