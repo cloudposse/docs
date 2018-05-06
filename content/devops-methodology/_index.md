@@ -31,8 +31,8 @@ This is our methodology.
 
 # Best Practices
 * [Pull Request Best Practices]({{< relref "development/github/pull-requests.md" >}})
-* [Terraform Best Practices]({{< relref "terraform/terraform-best-practices.md" >}})
-* [Terraform Module Best Practices]({{< relref "terraform-modules/terraform-module-best-practices.md" >}})
+* [Terraform Best Practices]({{< relref "terraform/best-practices.md" >}})
+* [Terraform Module Best Practices]({{< relref "terraform-modules/best-practices.md" >}})
 * [Makefile Best Practices]({{< relref "local-dev-environments/makefile/best-practices.md" >}})
 * [Markdown Best Practices]({{< relref "development/markdown/best-practices.md" >}})
 * [Development Best Practices]({{< relref "development/development-best-practices.md" >}})

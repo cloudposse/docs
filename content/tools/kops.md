@@ -22,8 +22,8 @@ kops create -f /conf/kops/manifest.yml
 
 # Helpful Terraform Modules
 
-- [terraform-aws-kops-route53](doc:terraform-aws-kops-route53)
-- [terraform-aws-kops-external-dns](doc:terraform-aws-kops-external-dns)
+- [terraform-aws-kops-route53]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-route53.md" >}})
+- [terraform-aws-kops-external-dns]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-external-dns.md" >}})
 
 ## init.sh
 
