@@ -6,7 +6,7 @@ tags:
   - "Best Practices"
   - "Terraform"
 ---
-![](/assets/08bcd99-terraform.png)
+![Terraform](/assets/08bcd99-terraform.png)
 
 # Use Git Workflow
 
@@ -45,7 +45,7 @@ Using `atlantis` it’s possible to introduce the standard CI/CD process to mana
 
 Linting helps to ensure a consistent code formatting, improves code quality and catches common errors with syntax.
 
-Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks](doc:terraform-tips-tricks)
+Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks]({{< relref "terraform/tips-tricks.md" >}})
 
 ## Use strings for all booleans and boolean comparisons
 
@@ -117,7 +117,7 @@ terraform {
 }
 ```
 
-**Pro Tip:** Use [`init-terraform`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/init-terraform) in [Geodesic](doc:geodesic)
+**Pro Tip:** Use [`init-terraform`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/init-terraform) in [Geodesic](/geodesic)
 
 ## Use one bucket per environment or stage
 

@@ -23,6 +23,10 @@ build:
 	rm -rf public/
 	$(HUGO)
 
+## Lint check all hugo code
+lint:
+	hugo --renderToMemory
+
 ## Validate all html is good
-validate:
+validate: lint
 	htmltest

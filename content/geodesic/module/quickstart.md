@@ -4,10 +4,10 @@ excerpt: "Get up and running quickly with geodesic"
 ---
 # Prerequisites
 
-* Follow the "Quick Start" for [Local Development Environments](doc:quickstart)
+* Follow the "Quick Start" for [Local Development Environments]({{< relref "local-dev-environments/quickstart.md" >}})
 
 {{% dialog type="info" icon="fa-info-circle" title="Examples" %}}
-All examples are based on use cases provided in [Agenda](doc:agenda)
+All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
 {{% /dialog %}}
 
 # Creating a New Module
@@ -43,7 +43,7 @@ cd $CLUSTER_NAME
 
 ## Build & Install
 
-Initialize the [Build Harness](doc:build-harness)
+Initialize the [Build Harness]({{< relref "release-engineering/build-harness.md" >}})
 
 ```
 make init
@@ -53,7 +53,7 @@ Build the docker container
 
 ```
 make build
-```    
+```
 
 Install the module as shell
 
@@ -68,10 +68,10 @@ For more information follow [Use](doc:use)
 
 # Authorize on AWS
 
-Config AWS credentials and roles following [Authorization](doc:authorization)
+Config AWS credentials and roles following [Authorization]({{< relref "aws/iam/authorization.md" >}})
 
 ##### :warning: Warning
-> Geodesic use [AWS Vault](doc:aws-vault) to authorize on AWS so ensure you add source profile name to [AWS Vault](doc:aws-vault)
+> By default, Geodesic uses [AWS Vault]({{< relref "tools/aws-vault.md" >}}) to authorize on AWS so ensure you add source profile name to [AWS Vault]({{< relref "tools/aws-vault.md" >}})
 
 ## Set default profile in Geodesic Module
 
@@ -86,5 +86,5 @@ Run `make docker/build` to rebuild module container
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 You can install it on local to do the same for development purpose.
-See [AWS Vault](doc:aws-vault) setup.
+See [AWS Vault]({{< relref "tools/aws-vault.md" >}}) setup.
 {{% /dialog %}}

@@ -1,5 +1,6 @@
 ---
 title: IAM
+slug: "iam"
 excerpt: ''
 draft: true
 tags:

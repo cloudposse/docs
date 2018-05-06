@@ -64,7 +64,7 @@ Initialize the backend with `terraform init`.
 
 After `terraform apply`, `terraform.tfstate` file will be stored in the bucket, and the DynamoDB table will be used to lock the state to prevent concurrent modifications.
 
-![](/assets/f5a8966-s3-bucket-with-terraform-state.png)
+![Terraform Apply Output](/assets/f5a8966-s3-bucket-with-terraform-state.png)
 
 # Variables
 

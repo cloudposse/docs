@@ -1,7 +1,8 @@
 ---
 title: AWS IAM Best Practices
+slug: "best-practices"
 excerpt: ''
-draft: true 
+draft: false 
 tags:
   - iam
   - aws

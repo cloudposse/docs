@@ -1,7 +1,7 @@
 ---
 title: AWS IAM Assuming Roles
 excerpt: ''
-draft: true
+draft: false
 tags:
   - iam
   - aws

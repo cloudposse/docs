@@ -16,6 +16,7 @@ Available targets:
 
   build                               Generate all static content (outputs to public/)
   deps                                Install package dependencies
+  lint                                Lint check all hugo code
   open                                Open localhost in browser
   run                                 Start the hugo server for live editing
   validate                            Validate all html is good

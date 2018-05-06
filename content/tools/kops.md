@@ -5,11 +5,11 @@ excerpt: ''
 
 # Quick Start
 
-These instructions are based on [Geodesic](doc:geodesic), which is a cluster shell that contains a mashup of tools like `kops`, `terraform`, `kubectl`.
+These instructions are based on [Geodesic](/geodesic), which is a cluster shell that contains a mashup of tools like `kops`, `terraform`, `kubectl`.
 
 ## Building Cluster
 
-Start a [Geodesic](doc:geodesic) cluster shell.
+Start a [Geodesic](/geodesic) cluster shell.
 
 ```
 assume-role

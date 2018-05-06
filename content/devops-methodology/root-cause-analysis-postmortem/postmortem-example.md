@@ -118,11 +118,11 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 ### Pingom
 
-![](/assets/1f27db8-image_12.png)
+![Pingdom 1](/assets/1f27db8-image_12.png)
 
-![](/assets/89c0050-image_13.png)
+![Pingdom 2](/assets/89c0050-image_13.png)
 
-![](/assets/9d3f441-image_14.png)
+![Pingdom 3](/assets/9d3f441-image_14.png)
 
 ### Elastic Beanstalk
 
@@ -136,23 +136,23 @@ There were no deadlocks. There was no increase in IOPS (r/w)
 
 #### CPU Utilization spiked.
 
-![](/assets/2e1d7be-image_17.png)
+![CPU Utilization Spiked](/assets/2e1d7be-image_17.png)
 
 #### Connections peaked and maxed out.
 
-![](/assets/8f2e7d3-image_18.png)
+![DB Connections Peaked](/assets/8f2e7d3-image_18.png)
 
 #### Selects went through the roof.
 
-![](/assets/43dfb04-image_19.png)
+![DB Selects Spiked](/assets/43dfb04-image_19.png)
 
 #### CPU credits were not exhausted, so we had excess capacity
 
-![](/assets/7bd6416-image_20.png)
+![CPU Credits Okay](/assets/7bd6416-image_20.png)
 
 #### Commits / Writes went through the roof
 
-![](/assets/b7a608c-image_21.png)
+![DB Commits Spiked](/assets/b7a608c-image_21.png)
 
 ## Related Post Mortems
 
