@@ -28,14 +28,16 @@ Then run these commands:
 
 5. Re-run `init-terraform`, answer `yes` when asked to import state
 
-##### :warning: Prerequisites
-> Follow the "Use geodesic module"  to [Use](doc:use) get how to use the module shell.
+{{% dialog type="warning" icon="fa-exclamation-circle" title="Prerequisites" %}}
+Follow the "Use geodesic module"  to [Use](doc:use) get how to use the module shell.
+{{% /dialog %}}
 
 # Create terraform state bucket
 
-##### :no_entry_sign: Important
-> To use terraform you need to create terraform state bucket.
- >Follow the instructions to do that.
+{{% dialog type="important" icon="fa-exclamation-triangle" title="Important" %}}
+To use terraform you need to create terraform state bucket.
+Follow the instructions to do that.
+{{% /dialog %}}
 
 To create terraform state bucket follow this steps:
 
@@ -129,7 +131,7 @@ Run Geodesic Shell in [development mode](doc:use#section-development-mode)
 > $CLUSTER_NAME
 ```
 
-##### Example
+{{% dialog type="code-block" icon="fa-code" title="Example" %}}
 ```shell
 > staging.example.com
 # Mounting /home/goruha into container
@@ -156,6 +158,7 @@ IMPORTANT:
 ❌   (none) ~ ➤  
 
 ```
+{{% /dialog %}}
 
 ## Authorize on AWS
 Assume role by running
@@ -163,7 +166,7 @@ Assume role by running
 assume-role
 ```
 
-##### Example
+{{% dialog type="code-block" icon="fa-code" title="Example" %}}
 ```shell
 ❌   (none) tfstate-backend ➤  assume-role
 Enter passphrase to unlock /conf/.awsvault/keys/:
@@ -174,6 +177,7 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
 ✅   (example-staging-admin) tfstate-backend ➤  
 
 ```
+{{% /dialog %}}
 
 ## Apply tfstate-bucket
 
@@ -185,7 +189,7 @@ terraform apply
 ```
 The latest command will output id of terraform state bucket and dynamo DB table. Please copy that values because we need it for next step.
 
-##### Example
+{{% dialog type="code-block" icon="fa-code" title="Example" %}}
 ```shell
 ✅   (example-staging-admin) tfstate-backend ➤  terraform apply
 null_resource.default: Refreshing state... (ID: 4514126170089387416)
@@ -207,13 +211,14 @@ tfstate_backend_s3_bucket_id = example-staging-terraform-state
 ✅   (example-staging-admin) tfstate-backend ➤  
 
 ```
+{{% /dialog %}}
 
 In the example the bucket name is `example-staging-terraform-state` and dynamo DB table `example-staging-terraform-state-lock`.
 
 ## Exit the module shell
 Exit from the shell by running `exit` twice
 
-##### Example
+{{% dialog type="code-block" icon="fa-code" title="Example" %}}
 ```shell
 ✅   (example-staging-admin) tfstate-backend ➤  exit
 logout
@@ -223,8 +228,8 @@ Goodbye
 ❌   (none) ~ ➤  exit
 logout
 Goodbye
-
 ```
+{{% /dialog %}}
 
 ## Set the bucket as default bucket to store for terraform state files
 Update in module `Dockerfile` environment variables
@@ -236,7 +241,7 @@ ENV TF_DYNAMODB_TABLE ""
 ```
 with terraform state bucket name and region and dynamo DB table name.
 
-##### Example
+### Example
 ```text
 # Terraform
 ENV TF_BUCKET "example-staging-terraform-state"
@@ -257,7 +262,7 @@ Run Geodesic Shell in [development mode](doc:use#section-development-mode)
 > assume-role
 ```
 
-##### Example
+{{% dialog type="code-block" icon="fa-code" title="Example" %}}
 ```shell
 > staging.example.com
 # Mounting /home/goruha into container
@@ -289,33 +294,32 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
  ⧉  staging example
 ✅   (example-staging-admin) tfstate-backend ➤  
 ```
+{{% /dialog %}}
 
 ## Save `tfstate-bucket` terraform state file into the bucket
 This is kind of self-reference but we need to store state in reliable storage. This is useful for the future update.
 
 
-# Create terraform module
-
-
+# Create Terraform Module
 
 To provision terraform module create a directory for it in `/conf`
 
-##### :information_source: Example
-> If terraform module name is `kube2iam`.
- >Create `/conf/kube2iam` and put there terraform code.
- >Example of code you can find there [LINK!]
+{{% dialog type="tip" icon="fa-hand-o-right" title="Tip" %}}
+If the terraform module is named `kube2iam`, then create `/conf/kube2iam` and stick the terraform code in there.
+Example of code you can find there [LINK!]
+{{% /dialog %}}
 
-# Rebuild the shell container
+# Rebuild the Geodesic Module
 
 Rebuild the shell container with `make build` command.
 
-{{% dialog type="info" icon="fa-info-circle" title="Tip" %}}
+{{% dialog type="tip" icon="fa-hand-o-right" title="Tip" %}}
 During development, you can skip rebuilding the container and instead work from the `/localhost` folder inside of the container. The `/localhost` folder is the user's `$HOME` folder mounted into the container. Any files on this system will be persisted.
 {{% /dialog %}}
 
 # Run the shell
 ```bash
-> $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 For example, to access your geodesic project shell do the following.
@@ -339,12 +343,15 @@ terraform plan
 terraform apply
 ```
 
-##### :information_source: Example
-> If terraform module name is `kube2iam`.
- >`> cd /conf/kube2iam`
- >`> init-terraform`
- >`> terraform plan`
- >`> terraform apply`
+{{% dialog type="code-block" icon="fa-code" title="Example" %}}
+If terraform module name is `kube2iam`.
+```bash
+cd /conf/kube2iam
+init-terraform
+terraform plan
+terraform apply
+```
+{{% /dialog %}}
 
 ## Example: Provision CloudTrail with Terraform
 

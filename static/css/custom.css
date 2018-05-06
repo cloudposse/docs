@@ -25,9 +25,59 @@ body > header nav.shortcuts li a {
   height: 2rem;
 }
 
+a, section a {
+    color: #364548;
+}
+
+a:hover {
+    color: #0a0d0e;
+}
+
+
+th:empty {
+  display: none;
+}
+
+
 /* fix for empty pages */
 section header {
   display: none;
+}
+
+section article.post {
+  display: inherit;
+}
+
+section article.post footer {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+section.page > article > header > h2, section.page > article p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+section.page > article.post > footer:empty.footline {
+  display: none;
+}
+
+section article header.post-header {
+  display: inherit;
+  position: relative;
+  background-color: transparent;
+  border-bottom: 0;
+  min-width: 100%;
+  padding-left: 0;
+}
+
+.post-header h2 {
+  background-color: transparent;
+  font-size: 1.2rem;
+}
+
+section article header:after {
+  background: transparent;
 }
 
 
@@ -115,6 +165,10 @@ article > aside .menu .dd-item li {
 aside#left-sidebar .menu .dd-item.active > div * {
   font-weight: normal;
   border-bottom: 0;
+}
+
+aside#left-sidebar .menu .dd-item.active > div a {
+  color: #fff;
 }
 
 aside#left-sidebar .menu .dd-item.active > div {
@@ -528,20 +582,20 @@ thead {
   border-bottom: 2px solid #eee;
 }
 
-footer .footline {
+body > footer .footline {
   display: block;
   padding-top: 0.2rem;
   padding-left: 5rem;
 }
 
-footer .footline .tags {
+body > footer .footline .tags {
   display: inline-block;
   float: left;
   font-size: 12px;
   margin-right: 10px;
 }
 
-footer .footline .tags, .footline .copyright {
+body > footer .footline .tags, body > .footline .copyright {
   display: inline-block;
   float: left;
 }
@@ -568,8 +622,9 @@ footer .footline .tags, .footline .copyright {
   padding-top: 13px;
   padding-bottom: 1px;
   padding-left: 23px;
-  margin-left: 31px;
+  margin-left: 0px;
   margin-bottom: 3em;
+  color: rgba(0,0,0,0.5);
 }
 
 .dialog p {
@@ -577,19 +632,20 @@ footer .footline .tags, .footline .copyright {
   padding-left: 22px;
   padding-bottom: 0;
   padding-top: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.dialog p:empty {
+   display: none;
 }
 
 .dialog h4 {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  margin-top: 2px;
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
-}
-
-.dialog.info, .dialog.info a {
-  background-color: #e3edf2;
-  border-color: #5bc0de;
-  color: rgba(0,0,0,0.5);
 }
 
 .dialog .fa {
@@ -606,3 +662,71 @@ footer .footline .tags, .footline .copyright {
 .dialog.info h4 {
    color: #5bc0de;
 }
+
+.dialog.info, .dialog.info a {
+  background-color: #e3edf2;
+  border-color: #5bc0de;
+}
+
+.dialog.important h4 {
+   color: #d9534f;
+}
+
+.dialog.important, .dialog.important a {
+  background-color: #fdf7f7;
+  border-color: #d9534f;
+}
+
+.dialog.warning h4 {
+   color: #f0ad4e;
+}
+
+.dialog.warning, .dialog.warning a {
+  background-color: #fcf8f2;
+  border-color: #f0ad4e;
+}
+
+.dialog.tip h4 {
+   color: #5bc0de;
+}
+
+.dialog.tip, .dialog.tip a {
+  background-color: #e3edf2;
+  border-color: #5bc0de;
+}
+
+.dialog.code-block {
+  width: 100%;
+  padding-left: 0;
+  margin-left: 0;
+  border-left: 0;
+  padding-top: 0;
+  position:relative;
+  left: -4rem;
+  width: 116%;
+}
+
+.dialog.code-block pre {
+  margin: 0;
+  padding-left: 13px;
+  padding-top: 5px;
+  padding-right: 13px;
+  padding-bottom: 5px;
+}
+
+.dialog.code-block h4 {
+  line-height: 2em;
+  font-size: 15px;
+  color: #333;
+  background-color: #eaeaea;
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+.dialog.code-block, .dialog.code-block a {
+  border-color: transparent;
+  background-color: #f6f6f6;
+  margin-bottom: 2em;
+}
+
+
