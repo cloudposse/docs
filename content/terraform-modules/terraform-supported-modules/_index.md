@@ -2,7 +2,7 @@
 title: "Terraform Supported Modules"
 excerpt: ""
 ---
-![](/images/034f19f-terraform.png)
+![](/assets/034f19f-terraform.png)
 
 Cloud Posse is the largest provider of high quality, fully composable open source Terraform Modules (APACHE2).
 

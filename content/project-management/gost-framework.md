@@ -2,7 +2,7 @@
 title: "GOST Framework"
 excerpt: ""
 ---
-![](/images/3feff88-ghost.png)
+![](/assets/3feff88-ghost.png)
 
 
 

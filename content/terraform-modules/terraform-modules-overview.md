@@ -4,7 +4,7 @@ excerpt: ''
 weight: -3
 ---
 
-![](/images/774b11e-terraform.png)
+![](/assets/774b11e-terraform.png)
 
 Terraform modules are the best way to encapsulate "business logic" and "Best Practices" for provisioning infrastructure. Terraform modules are used almost like functions in `terraform`; that is, they take inputs (aka `variables`) and produce some `outputs`.
 

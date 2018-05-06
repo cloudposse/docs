@@ -25,21 +25,21 @@ some-pod        0/1       OOMKilled   1          24s
 By inspecting a "Node" in the kubernetes dashboard, it's really easy to tell if a cluster is oversubscribed. In the example below, we can see that pods have requested 54% of available CPU, but the hard limit has been set to 100% of available CPU. This means, that nothing else should be scheduled do this node as 100% of total available capacity has been allocated. 
 
 In terms of memory, we see that all pods of a total memory limit of 4.3GB, which is 113% of available resources. This means the cluster is overcommitted in terms of the maximum permitted amount of memory. In terms of actually requested memory, we're still under the threshold. 
-![](/images/334a25e-Screen_Shot_2018-04-17_at_1.50.21_PM.png)
+![](/assets/334a25e-Screen_Shot_2018-04-17_at_1.50.21_PM.png)
 ## How can we tell if we have enough CPU/Memory Allocated?
 Navigate to the kubernetes dashboard. Click the "Cluster" menu option on the left (it's also the default view). At the top, it will show how much CPU and Memory is being consumed versus total available.
 
 In the cluster below, you can see CPU is not constrained, but available memory is very low.
-![](/images/e075391-Screen_Shot_2018-04-17_at_1.30.32_PM.png)
+![](/assets/e075391-Screen_Shot_2018-04-17_at_1.30.32_PM.png)
 ## What's the best way to view resources consumed by a namespace?
 
 Navigate to the kubernetes dashboard. Click the "Overview" menu option on the left and then filter by the namespace. By default, the "default" namespace is selected. Generally, we don't use this namespace.
 
 If everything is running smoothly, you should see "Deployments", "Pods" and "ReplicaSets" all at 100%, which means there are no failures. 
-![](/images/a701e1e-Screen_Shot_2018-04-17_at_1.25.03_PM.png)
+![](/assets/a701e1e-Screen_Shot_2018-04-17_at_1.25.03_PM.png)
 Note, you can also select "All Namespaces" to view aggregate information for the cluster.
 
-![](/images/edea654-Screen_Shot_2018-04-17_at_1.34.31_PM.png)
+![](/assets/edea654-Screen_Shot_2018-04-17_at_1.34.31_PM.png)
 # How can we set resource requests & limits?
 
 

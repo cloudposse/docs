@@ -15,4 +15,4 @@ This is a hybrid of two types: `Infrastructure as a Code` and `Deployable backin
 
 `Backing Services` usually extends the functionality of kubernetes or provide some services for CI/CD and development (example: artifact storage / chartmuseum / external dns / tls certbot )
 
-`Backing Services` stored in the same repo with `Infrastructure as a Code` software. So `Backing Services` does not have independent build, test and release steps. On deploy step `Backing Services` deploys independently from umbrella `Infrastructure as a Code` app. ![Backing Services Process loop](/images/70b071a-Process_Loop_-_Backing_Services_-_Page_1.png)Backing Services Process loop
+`Backing Services` stored in the same repo with `Infrastructure as a Code` software. So `Backing Services` does not have independent build, test and release steps. On deploy step `Backing Services` deploys independently from umbrella `Infrastructure as a Code` app. ![Backing Services Process loop](/assets/70b071a-Process_Loop_-_Backing_Services_-_Page_1.png)Backing Services Process loop

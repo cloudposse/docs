@@ -6,7 +6,7 @@ excerpt: ""
 
 # Help Target
 Our standard `help` target. This will automatically generate well-formatted output for any target that has a `##` comment preceding it.
-![](/images/7ee92cd-Screen_Shot_2018-04-01_at_12.03.15_AM.png)
+![](/assets/7ee92cd-Screen_Shot_2018-04-01_at_12.03.15_AM.png)
 Simply add this to your `Makefile` and you'll get this functionality.
 
 ```

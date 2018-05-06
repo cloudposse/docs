@@ -2,7 +2,7 @@
 title: "Vagrant"
 excerpt: ""
 ---
-![](/images/6e84876-vagrant.png)
+![](/assets/6e84876-vagrant.png)
 # Background
 
 Vagrant by HashiCorp is responsbile for setting up development environments under VirtualBox. Vagrant handles all configuration management and makes it easy to share development environments by developers.

@@ -360,7 +360,7 @@ terraform plan
 terraform apply
 ```
 
-![](/images/81d14ff-cloudtrail.png)
+![](/assets/81d14ff-cloudtrail.png)
 ## Example: Provision Backing Services with Terraform
 
 Change directory to the required resources folder
@@ -375,7 +375,7 @@ terraform plan
 terraform apply
 ```
 
-![](/images/8dd848c-vpc_and_subnets.png)
+![](/assets/8dd848c-vpc_and_subnets.png)
 Repeat for all other projects in the solution (`dns`, `acm`, etc.).
 
 # Build and Release geodesic shell

@@ -3,7 +3,7 @@ title: Docker
 excerpt: ''
 ---
 
-![](/images/5c0373a-docker.png)
+![](/assets/5c0373a-docker.png)
 
 # Install Docker
 

@@ -1,1 +1,1 @@
-<a href="/"><img src="/images/fe450ef-small-TransparentWhite-version-HQ.png" id="header-logo" /></a>
+<a href="/"><img src="/images/logo.png" id="header-logo" /></a>

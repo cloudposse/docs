@@ -5,7 +5,7 @@ excerpt: ''
 
 We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. GitHub Tags/Releases, Helm Charts, Terraform Modules, Docker Images).
 
-![Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)](/images/aa35c54-semver.png)Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)
+![Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)](/assets/aa35c54-semver.png)Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)
 
 # Semantics
 

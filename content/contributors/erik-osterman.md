@@ -17,4 +17,4 @@ Born and raised in Southern California, Erik is a 2002 graduate of UCLA, receivi
 |Blog|https://osterman.com/|
 
 
-![](/images/ba3ae6b-erik_osterman.png)
+![](/assets/ba3ae6b-erik_osterman.png)
