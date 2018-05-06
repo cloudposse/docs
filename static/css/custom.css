@@ -20,6 +20,10 @@ body > header {
   padding-right: 10%;
 }
 
+body > header a {
+  color: rgba(255,255,255,0.8);
+}
+
 body > header:after { 
   display: none;
 }
