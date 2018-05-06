@@ -1,6 +1,4 @@
 ---
-title: Add CI/CD Pipeline
-excerpt: ''
+title: "Add CI/CD Pipeline"
+excerpt: ""
 ---
-
-

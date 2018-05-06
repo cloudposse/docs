@@ -21,6 +21,7 @@
     <h1>The Cloud Posse Developer Hub</h1>
     <div class="about">
       Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!
+       <div id="search-box"><!-- SearchBox widget will appear here --></div>
     </div>
     <div class="search-bar">
       <div class="searchbox">
@@ -46,6 +47,18 @@
     {{end}}
   </div>
 </div>
+
+<div id="refinement-list">
+  <!-- Algolia RefinementList widget will appear here -->
+</div>
+
+<div id="hits">
+  <!-- Algolia Hits widget will appear here -->
+</div>
+
+ <div id="pagination">
+    <!-- Pagination widget will appear here -->
+  </div>
 
 <article>
   {{if .IsHome}}

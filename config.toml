@@ -25,7 +25,8 @@ enableEmoji = true
 [params]
 showVisitedLinks = true # default is false
 themeStyle = "flex"
-ordersectionsby = "weight" # ordersectionsby = "title"
+ordersectionsby = "weight" 
+# ordersectionsby = "title"
 disableHomeIcon = true
 disableSearch = true
 disableNavChevron = false # set true to hide next/prev chevron, default is false
@@ -33,51 +34,61 @@ highlightClientSide = false # set true to use highlight.pack.js instead of the d
 menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
 enableGitInfo = true
 
+[outputFormats.Algolia]
+baseName = "algolia"
+isPlainText = true
+mediaType = "application/json"
+notAlternative = true
+
+[params.algolia]
+vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
+params = ["categories", "tags"]
+
 [outputs]
-home = [ "HTML", "RSS", "JSON"]
+home = [ "HTML", "RSS", "Algolia"]
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i> <label>Documentation</label>"
+name = "<i class='fa fa-github'></i><label>Documentation</label>"
 identifier = "documentation"
 url = "/"
 weight = 10
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i> <label>Support</label>"
+name = "<i class='fa fa-github'></i><label>Support</label>"
 identifier = "support"
 url = "https://github.com/cloudposse/docs/issues"
 weight = 20
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i> <label>Ask a Question</label>"
+name = "<i class='fa fa-github'></i><label>Ask a Question</label>"
 identifier = "ask-a-question"
 url = "https://github.com/cloudposse/docs/issues/new"
 weight = 30
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i> <label>Github repo</label>"
+name = "<i class='fa fa-github'></i><label>Github repo</label>"
 identifier = "github"
 url = "https://github.com/vjeantet/hugo-theme-docdock"
 weight = 40
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-cloud-download'></i> <label>Announcements</label>"
+name = "<i class='fa fa-cloud-download'></i><label>Announcements</label>"
 identifier = "announcements"
 url = "/announcements"
 weight = 50
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-bookmark'></i> <label>Blog</label>"
+name = "<i class='fa fa-bookmark'></i><label>Blog</label>"
 identifier = "blog"
 url = "https://cloudposse.com/blog/"
 weight = 60
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-bullhorn'></i> <label>Contact Us</label>"
+name = "<i class='fa fa-bullhorn'></i><label>Contact Us</label>"
 url = "/contact-us"
 identifier = "contact-us"
 weight = 70
