@@ -2,11 +2,13 @@ export INSTALL_PATH ?= /usr/local/bin
 export HUGO ?= hugo
 export HUGO_URL ?= http://localhost.cloudposse.com:1313/
 export HUGO_ARGS ?= --watch --buildDrafts
+export PACKAGES_VERSION ?= 0.1.7
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
 ## Install package dependencies
-deps: packages/install/hugo packages/install/htmltest
+deps: packages/install/hugo \
+	  packages/install/htmltest
 
 open:
 	open $(HUGO_URL)
@@ -19,3 +21,7 @@ run:
 build:
 	rm -rf public/
 	$(HUGO)
+
+## Validate all html is good
+validate:
+	htmltest
