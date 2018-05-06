@@ -59,15 +59,15 @@ weight = 30
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i> <label>Github repo</label>"
+name = "<i class='fa fa-github'></i> <label>Our GitHub</label>"
 identifier = "github"
-url = "https://github.com/vjeantet/hugo-theme-docdock"
+url = "https://github.com/cloudposse/
 weight = 40
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-cloud-download'></i> <label>Announcements</label>"
 identifier = "announcements"
-url = "/announcements"
+url = "/announcements/"
 weight = 50
 
 [[menu.shortcuts]]
@@ -78,6 +78,6 @@ weight = 60
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-bullhorn'></i> <label>Contact Us</label>"
-url = "/contact-us"
+url = "/documentation/contact-us/"
 identifier = "contact-us"
 weight = 70
