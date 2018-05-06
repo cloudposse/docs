@@ -5,6 +5,7 @@ excerpt: Example of a well-executed postmortem for Root Cause Analysis
 
 # Incident #1 - Rollout Caused Unplanned Outage (2017-06-29)
 
+|                  |                      |
 |:-----------------|:---------------------|
 | On-call Engineer | Erik Osterman        |
 | Start Time       | 2018-06-29 12:58 PST |

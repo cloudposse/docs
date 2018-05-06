@@ -53,9 +53,13 @@ section article.post footer {
   padding-left: 0;
 }
 
-article section.page h2, article section.page p {
+section.page > article > header > h2, section.page > article p {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+section.page > article.post > footer:empty {
+  display: none;
 }
 
 section article header.post-header {
