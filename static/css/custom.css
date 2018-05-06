@@ -153,6 +153,10 @@ aside#left-sidebar .menu .dd-item.active > div * {
   border-bottom: 0;
 }
 
+aside#left-sidebar .menu .dd-item.active > div a {
+  color: #fff;
+}
+
 aside#left-sidebar .menu .dd-item.active > div {
   color: #fff;
   background-color: #364548;
