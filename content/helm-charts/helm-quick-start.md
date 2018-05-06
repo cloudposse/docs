@@ -4,7 +4,7 @@ excerpt: ""
 ---
 Helm is a package manager for kubernetes.
 
-There are a vast number of public charts available: https://github.com/kubernetes/charts/
+There are a vast number of public charts available: <https://github.com/kubernetes/charts/>
 
 {{% dialog type="info" icon="fa-info-circle" title="Official Documentation" %}}
 Visit the [Helm Documentation Portal](https://docs.helm.sh/) for excellent documentation
@@ -12,7 +12,7 @@ Visit the [Helm Documentation Portal](https://docs.helm.sh/) for excellent docum
 
 # Values File
 
-Most packages will require some shared secrets. We recommend storing the `values.yaml` in an encrypted S3 bucket. [Geodesic Overview](doc:geodesic) makes this easy using the `s3` command to mount S3 buckets to the local filesystem.
+Most packages will require some shared secrets. We recommend storing the `values.yaml` in an encrypted S3 bucket. [Geodesic Overview](/geodesic) makes this easy using the `s3` command to mount S3 buckets to the local filesystem.
 
 Mount secrets:
 ```

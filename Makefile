@@ -6,7 +6,7 @@ export HUGO_ARGS ?= --watch --buildDrafts
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
 ## Install package dependencies
-deps: packages/install/hugo
+deps: packages/install/hugo packages/install/htmltest
 
 open:
 	open $(HUGO_URL)

@@ -7,10 +7,4 @@
 
 1. Run `make init` 
 2. Run `make run` to start local server
-
-# Glossary
-
-Update [`glossary.json`](static/js/glossary.json)
-
-
-
+3. Run `make build` to generate static site in `public/`

@@ -12,7 +12,7 @@ We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse
 Features:
 
  * Encrypted vault for IAM credentials (OSX KeyChain or file)
- * IAM Metadata server 
+ * IAM Metadata server
  * MFA Token
  * Variable Session TTLs
 

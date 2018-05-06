@@ -12,5 +12,5 @@ excerpt: Example of how to structure a document
 # See Also
 
 {{% dialog type="info" icon="fa-info-circle" title="References" %}}
-
-- Links to other sites {{% /dialog %}}
+- Links to other sites 
+{{% /dialog %}}

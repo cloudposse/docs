@@ -6,10 +6,11 @@ excerpt: ""
 # TL;DR
 
 Developers (Makers) and Managers work differently.
-* **Makers** plan in half-day blocks of time. These are developers.
-* **Managers** plan to minimize empty 15-minute slots in their calendar.
+
+- **Makers** plan in half-day blocks of time. These are developers.
+- **Managers** plan to minimize empty 15-minute slots in their calendar.
 
 Interrupts are costly for developers and therefore the business.
 
-http://www.paulgraham.com/makersschedule.html
+<http://www.paulgraham.com/makersschedule.html>
  (Paul Graham - YCombinator Founder)

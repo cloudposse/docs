@@ -11,10 +11,10 @@ Erik Osterman is a technical evangelist and insanely passionate DevOps guru with
 
 Born and raised in Southern California, Erik is a 2002 graduate of UCLA, receiving a B.S. in Applied Mathematics with a specialization in Computation.  He is an avid sailor, outdoorsman, skier, and tennis player, and currently resides in Pasadena, CA.
 
-| | |
-|------|------|
-|LinkedIn|https://linkedin.com/in/osterman|
-|Blog|https://osterman.com/|
+|          |                                  |
+| -------- | -------------------------------- |
+| LinkedIn | https://linkedin.com/in/osterman |
+| Blog     | https://osterman.com/            |
 
 
 ![](/assets/ba3ae6b-erik_osterman.png)

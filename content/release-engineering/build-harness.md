@@ -21,7 +21,7 @@ At the top of your `Makefile` add, the following...
 
 ## Makefile
 
-```text
+```shell
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 ```
 
@@ -49,8 +49,6 @@ We leverage the `build-harness` in nearly every project on our [GitHub](doc:gith
 # Makefile Targets
 
 Running `make help` will produce this helpful output of all available make targets.
-
-## #
 
 ```shell
 $ make help

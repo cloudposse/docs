@@ -25,13 +25,9 @@ On the surface, this is what a well-formatted Pull Request looks like: ![](/asse
 
 - **Title**: A "human readable" title that represents the feature! ![](/assets/2d4fce9-image.png)
 - **Description**: A long description that details **_What_** was changed, **_Why_** it was deemed necessary, and any other **_References_** that might be useful (E.g. Jira ticket)
-
 - **Comments**: let anyone provide arbitrary feedback viewable by everyone.
-
 - **Diffs**: show what changed between this feature and the current master branch
-
 - **Formal Code Review Process:** let multiple people contribute to the code review process by submitting comments on a line-by-line basis. Having these code reviews formally documented serves as an excellent teaching tool. Over time, the reviews become faster and faster as developers learn what is expected. ![](/assets/9df4fad-image_2.png)
-
 - **Merging**: Once the PR is approved, the developer can squash and merge their code into the master branch. Squashing allows the master branch to have a very clean commit history where every commit corresponds to a PR. ![](/assets/2b3e7eb-image_4.png)
 - **Clean Commit History**: means that every change to the master branch is documented and justified. No one is sneaking in changes. ![](/assets/b3dae79-image_5.png)
 - **History of Features** and when they were added ![](/assets/f9a3727-image_7.png)
@@ -45,7 +41,7 @@ Whenever you begin work on a new feature or bugfix, it's important that you crea
 
 To create a new branch and start working on it:
 
-```
+```shell
 # Checkout the master branch - you want your new branch to come from master
 git checkout master
 
@@ -58,7 +54,7 @@ git checkout -b newfeature
 
 Now, go to town hacking away. When you're ready, push the changes up to the origin.
 
-```
+```shell
 git push origin newfeature
 ```
 
