@@ -58,7 +58,7 @@ section.page > article > header > h2, section.page > article p {
   margin-bottom: 0;
 }
 
-section.page > article.post > footer:empty {
+section.page > article.post > footer:empty.footline {
   display: none;
 }
 
