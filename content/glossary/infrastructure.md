@@ -3,6 +3,6 @@ title: Infrastructure
 terms: 
 - infrastructure
 - !AWS Infrastructure
-excerpt: "Everything that supports running your software"
+excerpt: "Infrastructure is everything that supports running your software"
 ---
-Everything that supports running your software. 
+Infrastructure is everything that supports running your software. 
