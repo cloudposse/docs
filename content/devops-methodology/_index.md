@@ -12,7 +12,7 @@ This is our methodology.
 
 # Local Development Environments
 1. Create easy functional environments using [Docker Compose]({{< relref "local-dev-environments/docker-compose.md" >}})
-2. Use [Makefile](/local-dev-environments/makefile) targets for automation of routine tasks across toolchains
+2. Use [Makefile](/tools/make) targets for automation of routine tasks across toolchains
 3. Use [Dockerfile](/local-dev-environments/dockerfile) to capture application dependencies
 
 # Release Engineering
@@ -33,7 +33,7 @@ This is our methodology.
 * [Pull Request Best Practices]({{< relref "development/github/pull-requests.md" >}})
 * [Terraform Best Practices]({{< relref "terraform/best-practices.md" >}})
 * [Terraform Module Best Practices]({{< relref "terraform-modules/best-practices.md" >}})
-* [Makefile Best Practices]({{< relref "local-dev-environments/makefile/best-practices.md" >}})
+* [Makefile Best Practices]({{< relref "tools/make/best-practices.md" >}})
 * [Markdown Best Practices]({{< relref "development/markdown/best-practices.md" >}})
 * [Development Best Practices]({{< relref "development/development-best-practices.md" >}})
 * [Workstation Best Practices]({{< relref "development/workstation-best-practices.md" >}})

@@ -3,7 +3,7 @@ title: Build Harness
 excerpt: ''
 ---
 
-The `build-harness` is a collection of [Makefiles](doc:makefile) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
+The `build-harness` is a collection of [Makefiles](/local-dev-environments/makefile) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
 
 |              |                                                                                                                                        |
 |:-------------|:---------------------------------------------------------------------------------------------------------------------------------------|
