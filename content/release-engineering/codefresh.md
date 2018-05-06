@@ -11,9 +11,9 @@ In order to push/pull images from the CodeFresh docker registry, you'll need to 
 First, obtain your API key by logging into CodeFresh.
 
 To get it, login into Codefresh and navigate to User Settings in the bottom left corner.
-![](/images/7f3a5da-Screen_Shot_2018-04-16_at_4.40.57_PM.png)
+![](/assets/7f3a5da-Screen_Shot_2018-04-16_at_4.40.57_PM.png)
 Then click the "generate" button next to the "Codefresh Registry" section. Make sure you click "copy token to clipboard" from there and save it in your password manager because you cannot retrieve it again.
-![](/images/85e5ee4-codefresh.png)
+![](/assets/85e5ee4-codefresh.png)
 Your `CF_USER_NAME` is probably your GitHub username, depending on how you login to CodeFresh. The `CFCR_LOGIN_TOKEN` is the one you just generated.
 
 ```

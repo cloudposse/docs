@@ -3,7 +3,7 @@ title: Markdown Best Practices
 excerpt: ''
 ---
 
-![](/images/13f56b6-markdown.png)
+![](/assets/13f56b6-markdown.png)
 
 Using Markdown is essential for clear communication on mediums such as GitHub, Slack or just plain text. Here are some of our recommendations on when to use certain conventions.
 
@@ -45,9 +45,9 @@ Here's an example:
 * Use `value` for all values
 ````
 
-Which will render to something like this: ![](/images/8d8cdf3-image_23.png)
+Which will render to something like this: ![](/assets/8d8cdf3-image_23.png)
 
-![](/images/a2761a9-image_22.png)
+![](/assets/a2761a9-image_22.png)
 
 # Feature List Formatting
 

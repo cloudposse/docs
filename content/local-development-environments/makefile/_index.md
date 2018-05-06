@@ -7,7 +7,7 @@ excerpt: ""
 The `make` command has been around for decades. Predominantly, it was used to build complex projects in C & C++, but it's seen a resurgence in the ops world for automating routine tasks and orchestration of infrastructure-as-code. In the 12-factor pattern, these are your “admin tasks”.
 
 
-![](/images/4132caf-image_3.png)
+![](/assets/4132caf-image_3.png)
 # Understanding Makefiles
 
 Because `make` is a very simple language, there's not very much you need to learn to get started. Some things, however, might seem unintuitive when approaching it from the perspective of other languages. Namely, `make` is really a template engine that renders “stubs” and then executes those stubs in a shell. Environment variables can be considered as the arguments to those targets. 

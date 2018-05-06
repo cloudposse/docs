@@ -2,7 +2,7 @@
 title: "Docker Compose"
 excerpt: ""
 ---
-![](/images/7804914-docker-compose.png)
+![](/assets/7804914-docker-compose.png)
 
 This document compiles “lessons learned” and advice for working with Docker Compose.
 

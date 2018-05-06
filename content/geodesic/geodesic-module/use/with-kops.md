@@ -43,10 +43,10 @@ terraform plan
 terraform apply
 ```
 
-![](/images/b5e88dd-joany-staging-kops-state.png)
+![](/assets/b5e88dd-joany-staging-kops-state.png)
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
 
-![](/images/9d5dc1c-joany-staging-kops-state-ssh-keys.png)
+![](/assets/9d5dc1c-joany-staging-kops-state-ssh-keys.png)
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `CLUSTER_NAME` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
 # Build Manifest
@@ -93,7 +93,7 @@ You will find the rendered `kops` manifest file `/conf/kops/manifest.yaml`.
 # Launch Cluster
 
 Run `kops create -f manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
-![](/images/b251e2e-kops-create.png)
+![](/assets/b251e2e-kops-create.png)
 Run the following to add the SSH public key to the cluster.
 ```
 kops create secret sshpublickey admin -i /secrets/tf/ssh/joany-staging-kops-us-west-2.pub \
@@ -105,7 +105,7 @@ Run the following to provision the AWS resources for the cluster.
 kops update cluster --name us-west-2.staging.joany.net --yes
 ```
 
-![](/images/944178e-kops-update-cluster.png)
+![](/assets/944178e-kops-update-cluster.png)
 
 All done. The `kops` cluster is now up and running.
 

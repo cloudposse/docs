@@ -73,8 +73,8 @@ The site experienced the classic cascading failure that affected all components 
 
 ## Unexplained problems
 
-- During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![](/images/e82e21a-image_10.png)
-- During the rollout, TablePress options got cleared ![](/images/4204bed-image_11.png)
+- During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![](/assets/e82e21a-image_10.png)
+- During the rollout, TablePress options got cleared ![](/assets/4204bed-image_11.png)
 
   ## Remediations
 
@@ -117,17 +117,17 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 ### Pingom
 
-![](/images/1f27db8-image_12.png)
+![](/assets/1f27db8-image_12.png)
 
-![](/images/89c0050-image_13.png)
+![](/assets/89c0050-image_13.png)
 
-![](/images/9d3f441-image_14.png)
+![](/assets/9d3f441-image_14.png)
 
 ### Elastic Beanstalk
 
-ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. ![](/images/af54926-image_15.png)
+ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. ![](/assets/af54926-image_15.png)
 
-![](/images/dc4dbd3-image_16.png)
+![](/assets/dc4dbd3-image_16.png)
 
 ### RDS
 
@@ -135,23 +135,23 @@ There were no deadlocks. There was no increase in IOPS (r/w)
 
 #### CPU Utilization spiked.
 
-![](/images/2e1d7be-image_17.png)
+![](/assets/2e1d7be-image_17.png)
 
 #### Connections peaked and maxed out.
 
-![](/images/8f2e7d3-image_18.png)
+![](/assets/8f2e7d3-image_18.png)
 
 #### Selects went through the roof.
 
-![](/images/43dfb04-image_19.png)
+![](/assets/43dfb04-image_19.png)
 
 #### CPU credits were not exhausted, so we had excess capacity
 
-![](/images/7bd6416-image_20.png)
+![](/assets/7bd6416-image_20.png)
 
 #### Commits / Writes went through the roof
 
-![](/images/b7a608c-image_21.png)
+![](/assets/b7a608c-image_21.png)
 
 ## Related Post Mortems
 

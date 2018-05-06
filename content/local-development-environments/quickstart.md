@@ -13,7 +13,7 @@ The "Developer Tools" package is needed for tools like `make` and `git` used thr
 xcode-select --install
 ```
 
-![](/images/f111fb9-image_4.png)
+![](/assets/f111fb9-image_4.png)
 
 ## Install Homebrew
 
@@ -31,9 +31,9 @@ Docker for Mac is a Docker Community Edition (CE) version which is completely FR
 
 Visit the [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) site or just go ahead and directly download the [`Docker.dmg`](https://download.docker.com/mac/stable/Docker.dmg)
 
-- <https://download.docker.com/mac/stable/Docker.dmg> ![](/images/840d66e-docker-app-drag.png) After installing, you'll now see a new docker icon in your task bar.
+- <https://download.docker.com/mac/stable/Docker.dmg> ![](/assets/840d66e-docker-app-drag.png) After installing, you'll now see a new docker icon in your task bar.
 
-![](/images/dbe7dad-whale-in-menu-bar.png) **IMPORTANT:** Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on a 2010 or newer Mac, with Intel's hardware support for MMU virtualization.
+![](/assets/dbe7dad-whale-in-menu-bar.png) **IMPORTANT:** Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on a 2010 or newer Mac, with Intel's hardware support for MMU virtualization.
 
 ## Configure AWS Vault
 

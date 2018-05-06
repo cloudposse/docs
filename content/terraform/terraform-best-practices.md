@@ -6,7 +6,7 @@ tags:
   - "Best Practices"
   - "Terraform"
 ---
-![](/images/08bcd99-terraform.png)
+![](/assets/08bcd99-terraform.png)
 
 # Use Git Workflow
 

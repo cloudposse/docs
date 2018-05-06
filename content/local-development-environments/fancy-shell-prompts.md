@@ -8,7 +8,7 @@ Fancy shell prompts are not just pretty, they're also incredibly practical. With
 
 
 This is how to get a fancy shell prompt like the one below for the `bash` shell.
-![](/images/500c4b8-Screen_Shot_2018-04-02_at_7.54.13_PM.png)
+![](/assets/500c4b8-Screen_Shot_2018-04-02_at_7.54.13_PM.png)
 
 ## Install powerline
 
