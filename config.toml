@@ -33,6 +33,12 @@ highlightClientSide = false # set true to use highlight.pack.js instead of the d
 menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
 enableGitInfo = true
 
+[outputFormats.glossary]
+baseName = "glossary"
+isPlainText = true
+mediaType = "application/json"
+notAlternative = true
+
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
 
