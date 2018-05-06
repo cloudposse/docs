@@ -2,6 +2,10 @@ body {
   font-family: 'Proxima Nova','Open Sans',sans-serif;
 }
 
+body.page-home {
+  display: block;
+}
+
 body > header {
   background-color: #364548;
   color: rgba(255,255,255,0.8);
@@ -544,6 +548,11 @@ footer .footline .tags {
 footer .footline .tags, .footline .copyright {
   display: inline-block;
   float: left;
+}
+
+footer .footline .date {
+  display: inline-block;
+  margin-left: 10px;
 }
 
 .tags .label-default[href]:hover  {
