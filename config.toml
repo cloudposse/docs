@@ -9,6 +9,7 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
 enableMissingTranslationPlaceholders = false
 
+
 enableEmoji = true
 # [Languages]
 # [Languages.en]
@@ -32,6 +33,7 @@ disableNavChevron = false # set true to hide next/prev chevron, default is false
 highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
 menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
 enableGitInfo = true
+editURL = "https://github.com/cloudposse/docs/edit/master"
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
