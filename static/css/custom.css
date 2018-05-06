@@ -25,9 +25,45 @@ body > header nav.shortcuts li a {
   height: 2rem;
 }
 
+a, section a {
+    color: #364548;
+}
+
+a:hover {
+    color: #0a0d0e;
+}
+
+
 /* fix for empty pages */
 section header {
   display: none;
+}
+
+section article.post {
+  display: inherit;
+}
+
+article section.page h2, article section.page p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+section article header.post-header {
+  display: inherit;
+  position: relative;
+  background-color: transparent;
+  border-bottom: 0;
+  min-width: 100%;
+  padding-left: 0;
+}
+
+.post-header h2 {
+  background-color: transparent;
+  font-size: 1.2rem;
+}
+
+section article header:after {
+  background: transparent;
 }
 
 
@@ -528,20 +564,20 @@ thead {
   border-bottom: 2px solid #eee;
 }
 
-footer .footline {
+body > footer .footline {
   display: block;
   padding-top: 0.2rem;
   padding-left: 5rem;
 }
 
-footer .footline .tags {
+body > footer .footline .tags {
   display: inline-block;
   float: left;
   font-size: 12px;
   margin-right: 10px;
 }
 
-footer .footline .tags, .footline .copyright {
+body > footer .footline .tags, body > .footline .copyright {
   display: inline-block;
   float: left;
 }

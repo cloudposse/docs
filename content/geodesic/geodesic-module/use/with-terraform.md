@@ -343,12 +343,15 @@ terraform plan
 terraform apply
 ```
 
-##### :information_source: Example
-> If terraform module name is `kube2iam`.
- >`> cd /conf/kube2iam`
- >`> init-terraform`
- >`> terraform plan`
- >`> terraform apply`
+{{% dialog type="code-block" icon="fa-code" title="Example" %}}
+If terraform module name is `kube2iam`.
+```bash
+cd /conf/kube2iam
+init-terraform
+terraform plan
+terraform apply
+```
+{{% /dialog %}}
 
 ## Example: Provision CloudTrail with Terraform
 

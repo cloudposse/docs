@@ -6,10 +6,9 @@ Helm is a package manager for kubernetes.
 
 There are a vast number of public charts available: https://github.com/kubernetes/charts/
 
-
-##### :information_source: Official Documentation
-> Visit the [Helm Documentation Portal](https://docs.helm.sh/) for excellent documentation
-
+{{% dialog type="info" icon="fa-info-circle" title="Official Documentation" %}}
+Visit the [Helm Documentation Portal](https://docs.helm.sh/) for excellent documentation
+{{% /dialog %}}
 
 # Values File
 
