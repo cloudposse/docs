@@ -16,6 +16,7 @@ Available targets:
 
   build                               Generate all static content (outputs to public/)
   deps                                Install package dependencies
+  open                                Open localhost in browser
   run                                 Start the hugo server for live editing
   validate                            Validate all html is good
 ```
@@ -95,7 +96,6 @@ or [hire us][hire] to help build your next cloud-platform.
   [hire]: http://cloudposse.com/contact/
 
 ### Contributors
-
 
 | [![Erik Osterman][erik_img]][erik_web]<br/>[Erik Osterman][erik_web] | [![Igor Rodionov][igor_img]][igor_web]<br/>[Igor Rodionov][igor_web] | [![Andriy Knysh][andriy_img]][andriy_web]<br/>[Andriy Knysh][andriy_web] |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------ |

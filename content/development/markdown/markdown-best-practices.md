@@ -3,7 +3,7 @@ title: Markdown Best Practices
 excerpt: ''
 ---
 
-![](/assets/13f56b6-markdown.png)
+![Markdown Logo](/assets/13f56b6-markdown.png)
 
 Using Markdown is essential for clear communication on mediums such as GitHub, Slack or just plain text. Here are some of our recommendations on when to use certain conventions.
 
@@ -18,9 +18,8 @@ Use code blocks for anything more than 1 line. Use `code` for inline code, filen
 ````markdown
 ```
 # This is a code block
-````
-
-````
+```
+`````
 
 
 ## Table of Options
@@ -43,11 +42,11 @@ Here's an example:
 * `:---------` should be used for all other columns
 * Use `` for empty defaults
 * Use `value` for all values
-````
+
 
 Which will render to something like this: ![](/assets/8d8cdf3-image_23.png)
 
-![](/assets/a2761a9-image_22.png)
+![Example Markdown Table](/assets/a2761a9-image_22.png)
 
 # Feature List Formatting
 
@@ -56,8 +55,8 @@ Use this format describe the features & benefits.
 ## Feature List Example
 
 ```markdown
-1\. **Feature 1** - Explanation of benefits
-2\. **Feature 2** - Explanation of benefits
+1. **Feature 1** - Explanation of benefits
+2. **Feature 2** - Explanation of benefits
 ```
 
 # Use Block Quotes

@@ -10,12 +10,13 @@ export PACKAGES_VERSION ?= 0.1.7
 deps: packages/install/hugo \
 	  packages/install/htmltest
 
+## Open localhost in browser
 open:
 	open $(HUGO_URL)
 
 ## Start the hugo server for live editing
 run:
-	@$(HUGO) server $(HUGO_ARGS)
+	$(HUGO) server $(HUGO_ARGS)
 
 ## Generate all static content (outputs to public/)
 build:

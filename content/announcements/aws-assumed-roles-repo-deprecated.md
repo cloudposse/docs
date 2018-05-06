@@ -9,7 +9,7 @@ tags:
 ---
 We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse/aws-assumed-role) repo in favor of using [`aws-vault`](https://github.com/99designs/aws-vault) by 99 Designs. This offers an outstanding, ultra-secure experience for working with IAM assumed roles for local development.
 
-Features:
+## AWS Vault Features:
 
  * Encrypted vault for IAM credentials (OSX KeyChain or file)
  * IAM Metadata server

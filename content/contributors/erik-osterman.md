@@ -15,6 +15,7 @@ Born and raised in Southern California, Erik is a 2002 graduate of UCLA, receivi
 | -------- | -------------------------------- |
 | LinkedIn | https://linkedin.com/in/osterman |
 | Blog     | https://osterman.com/            |
+| Calendar | https://calendly.com/cloudposse  |
 
 
-![](/assets/ba3ae6b-erik_osterman.png)
+![Erik Osterman](/assets/ba3ae6b-erik_osterman.png)
