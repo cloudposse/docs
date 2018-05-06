@@ -17,4 +17,5 @@ run:
 
 ## Generate all static content (outputs to public/)
 build:
-	@$(HUGO)
+	rm -rf public/
+	$(HUGO)
