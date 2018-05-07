@@ -3,7 +3,7 @@ title: "Root Module"
 excerpt: ""
 weight: 1
 ---
-* Clone reference architecture repo for Geodesic Root Module. 
+* Clone reference architecture repo for Geodesic Root Module.
 * Update the follow settings: XYZ
 * Configure Terraform Remote State
 * Establish DNS Zones

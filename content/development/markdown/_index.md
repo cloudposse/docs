@@ -3,68 +3,72 @@ title: Markdown
 excerpt: ''
 ---
 
-![](/images/5a735a9-markdown.png) Markdown is a simple way to format plain text that looks great on any device without using any HTML or CSS. It doesn't permit do anything fancy like changing fonts, color, or typeface -- just the bare essentials by using keyboard symbols you already know.
+![Markdown Logo](/assets/5a735a9-markdown.png) Markdown is a simple way to format plain text that looks great on any device without using any HTML or CSS. It doesn't permit do anything fancy like changing fonts, color, or typeface -- just the bare essentials by using keyboard symbols you already know.
 
 # Standard Formatting
 
-Preferred Syntax | Alternative Syntax | Example
----------------- | ------------------ | -------
-                 | ```_Italic_
+| Preferred Syntax              | Alternative Syntax       | Example                       |
+|:------------------------------|:-------------------------|:------------------------------|
+| `*Italic*`                    | `_Italic_`               | *Italic*                      |
+| `**Bold**`                    | `__Bold__`               | **Bold**                      |
+| `# Heading 1`                 | `Heading 1<br>=========` | # Heading 1                   |
+| `## Heading 2`                | `Heading 1<br>---------` | ## Heading 2                  |
+| `~~Strikeout~~`               | `~Strikeout~`            | `~~Strikeout~~`               |
+| `Inline code` with back-ticks |                          | `Inline code` with back-ticks |
+| `> Blockquote`                |                          | > Blockquote                  |
+| `---`                         | `***`                    | ---                           |
 
-````|```_italic_
-```|*Italic*|
-|Horizontal Rule
-````
 
---------------------------------------------------------------------------------
+# Bulleted Lists
 
-`|Horizontal Rule`
-
---------------------------------------------------------------------------------
-
-``` | Horizontal Rule
---- | ---------------
-    | ```**Bold**
-``` | ```**Bold**
-``` | **Bold**        |
-    | ```# Heading 1
-``` | ```Heading 1
-
-========= `|# Heading 1| |`## Heading 2
-
-## `|`Heading 2
-
-`|## Heading 2| |`~~Strikeout~~
-
-`````|```~strikeout~
-```|~~Strikeout~~|
-|````Inline code` with back-ticks
-```|`Inline code` with back-ticks|
-|```> Blockquote
-```|> Blockquote|
-|```* Item 1
+## Preferred Syntax
+```
+* Item 1
 * Item 2
 * Item 3
-```|```- Item 1
+```
+
+## Alternative Syntax
+```
+- Item 1
 - Item 2
 - Item 3
-```|* Item 1* Item 2
-* Item 3|
-|```1\. Item 1
-2\. Item 2
-3\. Item 3
-```|```1) Item 1
+```
+
+## Example
+
+* Item 1
+* Item 2
+* Item 3
+
+# Numbered lists
+
+## Preferred Syntax
+```
+1. Item 1
+2. Item 2
+3. Item 3
+```
+
+## Alternative Syntax
+```
+1) Item 1
 2) Item 2
 3) Item 3
-```|1\. Item 11\. Item 2
-1\. Item 3|
+```
+
+## Example
+
+1. Item 1
+2. Item 2
+3. Item 3
 
 # Simple Links
 
 #####
 ```markdown
 [Link Example](https://cloudposse.com)
-`````
+```
 
 [Link Example](https://cloudposse.com)
 
@@ -93,7 +97,7 @@ Preferred Syntax | Alternative Syntax | Example
 ## Standard Image
 
 ```markdown
-![Image](https://files.readme.io/40ee68a-cloudposse-64x64.png)
+![Image](/assets/40ee68a-cloudposse-64x64.png)
 ```
 
 ![Image][1]
@@ -107,7 +111,7 @@ Preferred Syntax | Alternative Syntax | Example
 ```markdown
 ![Image][1]
 ...other content here...
-[1]: https://files.readme.io/40ee68a-cloudposse-64x64.png
+[1]: /assets/40ee68a-cloudposse-64x64.png
 ```
 
 ![Image][1] ...other content here...
@@ -116,21 +120,19 @@ Preferred Syntax | Alternative Syntax | Example
 
 # Code Block
 
-## Code Block
+## Code Block Examples
 
-````markdown
+~~~~
 ```
 $i = 0;
 $i++;
-````
-
-````
 ```
+~~~~
 
-$i = 0; $i++;
-
-`
-````
+```
+$i = 0;
+$i++;
+```
 
 # Tables
 
@@ -140,24 +142,22 @@ $i = 0; $i++;
 - Columns do not need to be neatly formatted.
 - Supports inline Markdown.
 
-## #
+## Table Examples
 
-```text
-
-
-| Animals       | Fruits        | Coins    |
-| ------------- |:-------------:| --------:|
-| Cats          | Apples        | Nickle   |
-| Dogs          | Oranges       | Quarter  |
-| Zebras        | Oranges       | Dime     |
+```markdown
+| Animals | Fruits  |   Coins |
+|:--------|:-------:|--------:|
+| Cats    | Apples  |  Nickle |
+| Dogs    | Oranges | Quarter |
+| Zebras  | Oranges |    Dime |
 `
 ```
 
-Animals | Fruits  |   Coins
-------- | :-----: | ------:
-Cats    | Apples  |  Nickle
-Dogs    | Oranges | Quarter
-Zebras  | Oranges |    Dime
+| Animals | Fruits  |   Coins |
+|:--------|:-------:|--------:|
+| Cats    | Apples  |  Nickle |
+| Dogs    | Oranges | Quarter |
+| Zebras  | Oranges |    Dime |
 
 # References
 
@@ -165,5 +165,5 @@ Zebras  | Oranges |    Dime
 - <https://help.github.com/articles/basic-writing-and-formatting-syntax/>
 - <https://daringfireball.net/projects/markdown/>
 
-[1]: https://files.readme.io/40ee68a-cloudposse-64x64.png
+[1]: /assets/40ee68a-cloudposse-64x64.png
 [2]: https://google.com

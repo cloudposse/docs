@@ -9,6 +9,7 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
 enableMissingTranslationPlaceholders = false
 
+
 enableEmoji = true
 # [Languages]
 # [Languages.en]
@@ -33,6 +34,13 @@ disableNavChevron = false # set true to hide next/prev chevron, default is false
 highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
 menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
 enableGitInfo = true
+editURL = "https://github.com/cloudposse/docs/edit/master"
+
+[outputFormats.glossary]
+baseName = "glossary"
+isPlainText = true
+mediaType = "application/json"
+notAlternative = true
 
 [outputFormats.Algolia]
 baseName = "algolia"
@@ -70,15 +78,15 @@ weight = 30
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i><label>Github repo</label>"
+name = "<i class='fa fa-github'></i> <label>Our GitHub</label>"
 identifier = "github"
-url = "https://github.com/vjeantet/hugo-theme-docdock"
+url = "https://github.com/cloudposse/"
 weight = 40
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-cloud-download'></i><label>Announcements</label>"
 identifier = "announcements"
-url = "/announcements"
+url = "/announcements/"
 weight = 50
 
 [[menu.shortcuts]]
@@ -88,7 +96,7 @@ url = "https://cloudposse.com/blog/"
 weight = 60
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-bullhorn'></i><label>Contact Us</label>"
-url = "/contact-us"
+name = "<i class='fa fa-bullhorn'></i> <label>Contact Us</label>"
+url = "/documentation/contact-us/"
 identifier = "contact-us"
 weight = 70

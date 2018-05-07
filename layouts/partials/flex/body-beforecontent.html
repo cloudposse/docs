@@ -113,7 +113,7 @@
     {{- end}}
       <h1 class="title">{{.Title}}</h1>
       <div class="github-link">
-        <a href="{{ .Site.Params.editURL }}{{ replace .File.Dir "\\" "/" }}{{ .File.LogicalName }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
+        <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
       </div>
       <div class="excerpt">
         {{ if .Params.excerpt }}

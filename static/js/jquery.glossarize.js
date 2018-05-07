@@ -6,45 +6,31 @@
  * 1. Fixed IE8 bug where whitespace get removed - Had to change `abbr` tag to a block element `div`
  */
 
-// Expose plugin as an AMD module if AMD loader is present:
-(function (factory) {
-    "use strict";
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    } else if (typeof exports === 'object' && typeof require === 'function') {
-        // Browserify
-        factory(require('jquery'));
-    } else {
-        // Browser globals
-        factory(jQuery);
-    }
-}(function ($) {
-    'use strict';
+;(function($){
+
   /**
    * Defaults
    */
 
   var pluginName = 'glossarizer',
     defaults = {
-      sourceURL: '', /* URL of the JSON file with format {"term": "", "description": ""} */
-      replaceTag: 'abbr', /* Matching words will be wrapped with abbr tags by default */
-      lookupTagName: 'p, ul, a, div', /* Lookup in either paragraphs or lists. Do not replace in headings */
-      callback: null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
-      replaceOnce: false, /* Replace only once in a TextNode */
-      replaceClass: 'glossarizer_replaced',
-      caseSensitive: false,
-      exactMatch: false
-  }
+      sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */
+      replaceTag    : 'abbr', /* Matching words will be wrapped with abbr tags by default */
+      lookupTagName : 'p, ul, a, div', /* Lookup in either paragraphs or lists. Do not replace in headings */
+      callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
+      replaceOnce   : false /* Replace only once in a TextNode */,
+      replaceClass: 'glossarizer_replaced'
+    }
 
   /**
    * Constructor
    */
 
-  function Glossarizer (el, options) {
+  function Glossarizer(el, options){
+
     var base = this
 
-    base.el = el
+    base.el = el;
 
     /* Element */
     base.$el = $(el)
@@ -55,102 +41,153 @@
 
     /* Terms */
 
-    base.terms = []
+    base.terms = [];
 
     /* Excludes array */
 
-    base.excludes = []
+    base.excludes = [];
 
     /* Replaced words array */
 
-    base.replaced = []
+    base.replaced = [];
+
 
     /* Regex Tags */
 
-    base.regexOption = (base.options.caseSensitive ? '' : 'i') + (base.options.replaceOnce ? '' : 'g')
+    base.regexOption = base.options.replaceOnce? 'i': 'ig';
+
 
     /* Fetch glossary JSON */
 
-    $.getJSON(this.options.sourceURL).then(function (data) {
-      base.glossary = data
+    $.getJSON(this.options.sourceURL).then(function(data){
 
-      if (!base.glossary.length || base.glossary.length == 0) return
+      base.glossary = data;
+
+      if(!base.glossary.length || base.glossary.length == 0) return;
 
       /**
        * Get all terms
        */
 
-      for (var i = 0; i < base.glossary.length; i++) {
-        var terms = base.glossary[i].term.split(',')
+      for(var i =0; i< base.glossary.length; i++){
 
-        for (var j = 0; j < terms.length; j++) {
+        var terms = base.glossary[i].term.split(',');
+
+        for(var j = 0; j < terms.length; j++){
+
           /* Trim */
 
           var trimmed = terms[j].replace(/^\s+|\s+$/g, ''),
-            isExclusion = trimmed.indexOf('!')
+            isExclusion = trimmed.indexOf('!');
 
-          if (isExclusion == -1 || isExclusion != 0) {
+          if(isExclusion == -1 || isExclusion != 0){
+
             /* Glossary terms array */
 
             base.terms.push(trimmed)
-          } else {
+
+          }else{
+
             /* Excluded terms array */
 
-            base.excludes.push(trimmed.substr(1))
+            base.excludes.push(trimmed.substr(1));
           }
         }
+
+
       }
+      //Set all the terms to lower case
+      for(var word in base.glossary)
+        base.glossary[word].term = base.glossary[word].term.toLowerCase();
+
+      // Sort Terms -- move longer terms to the front
+      base.terms.sort(function(a, b){
+        return b.length - a.length;
+      });
 
       /**
        * Wrap terms
        */
+      console.log(base);
+      base.wrapTerms();
 
-      base.wrapTerms()
+
     })
+
+
+
   }
 
   /**
    * Prototypes
    */
   Glossarizer.prototype = {
-    getDescription: function (term) {
-      var regex = new RegExp('(\,|\s*)' + this.clean(term) + '\\s*|\\,$', 'i')
 
-      /**
-       * Matches
-       * 1. Starts with \s* (zero or more spaces)
-       * 2. Ends with zero or more spaces
-       * 3. Ends with comma
-       */
+    getDescription: function(term){
 
-      for (var i = 0; i < this.glossary.length; i++) {
-        if (this.options.exactMatch) {
-          if (this.glossary[i].term == this.clean(term)) {
-            return this.glossary[i].description.replace(/\"/gi, '&quot;')
-          }
-        } else {
-          if (this.glossary[i].term.match(regex)) {
-            return this.glossary[i].description.replace(/\"/gi, '&quot;')
-          }
+      // var regex = new RegExp('(\,|\s*)'+this.clean(term)+'\\s*|\\,$', 'i');
+      //
+      // /**
+      //  * Matches
+      //  * 1. Starts with \s* (zero or more spaces)
+      //  * 2. Ends with zero or more spaces
+      //  * 3. Ends with comma
+      //  */
+      //
+      // for(var i =0; i< this.glossary.length; i++){
+      //
+      //  if(this.glossary[i].term.match(regex)){
+      //    return this.glossary[i].description.replace(/\"/gi, '&quot;')
+      //  }
+      // }
+
+      // My code for finding the right definition
+        term = term.toLowerCase();
+        //Loop through Glossary Obj
+        for (var i = 0; i < this.glossary.length; i++) {
+            //If the there's a term with alias
+            if(this.glossary[i].term.indexOf(',') > -1){
+                //Break that term into an array
+                var temp = this.glossary[i].term.split(',');
+                //Trim and find the def
+                for(var j = 0; j < temp.length; j++){
+                  temp[j] = temp[j].trim().toLowerCase();
+                  if(temp[j] == this.clean(term)){
+
+                    return this.glossary[i].description.replace(/\"/gi, '&quot;')
+                  }
+                }
+            }
+            //Else find term
+            else{
+
+              if(this.glossary[i].term == term){
+                  return this.glossary[i].description.replace(/\"/gi, '&quot;')
+              }
+            }
+
         }
-      }
+
     },
-    clean: function (text) {
+    clean: function(text){
+
       var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g')
 
       return text.replace(reEscape, '\\$1')
+
     },
 
     /**
      * Wraps the matched terms by calling traverser
      */
-    wrapTerms: function () {
+    wrapTerms: function(){
+
       this.cleanedTerms = this.clean(this.terms.join('|'))
       this.excludedTerms = this.clean(this.excludes.join('|'))
 
       var nodes = this.el.querySelectorAll(this.options.lookupTagName)
 
-      for (var i = 0; i < nodes.length; i++) {
+      for(var i =0; i < nodes.length; i++){
         this.traverser(nodes[i])
       }
 
@@ -158,77 +195,101 @@
        * Callback
        */
 
-      if (this.options.callback) this.options.callback.call(this.$el)
+      if(this.options.callback) this.options.callback.call(this.$el)
+
     },
 
     /**
      * Traverses through nodes to find the matching terms in TEXTNODES
      */
 
-    traverser: function (node) {
+    traverser: function(node){
+
       var next,
-        base = this
+        base = this;
 
       if (node.nodeType === 1) {
+
         /*
          Element Node
          */
 
         if (node = node.firstChild) {
-          do {
-            // Recursively call traverseChildNodes
-            // on each child node
-            next = node.nextSibling
+            do {
+              // Recursively call traverseChildNodes
+              // on each child node
+              next = node.nextSibling
 
-            /**
-             * Check if the node is not glossarized
-             */
+              /**
+               * Check if the node is not glossarized
+               */
 
-            if (node.className != this.options.replaceClass) {
-              this.traverser(node)
-            }
-          } while (node = next)
+              if( node.className != this.options.replaceClass)
+              {
+
+                this.traverser(node)
+
+              }
+
+            } while(node = next)
         }
+
       } else if (node.nodeType === 3) {
+
         /*
          Text Node
          */
 
         var temp = document.createElement('div'),
-          data = node.data
+          data = node.data;
 
-        var re = new RegExp('(?:^|\\b)(' + this.cleanedTerms + ')(?!\\w)', base.regexOption),
-          reEx = new RegExp('(?:^|\\b)(' + this.excludedTerms + ')(?!\\w)', base.regexOption)
+        var re = new RegExp('(?:^|\\b)('+this.cleanedTerms+ ')(?!\\w)', base.regexOption),
+          reEx = new RegExp('(?:^|\\b)('+this.excludedTerms+ ')(?!\\w)', base.regexOption);
 
-        if (re.test(data)) {
-          var excl = reEx.exec(data)
 
-          data = data.replace(re, function (match, item , offset, string) {
-            if (base.options.replaceOnce && inArrayIn(match, base.replaced) >= 0) {
-              return match
+        if(re.test(data)){
+
+          var excl = reEx.exec(data);
+
+          data = data.replace(re,function(match, item , offset, string){
+
+            if(base.options.replaceOnce && inArrayIn(match, base.replaced) >= 0){
+
+              return match;
             }
 
-            base.replaced.push(match)
+            base.replaced.push(match);
 
-            var ir = new RegExp('(?:^|\\b)' + base.clean(match) + '(?!\\w)'),
+            var ir = new RegExp('(?:^|\\b)'+base.clean(match)+'(?!\\w)'),
               result = ir.exec(data)
 
-            if (result) {
-              if (excl && base.excludes.length) {
+
+            if(result){
+
+              if(excl && base.excludes.length){
+
                 var id = offset,
                   exid = excl.index,
-                  exl = excl.index + excl[0].length
+                  exl = excl.index + excl[0].length;
 
-                if (exid <= id && id <= exl) {
-                  return match
-                } else {
-                  return '<' + base.options.replaceTag + ' class="' + base.options.replaceClass + '" title="' + base.getDescription(match) + '">' + match + '</' + base.options.replaceTag + '>'
+                if(exid <= id && id <= exl){
+
+                  return match;
+
+                }else{
+
+                  return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
+
                 }
-              } else {
-                return '<' + base.options.replaceTag + ' class="' + base.options.replaceClass + '" title="' + base.getDescription(match) + '">' + match + '</' + base.options.replaceTag + '>'
+              }
+              else{
+
+                return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
               }
             }
-          })
+
+
+          });
 
           /**
            * Only replace when a match is found
@@ -239,34 +300,47 @@
 
           $(temp).html(data)
 
+
+
           while (temp.firstChild) {
             node.parentNode.insertBefore(temp.firstChild, node)
           }
 
           node.parentNode.removeChild(node)
+
         }
+
       }
+
     },
 
-  }
+  };
+
 
   /**
    * Public Methods
    */
 
   var methods = {
-    destroy: function () {
-      this.$el.removeData('plugin_' + pluginName)
+
+    destroy: function(){
+
+      this.$el.removeData('plugin_' + pluginName);
 
       /* Remove abbr tag */
-      this.$el.find('.' + this.options.replaceClass).each(function () {
+      this.$el.find('.' + this.options.replaceClass).each(function(){
+
         var $this = $(this),
-          text = $this.text()
+          text = $this.text();
+
 
         $this.replaceWith(text)
+
       })
+
     }
   }
+
 
   /**
    * Extend Prototype
@@ -278,48 +352,60 @@
    * Plugin
    * @param  {[type]} options
    */
-  $.fn[pluginName] = function (options) {
-    return this.each(function () {
+  $.fn[pluginName] =function(options){
+
+    return this.each(function(){
+
+
       var $this = $(this),
-        glossarizer = $this.data('plugin_' + pluginName)
+        glossarizer = $this.data('plugin_' + pluginName);
 
       /*
       Check if its a method
        */
 
-      if (typeof options == 'string' && glossarizer && methods.hasOwnProperty(options)) {
+      if(typeof options == "string" && glossarizer  && methods.hasOwnProperty(options) ){
+
         glossarizer[options].apply(glossarizer)
-      } else {
+
+      }else{
+
         /* Destroy if exists */
 
-        if (glossarizer) glossarizer['destroy'].apply(glossarizer)
+        if(glossarizer) glossarizer['destroy'].apply(glossarizer);
+
 
         /* Initialize */
 
         $.data(this, 'plugin_' + pluginName, new Glossarizer(this, options))
       }
-    })
+    });
+
   }
+
 
   /**
    * In Array
    */
 
-  function inArrayIn (elem, arr, i) {
-    if (typeof elem !== 'string') {
-      return $.inArray.apply(this, arguments)
+  function inArrayIn(elem, arr, i){
+
+        if (typeof elem !== 'string'){
+      return $.inArray.apply(this, arguments);
+        }
+
+        if (arr){
+            var len = arr.length;
+                i = i ? (i < 0 ? Math.max(0, len + i) : i) : 0;
+            elem = elem.toLowerCase();
+            for (; i < len; i++){
+                if (i in arr && arr[i].toLowerCase() == elem){
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
-    if (arr) {
-      var len = arr.length
-      i = i ? (i < 0 ? Math.max(0, len + i) : i) : 0
-      elem = elem.toLowerCase()
-      for (; i < len; i++) {
-        if (i in arr && arr[i].toLowerCase() == elem) {
-          return i
-        }
-      }
-    }
-    return -1
-  }
-}));
+
+})(jQuery);

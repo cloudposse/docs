@@ -59,7 +59,7 @@ source_profile=cloudposse
 
 > Do not define the source profile in `~/.aws/credentials`; we're going to use `aws-vault add` for that.
 
-We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](doc:geodesic) sessions.
+We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](/geodesic) sessions.
 
 Add the following to your `~/.bashrc`:
 
