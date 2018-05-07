@@ -24,6 +24,10 @@ body > header a {
   color: rgba(255,255,255,0.8);
 }
 
+body > header a:hover {
+  text-decoration: none;
+}
+
 body > header:after { 
   display: none;
 }
@@ -34,11 +38,16 @@ body > header nav.shortcuts li a {
 }
 
 a, section a {
-    color: #364548;
+  color: #364548;
 }
 
 a:hover {
-    color: #0a0d0e;
+  color: #0a0d0e;
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: 600;
 }
 
 
@@ -437,6 +446,7 @@ div.landing-description {
 }
 
 .breadcrumbs a:hover {
+  text-decoration: none;
   background-color: #fff;
   -webkit-box-shadow: 0 0 0 1px #c9d4d9, 0 2px 2px rgba(0,0,0,0.1);
   box-shadow: 0 0 0 1px #c9d4d9, 0 2px 2px rgba(0,0,0,0.1);

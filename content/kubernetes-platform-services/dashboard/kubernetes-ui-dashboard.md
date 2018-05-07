@@ -15,4 +15,4 @@ Explain what it does
 Give `helmfile` stub / example
 
 # Related
-* [Cluster Portal](doc:cluster-portal) for exposing this publicly
+* [Cluster Portal]({{< relref "kubernetes-platform-services/dashboard/cluster-portal.md" >}}) for exposing this publicly

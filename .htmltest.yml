@@ -1,0 +1,40 @@
+# Directory to scan for HTML files.
+DirectoryPath: "public/"
+
+# The file to look for when linking to a directory.
+DirectoryIndex: "index.html"
+
+# Extension of your HTML documents, includes the dot. If FilePath is set we use the extension from that.
+FileExtension: ".html"
+
+# Enables checking the document type declaration.
+CheckDoctype: true
+
+# Enables checking <a… tags.
+CheckAnchors: true
+
+# Enables checking <link… tags.
+CheckLinks: true
+
+# Enables checking <img… tags
+CheckImages: true
+
+# Enables checking <script… tags.
+CheckScripts: true
+
+# Fails when encountering an http:// link. Useful to prevent mixed content errors when serving over HTTPS.
+EnforceHTTPS: false
+
+# Turns off image alt attribute checking.
+IgnoreAltMissing: true
+
+# Array of regexs of URLs to ignore.
+IgnoreURLs:
+- "linkedin.com"
+
+# IgnoreDirs
+IgnoreDirs:
+- "revealjs"
+
+# Cache validity period, accepts go.time duration strings (…"m", "h").
+CacheExpires: "48h"

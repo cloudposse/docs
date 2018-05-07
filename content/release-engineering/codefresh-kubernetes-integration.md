@@ -14,7 +14,7 @@ Click "Add Provider" and select the relevant cloud platform.
 Then click "Add Cluster". For `kops` based clusters, select the "Custom Providers" option.
 
 ![](/assets/60b49ab-Screen_Shot_2018-04-16_at_5.19.13_PM.png)
-Next, you'll be presented a form. In [Geodesic Overview](doc:geodesic) we provide a script to make this integration a little bit easier. By running the [codefresh-settings](
+Next, you'll be presented a form. In [Geodesic Overview](/geodesic) we provide a script to make this integration a little bit easier. By running the [codefresh-settings](
 https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/codefresh-settings) script, it will output all the necessary information you need in order to setup the Kubernetes integration.
 
 Enter the outputs of the script into the form and click save.
