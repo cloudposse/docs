@@ -13,7 +13,7 @@ The "Developer Tools" package is needed for tools like `make` and `git` used thr
 xcode-select --install
 ```
 
-![](/assets/f111fb9-image_4.png)
+![Example XCode Dialog](/assets/f111fb9-image_4.png)
 
 ## Install Homebrew
 
@@ -31,12 +31,18 @@ Docker for Mac is a Docker Community Edition (CE) version which is completely FR
 
 Visit the [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) site or just go ahead and directly download the [`Docker.dmg`](https://download.docker.com/mac/stable/Docker.dmg)
 
-- <https://download.docker.com/mac/stable/Docker.dmg> ![](/assets/840d66e-docker-app-drag.png) After installing, you'll now see a new docker icon in your task bar.
+- <https://download.docker.com/mac/stable/Docker.dmg>
 
-![](/assets/dbe7dad-whale-in-menu-bar.png) **IMPORTANT:** Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on a 2010 or newer Mac, with Intel's hardware support for MMU virtualization.
+![Screenshot of Docker for Mac Installation](/assets/840d66e-docker-app-drag.png)
+
+After installing, you'll now see a new docker icon in your task bar.
+
+![Screenshot of Task Bar Item](/assets/dbe7dad-whale-in-menu-bar.png)
+
+**IMPORTANT:** Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on a 2010 or newer Mac, with Intel's hardware support for MMU virtualization.
 
 ## Configure AWS Vault
 
 Now set up your AWS credentials so you can interact with AWS on the command line.
 
-Follow the instructions for configuring [AWS Vault](doc:aws-vault).
+Follow the instructions for configuring [AWS Vault]({{< relref "tools/aws-vault.md" >}}).

@@ -63,7 +63,7 @@ This would require you to specify explicitly which instance of the ingress contr
 
 Here is a list of controllers we support:
 
-* [Nginx Ingress Controller](doc:nginx-ingress-controller)
+* [Nginx Ingress Controller]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}})
 
 {{% dialog type="info" icon="fa-info-circle" title="Read More" %}}
 https://kubernetes.io/docs/concepts/services-networking/ingress

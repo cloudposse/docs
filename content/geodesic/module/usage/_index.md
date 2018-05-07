@@ -4,27 +4,27 @@ excerpt: ""
 ---
 # Prerequisites
 
-* Follow the "Quick Start" for [Quick start](doc:geodesic-quick-start)
+* Follow the "Quick Start" for [Quick start]({{< relref "geodesic/module/quickstart.md" >}})
 
 {{% dialog type="info" icon="fa-info-circle" title="Examples" %}}
-All examples are based on use cases provided in [Agenda](doc:agenda)
+All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
 {{% /dialog %}}
 
 # Run shell
 
 A Geodesic Module is docker container that extends Geodesic and used as a shell.
 
-Each Geodesic Module will have a unique name. The shell can be easily started any time by simply running that name in a terminal.  
+Each Geodesic Module will have a unique name. The shell can be easily started any time by simply running that name in a terminal.
 The name is a shell script in `/usr/local/bin`. Make sure this path is in your `PATH` environment variable.
 
-## Development mode
+# Development Iterations
 
-If you create a Geodesic Module with [scaffolding](doc:quickstart) there would be `/conf` directory in Geodesic Module directory.
-'/conf' dir used to store [Backing Services](doc:scafflod).
-If you run Geodesic Module shell with flag `--dev` it will share local `./conf` directory into Geodesic Module container `/conf`.
-This is very useful when you developing [Backing Services](doc:scafflod).
+After you [create a Geodesic Module]({{< relref "geodesic/module/quickstart.md" >}}), there will be `/conf` directory in the image.
+The '/conf' dir used to store definitions of all [Backing Services]({{< relref "learn-by-example/kubernetes-cluster/add-platform-backing-services.md" >}}).
 
-When the development finished, you need rebuild Geodesic Module container to add [Backing Services](doc:scafflod) in the module container.
+During development, it would be very painful to have to rebuild the container everytime you make or test a change. Therefore, we recommend that you use `/localhost` path in the Geodesic Shell so that you can work on your local copy. Your native `$HOME` directory is mounted to `/localhost` in the container.
+
+Finally, when you have everything working, we recommend that you rebuild Geodesic Module container to add the backing services in the container and do one more final test.
 
 # Build new version
 
@@ -41,12 +41,12 @@ When you run into the shell you need to authorize on AWS by assuming a correct r
 # Starting new staging.example.com session from   cloudposse/staging.example.com:dev
 # Exposing port 48934
 * Started EC2 metadata service at http://169.254.169.254/latest
-         _              _                                              _      
+         _              _                                              _
      ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
     / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
     \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
     |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
-                  |___/         |___/                           |_|           
+                  |___/         |___/                           |_|
 
 IMPORTANT:
 * Your $HOME directory has been mounted to `/localhost`
@@ -61,6 +61,6 @@ Enter passphrase to unlock /conf/.awsvault/keys/:
 Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 365322
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 ⧉  staging example
-> ✅   (example-staging-admin) ~ ➤  
+> ✅   (example-staging-admin) ~ ➤
 
 ```

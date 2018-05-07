@@ -45,18 +45,18 @@ module "admin_tier" {
 
 # About terraform-aws-route53-cluster-zone
 
-This requires terraform-aws-route53-cluster-zone to provide a cluster-level DNS zone. The module uses [terraform-aws-route53-cluster-hostname](doc:terraform-aws-route53-cluster-hostname) to create a DNS record for created host. `terraform-aws-route53-cluster-hostname` module needs `zone_id` parameter as an input, and this parameter actually is an output from [terraform-aws-route53-cluster-zone](doc:terraform-aws-route53-cluster-zone).
+This requires terraform-aws-route53-cluster-zone to provide a cluster-level DNS zone. The module uses [terraform-aws-route53-cluster-hostname]({{< relref "terraform-modules/networking/terraform-aws-route53-cluster-hostname.md" >}}) to create a DNS record for created host. `terraform-aws-route53-cluster-hostname` module needs `zone_id` parameter as an input, and this parameter actually is an output from [terraform-aws-route53-cluster-zone]({{< relref "terraform-modules/networking/terraform-aws-route53-cluster-zone.md" >}}).
 
-That is why [terraform-aws-route53-cluster-zone](doc:terraform-aws-route53-cluster-zone) should be implemented in `root` TF manifest when we need `terraform-aws-ec2-admin-server`.
+That is why [terraform-aws-route53-cluster-zone]({{< relref "terraform-modules/networking/terraform-aws-route53-cluster-zone.md" >}}) should be implemented in `root` TF manifest when we need `terraform-aws-ec2-admin-server`.
 
 # Dependencies
 
 This module depends on the following modules:
 
-- [terraform-null-label](doc:terraform-null-label)
-- [terraform-template-user-data-github-authorized-keys](doc:terraform-template-user-data-github-authorized-keys)
-- [terraform-aws-route53-cluster-hostname](doc:terraform-aws-route53-cluster-hostname)
-- [terraform-aws-route53-cluster-zone](doc:terraform-aws-route53-cluster-zone) (not directly, but `terraform-aws-route53-cluster-hostname` need child `zone_id`)
+- [terraform-null-label]({{< relref "terraform-modules/supported/terraform-null-label.md" >}})
+- [terraform-template-user-data-github-authorized-keys]({{< relref "terraform-modules/user-data/terraform-template-user-data-github-authorized-keys.md" >}})
+- [terraform-aws-route53-cluster-hostname]({{< relref "terraform-modules/networking/terraform-aws-route53-cluster-hostname.md" >}})
+- [terraform-aws-route53-cluster-zone]({{< relref "terraform-modules/networking/terraform-aws-route53-cluster-zone.md" >}}) (not directly, but `terraform-aws-route53-cluster-hostname` need child `zone_id`)
 
 It is necessary to run `terraform get` to download these modules.
 

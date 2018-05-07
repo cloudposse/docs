@@ -16,8 +16,8 @@ excerpt: >-
 
 The module depends on the following Terraform modules
 
-- [terraform-aws-kops-metadata](doc:terraform-aws-kops-metadata) - to lookup resources within a Kops cluster
-- [terraform-aws-vpc-peering](doc:terraform-aws-vpc-peering) - to create a peering connection between two VPCs
+- [terraform-aws-kops-metadata]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-metadata.md" >}}) - to lookup resources within a Kops cluster
+- [terraform-aws-vpc-peering]({{< relref "terraform-modules/networking/terraform-aws-vpc-peering.md" >}}) - to create a peering connection between two VPCs
 
 # Usage
 

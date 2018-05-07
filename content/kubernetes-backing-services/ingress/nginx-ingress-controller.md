@@ -47,10 +47,11 @@ releases:
     value: 3Mi
 ```
 
-Then do [Helmfile](doc:helmfile) sync follow instructions
+Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
+
 # Usage
 
-After install you the ingress controller, then you can create [Ingress Resources](doc:ingress) with [kubectl](doc:kubectl) or specifying them in [Helm](doc:helm-charts) values directly or with [Helmfile](doc:helmfile). 
+After install you the ingress controller, then you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
 
 Here are some examples: (see tabs)
 
@@ -97,12 +98,12 @@ releases:
     value: true
   - name: ingress.hosts.example\.com[0]
     value: /
-    
+
 ```
 
 
 
 ##### :warning: Helm chart values are specific for chart
-> There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart. 
+> There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart.
  >
  >Provided examples are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum

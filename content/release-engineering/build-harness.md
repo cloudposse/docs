@@ -13,7 +13,7 @@ The `build-harness` is a collection of [Makefiles](/local-dev-environments/makef
 
 It's designed to work with CI/CD systems such as Travis CI, CircleCI, CodeFresh and Jenkins.
 
-It's 100% Open Source and licensed under [APACHE2](LICENSE).
+It's 100% Open Source and licensed under [APACHE2]({{< relref "LICENSE.md" >}}).
 
 # Usage
 
@@ -37,9 +37,9 @@ Run `make help` for a list of available targets.
 
 # Real World Examples
 
-We leverage the `build-harness` in nearly every project on our [GitHub](doc:github).
+We leverage the `build-harness` in nearly every project on our [GitHub]({{< relref "documentation/our-github.md" >}}).
 
-|                                                                                   |                                                                            |
+| Example Repo                                                                      | Usage                                                                      |
 |:----------------------------------------------------------------------------------|:---------------------------------------------------------------------------|
 | [`github-authorized-keys`](https://github.com/cloudposse/github-authorized-keys/) | A Golang project that leverages `docker/%`, `go/%`, `travis/%` targets     |
 | [`charts`](https://github.com/cloudposse/charts/)                                 | A collection of Helm Charts that leverages `docker/%` and `helm/%` targets |

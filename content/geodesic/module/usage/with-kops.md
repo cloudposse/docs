@@ -4,7 +4,7 @@ excerpt: ""
 ---
 
 ##### :warning: Prerequisites
-> This assumes you've followed the [Geodesic Quick Start](doc:geodesic-quick-start) guide which covers all the scaffolding necessary to get started.
+> This assumes you've followed the [Geodesic Quick Start]({{< relref "geodesic/module/quickstart.md" >}}) guide which covers all the scaffolding necessary to get started.
 
 # Create a cluster
 
@@ -12,7 +12,7 @@ Follow the [Provision a Cluster](doc:provision-a-cluster) process
 
 # Provision Platform Backing Services
 
-A number of [Terraform Modules Overview](doc:terraform-modules-overview) provide to provision AWS resources needed by Charts like [external-dns](doc:external-dns) and [chart-repo](doc:chart-repo). See our [Terraform modules for Kubernetes (Kops)](doc:terraform-kubernetes-kops-modules).
+A number of [Terraform Modules Overview]({{< relref "terraform-modules/overview.md" >}}) provide to provision AWS resources needed by Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
 
 # Provisioning a Kops cluster
 
@@ -25,7 +25,7 @@ and is compiled by running the `build-kops-manifest` script as a `RUN` step in t
 
 Provisioning a `kops` cluster takes three steps:
 
-1. Provision a [terraform-aws-kops-state-backend](doc:terraform-aws-kops-state-backend) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes.
+1. Provision a [terraform-aws-kops-state-backend]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-state-backend.md" >}}) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes.
 2. Update the `Dockerfile` and rebuild/restart the `geodesic` shell to generate a kops manifest file
 3. Launch a kops cluster from the manifest file
 
@@ -93,7 +93,9 @@ You will find the rendered `kops` manifest file `/conf/kops/manifest.yaml`.
 # Launch Cluster
 
 Run `kops create -f manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
-![](/assets/b251e2e-kops-create.png)
+
+![Kops Create Example](/assets/b251e2e-kops-create.png)
+
 Run the following to add the SSH public key to the cluster.
 ```
 kops create secret sshpublickey admin -i /secrets/tf/ssh/joany-staging-kops-us-west-2.pub \
@@ -101,11 +103,12 @@ kops create secret sshpublickey admin -i /secrets/tf/ssh/joany-staging-kops-us-w
 ```
 
 Run the following to provision the AWS resources for the cluster.
+
 ```
 kops update cluster --name us-west-2.staging.joany.net --yes
 ```
 
-![](/assets/944178e-kops-update-cluster.png)
+![Kops Update Cluster Example](/assets/944178e-kops-update-cluster.png)
 
 All done. The `kops` cluster is now up and running.
 
