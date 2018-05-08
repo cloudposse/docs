@@ -32,7 +32,7 @@ Install Github Authorized Keys if you want to enable users to login to the clust
 
 To install [`github-authorized-keys`](https://github.com/cloudposse/github-authorized-keys/) on all nodes (including master nodes), you can run the following commands.
 
-**NOTE**: The [Kops](doc:kops) `bastion` is not part of the kubernetes cluster, thus `DaemonSets` cannot be deployed to this instance. One alternative is to deploy a [`bastion`](https://github.com/cloudposse/charts/tree/master/incubator/bastion) helm chart.
+**NOTE**: The [Kops]({{< relref "tools/kops.md" >}}) `bastion` is not part of the kubernetes cluster, thus `DaemonSets` cannot be deployed to this instance. One alternative is to deploy a [`bastion`](https://github.com/cloudposse/charts/tree/master/incubator/bastion) helm chart.
 
 Simply run,
 ```
