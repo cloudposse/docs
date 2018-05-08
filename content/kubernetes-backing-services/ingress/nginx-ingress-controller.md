@@ -8,7 +8,7 @@ Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io
 None
 # Install
 
-Add to your [Kubernetes Backing Services](doc:backing-services) Helmfile this code
+Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
 ##### Helmfile
 ```yaml

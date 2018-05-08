@@ -29,7 +29,7 @@ Then run these commands:
 5. Re-run `init-terraform`, answer `yes` when asked to import state
 
 {{% dialog type="warning" icon="fa-exclamation-circle" title="Prerequisites" %}}
-Follow the "Use geodesic module"  to [Use](doc:use) get how to use the module shell.
+Follow the "Use geodesic module"  to [Use](/geodesic/module/usage/) get how to use the module shell.
 {{% /dialog %}}
 
 # Create terraform state bucket
@@ -120,13 +120,13 @@ ENV TF_VAR_tfstate_region=us-west-2
 ```
 
 ## Rebuild module
-[Rebuild](doc:use) the module
+[Rebuild](/geodesic/module/usage/) the module
 ```bash
 > make build
 ```
 
 ##  Run into the module shell
-Run Geodesic Shell in [development mode](doc:use#section-development-mode)
+Run Geodesic Shell in [development mode](/geodesic/module/usage/#section-development-mode)
 ```bash
 > $CLUSTER_NAME
 ```
@@ -250,13 +250,13 @@ ENV TF_DYNAMODB_TABLE "example-staging-terraform-state-lock"
 ```
 
 ## Rebuild the module
-[Rebuild](doc:use) the module
+[Rebuild](/geodesic/module/usage/) the module
 ```bash
 > make build
 ```
 
 ##  Run into the module shell and authorize on AWS
-Run Geodesic Shell in [development mode](doc:use#section-development-mode)
+Run Geodesic Shell in [development mode](/geodesic/module/usage/#section-development-mode)
 ```bash
 > $CLUSTER_NAME
 > assume-role

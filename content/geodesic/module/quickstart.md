@@ -35,7 +35,7 @@ docker run -e CLUSTER_NAME \
 
 # Configure Project
 
-Customize module files as necessary. Edit the `Dockerfile` to reflect your settings. The files are installed to the `$CLUSTER_NAME/` folder. We recommend creating a [GitHub](doc:github) repo to store this configuration.
+Customize module files as necessary. Edit the `Dockerfile` to reflect your settings. The files are installed to the `$CLUSTER_NAME/` folder. We recommend creating a [GitHub]({{< relref "documentation/our-github.md" >}}) repo to store this configuration.
 
 ```
 cd $CLUSTER_NAME
@@ -64,7 +64,7 @@ make install
 ## Run the shell
 
 The shell can now be easily started any time by simply running `$CLUSTER_NAME`,  which is a shell script in `/usr/local/bin`. Make sure this path is in your `PATH` environment variable.
-For more information follow [Use](doc:use)
+For more information follow [Use](/geodesic/module/usage/)
 
 # Authorize on AWS
 

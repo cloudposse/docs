@@ -8,7 +8,7 @@ excerpt: ""
 
 # Create a cluster
 
-Follow the [Provision a Cluster](doc:provision-a-cluster) process
+Follow the [Provision a Cluster]({{< relref "geodesic/module/usage/with-kops.md" >}}) process
 
 # Provision Platform Backing Services
 
