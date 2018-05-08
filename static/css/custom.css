@@ -259,6 +259,7 @@ aside#right-sidebar nav a:hover {
   background-color: #f8f8f8;
   color: #555;
   border-radius: 3px;
+  text-decoration: none;
 }
 
 
@@ -309,6 +310,7 @@ section > h2 {
 
 article section.page {
   margin: 0;
+  scroll-behavior: smooth;
 }
 
 article section.page h1:first-of-type {
