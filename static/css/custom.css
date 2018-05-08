@@ -56,6 +56,16 @@ th:empty {
 }
 
 
+.whitish {
+  filter: brightness(0) invert(1);
+}
+
+img.cloud {
+  max-width: 125px;
+  margin-right: 10px;
+  float: left;
+}
+
 /* fix for empty pages */
 section header {
   display: none;
@@ -125,7 +135,6 @@ ul.menu > li.haschildren > div > a {
 }
 
 article {
-  min-height: 40%;
   margin-top: 0;
 }
 
@@ -142,7 +151,11 @@ body > aside {
 
 article > aside .menu .dd-item div a, article > aside .menu .dd-item div a:hover {
   order: 1;
-  padding-left: 10px;
+  padding-left: 5px;
+}
+
+article > aside .menu .dd-item.haschildren > div {
+  margin-left: initial;
 }
 
 aside#left-sidebar .menu li.active > div > a:hover {
@@ -160,7 +173,7 @@ article > aside .menu .dd-item div i.category-icon {
 
 aside#left-sidebar ul {
   margin-top: 0;
-  padding-right: 20px;
+  padding-right: 12px;
 }
 
 aside#left-sidebar {
@@ -185,6 +198,7 @@ aside#left-sidebar .menu .dd-item.active > div * {
 }
 
 aside#left-sidebar .menu .dd-item.active > div a {
+  padding-left: 5px;
   color: #fff;
 }
 
@@ -312,6 +326,11 @@ article section.page h1:first-of-type {
 article section.page img {
   margin: 0;
   max-width: 50%
+}
+
+
+article section.page table {
+  width: auto;
 }
 
 article section.page table {
@@ -445,6 +464,14 @@ div.landing-description {
   border: 0;
 }
 
+.chevrons #navigation a:hover {
+  color: #364548;
+}
+
+.chevrons #navigation a {
+  text-decoration: none;
+}
+
 .breadcrumbs a:hover {
   text-decoration: none;
   background-color: #fff;
@@ -533,6 +560,11 @@ div.landing-description {
   font-size: 1em;
 }
 
+div.calendly-badge-widget {
+  right: 88px;
+  bottom: 20px;
+}
+
 .calendly-inline-widget iframe, .calendly-badge-widget iframe, .calendly-overlay iframe {
   border-radius: 10px;
 }
@@ -613,7 +645,7 @@ body > footer .footline .tags {
   margin-right: 10px;
 }
 
-body > footer .footline .tags, body > .footline .copyright {
+body > footer .footline .tags, body > footer .footline .copyright {
   display: inline-block;
   float: left;
 }
@@ -752,4 +784,22 @@ footer .footline .date {
   margin-bottom: 2em;
 }
 
+figure {
+  max-width: 70%;
+}
+
+figure img {
+  min-width: 100%;
+}
+
+figure h4 {
+  margin-top: 0px;
+  font-size: 0.8em;
+  font-weight: normal;
+  background-color: #F6F7F8;
+  padding-right: 1em;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
 
