@@ -72,6 +72,13 @@ weight = 40
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
+name = "<i class='fa fa-question'></i> <label>FAQ</label>"
+identifier = "faq"
+url = "/faq/"
+weight = 45
+
+[[menu.shortcuts]]
+pre = "<h3>More</h3>"
 name = "<i class='fa fa-question'></i> <label>Support</label>"
 identifier = "support"
 url = "https://github.com/cloudposse/docs/issues"

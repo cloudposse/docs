@@ -37,6 +37,11 @@ body > header nav.shortcuts li a {
   height: 2rem;
 }
 
+nav.shortcuts i {
+  /* disable nav icons to save some space */
+  display: none;
+}
+
 a, section a {
   color: #364548;
 }
@@ -645,13 +650,13 @@ div.calendly-badge-widget {
 .homepage .view-all {
   float: right;
   position: relative;
-  top: -40px;
+  top: -50px;
   color: #ddd;
 }
 
 .homepage i {
   margin-right: 5px;
-  color: #364548;
+  color: #aaa;
 }
 
 .homepage h3 {
@@ -847,3 +852,6 @@ figure h4 {
   text-align: right;
 }
 
+label abbr {
+  display: initial;
+}
