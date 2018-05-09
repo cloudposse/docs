@@ -41,9 +41,9 @@ module "instance" {
 }
 ```
 
-### :information_source: NOTE
-
-> We suggest adding the `${var.ssh_key_pair}` private key to your `ssh agent`.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+We suggest adding the `${var.ssh_key_pair}` private key to your `ssh agent`.
+{{% /dialog %}}
 
 ## Example with Additional Volumes and EIP
 

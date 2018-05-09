@@ -6,7 +6,7 @@ excerpt: ""
 
 * Follow the "Quick Start" for [Quick start]({{< relref "geodesic/module/quickstart.md" >}})
 
-{{% dialog type="info" icon="fa-info-circle" title="Examples" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Examples" %}}
 All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
 {{% /dialog %}}
 

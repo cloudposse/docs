@@ -82,9 +82,9 @@ module "cdn" {
 }
 ```
 
-### :information_source: NOTE
-
-> Pass the `deployment_arns` parameter to the `terraform-aws-s3-website` module to enable a [CI/CD]({{< relref "terraform-modules/security/terraform-aws-iam-system-user.md" >}}) user to upload assets to the bucket.
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+Pass the `deployment_arns` parameter to the `terraform-aws-s3-website` module to enable a [CI/CD]({{< relref "terraform-modules/security/terraform-aws-iam-system-user.md" >}}) user to upload assets to the bucket.
+{{% /dialog %}}
 
 # More Examples
 

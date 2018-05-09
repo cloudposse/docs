@@ -3,8 +3,9 @@ title: "with Kops"
 excerpt: ""
 ---
 
-##### :warning: Prerequisites
-> This assumes you've followed the [Geodesic Quick Start]({{< relref "geodesic/module/quickstart.md" >}}) guide which covers all the scaffolding necessary to get started.
+{{% dialog type="info" icon="fa-info-circle" title="Prerequisites" %}}
+This assumes you've followed the [Geodesic Quick Start]({{< relref "geodesic/module/quickstart.md" >}}) guide which covers all the scaffolding necessary to get started.
+{{% /dialog %}}
 
 # Create a cluster
 
@@ -112,7 +113,7 @@ kops update cluster --name us-west-2.staging.joany.net --yes
 
 All done. The `kops` cluster is now up and running.
 
-{{% dialog type="info" icon="fa-book" title="Read More" %}}
+{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 For more information, check out the following links:
 * https://github.com/cloudposse/geodesic#creating-a-kops-cluster
 * https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md

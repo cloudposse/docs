@@ -31,7 +31,7 @@ This automatically exposes many new targets that you can leverage throughout you
 
 Run `make help` for a list of available targets.
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 The `/` in target names is interchangeable with the `:` in target names
 {{% /dialog %}}
 

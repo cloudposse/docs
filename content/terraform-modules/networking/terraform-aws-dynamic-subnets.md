@@ -30,9 +30,9 @@ module "subnets" {
 }
 ```
 
-## :information_source: NOTE
-
-> This module is intended for use with existing VPC and existing Internet Gateway. You should use [terraform-aws-vpc](https://github.com/cloudposse/terraform-aws-vpc) module if you plan to use a new (separate) VPC.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+This module is intended for use with existing VPC and existing Internet Gateway. You should use [terraform-aws-vpc](https://github.com/cloudposse/terraform-aws-vpc) module if you plan to use a new (separate) VPC.
+{{% /dialog %}}
 
 # Variables
 

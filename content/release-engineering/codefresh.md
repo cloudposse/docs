@@ -24,6 +24,6 @@ Your `CF_USER_NAME` is probably your GitHub username, depending on how you login
 docker login r.cfcr.io -u $CF_USER_NAME -p $CFCR_LOGIN_TOKEN
 ```
 
-{{% dialog type="info" icon="fa-book" title="Read More" %}}
+{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 <https://codefresh.io/docs/docs/docker-registries/codefresh-registry/>
 {{% /dialog %}}

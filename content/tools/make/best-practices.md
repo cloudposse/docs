@@ -50,7 +50,7 @@ Avoid sticking every target in the same `Makefile` for the same reason we don't 
 ```
 
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 > The leading `-` tells `make` not to error if the `tasks/` folder is empty.
 {{% /dialog %}}
 

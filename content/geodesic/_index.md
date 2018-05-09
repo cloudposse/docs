@@ -22,7 +22,7 @@ Geodesic provides a fully customizable framework for defining and building world
 
 # Demo
 
-{{% dialog type="info" icon="fa-info-circle" title="Important" %}} This demo is *very* out-of-date. {{% /dialog %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Important" %}} This demo is *very* out-of-date. {{% /dialog %}}
 
 ![demo video](https://media.giphy.com/media/26FmS6BRnPVPo2FDq/source.gif)
 

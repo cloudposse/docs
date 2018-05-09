@@ -7,7 +7,7 @@ excerpt: ''
 
 Using Markdown is essential for clear communication on mediums such as GitHub, Slack or just plain text. Here are some of our recommendations on when to use certain conventions.
 
-{{% dialog type="info" icon="fa-info-circle" title="Markdown Cheatsheet" %}} If you're new to Markdown or need a refresher, check out our [Markdown cheatsheet](/development/markdown). {{% /dialog %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Markdown Cheatsheet" %}} If you're new to Markdown or need a refresher, check out our [Markdown cheatsheet](/development/markdown). {{% /dialog %}}
 
 # Code Blocks
 
