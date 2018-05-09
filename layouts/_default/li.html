@@ -3,7 +3,11 @@
         <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
     </header>
     <section class="post-excerpt">
+      {{ if .Params.excerpt }}
+        <p>{{ .Params.excerpt | markdownify | plainify | htmlUnescape | default "Read More"}} <a class="read-more" href="{{.RelPermalink}}">read more &raquo;</a></p>
+      {{ else }}
         <p>{{ .Summary | markdownify | plainify | htmlUnescape | default "Read More"}} <a class="read-more" href="{{.RelPermalink}}">read more &raquo;</a></p>
+      {{ end }}
     </section>
     <footer class=" footline" >
         {{- with .Params.LastModifierDisplayName -}}

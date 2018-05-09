@@ -356,6 +356,7 @@ article section.page h1:first-of-type {
   line-height: 30px;
   word-wrap: break-word; 
   text-transform: none;
+  max-width: 90%;
 }
 
 article section.page img {
@@ -549,16 +550,25 @@ div.landing-description {
   margin-bottom: 30px;
 }
 
+.github-link {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  float: right;
+}
+
 .github-link a {
-  float:right;
   display: inline-block;
   padding-left: 8px;
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 700;
   color: #777;
-  display: block;
-  margin-top: 2px;
+  display: inline-block;
+  float: right;
+  width: 130px;
+  position: relative;
+  top: -25px;
 }
 
 .github-link i {
@@ -864,7 +874,7 @@ label abbr {
 }
 
 .ask-a-question a {
-  top: -39px;
+  top: -70px;
   position: relative;
 }
 
