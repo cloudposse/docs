@@ -37,6 +37,11 @@ body > header nav.shortcuts li a {
   height: 2rem;
 }
 
+nav.shortcuts i {
+  /* disable nav icons to save some space */
+  display: none;
+}
+
 a, section a {
   color: #364548;
 }
@@ -83,6 +88,33 @@ section article.post footer {
 section.page > article > header > h2, section.page > article p {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+article.faq > header {
+padding: 10px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+article.faq > header a {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 87%;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+
+section.post-excerpt {
+  padding: 10px 15px;
+  background-color: #f8f8f8;
+  max-width: 86%;
+  border-radius: 2px;
+}
+
+section.post-excerpt .read-more {
+  float: right;
 }
 
 section.page > article.post > footer:empty.footline {
@@ -324,6 +356,7 @@ article section.page h1:first-of-type {
   line-height: 30px;
   word-wrap: break-word; 
   text-transform: none;
+  max-width: 90%;
 }
 
 article section.page img {
@@ -517,16 +550,25 @@ div.landing-description {
   margin-bottom: 30px;
 }
 
+.github-link {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  float: right;
+}
+
 .github-link a {
-  float:right;
   display: inline-block;
   padding-left: 8px;
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 700;
   color: #777;
-  display: block;
-  margin-top: 2px;
+  display: inline-block;
+  float: right;
+  width: 130px;
+  position: relative;
+  top: -25px;
 }
 
 .github-link i {
@@ -618,13 +660,13 @@ div.calendly-badge-widget {
 .homepage .view-all {
   float: right;
   position: relative;
-  top: -40px;
+  top: -50px;
   color: #ddd;
 }
 
 .homepage i {
   margin-right: 5px;
-  color: #364548;
+  color: #aaa;
 }
 
 .homepage h3 {
@@ -820,3 +862,55 @@ figure h4 {
   text-align: right;
 }
 
+label abbr {
+  display: initial;
+}
+
+.ask-a-question {
+  display: inline-block;
+  float:right;
+  width: 0;
+  height: 0;
+}
+
+.ask-a-question a {
+  top: -70px;
+  position: relative;
+}
+
+a.button {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  float:right;
+}
+
+a.button {
+  text-decoration: none;
+}
+
+a:hover.button {
+  text-decoration: none;
+}
+
+a.button.green {
+  background-color: #73c485;
+  color: #fff;
+}
+
+a:hover.button.green {
+  background-color: #419954;
+}
