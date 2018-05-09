@@ -77,7 +77,7 @@ The site experienced the classic cascading failure that affected all components 
 - During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![](/assets/e82e21a-image_10.png)
 - During the rollout, TablePress options got cleared ![](/assets/4204bed-image_11.png)
 
-  ## Remediations
+## Remediations
 
 List of actions performed to resolve the problem:
 
@@ -120,13 +120,15 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 {{< img src="/assets/1f27db8-image_12.png" title="Pingdom 1" >}}
 
-{{< img src="/assets/89c0050-image_13.png title="Pingdom 2" >}}
+{{< img src="/assets/89c0050-image_13.png" title="Pingdom 2" >}}
 
-{{< img src="/assets/9d3f441-image_14.png title="Pingdom 1" >}}
+{{< img src="/assets/9d3f441-image_14.png" title="Pingdom 1" >}}
 
 ### Elastic Beanstalk
 
-ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. ![](/assets/af54926-image_15.png)
+ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. 
+
+{{< img src="/assets/af54926-image_15.png" title="ElasticBeanstalk Request Spike" >}}
 
 {{< img src="/assets/dc4dbd3-image_16.png" title="ElasticBeanstalk Request Spike" >}}
 
@@ -136,7 +138,7 @@ There were no deadlocks. There was no increase in IOPS (r/w)
 
 #### CPU Utilization spiked.
 
-{{< img src="/assets/2e1d7be-image_17.png)" title="CPU Utilization Spiked" >}}
+{{< img src="/assets/2e1d7be-image_17.png" title="CPU Utilization Spiked" >}}
 
 #### Connections peaked and maxed out.
 
