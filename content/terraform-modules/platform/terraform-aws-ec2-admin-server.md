@@ -39,9 +39,9 @@ module "admin_tier" {
 }
 ```
 
-## :information_source: NOTE
-
-> Add `${var.ssh_key_pair}` private key to your `ssh-agent` to easily access the server.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+Add `${var.ssh_key_pair}` private key to your `ssh-agent` to easily access the server.
+{{% /dialog %}}
 
 # About terraform-aws-route53-cluster-zone
 

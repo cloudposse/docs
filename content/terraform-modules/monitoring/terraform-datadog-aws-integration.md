@@ -14,9 +14,9 @@ excerpt: Terraform Module for integration DataDog with AWS
 
 # Usage
 
-## :information_source: NOTE
-
-> At the moment the module supports `RDS integration only`. It will be modified as necessary to integrate the needful services.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+At the moment the module supports `RDS integration only`. It will be modified as necessary to integrate the needful services.
+{{% /dialog %}}
 
 Include this module in your existing terraform code:
 

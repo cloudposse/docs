@@ -76,9 +76,9 @@ https://signin.aws.amazon.com/switchrole
                 &displayName=Dev
 ```
 
-#### :information_source: NOTE
-
-> You can use [terraform-aws-organization-access-group](https://github.com/cloudposse/terraform-aws-organization-access-group) module to create an IAM Group and Policy to grant permissions to delegated IAM users in the Organization's master account to access a member account.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+You can use [terraform-aws-organization-access-group](https://github.com/cloudposse/terraform-aws-organization-access-group) module to create an IAM Group and Policy to grant permissions to delegated IAM users in the Organization's master account to access a member account.
+{{% /dialog %}}
 
 # References
 

@@ -7,7 +7,7 @@ excerpt: ""
 
 Vagrant by HashiCorp is responsbile for setting up development environments under VirtualBox. Vagrant handles all configuration management and makes it easy to share development environments by developers.
 
-{{% dialog type="info" icon="fa-info-circle" title="Important" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Important" %}}
 > Vagrant is no longer recommended as a means of provisioning local development environments. We recommend using [Docker Compose]({{< relref "local-dev-environments/docker-compose.md" >}}) instead.
 {{% /dialog %}}
 

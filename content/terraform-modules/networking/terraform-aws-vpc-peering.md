@@ -27,9 +27,9 @@ module "vpc_peering" {
 }
 ```
 
-## :information_source: NOTE
-
-> Both the acceptor and requestor VPCs must have subnets associated with route tables
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Both the acceptor and requestor VPCs must have subnets associated with route tables
+{{% /dialog %}}
 
 # Variables
 
@@ -48,11 +48,12 @@ module "vpc_peering" {
 | `delimiter`                                 | `-`     | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes`                                                 | No       |
 | `enabled`                                   | `true`  | Set to `false` to prevent the module from creating or accessing any resources                                               | No       |
 
-## :information_source: NOTE
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+When enabled, the DNS resolution features (`acceptor_allow_remote_vpc_dns_resolution` and `requestor_allow_remote_vpc_dns_resolution`) require that VPCs participating in the peering must have support for the DNS hostnames enabled. This can be done using the [`enable_dns_hostnames`](https://www.terraform.io/docs/providers/aws/r/vpc.html#enable_dns_hostnames) attribute in the `aws_vpc` resource.
 
-> When enabled, the DNS resolution features (`acceptor_allow_remote_vpc_dns_resolution` and `requestor_allow_remote_vpc_dns_resolution`) require that VPCs participating in the peering must have support for the DNS hostnames enabled. This can be done using the [`enable_dns_hostnames`](https://www.terraform.io/docs/providers/aws/r/vpc.html#enable_dns_hostnames) attribute in the `aws_vpc` resource.
+Read more: [www.terraform.io/docs/providers/aws/r/vpc_peering.html](https://www.terraform.io/docs/providers/aws/r/vpc_peering.html#allow_remote_vpc_dns_resolution)
+{{% /dialog %}}
 
-> [www.terraform.io/docs/providers/aws/r/vpc_peering.html](https://www.terraform.io/docs/providers/aws/r/vpc_peering.html#allow_remote_vpc_dns_resolution)
 
 # Outputs
 
