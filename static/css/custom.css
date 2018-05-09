@@ -42,6 +42,11 @@ nav.shortcuts i {
   display: none;
 }
 
+header nav.shortcuts li .fa, header nav.shortcuts li .fab {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
 a, section a {
   color: #364548;
 }
@@ -364,6 +369,9 @@ article section.page img {
   max-width: 50%
 }
 
+.page-gost-framework article section.page img {
+  max-width: 13%;
+}
 
 article section.page table {
   width: auto;
