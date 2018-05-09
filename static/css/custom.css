@@ -167,7 +167,7 @@ article > aside .menu .dd-item div i.category-icon {
   opacity: .5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
-  font-weight: 600;
+  font-weight: bold;
   font-size: 20px;
 }
 
@@ -193,11 +193,12 @@ article > aside .menu .dd-item li {
 }
 
 aside#left-sidebar .menu .dd-item.active > div * {
-  font-weight: normal;
+  font-weight: bold;
   border-bottom: 0;
 }
 
 aside#left-sidebar .menu .dd-item.active > div a {
+  font-weight: normal;
   padding-left: 5px;
   color: #fff;
 }
@@ -614,6 +615,18 @@ div.calendly-badge-widget {
   text-transform: none;
 }
 
+.homepage .view-all {
+  float: right;
+  position: relative;
+  top: -40px;
+  color: #ddd;
+}
+
+.homepage i {
+  margin-right: 5px;
+  color: #364548;
+}
+
 .homepage h3 {
   font-size: 12px;
   text-transform: uppercase;
@@ -787,6 +800,7 @@ footer .footline .date {
 }
 
 figure {
+  border: 1px solid #cccccc38;
   max-width: 70%;
 }
 
@@ -796,6 +810,7 @@ figure img {
 
 figure h4 {
   margin-top: 0px;
+  margin-bottom: 0px;
   font-size: 0.8em;
   font-weight: normal;
   background-color: #F6F7F8;

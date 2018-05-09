@@ -56,7 +56,7 @@ In order for the Ingress resource to work, the cluster must have an Ingress cont
 
 An Ingress Controller is a daemon, deployed as a Kubernetes Pod, that watches the API server's /ingresses endpoint for updates to the Ingress resource. Its job is to satisfy requests for Ingresses.
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+{{% dialog type="info" icon="fa-book" title="Note" %}}
 In theory, you can install several ingress controllers, for example, for different types of service.
 This would require you to specify explicitly which instance of the ingress controller to associate with. Therefore, we recommend to only have one controller per cluster.
 {{% /dialog %}}
@@ -65,6 +65,6 @@ Here is a list of controllers we support:
 
 * [Nginx Ingress Controller]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}})
 
-{{% dialog type="info" icon="fa-info-circle" title="Read More" %}}
+{{% dialog type="info" icon="fa-book" title="Read More" %}}
 https://kubernetes.io/docs/concepts/services-networking/ingress
 {{% /dialog %}}

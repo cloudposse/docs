@@ -1,5 +1,7 @@
 ---
 title: "Announcements"
+icon: "fa fa-bullhorn"
+head: "dude"
 ---
 Welcome to the developer hub and documentation for Cloud Posse! Here you'll find announcements pertaining to new projects, terraform modules, helm charts, and other offerings.
 

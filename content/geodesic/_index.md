@@ -1,6 +1,7 @@
 ---
 title: Geodesic
 slug: geodesic
+icon: "fa fa-cubes"
 excerpt: >-
   Geodesic is the fastest way to get up and running with a rock solid,
   production-grade cloud platform.

@@ -15,11 +15,11 @@ Use code blocks for anything more than 1 line. Use `code` for inline code, filen
 
 ## Code Block
 
-````markdown
+~~~~markdown
 ```
 # This is a code block
 ```
-`````
+~~~~
 
 
 ## Table of Options
@@ -30,23 +30,25 @@ Here's an example:
 
 ##### Table of Options
 ```markdown
-|  Name       |  Default |  Description                                  | Required |
-|:------------|:--------:|:----------------------------------------------|:--------:|
-| namespace   | ``       | Namespace (e.g. `cp` or `cloudposse`)         | Yes      |
-| stage       | ``       | Stage (e.g. `prod`, `dev`, `staging`)         | Yes      |
-| name        | ``       | Name  (e.g. `bastion` or `db`)                | Yes      |
-| attributes  | []       | Additional attributes (e.g. `policy`)         | No       |
-| tags        | {}       | Additional tags  (e.g. `map("Foo","XYZ")`)    | No       |
+| Name       | Default | Description                                | Required |
+|:---------- |:-------:|:------------------------------------------ |:--------:|
+| namespace  |         | Namespace (e.g. `cp` or `cloudposse`)      |   Yes    |
+| stage      |         | Stage (e.g. `prod`, `dev`, `staging`)      |   Yes    |
+| name       |         | Name  (e.g. `bastion` or `db`)             |   Yes    |
+| attributes |   []    | Additional attributes (e.g. `policy`)      |    No    |
+| tags       |   {}    | Additional tags  (e.g. `map("Foo","XYZ")`) |    No    |
+```
 
 * `:--------:` should be used for “Default” and “Required” values
 * `:---------` should be used for all other columns
-* Use `` for empty defaults
 * Use `value` for all values
 
 
-Which will render to something like this: ![](/assets/8d8cdf3-image_23.png)
+Which will render to something like this:
 
-![Example Markdown Table](/assets/a2761a9-image_22.png)
+{{< img src="/assets/8d8cdf3-image_23.png" title="Example Markdown Table Rendering" >}}
+
+{{< img src="/assets/a2761a9-image_22.png" title="Example Markdown Table Rendering" >}}
 
 # Feature List Formatting
 
