@@ -13,7 +13,7 @@ The "Developer Tools" package is needed for tools like `make` and `git` used thr
 xcode-select --install
 ```
 
-![Example XCode Dialog](/assets/f111fb9-image_4.png)
+{{< img src="/assets/f111fb9-image_4.png" title="Example XCode Dialog" >}}
 
 ## Install Homebrew
 
@@ -33,11 +33,11 @@ Visit the [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) site
 
 - <https://download.docker.com/mac/stable/Docker.dmg>
 
-![Screenshot of Docker for Mac Installation](/assets/840d66e-docker-app-drag.png)
+{{< img src="/assets/840d66e-docker-app-drag.png" title="Screenshot of Docker for Mac Installation" >}}
 
 After installing, you'll now see a new docker icon in your task bar.
 
-![Screenshot of Task Bar Item](/assets/dbe7dad-whale-in-menu-bar.png)
+{{< img src="/assets/dbe7dad-whale-in-menu-bar.png" title="Screenshot of Task Bar Item" >}}
 
 **IMPORTANT:** Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on a 2010 or newer Mac, with Intel's hardware support for MMU virtualization.
 

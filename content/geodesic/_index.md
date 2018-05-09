@@ -24,7 +24,7 @@ Geodesic provides a fully customizable framework for defining and building world
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Important" %}} This demo is *very* out-of-date. {{% /dialog %}}
 
-![demo video](https://media.giphy.com/media/26FmS6BRnPVPo2FDq/source.gif)
+{{< img src="https://media.giphy.com/media/26FmS6BRnPVPo2FDq/source.gif" title="demo video" >}}
 
 Geodesic is composed of two parts:
 
@@ -46,7 +46,7 @@ An organization may choose to leverage all of these components or just the parts
 At its core, Geodesic is a framework for provisioning cloud infrastructure and the applications that sit on top of it. We leverage as many existing tools as possible to facilitate cloud fabrication and administration. We're like the connective tissue that sits between all of the components of a modern cloud.
 
 | Tool                                                                 | Purpose                                                                                                                     |
-|:-------------------------------------------------------------------- |:--------------------------------------------------------------------------------------------------------------------------- |
+|:---------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------|
 | [`ansible`](http://docs.ansible.com/ansible/latest/index.html)       | for automating configuration management. It can configure systems, deploy software, and orchestrate more advanced IT tasks. |
 | [`goofys`](https://github.com/kahing/goofys/)                        | for mounting encrypted S3 buckets that store cluster configurations and secrets                                             |
 | [`packer`](https://github.com/hashicorp/packer/)                     | for creating identical machine images for multiple platforms                                                                |

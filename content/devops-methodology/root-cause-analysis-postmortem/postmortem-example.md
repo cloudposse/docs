@@ -118,17 +118,17 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 ### Pingom
 
-![Pingdom 1](/assets/1f27db8-image_12.png)
+{{< img src="/assets/1f27db8-image_12.png" title="Pingdom 1" >}}
 
-![Pingdom 2](/assets/89c0050-image_13.png)
+{{< img src="/assets/89c0050-image_13.png title="Pingdom 2" >}}
 
-![Pingdom 3](/assets/9d3f441-image_14.png)
+{{< img src="/assets/9d3f441-image_14.png title="Pingdom 1" >}}
 
 ### Elastic Beanstalk
 
 ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. ![](/assets/af54926-image_15.png)
 
-![](/assets/dc4dbd3-image_16.png)
+{{< img src="/assets/dc4dbd3-image_16.png" title="ElasticBeanstalk Request Spike" >}}
 
 ### RDS
 
@@ -136,23 +136,23 @@ There were no deadlocks. There was no increase in IOPS (r/w)
 
 #### CPU Utilization spiked.
 
-![CPU Utilization Spiked](/assets/2e1d7be-image_17.png)
+{{< img src="/assets/2e1d7be-image_17.png)" title="CPU Utilization Spiked" >}}
 
 #### Connections peaked and maxed out.
 
-![DB Connections Peaked](/assets/8f2e7d3-image_18.png)
+{{< img src="/assets/8f2e7d3-image_18.png" title="DB Connections Peaked" >}}
 
 #### Selects went through the roof.
 
-![DB Selects Spiked](/assets/43dfb04-image_19.png)
+{{< img src="/assets/43dfb04-image_19.png" title="DB Selects Spiked" >}}
 
 #### CPU credits were not exhausted, so we had excess capacity
 
-![CPU Credits Okay](/assets/7bd6416-image_20.png)
+{{< img src="/assets/7bd6416-image_20.png" title="CPU Credits Okay" >}}
 
 #### Commits / Writes went through the roof
 
-![DB Commits Spiked](/assets/b7a608c-image_21.png)
+{{< img src="/assets/b7a608c-image_21.png" title="DB Commits Spiked" >}}
 
 ## Related Post Mortems
 

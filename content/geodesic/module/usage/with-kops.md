@@ -95,7 +95,7 @@ You will find the rendered `kops` manifest file `/conf/kops/manifest.yaml`.
 
 Run `kops create -f manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
 
-![Kops Create Example](/assets/b251e2e-kops-create.png)
+{{< img src="/assets/b251e2e-kops-create.png" title="Kops Create Example" >}}
 
 Run the following to add the SSH public key to the cluster.
 ```
@@ -109,7 +109,7 @@ Run the following to provision the AWS resources for the cluster.
 kops update cluster --name us-west-2.staging.joany.net --yes
 ```
 
-![Kops Update Cluster Example](/assets/944178e-kops-update-cluster.png)
+{{< img src="/assets/944178e-kops-update-cluster.png" title="Kops Update Cluster Example" >}}
 
 All done. The `kops` cluster is now up and running.
 
