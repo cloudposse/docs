@@ -855,3 +855,52 @@ figure h4 {
 label abbr {
   display: initial;
 }
+
+.ask-a-question {
+  display: inline-block;
+  float:right;
+  width: 0;
+  height: 0;
+}
+
+.ask-a-question a {
+  top: -39px;
+  position: relative;
+}
+
+a.button {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  float:right;
+}
+
+a.button {
+  text-decoration: none;
+}
+
+a:hover.button {
+  text-decoration: none;
+}
+
+a.button.green {
+  background-color: #73c485;
+  color: #fff;
+}
+
+a:hover.button.green {
+  background-color: #419954;
+}
