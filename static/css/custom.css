@@ -85,6 +85,33 @@ section.page > article > header > h2, section.page > article p {
   margin-bottom: 0;
 }
 
+article.faq > header {
+padding: 10px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+article.faq > header a {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 87%;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+
+section.post-excerpt {
+  padding: 10px 15px;
+  background-color: #f8f8f8;
+  max-width: 86%;
+  border-radius: 2px;
+}
+
+section.post-excerpt .read-more {
+  float: right;
+}
+
 section.page > article.post > footer:empty.footline {
   display: none;
 }
