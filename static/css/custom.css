@@ -229,6 +229,13 @@ article > aside .menu .dd-item li {
   text-overflow: ellipsis;
 }
 
+aside#left-sidebar .menu .dd-item > div a {
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 aside#left-sidebar .menu .dd-item.active > div * {
   font-weight: bold;
   border-bottom: 0;
