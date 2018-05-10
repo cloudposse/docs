@@ -2,7 +2,8 @@
 title: "Vagrant"
 excerpt: ""
 ---
-![](/assets/6e84876-vagrant.png)
+![HashiCorp Vagrant](/assets/6e84876-vagrant.png)
+
 # Background
 
 Vagrant by HashiCorp is responsbile for setting up development environments under VirtualBox. Vagrant handles all configuration management and makes it easy to share development environments by developers.
@@ -25,7 +26,5 @@ Vagrant depends on VirtualBox. Make sure you install that first.
 
 # Dependencies
 
-|                    |                                           |
-|:-------------------|:------------------------------------------|
-| *Vagrant v1.9.7+*  | https://www.vagrantup.com/downloads.html  |
-| *VirtualBox v5.1*+ | https://www.virtualbox.org/wiki/Downloads |
+- *Vagrant v1.9.7+*  <https://www.vagrantup.com/downloads.html>
+- *VirtualBox v5.1+* <https://www.virtualbox.org/wiki/Downloads>

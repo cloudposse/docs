@@ -44,10 +44,12 @@ terraform plan
 terraform apply
 ```
 
-![](/assets/b5e88dd-joany-staging-kops-state.png)
+![Staging Cluster State](/assets/b5e88dd-joany-staging-kops-state.png)
+
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
 
-![](/assets/9d5dc1c-joany-staging-kops-state-ssh-keys.png)
+![Staging Kops SSH Keys](/assets/9d5dc1c-joany-staging-kops-state-ssh-keys.png)
+
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `CLUSTER_NAME` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
 # Build Manifest

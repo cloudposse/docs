@@ -6,6 +6,7 @@ export HUGO_ARGS ?= --watch --buildDrafts
 export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
+export HTMLTEST_LOG_LEVEL ?= 2
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
@@ -37,7 +38,7 @@ validate: lint test
 .PHONY : test
 ## Run tests
 test:
-	htmltest
+	htmltest --log-level $(HTMLTEST_LOG_LEVEL)
 
 ## Run smoketest
 smoketest:

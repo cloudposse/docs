@@ -74,8 +74,8 @@ The site experienced the classic cascading failure that affected all components 
 
 ## Unexplained problems
 
-- During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![](/assets/e82e21a-image_10.png)
-- During the rollout, TablePress options got cleared ![](/assets/4204bed-image_11.png)
+- During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![Amazon Associates Link Builder Credentials Lost](/assets/e82e21a-image_10.png)
+- During the rollout, TablePress options got cleared ![TablePress Options Reset](/assets/4204bed-image_11.png)
 
 ## Remediations
 
@@ -126,7 +126,7 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 ### Elastic Beanstalk
 
-ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. 
+ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s.
 
 {{< img src="/assets/af54926-image_15.png" title="ElasticBeanstalk Request Spike" >}}
 
