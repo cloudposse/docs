@@ -12,7 +12,7 @@ steps:
       - cf_export HUGO_CONFIG=deploy.toml
 
   build:
-    title: Build Hugo Static Site
+    title: Build Hugo static site
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
@@ -20,12 +20,19 @@ steps:
       - make release
       - make build
 
-  push_to_s3:
+  test:
+    title: Run tests
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ./
+    commands:
+      - make deps
+      - make smoketest
+
+  deploy:
     title: Push all artifacts to S3 bucket
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
-      - make aws/install
       - make deploy
     when:
       condition:

@@ -36,11 +36,17 @@ validate: lint test
 test:
 	htmltest
 
+## Run smoketest
+smoketest:
+	make release build test HUGO_URL=/ HUGO_CONFIG=test.toml
+
+## Generate a release config
 release:
 	@[ "$(HUGO_CONFIG)" != "config.toml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	@sed 's,^baseURL.*,baseURL = "$(HUGO_URL)",' config.toml > $(HUGO_CONFIG)
-	@echo "Wrotte $(HUGO_CONFIG)..."
+	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
 
+## Deploy static site to S3
 deploy:
 	aws s3 sync --delete --acl public --exact-timestamps ./public/ s3://$(S3_BUCKET_NAME)/
 
