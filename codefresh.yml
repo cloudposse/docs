@@ -6,8 +6,7 @@ steps:
     title: Init variables
     image: alpine
     commands:
-      #- cf_export BUILD_HARNESS_VERSION=0.5.4
-      - cf_export BUILD_HARNESS_VERSION=add-aws-cli-409
+      - cf_export BUILD_HARNESS_VERSION=0.5.5
       - cf_export HUGO_URL=https://${{S3_BUCKET_NAME}}
       - cf_export HUGO_CONFIG=deploy.toml
 
@@ -37,4 +36,4 @@ steps:
     when:
       condition:
         all:
-          executeForMasterBranch: "'${{CF_BRANCH}}' == 'add-codefresh'"
+          executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
