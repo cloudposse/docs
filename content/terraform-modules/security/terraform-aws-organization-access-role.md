@@ -24,7 +24,7 @@ However, member accounts that you invite to join your Organization do not automa
 
 This module creates `OrganizationAccountAccessRole` role in an invited member account.
 
-AWS recommends using the same name, `OrganizationAccountAccessRole`, for the created role for consistency and ease of remembering. ![](/assets/e24ad8c-OrganizationAccountAccessRole.png)
+AWS recommends using the same name, `OrganizationAccountAccessRole`, for the created role for consistency and ease of remembering. ![AWS IAM Web Console Example of OrganizationAccountAccessRole](/assets/e24ad8c-OrganizationAccountAccessRole.png)
 
 # Usage
 

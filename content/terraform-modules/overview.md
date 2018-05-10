@@ -4,7 +4,7 @@ excerpt: ''
 weight: -3
 ---
 
-![](/assets/774b11e-terraform.png)
+![HashiCorp Terraform](/assets/774b11e-terraform.png)
 
 Terraform modules are the best way to encapsulate "business logic" and "Best Practices" for provisioning infrastructure. Terraform modules are used almost like functions in `terraform`; that is, they take inputs (aka `variables`) and produce some `outputs`.
 
@@ -12,7 +12,7 @@ Terraform modules are the best way to encapsulate "business logic" and "Best Pra
 
 - Easily version pin infrastructure
 - Useful for staging changes across infrastructure
-- [Public module registry](registry.terraform.io) makes it easy to find modules
+- [Public module registry](https://registry.terraform.io) makes it easy to find modules
 - Distributed using `git`
 
 # Examples

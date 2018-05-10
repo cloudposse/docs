@@ -36,7 +36,9 @@ module "kops" {
 }
 ```
 
-![](/assets/e347aef-kops-state-backend.png) To check that the created `kops` DNS zone has been tagged correctly, run
+![Terraform Outputs Screenshots](/assets/e347aef-kops-state-backend.png)
+
+To check that the created `kops` DNS zone has been tagged correctly, run:
 
 ```sh
 aws route53 list-tags-for-resources --resource-type hostedzone --resource-ids Z58RWQWFVU4HT

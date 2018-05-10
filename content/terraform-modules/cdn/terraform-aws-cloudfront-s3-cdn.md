@@ -4,12 +4,12 @@ excerpt: "Terraform module to easily provision an AWS CloudFront CDN with an S3 
 ---
 # Terraform AWS CloudFront S3 CDN
 
-|                  |                                                                                                                                                                           |
-|:-----------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GitHub Repo      | https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn                                                                                                             |
-| Terraform Module | terraform-aws-cloudfront-s3-cdn                                                                                                                                           |
-| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudfront-s3-cdn.svg)](https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn/release) |
-| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn)   |
+|                  |                                                                                                                                                                            |
+|:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn                                                                                                              |
+| Terraform Module | terraform-aws-cloudfront-s3-cdn                                                                                                                                            |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudfront-s3-cdn.svg)](https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn)    |
 
 
 # Usage
