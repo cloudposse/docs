@@ -25,6 +25,9 @@ CheckScripts: true
 # Fails when encountering an http:// link. Useful to prevent mixed content errors when serving over HTTPS.
 EnforceHTTPS: false
 
+HTTPHeaders: 
+  User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
+
 # Turns off image alt attribute checking.
 IgnoreAltMissing: true
 
@@ -36,8 +39,12 @@ IgnoreInternalEmptyHash: true
 
 # Array of regexs of URLs to ignore.
 IgnoreURLs:
+# LinkedIn blocks all crawlers and AWS
 - "linkedin.com"
-- ".*_header.*"
+# Related to: https://github.com/wjdp/htmltest/issues/89
+- "marketplace.visualstudio.com"
+# Rate limiting precludes us from testing these
+- "img.shields.io"
 
 # IgnoreDirs
 IgnoreDirs:

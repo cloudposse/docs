@@ -12,7 +12,7 @@ excerpt: Terraform module to create a peering connection between two VPCs
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vpc-peering.svg)](https://github.com/cloudposse/terraform-aws-vpc-peering/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-vpc-peering.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-vpc-peering)    |
 
-![](/assets/82718b8-vpc-peering.png)
+![AWS Web Console Screenshot of VPC Peering Connection](/assets/82718b8-vpc-peering.png)
 
 # Usage
 

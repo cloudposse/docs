@@ -2,7 +2,8 @@
 title: "Minikube"
 excerpt: ""
 ---
-![](/assets/a58bf7c-minikube.png)
+![Minikube](/assets/a58bf7c-minikube.png)
+
 # Setting Up “minikube" on OSX
 
 Just run...
