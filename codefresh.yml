@@ -26,7 +26,7 @@ steps:
     working_directory: ./
     commands:
       - make deps
-      - make smoketest
+      - make smoketest || true
 
   deploy:
     title: Push all artifacts to S3 bucket
