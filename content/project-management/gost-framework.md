@@ -1,6 +1,7 @@
 ---
 title: "GOST Framework"
 excerpt: ""
+slug: gost-framework
 ---
 ![](/assets/3feff88-ghost.png)
 
