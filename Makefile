@@ -3,7 +3,10 @@ export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
 export HUGO_URL ?= http://localhost.cloudposse.com:1313/
 export HUGO_ARGS ?= --watch --buildDrafts
+export HUGO_CONFIG ?= config.toml
+export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
+export HTMLTEST_LOG_LEVEL ?= 2
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
@@ -21,13 +24,36 @@ run:
 
 ## Generate all static content (outputs to public/)
 build:
-	rm -rf public/
-	$(HUGO)
+	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
+	rm -rf $(HUGO_PUBLISH_DIR)
+	$(HUGO) --config $(HUGO_CONFIG)
 
 ## Lint check all hugo code
 lint:
 	hugo --renderToMemory
 
 ## Validate all html is good
-validate: lint
-	htmltest
+validate: lint test
+
+.PHONY : test
+## Run tests
+test:
+	htmltest --log-level $(HTMLTEST_LOG_LEVEL)
+
+## Run smoketest
+smoketest:
+	make release build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test
+
+## Generate a release config
+release:
+	@[ "$(HUGO_CONFIG)" != "config.toml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
+	cat config.toml | \
+		sed 's,^baseURL.*,baseURL = "$(HUGO_URL)",' | \
+		sed 's,^publishDir.*,publishDir = "$(HUGO_PUBLISH_DIR)",' \
+		> $(HUGO_CONFIG)
+	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
+
+## Deploy static site to S3
+deploy:
+	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/ s3://$(S3_BUCKET_NAME)/
+

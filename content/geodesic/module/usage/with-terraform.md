@@ -126,7 +126,8 @@ ENV TF_VAR_tfstate_region=us-west-2
 ```
 
 ##  Run into the module shell
-Run Geodesic Shell in [development mode](/geodesic/module/usage/#section-development-mode)
+
+Run the Geodesic shell.
 ```bash
 > $CLUSTER_NAME
 ```
@@ -256,7 +257,9 @@ ENV TF_DYNAMODB_TABLE "example-staging-terraform-state-lock"
 ```
 
 ##  Run into the module shell and authorize on AWS
-Run Geodesic Shell in [development mode](/geodesic/module/usage/#section-development-mode)
+
+Run the Geodesic shell:
+
 ```bash
 > $CLUSTER_NAME
 > assume-role
@@ -367,7 +370,7 @@ terraform plan
 terraform apply
 ```
 
-![](/assets/81d14ff-cloudtrail.png)
+![Terraform Plan Output of Cloud Trail](/assets/81d14ff-cloudtrail.png)
 ## Example: Provision Backing Services with Terraform
 
 Change directory to the required resources folder
@@ -382,7 +385,7 @@ terraform plan
 terraform apply
 ```
 
-![](/assets/8dd848c-vpc_and_subnets.png)
+![Terraform Plan Output of VPC and Subnets](/assets/8dd848c-vpc_and_subnets.png)
 Repeat for all other projects in the solution (`dns`, `acm`, etc.).
 
 # Build and Release geodesic shell

@@ -1,7 +1,7 @@
 ---
 title: "Makefile"
 excerpt: ""
-tags: 
+tags:
 - Makefile
 - GNUMakefile
 - make
@@ -11,20 +11,20 @@ tags:
 
 The `make` command has been around for decades. Predominantly, it was used to build complex projects in C & C++, but it's seen a resurgence in the ops world for automating routine tasks and orchestration of infrastructure-as-code. In the 12-factor pattern, these are your “admin tasks”.
 
-![](/assets/4132caf-image_3.png)
+![Make is the only orchestrator you'll ever need.](/assets/4132caf-image_3.png)
 
 # Understanding Makefiles
 
-Because `make` is a very simple language, there's not very much you need to learn to get started. Some things, however, might seem unintuitive when approaching it from the perspective of other languages. Namely, `make` is really a template engine that renders “stubs” and then executes those stubs in a shell. Environment variables can be considered as the arguments to those targets. 
+Because `make` is a very simple language, there's not very much you need to learn to get started. Some things, however, might seem unintuitive when approaching it from the perspective of other languages. Namely, `make` is really a template engine that renders “stubs” and then executes those stubs in a shell. Environment variables can be considered as the arguments to those targets.
 
 The reason for using `make` is that it's supposed to be less magical. It's such a basic language it should be hard to do something wrong. It defines every action you could possibly want to take and provides a consistent interface for calling those targets. Environment variables are used everywhere, so it's very configurable and also 12-factor-esque.
 
-On the other hand, something like `bash` is more full-featured, but suffers from some of the early criticisms of PHP. Most shell-scripts suck. They don't check exit codes. They don't accept arguments in consistent fashion. They don't use environment variables. They hardcode settings. They end up looking like spaghetti. 
+On the other hand, something like `bash` is more full-featured, but suffers from some of the early criticisms of PHP. Most shell-scripts suck. They don't check exit codes. They don't accept arguments in consistent fashion. They don't use environment variables. They hardcode settings. They end up looking like spaghetti.
 
 
-## Variables 
+## Variables
 
-Part of the confusion around make is that make variables (e.g. `$(FOO)`) resemble shell-like variables (e.g. `$FOO` or `${FOO}`).  Note, that in bash using  `$(....)` is synonymous using ``...`` (which will run the command). 
+Part of the confusion around make is that make variables (e.g. `$(FOO)`) resemble shell-like variables (e.g. `$FOO` or `${FOO}`).  Note, that in bash using  `$(....)` is synonymous using ``...`` (which will run the command).
 
 In `make`, variables are synonymous to environment variables. They can be defined ad-hoc on the command line or at the top of the Makefile.
 
@@ -32,7 +32,7 @@ In `make`, variables are synonymous to environment variables. They can be define
 make something FOO=bar
 ```
 
-or 
+or
 
 Makefile:
 
@@ -93,7 +93,7 @@ For example....
 ```
 deps:
     @which -s envsubst || brew install gettext
-     
+
 replace: deps
     @envsubst < something.sh > something.txt
 ```
@@ -108,7 +108,7 @@ If your target name contains an escaped color (\:), builds deps do not work.
 ```
 example\:test:
     @echo "Hello world!"
-     
+
 example\:broken: example:text
 
 ```
@@ -119,8 +119,8 @@ example\:broken: example:text
 ```
 example\:test:
     @echo "Hello world!"
-     
-example\:broken: 
+
+example\:broken:
     @make example:text
 ```
 
@@ -206,13 +206,13 @@ Here's what our template looks like:
 ```
 
 1. Make will first render the template. It does this by first processing all make directives. These are everything in `$(....)`.
-2. It finds` $(eval -include /tmp/env)`. This says to include the contents of `/tmp/env` into the current scope. If the file `/tmp/env` does not exist, it will not error and silently continue. Without the leading `-`, it would exit if the file does not exist (which it doesn't in this example - readon for more details). 
+2. It finds` $(eval -include /tmp/env)`. This says to include the contents of `/tmp/env` into the current scope. If the file `/tmp/env` does not exist, it will not error and silently continue. Without the leading `-`, it would exit if the file does not exist (which it doesn't in this example - readon for more details).
 3. `/tmp/env` does not exist, so nothing got included. Even if it did exist, it would be from some previous execution
 4. Then it finds `$(TODAY)` which is not set, so it's evaluated to an empty string.
 5. All `$(...)` processing is complete, so the rendered contents look like:
     `@echo "TODAY=wednesday" > /tmp/env
     @echo "Today is: ''"`
-    
+
 6. Make proceeds to execute the contents, line by line
 7. `/bin/bash -c 'echo “TODAY=wednesday” > /tmp/env'`
 8. `/bin/bash -c 'echo "Today is: \'\'"'`
@@ -268,7 +268,7 @@ foobar:
     @echo $${MONTH}
 ```
 
-This will output *nothing* but a new line `\n` because what happens is `export MONTH=February` is executed and exported in the first subshell, but a subshell cannot modify the environment of the parent process (`make`). 
+This will output *nothing* but a new line `\n` because what happens is `export MONTH=February` is executed and exported in the first subshell, but a subshell cannot modify the environment of the parent process (`make`).
 
 Then when the `echo` runs, we try and output `${MONTH}` (in bash-syntax) and it's empty.
 

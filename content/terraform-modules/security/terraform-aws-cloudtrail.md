@@ -7,12 +7,12 @@ excerpt: >-
 
 # Terraform AWS CloudTrail
 
-|                  |                                                                                                                                                             |
-|:-----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GitHub Repo      | <https://github.com/cloudposse/terraform-aws-cloudtrail>                                                                                                    |
-| Terraform Module | terraform-aws-cloudtrail                                                                                                                                    |
-| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudtrail.svg)](https://github.com/cloudposse/terraform-aws-cloudtrail/release) |
-| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudtrail.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudtrail)   |
+|                  |                                                                                                                                                              |
+|:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | <https://github.com/cloudposse/terraform-aws-cloudtrail>                                                                                                     |
+| Terraform Module | terraform-aws-cloudtrail                                                                                                                                     |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudtrail.svg)](https://github.com/cloudposse/terraform-aws-cloudtrail/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudtrail.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudtrail)    |
 
 The module accepts an encrypted S3 bucket with versioning to store CloudTrail logs.
 
@@ -60,7 +60,7 @@ module "cloudtrail_s3_bucket" {
 }
 ```
 
-For a complete example, see [examples/complete](https://github.com/cloudposse/terraform-aws-cloudtrail/examples/complete).
+For a complete example, see [examples/complete](https://github.com/cloudposse/terraform-aws-cloudtrail/tree/master/examples/complete).
 
 # Variables
 

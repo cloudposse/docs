@@ -12,7 +12,7 @@ excerpt: >-
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | GitHub Repo      | <https://github.com/cloudposse/terraform-aws-multi-az-subnets>                                                                                                   |
 | Terraform Module | terraform-aws-multi-az-subnets                                                                                                                                   |
-| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-jenkins.svg)](https://github.com/cloudposse/tterraform-aws-multi-az-subnets/releases) |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-jenkins.svg)](https://github.com/cloudposse/terraform-aws-multi-az-subnets/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-multi-az-subnets.svg)](https://travis-ci.org/cloudposse/terraform-aws-multi-az-subnets)          |
 
 The module creates private or public subnets in the provided Availability Zones.

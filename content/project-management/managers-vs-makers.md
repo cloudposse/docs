@@ -2,7 +2,7 @@
 title: "Managers vs Makers"
 excerpt: ""
 ---
-![](/assets/e5ae645-paul_graham.png)
+![Paul Graham](/assets/e5ae645-paul_graham.png)
 # TL;DR
 
 Developers (Makers) and Managers work differently.

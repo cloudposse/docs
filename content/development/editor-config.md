@@ -70,7 +70,7 @@ indent_size = 4
 Find all plugins here: <http://editorconfig.org/#download>
 
 - [Vim](https://github.com/editorconfig/editorconfig-vim#readme)
-- [Visual Studio](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+- [Visual Studio](https://marketplace.visualstudio.com/items?itemName=EditorConfigTeam.EditorConfig)
 
 # References
 

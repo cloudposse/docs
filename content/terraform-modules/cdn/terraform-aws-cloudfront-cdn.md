@@ -8,12 +8,12 @@ excerpt: >-
 
 # Terraform AWS CloudFront CDN
 
-|                  |                                                                                                                                                                     |
-|:-----------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GitHub Repo      | <https://github.com/cloudposse/terraform-aws-cloudfront-cdn>                                                                                                        |
-| Terraform Module | terraform-aws-cloudfront-cdn                                                                                                                                        |
-| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudfront-cdn.svg)](https://github.com/cloudposse/terraform-aws-cloudfront-cdn/release) |
-| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-cdn.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-cdn)   |
+|                  |                                                                                                                                                                      |
+|:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo      | <https://github.com/cloudposse/terraform-aws-cloudfront-cdn>                                                                                                         |
+| Terraform Module | terraform-aws-cloudfront-cdn                                                                                                                                         |
+| Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudfront-cdn.svg)](https://github.com/cloudposse/terraform-aws-cloudfront-cdn/releases) |
+| Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-cdn.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-cdn)    |
 
 If you need to accelerate an S3 bucket, we suggest using [`terraform-aws-cloudfront-s3-cdn`](https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn) instead.
 
@@ -88,7 +88,7 @@ Pass the `deployment_arns` parameter to the `terraform-aws-s3-website` module to
 
 # More Examples
 
-A complete example of setting up CloudFront Distribution with Cache Behaviors for a WordPress site: [`examples/wordpress`](examples/wordpress/main.tf)
+A complete example of setting up CloudFront Distribution with Cache Behaviors for a WordPress site: [`examples/wordpress`](https://github.com/cloudposse/terraform-aws-cloudfront-cdn/blob/master/examples/wordpress/main.tf)
 
 # Generating ACM Certificate
 

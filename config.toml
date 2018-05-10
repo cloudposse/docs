@@ -9,6 +9,7 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
 enableMissingTranslationPlaceholders = false
 
+publishDir = "public"
 
 enableEmoji = true
 # [Languages]

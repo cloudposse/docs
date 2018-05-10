@@ -74,8 +74,8 @@ The site experienced the classic cascading failure that affected all components 
 
 ## Unexplained problems
 
-- During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![](/assets/e82e21a-image_10.png)
-- During the rollout, TablePress options got cleared ![](/assets/4204bed-image_11.png)
+- During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![Amazon Associates Link Builder Credentials Lost](/assets/e82e21a-image_10.png)
+- During the rollout, TablePress options got cleared ![TablePress Options Reset](/assets/4204bed-image_11.png)
 
 ## Remediations
 
@@ -92,7 +92,7 @@ List of actions performed to resolve the problem:
 
 ### Short term
 
-- Varnish health probe should ping synthetic URI (e.g. /healthcheck) that only tests varnish, [not backends](https://github.com/gadgetreview/wordpress/blob/master/.ebextensions/80-monit.config#L174)
+- Varnish health probe should ping synthetic URI (e.g. /healthcheck) that only tests varnish, not backends
 - PHP-FPM should not use persistent mysqli connections
 - Ensure wp-plugins are all explicitly activated/deactivated as part of deployment
 - Investigate what happens if wordpress plugin activated before all servers upgraded
@@ -126,7 +126,7 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 ### Elastic Beanstalk
 
-ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s. 
+ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s.
 
 {{< img src="/assets/af54926-image_15.png" title="ElasticBeanstalk Request Spike" >}}
 
