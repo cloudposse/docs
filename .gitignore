@@ -1,4 +1,5 @@
 deploy.toml
+test
 test.toml
 node_modules
 .build-harness

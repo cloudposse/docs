@@ -1,5 +1,5 @@
 # Directory to scan for HTML files.
-DirectoryPath: "public/"
+DirectoryPath: "test/"
 
 # The file to look for when linking to a directory.
 DirectoryIndex: "index.html"
