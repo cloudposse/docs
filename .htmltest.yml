@@ -39,9 +39,12 @@ IgnoreInternalEmptyHash: true
 
 # Array of regexs of URLs to ignore.
 IgnoreURLs:
+# LinkedIn blocks all crawlers and AWS
 - "linkedin.com"
 # Related to: https://github.com/wjdp/htmltest/issues/89
 - "marketplace.visualstudio.com"
+# Rate limiting precludes us from testing these
+- "img.shields.io"
 
 # IgnoreDirs
 IgnoreDirs:
