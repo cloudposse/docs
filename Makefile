@@ -30,7 +30,10 @@ lint:
 	hugo --renderToMemory
 
 ## Validate all html is good
-validate: lint
+validate: lint test
+
+## Run tests
+test:
 	htmltest
 
 release:

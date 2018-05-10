@@ -28,6 +28,9 @@ EnforceHTTPS: false
 # Turns off image alt attribute checking.
 IgnoreAltMissing: true
 
+# Turns off errors for links to directories without a trailing slash.
+IgnoreDirectoryMissingTrailingSlash: true
+
 # Array of regexs of URLs to ignore.
 IgnoreURLs:
 - "linkedin.com"
