@@ -7,7 +7,7 @@ The `build-harness` is a collection of [Makefiles](/local-dev-environments/makef
 
 |              |                                                                                                                                        |
 |:-------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| GitHub Repo  | <https://raw.githubusercontent.com/cloudposse/build-harness>                                                                           |
+| GitHub Repo  | <https://github.com/cloudposse/build-harness/>                                                                                         |
 | Build Status | [![Build Status](https://travis-ci.org/cloudposse/build-harness.svg)](https://travis-ci.org/cloudposse/build-harness)                  |
 | Release      | [![Release](https://img.shields.io/github/release/cloudposse/build-harness.svg)](https://github.com/cloudposse/build-harness/releases) |
 
