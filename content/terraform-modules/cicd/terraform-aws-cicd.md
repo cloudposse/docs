@@ -21,7 +21,7 @@ This module supports three specific use-cases.
 The module gets the code from a GitHub repository (public or private), builds it by executing the `buildspec.yml` file from the repository pushes the built artifact to an S3 bucket,
 and deploys the artifact to Elastic Beanstalk running one of the supported stacks (_e.g._ Java, Go, Node, IIS, Python, Ruby, etc.).
 
-{{% dialog type="info" icon="fa-info-circle" title="References" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="References" %}}
 - http://docs.aws.amazon.com/codebuild/latest/userguide/sample-maven-5m.html
 - http://docs.aws.amazon.com/codebuild/latest/userguide/sample-nodejs-hw.html
 - http://docs.aws.amazon.com/codebuild/latest/userguide/sample-go-hw.html
@@ -33,7 +33,7 @@ and deploys the artifact to Elastic Beanstalk running one of the supported stack
 The module gets the code from a `GitHub` repository, builds a Docker image from it by executing the `buildspec.yml` and `Dockerfile` files from the repository,
 pushes the Docker image to an ECR repository, and deploys the Docker image to Elastic Beanstalk running Docker stack.
 
-{{% dialog type="info" icon="fa-info-circle" title="References" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="References" %}}
 - http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
 {{% /dialog %}}
 
@@ -44,7 +44,7 @@ and pushes the Docker image to an ECR repository. This is used when we want to b
 
 To activate this mode, don't specify the `app` and `env` attributes for the module.
 
-{{% dialog type="info" icon="fa-info-circle" title="References" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="References" %}}
 - http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
 {{% /dialog %}}
 

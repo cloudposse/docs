@@ -32,9 +32,9 @@ module "kops_vpc_peering" {
 }
 ```
 
-## :information_source: NOTE
-
-> The backing services VPC must have subnets associated with route tables.
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+The backing services VPC must have subnets associated with route tables.
+{{% /dialog %}}
 
 # Variables
 
@@ -55,13 +55,13 @@ module "kops_vpc_peering" {
 | `nodes_name`                                       | `nodes`   | K8s nodes subdomain name in the `Kops` DNS zone                                                                                      | Yes      |
 | `attributes`                                       | `[]`      | Additional attributes (_e.g._ `policy` or `role`)                                                                                    | No       |
 
-## :information_source: NOTE
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+When enabled, the DNS resolution feature (`backing_services_allow_remote_vpc_dns_resolution`) require that the backing services VPC must have support for the DNS hostnames enabled.
 
-> When enabled, the DNS resolution feature (`backing_services_allow_remote_vpc_dns_resolution`) require that the backing services VPC must have support for the DNS hostnames enabled.
+This can be done using the [`enable_dns_hostnames`](https://www.terraform.io/docs/providers/aws/r/vpc.html#enable_dns_hostnames) attribute in the `aws_vpc` resource.
 
-> This can be done using the [`enable_dns_hostnames`](https://www.terraform.io/docs/providers/aws/r/vpc.html#enable_dns_hostnames) attribute in the `aws_vpc` resource.
-
-> Read more: [www.terraform.io/docs/providers/aws/r/vpc_peering.html](https://www.terraform.io/docs/providers/aws/r/vpc_peering.html#allow_remote_vpc_dns_resolution)
+Read more: [www.terraform.io/docs/providers/aws/r/vpc_peering.html](https://www.terraform.io/docs/providers/aws/r/vpc_peering.html#allow_remote_vpc_dns_resolution)
+{{% /dialog %}}
 
 # Outputs
 

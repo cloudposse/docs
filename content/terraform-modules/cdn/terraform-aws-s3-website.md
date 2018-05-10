@@ -43,10 +43,9 @@ module "website" {
 }
 ```
 
-
-
-##### :warning: IMPORTANT
-> Only specify `parent_zone_id` or `parent_zone_name`, but not both
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Important" %}}
+Only specify `parent_zone_id` or `parent_zone_name`, but not both.
+{{% /dialog %}}
 
 # Variables
 

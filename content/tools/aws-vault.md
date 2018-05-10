@@ -5,9 +5,9 @@ excerpt: ''
 
 The [`aws-vault`](https://github.com/99designs/aws-vault) by [99 Designs](https://99designs.com/) is a vault for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
 
-# :warning: IMPORTANT
-
-> The `aws-vault` has no relationship to the HashiCorp Vault.
+{{% dialog type="info" icon="fa-info-circle" title="Info" %}}
+The `aws-vault` has no relationship to the HashiCorp Vault.
+{{% /dialog %}}
 
 Features:
 
@@ -18,9 +18,9 @@ Features:
 - Compatible with `~/.aws/config`
 - Automatic logins to AWS Web Console
 
-# :information_source: NOTE
-
-> This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).
+{{% /dialog %}}
 
 # Installation
 
@@ -55,9 +55,9 @@ mfa_serial = arn:aws:iam::313021614177:mfa/erik@cloudposse.com
 source_profile=cloudposse
 ```
 
-### :information_source: IMPORTANT
-
-> Do not define the source profile in `~/.aws/credentials`; we're going to use `aws-vault add` for that.
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Do not define the source profile in `~/.aws/credentials`; we're going to use `aws-vault add` for that.
+{{% /dialog %}}
 
 We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](/geodesic) sessions.
 

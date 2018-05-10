@@ -27,9 +27,9 @@ module "datadog_aws_integration" {
 }
 ```
 
-## :information_source: NOTE
-
-> At the moment the module supports `RDS integration only`. It will be modified as necessary to integrate the needful services.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+At the moment the module supports `RDS integration only`. It will be modified as necessary to integrate the needful services.
+{{% /dialog %}}
 
 # Variables
 

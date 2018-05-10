@@ -1,5 +1,6 @@
 export INSTALL_PATH ?= /usr/local/bin
 export HUGO ?= hugo
+export HUGO_VERSION ?= 0.40.2
 export HUGO_URL ?= http://localhost.cloudposse.com:1313/
 export HUGO_ARGS ?= --watch --buildDrafts
 export PACKAGES_VERSION ?= 0.1.7

@@ -5,7 +5,7 @@ excerpt: ''
 
 Staging - is kubernetes cluster running on top of AWS. Functionality of cluster extended with Kubernetes backing services.
 
-![Staging Cluster](/assets/2986185-Current_Staging_cluster_-_Page_1_2.png)
+{{< img src="/assets/2986185-Current_Staging_cluster_-_Page_1_2.png" title="Staging Cluster" >}}
 
 - Grey - Kubernetes & AWS is [Infrastructure as a Code]({{< relref "devops-methodology/software-lifecycle/infrastructure-as-code.md" >}})
 - Blue - Kubernetes Backing Services - are [Backing Services](/kubernetes-backing-services) for extending k8s functionality

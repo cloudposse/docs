@@ -3,12 +3,13 @@ title: "with Kops"
 excerpt: ""
 ---
 
-##### :warning: Prerequisites
-> This assumes you've followed the [Geodesic Quick Start]({{< relref "geodesic/module/quickstart.md" >}}) guide which covers all the scaffolding necessary to get started.
+{{% dialog type="info" icon="fa-info-circle" title="Prerequisites" %}}
+This assumes you've followed the [Geodesic Quick Start]({{< relref "geodesic/module/quickstart.md" >}}) guide which covers all the scaffolding necessary to get started.
+{{% /dialog %}}
 
 # Create a cluster
 
-Follow the [Provision a Cluster](doc:provision-a-cluster) process
+Follow the [Provision a Cluster]({{< relref "geodesic/module/usage/with-kops.md" >}}) process
 
 # Provision Platform Backing Services
 
@@ -94,7 +95,7 @@ You will find the rendered `kops` manifest file `/conf/kops/manifest.yaml`.
 
 Run `kops create -f manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
 
-![Kops Create Example](/assets/b251e2e-kops-create.png)
+{{< img src="/assets/b251e2e-kops-create.png" title="Kops Create Example" >}}
 
 Run the following to add the SSH public key to the cluster.
 ```
@@ -108,11 +109,11 @@ Run the following to provision the AWS resources for the cluster.
 kops update cluster --name us-west-2.staging.joany.net --yes
 ```
 
-![Kops Update Cluster Example](/assets/944178e-kops-update-cluster.png)
+{{< img src="/assets/944178e-kops-update-cluster.png" title="Kops Update Cluster Example" >}}
 
 All done. The `kops` cluster is now up and running.
 
-{{% dialog type="info" icon="fa-info-circle" title="Read More" %}}
+{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 For more information, check out the following links:
 * https://github.com/cloudposse/geodesic#creating-a-kops-cluster
 * https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md

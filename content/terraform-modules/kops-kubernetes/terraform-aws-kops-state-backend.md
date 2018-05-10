@@ -75,9 +75,10 @@ aws route53 list-tags-for-resources --resource-type hostedzone --resource-ids Z5
 
 # Variables
 
-## :information_source: NOTE
 
-> One of `parent_zone_name` or `parent_zone_id` is required, but not both. The module will look up the parent zone by either name or ID.
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+One of `parent_zone_name` or `parent_zone_id` is required, but not both. The module will look up the parent zone by either name or ID.
+{{% /dialog %}}
 
 | Name               | Default                         | Description                                                                                                               | Required |
 |:-------------------|:--------------------------------|:--------------------------------------------------------------------------------------------------------------------------|:--------:|

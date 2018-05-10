@@ -34,7 +34,7 @@ disableNavChevron = false # set true to hide next/prev chevron, default is false
 highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
 menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
 enableGitInfo = true
-editURL = "https://github.com/cloudposse/docs/edit/master"
+editURL = "https://github.com/cloudposse/docs/blob/master"
 
 [outputFormats.glossary]
 baseName = "glossary"
@@ -57,46 +57,53 @@ home = [ "HTML", "RSS", "Algolia"]
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i><label>Documentation</label>"
+name = "<i class='fa fa-book'></i> <label>Documentation</label>"
 identifier = "documentation"
 url = "/"
 weight = 10
 
 [[menu.shortcuts]]
-pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i><label>Support</label>"
-identifier = "support"
-url = "https://github.com/cloudposse/docs/issues"
+name = "<i class='fa fa-bullhorn'></i> <label>Announcements</label>"
+identifier = "announcements"
+url = "/announcements/"
 weight = 20
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i><label>Ask a Question</label>"
-identifier = "ask-a-question"
-url = "https://github.com/cloudposse/docs/issues/new"
+name = "<i class='fab fa-github'></i> <label>Our GitHub</label>"
+identifier = "github"
+url = "https://github.com/cloudposse/"
 weight = 30
 
 [[menu.shortcuts]]
-pre = "<h3>More</h3>"
-name = "<i class='fa fa-github'></i> <label>Our GitHub</label>"
-identifier = "github"
-url = "https://github.com/cloudposse/"
+name = "<i class='fa fa-bookmark'></i> <label>Blog</label>"
+identifier = "blog"
+url = "https://cloudposse.com/blog/"
 weight = 40
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-cloud-download'></i><label>Announcements</label>"
-identifier = "announcements"
-url = "/announcements/"
+pre = "<h3>More</h3>"
+name = "<i class='fa fa-question'></i> <label>FAQ</label>"
+identifier = "faq"
+url = "/faq/"
+weight = 45
+
+[[menu.shortcuts]]
+pre = "<h3>More</h3>"
+name = "<i class='fa fa-question'></i> <label>Support</label>"
+identifier = "support"
+url = "https://github.com/cloudposse/docs/issues"
 weight = 50
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-bookmark'></i><label>Blog</label>"
-identifier = "blog"
-url = "https://cloudposse.com/blog/"
+pre = "<h3>More</h3>"
+name = "<i class='fa fa-edit'></i> <label>Ask a Question</label>"
+identifier = "ask-a-question"
+url = "https://github.com/cloudposse/docs/issues/new"
 weight = 60
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-bullhorn'></i> <label>Contact Us</label>"
+name = "<i class='fa fa-envelope'></i> <label>Contact Us</label>"
 url = "/documentation/contact-us/"
 identifier = "contact-us"
 weight = 70

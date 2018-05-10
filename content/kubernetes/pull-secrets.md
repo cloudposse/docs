@@ -34,7 +34,7 @@ kops create secret dockerconfig
 
 
 
-{{% dialog type="info" icon="fa-info-circle" title="Read More" %}}
+{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 [github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md](https://github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md)
 {{% /dialog %}}
 

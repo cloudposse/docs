@@ -188,10 +188,9 @@ module "us_east_1b_private_subnets" {
 }
 ```
 
-
-
-##### :warning: IMPORTANT
-> You must use only one type of device for a default route gateway per route table. `ENI` or `NGW`
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Important" %}}
+You must use only one type of device for a default route gateway per route table. `ENI` or `NGW`
+{{% /dialog %}}
 
 # Inputs
 

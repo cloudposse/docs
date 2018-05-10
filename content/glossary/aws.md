@@ -6,6 +6,7 @@ terms:
 - "aws cli"
 - "awscli"
 - "aws-cli"
+- "!aws-"
 excerpt: "Amazon Web Services"
 ---
 Amazon Web Services is a public cloud offering from Amazon. It's also a command line tool (`aws`) use to control services running on the platform.

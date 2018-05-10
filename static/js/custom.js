@@ -16,6 +16,9 @@ $(function(){
     apiKey: '557985309adf0e4df9dcf3cb29c61928',
     indexName: 'docs',
     urlSync: true,
+    searchParameters: {
+      hitsPerPage: 10
+    },
     searchFunction(helper) {
       if (helper.state.query === '') {
         return;
@@ -26,12 +29,11 @@ $(function(){
 
   search.addWidget(
     instantsearch.widgets.hits({
-      container: '#hits',
+      container: '#search-results',
       templates: {
         empty: 'No results',
         // https://caniuse.com/#feat=template-literals
-        //item: '<div class="my-3"><h3><a href="{{ permalink }}">{{{ _highlightResult.title.value }}}</a></h3><div><span class="text-secondary">{{ lastmod_date }}</span> <span class="text-secondary">∙ {{ tags_text }}</span> {{#_highlightResult.description.value}}∙ {{ _highlightResult.description.value }}{{/_highlightResult.description.value}}</div><small class="text-muted">{{ summary }}</small></div>'
-        item: '<div class="my-3"><h3><a href="{{ uri }}">{{{ _highlightResult.title.value }}}</a></h3><div><span class="text-secondary">∙ {{ tags_text }}</span> {{#_highlightResult.description.value}}∙ {{ _highlightResult.description.value }}{{/_highlightResult.description.value}}</div><small class="text-muted">{{ summary }}</small></div>'
+        item: '<a href="{{ uri }}"><p class="search-result-container"><div><strong class="search-result-title">{{{ _highlightResult.title.value }}}</strong>{{{ tags_text }}}</div><p class="text-overflow">{{{ _highlightResult.content.value }}}</p></div></a>'
       },
       transformData: {
         item: function(data) {

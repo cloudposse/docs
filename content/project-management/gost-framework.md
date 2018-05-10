@@ -1,6 +1,7 @@
 ---
 title: "GOST Framework"
 excerpt: ""
+slug: gost-framework
 ---
 ![](/assets/3feff88-ghost.png)
 
@@ -12,7 +13,7 @@ A goal defines a broad primary outcome. This is the business driver and should r
 
 **Example**: "Improve user productivity for most popular pages across our site"
 
-{{% dialog type="tip" icon="fa-info-circle" title="Tip" %}}
+{{% dialog type="tip" icon="fa fa-info-circle" title="Tip" %}}
 The goal should not include any objectives, strategies or tactics. It's very high-level and should be easily understood by anyone in the business.
 {{% /dialog %}}
 
@@ -22,7 +23,7 @@ List of measurable outcomes that will be achieved by executing the strategies. O
 
 **Example**: "Reduce page load times by 25%"
 
-{{% dialog type="tip" icon="fa-info-circle" title="Tip" %}}
+{{% dialog type="tip" icon="fa fa-info-circle" title="Tip" %}}
 Typically, these objectives are described using the following terms: "minimize", "increase", "reduce", "eliminate".
 {{% /dialog %}}
 
@@ -32,7 +33,7 @@ The specific approach that will be taken to achieve a goal and objectives. They 
 
 **Example**: "Use caching to reduce page load times"
 
-{{% dialog type="tip" icon="fa-info-circle" title="Tip" %}}
+{{% dialog type="tip" icon="fa fa-info-circle" title="Tip" %}}
 Strategies should not encompass any tactics. That is, there might be multiple tacts that can be executed to fulfill the strategy. This is geared towards the CIO/CTO audience that might not be well versed on the tactics. For example, "Use Caching to reduce page load times"
 {{% /dialog %}}
 
@@ -42,6 +43,6 @@ Tactics describe *how* specific tools will be used to implement the strategies. 
 
 **Example**: "Use Memcache to cache API responses"
 
-{{% dialog type="tip" icon="fa-info-circle" title="Tip" %}}
+{{% dialog type="tip" icon="fa fa-info-circle" title="Tip" %}}
 Tactics describe the exact solution that will be implemented by the engineering team. Typically, this is a list of technologies (E.g. MySQL, Memcache, Kubernetes, Helm, Docker, etc)
 {{% /dialog %}}

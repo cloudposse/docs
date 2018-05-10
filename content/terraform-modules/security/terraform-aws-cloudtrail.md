@@ -37,9 +37,9 @@ module "cloudtrail" {
 }
 ```
 
-## :information_source: NOTE
-
-> To create an S3 bucket for CloudTrail logs, use [terraform-aws-cloudtrail-s3-bucket](https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket) module. It creates an S3 bucket and an IAM policy to allow CloudTrail logs.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+To create an S3 bucket for CloudTrail logs, use [terraform-aws-cloudtrail-s3-bucket](https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket) module. It creates an S3 bucket and an IAM policy to allow CloudTrail logs.
+{{% /dialog %}}
 
 ## HCL
 

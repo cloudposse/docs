@@ -18,18 +18,14 @@
 {{if .IsHome}}
 <div class="landing-top">
   <div class="landing-description">
+    <img src="/images/cloud.png" class="whitish cloud"/>
     <h1>The Cloud Posse Developer Hub</h1>
     <div class="about">
       Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!
-       <div id="search-box"><!-- SearchBox widget will appear here --></div>
     </div>
     <div class="search-bar">
-      <div class="searchbox">
-        <div class="icon">
-          <div class="fa fa-search"></div>
-        </div>
-        <input type="text" placeholder="Search" class="search-box">
-      </div>
+      <div id="search-box"><!-- SearchBox widget will appear here --></div>
+      <div id="search-results"></div>
     </div>
   </div>
 </div>
@@ -112,13 +108,16 @@
       </div>
     {{- end}}
       <h1 class="title">{{.Title}}</h1>
-      <div class="github-link">
-        <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
-      </div>
       <div class="excerpt">
         {{ if .Params.excerpt }}
         <p>{{ .Params.excerpt | markdownify }}</p>
         {{ end }}
+      </div>
+      <div class="ask-a-question">
+        <a class="button green" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
+      </div>
+      <div class="github-link">
+        <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
       </div>
   {{end}}
 

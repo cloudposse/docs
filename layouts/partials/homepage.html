@@ -25,7 +25,10 @@
             {{- if ne $numberOfPages 0 }} haschildren{{end}}
             ">
           <div>
-            <h3><a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a></h3>
+            <h3>{{ if eq $depth 1 }}<i class="{{ .Params.icon | default "fa fa-bullhorn" }}" aria-hidden="true"></i>{{end}}<a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a></h3>
+            {{ if eq $depth 1 }}
+            <a class="view-all" href="{{ .RelPermalink}}">View All</a>
+            {{ end }}
           </div>
           {{- if ne $numberOfPages 0 }}
             <!-- begin A: $numberOfPages ne 0 -->

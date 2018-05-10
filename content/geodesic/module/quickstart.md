@@ -6,7 +6,7 @@ excerpt: "Get up and running quickly with geodesic"
 
 * Follow the "Quick Start" for [Local Development Environments]({{< relref "local-dev-environments/quickstart.md" >}})
 
-{{% dialog type="info" icon="fa-info-circle" title="Examples" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Examples" %}}
 All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
 {{% /dialog %}}
 
@@ -70,8 +70,9 @@ For more information follow [Use](doc:use)
 
 Config AWS credentials and roles following [Authorization]({{< relref "aws/iam/authorization.md" >}})
 
-##### :warning: Warning
-> By default, Geodesic uses [AWS Vault]({{< relref "tools/aws-vault.md" >}}) to authorize on AWS so ensure you add source profile name to [AWS Vault]({{< relref "tools/aws-vault.md" >}})
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Note" %}}
+By default, Geodesic uses [AWS Vault]({{< relref "tools/aws-vault.md" >}}) to authorize on AWS so ensure you add source profile name to [AWS Vault]({{< relref "tools/aws-vault.md" >}})
+{{% /dialog %}}
 
 ## Set default profile in Geodesic Module
 
@@ -84,7 +85,7 @@ ENV AWS_DEFAULT_PROFILE="example-staging-admin"
 
 Run `make docker/build` to rebuild module container
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 You can install it on local to do the same for development purpose.
 See [AWS Vault]({{< relref "tools/aws-vault.md" >}}) setup.
 {{% /dialog %}}

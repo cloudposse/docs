@@ -41,9 +41,9 @@ https://signin.aws.amazon.com/switchrole
                 &displayName=Dev
 ```
 
-## :warning: IMPORTANT
-
-> Member accounts that you invite to join your Organization (that are not part of your Organization) do not automatically get `OrganizationAccountAccessRole` created. You can use [terraform-aws-organization-access-role](https://github.com/cloudposse/terraform-aws-organization-access-role) module to create `OrganizationAccountAccessRole` role in an invited member account.
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Important" %}}
+Member accounts that you invite to join your Organization (that are not part of your Organization) do not automatically get `OrganizationAccountAccessRole` created. You can use [terraform-aws-organization-access-role](https://github.com/cloudposse/terraform-aws-organization-access-role) module to create `OrganizationAccountAccessRole` role in an invited member account.
+{{% /dialog %}}
 
 # Usage
 

@@ -47,7 +47,7 @@ module "tf_ami_from_instance" {
 }
 ```
 
-### :no_entry_sign: CAVEATS
-
-> - Terraform will only keep the latest AMI snapshot (terraform will delete the previously generated AMI) See our Lamda based solution which avoids this pitfall: [terraform-aws-ec2-ami-backup](doc:terraform-aws-ec2-ami-backup)
-> - This is is not compatible with autoscaling groups
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Caveats" %}}
+- Terraform will only keep the latest AMI snapshot (terraform will delete the previously generated AMI) See our Lamda based solution which avoids this pitfall: [terraform-aws-ec2-ami-backup]({{< relref "terraform-modules/backups/terraform-aws-ec2-ami-backup.md" >}})
+- This is is not compatible with autoscaling groups
+{{% /dialog %}}

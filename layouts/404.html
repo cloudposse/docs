@@ -15,7 +15,7 @@
       {{ partial "flex/body-beforecontent.html" . }}
     {{end}}
     
-	<p><img src="{{"images/404-not-found.png" | relURL}}" style="width:50%"></img></p>    
+	<p><img src="{{"/assets/404-not-found.png" | relURL}}" style="width:50%"></img></p>    
     
     {{if .Site.Params.themeStyle}}
       {{ partial (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}

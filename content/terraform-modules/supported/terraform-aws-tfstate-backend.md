@@ -24,9 +24,9 @@ The module supports the following:
 
 <https://www.terraform.io/docs/backends/types/s3.html>
 
-## :information_source: NOTE
-
-> The operators of the module (IAM Users) must have permissions to create S3 buckets and DynamoDB tables when performing `terraform plan` and `terraform apply`
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+The operators of the module (IAM Users) must have permissions to create S3 buckets and DynamoDB tables when performing `terraform plan` and `terraform apply`
+{{% /dialog %}}
 
 # Usage
 
@@ -41,13 +41,14 @@ module "terraform_state_backend" {
 }
 ```
 
-## :information_source: NOTE
+{{% dialog type="tip" icon="fa-info-circle" title="Tip" %}}
+First, create the bucket and table without any state enabled (Terraform will use the local file system to store state).
 
-> First, create the bucket and table without any state enabled (Terraform will use the local file system to store state).
+You can then import the bucket and table by using [`terraform import`](https://www.terraform.io/docs/import/index.html) and store the state file into the bucket.
 
-> You can then import the bucket and table by using [`terraform import`](https://www.terraform.io/docs/import/index.html) and store the state file into the bucket.
+Once the bucket and table have been created, configure the [backend](https://www.terraform.io/docs/backends/types/s3.html)
+{{% /dialog %}}
 
-> Once the bucket and table have been created, configure the [backend](https://www.terraform.io/docs/backends/types/s3.html)
 
 ## HCL
 
@@ -64,7 +65,7 @@ Initialize the backend with `terraform init`.
 
 After `terraform apply`, `terraform.tfstate` file will be stored in the bucket, and the DynamoDB table will be used to lock the state to prevent concurrent modifications.
 
-![Terraform Apply Output](/assets/f5a8966-s3-bucket-with-terraform-state.png)
+{{< img src="/assets/f5a8966-s3-bucket-with-terraform-state.png" title="Terraform Apply Output" >}}
 
 # Variables
 
