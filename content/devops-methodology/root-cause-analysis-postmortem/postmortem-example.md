@@ -92,7 +92,7 @@ List of actions performed to resolve the problem:
 
 ### Short term
 
-- Varnish health probe should ping synthetic URI (e.g. /healthcheck) that only tests varnish, [not backends](https://github.com/gadgetreview/wordpress/blob/master/.ebextensions/80-monit.config#L174)
+- Varnish health probe should ping synthetic URI (e.g. /healthcheck) that only tests varnish, not backends
 - PHP-FPM should not use persistent mysqli connections
 - Ensure wp-plugins are all explicitly activated/deactivated as part of deployment
 - Investigate what happens if wordpress plugin activated before all servers upgraded

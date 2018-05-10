@@ -31,9 +31,13 @@ IgnoreAltMissing: true
 # Turns off errors for links to directories without a trailing slash.
 IgnoreDirectoryMissingTrailingSlash: true
 
+# When true prevents raising an error for links with href="#".
+IgnoreInternalEmptyHash: true
+
 # Array of regexs of URLs to ignore.
 IgnoreURLs:
 - "linkedin.com"
+- ".*_header.*"
 
 # IgnoreDirs
 IgnoreDirs:

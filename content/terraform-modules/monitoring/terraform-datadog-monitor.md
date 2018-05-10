@@ -16,14 +16,14 @@ excerpt: >-
 
 ## Datadog Monitors Catalog
 
-- [Load Average](modules/load_average) - Terraform module to provision Load Average monitors
-- [CPU](modules/cpu) - Terraform module to provision CPU Usage monitors
-- [Memory](modules/memory) - Terraform module to provision Memory Usage monitors
-- [Swap](modules/swap) - Terraform module to provision Swap Space monitors
+- [Load Average](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/load_average) - Terraform module to provision Load Average monitors
+- [CPU](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/cpu) - Terraform module to provision CPU Usage monitors
+- [Memory](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/memory) - Terraform module to provision Memory Usage monitors
+- [Swap](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/swap) - Terraform module to provision Swap Space monitors
 
 ## Usage
 
-- [Load Average](modules/load_average)
-- [CPU](modules/cpu)
-- [Memory](modules/memory)
-- [Swap](modules/swap)
+- [Load Average](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/load_average)
+- [CPU](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/cpu)
+- [Memory](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/memory)
+- [Swap](https://github.com/cloudposse/terraform-datadog-monitor/tree/master/modules/swap)

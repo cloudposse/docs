@@ -12,7 +12,7 @@ Terraform modules are the best way to encapsulate "business logic" and "Best Pra
 
 - Easily version pin infrastructure
 - Useful for staging changes across infrastructure
-- [Public module registry](registry.terraform.io) makes it easy to find modules
+- [Public module registry](https://registry.terraform.io) makes it easy to find modules
 - Distributed using `git`
 
 # Examples
