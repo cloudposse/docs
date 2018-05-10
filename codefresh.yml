@@ -1,0 +1,32 @@
+# Build a service with environment variables
+version: '1.0'
+
+steps:
+  init_variables:
+    title: Init variables
+    image: alpine
+    commands:
+      - cf_export BUILD_HARNESS_VERSION=0.5.4
+      - cf_export HUGO_URL=https://docs.cloudposse.com
+      - cf_export HUGO_CONFIG=deploy.toml
+
+  build:
+    title: Build Hugo Static Site
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ./
+    commands:
+      - make deps
+      - make release
+      - make build
+
+  push_to_s3:
+    title: Push all artifacts to S3 bucket
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ./
+    commands:
+      - make aws/install
+      - make deploy
+    when:
+      condition:
+        all:
+          executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"

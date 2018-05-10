@@ -1,3 +1,4 @@
+deploy.toml
 node_modules
 .build-harness
 build-harness/
