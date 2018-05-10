@@ -6,7 +6,8 @@ steps:
     title: Init variables
     image: alpine
     commands:
-      - cf_export BUILD_HARNESS_VERSION=0.5.4
+      #- cf_export BUILD_HARNESS_VERSION=0.5.4
+      - cf_export BUILD_HARNESS_VERSION=add-aws-cli-403
       - cf_export HUGO_URL=https://docs.cloudposse.com
       - cf_export HUGO_CONFIG=deploy.toml
 
