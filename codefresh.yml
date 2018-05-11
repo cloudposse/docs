@@ -37,3 +37,14 @@ steps:
       condition:
         all:
           executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
+
+  reindex:
+    title: Update algolia search index
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    working_directory: ./
+    commands:
+      - make reindex
+    when:
+      condition:
+        all:
+          executeForMasterBranch: "'${{CF_BRANCH}}' == 'add-algolia'"

@@ -11,12 +11,13 @@ $(function(){
 Calendly.initBadgeWidget({url: 'https://calendly.com/cloudposse/30min', text: 'Schedule Support', branding: false});
 
 $(function(){
+  //console.log(document.location.hostname.match(/localhost/) === null);
   const searchResults = document.querySelector('#search-results');
   const searchBar = document.querySelector('.search-bar');
   const search = instantsearch({
     appId: '32YOERUX83',
     apiKey: '557985309adf0e4df9dcf3cb29c61928',
-    indexName: 'docs',
+    indexName: document.location.hostname.match(/localhost/) === null ? 'prod' : 'dev',
     urlSync: true,
     searchParameters: {
       hitsPerPage: 5

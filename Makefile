@@ -1,3 +1,5 @@
+-include .env
+
 export INSTALL_PATH ?= /usr/local/bin
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
@@ -7,6 +9,8 @@ export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
 export HTMLTEST_LOG_LEVEL ?= 2
+export ALGOLIA_INDEX_FILE ?= $(HUGO_PUBLISH_DIR)/algolia.json
+export ALGOLIA_APPLICATION_INDEX ?= dev
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
@@ -57,3 +61,13 @@ release:
 deploy:
 	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/ s3://$(S3_BUCKET_NAME)/
 
+
+## Update algolia search index
+reindex:
+	jq -cM  .[] $(ALGOLIA_INDEX_FILE) | tr '\n' '\0' | \
+		xargs -0 -n 1 -I'{}' \
+			curl -X POST \
+				-H "X-Algolia-API-Key: $(ALGOLIA_API_KEY)" \
+				-H "X-Algolia-Application-Id: $(ALGOLIA_APPLICATION_ID)" \
+				-d '{}' \
+				"https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/indexes/$(ALGOLIA_APPLICATION_INDEX)"
