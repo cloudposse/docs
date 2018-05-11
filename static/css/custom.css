@@ -586,7 +586,7 @@ div.landing-description {
   transition-delay: 1s;
 }
 
-.search-bar:focus, .search-bar:hover, .search-bar:active {
+.search-bar:focus, .search-bar:hover, .search-bar:active, .search-bar.active {
   padding-left: 0;
   padding-right: 0;
   -webkit-transition: padding 0.3s ease-out;
@@ -595,7 +595,6 @@ div.landing-description {
   -ms-transition: padding 0.3s ease-out;
   transition: padding 0.3s ease-out;
   transition-delay: 0.5s;
-
 }
 
 .search-bar .icon {
@@ -625,7 +624,6 @@ div.landing-description {
     padding: 13px 13px 13px 50px;
     font-size: 14px;
 }
-
 
 .subnav {
   min-height: 38px;

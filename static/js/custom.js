@@ -12,6 +12,7 @@ Calendly.initBadgeWidget({url: 'https://calendly.com/cloudposse/30min', text: 'S
 
 $(function(){
   const searchResults = document.querySelector('#search-results');
+  const searchBar = document.querySelector('.search-bar');
   const search = instantsearch({
     appId: '32YOERUX83',
     apiKey: '557985309adf0e4df9dcf3cb29c61928',
@@ -36,11 +37,13 @@ $(function(){
   function showHits() {
     //console.log("showHits");
     searchResults.classList.remove('hidden');
+    searchBar.classList.add('active');
   }
 
   function hideHits() {
     //console.log("hideHits");
     searchResults.classList.add('hidden');
+    searchBar.classList.remove('active');
   }
 
   search.addWidget(
