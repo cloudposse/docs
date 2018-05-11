@@ -1,6 +1,6 @@
 ---
 title: "Dockerfile"
-excerpt: ""
+description: ""
 ---
 A `Dockerfile` provides a lightweight Domain Specific Langauge (“DSL”) for installing and configuring a Linux OS. It's a simple way of documenting-as-code the necessary steps to set up software with all dependencies. 
 

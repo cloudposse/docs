@@ -1,6 +1,6 @@
 ---
 title: AWS IAM Authorization
-excerpt: ''
+description: ''
 ---
 
 You can access AWS by Web console or AWS CLI.

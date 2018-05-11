@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-cloudtrail
-excerpt: >-
+description: >-
   Terraform module to provision an AWS
   [CloudTrail](https://aws.amazon.com/cloudtrail/).
 ---

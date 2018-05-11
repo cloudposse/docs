@@ -1,6 +1,6 @@
 ---
 title: AWS Organizations
-excerpt: ''
+description: ''
 tags:
   - aws
   - organizations

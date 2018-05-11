@@ -1,6 +1,6 @@
 ---
 title: "aws-vault: error: Failed to start credential server"
-excerpt: "This is usually caused by another geodesic shell running."
+description: "This is usually caused by another geodesic shell running."
 tags:
 - geodesic
 - aws-vault

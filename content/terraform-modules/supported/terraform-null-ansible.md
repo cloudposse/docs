@@ -1,6 +1,6 @@
 ---
 title: terraform-null-ansible
-excerpt: Terraform Module to run ansible playbooks.
+description: Terraform Module to run ansible playbooks.
 ---
 
 # Terraform Null Ansible

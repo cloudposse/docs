@@ -1,6 +1,6 @@
 ---
 title: "Dockerfile Examples"
-excerpt: ""
+description: ""
 draft: true
 ---
 # Simple Dockerfile

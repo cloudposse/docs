@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-elasticache-redis"
-excerpt: "Terraform module to provision an [`ElastiCache`](https://aws.amazon.com/elasticache/) Redis Cluster"
+description: "Terraform module to provision an [`ElastiCache`](https://aws.amazon.com/elasticache/) Redis Cluster"
 ---
 # Terraform AWS Elasticache Redis
 

@@ -1,6 +1,6 @@
 ---
 title: Route 53 Best Practices
-excerpt: ''
+description: ''
 tags:
   - dns
   - aws

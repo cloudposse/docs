@@ -1,6 +1,6 @@
 ---
 title: Editor Config
-excerpt: ''
+description: ''
 tags:
   - code style
   - formatting

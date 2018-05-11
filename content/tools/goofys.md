@@ -1,5 +1,5 @@
 ---
 title: Goofys
-excerpt: ''
+description: ''
 draft: true
 ---

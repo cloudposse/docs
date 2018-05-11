@@ -1,6 +1,6 @@
 ---
 title: "Makefile Examples"
-excerpt: ""
+description: ""
 ---
 *IMPORTANT:* All leading whitespace should be tabbed (`^T`)
 

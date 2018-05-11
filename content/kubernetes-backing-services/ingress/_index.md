@@ -1,6 +1,6 @@
 ---
 title: "Ingress"
-excerpt: ""
+description: ""
 ---
 Configuring a web server or load balancer used to be harder than it should be, especially since most web server configuration files are very similar. The Ingress resource makes this whole problem go away. It provides round-robin load balancing, automatic SSL termination, and name-based virtual hosting.
 

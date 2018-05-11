@@ -1,6 +1,6 @@
 ---
 title: Postmortem Template
-excerpt: ''
+description: ''
 ---
 
 # Incident #1 - Descriptive Name of Incident (2018-06-06)

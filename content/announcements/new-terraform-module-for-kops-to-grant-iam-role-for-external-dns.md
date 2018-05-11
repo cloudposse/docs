@@ -1,7 +1,9 @@
 ---
 title: "Terraform Module to Manage IAM for Kops External DNS"
-excerpt: "Terraform module to provision an IAM role for `external-dns` running in a Kops cluster, and attach an IAM policy to the role with permissions to modify Route53 recordsets."
+description: "Terraform module to provision an IAM role for `external-dns` running in a Kops cluster, and attach an IAM policy to the role with permissions to modify Route53 recordsets."
 publishDate: "2018-03-31 19:40:53"
+categories:
+- announcements
 ---
 
 

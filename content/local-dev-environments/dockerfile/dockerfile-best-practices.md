@@ -1,6 +1,6 @@
 ---
 title: "Dockerfile Best Practices"
-excerpt: ""
+description: ""
 ---
 ## Use .dockerignore
 

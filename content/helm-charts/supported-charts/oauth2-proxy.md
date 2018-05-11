@@ -1,5 +1,5 @@
 ---
 title: "oauth2-proxy"
-excerpt: ""
+description: ""
 draft: true
 ---

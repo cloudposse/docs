@@ -1,6 +1,6 @@
 ---
 title: "Local Dev Environments"
-excerpt: ""
+description: ""
 icon: "fa fa-laptop"
 homepage: true
 ---

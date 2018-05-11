@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-rds"
-excerpt: "Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances"
+description: "Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances"
 ---
 # Terraform AWS RDS
 

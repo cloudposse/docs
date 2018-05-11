@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-ec2-ami-backup
-excerpt: Terraform module for automatic AMI creation
+description: Terraform module for automatic AMI creation
 ---
 
 # Terraform AWS EC2 AMI Backup

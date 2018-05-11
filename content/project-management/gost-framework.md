@@ -1,6 +1,6 @@
 ---
 title: "GOST Framework"
-excerpt: ""
+description: ""
 slug: gost-framework
 ---
 ![GOST Framework](/assets/3feff88-ghost.png)

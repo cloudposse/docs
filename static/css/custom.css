@@ -65,6 +65,17 @@ th:empty {
   display: none;
 }
 
+.hidden, #search-results.hidden {
+  max-height: 0;
+  border: 0;
+  overflow: hidden;
+  -webkit-transition: max-height 0.3s;
+  -moz-transition: max-height 0.3s;
+  -o-transition: max-height 0.3s;
+  -ms-transition: max-height 0.3s;
+  transition: max-height 0.3s;
+  transition-delay: 0s;
+}
 
 .whitish {
   filter: brightness(0) invert(1);
@@ -331,26 +342,187 @@ section > h2 {
   font-weight: 300; 
 }
 
+
+.subnav .searchbox .fa {
+  color: #888;
+  position: relative;
+  left: 26px;
+}
+
 .searchbox {
   padding-top: 0;
 }
 
+.subnav .searchbox {
+  /* disabled until we implement algolia for subnav search */
+  /*display: inline;*/
+  display: none;
+  float: right;
+  width: 30%;
+  font-size: 15px;
+}
+
+.subnav .searchbox input[type="text"] {
+  background: transparent;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 30px;
+  margin-bottom: 0px;
+  border: 0;
+}
+.subnav .searchbox .fa {
+  color: #888;
+  position: relative;
+  left: 26px;
+}
+
+
+.ais-search-box {
+  padding-top: 0;
+}
+
+.ais-hits.ais-hits__empty {
+  width: 100%;
+  color: #999;
+  font-style: italic;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  color: #999;
+}
+
+#search-results .ais-stats {
+  opacity: 1;
+}
+
+#search-results {
+  background-color: #fff;
+  -webkit-transition: max-height 0.8s;
+  -moz-transition: max-height 0.8s;
+  -o-transition: max-height 0.8s;
+  -ms-transition: max-height 0.8s;
+  transition: max-height 0.8s;
+  transition-delay: 0s;
+  overflow: hidden;
+  max-height: 768px;
+  position: relative;
+  top: -5px;
+  -webkit-box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
+  box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#search-stats {
+  border-top: 1px solid #dee5e8;
+  display: inline-block;
+  padding-left: 20px;
+  padding-top: 20px;
+  width: 100%;
+  background-color: #fff;
+}
+
+#search-stats:empty {
+  display: none;
+}
+
+#search-stats h3 {
+  color: #364548;
+  font-size: 1.5em;
+  margin-bottom: 0.7em;
+  display: inline-block;
+  float: left;
+}
+
+#search-stats span {
+  display: none;
+}
+
+#search-hits {
+  max-width: 100%;
+  overflow: hidden;
+  background: #fff;
+  padding-top: 0px;
+  padding-bottom: 15px;
+}
+
+#search-hits:empty {
+  display: none;
+}
+
+#search-hits .text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 40px;
+  display: inline-block;
+}
+
+#search-hits a:hover {
+  text-decoration: none;
+}
+
+#search-hits p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+#search-hits p:empty {
+  display: none;
+}
+
+#search-hits .ais-hits--item {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#search-hits .ais-hits--item:hover {
+      background-color: #fcf5d4;
+}
+
+#search-hits em {
+  font-weight: bold;
+}
+
+#search-hits em.section {
+  font-weight: normal;
+  padding-left: 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-style: normal;
+  color: #aaa;
+}
+
+#search-hits em.tags {
+  font-weight: normal;
+  font-size: 11px;
+  font-style: normal;
+  color: #aaa;
+  display: block;
+}
+
+
 .landing-top {
-  height: 293px;
+  min-height: 293px;
+  height: 40%;
   padding: 60px 50px;
 }
 
-.landing-top .searchbox {
+.landing-top .ais-search-box {
   text-align: left;
   -webkit-box-shadow: 0 0 0 5px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.1);
   box-shadow: 0 0 0 5px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.1);
   width: 100%;
   border-radius: 5px;
+  max-width: 100%
 }
 
-.landing-top .searchbox input {
+.landing-top .ais-search-box input {
   width: 100%;
   margin-bottom: 0;
+  background-color: #f6f7f8;
 }
 
 article section.page {
@@ -366,7 +538,7 @@ article section.page h1:first-of-type {
   margin-bottom: 5px;
   color: #33383c;
   line-height: 30px;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   text-transform: none;
   max-width: 90%;
 }
@@ -441,6 +613,23 @@ div.landing-description {
   padding-top: 30px;
   padding-left: 20%;
   padding-right: 20%;
+  -webkit-transition: padding 0.3s ease-out;
+  -moz-transition: padding 0.3s ease-out;
+  -o-transition: padding 0.3s ease-out;
+  -ms-transition: padding 0.3s ease-out;
+  transition: padding 0.3s ease-out;
+  transition-delay: 1s;
+}
+
+.search-bar:focus, .search-bar:active, .search-bar.active {
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-transition: padding 0.3s ease-out;
+  -moz-transition: padding 0.3s ease-out;
+  -o-transition: padding 0.3s ease-out;
+  -ms-transition: padding 0.3s ease-out;
+  transition: padding 0.3s ease-out;
+  transition-delay: 0.3s;
 }
 
 .search-bar .icon {
@@ -471,7 +660,6 @@ div.landing-description {
     font-size: 14px;
 }
 
-
 .subnav {
   min-height: 38px;
   color: #4c555a;
@@ -500,14 +688,14 @@ div.landing-description {
   font-size: 10px;
 }
 
-.subnav .searchbox {
+.subnav .ais-search-box {
   display: inline;
   float: right;
   width: 30%;
   font-size: 15px;
 }
 
-.subnav .searchbox input {
+.subnav .ais-search-box input {
   background: transparent;
   padding-top: 0;
   padding-bottom: 0;
@@ -538,7 +726,7 @@ div.landing-description {
     line-height: 26px;
 }
 
-.subnav .searchbox .fa {
+.subnav .ais-search-box .fa {
   color: #888;
   position: relative;
   left: 26px;
@@ -646,15 +834,19 @@ div.calendly-badge-widget {
 }
 
 .homepage {
-  padding-left: 5%;
-  padding-right: 5%;
-  width: 100%;
+  padding-left: 10%;
+  padding-right: 0;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .homepage > .category {
   display: inline-block;
   float: left;
   width: 30%;
+  min-width: 320px;
+  max-width: 512px;
   height: 200px;
   overflow-y: hidden;
   margin-right: 35px;
@@ -667,20 +859,25 @@ div.calendly-badge-widget {
 .homepage ul {
   display: block;
   list-style: none;
-} 
+  width: 100%;
+}
 
-.homepage > .category > li > div > h3 {
-  font-size: 20px;
+.homepage > .category > li > div {
   border-bottom: 1px solid #ddd;
   line-height: 2em;
   margin-bottom: 1em;
+}
+
+.homepage > .category > li > div > h3 {
+  font-size: 20px;
   text-transform: none;
+  display: inline-block;
 }
 
 .homepage .view-all {
   float: right;
-  position: relative;
-  top: -50px;
+  display: inline-block;
+  padding-top: 14px;
   color: #ddd;
 }
 

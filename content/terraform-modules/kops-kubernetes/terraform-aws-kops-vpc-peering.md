@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-kops-vpc-peering
-excerpt: >-
+description: >-
   Terraform module to create a peering connection between a backing services VPC
   and a VPC created by [Kops](https://github.com/kubernetes/kops).
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Calling `chamber write` triggers `Error: InvalidKeyId: ... parameter_store_key is not found.`"
-excerpt: "Chamber expects to find a KMS key with alias `parameter_store_key`"
+description: "Chamber expects to find a KMS key with alias `parameter_store_key`"
 ---
 
 # Question

@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-organization-access-group
-excerpt: >-
+description: >-
   Terraform module to create an IAM Group and Policy to grant permissions to
   delegated IAM users in the Organization's master account to access a member
   account

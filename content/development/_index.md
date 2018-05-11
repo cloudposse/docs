@@ -1,6 +1,6 @@
 ---
 title: "Development"
-excerpt: ""
+description: ""
 icon: "fa fa-code"
 ---
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}

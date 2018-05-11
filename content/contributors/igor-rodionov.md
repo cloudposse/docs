@@ -1,6 +1,6 @@
 ---
 title: "Igor Rodionov"
-excerpt: ""
+description: ""
 tags:
  - "devops"
  - "terraform"

@@ -1,6 +1,6 @@
 ---
 title: "Prometheus, Alerts & Grafana"
-excerpt: ""
+description: ""
 ---
  [Prometheus](https://prometheus.io) is the heart of monitoring backing service. The other parts are [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and wide list of [exporters](https://prometheus.io/docs/instrumenting/exporters/) that are source of metric.
 

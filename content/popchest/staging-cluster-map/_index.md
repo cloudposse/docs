@@ -1,6 +1,6 @@
 ---
 title: Staging Cluster Map
-excerpt: ''
+description: ''
 ---
 
 Staging - is kubernetes cluster running on top of AWS. Functionality of cluster extended with Kubernetes backing services.

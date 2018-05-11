@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-jenkins"
-excerpt: "This is an enterprise-ready, scalable and fault-tolerant architecture and the CI/CD pattern to build and deploy Jenkins."
+description: "This is an enterprise-ready, scalable and fault-tolerant architecture and the CI/CD pattern to build and deploy Jenkins."
 ---
 # Terraform AWS Jenkins
 

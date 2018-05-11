@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-kops-route53
-excerpt: >-
+description: >-
   Terraform module to lookup an IAM role associated with `kops` masters, and
   attach an IAM policy to the role with permissions to modify Route53 record
   sets.

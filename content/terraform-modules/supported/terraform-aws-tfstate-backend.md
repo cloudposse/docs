@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-tfstate-backend
-excerpt: >-
+description: >-
   Terraform module to provision an S3 bucket to store `terraform.tfstate` file
   and a DynamoDB table to lock the state file to prevent concurrent
   modifications and state corruption.

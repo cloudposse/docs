@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-rds-cluster"
-excerpt: "Terraform module to provision an [`RDS Aurora`](https://aws.amazon.com/rds/aurora) cluster for MySQL or Postgres."
+description: "Terraform module to provision an [`RDS Aurora`](https://aws.amazon.com/rds/aurora) cluster for MySQL or Postgres."
 ---
 # Terraform AWS RDS Cluster
 

@@ -6,7 +6,7 @@
   {{- with .Site.Menus.shortcuts}}
     <nav class="shortcuts">
         {{- range sort . "Weight"}}
-            <li class="" role="">
+            <li id="{{ .Identifier }}" class="" role="">
                 <a href="{{.URL}}" {{if eq $.Site.Params.menushortcutsnewtab true}}target="_blank"{{end}} rel="noopener">
                   {{safeHTML .Name}}
                 </a>
@@ -21,14 +21,13 @@
     <img src="/images/cloud.png" class="whitish cloud"/>
     <h1>The Cloud Posse Developer Hub</h1>
     <div class="about">
-      <p>Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!</p>
+      Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!
     </div>
     <div class="search-bar">
-      <div class="searchbox">
-        <div class="icon">
-          <div class="fa fa-search"></div>
-        </div>
-        <input type="text" placeholder="Search" class="search-box">
+      <div id="search-box"><!-- SearchBox widget will appear here --></div>
+      <div id="search-results">
+        <div id="search-stats"><!-- Search status widget will appear here --></div>
+        <div id="search-hits"></div>
       </div>
     </div>
   </div>
@@ -47,6 +46,18 @@
     {{end}}
   </div>
 </div>
+
+<div id="refinement-list">
+  <!-- Algolia RefinementList widget will appear here -->
+</div>
+
+<div id="hits">
+  <!-- Algolia Hits widget will appear here -->
+</div>
+
+ <div id="pagination">
+    <!-- Pagination widget will appear here -->
+  </div>
 
 <article>
   {{if .IsHome}}
@@ -101,8 +112,8 @@
     {{- end}}
       <h1 class="title">{{.Title}}</h1>
       <div class="excerpt">
-        {{ if .Params.excerpt }}
-        <p>{{ .Params.excerpt | markdownify }}</p>
+        {{ if .Description }}
+        <p>{{ .Description | markdownify }}</p>
         {{ end }}
       </div>
       <div class="ask-a-question">

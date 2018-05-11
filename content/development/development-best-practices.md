@@ -1,6 +1,6 @@
 ---
 title: Development Best Practices
-excerpt: ''
+description: ''
 ---
 
 # Linting
