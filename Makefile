@@ -1,5 +1,3 @@
--include .env
-
 export INSTALL_PATH ?= /usr/local/bin
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
