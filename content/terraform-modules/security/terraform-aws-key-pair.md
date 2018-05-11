@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-key-pair
-excerpt: Terraform module for generating (or importing) a SSH public key file into AWS.
+description: Terraform module for generating (or importing) a SSH public key file into AWS.
 ---
 
 # Terraform AWS Key Pair

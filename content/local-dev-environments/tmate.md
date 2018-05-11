@@ -1,6 +1,6 @@
 ---
 title: "Tmate"
-excerpt: ""
+description: ""
 ---
 # Peer Console Development (tmate)
 

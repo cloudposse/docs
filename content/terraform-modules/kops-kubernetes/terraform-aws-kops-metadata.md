@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-kops-metadata
-excerpt: >-
+description: >-
   Terraform module to lookup resources within a
   [Kops](https://github.com/kubernetes/kops) cluster
 ---

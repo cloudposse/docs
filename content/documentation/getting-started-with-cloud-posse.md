@@ -1,6 +1,6 @@
 ---
 title: Getting Started with Cloud Posse
-excerpt: >-
+description: >-
   This page will help you get started with Cloud Posse. You'll be up and running
   in a jiffy!
 ---

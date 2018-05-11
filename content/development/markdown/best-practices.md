@@ -1,6 +1,6 @@
 ---
 title: Markdown Best Practices
-excerpt: ''
+description: ''
 ---
 
 ![Markdown Logo](/assets/13f56b6-markdown.png)

@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-codebuild"
-excerpt: "Terraform module to create AWS CodeBuild project for AWS CodePipeline"
+description: "Terraform module to create AWS CodeBuild project for AWS CodePipeline"
 ---
 # Terraform AWS CodeBuild
 

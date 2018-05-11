@@ -1,6 +1,6 @@
 ---
 title: Geodesic Design
-excerpt: ''
+description: ''
 weight: -1
 ---
 

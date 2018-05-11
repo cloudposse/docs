@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-ec2-admin-server
-excerpt: >-
+description: >-
   Terraform Module for providing a server capable of running admin tasks. Use
   `terraform-aws-ec2-admin-server` to create and manage an admin instance.
 ---

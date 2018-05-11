@@ -1,6 +1,6 @@
 ---
 title: "Running `kubectl` fails: `The connection to the server localhost:8080 was refused`"
-excerpt: "This is most likely caused by not setting the `kubectl` context to use the kops cluster."
+description: "This is most likely caused by not setting the `kubectl` context to use the kops cluster."
 tags:
 - kubectl
 - kubernetes

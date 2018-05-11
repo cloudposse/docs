@@ -1,6 +1,6 @@
 ---
 title: terraform-template-user-data-dba
-excerpt: ''
+description: ''
 ---
 
 # Terraform Template User Data DBA

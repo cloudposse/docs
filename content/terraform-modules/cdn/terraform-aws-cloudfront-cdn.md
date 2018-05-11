@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-cloudfront-cdn
-excerpt: >-
+description: >-
   Terraform Module that implements a CloudFront Distribution (CDN) for a custom
   origin (e.g. website) and [ships logs to a
   bucket](https://github.com/cloudposse/terraform-aws-log-storage).

@@ -1,6 +1,6 @@
 ---
 title: Postmortem Example
-excerpt: Example of a well-executed postmortem for Root Cause Analysis
+description: Example of a well-executed postmortem for Root Cause Analysis
 ---
 
 # Incident #1 - Rollout Caused Unplanned Outage (2017-06-29)

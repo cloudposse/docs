@@ -1,6 +1,6 @@
 ---
 title: Docker
-excerpt: ''
+description: ''
 ---
 
 ![Docker](/assets/5c0373a-docker.png)

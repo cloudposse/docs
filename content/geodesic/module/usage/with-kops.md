@@ -1,6 +1,6 @@
 ---
 title: "with Kops"
-excerpt: ""
+description: ""
 ---
 
 {{% dialog type="info" icon="fa-info-circle" title="Prerequisites" %}}

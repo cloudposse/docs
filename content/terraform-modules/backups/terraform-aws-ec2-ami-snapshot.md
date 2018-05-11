@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-ec2-ami-snapshot
-excerpt: ''
+description: ''
 ---
 
 # Terraform AWS EC2 AMI Snapshot

@@ -1,6 +1,6 @@
 ---
 title: "Makefile"
-excerpt: ""
+description: ""
 tags:
 - Makefile
 - GNUMakefile

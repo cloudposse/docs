@@ -1,11 +1,13 @@
 ---
 title: "AWS Assumed Roles Repo Deprecated"
-excerpt: "We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse/aws-assumed-role) repo in favor of using [`aws-vault`](https://github.com/99designs/aws-vault) by 99 Designs."
+description: "We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse/aws-assumed-role) repo in favor of using [`aws-vault`](https://github.com/99designs/aws-vault) by 99 Designs."
 publishDate: "2018-03-31 19:59:58"
 tags:
 - "aws-assumed-roles"
 - "iam"
 - "geodesic"
+categories:
+- announcements
 ---
 We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse/aws-assumed-role) repo in favor of using [`aws-vault`](https://github.com/99designs/aws-vault) by 99 Designs. This offers an outstanding, ultra-secure experience for working with IAM assumed roles for local development.
 

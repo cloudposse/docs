@@ -1,6 +1,6 @@
 ---
 title: "Vagrant"
-excerpt: ""
+description: ""
 ---
 ![HashiCorp Vagrant](/assets/6e84876-vagrant.png)
 

@@ -1,6 +1,6 @@
 ---
 title: "Helm Chart Best Practices"
-excerpt: ""
+description: ""
 draft: true
 ---
 # Use Validation

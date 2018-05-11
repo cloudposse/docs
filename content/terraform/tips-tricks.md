@@ -1,6 +1,6 @@
 ---
 title: "Terraform Tips & Tricks"
-excerpt: ""
+description: ""
 ---
 ![Terraform](/assets/a1f105a-terraform.png)
 

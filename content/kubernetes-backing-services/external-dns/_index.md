@@ -1,4 +1,4 @@
 ---
 title: "External DNS"
-excerpt: "Not cluster-dns"
+description: "Not cluster-dns"
 ---

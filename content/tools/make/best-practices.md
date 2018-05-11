@@ -1,6 +1,6 @@
 ---
 title: "Makefile Best Practices"
-excerpt: ""
+description: ""
 ---
 # Avoid using Evals
 

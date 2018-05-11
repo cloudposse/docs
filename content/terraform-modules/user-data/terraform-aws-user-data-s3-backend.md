@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-user-data-s3-backend
-excerpt: ''
+description: ''
 ---
 
 # Terraform AWS Use Data S3 Backend

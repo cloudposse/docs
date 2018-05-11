@@ -1,6 +1,6 @@
 ---
 title: Deployable Applications
-excerpt: ''
+description: ''
 
 ---
 

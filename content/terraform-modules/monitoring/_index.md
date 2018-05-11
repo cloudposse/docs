@@ -1,6 +1,6 @@
 ---
 title: "Terraform Monitoring Modules"
-excerpt: ""
+description: ""
 ---
 
 {{% notice note %}}

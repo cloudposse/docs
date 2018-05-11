@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-route53-cluster-hostname
-excerpt: Terraform module to define a consistent AWS Route53 hostname
+description: Terraform module to define a consistent AWS Route53 hostname
 ---
 
 # Terraform AWS Route53 Cluster Hostname

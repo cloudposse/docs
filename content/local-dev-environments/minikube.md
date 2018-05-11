@@ -1,6 +1,6 @@
 ---
 title: "Minikube"
-excerpt: ""
+description: ""
 ---
 ![Minikube](/assets/a58bf7c-minikube.png)
 

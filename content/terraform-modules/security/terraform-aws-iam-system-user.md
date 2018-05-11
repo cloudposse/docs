@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-iam-system-user
-excerpt: >-
+description: >-
   Terraform Module to provision a basic IAM system user suitable for CI/CD
   Systems
 

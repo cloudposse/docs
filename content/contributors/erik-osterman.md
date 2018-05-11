@@ -1,6 +1,6 @@
 ---
 title: "Erik Osterman"
-excerpt: ""
+description: ""
 tags:
  - "ceo"
  - "founder"

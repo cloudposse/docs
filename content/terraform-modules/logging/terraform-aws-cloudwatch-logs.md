@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-cloudwatch-logs
-excerpt: >-
+description: >-
   Terraform module for creation of CloudWatch Log Streams and Log Groups for use
   with Fluentd.
 ---

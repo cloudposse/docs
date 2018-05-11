@@ -1,6 +1,6 @@
 ---
 title: "Managers vs Makers"
-excerpt: ""
+description: ""
 ---
 ![Paul Graham](/assets/e5ae645-paul_graham.png)
 # TL;DR

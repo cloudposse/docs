@@ -1,6 +1,6 @@
 ---
 title: QuickStart
-excerpt: ''
+description: ''
 ---
 
 # OSX Dependencies

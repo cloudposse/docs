@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes UI Dashboard"
-excerpt: ""
+description: ""
 ---
 # Synopsis
 

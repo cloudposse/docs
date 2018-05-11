@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-elastic-beanstalk-environment
-excerpt: Terraform module to provision AWS Elastic Beanstalk environment
+description: Terraform module to provision AWS Elastic Beanstalk environment
 ---
 
 # Terraform AWS Elastic Beanstalk Environment
