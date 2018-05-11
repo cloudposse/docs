@@ -1,5 +1,5 @@
 ---
-title: "Use"
+title: "Usage"
 excerpt: ""
 ---
 # Prerequisites
