@@ -6,6 +6,7 @@ steps:
     title: Init variables
     image: alpine
     commands:
+      - cf_export MASTER_BRANCH=add-algolia
       - cf_export BUILD_HARNESS_VERSION=0.5.5
       - cf_export HUGO_URL=https://${{S3_BUCKET_NAME}}
       - cf_export HUGO_CONFIG=deploy.toml
@@ -36,7 +37,7 @@ steps:
     when:
       condition:
         all:
-          executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
+          executeForMasterBranch: "'${{CF_BRANCH}}' == '${{MASTER_BRANCH}}'"
 
   reindex:
     title: Update algolia search index
@@ -47,4 +48,4 @@ steps:
     when:
       condition:
         all:
-          executeForMasterBranch: "'${{CF_BRANCH}}' == 'add-algolia'"
+          executeForMasterBranch: "'${{CF_BRANCH}}' == '${{MASTER_BRANCH}}'"

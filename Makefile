@@ -67,6 +67,11 @@ reindex:
 	jq -cM  .[] $(ALGOLIA_INDEX_FILE) | tr '\n' '\0' | \
 		xargs -0 -n 1 -I'{}' \
 			curl -X POST \
+				--connect-timeout 5 \
+				--max-time 10 \
+				--retry 5 \
+				--retry-delay 5 \
+				--retry-max-time 60 \
 				-H "X-Algolia-API-Key: $(ALGOLIA_API_KEY)" \
 				-H "X-Algolia-Application-Id: $(ALGOLIA_APPLICATION_ID)" \
 				-d '{}' \
