@@ -16,6 +16,7 @@ deps: packages/install/hugo \
 
 ## Install useful atom plugins
 deps/atom:
+	@which apm >/dev/null || (echo "Install the atom editor"; exit 1)
 	@apm install -s \
 		modular-snippets \
 		language-hugo \
