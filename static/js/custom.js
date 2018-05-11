@@ -11,6 +11,7 @@ $(function(){
 Calendly.initBadgeWidget({url: 'https://calendly.com/cloudposse/30min', text: 'Schedule Support', branding: false});
 
 $(function(){
+  const searchResults = document.querySelector('#search-results');
   const search = instantsearch({
     appId: '32YOERUX83',
     apiKey: '557985309adf0e4df9dcf3cb29c61928',
@@ -21,22 +22,35 @@ $(function(){
     },
     searchFunction(helper) {
       if (helper.state.query === '') {
+        hideHits();
         return;
+      }
+      if(helper.state.query.length === 1) {
+        showHits();
       }
       helper.search();
     }
   });
 
+
+  function showHits() {
+    //console.log("showHits");
+    searchResults.classList.remove('hidden');
+  }
+
+  function hideHits() {
+    //console.log("hideHits");
+    searchResults.classList.add('hidden');
+  }
+
   search.addWidget(
     instantsearch.widgets.hits({
-      container: '#search-results',
+      container: '#search-hits',
       //autoHideContainer: true,
       //collapsible: true,
       templates: {
         empty: "We didn't find any results for the search <em>\"{{query}}\"</em>",
-        item: '<a href="{{ uri }}"><p class="search-result-container"><div><strong class="search-result-title">{{{ _highlightResult.title.value }}}</strong>{{{ tags_text }}}</div><p class="text-overflow">{{{ _highlightResult.content.value }}}</p></div></a>',
-        //header: 'results for the search <em>\"{{query}}\"</em>', 
-        //footer: '<span class="search-foot">Powered by <a href="https://www.algolia.com/" target="_blank" title="Algolia - Hosted cloud search as a service"><img src="/static/assets/algolia-logo.png" width="47" height="15"></a></span>',
+        item: '<a href="{{ uri }}"><p class="search-hit-container"><div><strong class="search-hit-title">{{{ _highlightResult.title.value }}}</strong>{{{ tags_text }}}</div><p class="text-overflow">{{{ _highlightResult.content.value }}}</p></div></a>',
       },
       showMoreLabel: "Load more results...",
       transformData: {
@@ -52,9 +66,23 @@ $(function(){
   );
 
   search.addWidget(
+    instantsearch.widgets.stats({
+      container: '#search-stats',
+      templates: {
+        body: "<h3>Search results for \"<em>{{query}}</em>\"</h3><span>(found {{nbHits}} results in {{processingTimeMS}} ms)</span>"
+      }
+    })
+  );
+
+  search.addWidget(
     instantsearch.widgets.searchBox({
       container: '#search-box',
-      placeholder: 'Search'
+      placeholder: 'Search',
+      poweredBy: false,
+      magnifier: true,
+      placeholder: 'Search',
+      autofocus: true,
+      reset: true
     })
   );
 

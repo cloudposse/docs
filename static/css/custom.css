@@ -65,6 +65,9 @@ th:empty {
   display: none;
 }
 
+.hidden {
+  display: none;
+}
 
 .whitish {
   filter: brightness(0) invert(1);
@@ -338,53 +341,85 @@ section > h2 {
 }
 
 #search-results {
-  max-width: 100%;
-  overflow: hidden;
-  display: inline-block;
-  background: white;
+  background-color: #fff;
+}
+
+#search-stats {
+  border-top: 1px solid #dee5e8;
   position: relative;
   top: -5px;
+  display: inline-block;
+  padding-left: 20px;
   padding-top: 20px;
-  border-top: 1px solid #dee5e8;
+  width: 100%;
+  background-color: #fff;
+}
+
+#search-stats:empty {
+  display: none;
+}
+
+#search-stats h3 {
+  color: #364548;
+  font-size: 1.5em;
+  display: inline-block;
+  float: left;
+}
+
+#search-stats span {
+  display: none;
+}
+
+#search-hits {
+  max-width: 100%;
+  overflow: hidden;
+  background: #fff;
+  padding-top: 0px;
   border-bottom: 1px solid #ddd;
   -webkit-box-shadow: 0 3px 3px -2px rgba(0,0,0,0.3);
   box-shadow: 0 3px 3px -2px rgba(0,0,0,0.3);
+  position: relative;
+  top: -11px;
 }
 
-#search-results .text-overflow {
+#search-hits:empty {
+  display: none;
+}
+
+#search-hits .text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;
   max-height: 40px;
   display: inline-block;
 }
 
-#search-results a:hover {
+#search-hits a:hover {
   text-decoration: none;
 }
 
-#search-results p {
+#search-hits p {
   margin-top: 0px;
   margin-bottom: 0px;
   margin-right: 0px;
   margin-left: 0px;
 }
 
-#search-results p:empty {
+#search-hits p:empty {
   display: none;
 }
 
-#search-results .ais-hits--item {
+#search-hits .ais-hits--item {
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-#search-results .ais-hits--item:hover {
+#search-hits .ais-hits--item:hover {
       background-color: #fcf5d4;
 }
 
-#search-results em {
+#search-hits em {
   font-weight: bold;
 }
 
@@ -501,6 +536,7 @@ div.landing-description {
   -o-transition: padding 0.3s ease-out;
   -ms-transition: padding 0.3s ease-out;
   transition: padding 0.3s ease-out;
+  transition-delay: 1s;
 }
 
 .search-bar:focus, .search-bar:hover, .search-bar:active {
@@ -511,6 +547,7 @@ div.landing-description {
   -o-transition: padding 0.3s ease-out;
   -ms-transition: padding 0.3s ease-out;
   transition: padding 0.3s ease-out;
+  transition-delay: 0.5s;
 
 }
 
