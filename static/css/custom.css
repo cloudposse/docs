@@ -395,6 +395,8 @@ section > h2 {
   top: -5px;
   -webkit-box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
   box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 #search-stats {
@@ -586,7 +588,7 @@ div.landing-description {
   transition-delay: 1s;
 }
 
-.search-bar:focus, .search-bar:hover, .search-bar:active, .search-bar.active {
+.search-bar:focus, .search-bar:active, .search-bar.active {
   padding-left: 0;
   padding-right: 0;
   -webkit-transition: padding 0.3s ease-out;
@@ -594,7 +596,7 @@ div.landing-description {
   -o-transition: padding 0.3s ease-out;
   -ms-transition: padding 0.3s ease-out;
   transition: padding 0.3s ease-out;
-  transition-delay: 0.5s;
+  transition-delay: 0.3s;
 }
 
 .search-bar .icon {
