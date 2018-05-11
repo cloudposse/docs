@@ -327,6 +327,39 @@ section > h2 {
   font-weight: 300; 
 }
 
+
+.subnav .searchbox .fa {
+  color: #888;
+  position: relative;
+  left: 26px;
+}
+
+.searchbox {
+  padding-top: 0;
+}
+
+.subnav .searchbox {
+  display: inline;
+  float: right;
+  width: 30%;
+  font-size: 15px;
+}
+
+.subnav .searchbox input[type="text"] {
+  background: transparent;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 30px;
+  margin-bottom: 0px;
+  border: 0;
+}
+.subnav .searchbox .fa {
+  color: #888;
+  position: relative;
+  left: 26px;
+}
+
+
 .ais-search-box {
   padding-top: 0;
 }
@@ -657,7 +690,7 @@ div.landing-description {
   border-bottom: 0;
 }
 
-.page-404 section.page h1, .page-404 .ais-search-box, .page-404 .excerpt, .page-404 .github-link {
+.page-404 section.page h1, .page-404 .searchbox, .page-404 .excerpt, .page-404 .github-link {
   display: none;
 }
 
