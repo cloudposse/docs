@@ -1,6 +1,6 @@
 ---
 title: "GitHub Status Updater"
-excerpt: ""
+description: ""
 draft: true
 ---
 # github-status-updater

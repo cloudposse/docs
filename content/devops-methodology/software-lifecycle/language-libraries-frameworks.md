@@ -1,6 +1,6 @@
 ---
 title: Language Libraries & Frameworks
-excerpt: ''
+description: ''
 ---
 
 _Library_ - is the software that can be run only as a part of some other software. Developers extract reusable code as a library and store it in artifact storage allow to include it in multiple projects.

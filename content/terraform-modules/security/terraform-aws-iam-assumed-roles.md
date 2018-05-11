@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-iam-assumed-roles
-excerpt: >-
+description: >-
   Terraform module to provision two IAM roles and two IAM groups for assuming
   the roles provided MFA is present, and add IAM users to the groups.
 ---

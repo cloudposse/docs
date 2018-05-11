@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Resource Management"
-excerpt: "Understanding Kubernetes Resource Limits, Requests and how to configure them."
+description: "Understanding Kubernetes Resource Limits, Requests and how to configure them."
 ---
 # FAQ
 

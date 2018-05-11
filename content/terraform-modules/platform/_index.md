@@ -1,6 +1,6 @@
 ---
 title: "Terraform Platform Modules"
-excerpt: ""
+description: ""
 ---
 
 {{% notice note %}}

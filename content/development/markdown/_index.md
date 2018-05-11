@@ -1,6 +1,6 @@
 ---
 title: Markdown
-excerpt: ''
+description: ''
 ---
 
 ![Markdown Logo](/assets/5a735a9-markdown.png) Markdown is a simple way to format plain text that looks great on any device without using any HTML or CSS. It doesn't permit do anything fancy like changing fonts, color, or typeface -- just the bare essentials by using keyboard symbols you already know.

@@ -1,5 +1,5 @@
 ---
 title: "Kube Lego (Let's Encrypt)"
-excerpt: ""
+description: ""
 draft: true
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Agenda"
-excerpt: ""
+description: ""
 weight: -1
 ---
 

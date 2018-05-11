@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-route53-cluster-zone
-excerpt: Terraform module to easily define consistent cluster domains on `Route53`.
+description: Terraform module to easily define consistent cluster domains on `Route53`.
 ---
 
 # Terraform AWS Route53 Cluster Zone

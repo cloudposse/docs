@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-route53-alias
-excerpt: >-
+description: >-
   Terraform module that implements "vanity" host names (e.g. `brand.com`) as
   `ALIAS` records to another Route53 DNS resource record (e.g. ELB/ALB, S3
   Bucket Endpoint or CloudFront Distribution).

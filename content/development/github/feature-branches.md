@@ -1,6 +1,6 @@
 ---
 title: Feature Branches
-excerpt: ''
+description: ''
 ---
 
 # Problem

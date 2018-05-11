@@ -1,6 +1,6 @@
 ---
 title: "Nginx Ingress Controller"
-excerpt: ""
+description: ""
 ---
 Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the nginx configuration.
 # Dependencies

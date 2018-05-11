@@ -1,6 +1,6 @@
 ---
 title: Semantic Versioning
-excerpt: ''
+description: ''
 ---
 
 We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. GitHub Tags/Releases, Helm Charts, Terraform Modules, Docker Images).

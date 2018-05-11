@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-ecr
-excerpt: >-
+description: >-
   Terraform module to provision an [`AWS ECR Docker Container
   registry`](https://aws.amazon.com/ecr/).
 ---

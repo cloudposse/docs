@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-efs
-excerpt: >-
+description: >-
   Terraform module to provision an AWS [`EFS`](https://aws.amazon.com/efs/)
   Network File System.
 ---

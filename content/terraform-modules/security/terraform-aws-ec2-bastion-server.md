@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-ec2-bastion-server
-excerpt: >-
+description: >-
   Terraform module to define a generic Bastion host with parameterized
   `user_data`
 ---

@@ -1,6 +1,6 @@
 ---
 title: Kops
-excerpt: ''
+description: ''
 ---
 
 # Quick Start

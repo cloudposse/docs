@@ -1,6 +1,6 @@
 ---
 title: "with Terraform"
-excerpt: "Learn how to use Geodesic to manage Terraform resources"
+description: "Learn how to use Geodesic to manage Terraform resources"
 weight: -1
 ---
 # Bootstrap Process

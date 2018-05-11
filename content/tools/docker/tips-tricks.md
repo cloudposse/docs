@@ -1,6 +1,6 @@
 ---
 title: Docker Tips & Tricks
-excerpt: ''
+description: ''
 ---
 
 Here's a collection of some nice little hacks for docker. A lot of them are related to house keeping.

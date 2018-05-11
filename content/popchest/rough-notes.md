@@ -1,6 +1,6 @@
 ---
 title: Rough Notes
-excerpt: ''
+description: ''
 draft: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "xcrun: error: invalid active developer path"
-excerpt: "Reinstall xcode developer tools"
+description: "Reinstall xcode developer tools"
 tags:
 - osx
 - darwin

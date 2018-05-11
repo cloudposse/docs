@@ -1,5 +1,5 @@
 ---
 title: "kube-lego"
-excerpt: ""
+description: ""
 draft: true
 ---

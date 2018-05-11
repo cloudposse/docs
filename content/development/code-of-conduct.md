@@ -1,6 +1,6 @@
 ---
 title: Code of Conduct
-excerpt: This is our Contributor Covenant Code of Conduct.
+description: This is our Contributor Covenant Code of Conduct.
 ---
 
 # Our Pledge

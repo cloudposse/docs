@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-cloudfront-s3-cdn"
-excerpt: "Terraform module to easily provision an AWS CloudFront CDN with an S3 or custom origin."
+description: "Terraform module to easily provision an AWS CloudFront CDN with an S3 or custom origin."
 ---
 # Terraform AWS CloudFront S3 CDN
 

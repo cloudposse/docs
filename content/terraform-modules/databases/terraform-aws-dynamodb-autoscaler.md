@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-dynamodb-autoscaler"
-excerpt: "Terraform module to provision DynamoDB autoscaler."
+description: "Terraform module to provision DynamoDB autoscaler."
 ---
 # Terraform AWS DynamoDB Autoscaler
 

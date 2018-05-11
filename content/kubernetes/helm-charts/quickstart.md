@@ -1,6 +1,6 @@
 ---
 title: "Helm Charts Quick Start"
-excerpt: ""
+description: ""
 ---
 # Create a new chart
 

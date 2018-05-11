@@ -1,6 +1,6 @@
 ---
 title: "Quick start"
-excerpt: "Get up and running quickly with geodesic"
+description: "Get up and running quickly with geodesic"
 ---
 # Prerequisites
 

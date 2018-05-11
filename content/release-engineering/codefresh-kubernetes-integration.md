@@ -1,6 +1,6 @@
 ---
 title: "CodeFresh Kubernetes Integration"
-excerpt: "Easily add Kubernetes Clusters in CodeFresh"
+description: "Easily add Kubernetes Clusters in CodeFresh"
 ---
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}

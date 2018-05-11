@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-cloudtrail-s3-bucket
-excerpt: >-
+description: >-
   Terraform module to provision an S3 bucket with built-in policy to allow
   [CloudTrail](https://aws.amazon.com/cloudtrail/) [logs
   (https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html).

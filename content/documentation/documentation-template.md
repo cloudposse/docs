@@ -1,6 +1,6 @@
 ---
 title: Documentation Template
-excerpt: Example of how to structure a document
+description: Example of how to structure a document
 ---
 
 # Synopsis

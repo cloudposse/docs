@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-ec2-instance
-excerpt: Terraform Module for providing a general purpose EC2 host.
+description: Terraform Module for providing a general purpose EC2 host.
 ---
 
 # Terraform AWS EC2 Instance

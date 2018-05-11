@@ -1,6 +1,6 @@
 ---
 title: "Contributors"
-excerpt: ""
+description: ""
 icon: "fa fa-users"
 ---
 {{% dialog type="info" icon="fa fa-info-circle" title="People" %}}

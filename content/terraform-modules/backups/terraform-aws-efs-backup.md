@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-efs-backup
-excerpt: >-
+description: >-
   Terraform module designed to easily backup EFS filesystems to S3 using
   DataPipeline.
 ---

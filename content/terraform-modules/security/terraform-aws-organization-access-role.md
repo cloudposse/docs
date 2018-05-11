@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-organization-access-role
-excerpt: >-
+description: >-
   Terraform module to create an IAM Role to grant permissions to delegated IAM
   users in the master account to access an invited member account
 ---

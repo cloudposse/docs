@@ -1,6 +1,6 @@
 ---
 title: "SignatureDoesNotMatch: Signature expired"
-excerpt: "This usually happens due to time drift when running under Docker for Mac"
+description: "This usually happens due to time drift when running under Docker for Mac"
 tags:
 - aws-cli
 - aws

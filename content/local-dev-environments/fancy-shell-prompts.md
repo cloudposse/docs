@@ -1,6 +1,6 @@
 ---
 title: "Fancy Shell Prompts"
-excerpt: ""
+description: ""
 ---
 Fancy shell prompts are not just pretty, they're also incredibly practical. With the powerline prompt, you'll always know what `branch` your working on, if there are any uncommitted changes and the exit code of the last command.
 
