@@ -17,7 +17,7 @@ $(function(){
     indexName: 'docs',
     urlSync: true,
     searchParameters: {
-      hitsPerPage: 10
+      hitsPerPage: 5
     },
     searchFunction(helper) {
       if (helper.state.query === '') {
@@ -30,14 +30,17 @@ $(function(){
   search.addWidget(
     instantsearch.widgets.hits({
       container: '#search-results',
+      //autoHideContainer: true,
+      //collapsible: true,
       templates: {
-        empty: 'No results',
-        // https://caniuse.com/#feat=template-literals
-        item: '<a href="{{ uri }}"><p class="search-result-container"><div><strong class="search-result-title">{{{ _highlightResult.title.value }}}</strong>{{{ tags_text }}}</div><p class="text-overflow">{{{ _highlightResult.content.value }}}</p></div></a>'
+        empty: "We didn't find any results for the search <em>\"{{query}}\"</em>",
+        item: '<a href="{{ uri }}"><p class="search-result-container"><div><strong class="search-result-title">{{{ _highlightResult.title.value }}}</strong>{{{ tags_text }}}</div><p class="text-overflow">{{{ _highlightResult.content.value }}}</p></div></a>',
+        //header: 'results for the search <em>\"{{query}}\"</em>', 
+        //footer: '<span class="search-foot">Powered by <a href="https://www.algolia.com/" target="_blank" title="Algolia - Hosted cloud search as a service"><img src="/static/assets/algolia-logo.png" width="47" height="15"></a></span>',
       },
+      showMoreLabel: "Load more results...",
       transformData: {
         item: function(data) {
-          // https://caniuse.com/#search=MAP
           const tags = data.tags.map(function(value) {
             return value.toLowerCase().replace(' ', '-')
           })
@@ -55,6 +58,7 @@ $(function(){
     })
   );
 
+  /*
   search.addWidget(
     instantsearch.widgets.pagination({
       container: '#pagination',
@@ -63,6 +67,7 @@ $(function(){
       // scrollTo: false
     })
   );
+  */
 
   search.start();
 });

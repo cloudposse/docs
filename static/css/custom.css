@@ -328,11 +328,64 @@ section > h2 {
   padding-top: 0;
 }
 
+.ais-hits.ais-hits__empty {
+  width: 100%;
+  color: #999;
+  font-style: italic;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  color: #999;
+}
+
 #search-results {
+  max-width: 100%;
+  overflow: hidden;
   display: inline-block;
   background: white;
   position: relative;
   top: -5px;
+  padding-top: 20px;
+  border-top: 1px solid #dee5e8;
+  border-bottom: 1px solid #ddd;
+  -webkit-box-shadow: 0 3px 3px -2px rgba(0,0,0,0.3);
+  box-shadow: 0 3px 3px -2px rgba(0,0,0,0.3);
+}
+
+#search-results .text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 40px;
+  display: inline-block;
+}
+
+#search-results a:hover {
+  text-decoration: none;
+}
+
+#search-results p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+#search-results p:empty {
+  display: none;
+}
+
+#search-results .ais-hits--item {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#search-results .ais-hits--item:hover {
+      background-color: #fcf5d4;
+}
+
+#search-results em {
+  font-weight: bold;
 }
 
 .landing-top {
@@ -352,6 +405,7 @@ section > h2 {
 .landing-top .ais-search-box input {
   width: 100%;
   margin-bottom: 0;
+  background-color: #f6f7f8;
 }
 
 article section.page {
@@ -442,6 +496,22 @@ div.landing-description {
   padding-top: 30px;
   padding-left: 20%;
   padding-right: 20%;
+  -webkit-transition: padding 0.3s ease-out;
+  -moz-transition: padding 0.3s ease-out;
+  -o-transition: padding 0.3s ease-out;
+  -ms-transition: padding 0.3s ease-out;
+  transition: padding 0.3s ease-out;
+}
+
+.search-bar:focus, .search-bar:hover, .search-bar:active {
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-transition: padding 0.3s ease-out;
+  -moz-transition: padding 0.3s ease-out;
+  -o-transition: padding 0.3s ease-out;
+  -ms-transition: padding 0.3s ease-out;
+  transition: padding 0.3s ease-out;
+
 }
 
 .search-bar .icon {
@@ -678,6 +748,7 @@ div.calendly-badge-widget {
   position: relative;
   top: -50px;
   color: #ddd;
+  z-index: -1;
 }
 
 .homepage i {
