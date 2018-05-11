@@ -54,15 +54,22 @@ $(function(){
       //collapsible: true,
       templates: {
         empty: "We didn't find any results for the search <em>\"{{query}}\"</em>",
-        item: '<a href="{{ uri }}"><p class="search-hit-container"><div><strong class="search-hit-title">{{{ _highlightResult.title.value }}}</strong>{{{ tags_text }}}</div><p class="text-overflow">{{{ _highlightResult.content.value }}}</p></div></a>',
+        item: '<a href="{{ url }}"><p class="search-hit-container"><div><strong class="search-hit-title">{{{ _highlightResult.title.value }}}</strong><em class="section">{{{ section }}}</em></div><p class="text-overflow">{{{ _highlightResult.description.value }}}</p><em class="tags">{{{ tags_text }}}</em></div></a>',
       },
       showMoreLabel: "Load more results...",
       transformData: {
         item: function(data) {
-          const tags = data.tags.map(function(value) {
-            return value.toLowerCase().replace(' ', '-')
-          })
-          data.tags_text = tags.join(', ')
+          // Process tags
+          if(data.tags) {
+            const tags = data.tags.map(function(value) {
+              return '#' + value.toLowerCase().replace(' ', '-')
+            })
+            data.tags_text = tags.join(' ')
+          } else {
+            data.tags_text = ""
+          }
+
+          // return normalized data
           return data
         }
       }
@@ -86,7 +93,8 @@ $(function(){
       magnifier: true,
       placeholder: 'Search',
       autofocus: true,
-      reset: true
+      reset: true,
+      loadingIndicator: true
     })
   );
 

@@ -112,8 +112,8 @@
     {{- end}}
       <h1 class="title">{{.Title}}</h1>
       <div class="excerpt">
-        {{ if .Params.excerpt }}
-        <p>{{ .Params.excerpt | markdownify }}</p>
+        {{ if .Description }}
+        <p>{{ .Description | markdownify }}</p>
         {{ end }}
       </div>
       <div class="ask-a-question">

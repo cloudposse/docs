@@ -43,18 +43,17 @@ isPlainText = true
 mediaType = "application/json"
 notAlternative = true
 
-[outputFormats.Algolia]
-baseName = "algolia"
+[mediaTypes]
+  [mediaTypes."application/algolia"]
+    suffix = "algolia.json"
+
+[outputFormats.algolia]
 isPlainText = true
-mediaType = "application/json"
+mediaType = "application/algolia"
 notAlternative = true
 
-[params.algolia]
-vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
-params = ["categories", "tags"]
-
 [outputs]
-home = [ "HTML", "RSS", "Algolia"]
+home = [ "HTML", "RSS", "algolia"]
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"

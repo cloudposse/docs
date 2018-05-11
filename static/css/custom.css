@@ -381,6 +381,10 @@ section > h2 {
   color: #999;
 }
 
+#search-results .ais-stats {
+  opacity: 1;
+}
+
 #search-results {
   background-color: #fff;
   -webkit-transition: max-height 0.8s;
@@ -471,6 +475,24 @@ section > h2 {
 #search-hits em {
   font-weight: bold;
 }
+
+#search-hits em.section {
+  font-weight: normal;
+  padding-left: 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-style: normal;
+  color: #aaa;
+}
+
+#search-hits em.tags {
+  font-weight: normal;
+  font-size: 11px;
+  font-style: normal;
+  color: #aaa;
+  display: block;
+}
+
 
 .landing-top {
   height: 293px;
