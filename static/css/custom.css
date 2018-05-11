@@ -496,7 +496,8 @@ section > h2 {
 
 
 .landing-top {
-  height: 293px;
+  min-height: 293px;
+  height: 40%;
   padding: 60px 50px;
 }
 
@@ -824,19 +825,24 @@ div.calendly-badge-widget {
 }
 
 .homepage {
-  padding-left: 5%;
-  padding-right: 5%;
-  width: 100%;
+  padding-left: 10%;
+  padding-right: 0;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .homepage > .category {
   display: inline-block;
   float: left;
   width: 30%;
+  min-width: 320px;
+  max-width: 512px;
   height: 200px;
   overflow: scroll;
   margin-right: 35px;
 }
+
 .homepage ul {
   display: block;
   list-style: none;
