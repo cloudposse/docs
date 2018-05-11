@@ -7,6 +7,6 @@
     'prefix': 'year'
     'body': '{{< year >}}'
 
-  'docs:relref':
-    'prefix': 'relref'
+  'docs:link':
+    'prefix': 'link'
     'body': '[]({{< relref "" >}})'

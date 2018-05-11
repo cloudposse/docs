@@ -3,7 +3,7 @@
     'prefix': 'dialog-category'
     'body': """
 {{% dialog type="info" icon="fa fa-info-circle" title="Category" %}}
-
+⇠ Select one of the pages on the left.
 {{% /dialog %}}
 """
   'docs:dialog-important':

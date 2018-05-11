@@ -31,17 +31,18 @@ deps/atom:
 		tool-bar-markdown-writer \
 		markdown-toc \
 		project-manager \
+		tool-bar \
 		local-config \
 		autocomplete-paths
 
 	@echo "Please follow that steps on first run"
-	@echo "1. Start Atom"
+	@echo "1. Start/Restart Atom"
 	@echo "2. Open menu 'Edit > Preferences'"
 	@echo "3. Select tab 'Packages'"
 	@echo "4. Type 'local' in filter field"
 	@echo "5. Click settings for 'local-config' plugin"
 	@echo "6. Select checkbox 'Auto apply'"
-	@echo "7. Restart Atom"
+	@echo "7. Restart Atom twice"
 
 ## Open localhost in browser
 open:
