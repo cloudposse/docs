@@ -3,16 +3,16 @@ version: '1.0'
 
 steps:
   init_variables:
-    title: Init variables
+    title: Initializing variables...
     image: alpine
     commands:
       - cf_export MASTER_BRANCH=add-algolia
       - cf_export BUILD_HARNESS_VERSION=0.5.5
-      - cf_export HUGO_URL=https://${{S3_BUCKET_NAME}}
+      - cf_export HUGO_URL=http://${{S3_BUCKET_NAME}}
       - cf_export HUGO_CONFIG=deploy.toml
 
   build:
-    title: Build Hugo static site
+    title: Building Hugo static site...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
@@ -21,7 +21,7 @@ steps:
       - make build
 
   test:
-    title: Run tests
+    title: Running tests...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
@@ -29,7 +29,7 @@ steps:
       - make smoketest
 
   deploy:
-    title: Push all artifacts to S3 bucket
+    title: Pushing all artifacts to S3 bucket...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
@@ -40,7 +40,7 @@ steps:
           executeForMasterBranch: "'${{CF_BRANCH}}' == '${{MASTER_BRANCH}}'"
 
   reindex:
-    title: Update algolia search index
+    title: Updating algolia search index...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
