@@ -375,6 +375,7 @@ section > h2 {
 
 #search-results {
   background-color: #fff;
+  z-index: 1;
 }
 
 #search-stats {
@@ -803,22 +804,26 @@ div.calendly-badge-widget {
 .homepage ul {
   display: block;
   list-style: none;
-} 
+  width: 100%;
+}
 
-.homepage > .category > li > div > h3 {
-  font-size: 20px;
+.homepage > .category > li > div {
   border-bottom: 1px solid #ddd;
   line-height: 2em;
   margin-bottom: 1em;
+}
+
+.homepage > .category > li > div > h3 {
+  font-size: 20px;
   text-transform: none;
+  display: inline-block;
 }
 
 .homepage .view-all {
   float: right;
-  position: relative;
-  top: -50px;
+  display: inline-block;
+  padding-top: 14px;
   color: #ddd;
-  z-index: -1;
 }
 
 .homepage i {
