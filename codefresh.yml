@@ -8,7 +8,7 @@ steps:
     commands:
       - cf_export MASTER_BRANCH=add-algolia
       - cf_export BUILD_HARNESS_VERSION=0.5.5
-      - cf_export HUGO_URL=http://${{S3_BUCKET_NAME}}
+      - cf_export HUGO_URL=http://${{S3_BUCKET_NAME}}/
       - cf_export HUGO_CONFIG=deploy.toml
 
   build:
