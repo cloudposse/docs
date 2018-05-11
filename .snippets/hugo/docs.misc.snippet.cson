@@ -1,0 +1,12 @@
+'.text.md':
+  'docs:figure':
+    'prefix': 'figure'
+    'body': '{{< img src="" title="" >}}'
+
+  'docs:year':
+    'prefix': 'year'
+    'body': '{{< year >}}'
+
+  'docs:relref':
+    'prefix': 'relref'
+    'body': '[]({{< relref "" >}})'

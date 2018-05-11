@@ -14,6 +14,34 @@ export HTMLTEST_LOG_LEVEL ?= 2
 deps: packages/install/hugo \
 	  packages/install/htmltest
 
+# Install useful atom plugins
+deps/atom:
+	@apm install -s \
+		modular-snippets \
+		language-hugo \
+		autocomplete-paths \
+		markdown-badges-snippets \
+		editorconfig \
+		linter-ui-default \
+		linter-markdown \
+		language-markdown \
+		markdown-table-editor \
+		markdown-writer \
+		tool-bar-markdown-writer \
+		markdown-toc \
+		project-manager \
+		local-config \
+		autocomplete-paths
+
+	@echo "Please follow that steps on first run"
+	@echo "1. Start Atom"
+	@echo "2. Open menu 'Edit > Preferences'"
+	@echo "3. Select tab 'Packages'"
+	@echo "4. Type 'local' in filter field"
+	@echo "5. Click settings for 'local-config' plugin"
+	@echo "6. Select checkbox 'Auto apply'"
+	@echo "7. Restart Atom"
+
 ## Open localhost in browser
 open:
 	open $(HUGO_URL)

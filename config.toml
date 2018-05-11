@@ -23,7 +23,6 @@ enableEmoji = true
 # weight = 2
 # languageName = "Français"
 
-
 [params]
 showVisitedLinks = true # default is false
 themeStyle = "flex"
