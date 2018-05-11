@@ -395,7 +395,6 @@ section > h2 {
   transition-delay: 0s;
   overflow: hidden;
   max-height: 768px;
-  padding-bottom: 15px;
   position: relative;
   top: -5px;
   -webkit-box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
@@ -420,6 +419,7 @@ section > h2 {
 #search-stats h3 {
   color: #364548;
   font-size: 1.5em;
+  margin-bottom: 0.7em;
   display: inline-block;
   float: left;
 }
@@ -433,6 +433,7 @@ section > h2 {
   overflow: hidden;
   background: #fff;
   padding-top: 0px;
+  padding-bottom: 15px;
 }
 
 #search-hits:empty {

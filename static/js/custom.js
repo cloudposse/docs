@@ -14,6 +14,11 @@ $(function(){
   //console.log(document.location.hostname.match(/localhost/) === null);
   const searchResults = document.querySelector('#search-results');
   const searchBar = document.querySelector('.search-bar');
+
+  if (searchResults === null) {
+    return;
+  }
+
   const search = instantsearch({
     appId: '32YOERUX83',
     apiKey: '557985309adf0e4df9dcf3cb29c61928',
