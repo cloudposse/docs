@@ -393,6 +393,8 @@ section > h2 {
   max-height: 768px;
   position: relative;
   top: -5px;
+  -webkit-box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
+  box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
 }
 
 #search-stats {
@@ -425,8 +427,6 @@ section > h2 {
   background: #fff;
   padding-top: 0px;
   border-bottom: 1px solid #ddd;
-  -webkit-box-shadow: 0 3px 3px -2px rgba(0,0,0,0.3);
-  box-shadow: 0 3px 3px -2px rgba(0,0,0,0.3);
 }
 
 #search-hits:empty {
