@@ -14,7 +14,7 @@ export HTMLTEST_LOG_LEVEL ?= 2
 deps: packages/install/hugo \
 	  packages/install/htmltest
 
-# Install useful atom plugins
+## Install useful atom plugins
 deps/atom:
 	@apm install -s \
 		modular-snippets \
