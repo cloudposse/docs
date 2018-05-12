@@ -1,6 +1,6 @@
 ---
 title: Terraform Modules Overview
-description: "Terraform modules are the best way to encapsulate "business logic" and "Best Practices" for provisioning infrastructure."
+description: 'Terraform modules are the best way to encapsulate "business logic" and "Best Practices" for provisioning infrastructure.'
 weight: -3
 ---
 
