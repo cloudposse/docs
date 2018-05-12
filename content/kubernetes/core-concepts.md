@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Core Concepts"
-excerpt: ""
+description: ""
 draft: true
 ---
 ## Resources

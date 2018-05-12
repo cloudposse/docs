@@ -1,6 +1,6 @@
 ---
 title: "AWS Assumed Roles Repo Deprecated"
-excerpt: "We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse/aws-assumed-role) repo in favor of using [`aws-vault`](https://github.com/99designs/aws-vault) by 99 Designs."
+description: "We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse/aws-assumed-role) repo in favor of using [`aws-vault`](https://github.com/99designs/aws-vault) by 99 Designs."
 publishDate: "2018-03-31 19:59:58"
 tags:
 - "aws-assumed-roles"
@@ -16,4 +16,4 @@ We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse
  * MFA Token
  * Variable Session TTLs
 
-This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).
+This has been incorporated into our latest release of [geodesic]({{< relref "announcements/new-major-release-of-geodesic.md" >}}).

@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-dynamodb"
-excerpt: "Terraform module to provision a DynamoDB table with autoscaling."
+description: "Terraform module to provision a DynamoDB table with autoscaling."
 ---
 # Terraform AWS DynamoDB
 

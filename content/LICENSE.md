@@ -1,6 +1,7 @@
 ---
 title: Apache License v2.0
 slug: license
+description: "The Apache License is a permissive free software license used by Cloud Posse on nearly every software project we start."
 tags:
 - license
 - apl

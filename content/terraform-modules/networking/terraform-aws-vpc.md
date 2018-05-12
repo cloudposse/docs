@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-vpc
-excerpt: Terraform module that defines a VPC with Internet Gateway.
+description: Terraform module that defines a VPC with Internet Gateway.
 ---
 
 # Terraform AWS VPC

@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-elastic-beanstalk-application
-excerpt: Terraform module to provision AWS Elastic Beanstalk application
+description: Terraform module to provision AWS Elastic Beanstalk application
 ---
 
 # Terraform AWS Elastic Beanstalk Application

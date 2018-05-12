@@ -1,6 +1,6 @@
 ---
 title: "RACI Matrix"
-excerpt: ""
+description: "The RACI Responsibility assignment matrix is used to clarify the participation by various roles in completing tasks or deliverables as it relates to projects or teams."
 ---
 The [RACI Responsibility assignment matrix](https://en.wikipedia.org/wiki/Responsibility_assignment_matrix) is used to clarify the participation by various roles in completing tasks or deliverables as it relates to projects or teams.
 

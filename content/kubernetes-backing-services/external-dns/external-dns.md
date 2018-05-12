@@ -1,5 +1,5 @@
 ---
 title: "External DNS"
-excerpt: ""
+description: ""
 draft: true
 ---

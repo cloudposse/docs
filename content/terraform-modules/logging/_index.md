@@ -1,6 +1,6 @@
 ---
 title: "Terraform Logging Modules"
-excerpt: ""
+description: ""
 ---
 
 {{% notice note %}}

@@ -1,5 +1,5 @@
 ---
 title: "GitHub Commenter"
-excerpt: ""
+description: ""
 draft: true
 ---

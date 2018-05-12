@@ -1,5 +1,5 @@
 ---
 title: Linting
-excerpt: ''
+description: ''
 draft: true
 ---

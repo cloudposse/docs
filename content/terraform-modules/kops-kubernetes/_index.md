@@ -1,6 +1,6 @@
 ---
 title: "Terraform Kubernetes (Kops) Modules"
-excerpt: ""
+description: ""
 ---
 
 {{% notice note %}}

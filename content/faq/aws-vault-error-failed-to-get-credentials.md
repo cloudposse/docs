@@ -1,6 +1,6 @@
 ---
 title: "aws-vault: error: Failed to get credentials ... aes.KeyUnwrap(): integrity check failed."
-excerpt: "This horribly cryptic error message is a cryptographers way of saying \"wrong password\"."
+description: "This horribly cryptic error message is a cryptographers way of saying \"wrong password\"."
 tags:
 - aws-vault
 - geodesic

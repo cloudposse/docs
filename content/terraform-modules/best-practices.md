@@ -1,5 +1,5 @@
 ---
 title: Terraform Module Best Practices
-excerpt: ''
+description: ''
 weight: -1
 ---

@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-user-data-assets
-excerpt: ''
+description: ''
 ---
 
 # Terraform AWS User Data Assets

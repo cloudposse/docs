@@ -1,6 +1,6 @@
 ---
 title: terraform-datadog-monitor
-excerpt: >-
+description: >-
   Terraform module repository with a number of common configurations
   ("submodules") of Datadog monitors
 ---

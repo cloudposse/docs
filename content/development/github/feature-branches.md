@@ -1,6 +1,6 @@
 ---
 title: Feature Branches
-excerpt: ''
+description: "The Feature Branch Workflow is a requirement for CI/CD. It's a process by which all feature development takes place in a dedicated branch instead of the `master` branch. This makes it easy for multiple developers to collaborate on a particular feature while at the same time ensuring that the master branch remains stable."
 ---
 
 # Problem

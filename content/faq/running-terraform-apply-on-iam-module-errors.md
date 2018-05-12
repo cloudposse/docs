@@ -1,6 +1,6 @@
 ---
 title: "Running terraform apply on iam module errors with: The security token included in the request is invalid status code: 403"
-excerpt: "This is normally an issue with a bad aws-vault session"
+description: "This is normally an issue with a bad aws-vault session"
 tags:
 - aws-vault
 - terraform

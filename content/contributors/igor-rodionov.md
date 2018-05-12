@@ -1,6 +1,6 @@
 ---
 title: "Igor Rodionov"
-excerpt: ""
+description: "Igor Rodionov is a Sr DevOps Engineer. He's a Kubernetes expert, Helm Chart maestro, GoLang Developer, and Beanstalk Slinger."
 tags:
  - "devops"
  - "terraform"

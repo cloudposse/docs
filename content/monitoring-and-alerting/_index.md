@@ -1,5 +1,5 @@
 ---
 title: "Monitoring - Alerting"
-excerpt: ""
-icon: "fa fa-bell"
+description: ""
+icon: "far fa-bell"
 ---

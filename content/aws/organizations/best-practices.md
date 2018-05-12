@@ -1,6 +1,6 @@
 ---
 title: AWS Organizations Best Practices
-excerpt: ''
+description: ''
 tags:
   - organizations
   - aws

@@ -1,6 +1,6 @@
 ---
 title: "Terraform Best Practices"
-excerpt: ""
+description: ""
 slug: "terraform-best-practices"
 tags:
   - "Best Practices"

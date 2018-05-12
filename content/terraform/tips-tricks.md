@@ -1,6 +1,10 @@
 ---
 title: "Terraform Tips & Tricks"
-excerpt: ""
+description: ""
+tags:
+  - terraform
+  - Tips & Tricks
+  - git
 ---
 ![Terraform](/assets/a1f105a-terraform.png)
 
@@ -31,4 +35,3 @@ After setting this up, every time you commit, the `terraform fmt` command will b
 Any time your commit affects any `*.tf` files, the validator will ensure well-formed terraform code.
 
 ![Example of Pre Commit Hook Output](/assets/terraform-git-precommit-hook.png)
-

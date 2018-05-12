@@ -1,6 +1,6 @@
 ---
 title: Infrastructure as Code
-excerpt: ''
+description: "Infrastructure as Code is software that configures and operates basic infrastructure including servers, networking, kubernetes platform."
 
 ---
 

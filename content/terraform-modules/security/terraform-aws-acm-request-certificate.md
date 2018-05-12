@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-acm-request-certificate
-excerpt: >-
+description: >-
   Terraform module to request an ACM certificate for a domain and add a CNAME
   record to the DNZ zone to complete certificate validation.
 ---

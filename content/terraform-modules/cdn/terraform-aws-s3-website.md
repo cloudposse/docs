@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-s3-website"
-excerpt: "Terraform module for creating S3 backed Websites"
+description: "Terraform module for creating S3 backed Websites"
 ---
 # Terraform AWS S3 Website
 

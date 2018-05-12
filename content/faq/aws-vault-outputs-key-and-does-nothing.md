@@ -1,6 +1,6 @@
 ---
 title: "aws-vault outputs `'aws_access_key_id'` message and does nothing"
-excerpt: "This is usually because there's a `[default]` section in your `~/.aws/config`"
+description: "This is usually because there's a `[default]` section in your `~/.aws/config`"
 tags:
 - geodesic
 - aws-vault

@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-kops-chart-repo
-excerpt: >-
+description: >-
   Terraform module to provision an S3 bucket for [Helm](https://helm.sh/) chart
   repository, and an IAM role and policy with permissions for k8s nodes to
   access the bucket.

@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-s3-log-storage
-excerpt: >-
+description: >-
   This module creates an S3 bucket suitable for receiving logs from other `AWS`
   services such as `S3`, `CloudFront`, and `CloudTrails`.
 ---

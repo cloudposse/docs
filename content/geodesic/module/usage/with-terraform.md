@@ -1,6 +1,6 @@
 ---
-title: "with Terraform"
-excerpt: "Learn how to use Geodesic to manage Terraform resources"
+title: "Using Geodesic with Terraform"
+description: "Learn how to use Geodesic to manage Terraform resources"
 weight: -1
 ---
 # Bootstrap Process
@@ -140,12 +140,12 @@ Run the Geodesic shell.
 # Exposing port 41179
 * Started EC2 metadata service at http://169.254.169.254/latest
 
-         _              _                                              _      
+         _              _                                              _
      ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
     / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
     \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
     |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
-                  |___/         |___/                           |_|           
+                  |___/         |___/                           |_|
 
 
 IMPORTANT:
@@ -156,7 +156,7 @@ IMPORTANT:
 
 -> Run 'assume-role' to login to AWS
  ⧉  staging example
-❌   (none) ~ ➤  
+❌   (none) ~ ➤
 
 ```
 {{% /dialog %}}
@@ -175,7 +175,7 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 -> Run 'init-terraform' to use this project
  ⧉  staging example
-✅   (example-staging-admin) tfstate-backend ➤  
+✅   (example-staging-admin) tfstate-backend ➤
 
 ```
 {{% /dialog %}}
@@ -209,7 +209,7 @@ tfstate_backend_s3_bucket_arn = arn:aws:s3:::example-staging-terraform-state
 tfstate_backend_s3_bucket_domain_name = example-staging-terraform-state.s3.amazonaws.com
 tfstate_backend_s3_bucket_id = example-staging-terraform-state
  ⧉  staging example
-✅   (example-staging-admin) tfstate-backend ➤  
+✅   (example-staging-admin) tfstate-backend ➤
 
 ```
 {{% /dialog %}}
@@ -273,12 +273,12 @@ Run the Geodesic shell:
 # Exposing port 41179
 * Started EC2 metadata service at http://169.254.169.254/latest
 
-         _              _                                              _      
+         _              _                                              _
      ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
     / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
     \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
     |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
-                  |___/         |___/                           |_|           
+                  |___/         |___/                           |_|
 
 
 IMPORTANT:
@@ -295,7 +295,7 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 -> Run 'init-terraform' to use this project
  ⧉  staging example
-✅   (example-staging-admin) tfstate-backend ➤  
+✅   (example-staging-admin) tfstate-backend ➤
 ```
 {{% /dialog %}}
 

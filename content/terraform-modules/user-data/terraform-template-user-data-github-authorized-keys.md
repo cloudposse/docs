@@ -1,6 +1,6 @@
 ---
 title: terraform-template-user-data-github-authorized-keys
-excerpt: ''
+description: ''
 ---
 
 # Terraform Template User Data GitHub Authorized Keys
