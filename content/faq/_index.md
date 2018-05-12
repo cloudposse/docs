@@ -1,4 +1,4 @@
 ---
 title: "FAQs"
-icon: "fa fa-question-circle"
+icon: "far fa-comment-dots"
 ---

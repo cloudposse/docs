@@ -1,11 +1,11 @@
 ---
 title: Cloud Posse, LLC
-terms: 
+terms:
 - "cloudposse"
 - "cloud posse"
 - "cloud posse llc"
-- "cloud posse, llc"
-- "cloudposse, llc"
+- "cloud posse"
+- "cloudposse"
 - "!cloudposse.com"
 description: "Cloud Posse is a DevOps professional services company"
 ---

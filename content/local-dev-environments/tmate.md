@@ -1,10 +1,8 @@
 ---
 title: "Tmate"
-description: ""
+description: "Tmate is a way to share a console window or set of console windows. It’s basically a fork of `tmux` that makes sessions network enabled. It doesn’t matter where the participants are located - inbound firewall rules don’t interfere since it’s all outbound connections."
 ---
 # Peer Console Development (tmate)
-
-Tmate is a way to share a console window or set of console windows. It’s basically a fork of `tmux` that makes sessions network enabled. It doesn’t matter where the participants are located - inbound firewall rules don’t interfere since it’s all outbound connections.
 
 {{< img src="https://cloudposse.com/wp-content/uploads/sites/29/2018/01/tmate-linuxdescomplicado.gif" title="Screencast" >}}
 
