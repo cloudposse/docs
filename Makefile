@@ -22,7 +22,7 @@ deps-darwin:
 
 ## Install Linux deps
 deps-linux:
-	sudo pip3 install asciinema
+	pip3 install asciinema
 
 ##Install package dependencies
 deps: deps-$(OS) \
