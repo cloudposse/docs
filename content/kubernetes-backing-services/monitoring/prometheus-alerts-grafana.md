@@ -1,23 +1,22 @@
 ---
 title: "Prometheus, Alerts & Grafana"
-description: ""
+description: "Prometheus is monitoring system and time-series database that works together with Grafana and Alert Manage to provide an end-to-end monitoring platform for Kubernetes."
 ---
- [Prometheus](https://prometheus.io) is the heart of monitoring backing service. The other parts are [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and wide list of [exporters](https://prometheus.io/docs/instrumenting/exporters/) that are source of metric.
+ [Prometheus](https://prometheus.io) is at the heart of the monitoring infrastructure. It works in tandem with [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and wide list of [Exporters](https://prometheus.io/docs/instrumenting/exporters/) that provide the metrics for instrumentation.
 
 {{< img src="/assets/324asd-Prometheus_architecture.png" title="Architecture" >}}
 
 # Prometheus
 
-Prometheus - is monitoring system and time-series database.
+Prometheus is monitoring system and time-series database.
 
-It is responsible for
-
-* Scrapping metrics data
-* Store metrics data
-* Fire alerts
+It is responsible for several things:
+* Scrapping metrics data from exporters
+* Storing metrics data
+* Firing alerts
 * Response to queries
 
-Prometheus pull metrics data from different exporters and put that data to the storage.
+Prometheus pulls all metrics from different exporters in the cluster and put that data to the storage.
 To get list of available exporters Prometheus use discovery service where available exporters should be registred.
 
 It have list of registred alerts. [Alert](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) is a rule with describes alert conditions based on Prometheus expression language expressions.
