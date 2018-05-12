@@ -25,7 +25,7 @@ When alert conditions became true Prometheus sends alert notification to Alert M
 
 Also Prometheus provide endpoint to query requests for metrics data. Grafana use this endpoint to get data for charts.
 
-# Exporter
+# Prometheus Exporter (aka Exporter)
 
 Exporter is http service that provide metrics for Prometheus in correct format.
 
