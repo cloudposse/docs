@@ -10,13 +10,25 @@ export HTMLTEST_LOG_LEVEL ?= 2
 export ALGOLIA_INDEX_FILE ?= $(HUGO_PUBLISH_DIR)/index.algolia.json
 export ALGOLIA_APPLICATION_INDEX ?= dev
 export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/indexes/$(ALGOLIA_APPLICATION_INDEX)"
+export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
+
 #export ALGOLIA_API_ENDPOINT ?= "https://httpbin.org/post"
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
-## Install package dependencies
-deps: packages/install/hugo \
+## Install OSX deps
+deps-darwin:
+	brew install asciinema
+
+## Install Linux deps
+deps-linux:
+	sudo pip3 install asciinema
+
+##Install package dependencies
+deps: deps-$(OS) \
+	  packages/install/hugo \
 	  packages/install/htmltest
+	@exit 0
 
 ## Install useful atom plugins
 deps/atom:
