@@ -1,5 +1,5 @@
 ---
 title: "Kubernetes Platform Services"
 description: ""
-icon: "fa fa-dolly-flatbed"
+icon: "far fa-plus-square"
 ---

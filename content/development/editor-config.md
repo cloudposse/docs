@@ -1,6 +1,6 @@
 ---
 title: Editor Config
-description: ''
+description: "The EditorConfig enables developers to define and maintain consistent coding styles between different editors and IDEs. It consists of a simple file format (`.editorconfig`) for defining coding styles such as tabs vs spaces. Most text editors support the format and adhere to defined styles. The config files are easily readable and they work nicely with version control systems."
 tags:
   - code style
   - formatting
