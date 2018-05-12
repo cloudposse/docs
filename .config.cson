@@ -5,6 +5,10 @@
     applyOnActivation: true
   "tool-bar-markdown-writer":
     visibility: "showButtonsOnAll"
+  "markdown-image-assistant":
+    imageDir: "static/assets"
+    imageUrlPrefix: "/assets"
+    insertTemplate: "{{< img src=\"%SRC%\" title=\"\" >}}"
   "autocomplete-paths":
     enableHtmlSupport: true
     maxFileCount: 10000
