@@ -41,16 +41,16 @@ To collect custom metrics a few things need to happen:
 
 ### Check list
 
-1. Check [list of available exporters](https://prometheus.io/docs/instrumenting/exporters) to make sure there isn't already an Exporter that will meet your needs. For example, there are exporters that will work with [JMX](https://github.com/prometheus/jmx_exporter) out-of-the-box.
+1. Check the [list of available exporters](https://prometheus.io/docs/instrumenting/exporters) to make sure there isn't already an Exporter that will meet your needs. For example, there are exporters that will work with [JMX](https://github.com/prometheus/jmx_exporter) out-of-the-box.
 2. If there is no exporter, then you'll need to [write your own](https://prometheus.io/docs/instrumenting/writing_exporters/) exporter that will provide required [metrics in correct format](https://prometheus.io/docs/instrumenting/exposition_formats/)
 3. Create Kubernetes service that will expose [exporter http endpoint](https://kubernetes.io/docs/concepts/services-networking/service). We recommend then deploying this service using a Helm Chart.
 4. Register the exporter for service discovery by creating a Kubernetes resource of type `ServiceMonitor` that points to the service created in step 3.
 
 ### Examples
 
-* [Running Exporters with Prometheus Operatort](https://coreos.com/operators/prometheus/docs/latest/user-guides/running-exporters.html)
-* [Custom configuration of Service Monitor](https://coreos.com/operators/prometheus/docs/latest/custom-configuration.html)
-* [Helm chart that expose etcd metrics](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
+* Running Exporters with [Prometheus Operator](https://coreos.com/operators/prometheus/docs/latest/user-guides/running-exporters.html)
+* Custom configuration of [Service Monitor](https://coreos.com/operators/prometheus/docs/latest/custom-configuration.html)
+* Helm chart that exposes [Etcd metrics](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
 
 # Grafana
 
@@ -63,6 +63,6 @@ To collect custom metrics a few things need to happen:
 1. Sign-in to the Kubernetes Portal. Then navigate to "Grafana"
 2. Login to Grafana (default credentials are admin/admin)
 2. Create dashboard
-3. Export dashboard to json
-4. Put exported content to helm file values
-5. Sync helmfile
+3. Export dashboard to JSON
+4. Put exported content to a helm file values
+5. Sync helmfile with cluster
