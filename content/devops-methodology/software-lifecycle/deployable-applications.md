@@ -1,6 +1,6 @@
 ---
 title: Deployable Applications
-description: ''
+description: "Deployable applications is software that can be deployed via CI/CD and operated independently from the underlying platform."
 
 ---
 

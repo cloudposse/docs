@@ -6,8 +6,6 @@ tags:
 - "aws-assumed-roles"
 - "iam"
 - "geodesic"
-categories:
-- announcements
 ---
 We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse/aws-assumed-role) repo in favor of using [`aws-vault`](https://github.com/99designs/aws-vault) by 99 Designs. This offers an outstanding, ultra-secure experience for working with IAM assumed roles for local development.
 
@@ -18,4 +16,4 @@ We've decided to deprecate our [`aws-assume-role`](https://github.com/cloudposse
  * MFA Token
  * Variable Session TTLs
 
-This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).
+This has been incorporated into our latest release of [geodesic]({{< relref "announcements/new-major-release-of-geodesic.md" >}}).

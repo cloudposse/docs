@@ -1,6 +1,6 @@
 ---
 title: "Managers vs Makers"
-description: ""
+description: "Developers (Makers) and Managers work differently. Interrupts are costly for developers and therefore the business."
 ---
 ![Paul Graham](/assets/e5ae645-paul_graham.png)
 # TL;DR

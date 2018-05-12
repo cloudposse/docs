@@ -1,5 +1,5 @@
 ---
-title: "Usage"
+title: "Geodesic Usage"
 description: ""
 ---
 # Prerequisites

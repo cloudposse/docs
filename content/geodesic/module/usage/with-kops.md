@@ -1,5 +1,5 @@
 ---
-title: "with Kops"
+title: "Using Geodesic with Kops"
 description: ""
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Erik Osterman"
-description: ""
+description: "Erik Osterman is a technical evangelist and insanely passionate DevOps guru with over 12 years of experience architecting systems for AWS. He's also the CEO and Founder of Cloud Posse, a DevOps Professional Services company based in Los Angeles, CA."
 tags:
  - "ceo"
  - "founder"

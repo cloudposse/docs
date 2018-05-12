@@ -1,6 +1,6 @@
 ---
 title: Postmortem Template
-description: ''
+description: "Here is the general format of Postmortems writeups that we use at Cloud Posse."
 ---
 
 # Incident #1 - Descriptive Name of Incident (2018-06-06)

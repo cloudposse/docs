@@ -1,6 +1,6 @@
 ---
 title: AWS Vault
-description: ''
+description: "The `aws-vault` is a command line tool for securely storing and accessing encrypted AWS credentials for local development environments. It makes it extremely easy to work with IAM assumed roles across multiple AWS organizations."
 ---
 
 The [`aws-vault`](https://github.com/99designs/aws-vault) by [99 Designs](https://99designs.com/) is a vault for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
@@ -19,7 +19,7 @@ Features:
 - Automatic logins to AWS Web Console
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).
+This has been incorporated into our latest release of [geodesic]({{< relref "announcements/new-major-release-of-geodesic.md" >}}).
 {{% /dialog %}}
 
 # Installation

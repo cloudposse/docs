@@ -1,6 +1,6 @@
 ---
 title: Postmortem Example
-description: Example of a well-executed postmortem for Root Cause Analysis
+description: "Example of a well-executed postmortem for Root Cause Analysis for an actual outage that affected an Elastic Beanstalk cluster running on AWS."
 ---
 
 # Incident #1 - Rollout Caused Unplanned Outage (2017-06-29)

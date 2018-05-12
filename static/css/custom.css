@@ -16,7 +16,7 @@ body > header {
   width: 100%;
   position: initial;
   margin-bottom: 0;
-  padding-left: 10%;
+  padding-left: 20%;
   padding-right: 10%;
 }
 
@@ -45,6 +45,11 @@ nav.shortcuts i {
 header nav.shortcuts li .fa, header nav.shortcuts li .fab {
     font-size: 1.5rem;
     margin-right: 0.5rem;
+}
+
+header nav.shortcuts {
+  justify-content: flex-start;
+  margin-left: 18%;
 }
 
 a, section a {
@@ -506,7 +511,7 @@ section > h2 {
 
 .landing-top {
   min-height: 293px;
-  height: 40%;
+  height: 25%;
   padding: 60px 50px;
 }
 

@@ -1,6 +1,6 @@
 ---
 title: Semantic Versioning
-description: ''
+description: "Software versioning is the most widely adopted scheme for assigning unique version version numbers to software releases."
 ---
 
 We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. GitHub Tags/Releases, Helm Charts, Terraform Modules, Docker Images).
