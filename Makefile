@@ -18,6 +18,36 @@ export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/
 deps: packages/install/hugo \
 	  packages/install/htmltest
 
+## Install useful atom plugins
+deps/atom:
+	@which apm >/dev/null || (echo "Install the atom editor"; exit 1)
+	@apm install -s \
+		modular-snippets \
+		language-hugo \
+		autocomplete-paths \
+		markdown-badges-snippets \
+		editorconfig \
+		linter-ui-default \
+		linter-markdown \
+		language-markdown \
+		markdown-table-editor \
+		markdown-writer \
+		tool-bar-markdown-writer \
+		markdown-toc \
+		project-manager \
+		tool-bar \
+		local-config \
+		autocomplete-paths
+
+	@echo "Now complete the setup by performing the following tasks:"
+	@echo "1. Start/Restart Atom"
+	@echo "2. Open menu 'Edit > Preferences'"
+	@echo "3. Select tab 'Packages'"
+	@echo "4. Type 'local' in filter field"
+	@echo "5. Click settings for 'local-config' plugin"
+	@echo "6. Select checkbox 'Auto apply'"
+	@echo "7. Restart Atom twice"
+
 ## Open localhost in browser
 open:
 	open $(HUGO_URL)

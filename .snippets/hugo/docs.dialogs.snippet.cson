@@ -1,0 +1,63 @@
+'.text.md':
+  'docs:dialog-category':
+    'prefix': 'dialog-category'
+    'body': """
+{{% dialog type="info" icon="fa fa-info-circle" title="Category" %}}
+⇠ Select one of the pages on the left.
+{{% /dialog %}}
+"""
+  'docs:dialog-important':
+    'prefix': 'dialog-important'
+    'body': """
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+
+{{% /dialog %}}
+"""
+
+  'docs:dialog-warning':
+    'prefix': 'dialog-warning'
+    'body': """
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Warning" %}}
+
+{{% /dialog %}}
+"""
+
+  'docs:dialog-note':
+    'prefix': 'dialog-note'
+    'body': """
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+
+{{% /dialog %}}
+"""
+
+  'docs:dialog-read-more':
+    'prefix': 'dialog-read-more'
+    'body': """
+{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
+
+{{% /dialog %}}
+"""
+
+  'docs:dialog-references':
+    'prefix': 'dialog-references'
+    'body': """
+{{% dialog type="info" icon="fa fa-info-circle" title="References" %}}
+
+{{% /dialog %}}
+"""
+
+  'docs:dialog-tip':
+    'prefix': 'dialog-tip'
+    'body': """
+{{% dialog type="tip" icon="fa fa-hand-o-right" title="Tip" %}}
+
+{{% /dialog %}}
+"""
+
+  'docs:dialog-code-block':
+    'prefix': 'dialog-code-block'
+    'body': """
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+
+{{% /dialog %}}
+"""
