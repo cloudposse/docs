@@ -36,8 +36,8 @@ Sometimes software expose it's metrics in prometheus compateble format. For exam
 ## Collecting Custom Metrics
 
 To collect custom metrics a few things need to happen:
-* Need an exporter service to expose metrics to Prometheus
-* Need to register the new Exporter service with Prometheus
+* Create an exporter service to expose metrics to Prometheus
+* Register the new Exporter service with Prometheus
 
 ### Check list
 
