@@ -1,11 +1,13 @@
 ---
 title: "New Major Release of Geodesic"
-excerpt: "This release rips out the complicated dependencies on `Makefiles` that wrapped `helm` and `kops`. "
+description: "This release rips out the complicated dependencies on `Makefiles` that wrapped `helm` and `kops`. "
 publishDate: "2018-03-31 19:47:11"
 tags:
 - geodesic
 - goofys
 - aws-vault
+categories:
+- announcements
 ---
 Geodesic is the fastest way to get up and running with a rock solid, production grade cloud platform leveraging best-of-breed Open Source tools.
 

@@ -1,3 +1,4 @@
+.env
 deploy.toml
 test
 test.toml

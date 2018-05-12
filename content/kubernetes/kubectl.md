@@ -1,4 +1,4 @@
 ---
 title: "kubectl"
-excerpt: ""
+description: ""
 ---

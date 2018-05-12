@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-named-subnets"
-excerpt: "Terraform module for named [`subnets`](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html) provisioning."
+description: "Terraform module for named [`subnets`](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html) provisioning."
 ---
 # Terraform AWS Named Subnets
 

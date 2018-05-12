@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-user-data-resolv-conf
-excerpt: ''
+description: ''
 ---
 
 # Terraform AWS User Data resolv.conf

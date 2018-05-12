@@ -1,5 +1,5 @@
 ---
 title: "Helm Charts"
-excerpt: ""
-icon: "fa fa-box"
+description: ""
+icon: "far fa-map"
 ---

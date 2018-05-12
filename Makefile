@@ -7,12 +7,46 @@ export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
 export HTMLTEST_LOG_LEVEL ?= 2
+export ALGOLIA_INDEX_FILE ?= $(HUGO_PUBLISH_DIR)/index.algolia.json
+export ALGOLIA_APPLICATION_INDEX ?= dev
+export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/indexes/$(ALGOLIA_APPLICATION_INDEX)"
+#export ALGOLIA_API_ENDPOINT ?= "https://httpbin.org/post"
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
 ## Install package dependencies
 deps: packages/install/hugo \
 	  packages/install/htmltest
+
+## Install useful atom plugins
+deps/atom:
+	@which apm >/dev/null || (echo "Install the atom editor"; exit 1)
+	@apm install -s \
+		modular-snippets \
+		language-hugo \
+		autocomplete-paths \
+		markdown-badges-snippets \
+		editorconfig \
+		linter-ui-default \
+		linter-markdown \
+		language-markdown \
+		markdown-table-editor \
+		markdown-writer \
+		tool-bar-markdown-writer \
+		markdown-toc \
+		project-manager \
+		tool-bar \
+		local-config \
+		autocomplete-paths
+
+	@echo "Now complete the setup by performing the following tasks:"
+	@echo "1. Start/Restart Atom"
+	@echo "2. Open menu 'Edit > Preferences'"
+	@echo "3. Select tab 'Packages'"
+	@echo "4. Type 'local' in filter field"
+	@echo "5. Click settings for 'local-config' plugin"
+	@echo "6. Select checkbox 'Auto apply'"
+	@echo "7. Restart Atom twice"
 
 ## Open localhost in browser
 open:
@@ -57,3 +91,19 @@ release:
 deploy:
 	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/ s3://$(S3_BUCKET_NAME)/
 
+## Update algolia search index
+reindex:
+	rm -rf algolia/
+	mkdir -p algolia
+	jq -c .[] $(ALGOLIA_INDEX_FILE) | split -l 1 - algolia/
+	find algolia/ -type f -exec \
+			curl -X POST \
+				--connect-timeout 5 \
+				--max-time 10 \
+				--retry 5 \
+				--retry-delay 5 \
+				--retry-max-time 60 \
+				-H "X-Algolia-API-Key: $(ALGOLIA_API_KEY)" \
+				-H "X-Algolia-Application-Id: $(ALGOLIA_APPLICATION_ID)" \
+				-d '@{}' \
+				$(ALGOLIA_API_ENDPOINT) \;

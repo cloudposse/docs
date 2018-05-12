@@ -1,5 +1,5 @@
 ---
 title: "Learn By Example"
-excerpt: ""
+description: ""
 icon: "fa fa-graduation-cap"
 ---

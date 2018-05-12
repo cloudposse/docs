@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-kops-state-backend
-excerpt: >-
+description: >-
   Terraform module to provision dependencies for `kops` (config S3 bucket & DNS
   zone).
 ---

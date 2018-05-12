@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-vpc-peering
-excerpt: Terraform module to create a peering connection between two VPCs
+description: Terraform module to create a peering connection between two VPCs
 ---
 
 # Terraform AWS VPC Peering

@@ -1,6 +1,6 @@
 ---
-title: "with Kops"
-excerpt: ""
+title: "Using Geodesic with Kops"
+description: ""
 ---
 
 {{% dialog type="info" icon="fa-info-circle" title="Prerequisites" %}}

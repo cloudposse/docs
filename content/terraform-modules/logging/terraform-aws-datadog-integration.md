@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-datadog-integration
-excerpt: Terraform Module for DataDog integration with AWS.
+description: Terraform Module for DataDog integration with AWS.
 ---
 
 # Terraform AWS DataDog Integration

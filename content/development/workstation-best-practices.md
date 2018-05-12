@@ -1,6 +1,6 @@
 ---
 title: Workstation Best Practices
-excerpt: ''
+description: ''
 ---
 
 # OSX

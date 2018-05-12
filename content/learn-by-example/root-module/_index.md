@@ -1,6 +1,6 @@
 ---
 title: "Root Module"
-excerpt: ""
+description: ""
 weight: 1
 ---
 * Clone reference architecture repo for Geodesic Root Module.

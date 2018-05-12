@@ -1,6 +1,6 @@
 ---
 title: "Terraform User Data Modules"
-excerpt: "User Data modules provide shell scripts that are useful as \"cloud init\" scripts passed to EC2 instances."
+description: "User Data modules provide shell scripts that are useful as \"cloud init\" scripts passed to EC2 instances."
 ---
 
 {{% notice note %}}

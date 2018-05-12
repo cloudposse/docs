@@ -1,5 +1,5 @@
 ---
 title: "Slack Notifier"
-excerpt: ""
+description: ""
 draft: true
 ---

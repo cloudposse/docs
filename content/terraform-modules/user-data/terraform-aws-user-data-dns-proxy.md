@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-user-data-dns-proxy
-excerpt: ''
+description: ''
 ---
 
 # Terraform AWS User Data DNS Proxy

@@ -1,6 +1,6 @@
 ---
 title: Pull Requests
-excerpt: ''
+description: ''
 ---
 
 # Submitting a Pull Request

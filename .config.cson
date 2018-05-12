@@ -1,0 +1,47 @@
+"*":
+  welcome:
+    showOnStartup: false
+  "local-config":
+    applyOnActivation: true
+  "tool-bar-markdown-writer":
+    visibility: "showButtonsOnAll"
+  "autocomplete-paths":
+    enableHtmlSupport: true
+    maxFileCount: 10000
+    normalizeSlashes: false
+    scopes: [
+      {
+        includeCurrentDirectory: false
+        prefixes: [
+          '{{< relref "'
+        ]
+        projectRelativePath: true
+        relative: false
+        replaceOnInsert: [
+          [
+            "^content\\/(.*?)$"
+            "$1"
+          ]
+        ]
+        scopes: [
+          "text.md"
+        ]
+      },
+      {
+        includeCurrentDirectory: false
+        prefixes: [
+          '{{< img src="'
+        ]
+        projectRelativePath: true
+        relative: false
+        replaceOnInsert: [
+          [
+            "^static\\/(.*?)$"
+            "/$1"
+          ]
+        ]
+        scopes: [
+          "text.md"
+        ]
+      }
+    ]

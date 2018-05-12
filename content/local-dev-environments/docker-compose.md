@@ -1,6 +1,6 @@
 ---
 title: "Docker Compose"
-excerpt: ""
+description: "These are some of the “lessons learned” by Cloud Posse and general advice for working with Docker Compose."
 ---
 ![Docker Compose](/assets/7804914-docker-compose.png)
 

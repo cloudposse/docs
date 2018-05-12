@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Pull Secrets"
-excerpt: ""
+description: ""
 ---
 There are a few ways to handle docker "pull secrets" under kubernetes. One way is specific to how `kops` works, the other is more generalized to kubernetes.
 

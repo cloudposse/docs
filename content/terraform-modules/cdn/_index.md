@@ -1,6 +1,6 @@
 ---
 title: "Terraform CDN Modules"
-excerpt: ""
+description: ""
 ---
 
 {{% notice note %}}

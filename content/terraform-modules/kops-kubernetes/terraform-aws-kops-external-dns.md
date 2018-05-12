@@ -1,6 +1,6 @@
 ---
 title: terraform-aws-kops-external-dns
-excerpt: >-
+description: >-
   Terraform module to provision an IAM role for `external-dns` running in a Kops
   cluster, and attach an IAM policy to the role with permissions to modify
   Route53 record sets.

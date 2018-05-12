@@ -1,6 +1,6 @@
 ---
 title: "terraform-aws-cicd"
-excerpt: "Terraform module to create AWS [CodePipeline](https://aws.amazon.com/codepipeline/) with [CodeBuild](https://aws.amazon.com/codebuild/) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD)"
+description: "Terraform module to create AWS [CodePipeline](https://aws.amazon.com/codepipeline/) with [CodeBuild](https://aws.amazon.com/codebuild/) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD)"
 ---
 # Terraform AWS CI/CD
 

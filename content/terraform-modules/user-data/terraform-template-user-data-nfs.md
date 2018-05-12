@@ -1,6 +1,6 @@
 ---
 title: terraform-template-user-data-nfs
-excerpt: >-
+description: >-
   Terraform module designed to use template file to generate the bootstrap shell
   script `user_data.sh`
 ---

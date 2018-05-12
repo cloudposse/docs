@@ -23,11 +23,11 @@ enableEmoji = true
 # weight = 2
 # languageName = "Français"
 
-
 [params]
 showVisitedLinks = true # default is false
 themeStyle = "flex"
-ordersectionsby = "weight" # ordersectionsby = "title"
+ordersectionsby = "weight" 
+# ordersectionsby = "title"
 disableHomeIcon = true
 disableSearch = true
 disableNavChevron = false # set true to hide next/prev chevron, default is false
@@ -42,58 +42,67 @@ isPlainText = true
 mediaType = "application/json"
 notAlternative = true
 
+[mediaTypes]
+  [mediaTypes."application/algolia"]
+    suffix = "algolia.json"
+
+[outputFormats.algolia]
+isPlainText = true
+mediaType = "application/algolia"
+notAlternative = true
+
 [outputs]
-home = [ "HTML", "RSS", "JSON"]
+home = [ "HTML", "RSS", "algolia"]
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-book'></i> <label>Documentation</label>"
-identifier = "documentation"
+identifier = "nav-documentation"
 url = "/"
 weight = 10
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-bullhorn'></i> <label>Announcements</label>"
-identifier = "announcements"
+identifier = "nav-announcements"
 url = "/announcements/"
 weight = 20
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
 name = "<i class='fab fa-github'></i> <label>Our GitHub</label>"
-identifier = "github"
+identifier = "nav-github"
 url = "https://github.com/cloudposse/"
 weight = 30
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-bookmark'></i> <label>Blog</label>"
-identifier = "blog"
+identifier = "nav-blog"
 url = "https://cloudposse.com/blog/"
 weight = 40
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-question'></i> <label>FAQ</label>"
-identifier = "faq"
+identifier = "nav-faq"
 url = "/faq/"
 weight = 45
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-question'></i> <label>Support</label>"
-identifier = "support"
+identifier = "nav-support"
 url = "https://github.com/cloudposse/docs/issues"
 weight = 50
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-edit'></i> <label>Ask a Question</label>"
-identifier = "ask-a-question"
+identifier = "nav-ask-a-question"
 url = "https://github.com/cloudposse/docs/issues/new"
 weight = 60
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-envelope'></i> <label>Contact Us</label>"
 url = "/documentation/contact-us/"
-identifier = "contact-us"
+identifier = "nav-contact-us"
 weight = 70

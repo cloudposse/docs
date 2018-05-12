@@ -1,6 +1,6 @@
 ---
 title: "Andriy Knysh"
-excerpt: ""
+description: ""
 tags:
  - "devops"
  - "terraform"

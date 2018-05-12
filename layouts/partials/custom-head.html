@@ -1,6 +1,11 @@
+{{- if .Permalink -}}
+<link rel="canonical" href="{{ .Permalink }}">
+{{- end -}}
+
 <link rel="apple-touch-icon-precomposed" href="/images/favicon.png">
 <link rel="stylesheet" href="/css/tooltip.css">
 <link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/media.css">
 
 <!-- Calendly link widget begin -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
@@ -15,4 +20,7 @@
 <script src="/js/tooltip.js"></script>
 <script src="/js/jquery.glossarize.js"></script>
 
-
+<!-- Algolia -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.4/dist/instantsearch.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.4/dist/instantsearch-theme-algolia.min.css">
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.4"></script>

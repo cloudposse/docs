@@ -1,5 +1,5 @@
 ---
 title: "Quip"
-excerpt: ""
+description: ""
 draft: true
 ---
