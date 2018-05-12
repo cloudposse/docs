@@ -26,7 +26,7 @@ Also Prometheus provide endpoint to query requests for metrics data. Grafana use
 
 # Exporter
 
-Exporter is http service that provide metrics for Prometheus in correct format.
+Exporter is an http service that provide metrics in a format suitable for Prometheus consumption.
 
 Sometimes this is single service like
 [Node exporter](https://github.com/prometheus/node_exporter) that provide some base server metrics (CPU/Memory/etc..)
@@ -60,7 +60,7 @@ To collect custom metrics a few things need to happen:
 
 ## How to create dashboard or panel
 
-1. Sign-in to the Kubernetes Portal. Then navigate to "Grafana"
+1. Sign-in to the Kubernetes Portal. Then navigate to "Grafana".
 2. Login to Grafana (default credentials are admin/admin)
 2. Create dashboard
 3. Export dashboard to JSON
