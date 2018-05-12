@@ -19,7 +19,7 @@ Features:
 - Automatic logins to AWS Web Console
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-This has been incorporated into our latest release of [geodesic](https://docs.cloudposse.com/blog/new-major-release-of-geodesic).
+This has been incorporated into our latest release of [geodesic]({{< relref "announcements/new-major-release-of-geodesic.md" >}}).
 {{% /dialog %}}
 
 # Installation
