@@ -901,7 +901,10 @@ div.calendly-badge-widget {
   float: right;
   display: inline-block;
   padding-top: 14px;
-  color: #ddd;
+  color: #bbb;
+  font-weight: normal;
+  font-size: 12px;
+  text-transform: uppercase;
 }
 
 .homepage i {
