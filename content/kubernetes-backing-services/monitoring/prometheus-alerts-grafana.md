@@ -4,7 +4,7 @@ description: "Prometheus is monitoring system and time-series database that work
 ---
  [Prometheus](https://prometheus.io) is at the heart of the monitoring infrastructure. It works in tandem with [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and wide list of [Exporters](https://prometheus.io/docs/instrumenting/exporters/) that provide the metrics for instrumentation.
 
-{{< img src="/assets/324asd-Prometheus_architecture.png" title="Architecture" >}}
+{{< img src="/assets/324asd-Prometheus_architecture.png" title="Prometheus Monitoring Architecture" >}}
 
 # Prometheus
 
@@ -33,36 +33,36 @@ Sometimes this is single service like
 
 Sometimes software expose it's metrics in prometheus compateble format. For example you can check this [list](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)
 
-## How to collect metric
+## Collecting Custom Metrics
 
-To collecting custom metrics:
+To collect custom metrics a few things need to happen:
+* Need an exporter service to expose metrics to Prometheus
+* Need to register the new Exporter service with Prometheus
 
-* Need an exporter service to expose metrics
-* Register the exporter in discovery service
+### Check list
 
-## Check list
+1. Check [list of available exporters](https://prometheus.io/docs/instrumenting/exporters) to make sure there isn't already an Exporter that will meet your needs. For example, there are exporters that will work with [JMX](https://github.com/prometheus/jmx_exporter) out-of-the-box.
+2. If there is no exporter, then you'll need to [write your own](https://prometheus.io/docs/instrumenting/writing_exporters/) exporter that will provide required [metrics in correct format](https://prometheus.io/docs/instrumenting/exposition_formats/)
+3. Create Kubernetes service that will expose [exporter http endpoint](https://kubernetes.io/docs/concepts/services-networking/service). We recommend then deploying this service using a Helm Chart.
+4. Register the exporter for service discovery by creating a Kubernetes resource of type `ServiceMonitor` that points to the service created in step 3.
 
-1. Check [list of available exporters](https://prometheus.io/docs/instrumenting/exporters)
-2. If there is no exporter that you need, feel free to [write your own](https://prometheus.io/docs/instrumenting/writing_exporters/) exporter that will provide required [metric in correct format](https://prometheus.io/docs/instrumenting/exposition_formats/)
-3. Create Kubernetes service that will expose [exporter http endpoint](https://kubernetes.io/docs/concepts/services-networking/service) 4. Register exporter in discovery service by creating Kubernetes resource `ServiceMonitor` point to the service created on step 3
-
-Examples:
+### Examples
 
 * [Running Exporters with Prometheus Operatort](https://coreos.com/operators/prometheus/docs/latest/user-guides/running-exporters.html)
 * [Custom configuration of Service Monitor](https://coreos.com/operators/prometheus/docs/latest/custom-configuration.html)
 * [Helm chart that expose etcd metrics](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
 
-
 # Grafana
 
-[Grafana](http://docs.grafana.org/guides/basic_concepts/) - is tool for visialization data
+[Grafana](http://docs.grafana.org/guides/basic_concepts/) is an Open Source tool for data visualization.
 
 [Read more about grafana dashboards and panels](http://docs.grafana.org/features/panels/graph/)
 
 ## How to create dashboard or panel
 
-1. [Sign-in](https://grafana.ui.staging.aws.popchest.io/login?redirect=%2Fdashboards) Login/Password = admin/admin
-2. [Create dashboard](https://grafana.ui.staging.aws.popchest.io/dashboard/new?orgId=1)
+1. Sign-in to the Kubernetes Portal. Then navigate to "Grafana"
+2. Login to Grafana (default credentials are admin/admin)
+2. Create dashboard
 3. Export dashboard to json
 4. Put exported content to helm file values
 5. Sync helmfile
