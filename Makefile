@@ -39,7 +39,7 @@ deps/atom:
 		local-config \
 		autocomplete-paths
 
-	@echo "Please follow that steps on first run"
+	@echo "Now complete the setup by performing the following tasks:"
 	@echo "1. Start/Restart Atom"
 	@echo "2. Open menu 'Edit > Preferences'"
 	@echo "3. Select tab 'Packages'"
