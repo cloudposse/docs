@@ -37,6 +37,7 @@ steps:
       - make deps
       - make smoketest
 
+  # Only deploy on tagged releases
   deploy:
     title: Pushing all artifacts to S3 bucket...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
@@ -46,9 +47,9 @@ steps:
     when:
       condition:
         all:
-          executeForMasterBranch: "'${{CF_BRANCH}}' == '${{MASTER_BRANCH}}'"
           executeForTag: "'${{SEMVERSION_TAG}}' != ''"
 
+  # Only reindex on tagged releases
   reindex:
     title: Updating algolia search index...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
@@ -58,5 +59,4 @@ steps:
     when:
       condition:
         all:
-          executeForMasterBranch: "'${{CF_BRANCH}}' == '${{MASTER_BRANCH}}'"
           executeForTag: "'${{SEMVERSION_TAG}}' != ''"
