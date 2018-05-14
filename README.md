@@ -61,7 +61,7 @@ Copyright 2017-2018 © Cloud Posse, LLC.
 
 ## License
 
-<img title="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License" src="static/images/cc-by-nc-sa.png" width="250" />
+(<img title="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License" src="static/images/cc-by-nc-sa.png" width="250" />)[http://creativecommons.org/licenses/by-nc-sa/4.0/]
 
 This material may only be distributed subject to the terms and conditions set forth in the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License or later with the restrictions noted below (the latest version of the license is presently available at <http://creativecommons.org/licenses/by-nc-sa/4.0/>).
 
