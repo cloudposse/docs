@@ -2,6 +2,7 @@ export INSTALL_PATH ?= /usr/local/bin
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
 export HUGO_URL ?= http://localhost.cloudposse.com:1313/
+export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(GIT_BRANCH)
 export HUGO_ARGS ?= --watch --buildDrafts
 export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
@@ -84,7 +85,8 @@ release:
 	@[ "$(HUGO_CONFIG)" != "config.toml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	cat config.toml | \
 		sed 's,^baseURL.*,baseURL = "$(HUGO_URL)",' | \
-		sed 's,^publishDir.*,publishDir = "$(HUGO_PUBLISH_DIR)",' \
+		sed 's,^publishDir.*,publishDir = "$(HUGO_PUBLISH_DIR)",' | \
+		sed 's,^editURL.*,editURL = "$(HUGO_EDIT_URL)",' \
 		> $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
 
