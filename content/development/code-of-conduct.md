@@ -1,6 +1,9 @@
 ---
 title: Code of Conduct
 description: This is our Contributor Covenant Code of Conduct.
+tags:
+- open-source
+- agreement
 ---
 
 # Our Pledge
