@@ -27,6 +27,19 @@
   #nav-github, #nav-documentation, #nav-ask-a-question {
     display: none;
   }
+
+  div.landing-description {
+    width: 100%;
+  }
+
+  .homepage {
+    width: 93%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .nav-select {
+    display: none;
+  }
 }
 
 /* 
@@ -40,7 +53,9 @@
     width: auto;
   }
 
-  
+  .landing-top {
+    height: 28vh;
+  }
 }
 
 /* 
@@ -56,7 +71,7 @@
 }
 
 /* 
- * Device = Most of the Smartphones Mobiles (Portrait)
+ * Device = Most of the Smartphones Mobiles (Portrait) - iPhone 6/7/8/10
  * Screen = B/w 320px to 479px
 */
 
@@ -78,14 +93,98 @@
   .landing-top {
     padding-top: 20px;
     padding-bottom: 20px;
+    height: 52vh;
+  }
+
+  .search-bar {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   div.landing-top h1 {
     line-height: 1.1em;
   }
 
+  .homepage {
+    padding-left: 0;
+  }
+
   .homepage > .category {
     height: auto;
+  }
+
+  header nav.shortcuts {
+    display: none;
+  }
+
+  div.calendly-badge-widget {
+    display: none;
+  }
+
+  .breadcrumbs {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-select {
+    background-color: transparent;
+    width: 100%;
+  }
+
+  .nav-select select {
+    margin-bottom: 0;
+    display: inline-block;
+    
+  }
+}
+
+/* iPhone 6, 7, & 8 in portrait */
+@media only screen 
+  and (min-device-width : 375px) 
+  and (max-device-width : 667px) {
+
+  .landing-top {
+    height: 53vh;
+  }
+}
+
+/* iPhone X in portrait */
+@media only screen 
+  and (min-device-width : 375px) 
+  and (max-device-width : 812px) 
+  and (-webkit-device-pixel-ratio : 3)
+  and (orientation : portrait) { 
+
+  .landing-top {
+    height: 45vh;
+  }
+}
+
+/* iPhone 6, 7, 8 Plus */
+@media only screen 
+  and (min-device-width : 414px) 
+  and (max-device-width : 736px) 
+  and (orientation : portrait) { 
+  .landing-top {
+    height: 48vh;
+  }
+}
+
+/* iPad Pro Portrait */
+@media only screen 
+  and (min-device-width: 1024px) 
+  and (max-device-width: 1366px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 1.5) {
+
+  .landing-top {
+    height: 21vh;
+  }
+
+  .homepage {
+    width: 80%;
+    padding-left: 5%;
   }
 
 }
