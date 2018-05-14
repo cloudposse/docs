@@ -55,29 +55,29 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 **NOTE:** Be sure to merge the latest from "upstream" before making a pull request!
 
+## Copyright
+
+Copyright 2017-2018 © Cloud Posse, LLC.
 
 ## License
 
-[APACHE 2.0](LICENSE) © 2018 [Cloud Posse, LLC](https://cloudposse.com)
+This material may only be distributed subject to the terms and conditions set forth in the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License or later with the restrictions noted below (the latest version of the license is presently available at <http://creativecommons.org/licenses/by-nc-sa/4.0/>).
 
-See [LICENSE](LICENSE) for full details.
+**Attribution** You must attribute the work in the manner specified by the author or licensor.
 
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+**Noncommercial** The licensor permits others to copy, distribute and transmit the work. In return, licensees may not use the work for commercial purposes — unless they get the licensor's permission.
 
-      http://www.apache.org/licenses/LICENSE-2.0
+**Share Alike** The licensor permits others to distribute derivative works only under the same license or one compatible with the one that governs the licensor's work.
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
+## Distribution
+
+Distribution of substantively modified versions of this document is prohibited without the explicit permission of the copyright holder.
+
+Distribution of the work or derivative of the work in any standard (paper) book form for commercial purposes is prohibited unless prior permission is obtained from the copyright holder.
+
+## Trademarks
+
+All other trademarks referenced herein are the property of their respective owners.
 
 ## About
 
