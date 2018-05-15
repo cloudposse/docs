@@ -37,7 +37,8 @@ deps/atom:
 		project-manager \
 		tool-bar \
 		local-config \
-		autocomplete-paths
+		autocomplete-paths \
+		https://github.com/cloudposse/atom-markdown-image-assistant.git
 
 	@echo "Now complete the setup by performing the following tasks:"
 	@echo "1. Start/Restart Atom"

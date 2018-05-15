@@ -8,3 +8,6 @@ build-harness/
 public/*
 .gitkeep
 *.swp
+.idea
+*.iml
+package-lock.json
