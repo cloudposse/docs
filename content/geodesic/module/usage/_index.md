@@ -1,5 +1,5 @@
 ---
-title: "Geodesic Usage"
+title: "Geodesic Module Usage"
 description: ""
 ---
 # Prerequisites

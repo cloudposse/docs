@@ -3,26 +3,13 @@ title: "Using Geodesic with Kops"
 description: ""
 ---
 
-{{% dialog type="info" icon="fa-info-circle" title="Prerequisites" %}}
-This assumes you've followed the [Geodesic Quick Start]({{< relref "geodesic/module/quickstart.md" >}}) guide which covers all the scaffolding necessary to get started.
+{{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
+This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relref "geodesic/module/usage/with-terraform.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
+Geodesic use [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes cluster.
+
 # Create a cluster
-
-Follow the [Provision a Cluster]({{< relref "geodesic/module/usage/with-kops.md" >}}) process
-
-# Provision Platform Backing Services
-
-A number of [Terraform Modules Overview]({{< relref "terraform-modules/overview.md" >}}) provide to provision AWS resources needed by Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
-
-# Provisioning a Kops cluster
-
-We create a `kops` cluster from a manifest.
-
-The manifest template is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
-and is compiled by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
-
-# Synopsis
 
 Provisioning a `kops` cluster takes three steps:
 
@@ -30,12 +17,181 @@ Provisioning a `kops` cluster takes three steps:
 2. Update the `Dockerfile` and rebuild/restart the `geodesic` shell to generate a kops manifest file
 3. Launch a kops cluster from the manifest file
 
-# Provision the State Backend
+## Provision the State Backend
 
-Inside the `geodesic shell, change directory to `kops` folder
-```bash
-cd /conf/kops
+## 
+
+### Add kops state terraform module
+Create file in `./conf/aws-kops-backend/main.tf` with following content
+
+{{% dialog type="code-block" icon="fa fa-code" title="./conf/aws-kops-backend/main.tf" %}}
 ```
+terraform {
+  required_version = ">= 0.11.2"
+  backend "s3" {}
+}
+
+variable "aws_assume_role_arn" {}
+
+variable "tfstate_namespace" {}
+
+variable "tfstate_stage" {}
+
+variable "tfstate_region" {}
+
+variable "kops_cluster_name" {}
+
+variable "parent_zone_name" {}
+
+provider "aws" {
+  assume_role {
+    role_arn = "${var.aws_assume_role_arn}"
+  }
+}
+
+module "kops_state_backend" {
+  source           = "git::https://github.com/cloudposse/terraform-aws-kops-state-backend.git?ref=tags/0.1.3"
+  namespace        = "${var.tfstate_namespace}"
+  stage            = "${var.tfstate_stage}"
+  name             = "kops-state"
+  parent_zone_name = "${var.parent_zone_name}"
+  zone_name        = "$${name}.$${parent_zone_name}"
+  cluster_name     = "${var.tfstate_region}"
+  region           = "${var.tfstate_region}"
+}
+
+module "ssh_key_pair" {
+  source              = "git::https://github.com/cloudposse/terraform-aws-key-pair.git?ref=tags/0.2.3"
+  namespace           = "${var.tfstate_namespace}"
+  stage               = "${var.tfstate_stage}"
+  name                = "kops-${var.tfstate_region}"
+  ssh_public_key_path = "/secrets/tf/ssh"
+  generate_ssh_key    = "true"
+}
+
+output "parent_zone_id" {
+  value = "${module.kops_state_backend.parent_zone_id}"
+}
+
+output "parent_zone_name" {
+  value = "${module.kops_state_backend.parent_zone_name}"
+}
+
+output "zone_id" {
+  value = "${module.kops_state_backend.zone_id}"
+}
+
+output "zone_name" {
+  value = "${module.kops_state_backend.zone_name}"
+}
+
+output "bucket_name" {
+  value = "${module.kops_state_backend.bucket_name}"
+}
+
+output "bucket_region" {
+  value = "${module.kops_state_backend.bucket_region}"
+}
+
+output "bucket_domain_name" {
+  value = "${module.kops_state_backend.bucket_domain_name}"
+}
+
+output "bucket_id" {
+  value = "${module.kops_state_backend.bucket_id}"
+}
+
+output "bucket_arn" {
+  value = "${module.kops_state_backend.bucket_arn}"
+}
+
+output "ssh_key_name" {
+  value = "${module.ssh_key_pair.key_name}"
+}
+
+output "shh_public_key" {
+  value = "${module.ssh_key_pair.public_key}"
+}
+```
+{{% /dialog %}}
+
+###  Run into the module shell
+
+Run the Geodesic shell.
+```shell
+> $CLUSTER_NAME
+```
+
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+```
+> staging.example.com
+# Mounting /home/goruha into container
+# Starting new staging.example.com session from cloudposse/staging.example.com:dev
+# Exposing port 41179
+* Started EC2 metadata service at http://169.254.169.254/latest
+
+         _              _                                              _
+     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
+    / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
+    \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
+    |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
+                  |___/         |___/                           |_|
+
+
+IMPORTANT:
+* Your $HOME directory has been mounted to `/localhost`
+* Use `aws-vault` to manage your sessions
+* Run `assume-role` to start a session
+
+
+-> Run 'assume-role' to login to AWS
+ ⧉  staging example
+❌   (none) ~ ➤
+
+```
+{{% /dialog %}}
+
+### Authorize on AWS
+Assume role by running
+```bash
+assume-role
+```
+
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+```
+❌   (none) tfstate-backend ➤  assume-role
+Enter passphrase to unlock /conf/.awsvault/keys/:
+Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
+* Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
+-> Run 'init-terraform' to use this project
+ ⧉  staging example
+✅   (example-staging-admin) tfstate-backend ➤
+
+```
+{{% /dialog %}}
+
+### Apply aws-kops-backend
+
+Change directory to `/conf/aws-kops-backend` and run there commands
+```shell
+init-terraform
+terraform plan
+terraform apply
+```
+
+The latest command will output id of kops state bucket. Please copy that values because we need it for next step.
+
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+```
+✅   (example-staging-admin) aws-kopstate-backend ➤  terraform apply
+ ⧉  staging example
+✅   (example-staging-admin)  ➤
+
+```
+{{% /dialog %}}
+
+In the example the bucket name is `example-staging-terraform-state` and dynamo DB table `example-staging-terraform-state-lock`.
+
 
 Run Terraform to provision the `kops` backend (S3 bucket, DNS zone, and SSH keypair)
 ```bash
@@ -51,6 +207,29 @@ The public and private SSH keys are created and stored automatically in the encr
 ![Staging Kops SSH Keys](/assets/9d5dc1c-joany-staging-kops-state-ssh-keys.png)
 
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `CLUSTER_NAME` and `KOPS_STATE_STORE` in the `Dockerfile`.
+
+
+
+
+
+
+
+
+
+
+# Provision Platform Backing Services
+
+A number of [Terraform Modules Overview]({{< relref "terraform-modules/overview.md" >}}) provide to provision AWS resources needed by Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
+
+# Provisioning a Kops cluster
+
+We create a `kops` cluster from a manifest.
+
+The manifest template is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
+and is compiled by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
+
+# Synopsis
+
 
 # Build Manifest
 
