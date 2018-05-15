@@ -1,6 +1,6 @@
 ![Cloud Posse](https://cloudposse.com/logo-300x69.png)
 
-# Developer Documentation ![Build Status](https://g.codefresh.io/api/badges/build?repoOwner=cloudposse&repoName=docs&branch=master&pipelineName=docs&accountName=cloudposse)]
+# Developer Documentation ![Build Status](https://g.codefresh.io/api/badges/build?repoOwner=cloudposse&repoName=docs&branch=master&pipelineName=docs&accountName=cloudposse)
 
 Welcome to the Cloud Posse developer Hub.
 

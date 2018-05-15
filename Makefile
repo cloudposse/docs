@@ -22,12 +22,14 @@ deps-darwin:
 
 ## Install Linux deps
 deps-linux:
+	@which pip3 >/dev/null || (echo "Install pip3 please"; exit 1)
 	pip3 install asciinema
 
 ##Install package dependencies
 deps: deps-$(OS) \
 	  packages/install/hugo \
 	  packages/install/htmltest
+	  asciinema auth
 	@exit 0
 
 ## Install useful atom plugins
@@ -37,7 +39,6 @@ deps/atom:
 		modular-snippets \
 		language-hugo \
 		autocomplete-paths \
-		markdown-badges-snippets \
 		editorconfig \
 		linter-ui-default \
 		linter-markdown \
