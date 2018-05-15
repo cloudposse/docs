@@ -35,6 +35,7 @@ steps:
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
+      - apk add --no-cache python3
       - make deps
       - make smoketest
 
