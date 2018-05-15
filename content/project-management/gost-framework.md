@@ -1,6 +1,6 @@
 ---
 title: "GOST Framework"
-description: ""
+description: "The GOST Framework is a method of clearly articulating a process for achieving a goal."
 slug: gost-framework
 ---
 ![GOST Framework](/assets/3feff88-ghost.png)

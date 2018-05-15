@@ -33,6 +33,8 @@ steps:
     title: Running tests...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
+    environment:
+      - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
     commands:
       - make deps
       - make smoketest
