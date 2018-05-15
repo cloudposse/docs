@@ -1160,3 +1160,7 @@ a:hover.button.green {
 .license .fab {
   font-size: 2em;
 }
+
+.utterances-wrapper {
+  margin: 10em auto 0 auto;
+}

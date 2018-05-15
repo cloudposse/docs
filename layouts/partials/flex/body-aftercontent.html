@@ -7,6 +7,14 @@
     {{ partial "next-prev-page.html" . }}
   </div>
 
+  <div class="utterances-wrapper">
+      <script src="https://utteranc.es/client.js"
+              repo="cloudposse/docs"
+              issue-term="pathname"
+              async>
+      </script>
+  </div>
+
   </section>
   {{ if and (gt .WordCount 400 ) (ne .Params.toc "false") }}
   <aside id="right-sidebar">
