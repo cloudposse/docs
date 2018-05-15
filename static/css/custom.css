@@ -570,6 +570,12 @@ article section.page img {
   max-width: 50%
 }
 
+article section.page li img {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+}
+
 .page-gost-framework article section.page img {
   max-width: 13%;
 }
