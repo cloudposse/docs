@@ -44,6 +44,13 @@
       <input type="text" placeholder="Search" class="search-box">
     </div>
     {{end}}
+    <div class="nav-select">
+      <center>
+        <select onchange="javascript:location.href = this.value;">
+          {{partial "flex/selectnavigation.html" .}}
+        </select><i class="fa fa-angle-down"></i>
+      </center>
+    </div>
   </div>
 </div>
 
@@ -84,13 +91,6 @@
   </aside>
 
   <section class="page">
-    <div class="nav-select">
-      <center>Navigation : 
-        <select onchange="javascript:location.href = this.value;">
-          {{partial "flex/selectnavigation.html" .}}
-        </select>
-      </center>
-    </div>
 
     {{- if not .Site.Params.disableSearch}}
       <div>

@@ -28,12 +28,12 @@
     {{end}}
 
 
-    <div class="copyright"> © {{ now.Format "2006"}} Cloud Posse, LLC. All Rights Reserved.</div>
+    <div class="copyright"> © {{ now.Format "2006"}} Cloud Posse, LLC. <a rel="license" href="/license/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a></div>
 
     <div class="custom">
 {{ $footer := print "_footer." .Lang }}
 {{ range where .Site.Pages "Source.BaseFileName" $footer }}
-  {{ .Content }} 
+  {{ .Content }}
 {{else}}
   {{ if .Site.GetPage "page" "_footer.md" }}
     {{(.Site.GetPage "page" "_footer.md").Content}}

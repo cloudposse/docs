@@ -16,7 +16,7 @@ body > header {
   width: 100%;
   position: initial;
   margin-bottom: 0;
-  padding-left: 20%;
+  padding-left: 18vw;
   padding-right: 10%;
 }
 
@@ -28,7 +28,7 @@ body > header a:hover {
   text-decoration: none;
 }
 
-body > header:after { 
+body > header:after {
   display: none;
 }
 
@@ -37,6 +37,10 @@ body > header nav.shortcuts li a {
   height: 2rem;
 }
 
+header nav.shortcuts li {
+  line-height: 1em;
+  white-space: nowrap;
+}
 nav.shortcuts i {
   /* disable nav icons to save some space */
   display: none;
@@ -49,7 +53,7 @@ header nav.shortcuts li .fa, header nav.shortcuts li .fab {
 
 header nav.shortcuts {
   justify-content: flex-start;
-  margin-left: 18%;
+  margin-left: 3vw;
 }
 
 a, section a {
@@ -61,13 +65,16 @@ a:hover {
   text-decoration: underline;
 }
 
-strong {
-  font-weight: 600;
+strong, section strong {
+  font-weight: bold;
 }
-
 
 th:empty {
   display: none;
+}
+
+.label-default {
+  font-weight: normal;
 }
 
 .hidden, #search-results.hidden {
@@ -161,9 +168,15 @@ section article header:after {
 }
 
 
-header .logo img {
-  width: 174px;
+header .logo {
+  width: 160px;
   height: 40px;
+  margin-bottom: 13px;
+}
+
+header .logo img {
+  width: 100%;
+  height: 100%;
 }
 
 header nav.shortcuts li a:hover {
@@ -205,6 +218,10 @@ body > aside {
 article > aside .menu .dd-item div a, article > aside .menu .dd-item div a:hover {
   order: 1;
   padding-left: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
 }
 
 article > aside .menu .dd-item.haschildren > div {
@@ -278,7 +295,7 @@ article section.page pre {
     padding: 20px 20px;
     border-radius: 6px;
     color: #EFF0F0;
-    background-color: #364548; 
+    background-color: #364548;
 }
 
 aside#right-sidebar {
@@ -344,7 +361,7 @@ section > h1 {
 section > h2 {
   color: #999;
   font-size: 21px;
-  font-weight: 300; 
+  font-weight: 300;
 }
 
 
@@ -511,7 +528,7 @@ section > h2 {
 
 .landing-top {
   min-height: 293px;
-  height: 25%;
+  height: 25vh;
   padding: 60px 50px;
 }
 
@@ -841,7 +858,7 @@ div.calendly-badge-widget {
 .homepage {
   padding-left: 10%;
   padding-right: 0;
-  width: 80%;
+  width: 85%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -883,7 +900,10 @@ div.calendly-badge-widget {
   float: right;
   display: inline-block;
   padding-top: 14px;
-  color: #ddd;
+  color: #bbb;
+  font-weight: normal;
+  font-size: 12px;
+  text-transform: uppercase;
 }
 
 .homepage i {
@@ -1135,4 +1155,8 @@ a.button.green {
 
 a:hover.button.green {
   background-color: #419954;
+}
+
+.license .fab {
+  font-size: 2em;
 }
