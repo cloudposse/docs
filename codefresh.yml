@@ -25,6 +25,8 @@ steps:
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
+      # Install python3 to pass install deps asciinema
+      - apk add --no-cache python3
       - make deps
       - make release
       - make build
@@ -36,6 +38,8 @@ steps:
     environment:
       - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
     commands:
+      # Install python3 to pass install deps asciinema
+      - apk add --no-cache python3
       - make deps
       - make smoketest
 

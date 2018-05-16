@@ -10,3 +10,7 @@
   'docs:link':
     'prefix': 'link'
     'body': '[]({{< relref "" >}})'
+
+  'docs:asciinema':
+    'prefix': 'asciinema'
+    'body': '{{% asciinema "" %}}'
