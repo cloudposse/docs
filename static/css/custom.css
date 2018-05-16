@@ -570,6 +570,12 @@ article section.page img {
   max-width: 50%
 }
 
+article section.page li img {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+}
+
 .page-gost-framework article section.page img {
   max-width: 13%;
 }
@@ -807,9 +813,6 @@ div.landing-description {
 
 .addthis_relatedposts_inline {
     width: 717px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 86px;
 }
 
 .addthis_relatedposts_inline .at4-recommended .at4-recommended-item {
@@ -1159,4 +1162,18 @@ a:hover.button.green {
 
 .license .fab {
   font-size: 2em;
+}
+
+.asciinema-player-wrapper .asciinema-player {
+  max-height: 600px;
+  -webkit-box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
+  box-shadow: 1px 29px 61px 1px rgba(0,0,0,0.3);
+}
+
+article section.page pre.asciinema-terminal {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 0;
 }

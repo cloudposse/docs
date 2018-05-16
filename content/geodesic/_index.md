@@ -22,9 +22,7 @@ Geodesic provides a fully customizable framework for defining and building world
 
 # Demo
 
-{{% dialog type="info" icon="fa fa-info-circle" title="Important" %}} This demo is *very* out-of-date. {{% /dialog %}}
-
-{{< img src="https://media.giphy.com/media/26FmS6BRnPVPo2FDq/source.gif" title="demo video" >}}
+{{% asciinema src="/assets/geodesic-demo.cast" autoplay="true" title="Geodesic Demo" %}}
 
 Geodesic is composed of two parts:
 
