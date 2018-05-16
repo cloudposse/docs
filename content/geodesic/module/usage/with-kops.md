@@ -1,5 +1,5 @@
 ---
-title: "Using Geodesic with Kops"
+title: "Using Geodesic Module with Kops"
 description: ""
 ---
 
@@ -14,12 +14,37 @@ Geodesic use [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes cluster
 Provisioning a `kops` cluster takes three steps:
 
 1. Provision a [terraform-aws-kops-state-backend]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-state-backend.md" >}}) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes.
-2. Update the `Dockerfile` and rebuild/restart the `geodesic` shell to generate a kops manifest file
+2. Update the `Dockerfile` and rebuild/restart the `geodesic module` shell to generate a kops manifest file
 3. Launch a kops cluster from the manifest file
 
 ## Provision the State Backend
 
-## 
+### Config environment variables
+Add to the module `Dockerfile` environment variables
+
+```
+ENV KOPS_CLUSTER_NAME={KOPS_CLUSTER_NAME}
+
+ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
+ENV TF_VAR_parent_zone_name={KOPS_CLUSTER_PARENT_DNS_ZONE_NAME}
+```
+
+Replace placeholders `{%}` with values specific for your project.
+
+{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
+```
+ENV KOPS_CLUSTER_NAME=us-west-2.staging.example.com
+
+ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
+ENV TF_VAR_parent_zone_name=staging.example.com
+```
+{{< /dialog >}}
+
+### Rebuild the module
+[Rebuild](/geodesic/module/usage/) the module
+```shell
+> make build
+```
 
 ### Add kops state terraform module
 Create file in `./conf/aws-kops-backend/main.tf` with following content
@@ -109,7 +134,7 @@ output "ssh_key_name" {
   value = "${module.ssh_key_pair.key_name}"
 }
 
-output "shh_public_key" {
+output "ssh_public_key" {
   value = "${module.ssh_key_pair.public_key}"
 }
 ```
@@ -170,127 +195,218 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
 ```
 {{% /dialog %}}
 
-### Apply aws-kops-backend
+### Provision aws-kops-backend
 
-Change directory to `/conf/aws-kops-backend` and run there commands
+Change directory to `/conf/aws-kops-backend` and run there commands to provision the `aws-kopstate-backend` backend (S3 bucket, DNS zone, and SSH keypair)
+```bash
+init-terraform
+terraform plan
+terraform apply
+```
+
 ```shell
 init-terraform
 terraform plan
 terraform apply
 ```
 
-The latest command will output id of kops state bucket. Please copy that values because we need it for next step.
+From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `KOPS_DNS_ZONE` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
 ✅   (example-staging-admin) aws-kopstate-backend ➤  terraform apply
- ⧉  staging example
-✅   (example-staging-admin)  ➤
+Outputs:
 
+bucket_arn = arn:aws:s3:::example-staging-kops-state
+bucket_domain_name = example-staging-kops-state.s3.amazonaws.com
+bucket_id = example-staging-kops-state
+bucket_name = example-staging-kops-state
+bucket_region = us-west-2
+parent_zone_id = ZRD5*****TRT
+parent_zone_name = staging.example.com.
+shh_public_key = ******************************
+
+ssh_key_name = example-staging-kops-us-west-2
+zone_id = Z2PQD****VDAIH
+zone_name = us-west-2.staging.example.com
 ```
 {{% /dialog %}}
 
-In the example the bucket name is `example-staging-terraform-state` and dynamo DB table `example-staging-terraform-state-lock`.
-
-
-Run Terraform to provision the `kops` backend (S3 bucket, DNS zone, and SSH keypair)
-```bash
-init-terraform
-terraform plan
-terraform apply
-```
-
-![Staging Cluster State](/assets/b5e88dd-joany-staging-kops-state.png)
-
+In the example the bucket name is `bucket_name = example-staging-kops-state` and `zone_name = us-west-2.staging.example.com`.
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
 
-![Staging Kops SSH Keys](/assets/9d5dc1c-joany-staging-kops-state-ssh-keys.png)
+### Config environment variables
+Add to module `Dockerfile` environment variable
 
-From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `CLUSTER_NAME` and `KOPS_STATE_STORE` in the `Dockerfile`.
+```
+# AWS Region of the S3 bucket to store cluster configuration
+ENV KOPS_STATE_STORE=s3://{KOPS_STATE_BUCKET_NAME}
+ENV KOPS_STATE_STORE_REGION={AWS_REGION}
+ENV KOPS_DNS_ZONE={KOPS_DNS_ZONE_NAME}
+```
 
+Replace placeholders `{%}` with values specific for your project.
 
+{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
+```
+# AWS Region of the S3 bucket to store cluster configuration
+ENV KOPS_STATE_STORE=s3://example-staging-kops-state
+ENV KOPS_STATE_STORE_REGION=us-west-2
+ENV KOPS_DNS_ZONE=us-west-2.staging.example.com
 
+## Config /etc/fstab to mount s3 bucket that containes generated ssh key
+RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
+```
+{{< /dialog >}}
 
+### Rebuild module
+[Rebuild](/geodesic/module/usage/) the module
+```shell
+> make build
+```
 
+## Configure kops manifest
 
+Geodesic creates a `kops` cluster from a manifest.
+[Kops manifest](https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md) is yaml file that describe resources that determinates Kubernetes cluster.
+`Geodesic` generates the manifest from template that support placehoders with environment variables.
+The manifest template is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml) in the
+and is compiled into `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
 
+The Geodesic module can overload template if structure of cluster differs from default one.
+In provided example we will relay on default structure.
 
+### Config environment variables
+Add to the module `Dockerfile` environment variables
 
-
-# Provision Platform Backing Services
-
-A number of [Terraform Modules Overview]({{< relref "terraform-modules/overview.md" >}}) provide to provision AWS resources needed by Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
-
-# Provisioning a Kops cluster
-
-We create a `kops` cluster from a manifest.
-
-The manifest template is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
-and is compiled by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
-
-# Synopsis
-
-
-# Build Manifest
-
-The `Dockerfile` should look something like this:
-
-```docker
-# kops config
-ENV CLUSTER_NAME="us-west-2.staging.joany.net"
-ENV KOPS_DNS_ZONE=${CLUSTER_NAME}
-ENV KOPS_STATE_STORE="s3://cp-prod-kops-state"
-ENV KOPS_STATE_STORE_REGION="us-east-1"
-ENV KOPS_AVAILABILITY_ZONES="us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e"
+```
+# https://github.com/kubernetes/kops/blob/master/channels/stable
+# https://github.com/kubernetes/kops/blob/master/docs/images.md
+ENV KOPS_BASE_IMAGE="kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28"
 ENV KOPS_BASTION_PUBLIC_NAME="bastion"
-ENV BASTION_MACHINE_TYPE="t2.medium"
-ENV MASTER_MACHINE_TYPE="t2.medium"
-ENV NODE_MACHINE_TYPE="t2.medium"
-ENV NODE_MAX_SIZE="2"
-ENV NODE_MIN_SIZE="2"
+ENV KOPS_PRIVATE_SUBNETS="172.20.32.0/19,172.20.64.0/19,172.20.96.0/19,172.20.128.0/19"
+ENV KOPS_UTILITY_SUBNETS="172.20.0.0/22,172.20.4.0/22,172.20.8.0/22,172.20.12.0/22"
+ENV KOPS_AVAILABILITY_ZONES="us-west-2a,us-west-2b,us-west-2c"
+
+# Instance sizes
+ENV BASTION_MACHINE_TYPE "t2.medium"
+
+# Kubernetes Master EC2 instance type (optional, required if the cluster uses Kubernetes)
+ENV MASTER_MACHINE_TYPE "t2.medium"
+
+# Kubernetes Node EC2 instance type (optional, required if the cluster uses Kubernetes)
+ENV NODE_MACHINE_TYPE "t2.medium"
+
+# Kubernetes node count (Node EC2 instance count) (optional, required if the cluster uses Kubernetes)
+ENV NODE_MIN_SIZE 3
+ENV NODE_MAX_SIZE 3
+
+RUN build-kops-manifest
 ```
 
-Exit the `geodesic` shell by typing `exit`. You might need to run it twice if you were in an assumed role.
-
-Rebuild the Docker image
+{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
+Changed types of instances and count of k8s workers (minions)
 ```
-make docker/build
+# https://github.com/kubernetes/kops/blob/master/channels/stable
+# https://github.com/kubernetes/kops/blob/master/docs/images.md
+ENV KOPS_BASE_IMAGE="kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28"
+ENV KOPS_BASTION_PUBLIC_NAME="bastion"
+ENV KOPS_PRIVATE_SUBNETS="172.20.32.0/19,172.20.64.0/19,172.20.96.0/19,172.20.128.0/19"
+ENV KOPS_UTILITY_SUBNETS="172.20.0.0/22,172.20.4.0/22,172.20.8.0/22,172.20.12.0/22"
+ENV KOPS_AVAILABILITY_ZONES="us-west-2a,us-west-2b,us-west-2c"
+
+# Instance sizes
+ENV BASTION_MACHINE_TYPE "t2.micro"
+
+# Kubernetes Master EC2 instance type (optional, required if the cluster uses Kubernetes)
+ENV MASTER_MACHINE_TYPE "t2.small"
+
+# Kubernetes Node EC2 instance type (optional, required if the cluster uses Kubernetes)
+ENV NODE_MACHINE_TYPE "t2.medium"
+
+# Kubernetes node count (Node EC2 instance count) (optional, required if the cluster uses Kubernetes)
+ENV NODE_MIN_SIZE 4
+ENV NODE_MAX_SIZE 4
+
+RUN build-kops-manifest
+```
+{{< /dialog >}}
+
+### Rebuild the module
+[Rebuild](/geodesic/module/usage/) the module
+```shell
+> make build
 ```
 
-Run the `geodesic` shell again and assume role to login to AWS
-```bash
-staging.joany.net
-assume-role
+When manifiest configured we can apply it with kops to spin up or update the cluster
+
+## Launch the cluster
+
+###  Run into the module shell
+
+Run the Geodesic shell.
+```shell
+> $CLUSTER_NAME
+> assume-role
 ```
 
-Change directory to `kops` folder, init Terraform, and list files
-```bash
-cd /conf/kops
-init-terraform
-ls
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
-
-You will find the rendered `kops` manifest file `/conf/kops/manifest.yaml`.
-
-# Launch Cluster
-
-Run `kops create -f manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
-
-{{< img src="/assets/b251e2e-kops-create.png" title="Kops Create Example" >}}
-
-Run the following to add the SSH public key to the cluster.
+> staging.example.com
+❌   (none) conf ➤  assume-role
+Enter passphrase to unlock /conf/.awsvault/keys/:
+Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
+* Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
+✅   (example-staging-admin) conf ➤
 ```
-kops create secret sshpublickey admin -i /secrets/tf/ssh/joany-staging-kops-us-west-2.pub \
-  --name us-west-2.staging.joany.net
+{{% /dialog %}}
+
+### Create the cluster
+
+Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
+
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
+✅   (example-staging-admin) kops ➤  kops create -f /conf/kops/manifest.yaml
+
+Created cluster/us-west-2.staging.example.com
+Created instancegroup/bastions
+Created instancegroup/master-us-west-2a
+Created instancegroup/master-us-west-2b
+Created instancegroup/master-us-west-2c
+Created instancegroup/nodes
+
+To deploy these resources, run: kops update cluster us-west-2.staging.example.com --yes
+
+ ⧉  staging example
+✅   (example-staging-admin) kops ➤
+```
+{{% /dialog %}}
+
+### Add ssh keys
+
+To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}})
+run the following to mount s3 bucket with SSH keys and add the SSH public key to the cluster.
+
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+```
+mount -a
+kops create secret sshpublickey admin -i /secrets/tf/ssh/example-staging-kops-us-west-2.pub \
+  --name us-west-2.staging.example.com
+```
+{{% /dialog %}}
+
+### Provision the cluster
 
 Run the following to provision the AWS resources for the cluster.
 
 ```
-kops update cluster --name us-west-2.staging.joany.net --yes
+kops update cluster --name us-west-2.staging.example.com --yes
 ```
 
-{{< img src="/assets/944178e-kops-update-cluster.png" title="Kops Update Cluster Example" >}}
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+
+{{% /dialog %}}
 
 All done. The `kops` cluster is now up and running.
 
@@ -301,3 +417,7 @@ For more information, check out the following links:
 * https://github.com/kubernetes/kops/blob/master/docs/security.md
 * https://icicimov.github.io/blog/virtualization/Kubernetes-Cluster-in-AWS-with-Kops
 {{% /dialog %}}
+
+# Provision Platform Backing Services
+
+A number of [Terraform Modules Overview]({{< relref "terraform-modules/overview.md" >}}) provide to provision AWS resources needed by Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).

@@ -1,6 +1,6 @@
 ---
-title: "Using Geodesic with Terraform"
-description: "Learn how to use Geodesic to manage Terraform resources"
+title: "Using Geodesic Module with Terraform"
+description: "Learn how to use Geodesic Module to manage Terraform resources"
 weight: -1
 ---
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Prerequisites" %}}
@@ -23,6 +23,7 @@ Add to module `Dockerfile` environment variables
 ENV TF_VAR_tfstate_namespace={PROJECT_NAME}
 ENV TF_VAR_tfstate_stage={ENVIRONMENT_NAME}
 ENV TF_VAR_tfstate_region={AWS_REGION}
+ENV TF_BUCKET_REGION={AWS_REGION}
 ```
 
 Replace placeholders `{%}` with values specific for your project.
@@ -32,6 +33,7 @@ Replace placeholders `{%}` with values specific for your project.
 ENV TF_VAR_tfstate_namespace=example
 ENV TF_VAR_tfstate_stage=staging
 ENV TF_VAR_tfstate_region=us-west-2
+ENV TF_BUCKET_REGION=us-west-2
 ```
 {{< /dialog >}}
 
@@ -100,7 +102,7 @@ output "tfstate_backend_dynamodb_table_arn" {
 
 ##  Run into the module shell
 
-Run the Geodesic shell.
+Run the Geodesic Module shell.
 ```shell
 > $CLUSTER_NAME
 ```
@@ -176,7 +178,7 @@ init-terraform
 terraform plan
 terraform apply
 ```
-The latest command will output id of terraform state bucket and dynamo DB table. Please copy that values because we need it for next step.
+The latest command will output id of terraform state bucket and dynamo DB table. Please copy that values because we need it for next steps.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
@@ -221,9 +223,16 @@ Uncomment in `./conf/tfstate-backend/main.tf` with `vim`
 
 Change directory to `/conf/tfstate-backet` and run there commands
 ```shell
+export TF_BUCKET={TERRAFORM_STATE_BUCKET_NAME}
 terraform apply
 ```
-dia
+
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+```
+export TF_BUCKET=example-staging-terraform-state
+terraform apply
+```
+{{% /dialog %}}
 
 ## Exit the module shell
 Exit from the shell by running `exit` twice
@@ -241,7 +250,28 @@ Goodbye
 ```
 {{% /dialog %}}
 
-When `tfstate-bucket` created you can continue with other terraform modules and kops
+## Config environment variables
+Add to module `Dockerfile` environment variable
+
+```
+ENV TF_BUCKET={TERRAFORM_STATE_BUCKET_NAME}
+```
+
+Replace placeholders `{%}` with values specific for your project.
+
+{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
+```
+ENV TF_BUCKET=example-staging-terraform-state
+```
+{{< /dialog >}}
+
+## Rebuild module
+[Rebuild](/geodesic/module/usage/) the module
+```shell
+> make build
+```
+
+Now `tfstate-bucket` created you and the module configured to use it for the other terraform modules and kops
 
 # Use with other terraform modules
 
