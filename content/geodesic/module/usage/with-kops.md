@@ -7,14 +7,14 @@ description: ""
 This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relref "geodesic/module/usage/with-terraform.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
-Geodesic use [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes cluster.
+Geodesic uses [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes clusters.
 
 # Create a cluster
 
 Provisioning a `kops` cluster takes three steps:
 
 1. Provision a [terraform-aws-kops-state-backend]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-state-backend.md" >}}) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes.
-2. Update the `Dockerfile` and rebuild/restart the `geodesic module` shell to generate a kops manifest file
+2. Update the `Dockerfile` and rebuild the Geodesic Module to generate a kops manifest file (and restart shell)
 3. Launch a kops cluster from the manifest file
 
 ## Provision the State Backend
