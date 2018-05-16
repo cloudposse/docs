@@ -1,2 +1,5 @@
-{{ $id := .Get 0 }}
-<script type="text/javascript" src="https://asciinema.org/a/{{ $id }}.js" id="asciicast-{{ $id }}" data-rows="10" async></script>
+{{ if .IsNamedParams }}
+<asciinema-player src="{{ .Get "src" }}" autoplay="{{ .Get "autoplay" | default "no" }}" rows="{{ .Get "rows" | default "24" }}" cols="{{ .Get "cols" | default "80" }}" loop="{{ .Get "loop" | default "no" }}" speed="{{ .Get "speed" | default "1" }}" idle-time-limit="{{ .Get "idle-time-limit" | default "2" }}" theme="{{ .Get "theme" | default "asciinema" }}" title="{{ .Get "title" }}" ></asciinema-player>
+{{- else -}}
+<asciinema-player src="{{ .Get 0 }}"></asciinema-player>
+{{- end -}}

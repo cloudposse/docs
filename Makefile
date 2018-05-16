@@ -1,4 +1,5 @@
 export INSTALL_PATH ?= /usr/local/bin
+export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
 export HUGO_URL ?= http://localhost.cloudposse.com:1313/
@@ -7,12 +8,13 @@ export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
 export HTMLTEST_LOG_LEVEL ?= 2
+
 export ALGOLIA_INDEX_FILE ?= $(HUGO_PUBLISH_DIR)/index.algolia.json
 export ALGOLIA_APPLICATION_INDEX ?= dev
 export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/indexes/$(ALGOLIA_APPLICATION_INDEX)"
-export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
-
 #export ALGOLIA_API_ENDPOINT ?= "https://httpbin.org/post"
+
+export ASCIINEMA_VERSION ?= 2.6.1
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
@@ -25,12 +27,16 @@ deps-linux:
 	@which pip3 >/dev/null || (echo "Install pip3 please"; exit 1)
 	pip3 install asciinema
 
-##Install package dependencies
+## Install package dependencies
 deps: deps-$(OS) \
 	  packages/install/hugo \
 	  packages/install/htmltest
 	  asciinema auth
 	@exit 0
+
+deps/asciinema:
+	curl -sSL -o static/css/asciinema-player.css https://github.com/asciinema/asciinema-player/releases/download/v2.6.1/asciinema-player.css
+	curl -sSL -o static/js/asciinema-player.js https://github.com/asciinema/asciinema-player/releases/download/v2.6.1/asciinema-player.js
 
 ## Install useful atom plugins
 deps/atom:
