@@ -6,6 +6,8 @@ node_modules
 .build-harness
 build-harness/
 public/*
+algolia/*
+tmp/*
 .gitkeep
 *.swp
 .idea
