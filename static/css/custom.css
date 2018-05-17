@@ -347,7 +347,7 @@ aside#right-sidebar nav > ul {
 }
 
 aside#right-sidebar nav > ul ul {
-  list-style: none;
+  list-style: none; 
   margin-left: 15px;
 }
 
@@ -811,26 +811,21 @@ div.landing-description {
   display: none;
 }
 
-.addthis_relatedposts_inline {
-    width: 717px;
+
+
+#related h4 {
+  color: #555;
+  font-size: 23px;
+  font-weight: bold;
 }
 
-.addthis_relatedposts_inline .at4-recommended .at4-recommended-item {
-  border: 0px;
+#related ul {
+  list-style-type: none;
+  line-height: 1.6em;
 }
 
-.addthis-smartlayers .at4-recommended.at-inline .at-h3.at-recommended-label {
-    color: #555;
-    font-size: 23px;
-    font-weight: 600;
-}
-
-.addthis-smartlayers .at4-recommended.at-medium .at4-recommended-item {
-  width: 200px;
-}
-
-.addthis-smartlayers .at4-recommended.at-medium .at4-recommended-item .at4-recommended-item-caption .at-h4 {
-  font-size: 1em;
+#related i {
+  margin-right: 10px;
 }
 
 div.calendly-badge-widget {
@@ -950,6 +945,7 @@ body > footer .footline .tags {
 body > footer .footline .tags, body > footer .footline .copyright {
   display: inline-block;
   float: left;
+  line-height: 2.2em;
 }
 
 footer .footline .date {
