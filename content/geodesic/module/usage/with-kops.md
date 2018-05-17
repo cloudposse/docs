@@ -23,13 +23,13 @@ Provisioning a `kops` cluster takes three steps:
 
 Update the environment variables in the module's `Dockerfile`:
 
-{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
 ENV KOPS_CLUSTER_NAME=us-west-2.staging.example.com
 ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
 ENV TF_VAR_parent_zone_name=staging.example.com
 ```
-{{< /dialog >}}
+{{% /dialog %}}
 
 Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
 
@@ -54,7 +54,7 @@ Run the Geodesic shell. The wrapper script is installed in `/usr/local/bin/$CLUS
 sh-3.2$ $CLUSTER_NAME
 ```
 
-{{% include-code-block" title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
 
 ### Authorize on AWS
 Assume role by running
@@ -62,7 +62,7 @@ Assume role by running
 assume-role
 ```
 
-{{% include-code-block" title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/assume-role.txt" %}}
 
 ### Provision aws-kops-backend
 
@@ -76,7 +76,7 @@ terraform apply
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `KOPS_DNS_ZONE` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
 
-{{% include-code-block" title="terraform apply" file="content/geodesic/module/usage/examples/terraform-apply-kops-state-backend.txt" %}}
+{{% include-code-block title="terraform apply" file="content/geodesic/module/usage/examples/terraform-apply-kops-state-backend.txt" %}}
 
 In the example the bucket name is `bucket_name = example-staging-kops-state` and `zone_name = us-west-2.staging.example.com`.
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
@@ -94,7 +94,7 @@ ENV KOPS_DNS_ZONE={KOPS_DNS_ZONE_NAME}
 
 Replace placeholders `{%}` with values specific for your project.
 
-{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
 # AWS Region of the S3 bucket to store cluster configuration
 ENV KOPS_STATE_STORE=s3://example-staging-kops-state
@@ -104,7 +104,7 @@ ENV KOPS_DNS_ZONE=us-west-2.staging.example.com
 ## Config /etc/fstab to mount s3 bucket that containes generated ssh key
 RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 ```
-{{< /dialog >}}
+{{% /dialog %}}
 
 ### Rebuild module
 [Rebuild](/geodesic/module/usage/) the module
@@ -126,7 +126,7 @@ The geodesic module can overload the template if a different architecture is des
 
 Add to the module `Dockerfile` environment variables
 
-{{% include-code-block" title="terraform apply" file="content/geodesic/module/usage/examples/Dockerfile" %}}
+{{% include-code-block title="terraform apply" file="content/geodesic/module/usage/examples/Dockerfile" %}}
 
 You might want to adjust these settings:
 
@@ -157,7 +157,7 @@ Run the Geodesic shell.
 > assume-role
 ```
 
-{{% include-code-block" title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/assume-role.txt" %}}
 
 ### Create the cluster
 
