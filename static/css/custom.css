@@ -1056,7 +1056,7 @@ footer .footline .date {
   padding-top: 0;
   position:relative;
   left: -4rem;
-  width: 116%;
+  width: 113%;
 }
 
 .dialog.code-block pre {
@@ -1065,6 +1065,7 @@ footer .footline .date {
   padding-top: 5px;
   padding-right: 13px;
   padding-bottom: 5px;
+  border-radius: 0;
 }
 
 .dialog.code-block h4 {
