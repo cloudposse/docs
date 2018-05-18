@@ -1,6 +1,6 @@
 ---
 title: "Running `init-terraform` fails: `Permission denied (publickey)`"
-description: "Make sure that your GitHub ssh pubkey has been added to your geodesic ssh-agent"
+description: "Make sure that your GitHub SSH public key has been added to your geodesic `ssh-agent`"
 tags:
 - geodesic
 - ssh-agent
@@ -17,7 +17,7 @@ When running `init-terraform`, it fails while trying to fetch a private github r
 init-terraform
 Mounted buckets
 Filesystem                 Mounted on
-ps-staging-terraform-state /secrets/tf
+eg-staging-terraform-state /secrets/tf
 Initializing modules...
 - module.identity
   Getting source "git::git@github.com:cloudposse/terraform-aws-account-metadata.git?ref=tags/0.1.0"
@@ -35,7 +35,7 @@ and the repository exists.
 
 This usually happens for one of two reasons:
 
-1) The SSH key added to your geodesic ssh-agent is not the same one authorized with your GitHub account
+1) The SSH key added to your geodesic `ssh-agent` is not the same one authorized with your GitHub account
 2) No SSH keys have been added to your `ssh-agent`
 
 Run `ssh-add -l` to verify the keys are in your `ssh-agent`. Remember, that in geodesic `/localhost` is your `$HOME` directory.
