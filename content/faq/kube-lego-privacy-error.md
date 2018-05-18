@@ -9,7 +9,7 @@ tags:
 
 # Question
 
-We're using `kube-lego` together with the standard nginx ingress controller for kubernetes. The site was working fine with TLS, but after we change the hostname and redeployed, we started getting the following error.
+We're using `kube-lego` together with the standard nginx ingress controller for kubernetes. The site was working fine with TLS, but after we changed the hostname and redeployed, we started getting the following error.
 
 {{< img src="/assets/kube-lego-privacy-error-9d1bee77.png" title="TLS Privacy Error" >}}
 
