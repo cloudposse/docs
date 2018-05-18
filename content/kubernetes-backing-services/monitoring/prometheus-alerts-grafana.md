@@ -11,17 +11,18 @@ description: "Prometheus is monitoring system and time-series database that work
 Prometheus is monitoring system and time-series database.
 
 It is responsible for many things:
+
 * Scrapping metrics data from exporters
 * Storing metrics data
 * Firing off alert notifications
 * Returning metrics in response to API requests
 
-Prometheus pulls metrics from all the different exporters in the cluster and stores that data in a local time series database. Prometheus also provides its own service discovery API where all available exporters register themselves. This allows prometheus to poll all the exporters for new data.
+Prometheus harvests metrics by polling all available exporters that have registered with its service discovery API. Every time it polls an exporter, it pulls down metrics which it then stores in a local time series database.
 
-There's also a list of registred alerts. An [Alert](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) is a rule which describes alert conditions using the Prometheus expression language.
+Prometheus has a primitive alert system. It's primitive in the sense that it cannot throttle or aggregate alerts, which is why another system like Alert Manager is needed to properly handle escalations to services like Slack or PagerDuty. An [Alert](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) is a rule which describes alert conditions using the Prometheus expression language.
 When alert conditions are satisfied, Prometheus passes alert notifications to [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/) which is responsible for escalating the alerts.
 
-Also Prometheus provides an API endpoint to query for metrics data. Grafana uses this endpoint to fetch the data needed by charts.
+The Prometheus API service is used by other services to query for metrics data. For example, Grafana uses this endpoint to fetch the data needed by charts.
 
 # Prometheus Exporter (aka Exporter)
 
