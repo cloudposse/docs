@@ -13,6 +13,7 @@ ENV TF_VAR_tfstate_region="${AWS_REGION}"
 
 ENV TF_BUCKET="example-staging-terraform-state"
 ENV TF_BUCKET_REGION="${AWS_REGION}"
+ENV TF_DYNAMODB_TABLE="example-staging-terraform-state-lock"
 
 ENV KOPS_CLUSTER_NAME=us-west-2.staging.example.com
 

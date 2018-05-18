@@ -190,7 +190,7 @@ Run the following to provision the AWS resources for the cluster.
 kops update cluster --name us-west-2.staging.example.com --yes
 ```
 
-{{% include-code-block title="kops update cluster --name us-west-2.staging.example.com --yes" file="geodesic/module/usage/examples/terraform-update-kops-cluster-start.txt"  %}}
+{{% include-code-block title="kops update cluster --name us-west-2.staging.example.com --yes" file="geodesic/module/usage/examples/kops-update-cluster-initial.txt"  %}}
 
 All done. The `kops` cluster is now up and running.
 

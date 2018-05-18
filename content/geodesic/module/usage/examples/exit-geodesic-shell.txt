@@ -1,0 +1,8 @@
+✅   (example-staging-admin) tfstate-backend ➤  exit
+logout
+Goodbye
+-> Run 'assume-role' to login to AWS
+ ⧉  staging example
+❌   (none) ~ ➤  exit
+logout
+Goodbye
