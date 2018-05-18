@@ -1,0 +1,7 @@
+❌   (none) conf ➤  assume-role
+Enter passphrase to unlock /conf/.awsvault/keys/:
+Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
+* Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
+-> Run 'init-terraform' to use this project
+ ⧉  staging example
+✅   (example-staging-admin) conf ➤

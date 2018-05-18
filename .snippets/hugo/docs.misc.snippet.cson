@@ -14,3 +14,9 @@
   'docs:asciinema':
     'prefix': 'asciinema'
     'body': '{{% asciinema "" %}}'
+
+  'docs:include-code-block':
+    'prefix': 'include-code-block'
+    'body': """
+{{% include-code-block file="" title="" language="" %}}
+"""

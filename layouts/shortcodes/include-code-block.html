@@ -1,0 +1,4 @@
+<div class="dialog {{ .Get "type" | default "code-block" }}">
+  <h4><i class="{{ .Get "icon" | default "fa fa-code" }}" aria-hidden="true"></i>{{ .Get "title" | default "Example" }}</h4>
+  <p>{{ (printf "```%s\n%s\n```" (.Get "language" | default "") (readFile (.Get "file"))) | markdownify}}</p>
+</div>

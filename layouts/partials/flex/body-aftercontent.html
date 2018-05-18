@@ -1,5 +1,5 @@
   {{if not .IsHome}}
-    <div class="addthis_relatedposts_inline"></div>
+    {{ partial "related.html" . }}
   {{end}}
 
   {{if not .IsHome}}
@@ -29,19 +29,6 @@
 
 
     <div class="copyright"> © {{ now.Format "2006"}} Cloud Posse, LLC. <a rel="license" href="/license/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a></div>
-
-    <div class="custom">
-{{ $footer := print "_footer." .Lang }}
-{{ range where .Site.Pages "Source.BaseFileName" $footer }}
-  {{ .Content }}
-{{else}}
-  {{ if .Site.GetPage "page" "_footer.md" }}
-    {{(.Site.GetPage "page" "_footer.md").Content}}
-  {{else}}
-    {{ T "create-footer-md" }}
-  {{end}}
-{{end}}
-    </div>
 
     {{with .Params.LastModifierDisplayName}}
     <div class="author">

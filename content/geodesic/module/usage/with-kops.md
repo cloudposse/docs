@@ -49,132 +49,16 @@ ENV TF_VAR_parent_zone_name=staging.example.com
 ### Add kops state terraform module
 Create file in `./conf/aws-kops-backend/main.tf` with following content
 
-{{% dialog type="code-block" icon="fa fa-code" title="./conf/aws-kops-backend/main.tf" %}}
-```
-terraform {
-  required_version = ">= 0.11.2"
-  backend "s3" {}
-}
+{{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/usage/examples/aws-kops-backend.tf" language="hcl" %}}
 
-variable "aws_assume_role_arn" {}
-
-variable "tfstate_namespace" {}
-
-variable "tfstate_stage" {}
-
-variable "tfstate_region" {}
-
-variable "kops_cluster_name" {}
-
-variable "parent_zone_name" {}
-
-provider "aws" {
-  assume_role {
-    role_arn = "${var.aws_assume_role_arn}"
-  }
-}
-
-module "kops_state_backend" {
-  source           = "git::https://github.com/cloudposse/terraform-aws-kops-state-backend.git?ref=tags/0.1.3"
-  namespace        = "${var.tfstate_namespace}"
-  stage            = "${var.tfstate_stage}"
-  name             = "kops-state"
-  parent_zone_name = "${var.parent_zone_name}"
-  zone_name        = "$${name}.$${parent_zone_name}"
-  cluster_name     = "${var.tfstate_region}"
-  region           = "${var.tfstate_region}"
-}
-
-module "ssh_key_pair" {
-  source              = "git::https://github.com/cloudposse/terraform-aws-key-pair.git?ref=tags/0.2.3"
-  namespace           = "${var.tfstate_namespace}"
-  stage               = "${var.tfstate_stage}"
-  name                = "kops-${var.tfstate_region}"
-  ssh_public_key_path = "/secrets/tf/ssh"
-  generate_ssh_key    = "true"
-}
-
-output "parent_zone_id" {
-  value = "${module.kops_state_backend.parent_zone_id}"
-}
-
-output "parent_zone_name" {
-  value = "${module.kops_state_backend.parent_zone_name}"
-}
-
-output "zone_id" {
-  value = "${module.kops_state_backend.zone_id}"
-}
-
-output "zone_name" {
-  value = "${module.kops_state_backend.zone_name}"
-}
-
-output "bucket_name" {
-  value = "${module.kops_state_backend.bucket_name}"
-}
-
-output "bucket_region" {
-  value = "${module.kops_state_backend.bucket_region}"
-}
-
-output "bucket_domain_name" {
-  value = "${module.kops_state_backend.bucket_domain_name}"
-}
-
-output "bucket_id" {
-  value = "${module.kops_state_backend.bucket_id}"
-}
-
-output "bucket_arn" {
-  value = "${module.kops_state_backend.bucket_arn}"
-}
-
-output "ssh_key_name" {
-  value = "${module.ssh_key_pair.key_name}"
-}
-
-output "ssh_public_key" {
-  value = "${module.ssh_key_pair.public_key}"
-}
-```
-{{% /dialog %}}
-
-###  Run into the module shell
+###  Start the shell
 
 Run the Geodesic shell.
 ```shell
 > $CLUSTER_NAME
 ```
 
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
-```
-> staging.example.com
-# Mounting /home/goruha into container
-# Starting new staging.example.com session from cloudposse/staging.example.com:dev
-# Exposing port 41179
-* Started EC2 metadata service at http://169.254.169.254/latest
-
-         _              _                                              _
-     ___| |_ __ _  __ _(_)_ __   __ _    _____  ____ _ _ __ ___  _ __ | | ___
-    / __| __/ _` |/ _` | | '_ \ / _` |  / _ \ \/ / _` | '_ ` _ \| '_ \| |/ _ \
-    \__ \ || (_| | (_| | | | | | (_| | |  __/>  < (_| | | | | | | |_) | |  __/
-    |___/\__\__,_|\__, |_|_| |_|\__, |  \___/_/\_\__,_|_| |_| |_| .__/|_|\___|
-                  |___/         |___/                           |_|
-
-
-IMPORTANT:
-* Your $HOME directory has been mounted to `/localhost`
-* Use `aws-vault` to manage your sessions
-* Run `assume-role` to start a session
-
-
--> Run 'assume-role' to login to AWS
- ⧉  staging example
-❌   (none) ~ ➤
-
-```
-{{% /dialog %}}
+{{% include-code-block file="geodesic/module/usage/examples/start-geodesic-shell.txt" title="Run the Geodesic Shell" %}}
 
 ### Authorize on AWS
 Assume role by running
@@ -182,18 +66,7 @@ Assume role by running
 assume-role
 ```
 
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
-```
-❌   (none) tfstate-backend ➤  assume-role
-Enter passphrase to unlock /conf/.awsvault/keys/:
-Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
-* Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
--> Run 'init-terraform' to use this project
- ⧉  staging example
-✅   (example-staging-admin) tfstate-backend ➤
-
-```
-{{% /dialog %}}
+{{% include-code-block file="geodesic/module/usage/examples/assume-role.txt" title="Assume role"%}}
 
 ### Provision aws-kops-backend
 
@@ -212,25 +85,7 @@ terraform apply
 
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `KOPS_DNS_ZONE` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
-```
-✅   (example-staging-admin) aws-kopstate-backend ➤  terraform apply
-Outputs:
-
-bucket_arn = arn:aws:s3:::example-staging-kops-state
-bucket_domain_name = example-staging-kops-state.s3.amazonaws.com
-bucket_id = example-staging-kops-state
-bucket_name = example-staging-kops-state
-bucket_region = us-west-2
-parent_zone_id = ZRD5*****TRT
-parent_zone_name = staging.example.com.
-shh_public_key = ******************************
-
-ssh_key_name = example-staging-kops-us-west-2
-zone_id = Z2PQD****VDAIH
-zone_name = us-west-2.staging.example.com
-```
-{{% /dialog %}}
+{{% include-code-block title="terraform apply" file="geodesic/module/usage/examples/terraform-apply-kops-state-backend.txt" %}}
 
 In the example the bucket name is `bucket_name = example-staging-kops-state` and `zone_name = us-west-2.staging.example.com`.
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
@@ -279,58 +134,7 @@ In provided example we will relay on default structure.
 ### Config environment variables
 Add to the module `Dockerfile` environment variables
 
-```
-# https://github.com/kubernetes/kops/blob/master/channels/stable
-# https://github.com/kubernetes/kops/blob/master/docs/images.md
-ENV KOPS_BASE_IMAGE="kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28"
-ENV KOPS_BASTION_PUBLIC_NAME="bastion"
-ENV KOPS_PRIVATE_SUBNETS="172.20.32.0/19,172.20.64.0/19,172.20.96.0/19,172.20.128.0/19"
-ENV KOPS_UTILITY_SUBNETS="172.20.0.0/22,172.20.4.0/22,172.20.8.0/22,172.20.12.0/22"
-ENV KOPS_AVAILABILITY_ZONES="us-west-2a,us-west-2b,us-west-2c"
-
-# Instance sizes
-ENV BASTION_MACHINE_TYPE "t2.medium"
-
-# Kubernetes Master EC2 instance type (optional, required if the cluster uses Kubernetes)
-ENV MASTER_MACHINE_TYPE "t2.medium"
-
-# Kubernetes Node EC2 instance type (optional, required if the cluster uses Kubernetes)
-ENV NODE_MACHINE_TYPE "t2.medium"
-
-# Kubernetes node count (Node EC2 instance count) (optional, required if the cluster uses Kubernetes)
-ENV NODE_MIN_SIZE 3
-ENV NODE_MAX_SIZE 3
-
-RUN build-kops-manifest
-```
-
-{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
-Changed types of instances and count of k8s workers (minions)
-```
-# https://github.com/kubernetes/kops/blob/master/channels/stable
-# https://github.com/kubernetes/kops/blob/master/docs/images.md
-ENV KOPS_BASE_IMAGE="kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28"
-ENV KOPS_BASTION_PUBLIC_NAME="bastion"
-ENV KOPS_PRIVATE_SUBNETS="172.20.32.0/19,172.20.64.0/19,172.20.96.0/19,172.20.128.0/19"
-ENV KOPS_UTILITY_SUBNETS="172.20.0.0/22,172.20.4.0/22,172.20.8.0/22,172.20.12.0/22"
-ENV KOPS_AVAILABILITY_ZONES="us-west-2a,us-west-2b,us-west-2c"
-
-# Instance sizes
-ENV BASTION_MACHINE_TYPE "t2.micro"
-
-# Kubernetes Master EC2 instance type (optional, required if the cluster uses Kubernetes)
-ENV MASTER_MACHINE_TYPE "t2.small"
-
-# Kubernetes Node EC2 instance type (optional, required if the cluster uses Kubernetes)
-ENV NODE_MACHINE_TYPE "t2.medium"
-
-# Kubernetes node count (Node EC2 instance count) (optional, required if the cluster uses Kubernetes)
-ENV NODE_MIN_SIZE 4
-ENV NODE_MAX_SIZE 4
-
-RUN build-kops-manifest
-```
-{{< /dialog >}}
+{{% include-code-block title="terraform apply" file="content/geodesic/module/usage/examples/Dockerfile" %}}
 
 ### Rebuild the module
 [Rebuild](/geodesic/module/usage/) the module
@@ -349,39 +153,14 @@ Run the Geodesic shell.
 > $CLUSTER_NAME
 > assume-role
 ```
-
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
-```
-> staging.example.com
-❌   (none) conf ➤  assume-role
-Enter passphrase to unlock /conf/.awsvault/keys/:
-Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 781874
-* Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
-✅   (example-staging-admin) conf ➤
-```
-{{% /dialog %}}
+{{% include-code-block file="geodesic/module/usage/examples/start-geodesic-shell.txt" title="Run the Geodesic Shell" %}}
+{{% include-code-block file="geodesic/module/usage/examples/assume-role.txt" title="Assume role"%}}
 
 ### Create the cluster
 
 Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
 
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
-```
-✅   (example-staging-admin) kops ➤  kops create -f /conf/kops/manifest.yaml
-
-Created cluster/us-west-2.staging.example.com
-Created instancegroup/bastions
-Created instancegroup/master-us-west-2a
-Created instancegroup/master-us-west-2b
-Created instancegroup/master-us-west-2c
-Created instancegroup/nodes
-
-To deploy these resources, run: kops update cluster us-west-2.staging.example.com --yes
-
- ⧉  staging example
-✅   (example-staging-admin) kops ➤
-```
-{{% /dialog %}}
+{{% include-code-block title="Example" file="content/geodesic/module/usage/examples/kops-create.txt" %}}
 
 ### Add ssh keys
 
@@ -404,56 +183,7 @@ Run the following to provision the AWS resources for the cluster.
 kops update cluster --name us-west-2.staging.example.com --yes
 ```
 
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
-```
-✅   (example-staging-admin) ~ ➤  kops update cluster --name us-west-2.staging.example.com --yes
-*********************************************************************************
-
-A new kops version is available: 1.8.1
-
-Upgrading is recommended
-More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_kops.md#1.8.1
-
-*********************************************************************************
-
-W0517 12:16:53.870951     268 firewall.go:228] Opening etcd port on masters for access from the nodes, for calico.  This is unsafe in untrusted environments.
-I0517 12:16:58.604951     268 executor.go:91] Tasks: 0 done / 131 total; 40 can run
-I0517 12:17:01.145989     268 vfs_castore.go:430] Issuing new certificate: "ca"
-I0517 12:17:01.162586     268 vfs_castore.go:430] Issuing new certificate: "apiserver-aggregator-ca"
-I0517 12:17:05.839088     268 executor.go:91] Tasks: 40 done / 131 total; 38 can run
-I0517 12:17:08.095988     268 vfs_castore.go:430] Issuing new certificate: "kube-scheduler"
-I0517 12:17:08.216884     268 vfs_castore.go:430] Issuing new certificate: "kube-controller-manager"
-I0517 12:17:08.300522     268 vfs_castore.go:430] Issuing new certificate: "kubelet"
-I0517 12:17:08.382453     268 vfs_castore.go:430] Issuing new certificate: "apiserver-aggregator"
-I0517 12:17:08.385249     268 vfs_castore.go:430] Issuing new certificate: "master"
-I0517 12:17:08.489622     268 vfs_castore.go:430] Issuing new certificate: "kube-proxy"
-I0517 12:17:08.513227     268 vfs_castore.go:430] Issuing new certificate: "apiserver-proxy-client"
-I0517 12:17:08.578911     268 vfs_castore.go:430] Issuing new certificate: "kubecfg"
-I0517 12:17:08.688453     268 vfs_castore.go:430] Issuing new certificate: "kops"
-I0517 12:17:08.754063     268 vfs_castore.go:430] Issuing new certificate: "kubelet-api"
-I0517 12:17:12.413322     268 executor.go:91] Tasks: 78 done / 131 total; 36 can run
-I0517 12:17:17.010674     268 executor.go:91] Tasks: 114 done / 131 total; 10 can run
-I0517 12:17:18.088422     268 logging_retryer.go:60] Retryable error (PriorRequestNotComplete: The request was rejected because Route 53 was still processing a prior request.
-        status code: 400, request id: 3dcff81f-59cc-11e8-b19f-0b847b609fa5) from route53/ChangeResourceRecordSets - will retry after delay of 702ms
-I0517 12:17:19.058746     268 executor.go:91] Tasks: 124 done / 131 total; 7 can run
-I0517 12:17:19.355382     268 natgateway.go:269] Waiting for NAT Gateway "nat-0cf6ad5e93b87e3d2" to be available (this often takes about 5 minutes)
-I0517 12:17:19.357305     268 natgateway.go:269] Waiting for NAT Gateway "nat-0b546e9de5a1d1b06" to be available (this often takes about 5 minutes)
-I0517 12:17:19.647656     268 natgateway.go:269] Waiting for NAT Gateway "nat-028a04891ae90c4ce" to be available (this often takes about 5 minutes)
-I0517 12:18:58.100048     268 executor.go:91] Tasks: 131 done / 131 total; 0 can run
-I0517 12:18:58.100095     268 dns.go:153] Pre-creating DNS records
-I0517 12:19:01.044909     268 update_cluster.go:248] Exporting kubecfg for cluster
-kops has set your kubectl context to us-west-2.staging.example.com
-
-Cluster is starting.  It should be ready in a few minutes.
-
-Suggestions:
- * validate cluster: kops validate cluster
- * list nodes: kubectl get nodes --show-labels
- * ssh to the bastion: ssh -A -i ~/.ssh/id_rsa admin@bastion.us-west-2.staging.example.com
-The admin user is specific to Debian. If not using Debian please use the appropriate user based on your OS.
- * read about installing addons: https://github.com/kubernetes/kops/blob/master/docs/addons.md
- ```
-{{% /dialog %}}
+{{% include-code-block file="geodesic/module/usage/examples/terraform-update-kops-cluster-start.txt" title="kops update cluster --name us-west-2.staging.example.com --yes" %}}
 
 All done. The `kops` cluster is now up and running.
 
