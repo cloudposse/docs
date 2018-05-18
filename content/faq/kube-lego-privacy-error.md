@@ -28,5 +28,7 @@ If the service was deployed as part of a helm chart, then deleting the release w
 * Make sure that `external-dns` is working and that all public DNS names are resolvable. Let's Encrypt makes a request to `/.well-known/acme-challenge`, so functioning DNS is a requirement.
 * Make sure that Let's Encrypt API limits haven't been reached. Tailing the logs of `kube-lego` will provide more information about what's going on.
 
+# Troubleshooting Resources
 
-
+- Review JetStack's Troubleshooting resources: <https://github.com/jetstack/kube-lego#troubleshooting>
+- Review GitHub Issues: <https://github.com/jetstack/kube-lego/issues>
