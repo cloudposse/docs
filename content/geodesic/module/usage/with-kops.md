@@ -23,15 +23,6 @@ Provisioning a `kops` cluster takes three steps:
 
 Update the environment variables in the module's `Dockerfile`:
 
-```
-ENV KOPS_CLUSTER_NAME={KOPS_CLUSTER_NAME}
-
-ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
-ENV TF_VAR_parent_zone_name={KOPS_CLUSTER_PARENT_DNS_ZONE_NAME}
-```
-
-Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
-
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
 ```
 ENV KOPS_CLUSTER_NAME=us-west-2.staging.example.com
@@ -40,6 +31,8 @@ ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
 ENV TF_VAR_parent_zone_name=staging.example.com
 ```
 {{< /dialog >}}
+
+Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
 
 ### Rebuild the module
 [Rebuild](/geodesic/module/usage/) the module
@@ -171,18 +164,17 @@ Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will j
 
 {{% include-code-block title="Example" file="content/geodesic/module/usage/examples/kops-create.txt" %}}
 
-### Mount all S3 filesystems
-```
-mount -a
-```
-
-### Import SSH public key
+### Add ssh keys
 
 To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}})
 run the following to mount s3 bucket with SSH keys and add the SSH public key to the cluster.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
+# Mount all S3 filesystems
+mount -a
+
+# Import SSH public key
 kops create secret sshpublickey admin \
   -i /secrets/tf/ssh/example-staging-kops-us-west-2.pub \
   --name us-west-2.staging.example.com
