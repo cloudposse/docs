@@ -10,7 +10,6 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 Geodesic uses [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes clusters.
 
 # Create a cluster
-
 Provisioning a `kops` cluster takes three steps:
 
 1. Provision a [`terraform-aws-kops-state-backend`]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-state-backend.md" >}}) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes.
@@ -20,6 +19,7 @@ Provisioning a `kops` cluster takes three steps:
 ## Provision the State Backend
 
 ### Config environment variables
+
 Update the environment variables in the module's `Dockerfile`:
 
 ```
@@ -29,7 +29,7 @@ ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
 ENV TF_VAR_parent_zone_name={KOPS_CLUSTER_PARENT_DNS_ZONE_NAME}
 ```
 
-Replace placeholders `{%}` with values specific for your project.
+Replace Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
 
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
 ```
@@ -47,6 +47,7 @@ ENV TF_VAR_parent_zone_name=staging.example.com
 ```
 
 ### Add kops state terraform module
+
 Create file in `./conf/aws-kops-backend/main.tf` with following content
 
 {{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/usage/examples/aws-kops-backend.tf" language="hcl" %}}
@@ -85,6 +86,7 @@ In the example the bucket name is `bucket_name = example-staging-kops-state` and
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
 
 ### Configure environment variables
+
 Add to module `Dockerfile` environment variable
 
 ```
@@ -119,12 +121,14 @@ RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 Geodesic creates a `kops` cluster from a manifest.
 [Kops manifest](https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md) is yaml file that describe resources that determinates Kubernetes cluster.
 `Geodesic` generates the manifest from template that support placehoders with environment variables.
-The manifest template (gomplate) is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml) and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
+The manifest template (gomplate) is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
+and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the
+`Dockerfile`.
 
-The Geodesic module can overload template if structure of cluster differs from default one.
-In provided example we will relay on default structure.
+The geodesic module can overload the template if a different architecture is desired. All of our examples will rely on our default manifest.
 
 ### Configure environment variables
+
 Add to the module `Dockerfile` environment variables
 
 {{% include-code-block title="terraform apply" file="content/geodesic/module/usage/examples/Dockerfile" %}}
@@ -140,6 +144,7 @@ You might want to adjust these settings:
 Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availability zones.
 
 ### Rebuild the module
+
 [Rebuild](/geodesic/module/usage/) the module
 ```shell
 > make build
@@ -165,14 +170,18 @@ Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will j
 
 {{% include-code-block title="Example" file="content/geodesic/module/usage/examples/kops-create.txt" %}}
 
-### Add ssh keys
+### Mount all S3 filesystems
+```
+mount -a
+```
+
+### Import SSH public key
 
 To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}})
 run the following to mount s3 bucket with SSH keys and add the SSH public key to the cluster.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
-mount -a
 kops create secret sshpublickey admin \
   -i /secrets/tf/ssh/example-staging-kops-us-west-2.pub \
   --name us-west-2.staging.example.com
@@ -187,7 +196,7 @@ Run the following to provision the AWS resources for the cluster.
 kops update cluster --name us-west-2.staging.example.com --yes
 ```
 
-{{% include-code-block file="geodesic/module/usage/examples/terraform-update-kops-cluster-start.txt" title="kops update cluster --name us-west-2.staging.example.com --yes" %}}
+{{% include-code-block title="kops update cluster --name us-west-2.staging.example.com --yes" file="geodesic/module/usage/examples/terraform-update-kops-cluster-start.txt"  %}}
 
 All done. The `kops` cluster is now up and running.
 
