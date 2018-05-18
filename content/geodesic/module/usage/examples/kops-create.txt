@@ -1,0 +1,13 @@
+✅   (example-staging-admin) kops ➤  kops create -f /conf/kops/manifest.yaml
+
+Created cluster/us-west-2.staging.example.com
+Created instancegroup/bastions
+Created instancegroup/master-us-west-2a
+Created instancegroup/master-us-west-2b
+Created instancegroup/master-us-west-2c
+Created instancegroup/nodes
+
+To deploy these resources, run: kops update cluster us-west-2.staging.example.com --yes
+
+ ⧉  staging example
+✅   (example-staging-admin) kops ➤
