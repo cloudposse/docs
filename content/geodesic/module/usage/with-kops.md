@@ -23,18 +23,20 @@ Provisioning a `kops` cluster takes three steps:
 
 Update the environment variables in the module's `Dockerfile`:
 
-{{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
 ENV KOPS_CLUSTER_NAME=us-west-2.staging.example.com
 
 ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
 ENV TF_VAR_parent_zone_name=staging.example.com
 ```
-{{< /dialog >}}
+{{% /dialog %}}
 
 Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
 
+
 ### Rebuild the module
+
 [Rebuild](/geodesic/module/usage/) the module
 ```shell
 > make build
@@ -116,8 +118,7 @@ Geodesic creates a `kops` cluster from a manifest.
 [Kops manifest](https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md) is yaml file that describe resources that determinates Kubernetes cluster.
 `Geodesic` generates the manifest from template that support placehoders with environment variables.
 The manifest template (gomplate) is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
-and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the
-`Dockerfile`.
+and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
 
 The geodesic module can overload the template if a different architecture is desired. All of our examples will rely on our default manifest.
 
