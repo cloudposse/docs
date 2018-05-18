@@ -1,11 +1,11 @@
 {{- $currentNode := . }}
 {{- if eq .Site.Params.ordersectionsby "title"}}
   {{- range .Site.Home.Sections.ByTitle}}
-    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1}}
+    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1 }}
   {{- end}}
 {{- else}}
-  {{- range .Site.Home.Sections.ByWeight}}
-    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1}}
+  {{- range .Sections}}
+    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1 }}
   {{- end}}
 {{- end}}
 
