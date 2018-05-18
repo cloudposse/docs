@@ -1,5 +1,10 @@
 ---
 title: "Error: Your connection is not private"
+description: "If your getting a TLS error for a service leveraging `kube-lego`, then try deleting the TLS secret to let `kube-lego` generate a new one."
+tags:
+- kube-lego
+- nginx-ingress
+- tls
 ---
 
 # Question
