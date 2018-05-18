@@ -1,6 +1,10 @@
 ---
 title: "Prometheus, Alerts & Grafana"
-description: "Prometheus is monitoring system and time-series database that works together with Grafana and Alert Manage to provide an end-to-end monitoring platform for Kubernetes."
+description: "Prometheus is monitoring system and time-series database that works together with Grafana and Alert Manager to provide an end-to-end monitoring platform for Kubernetes."
+tags:
+- "grafana"
+- "prometheus"
+- alert-manager
 ---
  [Prometheus](https://prometheus.io) is at the heart of the monitoring infrastructure. It works in concert with [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and wide list of [Exporters](https://prometheus.io/docs/instrumenting/exporters/) that provide the metrics for instrumentation.
 
@@ -8,7 +12,7 @@ description: "Prometheus is monitoring system and time-series database that work
 
 # Prometheus
 
-Prometheus is monitoring system and time-series database.
+Prometheus is a monitoring system and time-series database.
 
 It is responsible for many things:
 
@@ -31,7 +35,7 @@ The Prometheus Exporter is an http service that exposes metrics in a format suit
 Sometimes this will be a simple service like the
 [Node exporter](https://github.com/prometheus/node_exporter) which provides some basic server metrics (e.g. CPU/Memory/etc...)
 
-Othertimes, software exposes metrics in a prometheus-compatable format out-of-the-box. For a list of software the integrates natively with Prometheus, check out the [list of software exposing prometheus metrics](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)
+Othertimes, software exposes metrics in a prometheus-compatable format out-of-the-box. For a list of software that integrates natively with Prometheus, check out the [list of software exposing prometheus metrics](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)
 
 ## Collecting Custom Metrics
 
