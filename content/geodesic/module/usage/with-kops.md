@@ -126,7 +126,7 @@ The geodesic module can overload the template if a different architecture is des
 
 Add to the module `Dockerfile` environment variables
 
-{{% include-code-block title="terraform apply" file="content/geodesic/module/usage/examples/Dockerfile" %}}
+{{% include-code-block title="Dockerfile" file="content/geodesic/module/usage/examples/Dockerfile" %}}
 
 You might want to adjust these settings:
 
