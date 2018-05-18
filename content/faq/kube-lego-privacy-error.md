@@ -5,6 +5,8 @@ tags:
 - kube-lego
 - nginx-ingress
 - tls
+- kubernetes
+- letsencrypt
 ---
 
 # Question
