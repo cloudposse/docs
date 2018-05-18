@@ -10,6 +10,7 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 Geodesic uses [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes clusters.
 
 # Create a cluster
+
 Provisioning a `kops` cluster takes three steps:
 
 1. Provision a [`terraform-aws-kops-state-backend`]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-state-backend.md" >}}) which consists of an S3 bucket, cluster DNS zone, and SSH keypair to access the k8s masters and nodes.
@@ -29,7 +30,7 @@ ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
 ENV TF_VAR_parent_zone_name={KOPS_CLUSTER_PARENT_DNS_ZONE_NAME}
 ```
 
-Replace Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
+Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
 
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
 ```
