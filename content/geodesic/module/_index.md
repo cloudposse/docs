@@ -1,5 +1,5 @@
 ---
-title: "Module"
+title: "Geodesic Module"
 description: ""
 ---
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
