@@ -18,5 +18,5 @@
   'docs:include-code-block':
     'prefix': 'include-code-block'
     'body': """
-{{% include-code-block file="" title="" language="" %}}
+{{% include-code-block title="" file="" language="" %}}
 """
