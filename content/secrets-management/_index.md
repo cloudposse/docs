@@ -16,7 +16,7 @@ make secrets managment easy.
 
 # Use-cases
 
-There are a number of different use-cases for managing secrets. The ones we'll address are specificially:
+There are a number of different use-cases for managing secrets. The ones we'll address in this documentation are specificially:
 
 * [Secrets for Local Development]() - how to store shared secrets for local development environments (Application Secrets, AWS Credentials)
 * [Secrets for Kubernetes]() - how to store secrets for consumption by kubernetes services (Application Secrets, AWS Credentials, and Bootstrap Secrets)
@@ -38,4 +38,4 @@ Keys should be rotated as often as possible or reasonable. The more frequently k
 
 # Audit Trails
 
-Mechanisms should exist to track back changes in 
+Mechanisms should exist to track back changes in
