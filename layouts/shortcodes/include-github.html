@@ -1,0 +1,13 @@
+<div class="github-snippet">
+{{- $url := printf "https://api.github.com/repos/%s/%s/contents/%s?ref=%s" (.Get "org" | default "cloudposse") (.Get "repo") (.Get "file" | default "README.md") (.Get "ref" | default "master") -}}
+{{- $resp := getJSON $url -}}
+{{- $content := $resp.content | base64Decode -}}
+{{ if eq (.Get "type") "code-block" }} 
+<div class="dialog {{ .Get "type" | default "code-block" }}">
+  <h4><i class="{{ .Get "icon" | default "fa fa-code" }}" aria-hidden="true"></i>{{ .Get "title" | default "Example" }}</h4>
+  <p>{{ (printf "```%s\n%s\n```" (.Get "language" | default "text") ($content) | markdownify) }}</p>
+</div>
+{{ else }}
+{{ $content }}
+{{ end }}
+</div>
