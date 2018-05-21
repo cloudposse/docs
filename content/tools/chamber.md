@@ -14,7 +14,7 @@ In the article [The Right Way to Store Secrets using Parameter Store](https://aw
 This assumes you've installed the [AWS KMS]({{< relref "secrets-management/aws-kms.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
-## with Geodesic
+## Chamber with Geodesic
 
 From the Terraform outputs [AWS KMS]({{< relref "secrets-management/aws-kms.md#provision-aws-kms" >}}) copy the `chamber_kms_key_alias_name` into the ENV var `CHAMBER_KMS_KEY_ALIAS` in the geodesic module\`s `Dockerfile`.
 
@@ -27,7 +27,7 @@ ENV CHAMBER_KMS_KEY_ALIAS="alias/example-staging-chamber"
 
 Replace with values to suit your specific project.
 
-## with Codefresh
+## Chamber with Codefresh
 
 # Usage
 
@@ -72,3 +72,11 @@ To delete secret run `chamber delete {service} {key}`
 
 You can exec command that use secrets as enviroment variables.
 Run `chamber exec {service} -- {command}`
+
+You can specify secrets from multiple `services` my specifying them as a list
+
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+```
+sh-3.2 $ chamber exec kops staging_1 -- node app.js
+```
+{{% /dialog %}}
