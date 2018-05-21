@@ -20,3 +20,9 @@
     'body': """
 {{% include-code-block title="" file="" language="" %}}
 """
+
+  'docs:include-github':
+    'prefix': 'include-github'
+    'body': """
+{{% include-github title="" type="code-block" org="cloudposse" repo="" ref="master" file="" language="" %}}
+"""

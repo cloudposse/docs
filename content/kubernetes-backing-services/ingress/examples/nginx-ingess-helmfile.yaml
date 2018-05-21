@@ -1,4 +1,3 @@
-# https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml
 repositories:
 - name: cloudposse-incubator
   url: https://charts.cloudposse.com/incubator/

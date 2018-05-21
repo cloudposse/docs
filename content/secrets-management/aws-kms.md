@@ -15,9 +15,9 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 ## Add aws-kms terraform module
 
-Create file in `./conf/aws/kms.tf` with following content
+Create file in `/conf/chamber/kms.tf` with following content
 
-{{% include-code-block title="./conf/aws/kms.tf" file="secrets-management/examples/terraform-aws-kms.tf" language="hcl" %}}
+{{% include-github title="/conf/chamber/kms-key.tf" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.1" file="/aws/chamber/kms-key.tf" language="hcl" %}}
 
 ## Rebuild the module
 
@@ -38,7 +38,7 @@ Run the Geodesic shell.
 
 ## Provision aws-kms
 
-Change directory to `/conf/aws` and run there commands to provision the `kms` backend.
+Change directory to `/conf/chamber` and run there commands to provision the `kms` backend.
 ```bash
 init-terraform
 terraform plan

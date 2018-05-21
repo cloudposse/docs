@@ -4,18 +4,13 @@ description: ""
 ---
 Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the nginx configuration.
 # Dependencies
-
 None
-
 # Install
 
-Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+You can install `nginx-ingress` in different ways, we recomend
+to use Master Helmfile.
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingess-helmfile.yaml" language="yaml" %}}
-
-Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
-
-## Using Geodesic Master Helmfile
+## Install with Master Helmfile
 
 Run following command
 ```
@@ -30,13 +25,21 @@ This environment variables can be useful for configure:
 
 Environment variables can be specified in Geodesic Module `Dockerfile` or in [Chamber]({{< relref "tools/chamber.md" >}}) storage.
 
+## Install with custom Helmfile
+
+Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+
+{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingess-helmfile.yaml" language="yaml" %}}
+
+Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
+
 # Usage
 
 After install you the ingress controller, then you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
 
 Here are some examples:
 
-{{% include-code-block title="kubectl-resource.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-kubectl-resource.yaml" language="yaml" %}}
+{{% include-code-block title="ingress.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-kubectl-resource.yaml" language="yaml" %}}
 
 {{% include-code-block title="values.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-helm-values.yaml" language="yaml" %}}
 
