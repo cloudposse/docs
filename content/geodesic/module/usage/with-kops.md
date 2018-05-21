@@ -85,15 +85,6 @@ The public and private SSH keys are created and stored automatically in the encr
 
 Add to module `Dockerfile` environment variable
 
-```
-# AWS Region of the S3 bucket to store cluster configuration
-ENV KOPS_STATE_STORE=s3://{KOPS_STATE_BUCKET_NAME}
-ENV KOPS_STATE_STORE_REGION={AWS_REGION}
-ENV KOPS_DNS_ZONE={KOPS_DNS_ZONE_NAME}
-```
-
-Replace placeholders `{%}` with values specific for your project.
-
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
 # AWS Region of the S3 bucket to store cluster configuration
@@ -105,6 +96,8 @@ ENV KOPS_DNS_ZONE=us-west-2.staging.example.com
 RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 ```
 {{% /dialog %}}
+
+Replace with values to suit your specific project.
 
 ### Rebuild module
 [Rebuild](/geodesic/module/usage/) the module

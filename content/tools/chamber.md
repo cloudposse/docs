@@ -25,6 +25,8 @@ ENV CHAMBER_KMS_KEY_ALIAS="alias/example-staging-chamber"
 ```
 {{% /dialog %}}
 
+Replace with values to suit your specific project.
+
 ## with Codefresh
 
 # Usage

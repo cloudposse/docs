@@ -19,15 +19,6 @@ To create terraform state bucket follow this steps:
 ## Config environment variables
 Add to module `Dockerfile` environment variables
 
-```
-ENV TF_VAR_tfstate_namespace={PROJECT_NAME}
-ENV TF_VAR_tfstate_stage={ENVIRONMENT_NAME}
-ENV TF_VAR_tfstate_region={AWS_REGION}
-ENV TF_BUCKET_REGION={AWS_REGION}
-```
-
-Replace placeholders `{%}` with values specific for your project.
-
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
 ```
 ENV TF_VAR_tfstate_namespace=example
@@ -36,6 +27,8 @@ ENV TF_VAR_tfstate_region=us-west-2
 ENV TF_BUCKET_REGION=us-west-2
 ```
 {{< /dialog >}}
+
+Replace with values to suit your specific project.
 
 ## Rebuild module
 [Rebuild](/geodesic/module/usage/) the module
@@ -130,19 +123,14 @@ Exit from the shell by running `exit` twice
 ## Config environment variables
 Add to module `Dockerfile` environment variable
 
-```
-ENV TF_BUCKET={TERRAFORM_STATE_BUCKET_NAME}
-ENV TF_DYNAMODB_TABLE={TERRAFORM_STATE_LOCK_NAME}
-```
-
-Replace placeholders `{%}` with values specific for your project.
-
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
 ```
 ENV TF_BUCKET=example-staging-terraform-state
 ENV TF_DYNAMODB_TABLE=example-staging-terraform-state-lock
 ```
 {{< /dialog >}}
+
+Replace with values to suit your specific project.
 
 ## Rebuild module
 [Rebuild](/geodesic/module/usage/) the module
