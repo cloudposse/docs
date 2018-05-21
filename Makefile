@@ -1,9 +1,11 @@
+-include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
+
 export INSTALL_PATH ?= /usr/local/bin
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
 export HUGO_URL ?= http://localhost.cloudposse.com:1313/
-export HUGO_EDIT_BRANCH ?= master
+export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
 export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(HUGO_EDIT_BRANCH)
 export HUGO_ARGS ?= --watch --buildDrafts
 export HUGO_CONFIG ?= config.toml
@@ -17,8 +19,6 @@ export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/
 #export ALGOLIA_API_ENDPOINT ?= "https://httpbin.org/post"
 
 export ASCIINEMA_VERSION ?= 2.6.1
-
--include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
 ## Install OSX deps
 deps-darwin:
