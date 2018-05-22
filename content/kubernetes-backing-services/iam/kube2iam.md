@@ -40,7 +40,7 @@ spec:
 ```
 {{% /dialog %}}
 
-Follow instructions to [apply changes to kubernetes cluster]({{< relref "geodesic/module/usage/with-kops.md#update-a-cluster" >}})
+Follow instructions to [apply changes to kubernetes cluster]({{< relref "geodesic/module/with-kops.md#update-a-cluster" >}})
 
 ## Added kops
 
