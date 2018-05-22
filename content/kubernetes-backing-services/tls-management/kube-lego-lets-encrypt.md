@@ -23,7 +23,7 @@ Set `KUBE_LEGO_EMAIL` secret with chamber and run then install kubelego.
 {{% dialog type="code-block" icon="fa fa-code" title="Install kubelego" %}}
 ```
 chamber write kops KUBE_LEGO_EMAIL devops@example.com
-chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=kube-lego syncku
+chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=kube-lego sync
 ```
 {{% /dialog %}}
 
