@@ -11,8 +11,8 @@ None
 ## Enable Assumed Roles
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
-By default Geodesic config Kubernetes nodes to assume roles.
-So you can continue to [next step]({{< relref "#added-kops" >}})
+By default, the kops manifest that ships with Geodesic is configured to permit nodes to assume roles.
+So you can continue to [next step]({{< relref "#kops-integration" >}})
 {{% /dialog %}}
 
 All Kubernetes nodes instance profile should have permissions to assume role.
