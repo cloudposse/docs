@@ -46,7 +46,7 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 
 # Usage
 
-To leverage `kube-lego`, you will need to add annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
+To leverage `kube-lego`, you will need to add an annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
 
 With these in place, then `kube-lego` will handle all e2e TLS certificate issueing and save the certificate from Let's Encrypt to a secret specificied by the `tls` config.
 

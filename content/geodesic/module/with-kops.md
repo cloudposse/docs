@@ -196,13 +196,13 @@ For more information, check out the following links:
 {{% /dialog %}}
 
 
-# Update a cluster
+# Update a Cluster
 
-Run `kops replace -f /conf/kops/manifest.yaml` to update the cluster (this will just update the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
+Run `kops replace -f /conf/kops/manifest.yaml` to update the cluster. This will just update the cluster state in the S3 bucket, but not modify any of the underlying AWS resources for the cluster.
 
-## Provision the cluster
+## Apply the Updates
 
-Run the following to provision the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
+Run the following command to update the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
 
 ```
 kops update cluster --name us-west-2.staging.example.com --yes
@@ -210,9 +210,9 @@ kops update cluster --name us-west-2.staging.example.com --yes
 
 All done. At this point, the `kops` cluster is now updated and running.
 
-# Config kubectl
+# Configure `kubectl`
 
-When you run into the Geodesic module shell you need to export kubectl config by running
+When you run into the Geodesic module shell you need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` to authenticate with the cluster.
 
 ```
 ✅   (example-staging-admin) ~ ➤  kops export kubecfg $KOPS_CLUSTER_NAME

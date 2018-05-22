@@ -71,7 +71,9 @@ Then run [`helmfile sync`]({{< relref "tools/helmfile.md" >}}) to install.
 
 # Usage
 
-Add annotation `iam.amazonaws.com/role: "{ROLE NAME}"` to the kubernetes resource (e.g. `Deployment`, `CronJob`, `ReplicaSet`, `Pod`, etc).
+Add an annotation login `iam.amazonaws.com/role: "some-aws-role"` to the kubernetes resource (e.g. `Deployment`, `CronJob`, `ReplicaSet`, `Pod`, etc). Replace `some-aws-role` with an IAM role that you've previously provisioned.
+
+We recommend provisioning all IAM roles using terraform modules like this one (`terraform-aws-kops-external-dns`)[https://github.com/cloudposse/terraform-aws-kops-external-dns] for provisioning IAM roles to access Route53.
 
 Here are some examples:
 
