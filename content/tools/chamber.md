@@ -16,7 +16,7 @@ This assumes you've installed the [AWS KMS]({{< relref "secrets-management/aws-k
 
 ## Chamber with Geodesic
 
-From the Terraform outputs [AWS KMS]({{< relref "secrets-management/aws-kms.md#provision-aws-kms" >}}) copy the `chamber_kms_key_alias_name` into the ENV var `CHAMBER_KMS_KEY_ALIAS` in the geodesic module\`s `Dockerfile`.
+From the Terraform outputs [AWS KMS]({{< relref "secrets-management/aws-kms.md#provision-chamber-resources" >}}) copy the `chamber_kms_key_alias_name` into the ENV var `CHAMBER_KMS_KEY_ALIAS` in the geodesic module\`s `Dockerfile`.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Dockerfile" %}}
 ```
