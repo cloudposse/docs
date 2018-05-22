@@ -26,6 +26,7 @@ Update the environment variables in the module's `Dockerfile`:
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
 ENV KOPS_CLUSTER_NAME=us-west-2.staging.example.com
+
 ENV TF_VAR_kops_cluster_name=${KOPS_CLUSTER_NAME}
 ENV TF_VAR_parent_zone_name=staging.example.com
 ```
@@ -43,9 +44,9 @@ Replace with values to suit your specific project. Note, the variables correspon
 
 ### Add kops state terraform module
 
-Create file in `./conf/aws-kops-backend/main.tf` with following content
+Create a file in `./conf/aws-kops-backend/main.tf` with following content
 
-{{% include-code-block title="./conf/aws-kops-backend/main.tf" file="content/geodesic/module/usage/examples/aws-kops-backend.tf" language="hcl" %}}
+{{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/usage/examples/aws-kops-backend.tf" language="hcl" %}}
 
 ###  Start the shell
 
@@ -54,7 +55,7 @@ Run the Geodesic shell. The wrapper script is installed in `/usr/local/bin/$CLUS
 sh-3.2$ $CLUSTER_NAME
 ```
 
-{{% include-code-block title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
 
 ### Authorize on AWS
 Assume role by running
@@ -62,7 +63,7 @@ Assume role by running
 assume-role
 ```
 
-{{% include-code-block title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Assume role" file="geodesic/module/usage/examples/assume-role.txt" %}}
 
 ### Provision aws-kops-backend
 
@@ -75,8 +76,7 @@ terraform apply
 
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `KOPS_DNS_ZONE` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
-
-{{% include-code-block title="terraform apply" file="content/geodesic/module/usage/examples/terraform-apply-kops-state-backend.txt" %}}
+{{% include-code-block title="terraform apply" file="geodesic/module/usage/examples/terraform-apply-kops-state-backend.txt" %}}
 
 In the example the bucket name is `bucket_name = example-staging-kops-state` and `zone_name = us-west-2.staging.example.com`.
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
@@ -84,15 +84,6 @@ The public and private SSH keys are created and stored automatically in the encr
 ### Configure environment variables
 
 Add to module `Dockerfile` environment variable
-
-```
-# AWS Region of the S3 bucket to store cluster configuration
-ENV KOPS_STATE_STORE=s3://{KOPS_STATE_BUCKET_NAME}
-ENV KOPS_STATE_STORE_REGION={AWS_REGION}
-ENV KOPS_DNS_ZONE={KOPS_DNS_ZONE_NAME}
-```
-
-Replace placeholders `{%}` with values specific for your project.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
@@ -105,6 +96,8 @@ ENV KOPS_DNS_ZONE=us-west-2.staging.example.com
 RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 ```
 {{% /dialog %}}
+
+Replace with values to suit your specific project.
 
 ### Rebuild module
 [Rebuild](/geodesic/module/usage/) the module
@@ -126,7 +119,7 @@ The geodesic module can overload the template if a different architecture is des
 
 Add to the module `Dockerfile` environment variables
 
-{{% include-code-block title="terraform apply" file="content/geodesic/module/usage/examples/Dockerfile" %}}
+{{% include-code-block title="Dockerfile" file="content/geodesic/module/usage/examples/Dockerfile" %}}
 
 You might want to adjust these settings:
 
@@ -149,7 +142,7 @@ When manifiest configured we can apply it with kops to spin up or update the clu
 
 ## Launch the cluster
 
-###  Run into the module shell
+### Start the geodesic shell
 
 Run the Geodesic shell.
 ```shell
@@ -157,7 +150,8 @@ Run the Geodesic shell.
 > assume-role
 ```
 
-{{% include-code-block title="Run the Geodesic Shell" file="content/geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
+{{% include-code-block title="Assume role" file="geodesic/module/usage/examples/assume-role.txt" %}}
 
 ### Create the cluster
 
@@ -167,8 +161,7 @@ Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will j
 
 ### Add ssh keys
 
-To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}})
-run the following to mount s3 bucket with SSH keys and add the SSH public key to the cluster.
+To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}}), run the following command to mount the s3 bucket containing the SSH keys and register the SSH public key with the cluster.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
@@ -184,17 +177,15 @@ kops create secret sshpublickey admin \
 
 ### Provision the cluster
 
-Run the following to provision the AWS resources for the cluster.
+Run the following to provision the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
 
 ```
 kops update cluster --name us-west-2.staging.example.com --yes
 ```
 
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
+{{% include-code-block title="kops update cluster --name us-west-2.staging.example.com --yes" file="geodesic/module/usage/examples/kops-update-cluster-initial.txt"  %}}
 
-{{% /dialog %}}
-
-All done. The `kops` cluster is now up and running.
+All done. At this point, the `kops` cluster is now up and running (though it might take 5-10 minutes before all nodes come online).
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 For more information, check out the following links:
@@ -206,4 +197,4 @@ For more information, check out the following links:
 
 # Provision Platform Backing Services
 
-A number of [Terraform Modules Overview]({{< relref "terraform-modules/overview.md" >}}) provide to provision AWS resources needed by Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
+We provide a number of well-tested [Terraform Modules]({{< relref "terraform-modules/overview.md" >}}) to provision essential AWS resources needed by Helm Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).

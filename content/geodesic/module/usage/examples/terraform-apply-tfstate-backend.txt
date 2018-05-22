@@ -1,0 +1,18 @@
+✅   (example-staging-admin) tfstate-backend ➤  terraform apply
+null_resource.default: Refreshing state... (ID: 4514126170089387416)
+null_resource.default: Refreshing state... (ID: 5129624787293790468)
+aws_dynamodb_table.default: Refreshing state... (ID: example-staging-terraform-state-lock)
+aws_s3_bucket.default: Refreshing state... (ID: example-staging-terraform-state)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+tfstate_backend_dynamodb_table_arn = arn:aws:dynamodb:us-west-2:xxxxxxx:table/example-staging-terraform-state-lock
+tfstate_backend_dynamodb_table_id = example-staging-terraform-state-lock
+tfstate_backend_dynamodb_table_name = example-staging-terraform-state-lock
+tfstate_backend_s3_bucket_arn = arn:aws:s3:::example-staging-terraform-state
+tfstate_backend_s3_bucket_domain_name = example-staging-terraform-state.s3.amazonaws.com
+tfstate_backend_s3_bucket_id = example-staging-terraform-state
+ ⧉  staging example
+✅   (example-staging-admin) tfstate-backend ➤

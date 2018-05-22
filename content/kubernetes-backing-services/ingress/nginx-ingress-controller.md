@@ -4,48 +4,32 @@ description: ""
 ---
 Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the nginx configuration.
 # Dependencies
-
 None
 # Install
 
+You can install `nginx-ingress` in different ways, we recomend
+to use Master Helmfile.
+
+## Install with Master Helmfile
+
+Run following command
+```
+helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=ingress sync
+```
+This environment variables can be useful for configure:
+
+* `NGINX_INGRESS_REPLICA_COUNT` - Count of nginx ingress pods
+* `NGINX_INGRESS_IMAGE_TAG` - Version of [nginx ingress image](https://quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
+* `NGINX_INGRESS_BACKEND_REPLICA_COUNT` - Count of nginx default backend pods
+* `NGINX_INGRESS_HOSTNAME` - Ingress hostname required by [external dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
+
+Environment variables can be specified in Geodesic Module `Dockerfile` or in [Chamber]({{< relref "tools/chamber.md" >}}) storage.
+
+## Install with custom Helmfile
+
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
-##### Helmfile
-```yaml
-# https://github.com/cloudposse/helmfiles/blob/master/library/nginx-ingress.yaml
-repositories:
-- name: cloudposse-incubator
-  url: https://charts.cloudposse.com/incubator/
-
-releases:
-- name: ingress
-  namespace: kube-system
-  labels:
-    job: kube-system
-  chart: cloudposse-incubator/nginx-ingress
-  version: 0.1.7
-  set:
-  - name: replicaCount
-    value: 4
-  - name: resources.limits.cpu
-    value: 20m
-  - name: resources.limits.memory
-    value: 256Mi
-  - name: resources.requests.cpu
-    value: 10m
-  - name: resources.requests.memory
-    value: 128Mi
-  - name: nginx-default-backend.replicaCount
-    value: 2
-  - name: nginx-default-backend.resources.limits.cpu
-    value: 2m
-  - name: nginx-default-backend.resources.limits.memory
-    value: 5Mi
-  - name: nginx-default-backend.resources.requests.cpu
-    value: 1m
-  - name: nginx-default-backend.resources.requests.memory
-    value: 3Mi
-```
+{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingess-helmfile.yaml" language="yaml" %}}
 
 Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
 
@@ -53,54 +37,13 @@ Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
 
 After install you the ingress controller, then you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
 
-Here are some examples: (see tabs)
+Here are some examples:
 
-##### kubectl-resource.yaml
-```yaml
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: chartmuseum
-spec:
-  rules:
-  - host: example.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: chartmuseum-service
-          servicePort: 80
-```
+{{% include-code-block title="ingress.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-kubectl-resource.yaml" language="yaml" %}}
 
+{{% include-code-block title="values.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-helm-values.yaml" language="yaml" %}}
 
-##### values.yaml
-```yaml
-ingress:
-  enabled: true
-  hosts:
-    example.com:
-        - /
-```
-
-
-##### helmfile
-```yaml
-repositories:
-- name: stable
-  url: https://kubernetes-charts.storage.googleapis.com
-
-releases:
-- name: charts
-  chart: stable/chartmuseum
-  version: 1.3.1
-  set:
-  - name: ingress.enabled
-    value: true
-  - name: ingress.hosts.example\.com[0]
-    value: /
-
-```
-
+{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests.

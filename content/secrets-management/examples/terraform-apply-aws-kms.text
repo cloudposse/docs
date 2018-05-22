@@ -1,0 +1,52 @@
+✅   (example-staging-admin) aws ➤  terraform apply
+null_resource.default: Refreshing state... (ID: 8926089675036697346)
+null_resource.default: Refreshing state... (ID: 6310783615317345715)
+aws_kms_key.default: Refreshing state... (ID: 9eedc31d-4c1f-45c8-9479-ab79bef173c3)
+aws_iam_user.default: Refreshing state... (ID: example-staging-chamber-codefresh)
+data.aws_caller_identity.current: Refreshing state...
+aws_iam_access_key.default: Refreshing state... (ID: XXXXXXXXXXXXXXXXXXXXX)
+aws_kms_alias.default: Refreshing state... (ID: alias/example-staging-chamber)
+data.aws_iam_policy_document.default: Refreshing state...
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + module.chamber_user.aws_iam_user_policy.chamber_user
+      id:     <computed>
+      name:   "example-staging-chamber-codefresh"
+      policy: "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"ssm:DescribeParameters\",\n      \"Resource\": \"*\"\n    },\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ssm:GetParametersByPath\",\n        \"ssm:GetParameters\"\n      ],\n      \"Resource\": \"arn:aws:ssm:us-west-2:XXXXXXXXXXXX:parameter/kops/*\"\n    },\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"kms:Decrypt\",\n      \"Resource\": \"arn:aws:kms:us-west-2:XXXXXXXXXXXX:key/9eedc31d-4c1f-45c8-9479-ab79bef173c3\"\n    }\n  ]\n}"
+      user:   "example-staging-chamber-codefresh"
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+module.chamber_user.aws_iam_user_policy.chamber_user: Creating...
+  name:   "" => "example-staging-chamber-codefresh"
+  policy: "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"ssm:DescribeParameters\",\n      \"Resource\": \"*\"\n    },\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ssm:GetParametersByPath\",\n        \"ssm:GetParameters\"\n      ],\n      \"Resource\": \"arn:aws:ssm:us-west-2:XXXXXXXXXXXX:parameter/kops/*\"\n    },\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"kms:Decrypt\",\n      \"Resource\": \"arn:aws:kms:us-west-2:XXXXXXXXXXXX:key/9eedc31d-4c1f-45c8-9479-ab79bef173c3\"\n    }\n  ]\n}"
+  user:   "" => "example-staging-chamber-codefresh"
+module.chamber_user.aws_iam_user_policy.chamber_user: Creation complete after 1s (ID: example-staging-chamber-codefresh:example-staging-chamber-codefresh)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+chamber_access_key_id = XXXXXXXXXXXXXXXXXXXXX
+chamber_kms_key_alias_arn = arn:aws:kms:us-west-2:XXXXXXXXXXXX:alias/example-staging-chamber
+chamber_kms_key_alias_name = alias/example-staging-chamber
+chamber_kms_key_arn = arn:aws:kms:us-west-2:XXXXXXXXXXXX:key/9eedc31d-4c1f-45c8-9479-ab79bef173c3
+chamber_kms_key_id = 9eedc31d-4c1f-45c8-9479-ab79bef173c3
+chamber_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+chamber_user_arn = arn:aws:iam::XXXXXXXXXXXX:user/example-staging-chamber-codefresh
+chamber_user_name = example-staging-chamber-codefresh
+chamber_user_unique_id = XXXXXXXXXXXXXXXXXXXXX
+ ⧉  staging example
+✅   (example-staging-admin) aws ➤

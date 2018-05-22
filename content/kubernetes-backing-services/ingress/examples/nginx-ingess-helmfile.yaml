@@ -1,0 +1,32 @@
+repositories:
+- name: cloudposse-incubator
+  url: https://charts.cloudposse.com/incubator/
+
+releases:
+- name: ingress
+  namespace: kube-system
+  labels:
+    job: kube-system
+  chart: cloudposse-incubator/nginx-ingress
+  version: 0.1.7
+  set:
+  - name: replicaCount
+    value: 4
+  - name: resources.limits.cpu
+    value: 20m
+  - name: resources.limits.memory
+    value: 256Mi
+  - name: resources.requests.cpu
+    value: 10m
+  - name: resources.requests.memory
+    value: 128Mi
+  - name: nginx-default-backend.replicaCount
+    value: 2
+  - name: nginx-default-backend.resources.limits.cpu
+    value: 2m
+  - name: nginx-default-backend.resources.limits.memory
+    value: 5Mi
+  - name: nginx-default-backend.resources.requests.cpu
+    value: 1m
+  - name: nginx-default-backend.resources.requests.memory
+    value: 3Mi
