@@ -8,7 +8,7 @@ None
 
 # Install
 
-## Added assume role permissions
+## Enable Assumed Roles
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
 By default Geodesic config Kubernetes nodes to assume roles.
@@ -16,7 +16,8 @@ So you can continue to [next step]({{< relref "#added-kops" >}})
 {{% /dialog %}}
 
 All Kubernetes nodes instance profile should have permissions to assume role.
-To do this, kops manifest should have following `additionalPolicies`
+
+To do this, kops manifest should define following `additionalPolicies`. By default, we include this in the [`manifest.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml#L6-L17) that ships with geodesic.
 
 {{% dialog type="code-block" icon="fa fa-code" title="manifest.yaml" %}}
 ```yaml
@@ -40,38 +41,37 @@ spec:
 ```
 {{% /dialog %}}
 
-Follow instructions to [apply changes to kubernetes cluster]({{< relref "geodesic/module/with-kops.md#update-a-cluster" >}})
+Follow the instructions to [apply changes to the kops cluster]({{< relref "geodesic/module/with-kops.md#update-a-cluster" >}})
 
-## Added kops
+## Kops Integration
 
-You can install `kube2iam` in different ways, we recomend
-to use Master Helmfile.
+Now to leverage IAM Roles with your `kops` cluster, you'll need to install `kube2iam`. There are a number of ways to go about this, but we recommend to use our Master Helmfile that ships with Geodesic.
 
 ### Install with Master Helmfile
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install `kube-lego`" %}}
 ```
-helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=kube2iam sync
+helmfile -f /conf/kops/helmfile.yaml --selector chart=kube2iam sync
 ```
 {{% /dialog %}}
 
-This environment variables can be useful for configure:
+This service depends on the following environment variables:
 
 * `AWS_REGION` - AWS region
 
-Environment variables can be specified in Geodesic Module `Dockerfile` or in [Chamber]({{< relref "tools/chamber.md" >}}) storage.
+Environment variables can be specified in Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage.
 
-### Install with custom Helmfile
+### Install with Custom Helmfile
 
-Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code snippet.
 
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/iam/examples/kube2iam-helmfile.yaml" language="yaml" %}}
 
-Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
+Then run [`helmfile sync`]({{< relref "tools/helmfile.md" >}}) to install.
 
 # Usage
 
-Add annotation `iam.amazonaws.com/role: "{ROLE NAME}"` to Deployment/CronJob/ReplicaSet.
+Add annotation `iam.amazonaws.com/role: "{ROLE NAME}"` to the kubernetes resource (e.g. `Deployment`, `CronJob`, `ReplicaSet`, `Pod`, etc).
 
 Here are some examples:
 
@@ -82,7 +82,7 @@ Here are some examples:
 {{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/iam/examples/kube2iam-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests.
+There is no unified specification for the structure of helm chart values. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests. Additionally, there's no schema validation for `values.yaml`, so specifying an incorrect structure will not raise any alarms.
 
 Provided examples are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
 {{% /dialog %}}

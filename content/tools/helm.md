@@ -1,11 +1,12 @@
 ---
 title: Helm
-description: ''
+description: 'Helm is package manager for Kubernetes.'
 ---
 
-Helm is package manager for Kubernetes.
-It allow to install `charts` (package kubernetes resources) on kubernetes cluster.
+Helm makes it easy to install `charts` (a application) on kubernetes clusters. Just like `npm` or `apt` make it easy to install NodeJS modules and Debian packages, `helm` makes it easy to deploy a a full-fledged application with all of its dependencies on kubernetes.
 
-# Install server side
+# Install Tiller
 
-Run `helm init` to install server side
+The helm `tiller` is the server-side component of Helm. It's used to cordinate with the kubernetes cluster in order to deploy resources (E.g. `Services`, `Deployments`, `StatefulSets`, etc.)
+
+To install the `tiller`, just run `helm init` from the Geodesic Shell after assumming-role and running `kops export kubecfg $CLUSTER_NAME`.
