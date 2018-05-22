@@ -15,7 +15,7 @@ None
 
 ## Add aws-kms terraform module
 
-Create file in `/conf/chamber/kms.tf` with following content
+Create a file in `/conf/chamber/kms.tf` with following content
 
 {{% include-github title="/conf/chamber/kms-key.tf" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.1" file="/aws/chamber/kms-key.tf" language="hcl" %}}
 

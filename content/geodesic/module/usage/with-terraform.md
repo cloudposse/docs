@@ -4,7 +4,7 @@ description: "Learn how to use a Geodesic Module to manage resources using Terra
 weight: -1
 ---
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Prerequisites" %}}
-Make sure you have [creatd a Geodesic Module](/geodesic/module/usage/) before continuing with these steps.
+Make sure you have [created a Geodesic Module](/geodesic/module/usage/) before continuing with these steps.
 {{% /dialog %}}
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
@@ -39,7 +39,7 @@ sh-3.2$ make build
 
 ## Add tfstate-bucket backing service
 
-Create file in `./conf/tfstate-backend/main.tf` with following content
+Create a file in `./conf/tfstate-backend/main.tf` with following content
 
 {{% include-code-block title="./conf/tfstate-backend/main.tf" file="geodesic/module/usage/examples/tfstate-backend.tf" language="hcl" %}}
 
@@ -84,7 +84,8 @@ init-terraform
 terraform plan
 terraform apply
 ```
-The latest command will output id of terraform state bucket and dynamo DB table. Please copy that values because we need it for next steps.
+
+When `terraform apply` completes, it output the value of the terraform state bucket and DynamoDB table. Take note of these values because we will need them in the following steps.
 
 {{% include-code-block title="terraform apply" file="geodesic/module/usage/examples/terraform-apply-tfstate-backend.txt" %}}
 
@@ -126,7 +127,7 @@ Exit from the shell by running `exit` twice
 
 ## Config environment variables
 
-Add to module `Dockerfile` environment variable
+Update the geodesic module's `Dockerfile` with the following environment variables.
 
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
 ```
@@ -135,23 +136,23 @@ ENV TF_DYNAMODB_TABLE=example-staging-terraform-state-lock
 ```
 {{< /dialog >}}
 
-Replace with values to suit your specific project.
+Update the values based on the outputs from the previous step.
 
 ## Rebuild module
 
-[Rebuild](/geodesic/module/usage/) the module
+[Rebuild](/geodesic/module/usage/) the module.
 
 ```shell
 > make build
 ```
 
-Now `tfstate-bucket` created you and the module configured to use it for the other terraform modules and kops
+Now that we have provisioned all the nessary resources to operate terraform, we're ready to provision the other terraform modules needed by kops.
 
 # Use with other terraform modules
 
-With terraform modules you can provision any types of resources.
-That modules will store terraform state on s3 `tfstate-bucket` prefixed with `name` of module.
-Follow to create a terraform module and provision resources with it.
+Using our terraform modules you can now provision any other terraform projects using the `init-terraform` script.
+
+
 
 ## Create terraform module
 To provision terraform module create a directory for it in `/conf`

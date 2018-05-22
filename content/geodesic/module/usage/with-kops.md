@@ -44,7 +44,7 @@ Replace with values to suit your specific project. Note, the variables correspon
 
 ### Add kops state terraform module
 
-Create file in `./conf/aws-kops-backend/main.tf` with following content
+Create a file in `./conf/aws-kops-backend/main.tf` with following content
 
 {{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/usage/examples/aws-kops-backend.tf" language="hcl" %}}
 
