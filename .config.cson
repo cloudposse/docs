@@ -47,5 +47,22 @@
         scopes: [
           "text.md"
         ]
+      },
+      {
+        includeCurrentDirectory: false
+        prefixes: [
+          '{{% include-code-block(\\s*\\w*=\\".*\\")*\\sfile="'
+        ]
+        projectRelativePath: true
+        relative: false
+        replaceOnInsert: [
+          [
+            "^content\\/(.*?)$"
+            "$1"
+          ]
+        ]        
+        scopes: [
+          "text.md"
+        ]
       }
     ]

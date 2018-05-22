@@ -20,21 +20,22 @@ The name is a shell script in `/usr/local/bin`. Make sure this path is in your `
 # Development Iterations
 
 After you [create a Geodesic Module]({{< relref "geodesic/module/quickstart.md" >}}), there will be `/conf` directory in the image.
+
 The '/conf' dir used to store definitions of all [Backing Services]({{< relref "learn-by-example/kubernetes-cluster/add-platform-backing-services.md" >}}).
 
 During development, it would be very painful to have to rebuild the container everytime you make or test a change. Therefore, we recommend that you use `/localhost` path in the Geodesic Shell so that you can work on your local copy. Your native `$HOME` directory is mounted to `/localhost` in the container.
 
-Finally, when you have everything working, we recommend that you rebuild Geodesic Module container to add the backing services in the container and do one more final test.
+Finally, once you have everything working, we recommend that you rebuild the Geodesic Module container to incorporate your changes in the container and do one more final test.
 
 # Build new version
 
 To build Geodesic Module just run `make build` in the module directory
 
-# Use shell
+# Start the Shell
 
-When you run into the shell you need to authorize on AWS by assuming a correct role and then you can work with tools build in Geodesic Module.
+Run the wrapper script to start a new shell. The first thing you will need to do is to login to AWS by assuming a correct role (e.g. run `assume-role`) before you can work with many of the tools in the Geodesic Module.
 
-##### Example
+{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```shell
 > staging.example.com
 # Mounting /home/goruha into container
@@ -64,3 +65,4 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 365322
 > ✅   (example-staging-admin) ~ ➤
 
 ```
+{{% /dialog %}}

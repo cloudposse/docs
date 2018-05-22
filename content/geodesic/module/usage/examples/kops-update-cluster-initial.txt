@@ -1,0 +1,46 @@
+✅   (example-staging-admin) ~ ➤  kops update cluster --name us-west-2.staging.example.com --yes
+*********************************************************************************
+
+A new kops version is available: 1.8.1
+
+Upgrading is recommended
+More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_kops.md#1.8.1
+
+*********************************************************************************
+
+W0517 12:16:53.870951     268 firewall.go:228] Opening etcd port on masters for access from the nodes, for calico.  This is unsafe in untrusted environments.
+I0517 12:16:58.604951     268 executor.go:91] Tasks: 0 done / 131 total; 40 can run
+I0517 12:17:01.145989     268 vfs_castore.go:430] Issuing new certificate: "ca"
+I0517 12:17:01.162586     268 vfs_castore.go:430] Issuing new certificate: "apiserver-aggregator-ca"
+I0517 12:17:05.839088     268 executor.go:91] Tasks: 40 done / 131 total; 38 can run
+I0517 12:17:08.095988     268 vfs_castore.go:430] Issuing new certificate: "kube-scheduler"
+I0517 12:17:08.216884     268 vfs_castore.go:430] Issuing new certificate: "kube-controller-manager"
+I0517 12:17:08.300522     268 vfs_castore.go:430] Issuing new certificate: "kubelet"
+I0517 12:17:08.382453     268 vfs_castore.go:430] Issuing new certificate: "apiserver-aggregator"
+I0517 12:17:08.385249     268 vfs_castore.go:430] Issuing new certificate: "master"
+I0517 12:17:08.489622     268 vfs_castore.go:430] Issuing new certificate: "kube-proxy"
+I0517 12:17:08.513227     268 vfs_castore.go:430] Issuing new certificate: "apiserver-proxy-client"
+I0517 12:17:08.578911     268 vfs_castore.go:430] Issuing new certificate: "kubecfg"
+I0517 12:17:08.688453     268 vfs_castore.go:430] Issuing new certificate: "kops"
+I0517 12:17:08.754063     268 vfs_castore.go:430] Issuing new certificate: "kubelet-api"
+I0517 12:17:12.413322     268 executor.go:91] Tasks: 78 done / 131 total; 36 can run
+I0517 12:17:17.010674     268 executor.go:91] Tasks: 114 done / 131 total; 10 can run
+I0517 12:17:18.088422     268 logging_retryer.go:60] Retryable error (PriorRequestNotComplete: The request was rejected because Route 53 was still processing a prior request.
+        status code: 400, request id: 3dcff81f-59cc-11e8-b19f-0b847b609fa5) from route53/ChangeResourceRecordSets - will retry after delay of 702ms
+I0517 12:17:19.058746     268 executor.go:91] Tasks: 124 done / 131 total; 7 can run
+I0517 12:17:19.355382     268 natgateway.go:269] Waiting for NAT Gateway "nat-0cf6ad5e93b87e3d2" to be available (this often takes about 5 minutes)
+I0517 12:17:19.357305     268 natgateway.go:269] Waiting for NAT Gateway "nat-0b546e9de5a1d1b06" to be available (this often takes about 5 minutes)
+I0517 12:17:19.647656     268 natgateway.go:269] Waiting for NAT Gateway "nat-028a04891ae90c4ce" to be available (this often takes about 5 minutes)
+I0517 12:18:58.100048     268 executor.go:91] Tasks: 131 done / 131 total; 0 can run
+I0517 12:18:58.100095     268 dns.go:153] Pre-creating DNS records
+I0517 12:19:01.044909     268 update_cluster.go:248] Exporting kubecfg for cluster
+kops has set your kubectl context to us-west-2.staging.example.com
+
+Cluster is starting.  It should be ready in a few minutes.
+
+Suggestions:
+ * validate cluster: kops validate cluster
+ * list nodes: kubectl get nodes --show-labels
+ * ssh to the bastion: ssh -A -i ~/.ssh/id_rsa admin@bastion.us-west-2.staging.example.com
+The admin user is specific to Debian. If not using Debian please use the appropriate user based on your OS.
+ * read about installing addons: https://github.com/kubernetes/kops/blob/master/docs/addons.md
