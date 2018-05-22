@@ -1,9 +1,10 @@
 ---
 title: Helm
 description: ''
-draft: true
 ---
 
+Helm is package manager for Kubernetes.
+It allow to install `charts` (package kubernetes resources) on kubernetes cluster.
 
 # Install server side
 
