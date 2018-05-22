@@ -5,49 +5,50 @@ description: ""
 
 # Dependencies
 
-Kubelego use ingress so required [ingress controller]({{< relref "kubernetes-backing-services/ingress/_index.md" >}}) to be installed.
+The way `kube-lego` works is by looking for annotations on `Ingress` and `Service` resources. Thus to use `kube-lego`, it's necessary to first install an [ingress controller]({{< relref "kubernetes-backing-services/ingress/_index.md" >}}).
 
-Kubelego support 2 types of [ingress controllers](https://github.com/jetstack/kube-lego#ingress-controllers)
-* `GCE Loadbalancers`
-* `Nginx Ingress Controller`
+Out of the box, `kube-lego` support 2 types of [ingress controllers](https://github.com/jetstack/kube-lego#ingress-controllers)
+* GCE Load Balancers
+* Nginx Ingress Controller
 
 # Install
 
-You can install `kubelego` in different ways, we recomend
-to use Master Helmfile.
+You can install `kube-lego` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
 ## Install with Master Helmfile
 
-Set `KUBE_LEGO_EMAIL` secret with chamber and run then install kubelego.
+1. Set the `KUBE_LEGO_EMAIL` secret with chamber
+2. Run then install `kube-lego` using `helmfile sync`.
 
-{{% dialog type="code-block" icon="fa fa-code" title="Install kubelego" %}}
+{{% dialog type="code-block" icon="fa fa-code" title="Install kube-lego" %}}
 ```
 chamber write kops KUBE_LEGO_EMAIL devops@example.com
 chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=kube-lego sync
 ```
 {{% /dialog %}}
 
-This environment variables can be useful for configure:
+These are some of the environment variables you may want to configure:
 
-* `KUBE_LEGO_REPLICA_COUNT` - Count of kubelego pods
-* `KUBE_LEGO_IMAGE_TAG` - Version of [kube lego image](https://hub.docker.com/r/jetstack/kube-lego/)
+* `KUBE_LEGO_REPLICA_COUNT` - Count of `kube-lego` pods
+* `KUBE_LEGO_IMAGE_TAG` - Version of [`kube-lego` image](https://hub.docker.com/r/jetstack/kube-lego/)
 * `KUBE_LEGO_DEBUG` - Boolean to enabled debug mode. Defaults `false`
-* `KUBE_LEGO_PROD` - Boolean to enabled prod\\stage mode. Defaults `true`
+* `KUBE_LEGO_PROD` - Boolean to enabled prod/stage mode. Defaults `true`
 
-Environment variables can be specified in Geodesic Module `Dockerfile` or in [Chamber]({{< relref "tools/chamber.md" >}}) storage.
+Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-## Install with custom Helmfile
+## Install with Custom Helmfile
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-helmfile.yaml" language="yaml" %}}
 
-Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
+Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).  We recommend passing the `--selector` argument so you can pinpoint a specific chart.
 
 # Usage
 
-Add annotation `kubernetes.io/tls-acme: "true"` and `tls` config to ingress resource.
-Kube lego will handle TLS certificate issueing and save certificate to secret setted in `tls` config.
+To leverage `kube-lego`, you will need to add annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
+
+With these in place, then `kube-lego` will handle all e2e TLS certificate issueing and save the certificate from Let's Encrypt to a secret specificied by the `tls` config.
 
 Here are some examples:
 

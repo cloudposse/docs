@@ -49,7 +49,7 @@ to use Master Helmfile.
 
 ### Install with Master Helmfile
 
-{{% dialog type="code-block" icon="fa fa-code" title="Install kubelego" %}}
+{{% dialog type="code-block" icon="fa fa-code" title="Install `kube-lego`" %}}
 ```
 helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=kube2iam sync
 ```
