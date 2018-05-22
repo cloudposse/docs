@@ -1,23 +1,23 @@
 ---
-title: "Using Geodesic Module with Terraform"
-description: "Learn how to use Geodesic Module to manage Terraform resources"
+title: "Using Geodesic Modules with Terraform"
+description: "Learn how to use a Geodesic Module to manage resources using Terraform"
 weight: -1
 ---
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Prerequisites" %}}
-Follow the "Use geodesic module"  to [Use](/geodesic/module/usage/) get how to use the module shell.
+Make sure you have [creatd a Geodesic Module](/geodesic/module/usage/) before continuing with these steps.
 {{% /dialog %}}
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
-To use terraform you need to create terraform state bucket.
-Follow the instructions to do that.
+Before provisioning any terraform resources, it's essential to provision a Terraform state backend (aka tfstate backend). A terraform state backend consists of an S3 bucket and a DynamoDB lock table.
 {{% /dialog %}}
 
-# Create terraform state bucket
+# Provisioning a Terraform State Backend
 
-To create terraform state bucket follow this steps:
+To create terraform state bucket and lock table, follow these steps:
 
-## Config environment variables
-Add to module `Dockerfile` environment variables
+## Configure Environment Variables
+
+Update your geodesic module's `Dockerfile` with the following environment variables:
 
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
 ```
@@ -30,18 +30,20 @@ ENV TF_BUCKET_REGION=us-west-2
 
 Replace with values to suit your specific project.
 
-## Rebuild module
+## Rebuild the Module
+
 [Rebuild](/geodesic/module/usage/) the module
 ```shell
-> make build
+sh-3.2$ make build
 ```
 
 ## Add tfstate-bucket backing service
+
 Create file in `./conf/tfstate-backend/main.tf` with following content
 
 {{% include-code-block title="./conf/tfstate-backend/main.tf" file="geodesic/module/usage/examples/tfstate-backend.tf" language="hcl" %}}
 
-e##  Run into the module shell
+##  Start the Geodesic Shell
 
 Run the Geodesic Module shell.
 ```shell
@@ -50,7 +52,8 @@ Run the Geodesic Module shell.
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
 
-## Authorize on AWS
+## Log into AWS
+
 Assume role by running
 ```bash
 assume-role
@@ -116,11 +119,13 @@ terraform apply
 {{% /dialog %}}
 
 ## Exit the module shell
+
 Exit from the shell by running `exit` twice
 
 {{% include-code-block title="Exit the shell" file="geodesic/module/usage/examples/exit-geodesic-shell.txt" language="" %}}
 
 ## Config environment variables
+
 Add to module `Dockerfile` environment variable
 
 {{< dialog type="code-block" icon="fa fa-code" title="Example" >}}
@@ -133,7 +138,9 @@ ENV TF_DYNAMODB_TABLE=example-staging-terraform-state-lock
 Replace with values to suit your specific project.
 
 ## Rebuild module
+
 [Rebuild](/geodesic/module/usage/) the module
+
 ```shell
 > make build
 ```
@@ -162,7 +169,8 @@ Rebuild the shell container with `make build` command.
 During development, you can skip rebuilding the container and instead work from the `/localhost` folder inside of the container. The `/localhost` folder is the user's `$HOME` folder mounted into the container. Any files on this system will be persisted.
 {{% /dialog %}}
 
-## Run the shell
+## Start the Shell
+
 ```bash
 $CLUSTER_NAME
 ```

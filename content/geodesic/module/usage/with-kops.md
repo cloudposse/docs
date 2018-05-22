@@ -142,13 +142,14 @@ When manifiest configured we can apply it with kops to spin up or update the clu
 
 ## Launch the cluster
 
-###  Run into the module shell
+### Start the geodesic shell
 
 Run the Geodesic shell.
 ```shell
 > $CLUSTER_NAME
 > assume-role
 ```
+
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
 {{% include-code-block title="Assume role" file="geodesic/module/usage/examples/assume-role.txt" %}}
 
@@ -160,8 +161,7 @@ Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will j
 
 ### Add ssh keys
 
-To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}})
-run the following to mount s3 bucket with SSH keys and add the SSH public key to the cluster.
+To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}}), run the following command to mount the s3 bucket containing the SSH keys and register the SSH public key with the cluster.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
@@ -177,7 +177,7 @@ kops create secret sshpublickey admin \
 
 ### Provision the cluster
 
-Run the following to provision the AWS resources for the cluster.
+Run the following to provision the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
 
 ```
 kops update cluster --name us-west-2.staging.example.com --yes
@@ -185,7 +185,7 @@ kops update cluster --name us-west-2.staging.example.com --yes
 
 {{% include-code-block title="kops update cluster --name us-west-2.staging.example.com --yes" file="geodesic/module/usage/examples/kops-update-cluster-initial.txt"  %}}
 
-All done. The `kops` cluster is now up and running.
+All done. At this point, the `kops` cluster is now up and running (though it might take 5-10 minutes before all nodes come online).
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 For more information, check out the following links:
@@ -197,4 +197,4 @@ For more information, check out the following links:
 
 # Provision Platform Backing Services
 
-A number of [Terraform Modules Overview]({{< relref "terraform-modules/overview.md" >}}) provide to provision AWS resources needed by Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
+We provide a number of well-tested [Terraform Modules]({{< relref "terraform-modules/overview.md" >}}) to provision essential AWS resources needed by Helm Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
