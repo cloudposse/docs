@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: chartmuseum-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      annotations:
+        iam.amazonaws.com/role: s3-access-role
+      labels:
+        app: chartmuseum
+    spec:
+      containers:
+      - name: chartmuseum
+        image: chartmuseum/chartmuseum:v0.5.2
+        ports:
+        - containerPort: 80

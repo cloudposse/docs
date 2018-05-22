@@ -1,10 +1,10 @@
 ---
-title: "Using Geodesic Modules with Terraform"
+title: "Using Geodesic with Terraform"
 description: "Learn how to use a Geodesic Module to manage resources using Terraform"
 weight: -1
 ---
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Prerequisites" %}}
-Make sure you have [created a Geodesic Module](/geodesic/module/usage/) before continuing with these steps.
+Make sure you have [created a Geodesic Module](/geodesic/module/) before continuing with these steps.
 {{% /dialog %}}
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
@@ -32,7 +32,7 @@ Replace with values to suit your specific project.
 
 ## Rebuild the Module
 
-[Rebuild](/geodesic/module/usage/) the module
+[Rebuild](/geodesic/module/) the module
 ```shell
 sh-3.2$ make build
 ```
@@ -41,7 +41,7 @@ sh-3.2$ make build
 
 Create a file in `./conf/tfstate-backend/main.tf` with following content
 
-{{% include-code-block title="./conf/tfstate-backend/main.tf" file="geodesic/module/usage/examples/tfstate-backend.tf" language="hcl" %}}
+{{% include-code-block title="./conf/tfstate-backend/main.tf" file="geodesic/module/examples/tfstate-backend.tf" language="hcl" %}}
 
 ##  Start the Geodesic Shell
 
@@ -50,7 +50,7 @@ Run the Geodesic Module shell.
 > $CLUSTER_NAME
 ```
 
-{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
 
 ## Log into AWS
 
@@ -59,7 +59,7 @@ Assume role by running
 assume-role
 ```
 
-{{% include-code-block title="Assume role" file="geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
 ## Save terraform state to local
 
@@ -87,7 +87,7 @@ terraform apply
 
 When `terraform apply` completes, it output the value of the terraform state bucket and DynamoDB table. Take note of these values because we will need them in the following steps.
 
-{{% include-code-block title="terraform apply" file="geodesic/module/usage/examples/terraform-apply-tfstate-backend.txt" %}}
+{{% include-code-block title="terraform apply" file="geodesic/module/examples/terraform-apply-tfstate-backend.txt" %}}
 
 In the example the bucket name is `example-staging-terraform-state` and dynamo DB table `example-staging-terraform-state-lock`.
 
@@ -123,7 +123,7 @@ terraform apply
 
 Exit from the shell by running `exit` twice
 
-{{% include-code-block title="Exit the shell" file="geodesic/module/usage/examples/exit-geodesic-shell.txt" language="" %}}
+{{% include-code-block title="Exit the shell" file="geodesic/module/examples/exit-geodesic-shell.txt" language="" %}}
 
 ## Config environment variables
 
@@ -140,7 +140,7 @@ Update the values based on the outputs from the previous step.
 
 ## Rebuild module
 
-[Rebuild](/geodesic/module/usage/) the module.
+[Rebuild](/geodesic/module/) the module.
 
 ```shell
 > make build
@@ -183,7 +183,7 @@ If `$CLUSTER_NAME=staging.example.com` simply run the command `staging.example.c
 ```bash
 assume-role
 ```
-{{% include-code-block title="Assume role" file="geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
 ## Provision terraform module
 

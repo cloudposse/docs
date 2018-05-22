@@ -10,7 +10,7 @@ description: ""
 All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
 {{% /dialog %}}
 
-# Run shell
+# Start the Geodesic Shell
 
 A Geodesic Module is docker container that extends Geodesic and used as a shell.
 
@@ -39,7 +39,7 @@ Run the wrapper script to start a new shell. The first thing you will need to do
 ```shell
 > staging.example.com
 # Mounting /home/goruha into container
-# Starting new staging.example.com session from   cloudposse/staging.example.com:dev
+# Starting new staging.example.com session from cloudposse/staging.example.com:dev
 # Exposing port 48934
 * Started EC2 metadata service at http://169.254.169.254/latest
          _              _                                              _
@@ -63,6 +63,5 @@ Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 365322
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 ⧉  staging example
 > ✅   (example-staging-admin) ~ ➤
-
 ```
 {{% /dialog %}}

@@ -14,7 +14,7 @@ to use Master Helmfile.
 
 Run following command
 ```
-helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=ingress sync
+helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
 ```
 This environment variables can be useful for configure:
 
