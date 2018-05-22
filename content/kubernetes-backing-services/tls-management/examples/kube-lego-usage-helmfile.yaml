@@ -1,0 +1,23 @@
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+
+releases:
+- name: charts
+  chart: stable/chartmuseum
+  version: 1.3.1
+  set:
+  - name: ingress.enabled
+    value: true
+  - name: ingress.annotations.kubernetes\.io/ingress\.class
+    value: nginx
+  - name: ingress.annotations.kubernetes\.io/tls-acme
+    value: true
+  - name: ingress.hosts.example\.com[0]
+    value: /charts
+  - name: ingress.hosts.example\.com[1]
+    value: /index.yaml
+  - name: ingress.tls[0].secretName
+    value: chartmuseum-server-tls
+  - name: ingress.tls[0].hosts[0]
+    value: example.com
