@@ -195,6 +195,15 @@ For more information, check out the following links:
 * https://icicimov.github.io/blog/virtualization/Kubernetes-Cluster-in-AWS-with-Kops
 {{% /dialog %}}
 
+# Config kubectl
+
+When you run into the Geodesic module shell you need to export kubectl config by running
+
+```
+✅   (example-staging-admin) ~ ➤  kops export kubecfg $KOPS_CLUSTER_NAME
+kops has set your kubectl context to us-west-2.staging.example.com
+```
+
 # Provision Platform Backing Services
 
 We provide a number of well-tested [Terraform Modules]({{< relref "terraform-modules/overview.md" >}}) to provision essential AWS resources needed by Helm Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).
