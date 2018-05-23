@@ -11,7 +11,7 @@ Since we prescribe using `docker-compose` for local development environments, ex
 
 For example, development environments will frequently need access to shared secrets like Mailgun API keys, Google Analytics code (e.g. `UA-XXXXX-X`), Sentry API endpoints, Datadog API key for APM, etc. To satsify these requirements, we ensure first that all docker containers accept environment variables for these parameters. Then we manage the secrets themselves with [`chamber`]({{< relref "tools/chamber.md" >}}).
 
-To execute `docker-compose` with chamber, it's pretty straight foward. Usually, you'll need to combine this strategy with something like [`aws-vault`]({{< relref "tools/aws-vault.md" >}}) for assuming AWS roles on your workstation.
+To execute `docker-compose` with chamber, it's pretty straightfoward. Usually, you'll need to combine this strategy with something like [`aws-vault`]({{< relref "tools/aws-vault.md" >}}) for assuming AWS roles on your workstation.
 
 ```
 aws-vault exec eg-dev-admin -- chamber exec app -- docker-compose up

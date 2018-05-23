@@ -24,7 +24,7 @@ When setting the variables with `chamber write`, make sure you prefix all variab
 
 ## Use Chamber with `terraform` Commands
 
-To use `chamber` with `terraform`, it's pretty straight forward.
+To use `chamber` with `terraform`, it's pretty straightforward.
 
 Manage the secrets in SSM using the standard chamber commands: `chamber write`, `chamber list`, `chamber delete`.
 
@@ -32,4 +32,4 @@ Execute all `terraform` commands with `chamber exec ...`
 
 For example, to run `terraform plan` using `chamber` with the `example` namespace, you would run `chamber exec example -- terraform plan` (after replacing `example` with the actual SSM path).
 
-It should also be noted that you can pass multiple namespaces. This provides a nice way of inheriting settings and scoping IAM permissions. 
+It should also be noted that you can pass multiple namespaces. This provides a nice way of inheriting settings and scoping IAM permissions.
