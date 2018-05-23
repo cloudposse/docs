@@ -15,13 +15,13 @@ Here are some of our recommended practices for working with 1Password. If your o
 
 With real-time slack notifications, you'll be able to monitor logins for anomalies.
 
-![Real-time Slack Notifications](assets/1password-e3bc9e9c.png)
+![Real-time Slack Notifications](/assets/1password-e3bc9e9c.png)
 
 ## Duo Integration for MFA
 
 Leverage Duo push notifications for MFA. With Duo, you can do full-on geofencing to ensure logins do not come from untrusted locations.
 
-![Duo Push Notifications](assets/1password-57e89599.png)
+![Duo Push Notifications](/assets/1password-57e89599.png)
 
 ## Create Role-based Teams
 
@@ -31,4 +31,4 @@ Define teams in terms of roles (E.g. `production-admin`, `staging-admin`, `dns`,
 
 We use 1Password to store the AWS Master Account "root" credentials. Share OTP (MFA) codes with trusted admins.
 
-![1Password MFA Tokens](assets/1password-ca184eb3.png)
+![1Password MFA Tokens](/assets/1password-ca184eb3.png)
