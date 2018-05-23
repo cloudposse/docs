@@ -45,8 +45,10 @@ IgnoreURLs:
 - "marketplace.visualstudio.com"
 # Rate limiting precludes us from testing these
 - "img.shields.io"
+# Reduce hits to GitHub to avoid Rate Limiting
+- "github.com/cloudposse/docs/blob"
 
-# IgnoreDirs
+# Array of regexs of directories to ignore when scanning for HTML files.
 IgnoreDirs:
 - "revealjs"
 
