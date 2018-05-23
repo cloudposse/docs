@@ -10,7 +10,7 @@ Do not let users within your organization share login credentials. If logins are
 
 # Security through Obscurity
 
-Obfuscation is a trap that offers only a false-sense of security. Systems that rely largely on obfuscastion are dangerously insecure. Obfuscation is not easily changed and one "the cat's out of the bag", require signficant re-engineering to fix the vulnerability. Instead, we advocate [security by design]({{< relref "secrets-management.md#security-by-design" >}}).
+Obfuscation is a trap that offers only a false-sense of security. Systems that rely largely on obfuscastion are dangerously insecure. Obfuscation is not easily changed and one "the cat's out of the bag", require signficant re-engineering to fix the vulnerability. Instead, we advocate [security by design]({{< relref "secrets-management/best-practices.md#security-by-design" >}}).
 
 # Do Not Store Secrets in Source Control (e.g. git)
 
