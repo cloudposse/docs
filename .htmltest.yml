@@ -43,10 +43,10 @@ IgnoreURLs:
 - "linkedin.com"
 # Related to: https://github.com/wjdp/htmltest/issues/89
 - "marketplace.visualstudio.com"
-# Rate limiting precludes us from testing these
+# Rate limiting precludes us from testing badge shields
 - "img.shields.io"
-# Reduce hits to GitHub to avoid Rate Limiting
-- "github.com/cloudposse/docs/blob"
+# Rate limiting precludes us from testing GitHub links
+- "github.com"
 
 # Array of regexs of directories to ignore when scanning for HTML files.
 IgnoreDirs:
