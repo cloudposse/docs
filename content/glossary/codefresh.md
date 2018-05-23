@@ -1,9 +1,9 @@
 ---
-title: "CodeFresh"
-description: "CodeFresh is CI/CD as a service, built for containers with native support for Docker, Kubernetes and Helm."
+title: "Codefresh"
+description: "Codefresh is CI/CD as a service, built for containers with native support for Docker, Kubernetes and Helm."
 terms:
-- CodeFresh
-- Code Fresh
+- Codefresh
+- Codefresh
 tags:
-- ci/cd
+- CI/CD
 ---

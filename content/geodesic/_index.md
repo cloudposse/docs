@@ -36,7 +36,7 @@ An organization may choose to leverage all of these components or just the parts
 - **Secure** - TLS/PKI, OAuth2, MFA Everywhere, remote access VPN, [ultra secure bastion/jumphost](https://github.com/cloudposse/bastion) with audit capabilities and slack notifications, [IAM assumed roles](https://github.com/99designs/aws-vault/), automatic key rotation, encryption at rest, and VPCs
 - **Repeatable** - 100% Infrastructure-as-Code with change automation and support for scriptable admin tasks in any language, including Terraform
 - **Extensible** - A framework where everything can be extended to work the way you want to
-- **Comprehensive** - our [helm charts library](https://github.com/cloudposse/charts) are designed to tightly integrate your cloud-platform with Github Teams and Slack Notifications and CI/CD systems like TravisCI, CircleCI or Jenkins
+- **Comprehensive** - our [helm charts library](https://github.com/cloudposse/charts) are designed to tightly integrate your cloud-platform with GitHub Teams and Slack Notifications and CI/CD systems like TravisCI, CircleCI or Jenkins
 - **OpenSource** - Permissive [APACHE 2.0](https://github.com/cloudposse/geodesic/blob/master/LICENSE) license means no lock-in and no on-going license fees
 
 # Technologies

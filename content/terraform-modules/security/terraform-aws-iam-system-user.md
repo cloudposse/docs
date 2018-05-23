@@ -4,7 +4,7 @@ description: >-
   Terraform Module to provision a basic IAM system user suitable for CI/CD
   Systems
 
-  (_e.g._ TravisCI, CircleCI, CodeFresh) or systems which are *external* to AWS
+  (_e.g._ TravisCI, CircleCI, Codefresh) or systems which are *external* to AWS
   that cannot leverage [AWS IAM Instance
   Profiles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html).
 ---
@@ -24,7 +24,7 @@ We do not recommend creating IAM users this way for any other purpose.
 
 ## Example 1
 
-Sometimes it's necessary to generate some AWS credentials for a CI/CD system like CircleCi, TravisCI or CodeFresh. Here's how we recommend doing that.
+Sometimes it's necessary to generate some AWS credentials for a CI/CD system like CircleCi, TravisCI or Codefresh. Here's how we recommend doing that.
 
 ### HCL
 

@@ -49,13 +49,14 @@ Note, you can also select "All Namespaces" to view aggregate information for the
 
 # How can we set resource requests & limits?
 
-
 ## Namespace Level
+
 It's possible to restrict the total resources available to a namespace.
 * Who is responsible for this? DevOps ADmin
 * Who sets these limits?
 
 ## Deployment / Pod Level
+
 * Who is responsible for this?
-* How do you do it? Go to helmfile which is capable of overriding the limits. Redeploy?  Relationship to codefresh
+* How do you do it? Go to helmfile which is capable of overriding the limits. Redeploy?  Relationship to Codefresh
 * We need docs on process for using `helmfile` (e.g.  `helmfile sync`)

@@ -1,13 +1,13 @@
 ---
-title: "CodeFresh Kubernetes Integration"
-description: "Easily add Kubernetes Clusters in CodeFresh"
+title: "Codefresh Kubernetes Integration"
+description: "Easily add Kubernetes Clusters in Codefresh"
 ---
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-The "administrator" permission on CodeFresh is required to carry out these steps. Ask your CodeFresh administrator to grant these permissions on the [collaborators](https://g.codefresh.io/account/collaborators) page on CodeFresh or to carry out the following steps on your behalf.
+The "administrator" permission on Codefresh is required to carry out these steps. Ask your Codefresh administrator to grant these permissions on the [collaborators](https://g.codefresh.io/account/collaborators) page on Codefresh or to carry out the following steps on your behalf.
 {{% /dialog %}}
 
-Login to CodeFresh and navigate to the [Kubernetes Integration](https://g.codefresh.io/kubernetes/services/) under account settings.
+Login to Codefresh and navigate to the [Kubernetes Integration](https://g.codefresh.io/kubernetes/services/) under account settings.
 
 Click "Add Provider" and select the relevant cloud platform.
 
@@ -25,5 +25,5 @@ Enter the outputs of the script into the form and click save.
 ![Enter Kubernetes API Details](/assets/c5273c7-Screen_Shot_2018-04-16_at_5.20.30_PM.png)
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
-The complete docs for configuring CodeFresh with Kubernetes can be found on their [documentation portal](https://docs.codefresh.io/v1.0/docs/adding-non-gke-kubernetes-cluster).
+The complete docs for configuring Codefresh with Kubernetes can be found on their [documentation portal](https://docs.codefresh.io/v1.0/docs/adding-non-gke-kubernetes-cluster).
 {{% /dialog %}}
