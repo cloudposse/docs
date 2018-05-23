@@ -1,0 +1,107 @@
+✅   (example-staging-admin) kops-aws-platform ➤  terraform apply
+data.aws_caller_identity.current: Refreshing state...
+data.aws_caller_identity.default: Refreshing state...
+data.aws_iam_role.nodes: Refreshing state...
+data.aws_route53_zone.default: Refreshing state...
+data.aws_vpc.kops: Refreshing state...
+data.aws_iam_role.masters: Refreshing state...
+data.aws_iam_policy_document.assume_role: Refreshing state...
+data.aws_iam_policy_document.default: Refreshing state...
+data.aws_security_group.bastion: Refreshing state...
+data.aws_subnet_ids.private: Refreshing state...
+data.aws_security_group.masters: Refreshing state...
+data.aws_security_group.nodes: Refreshing state...
+data.aws_subnet_ids.utility: Refreshing state...
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + module.kops_external_dns.aws_iam_policy.default
+      id:                    <computed>
+      arn:                   <computed>
+      description:           "Grant permissions for external-dns"
+      name:                  "example-staging-external-dns"
+      path:                  "/"
+      policy:                "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"GrantModifyAccessToDomains\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"route53:ChangeResourceRecordSets\",\n      \"Resource\": \"arn:aws:route53:::hostedzone/Z2PQD3A7ZVDAIH\"\n    },\n    {\n      \"Sid\": \"GrantListAccessToDomains\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"route53:ListResourceRecordSets\",\n        \"route53:ListHostedZones\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}"
+
+  + module.kops_external_dns.aws_iam_role.default
+      id:                    <computed>
+      arn:                   <computed>
+      assume_role_policy:    "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::XXXXXXXXXXXX:role/masters.us-west-2.staging.example.com\",\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}"
+      create_date:           <computed>
+      description:           "Role that can be assumed by external-dns"
+      force_detach_policies: "false"
+      max_session_duration:  "3600"
+      name:                  "example-staging-external-dns"
+      path:                  "/"
+      unique_id:             <computed>
+
+  + module.kops_external_dns.aws_iam_role_policy_attachment.default
+      id:                    <computed>
+      policy_arn:            "${aws_iam_policy.default.arn}"
+      role:                  "example-staging-external-dns"
+
+  + module.kops_external_dns.module.label.null_resource.default
+      id:                    <computed>
+      triggers.%:            "5"
+      triggers.attributes:   ""
+      triggers.id:           "example-staging-external-dns"
+      triggers.name:         "external-dns"
+      triggers.namespace:    "example"
+      triggers.stage:        "staging"
+
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+module.kops_external_dns.module.label.null_resource.default: Creating...
+  triggers.%:          "" => "5"
+  triggers.attributes: "" => ""
+  triggers.id:         "" => "example-staging-external-dns"
+  triggers.name:       "" => "external-dns"
+  triggers.namespace:  "" => "example"
+  triggers.stage:      "" => "staging"
+module.kops_external_dns.module.label.null_resource.default: Creation complete after 0s (ID: 6903789342022752579)
+module.kops_external_dns.aws_iam_role.default: Creating...
+  arn:                   "" => "<computed>"
+  assume_role_policy:    "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::XXXXXXXXXXXX:role/masters.us-west-2.staging.example.com\",\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}"
+  create_date:           "" => "<computed>"
+  description:           "" => "Role that can be assumed by external-dns"
+  force_detach_policies: "" => "false"
+  max_session_duration:  "" => "3600"
+  name:                  "" => "example-staging-external-dns"
+  path:                  "" => "/"
+  unique_id:             "" => "<computed>"
+module.kops_external_dns.aws_iam_policy.default: Creating...
+  arn:         "" => "<computed>"
+  description: "" => "Grant permissions for external-dns"
+  name:        "" => "example-staging-external-dns"
+  path:        "" => "/"
+  policy:      "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"GrantModifyAccessToDomains\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"route53:ChangeResourceRecordSets\",\n      \"Resource\": \"arn:aws:route53:::hostedzone/Z2PQD3A7ZVDAIH\"\n    },\n    {\n      \"Sid\": \"GrantListAccessToDomains\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"route53:ListResourceRecordSets\",\n        \"route53:ListHostedZones\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}"
+module.kops_external_dns.aws_iam_role.default: Creation complete after 2s (ID: example-staging-external-dns)
+module.kops_external_dns.aws_iam_policy.default: Creation complete after 2s (ID: arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-external-dns)
+module.kops_external_dns.aws_iam_role_policy_attachment.default: Creating...
+  policy_arn: "" => "arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-external-dns"
+  role:       "" => "example-staging-external-dns"
+module.kops_external_dns.aws_iam_role_policy_attachment.default: Creation complete after 3s (ID: example-staging-external-dns-20180523104524972800000001)
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+kops_external_dns_policy_arn = arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-external-dns
+kops_external_dns_policy_id = arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-external-dns
+kops_external_dns_policy_name = example-staging-external-dns
+kops_external_dns_role_arn = arn:aws:iam::XXXXXXXXXXXX:role/example-staging-external-dns
+kops_external_dns_role_name = example-staging-external-dns
+kops_external_dns_role_unique_id = XXXXXXXXXXXXXXXXXXXXX
+ ⧉  staging example
+✅   (example-staging-admin) kops-aws-platform ➤
