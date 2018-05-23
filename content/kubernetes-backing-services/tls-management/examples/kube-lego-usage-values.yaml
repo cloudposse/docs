@@ -1,0 +1,14 @@
+## Ingress for load balancer
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    example.com:
+      - /charts
+      - /index.yaml
+  tls:
+    - secretName: chartmuseum-server-tls
+      hosts:
+      - example.com

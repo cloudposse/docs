@@ -43,12 +43,18 @@ IgnoreURLs:
 - "linkedin.com"
 # Related to: https://github.com/wjdp/htmltest/issues/89
 - "marketplace.visualstudio.com"
-# Rate limiting precludes us from testing these
+# Rate limiting precludes us from testing badge shields
 - "img.shields.io"
+# Rate limiting precludes us from testing GitHub links
+- "github.com"
 
-# IgnoreDirs
+# Array of regexs of directories to ignore when scanning for HTML files.
 IgnoreDirs:
 - "revealjs"
 
 # Cache validity period, accepts go.time duration strings (…"m", "h").
 CacheExpires: "48h"
+
+# Maximum number of open HTTP connections (keep this low to avoid GitHub rate limits)
+HTTPConcurrencyLimit: 2
+

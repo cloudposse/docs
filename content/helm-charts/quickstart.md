@@ -26,9 +26,9 @@ Search package repository for `datadog`
 ```
 helm search datadog
 ```
-#### Installing Github Authorized Keys
+#### Installing GitHub Authorized Keys
 
-Install Github Authorized Keys if you want to enable users to login to the cluster via SSH using their Github Usernames & Github SSH keys.
+Install GitHub Authorized Keys if you want to enable users to login to the cluster via SSH using their GitHub Usernames & GitHub SSH keys.
 
 To install [`github-authorized-keys`](https://github.com/cloudposse/github-authorized-keys/) on all nodes (including master nodes), you can run the following commands.
 

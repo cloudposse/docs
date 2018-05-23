@@ -1,0 +1,56 @@
+repositories:
+- name: cloudposse-incubator
+  url: https://charts.cloudposse.com/incubator/
+
+releases:
+- name: tls
+  namespace: kube-system
+  labels:
+    job: kube-system
+  chart: cloudposse-incubator/kube-lego
+  version: 0.1.2
+  set:
+    ### Optional: KUBE_LEGO_REPLICA_COUNT; e.g. 1
+    - name: "replicaCount"
+      value: '1'
+
+    ### Optional: KUBE_LEGO_DEBUG; e.g. false
+    - name: "debug"
+      value: 'false'
+
+    ## Image
+    - name: "image.repository"
+      value: "jetstack/kube-lego"
+
+    ### Optional: KUBE_LEGO_IMAGE_TAG; e.g. 0.1.2
+    - name: "image.tag"
+      value: '0.1.5'
+
+    - name: "image.pullPolicy"
+      value: "IfNotPresent"
+
+    ## Lego Settings
+    ### Required: KUBE_LEGO_EMAIL; e.g. ops@cloudposse.org
+    - name: "lego.email"
+      value: ''
+
+    ### Optional: KUBE_LEGO_PROD; e.g. true
+    - name: "lego.prod"
+      value: 'true'
+
+    ## Pod Settings
+    - name: "pod.internalPort"
+      value: "8080"
+
+    ## Resources
+    - name: "resources.limits.cpu"
+      value: "200m"
+
+    - name: "resources.limits.memory"
+      value: "256Mi"
+
+    - name: "resources.requests.cpu"
+      value: "50m"
+
+    - name: "resources.requests.memory"
+      value: "128Mi"

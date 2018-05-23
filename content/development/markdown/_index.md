@@ -79,7 +79,7 @@ description: "Markdown is a simple way to format plain text that looks great on 
 ## Footnote Links
 
 ```markdown
-[CloudPosse][1]
+[Cloud Posse][1]
 [Google][2]
 
 ...other content here...
@@ -88,7 +88,7 @@ description: "Markdown is a simple way to format plain text that looks great on 
 [2]: https://google.com
 ```
 
-[CloudPosse][1] [Google][2]
+[Cloud Posse][1] [Google][2]
 
 --------------------------------------------------------------------------------
 

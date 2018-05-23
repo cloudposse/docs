@@ -5,9 +5,13 @@ tags:
 - secrets
 ---
 
+# Security by Design
+
 # Never Share Secrets Between Stages
 
-# Rotate Frequently
+# Rotate Secrets Frequently
+
+# Automate Key Rotation
 
 # Audit Trails
 

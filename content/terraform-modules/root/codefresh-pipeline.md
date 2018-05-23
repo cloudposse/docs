@@ -1,5 +1,5 @@
 ---
-title: "CodeFresh Pipeline for Root Modules"
+title: "Codefresh Pipeline for Root Modules"
 description: "Example of the pipeline we use to build the `terraform-root-modules` docker image"
 ---
 

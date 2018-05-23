@@ -1,15 +1,15 @@
 ---
-title: "Using Geodesic Module with Kops"
-description: ""
+title: "Using Geodesic with Kops"
+description: "Learn how to provision kops clusters using Geodesic Modules."
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
-This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relref "geodesic/module/usage/with-terraform.md" >}}) guide which covers all the scaffolding necessary to get started.
+This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relref "geodesic/module/with-terraform.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
 Geodesic uses [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes clusters.
 
-# Create a cluster
+# Create a Cluster
 
 Provisioning a `kops` cluster takes three steps:
 
@@ -37,7 +37,7 @@ Replace with values to suit your specific project. Note, the variables correspon
 
 ### Rebuild the module
 
-[Rebuild](/geodesic/module/usage/) the module
+[Rebuild](/geodesic/module/) the module
 ```shell
 > make build
 ```
@@ -46,7 +46,7 @@ Replace with values to suit your specific project. Note, the variables correspon
 
 Create a file in `./conf/aws-kops-backend/main.tf` with following content
 
-{{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/usage/examples/aws-kops-backend.tf" language="hcl" %}}
+{{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/examples/aws-kops-backend.tf" language="hcl" %}}
 
 ###  Start the shell
 
@@ -55,7 +55,7 @@ Run the Geodesic shell. The wrapper script is installed in `/usr/local/bin/$CLUS
 sh-3.2$ $CLUSTER_NAME
 ```
 
-{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
 
 ### Authorize on AWS
 Assume role by running
@@ -63,7 +63,7 @@ Assume role by running
 assume-role
 ```
 
-{{% include-code-block title="Assume role" file="geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
 ### Provision aws-kops-backend
 
@@ -76,7 +76,7 @@ terraform apply
 
 From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV vars `KOPS_DNS_ZONE` and `KOPS_STATE_STORE` in the `Dockerfile`.
 
-{{% include-code-block title="terraform apply" file="geodesic/module/usage/examples/terraform-apply-kops-state-backend.txt" %}}
+{{% include-code-block title="terraform apply" file="geodesic/module/examples/terraform-apply-kops-state-backend.txt" %}}
 
 In the example the bucket name is `bucket_name = example-staging-kops-state` and `zone_name = us-west-2.staging.example.com`.
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
@@ -100,7 +100,7 @@ RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 Replace with values to suit your specific project.
 
 ### Rebuild module
-[Rebuild](/geodesic/module/usage/) the module
+[Rebuild](/geodesic/module/) the module
 ```shell
 > make build
 ```
@@ -119,7 +119,7 @@ The geodesic module can overload the template if a different architecture is des
 
 Add to the module `Dockerfile` environment variables
 
-{{% include-code-block title="Dockerfile" file="content/geodesic/module/usage/examples/Dockerfile" %}}
+{{% include-code-block title="Dockerfile" file="content/geodesic/module/examples/Dockerfile" %}}
 
 You might want to adjust these settings:
 
@@ -133,7 +133,7 @@ Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availabilit
 
 ### Rebuild the module
 
-[Rebuild](/geodesic/module/usage/) the module
+[Rebuild](/geodesic/module/) the module
 ```shell
 > make build
 ```
@@ -150,18 +150,18 @@ Run the Geodesic shell.
 > assume-role
 ```
 
-{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/usage/examples/start-geodesic-shell.txt" %}}
-{{% include-code-block title="Assume role" file="geodesic/module/usage/examples/assume-role.txt" %}}
+{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
+{{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
 ### Create the cluster
 
 Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
 
-{{% include-code-block title="Example" file="content/geodesic/module/usage/examples/kops-create.txt" %}}
+{{% include-code-block title="Example" file="content/geodesic/module/examples/kops-create.txt" %}}
 
 ### Add ssh keys
 
-To add [ssh keys generated previously]({{< relref "geodesic/module/usage/with-kops.md#provision-aws-kops-backend" >}}), run the following command to mount the s3 bucket containing the SSH keys and register the SSH public key with the cluster.
+To add [ssh keys generated previously]({{< relref "geodesic/module/with-kops.md#provision-aws-kops-backend" >}}), run the following command to mount the s3 bucket containing the SSH keys and register the SSH public key with the cluster.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
@@ -183,7 +183,7 @@ Run the following to provision the AWS resources for the cluster. The `--yes` wi
 kops update cluster --name us-west-2.staging.example.com --yes
 ```
 
-{{% include-code-block title="kops update cluster --name us-west-2.staging.example.com --yes" file="geodesic/module/usage/examples/kops-update-cluster-initial.txt"  %}}
+{{% include-code-block title="kops update cluster --name us-west-2.staging.example.com --yes" file="geodesic/module/examples/kops-update-cluster-initial.txt"  %}}
 
 All done. At this point, the `kops` cluster is now up and running (though it might take 5-10 minutes before all nodes come online).
 
@@ -194,6 +194,30 @@ For more information, check out the following links:
 * https://github.com/kubernetes/kops/blob/master/docs/security.md
 * https://icicimov.github.io/blog/virtualization/Kubernetes-Cluster-in-AWS-with-Kops
 {{% /dialog %}}
+
+
+# Update a Cluster
+
+Run `kops replace -f /conf/kops/manifest.yaml` to update the cluster. This will just update the cluster state in the S3 bucket, but not modify any of the underlying AWS resources for the cluster.
+
+## Apply the Updates
+
+Run the following command to update the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
+
+```
+kops update cluster --name us-west-2.staging.example.com --yes
+```
+
+All done. At this point, the `kops` cluster is now updated and running.
+
+# Configure `kubectl`
+
+When you run into the Geodesic module shell you need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` to authenticate with the cluster.
+
+```
+✅   (example-staging-admin) ~ ➤  kops export kubecfg $KOPS_CLUSTER_NAME
+kops has set your kubectl context to us-west-2.staging.example.com
+```
 
 # Provision Platform Backing Services
 

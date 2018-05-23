@@ -1,14 +1,14 @@
 ---
-title: "CodeFresh"
+title: "Codefresh"
 description: ""
 ---
 # Quick Start
 
-## Docker Login to CodeFresh Registry
+## Docker Login to Codefresh Registry
 
-In order to push/pull images from the CodeFresh docker registry, you'll need to login via the command line API. This is a one-time operation, so you won't need to do this very often.
+In order to push/pull images from the Codefresh docker registry, you'll need to login via the command line API. This is a one-time operation, so you won't need to do this very often.
 
-First, obtain your API key by logging into CodeFresh.
+First, obtain your API key by logging into Codefresh.
 
 To get it, login into Codefresh and navigate to User Settings in the bottom left corner.
 
@@ -18,7 +18,7 @@ Then click the "generate" button next to the "Codefresh Registry" section. Make 
 
 ![Codefresh Registry Access Token](/assets/85e5ee4-codefresh.png)
 
-Your `CF_USER_NAME` is probably your GitHub username, depending on how you login to CodeFresh. The `CFCR_LOGIN_TOKEN` is the one you just generated.
+Your `CF_USER_NAME` is probably your GitHub username, depending on how you login to Codefresh. The `CFCR_LOGIN_TOKEN` is the one you just generated.
 
 ```
 docker login r.cfcr.io -u $CF_USER_NAME -p $CFCR_LOGIN_TOKEN
