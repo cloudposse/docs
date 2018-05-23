@@ -1,5 +1,5 @@
 ---
-title: "AWS KMS"
+title: "AWS KMS+SSM"
 description: "Use Terraform to easily provision all KMS+SSM resources for Chamber."
 ---
 
@@ -48,7 +48,7 @@ terraform plan
 terraform apply
 ```
 
-{{% include-code-block title="terraform apply" file="secrets-management/examples/terraform-apply-aws-kms.text" %}}
+{{% include-code-block title="terraform apply" file="secrets-management/examples/terraform-apply-aws-kms.txt" %}}
 
 # Usage
 
