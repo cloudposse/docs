@@ -9,7 +9,7 @@ Inevitably, developers working with external APIs will need access to some numbe
 
 Since we prescribe using `docker-compose` for local development environments, externalizing all parameters and secrets is possible by using environment variables. Combined with [`chamber`]({{< relref "tools/chamber.md" >}}), there's an easy way to secure as much as possible the secrets for local consumption and easily rotate them as necessary without needing to distribute/communicate/coordinate the changes to the various engineering teams.
 
-For example, development environments will frequently need access to shared secrets like Mailgun API keys, Google Analytics `UA` code, Sentry API endpoints, Datadog API key for APM, etc. To satsify these requirements, we ensure first that all docker containers accept environment variables for these parameters. Then we manage the secrets themselves with [`chamber`]({{< relref "tools/chamber.md" >}}).
+For example, development environments will frequently need access to shared secrets like Mailgun API keys, Google Analytics code (e.g. `UA-XXXXX-X`), Sentry API endpoints, Datadog API key for APM, etc. To satsify these requirements, we ensure first that all docker containers accept environment variables for these parameters. Then we manage the secrets themselves with [`chamber`]({{< relref "tools/chamber.md" >}}).
 
 To execute `docker-compose` with chamber, it's pretty straight foward. Usually, you'll need to combine this strategy with something like [`aws-vault`]({{< relref "tools/aws-vault.md" >}}) for assuming AWS roles on your workstation.
 
