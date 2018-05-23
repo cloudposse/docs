@@ -54,3 +54,7 @@ IgnoreDirs:
 
 # Cache validity period, accepts go.time duration strings (…"m", "h").
 CacheExpires: "48h"
+
+# Maximum number of open HTTP connections (keep this low to avoid GitHub rate limits)
+HTTPConcurrencyLimit: 2
+
