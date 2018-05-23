@@ -84,8 +84,12 @@ build:
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --config $(HUGO_CONFIG)
 
+## Lint check for empty markdown links
+lint/check-for-empty-links:
+	@! grep -Eo '\[.+\]\(\)' -R content/
+
 ## Lint check all hugo code
-lint:
+lint: lint/check-for-empty-links
 	hugo --renderToMemory
 
 ## Validate all html is good

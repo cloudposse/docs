@@ -27,7 +27,7 @@ There are a number of different use-cases for managing secrets. The ones we'll a
 
 The "System of Record" is the authorative source for where secrets are kept. For any given secret, there should be a single "source of truth".
 
-Depending on the underlying technology, there will be a few different systems. For example, we prescribe a combination of [SSM+KMS]({{< relref "secrets-management/aws-kms-ssm.md" >}}) for platform services managed with Chamber, [encrypted S3 buckets]() for master private keys, [Kubernetes secrets]({{< relref "secrets-management/kubernetes.md" >}}) for services running within a Kubernetes cluster, and [1Password for Teams]({{< relref "tools/1password.md" >}}) as a last resort for all other secrets.
+Depending on the underlying technology, there will be a few different systems. For example, we prescribe a combination of [SSM+KMS]({{< relref "secrets-management/aws-kms-ssm.md" >}}) for platform services managed with Chamber, [encrypted S3 buckets]({{< relref "secrets-management/aws-kms-s3.md" >}}) for master private keys, [Kubernetes secrets]({{< relref "secrets-management/kubernetes.md" >}}) for services running within a Kubernetes cluster, and [1Password for Teams]({{< relref "tools/1password.md" >}}) as a last resort for all other secrets.
 
 # API
 
