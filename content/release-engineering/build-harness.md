@@ -11,7 +11,7 @@ The `build-harness` is a collection of [Makefiles](/tools/make) to facilitate bu
 | Build Status | [![Build Status](https://travis-ci.org/cloudposse/build-harness.svg)](https://travis-ci.org/cloudposse/build-harness)                  |
 | Release      | [![Release](https://img.shields.io/github/release/cloudposse/build-harness.svg)](https://github.com/cloudposse/build-harness/releases) |
 
-It's designed to work with CI/CD systems such as Travis CI, CircleCI, CodeFresh and Jenkins.
+It's designed to work with CI/CD systems such as Travis CI, CircleCI, Codefresh and Jenkins.
 
 It's 100% Open Source and licensed under [APACHE2]({{< relref "LICENSE.md" >}}).
 

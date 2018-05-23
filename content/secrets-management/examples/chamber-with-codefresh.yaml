@@ -1,0 +1,24 @@
+  deploy_helmfile:
+    title: Deploy app with helmfile
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    environment:
+      - AWS_REGION=us-west-2
+      - AWS_ACCESS_KEY_ID=${{AWS_ACCESS_KEY_ID}}          # for chamber
+      - AWS_SECRET_ACCESS_KEY=${{AWS_SECRET_ACCESS_KEY}}  # for chamber
+      - CHART_NAME=example
+      - CHART_REPO_URL=${{STAGING_REPO_ENDPOINT}}
+      - CHART_VERSION=${{SEMVERSION_COMMIT_SHORT}}
+      - IMAGE_TAG=${{SEMVERSION_COMMIT_SHORT}}
+      - INGRESS_HOST=${{APP_HOST}}
+      - KUBE_CONTEXT=us-west-2-example-cloudposse-org
+    commands:
+      # Install or upgrade tiller
+      - "make helm/toolbox/upsert"
+      # Update values.yaml with envs from chamber
+      - "chamber exec kops ${NAMESPACE} -- envsubst < config/chart.yaml > config/${RELEASE_NAME}.yaml"
+      # Deploy chart to cluster using helmfile (with chamber secrets)
+      - "chamber exec kops ${NAMESPACE} -- helmfile --file config/helmfile.yaml --selector component=app sync --concurrency 1 --args '--wait --timeout=600 --recreate-pods --force --reset-values'"
+    when:
+      condition:
+        all:
+          executeForNamespace: "'${{NAMESPACE}}' != ''"

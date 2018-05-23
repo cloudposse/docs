@@ -13,13 +13,13 @@ None
 
 # Install
 
-## Add aws-kms terraform module
+## Add `chamber` Terraform Root Module
 
 Create a file in `/conf/chamber/kms.tf` with following content
 
 {{% include-github title="/conf/chamber/kms-key.tf" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.1" file="/aws/chamber/kms-key.tf" language="hcl" %}}
 
-## Rebuild the module
+## Rebuild the Geodesic Module
 
 [Rebuild](/geodesic/module/) the module
 ```shell

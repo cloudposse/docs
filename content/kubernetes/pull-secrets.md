@@ -5,7 +5,7 @@ description: ""
 There are a few ways to handle docker "pull secrets" under kubernetes. One way is specific to how `kops` works, the other is more generalized to kubernetes.
 
 First you'll need to obtain a pull secret from your registry of choice.
-e.g. ECR, Docker Hub or [Code Fresh](https://codefresh.io/docs/docs/docker-registries/codefresh-registry/).
+e.g. ECR, Docker Hub or [Codefresh](https://codefresh.io/docs/docs/docker-registries/codefresh-registry/).
 
 # Kops Pull Secret
 
