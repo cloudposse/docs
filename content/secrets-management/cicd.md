@@ -2,7 +2,7 @@
 title: "Using Secrets with CI/CD"
 description: "Learn how we recommend managing secrets as part of CI/CD pipelines."
 tags:
-- ci/cd
+- CI/CD
 - codefresh
 - secrets
 ---

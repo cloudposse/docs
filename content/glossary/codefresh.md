@@ -5,5 +5,5 @@ terms:
 - Codefresh
 - Codefresh
 tags:
-- ci/cd
+- CI/CD
 ---

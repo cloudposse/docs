@@ -84,12 +84,22 @@ build:
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --config $(HUGO_CONFIG)
 
+## Lint check common formatting mistakes
+lint/formatting:
+	@! grep -Eo 'CodeFresh' -R content/   # Should be Codefresh
+	@! grep -Eo 'Code Fresh' -R content/  # Should be Codefresh
+	@! grep -Eo 'CloudPosse' -R content/  # Should be Cloud Posse
+	@! grep -Eo 'Cloudposse' -R content/  # Should be Cloud Posse
+	@! grep -Eo 'Github' -R content/      # Should be GitHub
+	@! grep -Eo 'CI\\+CD' -R content/     # Should be CI/CD
+	@! grep -Eo 'ci/cd' -R content/       # Should be CI/CD
+
 ## Lint check for empty markdown links
 lint/check-for-empty-links:
 	@! grep -Eo '\[.+\]\(\)' -R content/
 
 ## Lint check all hugo code
-lint: lint/check-for-empty-links
+lint: lint/check-for-empty-links lint/formatting
 	hugo --renderToMemory
 
 ## Validate all html is good
