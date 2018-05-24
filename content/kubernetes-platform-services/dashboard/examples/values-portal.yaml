@@ -1,0 +1,90 @@
+---
+## Internal backends exposed with portal`
+backends:
+  ## Subdomain name
+  dashboard:
+    ## Name for menu item
+    name: "Kubernetes"
+    ## Endpoint
+    endpoint: "https://ui-kubernetes-dashboard.kube-system:443"
+    ## Set true if endpoint is external (would be redirect instead of proxy)
+    external: false
+  grafana:
+    name: "Grafana"
+    endpoint: "http://prom-grafana.monitoring:80"
+    external: false
+  alerts:
+    name: "Alerts"
+    endpoint: "http://prom-alertmanager.monitoring:9093"
+    external: false
+  prometheus:
+    name: "Prometheus"
+    endpoint: "http://prom-prometheus.monitoring:9090"
+    external: false
+  docs:
+    name: "Documentation"
+    endpoint: "https://docs.cloudposse.com/docs"
+    external: true
+  api:
+    name: "API Docs"
+    endpoint: "https://resources.staging.aws.popchest.io/api-docs/"
+    external: true
+  rabbit:
+    name: "RabbitMQ"
+    endpoint: "http://popchest-rabbitmq.popchest-staging:15672"
+    external: false
+
+config:
+  title: "Staging Example"
+  brand: "Staging Cluster"
+  image:
+    favicon: https://d3r456tgct9p74.cloudfront.net/favicons/favicon.ico
+    url: https://d3r456tgct9p74.cloudfront.net/favicons/favicon-196x196.png
+    width: 35
+
+  ## Base portal hostname
+  basehost: portal.us-west-2.staging.example.com
+
+dashboard:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 5m
+      memory: 16Mi
+    requests:
+      cpu: 2m
+      memory: 8Mi
+
+proxy:
+  enabled: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 5m
+      memory: 64Mi
+    requests:
+      cpu: 2m
+      memory: 32Mi
+
+oauth2-proxy:
+  app:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 10m
+      memory: 16Mi
+    requests:
+      cpu: 5m
+      memory: 8Mi
+
+ingress:
+  enabled: true
+  tls:
+    enabled: true
+  dns:
+    enabled: false
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    external-dns.alpha.kubernetes.io/hostname: "portal.us-west-2.staging.example.com"
+    external-dns.alpha.kubernetes.io/target: "internal.us-west-2.staging.example.com"
