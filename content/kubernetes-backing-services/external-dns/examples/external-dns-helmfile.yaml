@@ -18,10 +18,10 @@ releases:
       value: "service\ningress"
 
     - name: "txtOwnerId"
-      value: 'us-west-2.staging.cloudposse.org'
+      value: 'us-west-2.staging.example.com'
 
     - name: "txtPrefix"
-      value: '11591833-F9CE-407C-8519-35A947DB1D87'
+      value: '11591833-F9CE-407C-8519-35A947DB1D87-'
 
     - name: "publishInternalServices"
       value: "true"

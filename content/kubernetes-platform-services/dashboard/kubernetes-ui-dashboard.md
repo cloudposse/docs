@@ -11,7 +11,7 @@ description: ""
 
 You can install `kubernetes-dashboard` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
-Kubernetes dashboard required `heapster` to show `cpu` and `memory` charts on dashboard.
+Kubernetes dashboard requires [heapster](https://github.com/kubernetes/heapster) to collect and interpret various signals like compute and memory resource usage and lifecycle events.
 You can skip install `heapster` if there is no need in resources chart.
 
 ## Install with Master Helmfile
@@ -21,7 +21,7 @@ Run following command
 helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=kubernetes-dashboard sync
 helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=heapster sync
 ```
-This environment variables can be useful for configure:
+These environment variables are used to configure:
 
 * `KUBERNETES_DASHBOARD_IMAGE_TAG` - Version of [kubernetes dashboard image](https://github.com/kubernetes/dashboard/releases)
 * `HEAPSTER_REPLICA_COUNT` - Count of `heapster` pods

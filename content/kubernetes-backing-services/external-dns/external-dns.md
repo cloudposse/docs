@@ -9,7 +9,7 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 # Dependencies
 
-* Kube2IAM
+* [Kube2IAM]({{< relref "kubernetes-backing-services/iam/kube2iam.md" >}})
 
 # Install
 
@@ -69,7 +69,7 @@ You can install `external-dns` in a few different ways, but we recomend to use t
 ```
 chamber write kops EXTERNAL_DNS_IAM_ROLE example-staging-external-dns
 chamber write kops EXTERNAL_DNS_TXT_OWNER_ID us-west-2.staging.example.com
-chamber write kops EXTERNAL_DNS_TXT_PREFIX $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+chamber write kops EXTERNAL_DNS_TXT_PREFIX "$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)-"
 chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=external-dns sync
 ```
 {{% /dialog %}}
