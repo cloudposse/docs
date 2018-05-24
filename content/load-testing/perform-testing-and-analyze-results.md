@@ -5,12 +5,11 @@ weight: 3
 
 [k6](https://github.com/loadimpact/k6) has a built-in [HAR](http://www.softwareishard.com/blog/har-12-spec/) converter that will read HAR files and convert them to k6 scripts that can then be executed.
 
-See [session-recording-har-support](https://docs.k6.io/docs/session-recording-har-support) for more details.
+See [session recording](https://docs.k6.io/docs/session-recording-har-support) for more details.
 
-We recorded and prepared a sample scenario to test the complete user flow on a website, including signing up, creating a user profile, providing all required information,
-and finally getting a list of available options for the user.
+We recorded and prepared a sample scenario to test the complete user flow on a website, including signing up, creating a user profile, providing all required information, and finally getting a list of available options for the user.
 
-{{% include-code-block title="Complete Load Testing Scenario" file="load-testing/scenarios/scenario_all.js" language="js" %}}
+{{% include-github org="cloudposse" repo="load-testing" ref="master" file="scenarios/scenario_all.js" title="Complete Load Testing Scenario" language="js" type="code-block" %}}
 
 Run it with a single user
 

@@ -7,14 +7,14 @@ We use [k6](https://github.com/loadimpact/k6) from [Load Impact](https://loadimp
 
 * Open-source, well documented (see [docs](https://docs.k6.io/docs)) and with simple command line usage
 * Allows to easily create load test scenarios based on virtual users and simulated traffic configurations
-* It's implemented in [Go](https://golang.org/), which has exelent support for concurrency - tests will not consume too much CPU and memory on the test machine even with a large number of consurrent sessions
+* It's implemented in [Go](https://golang.org/), which has exelent support for concurrency - tests will not consume too much CPU and memory on the test machine even with a large number of concurrent sessions
 * Scenario scripting in `JavaScript` ES2015/ES6 - with support for local and remote modules
-* Everything as code: test logic and configuration options are both in JS for version control friendliness
+* Testing as code: test logic and configuration options are both in JS for version control friendliness
 * Can be run from the command line with command & control through CLI
-* Has a built-in [HAR](http://www.softwareishard.com/blog/har-12-spec/) converter that will read HAR files and convert them to `k6` scripts that can then be executed ([session-recording-har-support](https://docs.k6.io/docs/session-recording-har-support))
-* Can be easily integrated into CI/CD processes
+* Has a built-in [HAR](http://www.softwareishard.com/blog/har-12-spec/) converter that will read HAR files and convert them to `k6` scripts that can then be executed (see [session recording](https://docs.k6.io/docs/session-recording-har-support))
+* Can be easily integrated into CI/CD pipelines
 * Provides a comprehensive set of built-in [metrics](https://docs.k6.io/docs/result-metrics)
-* Can stream metrics into [InfluxDB](https://www.influxdata.com/) for storage and visualization with [Grafana](https://grafana.com/) ([influxdb-grafana](https://docs.k6.io/docs/influxdb-grafana))
+* Can stream metrics into [InfluxDB](https://www.influxdata.com/) for storage and visualization with [Grafana](https://grafana.com/) (see [influxdb-grafana](https://docs.k6.io/docs/influxdb-grafana))
 
 Read more about k6's features and metrics:
 
@@ -26,7 +26,7 @@ Read more about k6's features and metrics:
 
 We use [Docker Compose](https://docs.docker.com/compose/) for defining and running multi-container Docker applications
 
-{{% include-code-block title="docker-compose.yml" file="load-testing/docker-compose.yml" language="yaml" %}}
+{{% include-github org="cloudposse" repo="load-testing" ref="master" file="docker-compose.yml" title="docker-compose.yml" language="yaml" type="code-block" %}}
 
 It builds three Docker images:
 
@@ -36,13 +36,13 @@ It builds three Docker images:
 
 And uses these Dockerfiles
 
-{{% include-code-block title="Dockerfile.influxdb" file="load-testing/Dockerfile.influxdb" language="yaml" %}}
+{{% include-github org="cloudposse" repo="load-testing" ref="master" file="Dockerfile.influxdb" title="Dockerfile.influxdb" language="dockerfile" type="code-block" %}}
 
-{{% include-code-block title="Dockerfile.grafana" file="load-testing/Dockerfile.grafana" language="yaml" %}}
+{{% include-github org="cloudposse" repo="load-testing" ref="master" file="Dockerfile.grafana" title="Dockerfile.grafana" language="dockerfile" type="code-block" %}}
 
-{{% include-code-block title="init.sh" file="load-testing/init.sh" language="bash" %}}
+{{% include-github org="cloudposse" repo="load-testing" ref="master" file="init.sh" title="init.sh" language="bash" type="code-block" %}}
 
-{{% include-code-block title="Dockerfile.k6" file="load-testing/Dockerfile.k6" language="dockerfile" %}}
+{{% include-github org="cloudposse" repo="load-testing" ref="master" file="Dockerfile.k6" title="Dockerfile.k6" language="dockerfile" type="code-block" %}}
 
 Run [docker-compose up](https://docs.docker.com/compose/reference/up/) to build the containers and run `InfluxDB` and `Grafana` in the background
 
