@@ -47,6 +47,8 @@ IgnoreURLs:
 - "img.shields.io"
 # Rate limiting precludes us from testing GitHub links
 - "github.com"
+# Site started blocking us
+- "blog.gopheracademy.com"
 
 # Array of regexs of directories to ignore when scanning for HTML files.
 IgnoreDirs:
