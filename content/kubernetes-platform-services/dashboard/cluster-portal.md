@@ -27,17 +27,17 @@ For authentification we need to create oAuth2 application on one of external pro
 As oAuth callback url use `https://portal.us-west-2.staging.example.com/oauth2/callback`
 Replace with value to suit your specific project.
 
-### Github Auth provider
+### GitHub Auth provider
 
 To create oAuth2 application you can follow one of this instructions:
-* [oAuth2Proxy with Github](https://github.com/bitly/oauth2_proxy#github-auth-provider)
-* [Github creating oAuth app](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
+* [oAuth2Proxy with GitHub](https://github.com/bitly/oauth2_proxy#github-auth-provider)
+* [GitHub creating oAuth app](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
 
 As the result of creation oAuth2 app you need `Client ID` and `Client Secret`.
 
 #### Create team
 
-With Github Auth provider you need restrict access to the portal by membership users
+With GitHub Auth provider you need restrict access to the portal by membership users
 in the `github organization` and in the `team` belog to it.
 
 For more details read [Creating organization](https://help.github.com/articles/creating-a-new-organization-from-scratch/)
@@ -52,7 +52,7 @@ You can install `portal` in a few different ways, but we recomend to use the [Ma
 ### Install with Master Helmfile
 
 [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml)
-use Github auth provider and have configured to expose next dashboards:
+use GitHub auth provider and have configured to expose next dashboards:
 
 * [Kubernetes Dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
   - Acceptable by `https://dashboard.portal.us-west-2.staging.example.com`
@@ -68,10 +68,10 @@ This environment variables are required.
 
 1. Set the `PORTAL_HOSTNAME` secret with chamber or Dockerfile to base `hostname`
 2. Set the `PORTAL_INGRESS` secret with chamber or Dockerfile to `ingress host`
-3. Set the `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID` secret with chamber to Github oAuth app `Client ID`
-4. Set the `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET` secret with chamber to Github oAuth app `Client Secret`
-5. Set the `PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION` secret with chamber or Dockerfile to Github `Organization name`
-6. Set the `PORTAL_OAUTH2_PROXY_GITHUB_TEAM` secret with chamber or Dockerfile to Github `Team name`
+3. Set the `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID` secret with chamber to GitHub oAuth app `Client ID`
+4. Set the `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET` secret with chamber to GitHub oAuth app `Client Secret`
+5. Set the `PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION` secret with chamber or Dockerfile to GitHub `Organization name`
+6. Set the `PORTAL_OAUTH2_PROXY_GITHUB_TEAM` secret with chamber or Dockerfile to GitHub `Team name`
 7. Set the `PORTAL_OAUTH2_PROXY_COOKIE_NAME` secret with chamber to `random value`
 8. Set the `PORTAL_OAUTH2_PROXY_COOKIE_SECRET` secret with chamber to `random value`
 9. Do branging of cluster dashboard with this variables:
@@ -141,5 +141,5 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 
 # Usage
 
-Open `https://portal.us-west-2.staging.example.com` process authorization on Github
+Open `https://portal.us-west-2.staging.example.com` process authorization on GitHub
 and use dashboards.
