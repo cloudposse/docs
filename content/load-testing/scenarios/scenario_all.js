@@ -5,7 +5,6 @@ import {checkResponses, commonHeaders, config, k6_options, mergeHeaders} from ".
 export let options = k6_options;
 
 export function setup() {
-    console.log("k6 options: " + JSON.stringify(options) + "\n");
 }
 
 export function teardown(data) {

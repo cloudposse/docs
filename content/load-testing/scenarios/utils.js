@@ -99,7 +99,6 @@ export let commonHeaders = {
     "accept-language": "en-US,en;q=0.9"
 };
 
-// https://stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically
 export function mergeHeaders(headers) {
     let result = {};
     Object.assign(result, commonHeaders, headers);

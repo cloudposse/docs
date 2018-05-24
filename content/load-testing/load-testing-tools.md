@@ -1,5 +1,6 @@
 ---
-title: "Select and configure load testing tools"
+title: "Load Testing Tools"
+weight: 1
 ---
 
 We use [k6](https://github.com/loadimpact/k6) from [Load Impact](https://loadimpact.com/) for the following reasons:
@@ -26,9 +27,9 @@ Read more about k6's features and metrics:
 
 The [docker-compose](docker-compose.yml) file builds three Docker images:
 
-* InfluxDB
-* Grafana
-* k6
+* [InfluxDB](https://www.influxdata.com/)
+* [Grafana](https://grafana.com/)
+* [k6](https://github.com/loadimpact/k6)
 
 Run [docker-compose up](https://docs.docker.com/compose/reference/up/) to build the containers and run `InfluxDB` and `Grafana` in the background
 

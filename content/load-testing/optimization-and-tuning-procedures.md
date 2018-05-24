@@ -1,8 +1,9 @@
 ---
-title: "Suggest improvements and tuning procedures for the infrastructure and application under test"
+title: "Optimization and Tuning Procedures"
+weight: 4
 ---
 
-Here are some optimization steps that we usually perform after running load tests:
+Here are some optimization and tuning steps that we usually perform after running load tests:
 
 * Put all static assets behind a CDN (e.g. AWS CloudFront), do not overload the Kubernetes pods with serving the static assets (in may cases, this is one of the main reasons of poor website performance)
 * Scale Kubernetes cluster (horizontally by adding nodes or vertically by using different types of EC2 instances)

@@ -1,28 +1,21 @@
 ---
-title: "Implement load testing scenarios and scripts"
+title: "Load Testing Scenarios"
+weight: 2
 ---
+
+__NOTE:__ All load testing scenarios described here are just examples and are provided for reference.
+Consider updating them to reflect your environment.
+
+__NOTE:__ All our load testing scripts use the utility module `utils.js`, which provides a set of reusable structures and functions.
+{{% include-code-block title="Load Testing Utilities Module" file="load-testing/scenarios/utils.js" language="js" %}}
 
 To establish a baseline, first we'll load test the website's home page with one concurrent user.
 
 This will allow us to see the best performing numbers, against which we'd compare more advanced scenarious involving more pages and more concurrent users.
 
-```js
-import http from "k6/http";
-import {checkResponses, config, k6_options} from "./utils.js";
+We created this simple script to load test the home page of a website:
 
-export let options = k6_options;
-
-export function setup() {
-}
-
-export function teardown(data) {
-}
-
-export default function (data) {
-    let res = http.get(config.baseUrl);
-    checkResponses(res);
-}
-```
+{{% include-code-block title="Load Testing Scenario 1" file="load-testing/scenarios/scenario_01.js" language="js" %}}
 
 Run the test
 
@@ -145,8 +138,6 @@ execution: local
 
 Check the Kubernetes pods CPU and memory consumption in the Kubernetes `Grafana` dashboard
 
-
 ![Load Scenario 01 Grafana Portal Dashboard](/assets/load-testing-portal-grafana-scenario-01.png)
-
 
 We can conclude that with the current CPU and memory configurations for Kubernetes pods, the site can handle 50 requests per second to the home page.
