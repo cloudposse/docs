@@ -86,5 +86,4 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
     external-dns.alpha.kubernetes.io/ttl: "60"
-    external-dns.alpha.kubernetes.io/hostname: "portal.us-west-2.staging.example.com"
     external-dns.alpha.kubernetes.io/target: "internal.us-west-2.staging.example.com"
