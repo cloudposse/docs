@@ -27,6 +27,7 @@ EnforceHTTPS: false
 
 HTTPHeaders: 
   User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
+  Referer: "https://docs.cloudposse.com/"
 
 # Turns off image alt attribute checking.
 IgnoreAltMissing: true
@@ -47,13 +48,16 @@ IgnoreURLs:
 - "img.shields.io"
 # Rate limiting precludes us from testing GitHub links
 - "github.com"
+# Site started blocking us
+- "blog.gopheracademy.com"
 
 # Array of regexs of directories to ignore when scanning for HTML files.
 IgnoreDirs:
 - "revealjs"
 
 # Cache validity period, accepts go.time duration strings (…"m", "h").
-CacheExpires: "48h"
+# Two-weeks = 336 Hours
+CacheExpires: "336h"
 
 # Maximum number of open HTTP connections (keep this low to avoid GitHub rate limits)
 HTTPConcurrencyLimit: 2
