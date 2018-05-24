@@ -3,10 +3,10 @@ title: "Cluster Portal"
 description: ""
 ---
 
-[Cluster portal](https://github.com/cloudposse/charts/tree/master/incubator/portal) allow to access
-internal dashboards after authorization with third party [oAuth](https://en.wikipedia.org/wiki/OAuth) service.
+[Cluster portal](https://github.com/cloudposse/charts/tree/master/incubator/portal) allows to access
+internal dashboards after authorization with a third party [oAuth](https://en.wikipedia.org/wiki/OAuth) service.
 
-Cluster portal use [oauth2proxy](https://github.com/bitly/oauth2_proxy) as component
+Cluster portal uses [oauth2proxy](https://github.com/bitly/oauth2_proxy) as component
 responsible for authentification.
 
 # Dependencies
@@ -16,7 +16,7 @@ responsible for authentification.
 
 # Install
 
-Starting installation the `portal` you need to define `hostname` used to access the portal.
+To install the `portal`, you need to define `hostname`, which is a DNS name used to access the portal.
 In our example it would be `portal.us-west-2.staging.example.com`.
 Replace with value to suit your specific project.
 
