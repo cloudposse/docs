@@ -8,7 +8,7 @@ tags:
   - assume-role
 ---
 
-# Assume Role via AWS Console
+# Assume Role via AWS Web Console
 
 **NOTE**: Due to the security implications, IAM policies are set up to **only** allow the root AWS account to assume roles into other accounts.
 
@@ -28,9 +28,11 @@ First, ensure that the proper profiles are setup following [Authorization]({{< r
 
 
 ## Inspect the environment
+```
 $ aws-vault exec `<profile>` -- env | grep AWS
+```
 
 ## Execute a command using temporary credentials
+```
 $ aws-vault exec `<profile>` -- aws s3 ls
-bucket_1
-bucket_2
+```
