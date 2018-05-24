@@ -27,12 +27,12 @@ tags:
 First, ensure that the proper profiles are setup following [Authorization]({{< relref "aws/iam/authorization.md" >}}).
 
 
-## Inspect the environment
+## Inspect The Environment
 ```
-$ aws-vault exec `<profile>` -- env | grep AWS
+$ aws-vault exec $profile -- env | grep AWS
 ```
 
-## Execute a command using temporary credentials
+## Execute a Command Using Temporary Credentials
 ```
-$ aws-vault exec `<profile>` -- aws s3 ls
+$ aws-vault exec $profile -- aws s3 ls
 ```

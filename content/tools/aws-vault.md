@@ -1,9 +1,9 @@
 ---
 title: AWS Vault
-description: "`aws-vault` is a command line tool for securely storing and accessing encrypted AWS credentials for local development environments. It makes it extremely easy to work with IAM assumed roles across multiple AWS organizations."
+description: "The `aws-vault` command line tool is a utility for securely storing and accessing encrypted AWS credentials for local development environments. It makes it extremely easy to work with IAM assumed roles across multiple AWS organizations."
 ---
 
-[`aws-vault`](https://github.com/99designs/aws-vault) by [99 Designs](https://99designs.com/) is a vault for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
+The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
 
 {{% dialog type="info" icon="fa-info-circle" title="Info" %}}
 `aws-vault` has no relationship to the HashiCorp Vault.
@@ -70,11 +70,14 @@ region=us-west-2
 ```
 
 4. Setup your `~/.aws/config` by adding a profile entry for each AWS account:
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Remember to replace the `$aws_account_id`s with your account ids and `user@example.com` with your IAM username below. We recommend using email addresses for all IAM user accounts associated with human users.
+{{% /dialog %}}
 ```
 [profile example-staging-admin]
 region=us-west-2
-role_arn=arn:aws:iam::XXXXXXXXXXXX:role/OrganizationAccountAccessRole
-mfa_serial=arn:aws:iam::XXXXXXXXXXXX:mfa/user@example.com
+role_arn=arn:aws:iam::$aws_account_id_for_staging:role/OrganizationAccountAccessRole
+mfa_serial=arn:aws:iam::$aws_account_id_for_root:mfa/user@example.com
 source_profile=example
 ```
 
@@ -87,7 +90,7 @@ This should open a browser and log you into the AWS console as the assumed role 
 
 # Using with Geodesic
 
-`aws-vault` is available in the geodesic shell - to connect to the shell, run:
+`aws-vault` is available in the geodesic shell - to start the shell, run:
 
 ```bash
 > $CLUSTER_NAME
@@ -110,6 +113,9 @@ Most problems stem from misconfiguration.
 - **Do not** set `AWS_SHARED_CREDENTIALS_FILE`
 
 If using `--server` mode, ensure the following credentials are not exported:
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Running in `--server` mode binds to `169.254.169.254` in order to mock the AWS metadata server, you can only run one per host machine. More info can be found [here]({{< relref "/faq/aws-vault-error-failed-to-start-credential-server" >}}).
+{{% /dialog %}}
 
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
