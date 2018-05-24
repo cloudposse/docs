@@ -6,8 +6,7 @@ description: ""
 [Cluster portal](https://github.com/cloudposse/charts/tree/master/incubator/portal) allows to access
 internal dashboards after authorization with a third party [oAuth](https://en.wikipedia.org/wiki/OAuth) service.
 
-Cluster portal uses [oauth2proxy](https://github.com/bitly/oauth2_proxy) as component
-responsible for authentification.
+Cluster portal uses the Bitly [oauth2proxy](https://github.com/bitly/oauth2_proxy) as an IAP.
 
 # Dependencies
 
