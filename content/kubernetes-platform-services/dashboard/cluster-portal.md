@@ -55,13 +55,13 @@ You can install `portal` in a few different ways, but we recomend to use the [Ma
 use Github auth provider and have configured to expose next dashboards:
 
 * [Kubernetes Dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
-  - Acceptable by https://dashboard.portal.us-west-2.staging.example.com
+  - Acceptable by `https://dashboard.portal.us-west-2.staging.example.com`
 * [Prometheus]({{< relref "kubernetes-backing-services/monitoring/prometheus-alerts-grafana.md" >}})
-  - Acceptable by https://prometheus.portal.us-west-2.staging.example.com
+  - Acceptable by `https://prometheus.portal.us-west-2.staging.example.com`
 * [Alert Manager]({{< relref "kubernetes-backing-services/monitoring/prometheus-alerts-grafana.md" >}})
-  - Acceptable by https://alerts.portal.us-west-2.staging.example.com
+  - Acceptable by `https://alerts.portal.us-west-2.staging.example.com`
 * [Grafana]({{< relref "kubernetes-backing-services/monitoring/prometheus-alerts-grafana.md" >}})
-  - Acceptable by https://grafana.portal.us-west-2.staging.example.com
+  - Acceptable by `https://grafana.portal.us-west-2.staging.example.com`
 * [External Documentation](https://docs.cloudposse.com)
 
 This environment variables are required.
@@ -141,5 +141,5 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 
 # Usage
 
-Open https://portal.us-west-2.staging.example.com/oauth2/callback process authorization on Github
+Open `https://portal.us-west-2.staging.example.com` process authorization on Github
 and use dashboards.
