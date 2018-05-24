@@ -22,14 +22,27 @@ Read more about k6's features and metrics:
 * http://support.loadimpact.com/knowledgebase/articles/174121-how-do-i-interpret-test-results
 
 
-
 # Installation
 
-The [docker-compose](docker-compose.yml) file builds three Docker images:
+We use [Docker Compose](https://docs.docker.com/compose/) for defining and running multi-container Docker applications
+
+{{% include-code-block title="docker-compose.yml" file="load-testing/docker-compose.yml" language="yaml" %}}
+
+It builds three Docker images:
 
 * [InfluxDB](https://www.influxdata.com/)
 * [Grafana](https://grafana.com/)
 * [k6](https://github.com/loadimpact/k6)
+
+And uses these Dockerfiles
+
+{{% include-code-block title="Dockerfile.influxdb" file="load-testing/Dockerfile.influxdb" language="yaml" %}}
+
+{{% include-code-block title="Dockerfile.grafana" file="load-testing/Dockerfile.grafana" language="yaml" %}}
+
+{{% include-code-block title="init.sh" file="load-testing/init.sh" language="bash" %}}
+
+{{% include-code-block title="Dockerfile.k6" file="load-testing/Dockerfile.k6" language="dockerfile" %}}
 
 Run [docker-compose up](https://docs.docker.com/compose/reference/up/) to build the containers and run `InfluxDB` and `Grafana` in the background
 

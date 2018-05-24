@@ -1,0 +1,14 @@
+FROM grafana/grafana:5.1.3
+
+USER root
+
+RUN apt-get update && apt-get -y install curl
+
+# Change the default data directory (otherwise grafanadb won't persist)
+RUN mkdir /var/lib/grafanadb
+ENV GF_PATHS_DATA /var/lib/grafanadb
+
+# Init Grafana and preconfigure data source to be influxdb
+RUN ./init.sh
+
+CMD ["/run.sh"]
