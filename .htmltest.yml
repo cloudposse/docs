@@ -53,7 +53,8 @@ IgnoreDirs:
 - "revealjs"
 
 # Cache validity period, accepts go.time duration strings (…"m", "h").
-CacheExpires: "48h"
+# Two-weeks = 336 Hours
+CacheExpires: "336h"
 
 # Maximum number of open HTTP connections (keep this low to avoid GitHub rate limits)
 HTTPConcurrencyLimit: 2
