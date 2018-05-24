@@ -4,7 +4,7 @@ description: ""
 ---
 
 [Cluster portal](https://github.com/cloudposse/charts/tree/master/incubator/portal) allow to access
-internal dashboards after authorization with third party [oAuth]() service.
+internal dashboards after authorization with third party [oAuth](https://en.wikipedia.org/wiki/OAuth) service.
 
 Cluster portal use [oauth2proxy](https://github.com/bitly/oauth2_proxy) as component
 responsible for authentification.
