@@ -53,7 +53,7 @@ execution: local
 
 ```
 
-Open the `Grafana` dashboard at http://localhost:3000 to see the load test results
+Open the `Grafana` dashboard at `localhost:3000` to see the load test results
 
 
 ![Load Scenario 01 Grafana Dashboard](/assets/load-testing-grafana-scenario-01.png)

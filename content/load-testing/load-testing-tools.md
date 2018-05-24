@@ -50,7 +50,7 @@ Run [docker-compose up](https://docs.docker.com/compose/reference/up/) to build 
 docker-compose up -d influxdb grafana
 ```
 
-Open http://localhost:3000 to see `Grafana` running.
+Open `localhost:3000` to see `Grafana` running.
 
 By default, `Grafana` does not come with any pre-configured dashboards.
 
