@@ -1,13 +1,12 @@
 ---
-## Internal backends exposed with portal`
+## Internal backends exposed with portal
 backends:
-  ## Subdomain name
   dashboard:
     ## Name for menu item
     name: "Kubernetes"
     ## Endpoint
     endpoint: "https://ui-kubernetes-dashboard.kube-system:443"
-    ## Set true if endpoint is external (would be redirect instead of proxy)
+    ## Set to true if endpoint is external (would be redirect instead of proxy)
     external: false
   grafana:
     name: "Grafana"

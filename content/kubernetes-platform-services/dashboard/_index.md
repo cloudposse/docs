@@ -1,4 +1,5 @@
 ---
 title: "Dashboard"
-description: ""
+description: "Kubernetes Dashboard"
+weight: 1
 ---
