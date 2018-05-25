@@ -17,55 +17,7 @@ Run it with a single user
 docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 1 -i 1 /scenarios/scenario_all.js
 ```
 
-```
-execution: local
-     output: influxdb=http://influxdb:8086/k6 (http://influxdb:8086)
-     script: /scenarios/scenario_all.js
-
-    duration: -,  iterations: 1
-         vus: 1, max: 1
-
-    done [==========================================================] 1 / 1
-
-    █ page_01 - home
-
-    █ page_02 - /profile
-
-    █ page_03 - /save_profile
-
-    █ page_04 - /add_categories
-
-    █ page_05 - /add_features
-
-    █ page_06 - /add_details
-
-    █ page_07 - /add_details2
-
-    █ page_08 - /users
-
-    █ page_09 - /enrollment
-
-    █ page_10 - /enrollment2
-
-    █ page_11 - /update_profile
-
-    data_received..............: 14 MB  630 kB/s
-    data_sent..................: 234 kB 11 kB/s
-    group_duration.............: avg=1.96s    min=106.14ms med=1.75s    max=4.91s    p(90)=3.76s    p(95)=4.34s
-    http_req_blocked...........: avg=33.98ms  min=0s       med=0s       max=443.45ms p(90)=0s       p(95)=441.04ms
-    http_req_connecting........: avg=7.36ms   min=0s       med=0s       max=96.85ms  p(90)=0s       p(95)=95.41ms
-    http_req_duration..........: avg=227.61ms min=95.64ms  med=148.8ms  max=1.27s    p(90)=464.57ms p(95)=806.93ms
-    http_req_receiving.........: avg=34.44ms  min=76.3µs   med=1.12ms   max=1.11s    p(90)=102.9ms  p(95)=117.98ms
-    http_req_sending...........: avg=224.35µs min=83.5µs   med=178.1µs  max=1.45ms   p(90)=346.46µs p(95)=545.93µs
-    http_req_tls_handshaking...: avg=17.26ms  min=0s       med=0s       max=225.33ms p(90)=0s       p(95)=224.26ms
-    http_req_waiting...........: avg=192.94ms min=95.41ms  med=105.15ms max=998.45ms p(90)=374.83ms p(95)=652.32ms
-    http_reqs..................: 130    6.027408/s
-    iteration_duration.........: avg=21.56s   min=21.56s   med=21.56s   max=21.56s   p(90)=21.56s   p(95)=21.56s
-    iterations.................: 1      0.046365/s
-    vus........................: 1      min=1 max=1
-    vus_max....................: 1      min=1 max=1
-
-```
+{{% include-code-block title="k6 run scenario_all 1 user 1 iteration" file="load-testing/examples/k6_run_scenario_all_1_user_1_iteration.txt" %}}
 
 The entire process took 21 seconds.
 
@@ -75,55 +27,7 @@ Now run it with 50 concurrent users
 docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 50 -i 50 /scenarios/scenario_all.js
 ```
 
-```
-execution: local
-     output: influxdb=http://influxdb:8086/k6 (http://influxdb:8086)
-     script: /scenarios/scenario_all.js
-
-    duration: -,   iterations: 50
-         vus: 50, max: 50
-
-    done [==========================================================] 50 / 50
-
-    █ page_01 - home
-
-    █ page_02 - /profile
-
-    █ page_03 - /save_profile
-
-    █ page_04 - /add_categories
-
-    █ page_05 - /add_features
-
-    █ page_06 - /add_details
-
-    █ page_07 - /add_details2
-
-    █ page_08 - /users
-
-    █ page_09 - /enrollment
-
-    █ page_10 - /enrollment2
-
-    █ page_11 - /update_profile
-
-    data_received..............: 679 MB 6.6 MB/s
-    data_sent..................: 12 MB  115 kB/s
-    group_duration.............: avg=5.78s    min=104.4ms    med=3.02s    max=1m6s     p(90)=10.88s   p(95)=13.51s
-    http_req_blocked...........: avg=230.04ms min=0s         med=0s       max=5.64s    p(90)=0s       p(95)=2.93s
-    http_req_connecting........: avg=10.63ms  min=0s         med=0s       max=321.33ms p(90)=0s       p(95)=123.46ms
-    http_req_duration..........: avg=953.25ms min=128.3µs    med=292.67ms max=59.93s   p(90)=2.22s    p(95)=3.19s
-    http_req_receiving.........: avg=223.82ms min=-15.0602ms med=2.04ms   max=59.78s   p(90)=389.02ms p(95)=1.14s
-    http_req_sending...........: avg=221.58µs min=70.8µs     med=155.4µs  max=8.2ms    p(90)=337µs    p(95)=469.13µs
-    http_req_tls_handshaking...: avg=206.19ms min=0s         med=0s       max=5.24s    p(90)=0s       p(95)=2.59s
-    http_req_waiting...........: avg=729.2ms  min=0s         med=199.58ms max=59.7s    p(90)=1.96s    p(95)=2.86s
-    http_reqs..................: 6500   63.046647/s
-    iteration_duration.........: avg=1m3s     min=31.83s     med=50.92s   max=1m43s    p(90)=1m39s    p(95)=1m40s
-    iterations.................: 50     0.484974/s
-    vus........................: 50     min=50 max=50
-    vus_max....................: 50     min=50 max=50
-
-```
+{{% include-code-block title="k6 run scenario_all 50 users 50 iterations" file="load-testing/examples/k6_run_scenario_all_50_users_50_iterations.txt" %}}
 
 Check the Kubernetes pods CPU and memory consumption in the Kubernetes `Grafana` dashboard
 

@@ -1,0 +1,46 @@
+execution: local
+     output: influxdb=http://influxdb:8086/k6 (http://influxdb:8086)
+     script: /scenarios/scenario_all.js
+
+    duration: -,  iterations: 1
+         vus: 1, max: 1
+
+    done [==========================================================] 1 / 1
+
+    █ page_01 - home
+
+    █ page_02 - /profile
+
+    █ page_03 - /save_profile
+
+    █ page_04 - /add_categories
+
+    █ page_05 - /add_features
+
+    █ page_06 - /add_details
+
+    █ page_07 - /add_details2
+
+    █ page_08 - /users
+
+    █ page_09 - /enrollment
+
+    █ page_10 - /enrollment2
+
+    █ page_11 - /update_profile
+
+    data_received..............: 14 MB  630 kB/s
+    data_sent..................: 234 kB 11 kB/s
+    group_duration.............: avg=1.96s    min=106.14ms med=1.75s    max=4.91s    p(90)=3.76s    p(95)=4.34s
+    http_req_blocked...........: avg=33.98ms  min=0s       med=0s       max=443.45ms p(90)=0s       p(95)=441.04ms
+    http_req_connecting........: avg=7.36ms   min=0s       med=0s       max=96.85ms  p(90)=0s       p(95)=95.41ms
+    http_req_duration..........: avg=227.61ms min=95.64ms  med=148.8ms  max=1.27s    p(90)=464.57ms p(95)=806.93ms
+    http_req_receiving.........: avg=34.44ms  min=76.3µs   med=1.12ms   max=1.11s    p(90)=102.9ms  p(95)=117.98ms
+    http_req_sending...........: avg=224.35µs min=83.5µs   med=178.1µs  max=1.45ms   p(90)=346.46µs p(95)=545.93µs
+    http_req_tls_handshaking...: avg=17.26ms  min=0s       med=0s       max=225.33ms p(90)=0s       p(95)=224.26ms
+    http_req_waiting...........: avg=192.94ms min=95.41ms  med=105.15ms max=998.45ms p(90)=374.83ms p(95)=652.32ms
+    http_reqs..................: 130    6.027408/s
+    iteration_duration.........: avg=21.56s   min=21.56s   med=21.56s   max=21.56s   p(90)=21.56s   p(95)=21.56s
+    iterations.................: 1      0.046365/s
+    vus........................: 1      min=1 max=1
+    vus_max....................: 1      min=1 max=1
