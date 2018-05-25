@@ -1,40 +1,40 @@
 ---
 title: "Cluster Portal"
-description: ""
+description: "The Cluster Portal is a dashboard that exposes several services behind an OAuth2 proxy."
 ---
 
 [Cluster portal](https://github.com/cloudposse/charts/tree/master/incubator/portal) allows to access
-internal dashboards after authorization with a third party [oAuth](https://en.wikipedia.org/wiki/OAuth) service.
+internal dashboards after authorization with a third party [OAuth2](https://en.wikipedia.org/wiki/OAuth) service like GitHub or Okta.
 
-Cluster portal uses the Bitly [oauth2proxy](https://github.com/bitly/oauth2_proxy) as an IAP.
+The cluster portal uses follows the BeyondCorp security model and uses the Bitly [`oauth2-proxy`](https://github.com/bitly/oauth2_proxy) as an Identity Aware Proxy ("IAP").
 
 # Dependencies
 
 * [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
 * [Kube Lego]({{< relref "kubernetes-backing-services/tls-management/kube-lego-lets-encrypt.md" >}})
 
-# Install
+# Installation
 
-To install the `portal`, you need to define `hostname`, which is a DNS name used to access the portal.
-In our example it would be `portal.us-west-2.staging.example.com`.
-Replace with value to suit your specific project.
+To install the `portal`, you will need to define the `hostname`, which is the FQHN used to access the portal.
 
-## Create oAuth2 application
+In our example, we use `portal.us-west-2.staging.example.com` as this FQHN. Replace this with appropriate value to suit your specific project.
 
-For authentification we need to create oAuth2 application on one of external providers.
+## Create OAuth2 Application
 
-As oAuth callback url use `https://portal.us-west-2.staging.example.com/oauth2/callback`
-Replace with value to suit your specific project.
+For authentification we'll need to create an OAuth2 application with one of the supported external providers.
 
-### GitHub Auth provider
+The OAuth2 callback URL should be `https://portal.us-west-2.staging.example.com/oauth2/callback`
 
-To create oAuth2 application you can follow one of this instructions:
-* [oAuth2Proxy with GitHub](https://github.com/bitly/oauth2_proxy#github-auth-provider)
-* [GitHub creating oAuth app](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
+Replace the FQHN to suit your specific project.
 
-As the result of creation oAuth2 app you need `Client ID` and `Client Secret`.
+### GitHub Auth Provider
 
-#### Create team
+To create OAuth2 application you can follow one of this instructions:
+
+1. [Create a GitHub OAuth2 App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) to obtain the need `Client ID` and `Client Secret`.
+2. [Configure OAuth2 Proxy with GitHub](https://github.com/bitly/oauth2_proxy#github-auth-provider) using the `Client ID` and `Client Secret` from the previous step.
+
+#### Create Team
 
 With GitHub Auth provider you need restrict access to the portal by membership users
 in the `github organization` and in the `team` belog to it.
@@ -92,8 +92,8 @@ chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID e76XXXXXXXXXXXXXX9a0
 chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET b24XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXa1c
 chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION example-org
 chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_TEAM staging-team
-chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_NAME $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_SECRET $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_NAME $(uuidgen)
+chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_SECRET $(uuidgen)
 chamber write kops PORTAL_TITLE "Staging Example"
 chamber write kops PORTAL_BRAND "Staging Cluster"
 chamber write kops PORTAL_BRAND_IMAGE_URL "https://raw.githubusercontent.com/cloudposse/helm-chart-scaffolding/master/logo.png"
@@ -104,12 +104,12 @@ chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=k
 
 These are some of the environment variables you may want to configure:
 
-* `PORTAL_OAUTH2_PROXY_REPLICA_COUNT` - Count of `oauth2proxy` pods
-* `PORTAL_OAUTH2_PROXY_IMAGE_TAG` - Version of [`oauth2proxy` image](https://hub.docker.com/r/cloudposse/oauth2-proxy/)
+* `PORTAL_OAUTH2_PROXY_REPLICA_COUNT` - Count of `oauth2-proxy` pods
+* `PORTAL_OAUTH2_PROXY_IMAGE_TAG` - Version of [`oauth2-proxy` image](https://hub.docker.com/r/cloudposse/oauth2-proxy/)
 * `PORTAL_DASHBOARD_REPLICA_COUNT`- Count of portal `dashboard` pods
 * `PORTAL_DASHBOARD_IMAGE_TAG` - Version of [`nginx` image](https://hub.docker.com/_/nginx/)
 
-And few environment variables useful for backends
+And few environment variables useful for backends:
 
 * [Kubernetes Dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
   - `PORTAL_BACKEND_K8S_DASHBOARD_NAME` - Menu item name for [kubernetes dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
@@ -131,7 +131,7 @@ Environment variables can be specified in the Geodesic Module's `Dockerfile` or 
 
 ### Install with Custom Helmfile
 
-Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+Add the following to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-platform-services/dashboard/examples/portal-helmfile.yaml" language="yaml" %}}
 {{% include-code-block  title="values-portal.yaml" file="kubernetes-platform-services/dashboard/examples/values-portal.yaml" language="yaml" %}}
@@ -140,5 +140,4 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 
 # Usage
 
-Open `https://portal.us-west-2.staging.example.com` process authorization on GitHub
-and use dashboards.
+Open `https://portal.us-west-2.staging.example.com` and authenticate using your GitHub credentials.
