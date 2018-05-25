@@ -30,8 +30,8 @@ config:
   title: "Staging Example"
   brand: "Staging Cluster"
   image:
-    favicon: https://d3r456tgct9p74.cloudfront.net/favicons/favicon.ico
-    url: https://d3r456tgct9p74.cloudfront.net/favicons/favicon-196x196.png
+    favicon: https://cloudposse.com/wp-content/uploads/sites/29/2018/04/favicon-57.png
+    url: https://cloudposse.com/wp-content/uploads/sites/29/2018/02/SquareLogo2.png
     width: 35
 
   ## Base portal hostname
