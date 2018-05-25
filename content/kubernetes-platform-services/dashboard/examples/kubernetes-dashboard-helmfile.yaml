@@ -1,0 +1,78 @@
+repositories:
+- name: "stable"
+  url: "https://kubernetes-charts.storage.googleapis.com"
+
+releases:
+- name: "kubernetes-dashboard"
+  namespace: "kube-system"
+  labels:
+    chart: "kubernetes-dashboard"
+    component: "monitoring"
+    namespace: "kube-system"
+    vendor: "kubernetes"
+    default: "true"
+  chart: "stable/kubernetes-dashboard"
+  version: "0.6.7"
+  set:
+    - name: "image.repository"
+      value: "k8s.gcr.io/kubernetes-dashboard-amd64"
+
+    - name: "image.tag"
+      value: 'v1.8.3'
+
+    - name: "image.pullPolicy"
+      value: "IfNotPresent"
+
+    - name: "resources.limits.cpu"
+      value: "100m"
+
+    - name: "resources.limits.memory"
+
+      value: "100Mi"
+
+    - name: "resources.requests.cpu"
+      value: "50m"
+
+    - name: "resources.requests.memory"
+      value: "50Mi"
+
+    - name: "rbac.create"
+      value: "false"
+
+    - name: "serviceAccount.create"
+      value: "true"
+
+- name: "heapster"
+  namespace: "kube-system"
+  labels:
+    chart: "heapster"
+    component: "monitoring"
+    namespace: "kube-system"
+    vendor: "kubernetes"
+    default: "true"
+  chart: "stable/heapster"
+  version: "0.2.10"
+  set:
+    - name: "replicaCount"
+      value: '1'
+
+    - name: "image.repository"
+      value: "k8s.gcr.io/heapster"
+
+    - name: "image.tag"
+      value: 'v1.3.0'
+
+    - name: "image.pullPolicy"
+      value: "IfNotPresent"
+
+    - name: "resources.limits.cpu"
+      value: "100m"
+
+    - name: "resources.limits.memory"
+      value: "256Mi"
+
+    - name: "resources.requests.cpu"
+      value: "50m"
+
+    - name: "resources.requests.memory"
+      value: "128Mi"

@@ -42,7 +42,7 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-helmfile.yaml" language="yaml" %}}
 
-Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).  We recommend passing the `--selector` argument so you can pinpoint a specific chart.
+Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
 # Usage
 
