@@ -1,6 +1,6 @@
 ---
 title: "Optimization and Tuning Procedures"
-description: "Infrastructure and application optimization and tuning to perform after running load tests"
+description: "Infrastructure and application optimization and tuning after running load tests"
 weight: 4
 ---
 

@@ -6,21 +6,21 @@ weight: 1
 
 We use [k6](https://github.com/loadimpact/k6) from [Load Impact](https://loadimpact.com/) for the following reasons:
 
-* Open-source, well documented (see [docs](https://docs.k6.io/docs)) and with simple command line usage
-* Allows to easily create load test scenarios based on virtual users and simulated traffic configurations
-* It's implemented in [Go](https://golang.org/), which has exelent support for concurrency - tests will not consume too much CPU and memory on the test machine even with a large number of concurrent sessions
-* Scenario scripting in `JavaScript` ES2015/ES6 - with support for local and remote modules
-* Testing as code: test logic and configuration options are both in JS for version control friendliness
-* Can be run from the command line with command & control through CLI
-* Has a built-in [HAR](http://www.softwareishard.com/blog/har-12-spec/) converter that will read HAR files and convert them to `k6` scripts that can then be executed (see [session recording](https://docs.k6.io/docs/session-recording-har-support))
-* Can be easily integrated into CI/CD pipelines
-* Provides a comprehensive set of built-in [metrics](https://docs.k6.io/docs/result-metrics)
-* Can stream metrics into [InfluxDB](https://www.influxdata.com/) for storage and visualization with [Grafana](https://grafana.com/) (see [influxdb-grafana](https://docs.k6.io/docs/influxdb-grafana))
+* **Open Source** - well documented (see [docs](https://docs.k6.io/docs)) and with simple command line usage
+* **Synthetic Testing** - allows to easily create load test scenarios based on virtual users and simulated traffic configurations
+* **Small Footprint** - implemented in [Go](https://golang.org/), which has excellent support for concurrency and small memory footprint
+* **JavaScript DSL** - scenario scripting in `JavaScript` ES2015/ES6 with support for local and remote modules
+* **Testing as Code** - test logic and configuration options are both in JS for version control friendliness
+* **Command-line Driven** - can be run from the command line with command & control through CLI
+* **Compatible with [HAR](http://www.softwareishard.com/blog/har-12-spec/)** - has a built-in [HAR](http://www.softwareishard.com/blog/har-12-spec/) converter that will read HAR files and convert them to `k6` scripts (see [session recording](https://docs.k6.io/docs/session-recording-har-support))
+* **Automated Testing** - can be easily integrated into CI/CD pipelines
+* **Comprehensive Metrics** - provides a comprehensive set of built-in [metrics](https://docs.k6.io/docs/result-metrics)
+* **Beautiful Visualizations** - can stream metrics into [InfluxDB](https://www.influxdata.com/) for storage and visualization with [Grafana](https://grafana.com/) (see [influxdb-grafana](https://docs.k6.io/docs/influxdb-grafana))
 
 Read more about k6's features and metrics:
 
-* https://docs.k6.io/docs/welcome#section-features
-* http://support.loadimpact.com/knowledgebase/articles/174121-how-do-i-interpret-test-results
+* [Features](https://docs.k6.io/docs/welcome#section-features)
+* [Interpret test results](http://support.loadimpact.com/knowledgebase/articles/174121-how-do-i-interpret-test-results)
 
 
 # Installation
@@ -55,7 +55,7 @@ Open `localhost:3000` to see `Grafana` running.
 
 By default, `Grafana` does not come with any pre-configured dashboards.
 
-We will install this dashboard to visualize `k6` metrics https://grafana.com/dashboards/2587
+We will install this dashboard to visualize `k6` metrics [dashboards-2587](https://grafana.com/dashboards/2587)
 
 Go to `+/Import` menu and paste `https://grafana.com/dashboards/2587` URL into the `Grafana.com Dashboard` field, then click `Load` button.
 Then select `myinfluxdb` from the `Select a InfluxDB data source` dropdown and click `Import`.

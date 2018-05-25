@@ -1,7 +1,7 @@
 ---
 title: "Load Testing"
 description: "Load testing best practices, workflows, scripts and scenarios"
-icon: "fa fa-shipping-fast"
+icon: "fa fa-chart-bar"
 ---
 This is a collection of best practices, workflows, scripts and scenarios that Cloud Posse uses for load and performance testing of websites and applications
 (in particular those deployed on Kubernetes clusters).

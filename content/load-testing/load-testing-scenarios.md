@@ -10,9 +10,14 @@ Consider updating them to reflect your environment.
 {{% /dialog %}}
 
 
-All our load testing scripts use the utility module `utils.js`, which provides a set of reusable structures and functions.
+## Utilities Module
 
-{{% include-github org="cloudposse" repo="load-testing" ref="master" file="scenarios/utils.js" title="Load Testing Utilities Module" language="js" type="code-block" %}}
+All our load testing scripts use the utilities module `utils.js` with reusable structures and functions.
+
+{{% include-github org="cloudposse" repo="load-testing" ref="master" file="scenarios/utils.js" title="Utilities Module" language="js" type="code-block" %}}
+
+
+## Establish Baseline
 
 To establish a baseline, first we'll load test the website's home page with one concurrent user.
 
@@ -22,7 +27,8 @@ We created this simple script to load test the home page of a website:
 
 {{% include-github org="cloudposse" repo="load-testing" ref="master" file="scenarios/scenario_01.js" title="Load Testing Scenario 1" language="js" type="code-block" %}}
 
-Run the test
+
+## Run the Tests
 
 ```sh
 docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 1 /scenarios/scenario_01.js
@@ -30,12 +36,9 @@ docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 1 /scenarios/scenar
 
 {{% include-code-block title="k6 run scenario_01 1 user 1 iteration" file="load-testing/examples/k6_run_scenario_01_1_user_1_iteration.txt" %}}
 
-
 Open the `Grafana` dashboard at `localhost:3000` to see the load test results
 
-
 ![Load Scenario 01 Grafana Dashboard](/assets/load-testing-grafana-scenario-01.png)
-
 
 We assume that we want the website to handle 50 concurrent users.
 
@@ -58,7 +61,9 @@ docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 50 -i 80 /scenarios
 {{% include-code-block title="k6 run scenario_01 50 users 80 iterations" file="load-testing/examples/k6_run_scenario_01_50_users_80_iterations.txt" %}}
 
 
-Check the Kubernetes pods CPU and memory consumption in the Kubernetes `Grafana` dashboard
+## Review Results
+
+Check the Kubernetes pods' CPU and memory consumption in the Kubernetes `Grafana` dashboard
 
 ![Load Scenario 01 Grafana Portal Dashboard](/assets/load-testing-portal-grafana-scenario-01.png)
 

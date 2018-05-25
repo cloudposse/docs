@@ -30,7 +30,7 @@ docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 50 -i 50 /scenarios
 
 {{% include-code-block title="k6 run scenario_all 50 users 50 iterations" file="load-testing/examples/k6_run_scenario_all_50_users_50_iterations.txt" %}}
 
-Check the Kubernetes pods CPU and memory consumption in the Kubernetes `Grafana` dashboard
+Check the Kubernetes pods' CPU and memory consumption in the Kubernetes `Grafana` dashboard
 
 ![Load Scenario 02 Grafana Portal Dashboard](/assets/load-testing-portal-grafana-scenario-02.png)
 
