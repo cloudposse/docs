@@ -1,6 +1,6 @@
 ---
 title: "External DNS"
-description: ""
+description: "The `external-dns` controller synchronizes exposed Kubernetes `Services` and `Ingresses` with DNS providers like Route53."
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
@@ -11,9 +11,9 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 * [Kube2IAM]({{< relref "kubernetes-backing-services/iam/kube2iam.md" >}})
 
-# Install
+# Installation
 
-## Provision IAM role
+## Provision IAM Role
 
 Create a file in `/conf/kops-aws-platform/external-dns.tf` with following content
 
@@ -54,7 +54,7 @@ From the Terraform outputs, copy the `kops_external_dns_role_name`into the ENV v
 
 In the example the iam role name is `kops_external_dns_role_name = example-staging-external-dns`.
 
-## Install chart
+## Install Chart
 
 You can install `external-dns` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
@@ -83,5 +83,3 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
-
-# Usage
