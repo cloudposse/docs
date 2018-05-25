@@ -25,14 +25,6 @@ backends:
     name: "Documentation"
     endpoint: "https://docs.cloudposse.com/docs"
     external: true
-  api:
-    name: "API Docs"
-    endpoint: "https://resources.staging.aws.popchest.io/api-docs/"
-    external: true
-  rabbit:
-    name: "RabbitMQ"
-    endpoint: "http://popchest-rabbitmq.popchest-staging:15672"
-    external: false
 
 config:
   title: "Staging Example"
