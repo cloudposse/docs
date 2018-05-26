@@ -24,7 +24,7 @@ This has been incorporated into our latest release of [geodesic]({{< relref "ann
 
 # Installation
 
-You can install `aws-vault` locally, allowing you to authorize to AWS and preform AWS cli actions.
+You can install `aws-vault` locally, allowing you to authorize to AWS and perform AWS cli actions.
 
 ## OSX Installation
 
@@ -90,7 +90,7 @@ This should open a browser and log you into the AWS console as the assumed role 
 
 # Using with Geodesic
 
-`aws-vault` is available in the geodesic shell - to start the shell, run:
+`aws-vault` is available in the geodesic shell. To start the shell, run:
 
 ```bash
 > $CLUSTER_NAME
@@ -114,7 +114,7 @@ Most problems stem from misconfiguration.
 
 If using `--server` mode, ensure the following credentials are not exported:
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
-Running in `--server` mode binds to `169.254.169.254` in order to mock the AWS metadata server, you can only run one per host machine. More info can be found [here]({{< relref "/faq/aws-vault-error-failed-to-start-credential-server" >}}).
+Since running `aws-vault` using `--server` binds to the `169.254.169.254` local ip address to mock the AWS metadata server, you can run only one process per host machine. More info can be found [here]({{< relref "/faq/aws-vault-error-failed-to-start-credential-server" >}}).
 {{% /dialog %}}
 
 - `AWS_ACCESS_KEY_ID`

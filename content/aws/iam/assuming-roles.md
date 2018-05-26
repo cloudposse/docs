@@ -9,14 +9,15 @@ tags:
 ---
 
 # Assume Role via AWS Web Console
-
-**NOTE**: Due to the security implications, IAM policies are set up to **only** allow the root AWS account to assume roles into other accounts.
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Due to the security implications, IAM policies are set up by default to **only** allow the root AWS account to assume roles into other accounts.
+{{% /dialog %}}
 
 1. Log into the AWS root acccount
 {{< img src="/assets/aws-root-login.png" title="Example AWS root login" >}}
 
 2. Click on `user@example.com @ example-root-aws` drop down at the top of the console and select `Switch Role`
-  - Enter the AWS Account ID of the account to assume in `Account` field
+  - Enter the AWS account id of the member account in the `Account` field
   - Use `OrganizationAccountAccessRole` as the `Role`
   - (Optional) Pick `Display Name` and choose a `Color` for the role
 
