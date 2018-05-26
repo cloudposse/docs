@@ -1,6 +1,6 @@
 ---
-title: "How to rollback app to previous version"
-description: "How to rollback to previous version."
+title: "How do we perform rollbacks?"
+description: "Learn how to rollback to previous releases of helm apps."
 tags:
 - helm
 - geodesic
@@ -14,10 +14,11 @@ How to rollback application to previous version?
 
 # Answer
 
-[Helm]({{< relref "tools/helm.md" >}}) release have revisions that is list of
-previously deployed versions of the release.
+[Helm]({{< relref "tools/helm.md" >}}) handles rollbacks out-of-the-box. Everytime a helm replease is performed, it creates a new revision. By pinpointing a specific helm revision and performing a rollback, the previous version will be redeployed. 
 
-## Rollback with CLI
+There are a couple ways we recommend performing rollbacks.
+
+## Rollback using Helm Client
 
 ###  Start the Geodesic Shell
 
@@ -34,7 +35,7 @@ Then login to AWS by running `assume-role`:
 
 ### Configure `kubectl` and `helm`
 
-When you run into the Geodesic module shell you need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` and `helm` to authenticate with the cluster.
+When you start the Geodesic shell, you will need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` and `helm` to authenticate with the cluster.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Export kops config" %}}
 ```
@@ -43,32 +44,41 @@ kops has set your kubectl context to us-west-2.staging.example.com
 ```
 {{% /dialog %}}
 
-### Rollback helm release
+### Rollback Helm Release
 
-Run
+Run the following commands to identify the helm release and corresponding revision that you want to rollback to. Note, we're using `$RELEASE_NAME` and `$REVISION_NUMBER` to symbolically represent the values you should enter in their place.
+
 ```
 sh-3.2 $ helm list
-sh-3.2 $ helm history {release_name}
-sh-3.2 $ helm rollback {release_name} {revision_number}
+sh-3.2 $ helm history $RELEASE_NAME
+sh-3.2 $ helm rollback $RELEASE_NAME $REVISION_NUMBER
 ```
 
 {{% include-code-block title="Helm rollback" file="faq/examples/helm-rollback.txt" %}}
 
-## Rollback with UI
+## Rollback using Codefresh UI
 
-[Codefresh]({{< relref "release-engineering/codefresh.md" >}}) have nice integration
-with Kubernetes and Helm and have UI that allow to rollback releases
+The other option is to use the Codefresh UI to perfom the rollback. The benefit with this is no console access is required.
 
-* Open [Releases](https://g.codefresh.io/helm/releases/releases/) page
-{{< img src="/assets/how-to-do-rollback-534718a5.png" title="Releases" >}}
-* Find required release and click on it
-{{< img src="/assets/how-to-do-rollback-f30ef835.png" title="Release page" >}}
-* Open release history tab
-{{< img src="/assets/how-to-do-rollback-bb9fc21b.png" title="Release history" >}}
-* Click on rollback button for required revision
-{{< img src="/assets/how-to-do-rollback-726fd44e.png" title="Rollback to revision" >}}
-* Confirm your will to do rollback
-{{< img src="/assets/how-to-do-rollback-110761f7.png" title="Confirm rollback" >}}
-* Wait rollback finished
-* Refresh page and check new revision appears
-{{< img src="/assets/how-to-do-rollback-c23f0d87.png" title="New release appears" >}}
+[Codefresh]({{< relref "release-engineering/codefresh.md" >}}) provides native integration
+with Kubernetes and Helm. Here's an example of how you can use their UI to perform a rollback.
+
+1. Open the [Helm Releases](https://g.codefresh.io/helm/releases/releases/) page
+{{< img src="/assets/how-to-do-rollback-534718a5.png" title="List Releases" >}}
+
+2. Find the release you want to update and click on it
+{{< img src="/assets/how-to-do-rollback-f30ef835.png" title="View Release" >}}
+
+3. Select the release "History" tab
+{{< img src="/assets/how-to-do-rollback-bb9fc21b.png" title="Release History" >}}
+
+4. Click on rollback button next to the corresponding revision you wish to restore
+{{< img src="/assets/how-to-do-rollback-726fd44e.png" title="Rollback to Revision" >}}
+
+5. Confirm the rollback
+{{< img src="/assets/how-to-do-rollback-110761f7.png" title="Confirm Rollback" >}}
+
+6. Wait until rollback finishes
+
+7. Refresh page and check that the new revision appears
+{{< img src="/assets/how-to-do-rollback-c23f0d87.png" title="Rollback Completed" >}}
