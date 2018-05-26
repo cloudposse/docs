@@ -364,6 +364,12 @@ section > h2 {
   font-weight: 300;
 }
 
+section > h3 {
+  color: #999;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
 
 .subnav .searchbox .fa {
   color: #888;
@@ -410,6 +416,7 @@ section > h2 {
   padding-left: 20px;
   padding-bottom: 20px;
   color: #999;
+  box-sizing: border-box;
 }
 
 #search-results .ais-stats {
@@ -528,7 +535,6 @@ section > h2 {
 
 .landing-top {
   min-height: 293px;
-  height: 25vh;
   padding: 60px 50px;
 }
 
@@ -854,31 +860,36 @@ div.calendly-badge-widget {
 }
 
 .homepage {
-  padding-left: 10%;
-  padding-right: 0;
   width: 85%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.homepage * {
+  box-sizing: border-box;
 }
 
 .homepage > .category {
-  display: inline-block;
-  float: left;
-  width: 30%;
-  min-width: 320px;
-  max-width: 512px;
-  height: 200px;
-  overflow-y: hidden;
-  margin-right: 35px;
-}
-
-.homepage > .category:hover, .homepage > .category:active, .homepage > .category:focus {
-  overflow-y: auto;
+  flex: 0 0 33.33%;
+  max-height: 250px;
+  display: flex;
+  padding: 20px;
+  margin: 0;
+  justify-content: end;
 }
 
 .homepage ul {
   display: block;
   list-style: none;
+  width: 100%;
+}
+
+.homepage > .category > li {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
   width: 100%;
 }
 
@@ -892,6 +903,10 @@ div.calendly-badge-widget {
   font-size: 20px;
   text-transform: none;
   display: inline-block;
+}
+
+.homepage > .category > li > ul {
+  overflow-y: scroll;
 }
 
 .homepage .view-all {
