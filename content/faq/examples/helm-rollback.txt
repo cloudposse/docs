@@ -1,0 +1,53 @@
+✅   (example-staging-admin) ~ ➤  helm list
+NAME                    REVISION        UPDATED                STATUS            CHART             NAMESPACE
+catalogue-master           21     Fri May 25 14:36:47 2018    DEPLOYED   catalogue-0.4.0-master   demo-master
+frontend-master            20     Wed Mar 14 03:23:05 2018    DEPLOYED   frontend-0.3.12-master   demo-master
+ ⧉  cluster-4.cloudposse.com
+✅   (example-staging-admin) ~ ➤  helm history catalogue-master
+ REVISION        UPDATED                         STATUS          CHART                   DESCRIPTION
+1               Fri Jan 19 05:58:39 2018        SUPERSEDED      catalogue-0.3.5-master  Install complete
+2               Tue Jan 23 20:17:47 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+3               Thu Jan 25 13:00:21 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+4               Thu Jan 25 13:18:30 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+5               Thu Jan 25 13:22:13 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+6               Fri Feb  9 03:50:43 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+7               Fri Feb  9 18:54:30 2018        SUPERSEDED      catalogue-0.3.6-master  Upgrade complete
+8               Sat Feb 17 02:24:01 2018        SUPERSEDED      catalogue-0.3.6-master  Upgrade complete
+9               Fri Mar  9 20:50:52 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+10              Fri Mar  9 20:54:59 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+11              Mon Mar 12 06:08:16 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+12              Mon Mar 12 15:36:25 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+13              Mon Mar 12 19:50:52 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+14              Wed Mar 14 04:35:19 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+15              Wed Mar 14 04:47:10 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+16              Wed Mar 14 04:54:18 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+17              Wed Mar 14 14:50:30 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+18              Wed Mar 14 15:02:58 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+19              Fri Mar 16 01:02:26 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+20              Fri May 25 08:36:53 2018        SUPERSEDED      catalogue-0.4.0-master  Upgrade complete
+21              Fri May 25 14:36:47 2018        DEPLOYED        catalogue-0.4.0-master  Upgrade complete
+✅   (example-staging-admin) ~ ➤  helm rollback catalogue-master 19
+Rollback was a success! Happy Helming!
+REVISION        UPDATED                         STATUS          CHART                   DESCRIPTION
+1               Fri Jan 19 05:58:39 2018        SUPERSEDED      catalogue-0.3.5-master  Install complete
+2               Tue Jan 23 20:17:47 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+3               Thu Jan 25 13:00:21 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+4               Thu Jan 25 13:18:30 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+5               Thu Jan 25 13:22:13 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+6               Fri Feb  9 03:50:43 2018        SUPERSEDED      catalogue-0.3.5-master  Upgrade complete
+7               Fri Feb  9 18:54:30 2018        SUPERSEDED      catalogue-0.3.6-master  Upgrade complete
+8               Sat Feb 17 02:24:01 2018        SUPERSEDED      catalogue-0.3.6-master  Upgrade complete
+9               Fri Mar  9 20:50:52 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+10              Fri Mar  9 20:54:59 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+11              Mon Mar 12 06:08:16 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+12              Mon Mar 12 15:36:25 2018        SUPERSEDED      catalogue-0.3.7-master  Upgrade complete
+13              Mon Mar 12 19:50:52 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+14              Wed Mar 14 04:35:19 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+15              Wed Mar 14 04:47:10 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+16              Wed Mar 14 04:54:18 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+17              Wed Mar 14 14:50:30 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+18              Wed Mar 14 15:02:58 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+19              Fri Mar 16 01:02:26 2018        SUPERSEDED      catalogue-0.3.9-master  Upgrade complete
+20              Fri May 25 08:36:53 2018        SUPERSEDED      catalogue-0.4.0-master  Upgrade complete
+21              Fri May 25 14:36:47 2018        SUPERSEDED      catalogue-0.4.0-master  Upgrade complete
+22              Fri May 25 15:42:00 2018        DEPLOYED        catalogue-0.3.9-master  Rollback to 19
