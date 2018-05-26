@@ -1,0 +1,13 @@
+chamber write kops PORTAL_HOSTNAME portal.us-west-2.staging.example.com
+chamber write kops PORTAL_INGRESS ingress.us-west-2.staging.example.com
+chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID e76XXXXXXXXXXXXXX9a0
+chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET b24XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXa1c
+chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION example-org
+chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_TEAM staging-team
+chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_NAME $(uuidgen)
+chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_SECRET $(uuidgen)
+chamber write kops PORTAL_TITLE "Staging Example"
+chamber write kops PORTAL_BRAND "Staging Cluster"
+chamber write kops PORTAL_BRAND_IMAGE_URL "https://cloudposse.com/wp-content/uploads/sites/29/2018/02/SquareLogo2.png"
+chamber write kops PORTAL_BRAND_IMAGE_FAVICON_URL "https://cloudposse.com/wp-content/uploads/sites/29/2018/04/favicon-57.png"
+chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=monitoring,chart=portal sync

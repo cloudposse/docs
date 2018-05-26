@@ -1,0 +1,80 @@
+---
+## Internal backends exposed with portal
+backends:
+  dashboard:
+    ## Name for menu item
+    name: "Kubernetes"
+    ## Endpoint
+    endpoint: "https://ui-kubernetes-dashboard.kube-system:443"
+    ## Set to true if endpoint is external (would be redirect instead of proxy)
+    external: false
+  grafana:
+    name: "Grafana"
+    endpoint: "http://prom-grafana.monitoring:80"
+    external: false
+  alerts:
+    name: "Alerts"
+    endpoint: "http://prom-alertmanager.monitoring:9093"
+    external: false
+  prometheus:
+    name: "Prometheus"
+    endpoint: "http://prom-prometheus.monitoring:9090"
+    external: false
+  docs:
+    name: "Documentation"
+    endpoint: "https://docs.cloudposse.com/docs"
+    external: true
+
+config:
+  title: "Staging Example"
+  brand: "Staging Cluster"
+  image:
+    favicon: https://cloudposse.com/wp-content/uploads/sites/29/2018/04/favicon-57.png
+    url: https://cloudposse.com/wp-content/uploads/sites/29/2018/02/SquareLogo2.png
+    width: 35
+
+  ## Base portal hostname
+  basehost: portal.us-west-2.staging.example.com
+
+dashboard:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 5m
+      memory: 16Mi
+    requests:
+      cpu: 2m
+      memory: 8Mi
+
+proxy:
+  enabled: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 5m
+      memory: 64Mi
+    requests:
+      cpu: 2m
+      memory: 32Mi
+
+oauth2-proxy:
+  app:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 10m
+      memory: 16Mi
+    requests:
+      cpu: 5m
+      memory: 8Mi
+
+ingress:
+  enabled: true
+  tls:
+    enabled: true
+  dns:
+    enabled: false
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    external-dns.alpha.kubernetes.io/target: "internal.us-west-2.staging.example.com"
