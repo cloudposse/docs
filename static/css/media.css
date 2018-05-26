@@ -37,12 +37,17 @@
     padding-left: 0;
     padding-right: 0;
   }
+
   .nav-select {
     display: none;
   }
+
+  .homepage > .category {
+    flex: 0 0 50%;
+  }
 }
 
-/* 
+/*
  * Device = Tablets, Ipads (landscape)
  * Screen = B/w 768px to 1024px
 */
@@ -91,9 +96,7 @@
   }
 
   .landing-top {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    height: 52vh;
+    padding: 20px;
   }
 
   .search-bar {
@@ -106,11 +109,9 @@
   }
 
   .homepage {
-    padding-left: 0;
-  }
-
-  .homepage > .category {
-    height: auto;
+    padding: 0;
+    width: 100%;
+    display: block;
   }
 
   header nav.shortcuts {
@@ -135,13 +136,16 @@
   .nav-select select {
     margin-bottom: 0;
     display: inline-block;
-    
+  }
+
+  .homepage > .category {
+    max-height: none;
   }
 }
 
 /* iPhone 6, 7, & 8 in portrait */
-@media only screen 
-  and (min-device-width : 375px) 
+@media only screen
+  and (min-device-width : 375px)
   and (max-device-width : 667px) {
 
   .landing-top {
