@@ -16,7 +16,7 @@ Run following command
 ```
 helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
 ```
-This environment variables can be useful for configure:
+These environment variables are used to configure:
 
 * `NGINX_INGRESS_REPLICA_COUNT` - Count of nginx ingress pods
 * `NGINX_INGRESS_IMAGE_TAG` - Version of [nginx ingress image](https://quay.io/kubernetes-ingress-controller/nginx-ingress-controller)

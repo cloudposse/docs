@@ -1,0 +1,26 @@
+execution: local
+     output: influxdb=http://influxdb:8086/k6 (http://influxdb:8086)
+     script: /scenarios/scenario_01.js
+
+    duration: -,   iterations: 50
+         vus: 50, max: 50
+
+    done [==========================================================] 50 / 50
+
+    ✓ status is 200
+
+    checks.....................: 100.00% ✓ 50   ✗ 0
+    data_received..............: 1.1 MB  900 kB/s
+    data_sent..................: 32 kB   26 kB/s
+    http_req_blocked...........: avg=508.53ms min=367.91ms med=514.28ms max=626.1ms  p(90)=535.23ms p(95)=580.65ms
+    http_req_connecting........: avg=118.73ms min=107.93ms med=116.3ms  max=128.63ms p(90)=127.72ms p(95)=128.27ms
+    http_req_duration..........: avg=352.61ms min=242.46ms med=289.54ms max=693.7ms  p(90)=586.94ms p(95)=677.55ms
+    http_req_receiving.........: avg=142.61ms min=106.13ms med=112.35ms max=325.64ms p(90)=221.21ms p(95)=243.53ms
+    http_req_sending...........: avg=302.04µs min=96µs     med=216.3µs  max=1.47ms   p(90)=450.41µs p(95)=722.01µs
+    http_req_tls_handshaking...: avg=384.43ms min=255.68ms med=392.95ms max=490.64ms p(90)=400.86ms p(95)=445.49ms
+    http_req_waiting...........: avg=209.7ms  min=121.49ms med=178.65ms max=465.43ms p(90)=372.73ms p(95)=449.88ms
+    http_reqs..................: 50      41.106944/s
+    iteration_duration.........: avg=861.49ms min=613.3ms  med=821.16ms max=1.21s    p(90)=1.1s     p(95)=1.19s
+    iterations.................: 50      41.106944/s
+    vus........................: 50      min=50 max=50
+    vus_max....................: 50      min=50 max=50

@@ -1,5 +1,5 @@
 ---
-title: "Secrets Managment"
+title: "Secrets Management"
 description: "Secrets management services allow to put all secrets in one place and protect it."
 ---
 Secrets management services allow to put all secrets in one place and protect it.

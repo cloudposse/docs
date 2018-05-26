@@ -1,0 +1,33 @@
+repositories:
+- name: "stable"
+  url: "https://kubernetes-charts.storage.googleapis.com"
+
+releases:
+- name: "dns"
+  namespace: "kube-system"
+  labels:
+    chart: "external-dns"
+    component: "ingress"
+    namespace: "kube-system"
+    vendor: "kubernetes-incubator"
+    default: "true"
+  chart: "stable/external-dns"
+  version: "0.5.4"
+  set:
+    - name: "extraEnv.EXTERNAL_DNS_SOURCE"
+      value: "service\ningress"
+
+    - name: "txtOwnerId"
+      value: 'us-west-2.staging.example.com'
+
+    - name: "txtPrefix"
+      value: '11591833-F9CE-407C-8519-35A947DB1D87-'
+
+    - name: "publishInternalServices"
+      value: "true"
+
+    - name: "provider"
+      value: "aws"
+
+    - name: "podAnnotations.iam\\.amazonaws\\.com/role"
+      value: 'example-staging-external-dns'
