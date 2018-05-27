@@ -15,7 +15,8 @@ We recorded and prepared a sample scenario to test the complete user flow on a w
 Run it with a single user
 
 ```sh
-docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 1 -i 1 /scenarios/scenario_all.js
+docker-compose run -v $PWD/scenarios:/scenarios k6 run \
+    --vus 1 -i 1 /scenarios/scenario_all.js
 ```
 
 {{% include-code-block title="k6 run scenario_all 1 user 1 iteration" file="load-testing/examples/k6_run_scenario_all_1_user_1_iteration.txt" %}}
@@ -25,7 +26,8 @@ The entire process took 21 seconds.
 Now run it with 50 concurrent users
 
 ```sh
-docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 50 -i 50 /scenarios/scenario_all.js
+docker-compose run -v $PWD/scenarios:/scenarios k6 run \
+    --vus 50 -i 50 /scenarios/scenario_all.js
 ```
 
 {{% include-code-block title="k6 run scenario_all 50 users 50 iterations" file="load-testing/examples/k6_run_scenario_all_50_users_50_iterations.txt" %}}
