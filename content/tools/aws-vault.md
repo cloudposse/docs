@@ -1,12 +1,12 @@
 ---
 title: AWS Vault
-description: "The `aws-vault` is a command line tool for securely storing and accessing encrypted AWS credentials for local development environments. It makes it extremely easy to work with IAM assumed roles across multiple AWS organizations."
+description: "The `aws-vault` command line tool is a utility for securely storing and accessing encrypted AWS credentials for local development environments. It makes it extremely easy to work with IAM assumed roles across multiple AWS organizations."
 ---
 
-The [`aws-vault`](https://github.com/99designs/aws-vault) by [99 Designs](https://99designs.com/) is a vault for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
+The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
 
 {{% dialog type="info" icon="fa-info-circle" title="Info" %}}
-The `aws-vault` has no relationship to the HashiCorp Vault.
+`aws-vault` has no relationship to the HashiCorp Vault.
 {{% /dialog %}}
 
 Features:
@@ -24,7 +24,7 @@ This has been incorporated into our latest release of [geodesic]({{< relref "ann
 
 # Installation
 
-You can install AWS Vault on local allow you to authorize on aws and preform aws cli requrests from host computer
+You can install `aws-vault` locally, allowing you to authorize to AWS and perform AWS cli actions.
 
 ## OSX Installation
 
@@ -42,23 +42,6 @@ sudo chmod 755 /usr/local/bin/aws-vault
 ```
 
 ## Local Configuration
-
-Setup your `~/.aws/config` by adding a profile entry for each AWS account.
-
-Here's an example of how we do it:
-
-```
-[profile cloudposse-dev-admin]
-region=us-west-2
-role_arn=arn:aws:iam::29013231371:role/OrganizationAccountAccessRole
-mfa_serial = arn:aws:iam::313021614177:mfa/erik@cloudposse.com
-source_profile=cloudposse
-```
-
-{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
-Do not define the source profile in `~/.aws/credentials`; we're going to use `aws-vault add` for that.
-{{% /dialog %}}
-
 We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](/geodesic) sessions.
 
 Add the following to your `~/.bashrc`:
@@ -69,9 +52,45 @@ export AWS_VAULT_BACKEND="file"
 
 Then `source ~/.bashrc` to update your current session.
 
+1. Generate IAM Access Key ID/Secret on your AWS root account via IAM management page in the AWS Console.
+
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Do not define the source profile in `~/.aws/credentials`; we're going to use `aws-vault add` for that.
+{{% /dialog %}}
+
+2. Using the IAM Access Key ID/Secret generated in Step 1, add the `source_profile`:
+```bash
+$ aws-vault add example
+```
+
+3. Add the `source_profile` created in Step 2 to your `~/.aws/config`.
+```
+[profile example]
+region=us-west-2
+```
+
+4. Setup your `~/.aws/config` by adding a profile entry for each AWS account:
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Remember to replace the `$aws_account_id`s with your account ids and `user@example.com` with your IAM username below. We recommend using email addresses for all IAM user accounts associated with human users.
+{{% /dialog %}}
+```
+[profile example-staging-admin]
+region=us-west-2
+role_arn=arn:aws:iam::$aws_account_id_for_staging:role/OrganizationAccountAccessRole
+mfa_serial=arn:aws:iam::$aws_account_id_for_root:mfa/user@example.com
+source_profile=example
+```
+
+5. Test that it is all set up properly:
+```
+$ aws-vault login example-staging-admin
+```
+
+This should open a browser and log you into the AWS console as the assumed role `example-staging-admin`.
+
 # Using with Geodesic
 
-AWS Vault available in the geodesic shell - just connect to that shell by running
+`aws-vault` is available in the geodesic shell. To start the shell, run:
 
 ```bash
 > $CLUSTER_NAME
@@ -85,20 +104,25 @@ Now we are ready to configure your AWS credentials. To add your AWS credentials 
 aws-vault add example
 ```
 
-# Trouble Shooting
+# Troubleshooting
 
-Most problems are related to your environment settings.
+Most problems stem from misconfiguration.
 
-- Make sure you do not define a `[default]` profile in `~/.aws/credentials` or `[profile default]` in `~/aws/config`
-- Make sure `AWS_SDK_LOAD_CONFIG` is not set
-- Make sure `AWS_SHARED_CREDENTIALS_FILE` is not set
+- **Do not** define a `[default]` profile in `~/.aws/credentials` or `[profile default]` in `~/aws/config`
+- **Do not** set `AWS_SDK_LOAD_CONFIG`
+- **Do not** set `AWS_SHARED_CREDENTIALS_FILE`
 
-If using `--server` mode, make sure you do not have credentials exported:
+If using `--server` mode, ensure the following credentials are not exported:
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Since running `aws-vault` using `--server` binds to the `169.254.169.254` local ip address to mock the AWS metadata server, you can run only one process per host machine. More info can be found [here]({{< relref "/faq/aws-vault-error-failed-to-start-credential-server" >}}).
+{{% /dialog %}}
 
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_SECURITY_TOKEN`
-- `AWS_SESSION_TOKEN` (Use `unset` to delete them from your environment and make sure they aren't expored in your `~/.bashrc` or `~/.profile`)
+- `AWS_SESSION_TOKEN`
+
+Use `unset` to delete each of the above variables from your environment and ensure they aren't exported in your `~/.bashrc` or `~/.profile`.
 
 # References
 
