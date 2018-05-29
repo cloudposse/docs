@@ -15,7 +15,13 @@ First, in the solution `Dockerfile`, update `NODE_MACHINE_TYPE` to reflect the d
 ENV NODE_MACHINE_TYPE="t2.2xlarge"
 ```
 
-Then, ensure that the `kubectl` context has been set. In `geodesic` shell run:
+Rebuild the `geodesic` shell by running
+
+```sh
+make docker/build
+```
+
+Then, ensure that the `kubectl` context has been set. In `geodesic` shell run
 
 ```sh
 kops export kubecfg $KOPS_CLUSTER_NAME
@@ -31,13 +37,13 @@ kops upgrade cluster --yes
 The `--yes` option immediately applies the changes. Not specifying the `--yes` option shows only the changes that are applied.
 {{% /dialog %}}
 
-Update the Kubernetes state store to match the cluster state. This can be done using the following command:
+Update the Kubernetes state store to match the cluster state. This can be done using the following command
 
 ```sh
 kops update cluster --yes
 ```
 
-Lastly, perform a rolling update for all cluster nodes using the kops `rolling-update` command:
+Lastly, perform a rolling update for all cluster nodes using the kops `rolling-update` command
 
 ```sh
 kops rolling-update cluster --yes
