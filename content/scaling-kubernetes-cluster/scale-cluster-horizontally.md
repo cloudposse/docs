@@ -4,20 +4,25 @@ description: "Procedures to scale Kubernetes cluster horizontally by adding node
 weight: 1
 ---
 
+{{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
+This assumes you've followed the [Geodesic Module Usage]({{< relref "geodesic/module/with-kops.md" >}}) guide which covers all the scaffolding necessary to get started.
+{{% /dialog %}}
+
 Kops cluster can be scaled horizontally by adding EC2 instances for worker nodes. 
 
 Kops supports rolling cluster upgrades where the master and worker nodes are upgraded one by one.
 
-First, in the solution `Dockerfile`, increase `NODE_MAX_SIZE` and `NODE_MIN_SIZE` to reflect the desired number of worker nodes
+First, in the module's `Dockerfile`, increase `NODE_MAX_SIZE` and `NODE_MIN_SIZE` to reflect the desired number of worker nodes
 
+{{% dialog type="code-block" icon="fa fa-code" title="Dockerfile Kops config" %}}
 ```dockerfile
-# kops config
 ENV BASTION_MACHINE_TYPE="t2.medium"
 ENV MASTER_MACHINE_TYPE="t2.large"
 ENV NODE_MACHINE_TYPE="t2.large"
 ENV NODE_MAX_SIZE="3"
 ENV NODE_MIN_SIZE="3"
 ```
+{{% /dialog %}}
 
 Rebuild the `geodesic` shell by running
 
@@ -57,16 +62,18 @@ kops rolling-update cluster --yes
 Using `--yes` updates all nodes in the cluster, first master and then worker.
 There is a 5-minute delay between restarting master nodes, and a 2-minute delay between restarting nodes. 
 These values can be altered using `--master-interval` and `--node-interval` options, respectively.
-{{% /dialog %}}
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 Only the worker nodes may be updated by using the [`--instance-group`](https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md) node option.
 {{% /dialog %}}
 
-Further reading:
+{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
+For more information, check out the following links:
 
-* https://aws.amazon.com/blogs/compute/kubernetes-clusters-aws-kops/
-* https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md
-* https://kubernetes.io/docs/getting-started-guides/kops/
-* https://kubernetes.io/docs/tasks/administer-cluster/dns-horizontal-autoscaling/
-* https://medium.com/tailor-tech/production-grade-kubernetes-on-aws-3-lessons-learned-scaling-a-cluster-a421dfe786dd
+* [Manage Kubernetes Clusters on AWS Using Kops](https://aws.amazon.com/blogs/compute/kubernetes-clusters-aws-kops/)
+
+* [Kops Instance Groups](https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md)
+
+* [Installing Kubernetes on AWS with kops](https://kubernetes.io/docs/getting-started-guides/kops/)
+
+* [Lessons learned scaling a cluster](https://medium.com/tailor-tech/production-grade-kubernetes-on-aws-3-lessons-learned-scaling-a-cluster-a421dfe786dd)
+{{% /dialog %}}

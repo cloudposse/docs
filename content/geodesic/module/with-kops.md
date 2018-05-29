@@ -19,7 +19,7 @@ Provisioning a `kops` cluster takes three steps:
 
 ## Provision the State Backend
 
-### Config environment variables
+### Configure environment variables
 
 Update the environment variables in the module's `Dockerfile`:
 
@@ -39,7 +39,7 @@ Replace with values to suit your specific project. Note, the variables correspon
 
 [Rebuild](/geodesic/module/) the module
 ```shell
-> make build
+> make docker/build
 ```
 
 ### Add kops state terraform module
@@ -83,7 +83,7 @@ The public and private SSH keys are created and stored automatically in the encr
 
 ### Configure environment variables
 
-Add to module `Dockerfile` environment variable
+Add to module's `Dockerfile` the following environment variables
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
@@ -109,7 +109,7 @@ Replace with values to suit your specific project.
 
 Geodesic creates a `kops` cluster from a manifest.
 [Kops manifest](https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md) is yaml file that describe resources that determinates Kubernetes cluster.
-`Geodesic` generates the manifest from template that support placehoders with environment variables.
+`Geodesic` generates the manifest from template that support placeholders with environment variables.
 The manifest template (gomplate) is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
 and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
 
@@ -138,7 +138,7 @@ Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availabilit
 > make build
 ```
 
-When manifiest configured we can apply it with kops to spin up or update the cluster
+When manifest configured we can apply it with kops to spin up or update the cluster
 
 ## Launch the cluster
 

@@ -14,5 +14,5 @@ Here are some optimization and tuning steps that we usually perform after runnin
 * [Scale Nginx Ingress pods horizontally by increasing the replica count]({{< relref "scaling-kubernetes-cluster/scale-nginx-ingress-horizontally.md" >}})
 * [Scale Nginx Ingress vertically by increasing CPU and Memory limits]({{< relref "scaling-kubernetes-cluster/scale-nginx-ingress-vertically.md" >}})
 * [Tune Nginx parameters (e.g timeouts, queues)]({{< relref "scaling-kubernetes-cluster/tune-nginx.md" >}})
-* [Optimize application/web server parameters]({{< relref "scaling-kubernetes-cluster/optimize-web-server.md" >}}) (e.g. concurrency, threads and processes, thread pools, timeouts, memory limits)
+* Optimize application and web servers' parameters (e.g. concurrency, threads and processes, thread pools, timeouts, memory limits)
 * [Optimize database queries and indexes]({{< relref "scaling-kubernetes-cluster/optimize-database-indexes.md" >}})

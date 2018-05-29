@@ -4,16 +4,21 @@ description: "Procedures to scale Kubernetes cluster vertically by changing EC2 
 weight: 2
 ---
 
+{{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
+This assumes you've followed the [Geodesic Module Usage]({{< relref "geodesic/module/with-kops.md" >}}) guide which covers all the scaffolding necessary to get started.
+{{% /dialog %}}
+
 Kops cluster can be scaled vertically by changing EC2 instances type for worker nodes. 
 
 Kops supports rolling cluster upgrades where the master and worker nodes are upgraded one by one.
 
-First, in the solution `Dockerfile`, update `NODE_MACHINE_TYPE` to reflect the desired EC2 instance type of worker nodes
+First, in the module's `Dockerfile`, update `NODE_MACHINE_TYPE` to reflect the desired EC2 instance type of worker nodes
 
+{{% dialog type="code-block" icon="fa fa-code" title="Dockerfile Kops config" %}}
 ```dockerfile
-# kops config
-ENV NODE_MACHINE_TYPE="t2.2xlarge"
+ENV NODE_MACHINE_TYPE="c4.2xlarge"
 ```
+{{% /dialog %}}
 
 Rebuild the `geodesic` shell by running
 
@@ -53,8 +58,6 @@ kops rolling-update cluster --yes
 Using `--yes` updates all nodes in the cluster, first master and then worker.
 There is a 5-minute delay between restarting master nodes, and a 2-minute delay between restarting nodes. 
 These values can be altered using `--master-interval` and `--node-interval` options, respectively.
-{{% /dialog %}}
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 Only the worker nodes may be updated by using the [`--instance-group`](https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md) node option.
 {{% /dialog %}}

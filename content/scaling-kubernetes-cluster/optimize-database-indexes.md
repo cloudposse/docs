@@ -1,7 +1,7 @@
 ---
-title: "Optimize database queries and indexes"
+title: "Optimize database indexes"
 description: "Rules and best practices for optimizing database queries and indexes"
-weight: 9
+weight: 8
 ---
 
 The main rule is that with indexes, there are no absolute rules. Indexing is like a math problem. That said, rules help:
