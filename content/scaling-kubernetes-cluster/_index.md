@@ -1,12 +1,9 @@
 ---
-title: "Optimization and Tuning Procedures"
-description: "Infrastructure and application optimization and tuning after running load tests"
-weight: 4
+title: "Scaling Kubernetes Cluster"
+description: "Commands and procedures to scale and optimize Kubernetes cluster and its components"
+icon: "fa fa-chart-bar"
 ---
 
-Here are some optimization and tuning steps that we usually perform after running load tests:
-
-* Put all static assets behind a CDN (e.g. AWS CloudFront), do not overload the Kubernetes pods with serving the static assets (in many cases, this is one of the main reasons of poor website performance)
 * [Scale Kubernetes cluster horizontally by adding nodes]({{< relref "scaling-kubernetes-cluster/scale-cluster-horizontally.md" >}})
 * [Scale Kubernetes cluster vertically by using different types of EC2 instances]({{< relref "scaling-kubernetes-cluster/scale-cluster-vertically.md" >}})
 * [Scale Kubernetes pods horizontally by increasing the replica count]({{< relref "scaling-kubernetes-cluster/scale-pods-horizontally.md" >}})
