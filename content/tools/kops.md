@@ -28,6 +28,15 @@ RUN make -C /packages/install kops KOPS_VERSION=1.9.0
 
 Find the latest release of kops [here](https://github.com/kubernetes/kops/releases).
 
+Then follow the instructions for upgrading kubernetes.
+
+
+
+
+# Upgrading Kubernetes Release
+
+Upgrading `kops` cluster to a new release of kubernetes requires that we upgrade the `kubectl` client as well as select a kubernetes release that is compatible with kops.
+
 To explictly upgrade `kubectl`, add this to the `Dockerfile`
 ```
 RUN make -C /packages/install kubectl KUBECTL_VERSION=1.10.0
@@ -39,6 +48,19 @@ RUN make -C /packages/install kubectl KUBECTL_VERSION=1.10.0
 Set the `KUBERNETES_VERSION` in the `Dockerfile`
 
 Then follow the instructions to update the manifest and update the cluster.
+
+# Upgrading EC2 Image for Nodes
+
+Identify the AMI that should be used by following the [official documentation](https://github.com/kubernetes/kops/blob/master/docs/images.md).
+
+The AMI will look something like this:
+```
+kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28
+```
+
+Set the `KOPS_BASE_IMAGE` to the latest release AMI in the Geodesic Module's `Dockerfile` and rebuild the container.
+
+Then [rebuild the manifest and update the cluster]({{< relref "tools/kops.md#update-manifest" >}})
 
 
 # Update manifest
@@ -55,25 +77,10 @@ Some changes will require rebuilding the nodes (for example, resizing nodes or c
 kops rolling-update cluster --yes
 ```
 
-# Upgrading Kubernetes Release
-
-Upgrading `kops` cluster to a new release of kubernetes requires that we upgrade the `kubectl` client as well as select a kubernetes release that is compatible with kops.
-
-# Upgrading Kubernetes Nodes EC2 Image
-
-Identify the AMI that should be used by following the [official documentation](https://github.com/kubernetes/kops/blob/master/docs/images.md).
-
-The AMI will look something like this:
-```
-kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28
-```
-
-Set the `KOPS_BASE_IMAGE` to the latest release AMI in the Geodesic Module's `Dockerfile` and rebuild the container.
-
-Then [rebuild the manifest and update the cluster]({{< relref "tools/kops.md#update-manifest" >}})
-
-
 # Upgrading a Cluster
+
+Increase node size
+Rebuild Cluster
 
 # Connecting to Bastion
 
@@ -95,7 +102,6 @@ ssh-add /secrets/tf/*
 ```
 
 Then, run `ssh admin@bastion.$KOPS_CLUSTER_NAME`
-
 
 
 # Helpful Terraform Modules
