@@ -23,11 +23,12 @@ We use `helmfile` to deploy collections of charts as part of geodesic. The `helm
 
 # Use-cases
 
-We recommend using a `helmfile` anywhere you need to deploy a helm chart. This is because `helm` does not support environment variables out-of-the-box.
-
-The `helmfile` reduces the need for complex umbrella charts that are more difficult to manage.
+- We recommend using a `helmfile` anywhere you need to deploy a helm chart. This is because `helm` does not support environment variables out-of-the-box.
+- The `helmfile` reduces the need for complex umbrella charts that are more difficult to manage.
 
 # Dependencies
+
+Helmfile depends on the following `cli` tools.
 
 - [`helm`]({{< relref "tools/helm.md" >}}) - for managing helm packages
 - [`kubectl`]({{< relref "kubernetes/kubectl.md" >}}) - for interfacing with the Kubernetes API
@@ -35,6 +36,10 @@ The `helmfile` reduces the need for complex umbrella charts that are more diffic
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 [`geodesic`](/geodesic/) shell ships with all dependencies.
 {{% /dialog %}}
+
+Prior to using `helmfile`, you'll need a valid [`kubectl` context]({{< relref "geodesic/module/with-kops.md#export-kubecfg" >}}).
+
+Alternatively, set the [`KUBE_CONTEXT`]({{< relref "release-engineering/codefresh-kubernetes-integration.md#usage" >}}) when using `helmfile` with a Codefresh pipeline.
 
 # Configuration File
 
@@ -45,52 +50,8 @@ For a complex example, review the [Master Helmfile](https://github.com/cloudposs
 ## Example `helmfile.yaml`
 
 Here's an example `helmfile.yaml`. Note that it's possible to use conditionals (e.g. `if` / `else`).
-```
-#
-# Helm Chart Repositories
-#
-repositories:
-  # Stable repo of official helm charts
-  - name: "stable"
-    url: "https://kubernetes-charts.storage.googleapis.com"
 
-{{ if env "CHART_REPO_URL" }}
-  # Local chart repo
-  - name: "chart-repo"
-    url: '{{ env "CHART_REPO_URL" }}'
-{{ end }}
-
-#
-# Kubernetes
-#
-context: '{{ env "KUBE_CONTEXT" }}'
-
-#
-# Helm Releases
-#
-releases:
-  # Postgres
-  - name: '{{ env "RELEASE_NAME" }}-pg'
-    labels:
-      chart: "postgresql"
-      component: "database"
-    chart: "stable/postgresql"
-    version: "0.11.0"
-    namespace: '{{ env "NAMESPACE" }}'
-    set:
-      - name: "image"
-        value: "cloudposse/postgres"
-      - name: "imageTag"
-        value: '{{ coalesce (env "POSTGRES_IMAGE_TAG") "0.2.1" }}'
-      - name: "imagePullSecrets"
-        value: '{{ env "RELEASE_NAME" }}-pull-secret-dockercfg'
-      - name: "postgresDatabase"
-        value: '{{ env "POSTGRES_DB" }}'
-      - name: "postgresUser"
-        value: '{{ env "POSTGRES_USER" }}'
-      - name: "postgresPassword"
-        value: '{{ env "POSTGRES_PASSWORD" }}'
-```
+{{% include-code-block title="Helmfile Example" file="tools/examples/helmfile.yaml" language="yaml" %}}
 
 ## Environment Variables
 
