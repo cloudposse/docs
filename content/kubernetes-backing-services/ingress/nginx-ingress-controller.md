@@ -4,7 +4,9 @@ description: ""
 ---
 Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the nginx configuration.
 # Dependencies
+
 None
+
 # Install
 
 You can install `nginx-ingress` in different ways, we recomend
@@ -12,10 +14,19 @@ to use Master Helmfile.
 
 ## Install with Master Helmfile
 
-Run following command
+Run follow the instructions:
+
+* If you going to use [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
+set `NGINX_INGRESS_HOSTNAME` environment variable to domain that would be used in [external dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md#usage" >}})
+* Run command to sync `helmfile`
+
+{{% dialog type="code-block" icon="fa fa-code" title="Install ingress" %}}
 ```
-helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
+chamber write kops NGINX_INGRESS_HOSTNAME ingress.us-west-2.staging.aws.popchest.io
+chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
 ```
+{{% /dialog %}}
+
 These environment variables are used to configure:
 
 * `NGINX_INGRESS_REPLICA_COUNT` - Count of nginx ingress pods

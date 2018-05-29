@@ -1,0 +1,72 @@
+repositories:
+- name: "coreos-stable"
+  url: "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable"
+
+releases:
+- name: "prometheus-operator"
+  namespace: "kube-system"
+  labels:
+    chart: "prometheus-operator"
+    component: "monitoring"
+    namespace: "kube-system"
+    vendor: "coreos"
+    default: "true"
+  chart: "coreos-stable/prometheus-operator"
+  version: "0.0.23"
+  set:
+    - name: "rbacEnable"
+      value: "false"
+
+    - name: "jobLabel"
+      value: "prometheus-operator"
+
+    - name: "image.repository"
+      value: "quay.io/coreos/prometheus-operator"
+
+    - name: "image.tag"
+      value: 'v0.17.0'
+
+    - name: "image.pullPolicy"
+      value: "IfNotPresent"
+
+    - name: "resources.limits.cpu"
+      value: "10m"
+
+    - name: "resources.limits.memory"
+      value: "64Mi"
+
+    - name: "resources.requests.cpu"
+      value: "5m"
+
+    - name: "resources.requests.memory"
+      value: "32Mi"
+
+    - name: "global.hyperkube.repository"
+      value: "quay.io/coreos/hyperkube"
+
+    - name: "global.hyperkube.tag"
+      value: 'v1.7.6_coreos.0'
+
+    - name: "global.hyperkube.pullPolicy"
+      value: "IfNotPresent"
+
+    - name: "prometheusConfigReloader.repository"
+      value: "quay.io/coreos/prometheus-config-reloader"
+
+    - name: "prometheusConfigReloader.tag"
+      value: 'v0.0.3'
+
+    - name: "configmapReload.repository"
+      value: "quay.io/coreos/configmap-reload"
+
+    - name: "configmapReload.tag"
+      value: 'v0.0.1'
+
+    - name: "kubeletService.enable"
+      value: "true"
+
+    - name: "kubeletService.namespace"
+      value: "kube-system"
+
+    - name: "kubeletService.name"
+      value: "kubelet"

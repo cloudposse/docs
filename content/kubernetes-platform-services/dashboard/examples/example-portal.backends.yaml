@@ -1,0 +1,9 @@
+backends:
+  api:
+    name: "API Docs"
+    endpoint: "https://api.us-west-2.staging.example.com/api-docs/"
+    external: true
+  rabbit:
+    name: "RabbitMQ"
+    endpoint: "http://example-rabbitmq.example-staging:15672"
+    external: false
