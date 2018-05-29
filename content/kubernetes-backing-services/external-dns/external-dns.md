@@ -17,7 +17,7 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 Create a file in `/conf/kops-aws-platform/external-dns.tf` with following content
 
-{{% include-github title="External DNS IAM Role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.3" file="/aws/kops-aws-platform/external-dns.tf" language="hcl" %}}
+{{% include-github title="External DNS IAM Role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.5" file="/aws/kops-aws-platform/external-dns.tf" language="hcl" %}}
 
 ## Rebuild the Geodesic Module
 

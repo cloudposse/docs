@@ -17,7 +17,7 @@ None
 
 Create a file in `/conf/chamber/kms.tf` with following content
 
-{{% include-github title="/conf/chamber/kms-key.tf" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.1" file="/aws/chamber/kms-key.tf" language="hcl" %}}
+{{% include-github title="/conf/chamber/kms-key.tf" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.5" file="/aws/chamber/kms-key.tf" language="hcl" %}}
 
 ## Rebuild the Geodesic Module
 
