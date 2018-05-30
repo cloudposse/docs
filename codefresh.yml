@@ -32,6 +32,7 @@ steps:
       - make lint
       - make release
       - make build
+      - echo $TMPDIR
 
   test:
     title: Running tests...
