@@ -45,7 +45,6 @@ steps:
       - apk add --no-cache python3
       - make deps
       - make lint
-      - cat $HTMLTEST_CONFIG
       - make smoketest
 
   # Only deploy on tagged releases
