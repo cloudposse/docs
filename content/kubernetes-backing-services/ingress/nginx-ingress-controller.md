@@ -39,7 +39,7 @@ Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
 
 # Usage
 
-After uou install the ingress controller, you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
+After the ingress controller is installed, you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
 
 Here are some examples:
 
