@@ -1,13 +1,13 @@
 ---
 title: "Kube Prometheus"
-description: "Kube Prometheus provides easy-to-operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator."
+description: "Kube Prometheus provides an easy-to-operate end-to-end Kubernetes cluster monitoring solution using Prometheus together with `PrometheusOperator`."
 tags:
 - "grafana"
 - "prometheus"
 - "alert-manager"
 ---
 
-[Kube Prometheus](https://github.com/coreos/prometheus-operator/tree/master/helm/kube-prometheus) provides easy-to-operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
+[Kube Prometheus](https://github.com/coreos/prometheus-operator/tree/master/helm/kube-prometheus) provides an easy-to-operate end-to-end Kubernetes cluster monitoring solution using Prometheus together with `PrometheusOperator`.
 
 Kube Prometheus includes the following packages:
 
