@@ -1,5 +1,5 @@
 ---
-title: "Scale Nginx Ingress pods horizontally"
+title: "Scale Nginx Ingress Pods Horizontally"
 description: "Procedures to scale Nginx Ingress pods horizontally by increasing the replica count"
 weight: 5
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Scale Kubernetes cluster vertically"
+title: "Scale Kubernetes Cluster Vertically"
 description: "Procedures to scale Kubernetes cluster vertically by modifying EC2 instance types"
 weight: 2
 ---

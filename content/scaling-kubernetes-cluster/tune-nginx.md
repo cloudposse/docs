@@ -1,5 +1,5 @@
 ---
-title: "Tune Nginx parameters"
+title: "Tune Nginx Parameters"
 description: "Procedures and resources for tuning Nginx parameters"
 weight: 7
 ---

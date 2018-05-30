@@ -1,5 +1,5 @@
 ---
-title: "Scale Nginx Ingress pods vertically"
+title: "Scale Nginx Ingress Pods Vertically"
 description: "Procedures to scale Nginx Ingress pods vertically by increasing CPU and memory limits"
 weight: 6
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Scale Kubernetes pods vertically"
+title: "Scale Kubernetes Pods Vertically"
 description: "Procedures to scale Kubernetes cluster vertically by modifying the CPU and memory limits"
 weight: 4
 ---

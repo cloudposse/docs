@@ -1,5 +1,5 @@
 ---
-title: "Scale Kubernetes pods horizontally"
+title: "Scale Kubernetes Pods Horizontally"
 description: "Procedures to scale Kubernetes pods horizontally by modifying the replica count"
 weight: 3
 ---

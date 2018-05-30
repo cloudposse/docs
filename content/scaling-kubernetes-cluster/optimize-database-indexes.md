@@ -1,5 +1,5 @@
 ---
-title: "Optimize database indexes"
+title: "Optimize Database Indexes"
 description: "Rules and best practices for optimizing database queries and indexes"
 weight: 8
 ---

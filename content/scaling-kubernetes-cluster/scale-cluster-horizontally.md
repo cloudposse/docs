@@ -1,5 +1,5 @@
 ---
-title: "Scale Kubernetes cluster horizontally"
+title: "Scale Kubernetes Cluster Horizontally"
 description: "Procedures to scale Kubernetes cluster horizontally by adding nodes"
 weight: 1
 ---
