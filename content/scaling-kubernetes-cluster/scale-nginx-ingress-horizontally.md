@@ -18,6 +18,6 @@ The `nginx-ingress` chart itself is deployed from the `geodesic` shell using the
 To scale Nginx Ingress pods horizontally, update the following settings in the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L496):
 
 * [`replicaCount`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L517) 
-* [`nginx-default-backend.replicaCount`]((https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L543)) 
+* [`nginx-default-backend.replicaCount`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L543)
 
 Then follow [`Install with Master Helmfile`]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}}) instructions to update the cluster with the new settings.
