@@ -22,4 +22,4 @@ To scale Nginx Ingress pods horizontally, update the following settings for `ngi
 * `replicaCount` 
 * `nginx-default-backend.replicaCount`
 
-Then follow [`Install with Master Helmfile`]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}}) instructions to update the cluster with the new settings.
+Then follow [`Install with Master Helmfile`]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md#install-with-master-helmfile" >}}) instructions to update the cluster with the new settings.
