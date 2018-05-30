@@ -64,19 +64,18 @@ uses GitHub OAuth provider and is configured to expose the following dashboards:
   - accessible at `https://grafana.portal.us-west-2.staging.example.com`
 * [External Documentation](https://docs.cloudposse.com)
 
-#### Adding additional tabs
+#### Adding Additional Tabs
 
-If you want to add some additional tabs, follow these instructions
+If you want to add some additional tabs, follow these instructions:
 
-* Exit the Geodesic Module Shell
-* Create file `/conf/kops/values/portal.backends.yaml` with config for
-your tabs. For example
+1. Exit the Geodesic Module Shell
+2. Create file `/conf/kops/values/portal.backends.yaml` with config for your tabs. For example
 
 {{% include-code-block title="/conf/kops/values/portal.backends.yaml" file="kubernetes-platform-services/dashboard/examples/example-portal.backends.yaml" language="yaml" %}}
 
-* [Rebuild the Geodesic Module]({{< relref "geodesic/module/quickstart.md#build-install" >}})
-* [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
-* Continue from step [Helmfile sync]({{< relref "#helmfile-sync" >}})
+3. [Rebuild the Geodesic Module]({{< relref "geodesic/module/quickstart.md#build-install" >}})
+4. [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
+5. Proceed to [Helmfile sync]({{< relref "#helmfile-sync" >}})
 
 #### Helmfile sync
 
@@ -100,7 +99,7 @@ Customize the portal UI appearance with these environment variables:
 * Set `PORTAL_BRAND_IMAGE_WIDTH` with chamber or Dockerfile (default 35)
 
 This image shows a customized portal UI
-{{< img src="/assets/cluster-portal-9fada4bb.png" title="" >}}
+{{< img src="/assets/cluster-portal-9fada4bb.png" title="Example: Customized Cluster Portal" >}}
 
 These environment variables you may want to update:
 
@@ -129,16 +128,17 @@ Use these environment variables to configure the backends:
 
 Environment variables can be specified in the Geodesic module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-Install `portal` using `helmfile sync`
+Install the `portal` using `helmfile sync`
 
 {{% include-code-block title="Install portal using helmfile sync" file="kubernetes-platform-services/dashboard/examples/portal-helmfile-sync.txt" %}}
 
 ### Install with Custom Helmfile
 
-Add the following to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
+Add the following code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-platform-services/dashboard/examples/portal-helmfile.yaml" language="yaml" %}}
-{{% include-code-block  title="values-portal.yaml" file="kubernetes-platform-services/dashboard/examples/values-portal.yaml" language="yaml" %}}
+
+{{% include-code-block  title="values/portal.yaml" file="kubernetes-platform-services/dashboard/examples/values-portal.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
