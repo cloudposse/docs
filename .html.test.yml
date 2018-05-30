@@ -1,0 +1,67 @@
+# Directory to scan for HTML files.
+DirectoryPath: "test/"
+
+# The file to look for when linking to a directory.
+DirectoryIndex: "index.html"
+
+# Extension of your HTML documents, includes the dot. If FilePath is set we use the extension from that.
+FileExtension: ".html"
+
+# Enables checking the document type declaration.
+CheckDoctype: true
+
+# Enables checking <a… tags.
+CheckAnchors: true
+
+# Enables checking <link… tags.
+CheckLinks: true
+
+# Enables checking <img… tags
+CheckImages: true
+
+# Enables checking <script… tags.
+CheckScripts: true
+
+# Fails when encountering an http:// link. Useful to prevent mixed content errors when serving over HTTPS.
+EnforceHTTPS: false
+
+HTTPHeaders: 
+  User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
+  Referer: "https://docs.cloudposse.com/"
+
+# Turns off image alt attribute checking.
+IgnoreAltMissing: true
+
+# Turns off errors for links to directories without a trailing slash.
+IgnoreDirectoryMissingTrailingSlash: true
+
+# When true prevents raising an error for links with href="#".
+IgnoreInternalEmptyHash: true
+
+# Array of regexs of URLs to ignore.
+IgnoreURLs:
+# LinkedIn blocks all crawlers and AWS
+- "linkedin.com"
+# Related to: https://github.com/wjdp/htmltest/issues/89
+- "marketplace.visualstudio.com"
+# Rate limiting precludes us from testing badge shields
+- "img.shields.io"
+# Rate limiting precludes us from testing GitHub links
+- "github.com"
+# Site started blocking us
+- "blog.gopheracademy.com"
+
+# Array of regexs of directories to ignore when scanning for HTML files.
+IgnoreDirs:
+- "revealjs"
+
+# Cache validity period, accepts go.time duration strings (…"m", "h").
+# Two-weeks = 336 Hours
+CacheExpires: "336h"
+
+# Directory to store cache and log files in. Relative to executing directory.
+OutputDir: tmp/.htmltest
+
+# Maximum number of open HTTP connections (keep this low to avoid GitHub rate limits)
+HTTPConcurrencyLimit: 2
+

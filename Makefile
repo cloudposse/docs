@@ -126,7 +126,7 @@ release:
 		> $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
 	cat .htmltest.yml | \
-		sed 's,^OutputDir:.*,OutputDir: "$(TMPDIR)/.htmltest",' | \
+		sed 's,^OutputDir:.*,OutputDir: "$(TMPDIR)/.htmltest",' \
 		> $(HTMLTEST_CONFIG)
 	@echo "Wrote $(HTMLTEST_CONFIG) for codefresh..."
 
