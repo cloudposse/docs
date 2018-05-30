@@ -17,7 +17,7 @@ that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/c
 
 We optimized Nginx configuration settings to fine-tune Nginx performance in a Kubernetes cluster:
 
-{{% include-code-block  title="nginx.conf" file="scaling-kubernetes-cluster/examples/nginx.conf" language="nginx" %}}
+{{% include-code-block  title="nginx.conf" file="kubernetes-optimization/examples/nginx.conf" language="nginx" %}}
 
 As mentioned above, these settings are stored in the Kubernetes cluster as [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/),
 and get deployed by [`nginx-ingress`](https://github.com/kubernetes/charts/tree/master/stable/nginx-ingress#configuration) [Helm chart]({{< relref "helm-charts/quickstart.md" >}}).
