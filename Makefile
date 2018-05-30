@@ -109,7 +109,7 @@ validate: lint test
 .PHONY : test
 ## Run tests
 test:
-	htmltest -c $(HTMLTEST_CONFIG) --log-level $(HTMLTEST_LOG_LEVEL)
+	htmltest -s -c $(HTMLTEST_CONFIG) --log-level $(HTMLTEST_LOG_LEVEL)
 
 ## Run smoketest
 smoketest:
