@@ -14,9 +14,10 @@ You can install `nginx-ingress` in different ways, we recommend to use [Master H
 
 ## Install with Master Helmfile
 
-Run following command
-```
-helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
+Run the following command
+```shell
+helmfile -f /conf/kops/helmfile.yaml \
+    --selector namespace=kube-system,chart=nginx-ingress sync
 ```
 
 These environment variables are used to configure Nginx Ingress:

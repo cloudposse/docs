@@ -1,6 +1,6 @@
 ---
 title: "Scale Kubernetes cluster vertically"
-description: "Procedures to scale Kubernetes cluster vertically by changing EC2 instance types"
+description: "Procedures to scale Kubernetes cluster vertically by modifying EC2 instance types"
 weight: 2
 ---
 
@@ -8,7 +8,7 @@ weight: 2
 This assumes you've followed the [Geodesic Module Usage]({{< relref "geodesic/module/with-kops.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
-Kops cluster can be scaled vertically by changing EC2 instances type for worker nodes. 
+Kops cluster can be scaled vertically by modifying EC2 instance types. 
 
 Kops supports rolling cluster upgrades where the master and worker nodes are upgraded one by one.
 

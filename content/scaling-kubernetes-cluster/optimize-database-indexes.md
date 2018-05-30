@@ -22,4 +22,4 @@ If the equality check on the first column in the index is not included in the qu
     * Equality tests - add all equality-tested fields to the compound index, in any order
     * Sort fields (ascending/descending only matters if there are multiple fields) - add sort fields to the index in the same order and direction as the query's sort
     * Range filters - first, add the range filter for the field with the lowest selectivity (fewest distinct values in the collection), then the next lowest-selectivity range filter, and so on to the highest-selectivity
-    (this is counter-intuitive at first, but it allows the database to more effectively traverse different areas of B-Trees)
+    (this is counter-intuitive at first, but it allows the database to more effectively traverse different parts of B-Trees)

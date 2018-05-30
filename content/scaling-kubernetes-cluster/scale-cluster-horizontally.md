@@ -8,7 +8,7 @@ weight: 1
 This assumes you've followed the [Geodesic Module Usage]({{< relref "geodesic/module/with-kops.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
-Kops cluster can be scaled horizontally by adding EC2 instances for worker nodes. 
+Kops cluster can be scaled horizontally by adding EC2 instances. 
 
 Kops supports rolling cluster upgrades where the master and worker nodes are upgraded one by one.
 

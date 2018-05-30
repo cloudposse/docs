@@ -10,5 +10,5 @@ icon: "fa fa-chart-bar"
 * [Scale Kubernetes pods vertically by increasing CPU and Memory limits]({{< relref "scaling-kubernetes-cluster/scale-pods-vertically.md" >}})
 * [Scale Nginx Ingress pods horizontally by increasing the replica count]({{< relref "scaling-kubernetes-cluster/scale-nginx-ingress-horizontally.md" >}})
 * [Scale Nginx Ingress vertically by increasing CPU and Memory limits]({{< relref "scaling-kubernetes-cluster/scale-nginx-ingress-vertically.md" >}})
-* [Tune Nginx parameters (e.g timeouts, queues)]({{< relref "scaling-kubernetes-cluster/tune-nginx.md" >}})
+* [Tune Nginx parameters (timeouts, worker processes, logs, http)]({{< relref "scaling-kubernetes-cluster/tune-nginx.md" >}})
 * [Optimize database queries and indexes]({{< relref "scaling-kubernetes-cluster/optimize-database-indexes.md" >}})
