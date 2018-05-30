@@ -33,6 +33,7 @@ steps:
       - make release
       - make build
       - echo $TMPDIR
+      - ls -l $TMPDIR
 
   test:
     title: Running tests...
