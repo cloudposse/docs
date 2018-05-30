@@ -86,5 +86,5 @@ Here are some examples:
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification for the structure of helm chart values. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests. Additionally, there's no schema validation for `values.yaml`, so specifying an incorrect structure will not raise any alarms.
 
-Provided examples are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
+The examples provided here are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
 {{% /dialog %}}

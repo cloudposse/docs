@@ -3,9 +3,9 @@ title: "Prometheus Operator"
 description: ""
 draft:
 ---
-[Prometheus operator](https://github.com/coreos/prometheus-operator) provide
+[Prometheus operator](https://github.com/coreos/prometheus-operator) provides
 [CRD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
-that simplify creation/configuration/managment of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
+that simplifies creation/configuration/managment of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
 
 # Dependencies
 
@@ -44,17 +44,17 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 
 # Usage
 
-Prometheus operator provide new Kubernetes resources:
+Prometheus operator provides these new Kubernetes resources:
 
 * Prometheus
 * ServiceMonitor
 * Alertmanager
 
-This resources can be configured to interact with each other.
+These resources can be configured to interact with each other.
 
 {{% dialog type="tip" icon="fa fa-hand-o-right" title="Tip" %}}
 We recommend to install [kube-prometheus]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
-that install Prometheus, Alert Manager and ServiceMonitors+Exporters to
+that installs Prometheus, Alert Manager and ServiceMonitors+Exporters to
 collect all required metrics from Kubernetes cluster.
 {{% /dialog %}}
 

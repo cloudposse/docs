@@ -15,7 +15,7 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 ## Provision IAM Role
 
-Create a file in `/conf/kops-aws-platform/external-dns.tf` with following content
+Create a file in `/conf/kops-aws-platform/external-dns.tf` with the following content
 
 {{% include-github title="External DNS IAM Role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.5" file="/aws/kops-aws-platform/external-dns.tf" language="hcl" %}}
 
@@ -86,9 +86,10 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 
 ## Usage
 
-To leverage `external-dns`, you will need to add an annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
+To leverage `external-dns`, you will need to add annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
 
-With these in place, then `kube-lego` will handle all e2e TLS certificate issueing and save the certificate from Let's Encrypt to a secret specificied by the `tls` config.
+With these in place, then `kube-lego` will handle issuing of TLS certificates from Let's Encrypt and saving them to a
+Kubernetes secret specificied by the `tls` config parameter.
 
 Here are some examples:
 
@@ -99,7 +100,7 @@ Here are some examples:
 {{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests.
+There is no unified specification on how to structure helm chart values. Different charts may have very different structures of the value parameters. The only way to know for sure what is supported is to refer to the chart manifests.
 
-Provided examples are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
+The examples provided here are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
 {{% /dialog %}}

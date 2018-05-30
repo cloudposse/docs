@@ -1,11 +1,11 @@
 ---
 title: "Prometheus"
-description: "Prometheus is monitoring system and time-series database that works together with Grafana and Alert Manager to provide an end-to-end monitoring platform for Kubernetes."
+description: "Prometheus is a monitoring system and time-series database that works together with Grafana and Alert Manager to provide an end-to-end monitoring platform for Kubernetes."
 ---
 
 [Prometheus](https://prometheus.io) is a monitoring system and time-series database.
 
- Prometheus is at the heart of the monitoring infrastructure. It works in concert with [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and wide list of [Exporters](https://prometheus.io/docs/instrumenting/exporters/) that provide the metrics for instrumentation.
+Prometheus is at the heart of the monitoring infrastructure. It works in concert with [Alert Manager](https://prometheus.io/docs/alerting/alertmanager/), [Grafana](https://grafana.com/) and wide list of [Exporters](https://prometheus.io/docs/instrumenting/exporters/) that provide the metrics for instrumentation.
 
 {{< img src="/assets/324asd-Prometheus_architecture.png" title="Prometheus Monitoring Architecture" >}}
 
@@ -39,5 +39,5 @@ To collect custom metrics a few things need to happen:
 * Create an exporter service to expose metrics to Prometheus
 * Register the new Exporter service with Prometheus
 
-On practice we use [Prometheus Operator]({{< relref "kubernetes-backing-services/monitoring/prometheus-operator.md" >}}) to run and configure prometheus, so follow this [documentation]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}}) to get practical
+In practice we use [Prometheus Operator]({{< relref "kubernetes-backing-services/monitoring/prometheus-operator.md" >}}) to run and configure Prometheus, so follow this [documentation]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}}) to get practical
 examples collecting custom mertics.

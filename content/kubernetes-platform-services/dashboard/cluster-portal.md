@@ -66,16 +66,16 @@ uses GitHub OAuth provider and is configured to expose the following dashboards:
 
 #### Adding additional tabs
 
-If you want to add some additional tabs follow this instructions
+If you want to add some additional tabs, follow these instructions
 
 * Exit the Geodesic Module Shell
-* Create file `/conf/kops/custom_values/portal.backends.yaml` with config for
+* Create file `/conf/kops/values/portal.backends.yaml` with config for
 your tabs. For example
 
-{{% include-code-block title="/conf/kops/custom_values/portal.backends.yaml" file="kubernetes-platform-services/dashboard/examples/example-portal.backends.yaml" language="yaml" %}}
+{{% include-code-block title="/conf/kops/values/portal.backends.yaml" file="kubernetes-platform-services/dashboard/examples/example-portal.backends.yaml" language="yaml" %}}
 
 * [Rebuild the Geodesic Module]({{< relref "geodesic/module/quickstart.md#build-install" >}})
-* [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}}) 
+* [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
 * Continue from step [Helmfile sync]({{< relref "#helmfile-sync" >}})
 
 #### Helmfile sync
@@ -113,13 +113,13 @@ Use these environment variables to configure the backends:
 
 * [Kubernetes Dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
   - `PORTAL_BACKEND_K8S_DASHBOARD_NAME` - menu item name for [kubernetes dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
-  - `PORTAL_BACKEND_K8S_DASHBOARD_ENDPOINT` - internal endpoint to [kubernetes dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
+  - `PORTAL_BACKEND_K8S_DASHBOARD_ENDPOINT` - internal endpoint for [kubernetes dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
 * [Prometheus]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
   - `PORTAL_BACKEND_PROMETHEUS_NAME` - menu item name for [prometheus ui]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
   - `PORTAL_BACKEND_PROMETHEUS_ENDPOINT` - internal endpoint for [prometheus ui]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
 * [Alert Manager]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
   - `PORTAL_BACKEND_ALERTS_NAME` - menu item name for [alert manager ui]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
-  - `PORTAL_BACKEND_ALERTS_ENDPOINT` - internal endpoint [alert manager ui]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
+  - `PORTAL_BACKEND_ALERTS_ENDPOINT` - internal endpoint for [alert manager ui]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
 * [Grafana]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
   - `PORTAL_BACKEND_GRAFANA_NAME` - menu item name for [grafana]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
   - `PORTAL_BACKEND_GRAFANA_ENDPOINT` - internal endpoint for [grafana]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
