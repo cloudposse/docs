@@ -9,6 +9,7 @@ steps:
       - cf_export MASTER_BRANCH=master
       - cf_export BUILD_HARNESS_VERSION=0.5.5
       - cf_export HUGO_CONFIG=deploy.toml
+      - cf_export HTMLTEST_CONFIG=.htmltest.codefresh.yml
       - cf_export TMPDIR=/codefresh/volume
 
   semver:
