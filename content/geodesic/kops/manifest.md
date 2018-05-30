@@ -19,9 +19,9 @@ RUN build-manifest
 
 # Updating Cluster
 
-After modifying the manifest, it will need to be applied to the cluster. 
+After modifying the manifest, it will need to be applied to the cluster.
 
-Follow the instructions for [updating a cluster]({{< relref "geodesic/kops/updating-cluster.md" >}}).
+Follow the instructions for [updating a cluster]({{< relref "geodesic/kops/update-cluster.md" >}}).
 
 # References
 - <https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md>
