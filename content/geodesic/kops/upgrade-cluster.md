@@ -50,7 +50,7 @@ kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28
 
 Set the `KOPS_BASE_IMAGE` to the latest release AMI in the Geodesic Module's `Dockerfile` and rebuild the container.
 
-Then [rebuild the manifest and update the cluster]({{< relref "tools/kops.md#update-manifest" >}})
+Then [rebuild the manifest and update the cluster]({{< relref "geodesic/kops/manifest.md" >}})
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 <https://github.com/kubernetes/kops/blob/master/docs/tutorial/working-with-instancegroups.md#changing-the-image>
