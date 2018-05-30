@@ -1,5 +1,5 @@
 ---
-title: "Scaling Kubernetes Cluster"
+title: "Kubernetes Optimization"
 description: "Commands and procedures to scale and optimize Kubernetes cluster and its components"
 icon: "fa fa-chart-bar"
 ---
