@@ -1,6 +1,6 @@
 ---
 title: "Tune Nginx Parameters"
-description: "Procedures and resources for tuning Nginx parameters"
+description: "Procedures and recommendations for tuning Nginx parameters"
 weight: 7
 tags:
 - nginx

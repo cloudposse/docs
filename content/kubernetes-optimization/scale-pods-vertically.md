@@ -6,7 +6,6 @@ tags:
 - helm
 - chart
 - kubernetes
-- ci/cd
 - pipeline
 ---
 

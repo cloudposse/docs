@@ -7,7 +7,6 @@ tags:
 - helm
 - chart
 - kubernetes
-- ci/cd
 - pipeline
 - replica set
 - cpu
