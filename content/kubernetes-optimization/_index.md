@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Optimization"
-description: "Procedures to scale and optimize Kubernetes cluster and its components"
+description: "Procedures and recommendations to scale and optimize Kubernetes cluster and its components"
 icon: "fa fa-chart-bar"
 ---
 
