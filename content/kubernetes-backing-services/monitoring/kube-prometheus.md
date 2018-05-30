@@ -12,16 +12,16 @@ tags:
 Kube Prometheus includes the following packages:
 
 * [Prometheus](https://github.com/coreos/prometheus-operator/tree/master/helm/prometheus)
-* [Alertmanager](https://github.com/coreos/prometheus-operator/tree/master/helm/alertmanager)
-* [Exporter kube controller manager](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-controller-manager)
-* [Exporter kube dns](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-dns)
-* [Exporter kube etcd](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
-* [Exporter kube scheduler](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-scheduler)
-* [Exporter kube state](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-state)
-* [Exporter kubelets](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kubelets)
-* [Exporter kubernetes](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kubernetes)
-* [Exporter node](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-node)
 * [Grafana](https://github.com/coreos/prometheus-operator/tree/master/helm/grafana)
+* [Alert Manager](https://github.com/coreos/prometheus-operator/tree/master/helm/alertmanager)
+* [Kube Controller Manager Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-controller-manager)
+* [Kube DNS Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-dns)
+* [Kube Etcd Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
+* [Kube Scheduler Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-scheduler)
+* [Kube State Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-state)
+* [Kubelets Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kubelets)
+* [Kubernetes Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kubernetes)
+* [Node Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-node)
 
 # Dependencies
 
@@ -31,7 +31,7 @@ Kube Prometheus includes the following packages:
 
 You can install `kube-prometheus` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
-## Install with Master Helmfile
+## Install using Master Helmfile
 
 To install `kube-prometheus` run:
 
@@ -52,7 +52,7 @@ These are some of the environment variables you may want to configure:
 
 Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-## Install with Custom Helmfile
+## Install using Custom Helmfile
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
@@ -60,12 +60,12 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-# Extending
+# Extending Functionality
 
 You can extend the default functionality of `kube-prometheus` to collect custom
 metrics and send alerts based on the metrics, and display the metric in Grafana charts.
 
-## Custom metrics collection
+## Custom Netrics Collection
 
 1. Check the [list of available exporters](https://prometheus.io/docs/instrumenting/exporters) to make sure there isn't already an Exporter that will meet your needs. For example, there are exporters that will work with [JMX](https://github.com/prometheus/jmx_exporter) out-of-the-box.
 2. If there is no exporter, then you'll need to [write your own](https://prometheus.io/docs/instrumenting/writing_exporters/) exporter that will provide required [metrics in correct format](https://prometheus.io/docs/instrumenting/exposition_formats/)
@@ -78,7 +78,7 @@ metrics and send alerts based on the metrics, and display the metric in Grafana 
 * Custom configuration of [Service Monitor](https://coreos.com/operators/prometheus/docs/latest/custom-configuration.html)
 * Helm chart that exposes [Etcd metrics](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
 
-## Custom dashboards with Grafana
+## Custom Dashboards using Grafana
 
 Before you start, read the basic introduction about grafana [dashboards and panels](http://docs.grafana.org/features/panels/graph/)
 
@@ -97,7 +97,7 @@ Follow [Grafana dashboards documentations](http://docs.grafana.org/reference/tem
 
 The next steps depend on the way you installed `kube-prometheus`
 
-### Installed with Master Helmfile
+### Installation using Master Helmfile
 
 * Put the exported content into the `/conf/kops/values/kube-prometheus.grafana.dashboards.yaml`
 in format
@@ -112,7 +112,7 @@ grafana:
 * [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
 * Continue from step [Install with Master Helmfile]({{< relref "#install-with-master-helmfile" >}})
 
-### Installed with Custom Helmfile
+### Installation using Custom Helmfile
 
 * Put the exported content into the `value.yaml` file in this format
 
