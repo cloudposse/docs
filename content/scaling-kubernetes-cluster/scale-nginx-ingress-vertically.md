@@ -13,17 +13,17 @@ that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/c
 
 Nginx [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) controller is deployed by [`nginx-ingress`](https://github.com/kubernetes/charts/tree/master/stable/nginx-ingress) [Helm chart]({{< relref "helm-charts/quickstart.md" >}}).
 
-The `nginx-ingress` chart itself is deployed from the `geodesic` shell using the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L496).
+The `nginx-ingress` chart itself is deployed from the `geodesic` shell using the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
-To scale Nginx Ingress pods vertically, update the following settings in the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L543):
+To scale Nginx Ingress pods vertically, update the following settings for `nginx-ingress` in the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml):
 
-* [`resources.limits.cpu`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L530)
-* [`resources.limits.memory`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L533)
-* [`resources.requests.cpu`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L536)
-* [`resources.requests.memory`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L539)
-* [`nginx-default-backend.resources.limits.cpu`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L546)
-* [`nginx-default-backend.resources.limits.memory`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L549)
-* [`nginx-default-backend.resources.requests.cpu`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L552)
-* [`nginx-default-backend.resources.requests.memory`](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml#L555)
+* `resources.limits.cpu`
+* `resources.limits.memory`
+* `resources.requests.cpu`
+* `resources.requests.memory`
+* `nginx-default-backend.resources.limits.cpu`
+* `nginx-default-backend.resources.limits.memory`
+* `nginx-default-backend.resources.requests.cpu`
+* `nginx-default-backend.resources.requests.memory`
 
 Then follow [`Install with Master Helmfile`]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}}) instructions to update the cluster with the new settings.

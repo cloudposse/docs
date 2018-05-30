@@ -27,14 +27,12 @@ and then follow [`Install with Master Helmfile`]({{< relref "kubernetes-backing-
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 For more information, check out the following links:
 
-* https://www.nginx.com/blog/performance-tuning-tips-tricks/
+* [Performance Tuning Tips and Tricks](https://www.nginx.com/blog/performance-tuning-tips-tricks/)
 
-* https://www.nginx.com/blog/tuning-nginx/
+* [Tuning Nginx](https://www.nginx.com/blog/tuning-nginx/)
 
-* https://blog.codeship.com/tuning-nginx/
+* [Nginx Tuning](https://www.revsys.com/12days/nginx-tuning/)
 
-* https://www.revsys.com/12days/nginx-tuning/
-
-* https://github.com/kubernetes/ingress-nginx
+* [Ingress Nginx](https://github.com/kubernetes/ingress-nginx)
 
 {{% /dialog %}}
