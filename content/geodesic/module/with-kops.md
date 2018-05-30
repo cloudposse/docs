@@ -107,9 +107,10 @@ Replace with values to suit your specific project.
 
 ## Configure Kops Manifest
 
-Geodesic creates a `kops` cluster from a manifest.
+`Geodesic` creates a `kops` cluster from a manifest.
 [Kops manifest](https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md) is yaml file that describe resources that determinates Kubernetes cluster.
-`Geodesic` generates the manifest from template that support placeholders with environment variables.
+`Geodesic` generates the manifest from a template that supports [`gomplate`](https://github.com/hairyhenderson/gomplate) interpolation for environment variables.
+
 The manifest template (gomplate) is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
 and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
 
@@ -138,7 +139,7 @@ Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availabilit
 > make build
 ```
 
-When manifest configured we can apply it with kops to spin up or update the cluster
+After building the manifest, we can apply it with kops to spin up or update the cluster.
 
 ## Launch Cluster
 
