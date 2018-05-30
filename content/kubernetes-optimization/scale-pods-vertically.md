@@ -2,6 +2,12 @@
 title: "Scale Kubernetes Pods Vertically"
 description: "Procedures to scale Kubernetes cluster vertically by modifying the CPU and memory limits"
 weight: 4
+tags:
+- helm
+- chart
+- kubernetes
+- ci/cd
+- pipeline
 ---
 
 We use [Helm charts]({{< relref "helm-charts/quickstart.md" >}}) to deploy applications via a CI/CD pipeline.

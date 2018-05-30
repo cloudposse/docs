@@ -2,6 +2,10 @@
 title: "Tune Nginx Parameters"
 description: "Procedures and resources for tuning Nginx parameters"
 weight: 7
+tags:
+- nginx
+- geodesic
+- nginx-ingress
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}

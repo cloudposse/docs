@@ -2,6 +2,12 @@
 title: "Scale Nginx Ingress Pods Horizontally"
 description: "Procedures to scale Nginx Ingress pods horizontally by increasing the replica count"
 weight: 5
+tags:
+- nginx
+- ingress
+- nginx-ingress
+- helm
+- chart
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}

@@ -2,6 +2,11 @@
 title: "Optimize Database Indexes"
 description: "Rules and best practices for optimizing database queries and indexes"
 weight: 8
+tags:
+- database
+- index
+- sql
+- query
 ---
 
 The main rule is that with indexes, there are no absolute rules. Indexing is like a math problem. That said, rules help:

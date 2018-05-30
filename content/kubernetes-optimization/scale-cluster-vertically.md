@@ -2,6 +2,10 @@
 title: "Scale Kubernetes Cluster Vertically"
 description: "Procedures to scale Kubernetes cluster vertically by modifying EC2 instance types"
 weight: 2
+tags:
+- geodesic
+- kops
+- kubernetes
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
@@ -58,7 +62,7 @@ kops rolling-update cluster --yes
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 Using `--yes` updates all nodes in the cluster, first master nodes and then worker nodes.
-There is a 5-minute delay between restarting master nodes, and a 2-minute delay between restarting nodes. 
+There is a configurable 5-minute delay between restarting master nodes, and a 2-minute delay between restarting nodes. 
 These values can be altered using `--master-interval` and `--node-interval` options, respectively.
 
 Only the worker nodes may be updated by using the [`--instance-group`](https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md) node option.

@@ -2,6 +2,10 @@
 title: "Scale Kubernetes Cluster Horizontally"
 description: "Procedures to scale Kubernetes cluster horizontally by adding nodes"
 weight: 1
+tags:
+- geodesic
+- kops
+- kubernetes
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
@@ -45,7 +49,7 @@ kops upgrade cluster --yes
 ```
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-The `--yes` option immediately applies the changes. Not specifying the `--yes` option shows only the changes that are applied.
+The `--yes` option immediately applies the changes. Not specifying `--yes` works like `terraform plan` and shows the pending changes.
 {{% /dialog %}}
 
 Update the Kubernetes state store to match the cluster state. This can be done using the following command:

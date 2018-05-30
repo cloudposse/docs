@@ -2,6 +2,12 @@
 title: "Scale Kubernetes Pods Horizontally"
 description: "Procedures to scale Kubernetes pods horizontally by modifying the replica count"
 weight: 3
+tags:
+- helm
+- chart
+- kubernetes
+- ci/cd
+- pipeline
 ---
 
 We use [Helm charts]({{< relref "helm-charts/quickstart.md" >}}) to deploy applications via a CI/CD pipeline.

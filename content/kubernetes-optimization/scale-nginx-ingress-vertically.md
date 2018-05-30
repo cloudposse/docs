@@ -2,6 +2,12 @@
 title: "Scale Nginx Ingress Pods Vertically"
 description: "Procedures to scale Nginx Ingress pods vertically by increasing CPU and memory limits"
 weight: 6
+tags:
+- nginx
+- ingress
+- nginx-ingress
+- helm
+- chart
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
