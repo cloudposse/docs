@@ -82,7 +82,7 @@ run:
 build:
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
-	$(HUGO) --config $(HUGO_CONFIG)
+	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Lint check common formatting mistakes
 lint/formatting:
