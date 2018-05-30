@@ -210,14 +210,19 @@ kops update cluster --name us-west-2.staging.example.com --yes
 
 All done. At this point, the `kops` cluster is now updated and running.
 
-# Configure `kubectl`
+# Export `kubecfg`
 
 When you run into the Geodesic module shell you need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` to authenticate with the cluster.
+
+Run `kops export kubecfg $KOPS_CLUSTER_NAME` to export the `kubecfg`. This will export the `kubecfg` to the location set in the `KUBECONFIG` environment variable.
 
 ```
 ✅   (example-staging-admin) ~ ➤  kops export kubecfg $KOPS_CLUSTER_NAME
 kops has set your kubectl context to us-west-2.staging.example.com
 ```
+
+By default, geodesic exports `KUBECONFIG=/dev/shm` to ensure this config does not pesist.
+
 
 # Provision Platform Backing Services
 
