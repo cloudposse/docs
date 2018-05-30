@@ -12,6 +12,7 @@ export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
 export HTMLTEST_LOG_LEVEL ?= 2
+export HTMLTEST_CONFIG ?= .htmltest.yml
 
 export ALGOLIA_INDEX_FILE ?= $(HUGO_PUBLISH_DIR)/index.algolia.json
 export ALGOLIA_APPLICATION_INDEX ?= dev
@@ -82,7 +83,7 @@ run:
 build:
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
-	$(HUGO) --config $(HUGO_CONFIG)
+	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Lint check common formatting mistakes
 lint/formatting:
@@ -108,7 +109,7 @@ validate: lint test
 .PHONY : test
 ## Run tests
 test:
-	htmltest --log-level $(HTMLTEST_LOG_LEVEL)
+	htmltest -c $(HTMLTEST_CONFIG) --log-level $(HTMLTEST_LOG_LEVEL)
 
 ## Run smoketest
 smoketest:
@@ -117,12 +118,18 @@ smoketest:
 ## Generate a release config
 release:
 	@[ "$(HUGO_CONFIG)" != "config.toml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
+	@[ "$(HTMLTEST_CONFIG)" != ".htmltest.yml" ] || (echo "Cannot release with $(HTMLTEST_CONFIG)"; exit 1)
 	cat config.toml | \
 		sed 's,^baseURL.*,baseURL = "$(HUGO_URL)",' | \
 		sed 's,^publishDir.*,publishDir = "$(HUGO_PUBLISH_DIR)",' | \
 		sed 's,^editURL.*,editURL = "$(HUGO_EDIT_URL)",' \
 		> $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
+	cat .htmltest.yml | \
+		sed 's,^OutputDir:.*,OutputDir: "$(TMPDIR)/.htmltest",' \
+		> $(HTMLTEST_CONFIG)
+	@echo "Wrote $(HTMLTEST_CONFIG) for codefresh..."
+
 
 ## Deploy static site to S3
 deploy:

@@ -3,30 +3,30 @@
   <head>
     <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
     {{if .Site.Params.themeStyle}}
-      {{ partial (printf "%s/head.html" .Site.Params.themeStyle) . }}
+      {{ partialCached (printf "%s/head.html" .Site.Params.themeStyle) . }}
     {{else}}
-      {{ partial "flex/head.html" . }}
+      {{ partialCached "flex/head.html" . }}
     {{end}}
   </head>
   <body data-url="{{ .RelPermalink }}" class="cloudposse page-404">
     {{if .Site.Params.themeStyle}}
-      {{ partial (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
+      {{ partialCached (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
     {{else}}
-      {{ partial "flex/body-beforecontent.html" . }}
+      {{ partialCached "flex/body-beforecontent.html" . }}
     {{end}}
     
 	<p><img src="{{"/assets/404-not-found.png" | relURL}}" style="width:50%"></img></p>    
     
     {{if .Site.Params.themeStyle}}
-      {{ partial (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}
+      {{ partialCached (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}
     {{else}}
-      {{ partial "flex/body-aftercontent.html" . }}
+      {{ partialCached "flex/body-aftercontent.html" . }}
     {{ end }}
 
     {{ block "footer" . }}
     {{ end }}
 
-    {{ partial "custom-footer.html" . }}
+    {{ partialCached "custom-footer.html" . }}
   </body>
 </html>
 
