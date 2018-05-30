@@ -9,7 +9,7 @@ None
 
 # Install
 
-You can install `Nginx-ingress` in different ways, we recommend
+You can install `nginx-ingress` in different ways, we recommend
 to use Master Helmfile.
 
 ## Install with Master Helmfile
@@ -23,14 +23,14 @@ set `NGINX_INGRESS_HOSTNAME` environment variable to domain that will be used in
 {{% dialog type="code-block" icon="fa fa-code" title="Install ingress" %}}
 ```
 chamber write kops NGINX_INGRESS_HOSTNAME ingress.us-west-2.staging.example.com
-chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=Nginx-ingress sync
+chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
 ```
 {{% /dialog %}}
 
 These environment variables are used to configure `Nginx` Ingress:
 
 * `NGINX_INGRESS_REPLICA_COUNT` - `Nginx` Ingress pod replica count
-* `NGINX_INGRESS_IMAGE_TAG` - Version of [Nginx ingress image](https://quay.io/kubernetes-ingress-controller/Nginx-ingress-controller)
+* `NGINX_INGRESS_IMAGE_TAG` - Version of [Nginx ingress image](https://quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
 * `NGINX_INGRESS_BACKEND_REPLICA_COUNT` - `Nginx` default backend pod replica count
 * `NGINX_INGRESS_HOSTNAME` - Ingress hostname required by [external dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
 
@@ -40,7 +40,7 @@ Environment variables can be specified in Geodesic Module `Dockerfile` or in [Ch
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/Nginx-ingess-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingess-helmfile.yaml" language="yaml" %}}
 
 Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
 
@@ -50,11 +50,11 @@ After install you the ingress controller, then you can create [Ingress Resources
 
 Here are some examples:
 
-{{% include-code-block title="ingress.yaml" file="kubernetes-backing-services/ingress/examples/Nginx-ingress-usage-kubectl-resource.yaml" language="yaml" %}}
+{{% include-code-block title="ingress.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-kubectl-resource.yaml" language="yaml" %}}
 
-{{% include-code-block title="values.yaml" file="kubernetes-backing-services/ingress/examples/Nginx-ingress-usage-helm-values.yaml" language="yaml" %}}
+{{% include-code-block title="values.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-helm-values.yaml" language="yaml" %}}
 
-{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/Nginx-ingress-usage-helmfile.yaml" language="yaml" %}}
+{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests.
