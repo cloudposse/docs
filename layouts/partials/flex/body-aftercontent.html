@@ -1,10 +1,10 @@
   {{if not .IsHome}}
-    {{ partial "related.html" . }}
+    {{ partialCached "related.html" . }}
   {{end}}
 
   {{if not .IsHome}}
   <div class="chevrons">
-    {{ partial "next-prev-page.html" . }}
+    {{ partialCached "next-prev-page.html" . }}
   </div>
 
   </section>
@@ -44,4 +44,4 @@
    </div>
 </footer>
 
-{{ partial "flex/scripts.html" . }}
+{{ partialCached "flex/scripts.html" . }}
