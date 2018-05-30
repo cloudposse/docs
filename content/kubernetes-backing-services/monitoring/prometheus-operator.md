@@ -1,10 +1,9 @@
 ---
 title: "Prometheus Operator"
 description: ""
-draft:
 ---
-[Prometheus operator](https://github.com/coreos/prometheus-operator) provides
-[CRD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+[PrometheusOperator](https://github.com/coreos/prometheus-operator) provides
+[CRUD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
 that simplifies creation/configuration/managment of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
 
 # Dependencies
@@ -15,7 +14,7 @@ None
 
 You can install `prometheus-operator` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
-## Install with Master Helmfile
+## Install using Master Helmfile
 
 To install `prometheus-operator` run
 
@@ -34,7 +33,7 @@ These are some of the environment variables you may want to configure:
 
 Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-## Install with Custom Helmfile
+## Install using Custom Helmfile
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
@@ -54,18 +53,17 @@ These resources can be configured to interact with each other.
 
 {{% dialog type="tip" icon="fa fa-hand-o-right" title="Tip" %}}
 We recommend to install [kube-prometheus]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
-that installs Prometheus, Alert Manager and ServiceMonitors+Exporters to
-collect all required metrics from Kubernetes cluster.
+that installs Prometheus, Alert Manager and ServiceMonitors+Exporters to collect all required metrics from Kubernetes cluster.
 {{% /dialog %}}
 
 ## Prometheus
 
-[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#prometheus)
+[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#prometheus) about the Prometheus design.
 
 ## Alert Manager
 
-[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager)
+[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager) about the Alert Manager design.
 
 ## ServiceMonitor
 
-[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#servicemonitor)
+[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#servicemonitor) about the Service Monitor design.
