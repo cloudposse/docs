@@ -2,12 +2,11 @@
 
 # Developer Documentation ![Build Status](https://g.codefresh.io/api/badges/build?repoOwner=cloudposse&repoName=docs&branch=master&pipelineName=docs&accountName=cloudposse)
 
-Welcome to the Cloud Posse developer Hub.
+Welcome to the Cloud Posse Developer Hub Documentation Portal.
 
-All documentation is availble on [docs.cloudposse.com](https://docs.cloudposse.com). Here you'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck.
+All documentation is published to [docs.cloudposse.com](https://docs.cloudposse.com). Here you'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck.
 
 Let's jump right in!
-
 
 ## Manifest
 
@@ -33,7 +32,6 @@ Available targets:
 **Got a question?**
 
 File a GitHub [issue](https://github.com/cloudposse/docs/issues), send us an [email](mailto:hello@cloudposse.com) or reach out to us on [Gitter](https://gitter.im/cloudposse/).
-
 
 ## Contributing
 
