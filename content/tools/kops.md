@@ -1,6 +1,6 @@
 ---
 title: Kops
-description: ''
+description: 'Kops is the primary tool used by geodesic to provision kubernetes clusters'
 ---
 
 # Quick Start
@@ -16,16 +16,7 @@ assume-role
 kops create -f /conf/kops/manifest.yml
 ```
 
-## Provision Backing Service VPC
-
-## VPC peering
-
 # Helpful Terraform Modules
 
 - [terraform-aws-kops-route53]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-route53.md" >}})
 - [terraform-aws-kops-external-dns]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-external-dns.md" >}})
-
-## init.sh
-
-```text
-```
