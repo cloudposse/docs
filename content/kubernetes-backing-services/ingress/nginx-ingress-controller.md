@@ -1,37 +1,37 @@
 ---
 title: "Nginx Ingress Controller"
-description: ""
+description: "Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the Nginx configuration."
 ---
-Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the Nginx configuration.
+
+The Nginx Ingress Controller is a type of [Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) (think "Load Balancer") that uses a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the Nginx configuration.
+
 # Dependencies
 
 None
 
 # Install
 
-You can install `nginx-ingress` in different ways, we recommend
-to use Master Helmfile.
+You can install the `nginx-ingress` controller in few different ways, but we recommend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
-## Install with Master Helmfile
+## Install using Master Helmfile
 
 Follow these instructions:
 
-* If you going to use [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
-set `NGINX_INGRESS_HOSTNAME` environment variable to domain that will be used in [external dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md#usage" >}})
-* Run command to sync `helmfile`
+* If you're going to use [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}}), then set the `NGINX_INGRESS_HOSTNAME` environment variable to domain that will be used with [external-dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md#usage" >}})
+* Run `helmfile sync` with appropriate arguments to apply changes.
 
-{{% dialog type="code-block" icon="fa fa-code" title="Install ingress" %}}
+{{% dialog type="code-block" icon="fa fa-code" title="Install Ingress" %}}
 ```
 chamber write kops NGINX_INGRESS_HOSTNAME ingress.us-west-2.staging.example.com
 chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
 ```
 {{% /dialog %}}
 
-These environment variables are used to configure `Nginx` Ingress:
+These environment variables are supported by the Nginx Ingress in the Master Helmfile:
 
-* `NGINX_INGRESS_REPLICA_COUNT` - `Nginx` Ingress pod replica count
-* `NGINX_INGRESS_IMAGE_TAG` - Version of [Nginx ingress image](https://quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
-* `NGINX_INGRESS_BACKEND_REPLICA_COUNT` - `Nginx` default backend pod replica count
+* `NGINX_INGRESS_REPLICA_COUNT` - Nginx Ingress pod replica count
+* `NGINX_INGRESS_IMAGE_TAG` - Version of [`nginx-ingress` image](https://quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
+* `NGINX_INGRESS_BACKEND_REPLICA_COUNT` - Nginx default backend pod replica count
 * `NGINX_INGRESS_HOSTNAME` - Ingress hostname required by [external dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
 
 Environment variables can be specified in Geodesic Module `Dockerfile` or in [Chamber]({{< relref "tools/chamber.md" >}}) storage.
@@ -40,13 +40,13 @@ Environment variables can be specified in Geodesic Module `Dockerfile` or in [Ch
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingess-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/ingress/examples/nginx-ingress-helmfile.yaml" language="yaml" %}}
 
 Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
 
 # Usage
 
-After install you the ingress controller, then you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
+After the ingress controller is installed, you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
 
 Here are some examples:
 

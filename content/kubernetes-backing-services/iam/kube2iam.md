@@ -41,7 +41,7 @@ spec:
 ```
 {{% /dialog %}}
 
-Follow the instructions to [apply changes to the kops cluster]({{< relref "geodesic/module/with-kops.md#update-a-cluster" >}})
+Follow the instructions to [apply changes to the kops cluster]({{< relref "geodesic/module/with-kops.md#update-cluster" >}})
 
 ## Kops Integration
 
