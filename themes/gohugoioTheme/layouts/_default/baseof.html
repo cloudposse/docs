@@ -37,9 +37,6 @@
         {{ partial "gtag" . }}
       {{ end }}
 
-
-
-
   </head>
   <body class="ma0 sans-serif bg-primary-color-light{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
     {{ block "nav" . }}{{ partial "site-nav.html" . }}{{ end }}
