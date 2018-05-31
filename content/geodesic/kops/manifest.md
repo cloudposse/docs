@@ -4,7 +4,7 @@ description: ""
 ---
 Geodesic uses a kops `manifest.yaml` file to define the topology of the kops clusters. The [default toplogy](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml) can be found in the [`geodesic`](https://github.com/cloudposse/geodesic/) repo. This topology is implemented as a [`gomplate`]({{< relref "tools/gomplate.md" >}}) template so it can be parameterized using environment variables defined in the `Dockerfile` of the geodesic module.
 
-# Extending Manifest
+# Extend the Manifest
 
 The default kops manifest that ships with geodesic is
 
@@ -17,7 +17,7 @@ We recommend adding the following to the end of the geodesic module's `Dockerfil
 RUN build-manifest
 ```
 
-# Updating Cluster
+# Update the Cluster
 
 After modifying the manifest, it will need to be applied to the cluster.
 
