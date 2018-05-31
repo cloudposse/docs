@@ -47,7 +47,7 @@ IgnoreURLs:
 # Rate limiting precludes us from testing badge shields
 - "img.shields.io"
 # Rate limiting precludes us from testing GitHub links
-- "github.com"
+- "github.com/cloudposse/docs/blob"
 # Site started blocking us
 - "blog.gopheracademy.com"
 
