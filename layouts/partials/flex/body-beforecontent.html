@@ -47,7 +47,7 @@
     <div class="nav-select">
       <center>
         <select onchange="javascript:location.href = this.value;">
-          {{partialCached "flex/selectnavigation.html" .}}
+          {{partial "flex/selectnavigation.html" .}}
         </select><i class="fa fa-angle-down"></i>
       </center>
     </div>
@@ -69,7 +69,7 @@
 <article>
   {{if .IsHome}}
     <div class="homepage">
-      {{ partialCached "homepage.html" . }}
+      {{ partial "homepage.html" . }}
     </div>
   {{else}}
   <aside id="left-sidebar">
@@ -82,11 +82,11 @@
         </li>
       {{- end}}
 
-      {{- partialCached "menu.html" . }}
+      {{- partial "menu.html" . }}
     </ul>
-    {{- partialCached "language-selector.html" . }}
+    {{- partial "language-selector.html" . }}
     <section>
-      {{- partialCached "menu-footer.html" . }}
+      {{- partial "menu-footer.html" . }}
     </section>
   </aside>
 

@@ -2,9 +2,9 @@
 <html>
   <head>
     {{if .Site.Params.themeStyle}}
-      {{ partialCached (printf "%s/head.html" .Site.Params.themeStyle) . }}
+      {{ partial (printf "%s/head.html" .Site.Params.themeStyle) . }}
     {{else}}
-      {{ partialCached "flex/head.html" . }}
+      {{ partial "flex/head.html" . }}
     {{end}}
   </head>
 
@@ -16,23 +16,23 @@
   <body data-url="{{ .RelPermalink }}" class="cloudposse no-page-slug">
   {{ end }}
     {{if .Site.Params.themeStyle}}
-      {{ partialCached (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
+      {{ partial (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
     {{else}}
-      {{ partialCached "flex/body-beforecontent.html" . }}
+      {{ partial "flex/body-beforecontent.html" . }}
     {{end}}
     
     {{ block "main" . }}
     {{ end }}
     
     {{if .Site.Params.themeStyle}}
-      {{ partialCached (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}
+      {{ partial (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}
     {{else}}
-      {{ partialCached "flex/body-aftercontent.html" . }}
+      {{ partial "flex/body-aftercontent.html" . }}
     {{ end }}
 
     {{ block "footer" . }}
     {{ end }}
 
-    {{ partialCached "custom-footer.html" . }}
+    {{ partial "custom-footer.html" . }}
   </body>
 </html>

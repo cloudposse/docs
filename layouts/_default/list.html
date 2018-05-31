@@ -5,7 +5,7 @@
 {{ $paginator := .Paginator }}
 
 <div class="extra-pagination inner">
-{{ partialCached "pagination.html" $paginator }}
+{{ partial "pagination.html" $paginator }}
 </div>
 
 {{ range $index, $page := $paginator.Pages }}
@@ -14,7 +14,7 @@
 
 <div style="margin-bottom:2rem"></div>
 
-{{ partialCached "pagination.html" $paginator }}
+{{ partial "pagination.html" $paginator }}
 
 {{end}}
 {{end}}
