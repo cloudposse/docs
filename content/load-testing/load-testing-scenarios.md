@@ -12,16 +12,14 @@ Consider updating them to reflect your environment.
 
 ## Utilities Module
 
-All our load testing scripts use the utilities module `utils.js` with reusable structures and functions.
-
-{{% include-github org="cloudposse" repo="load-testing" ref="master" file="scenarios/utils.js" title="Utilities Module" language="js" type="code-block" %}}
+All our load testing scripts use the utilities module [`utils.js`](https://github.com/cloudposse/load-testing/blob/master/scenarios/utils.js) which provides reusable data structures and functions.
 
 
 ## Establish Baseline
 
 To establish a baseline, first we'll load test the website's home page with one concurrent user.
 
-This will allow us to see the best performing numbers, against which we'd compare more advanced scenarious involving more pages and more concurrent users.
+This will allow us to see the best performing numbers, against which we'd compare more advanced scenarios involving more pages and more concurrent users.
 
 We created this simple script to load test the home page of a website:
 
@@ -31,7 +29,8 @@ We created this simple script to load test the home page of a website:
 ## Run the Tests
 
 ```sh
-docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 1 /scenarios/scenario_01.js
+docker-compose run -v $PWD/scenarios:/scenarios k6 run \
+    --vus 1 /scenarios/scenario_01.js
 ```
 
 {{% include-code-block title="k6 run scenario_01 1 user 1 iteration" file="load-testing/examples/k6_run_scenario_01_1_user_1_iteration.txt" %}}
@@ -45,7 +44,8 @@ We assume that we want the website to handle 50 concurrent users.
 Let's hit the home page with 50 concurrent users, each doing one iteration
 
 ```sh
-docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 50 -i 50 /scenarios/scenario_01.js
+docker-compose run -v $PWD/scenarios:/scenarios k6 run \
+    --vus 50 -i 50 /scenarios/scenario_01.js
 ```
 
 {{% include-code-block title="k6 run scenario_01 50 users 50 iterations" file="load-testing/examples/k6_run_scenario_01_50_users_50_iterations.txt" %}}
@@ -55,7 +55,8 @@ We just loaded the website with `41.106944` requests per second.
 Let's increase the number of iterations to hit the home page with approximately 50 requests per second.
 
 ```sh
-docker-compose run -v $PWD/scenarios:/scenarios k6 run --vus 50 -i 80 /scenarios/scenario_01.js
+docker-compose run -v $PWD/scenarios:/scenarios k6 run \
+    --vus 50 -i 80 /scenarios/scenario_01.js
 ```
 
 {{% include-code-block title="k6 run scenario_01 50 users 80 iterations" file="load-testing/examples/k6_run_scenario_01_50_users_80_iterations.txt" %}}

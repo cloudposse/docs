@@ -9,7 +9,7 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 Geodesic uses [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes clusters.
 
-# Create a Cluster
+# Create Cluster
 
 Provisioning a `kops` cluster takes three steps:
 
@@ -17,9 +17,9 @@ Provisioning a `kops` cluster takes three steps:
 2. Update the `Dockerfile` and rebuild the Geodesic Module to generate a kops manifest file (and restart shell)
 3. Launch a kops cluster from the manifest file
 
-## Provision the State Backend
+## Provision State Backend
 
-### Config environment variables
+### Configure Environment Variables
 
 Update the environment variables in the module's `Dockerfile`:
 
@@ -35,20 +35,20 @@ ENV TF_VAR_parent_zone_name=staging.example.com
 Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
 
 
-### Rebuild the module
+### Rebuild Module
 
 [Rebuild](/geodesic/module/) the module
 ```shell
-> make build
+> make docker/build
 ```
 
-### Add kops state terraform module
+### Add Kops State Terraform Module
 
 Create a file in `./conf/aws-kops-backend/main.tf` with following content
 
 {{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/examples/aws-kops-backend.tf" language="hcl" %}}
 
-###  Start the shell
+###  Start the Shell
 
 Run the Geodesic shell. The wrapper script is installed in `/usr/local/bin/$CLUSTER_NAME`, so you should be able to just run something like:
 ```shell
@@ -81,9 +81,9 @@ From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV 
 In the example the bucket name is `bucket_name = example-staging-kops-state` and `zone_name = us-west-2.staging.example.com`.
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
 
-### Configure environment variables
+### Configure Environment Variables
 
-Add to module `Dockerfile` environment variable
+Add to module's `Dockerfile` the following environment variables
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```
@@ -99,23 +99,24 @@ RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 
 Replace with values to suit your specific project.
 
-### Rebuild module
+### Rebuild Module
 [Rebuild](/geodesic/module/) the module
 ```shell
 > make build
 ```
 
-## Configure kops manifest
+## Configure Kops Manifest
 
-Geodesic creates a `kops` cluster from a manifest.
+`Geodesic` creates a `kops` cluster from a manifest.
 [Kops manifest](https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md) is yaml file that describe resources that determinates Kubernetes cluster.
-`Geodesic` generates the manifest from template that support placehoders with environment variables.
+`Geodesic` generates the manifest from a template that supports [`gomplate`](https://github.com/hairyhenderson/gomplate) interpolation for environment variables.
+
 The manifest template (gomplate) is located in [`/templates/kops/default.yaml`](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml)
 and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifest` script as a `RUN` step in the `Dockerfile`.
 
 The geodesic module can overload the template if a different architecture is desired. All of our examples will rely on our default manifest.
 
-### Configure environment variables
+### Configure Environment Variables
 
 Add to the module `Dockerfile` environment variables
 
@@ -131,18 +132,18 @@ You might want to adjust these settings:
 
 Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availability zones.
 
-### Rebuild the module
+### Rebuild Module
 
 [Rebuild](/geodesic/module/) the module
 ```shell
 > make build
 ```
 
-When manifiest configured we can apply it with kops to spin up or update the cluster
+After building the manifest, we can apply it with kops to spin up or update the cluster.
 
-## Launch the cluster
+## Launch Cluster
 
-### Start the geodesic shell
+### Start Geodesic Shell
 
 Run the Geodesic shell.
 ```shell
@@ -153,13 +154,13 @@ Run the Geodesic shell.
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
 {{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
-### Create the cluster
+### Create Cluster
 
 Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
 
 {{% include-code-block title="Example" file="content/geodesic/module/examples/kops-create.txt" %}}
 
-### Add ssh keys
+### Add SSH Keys
 
 To add [ssh keys generated previously]({{< relref "geodesic/module/with-kops.md#provision-aws-kops-backend" >}}), run the following command to mount the s3 bucket containing the SSH keys and register the SSH public key with the cluster.
 
@@ -175,7 +176,7 @@ kops create secret sshpublickey admin \
 ```
 {{% /dialog %}}
 
-### Provision the cluster
+### Provision Cluster
 
 Run the following to provision the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
 
@@ -196,7 +197,7 @@ For more information, check out the following links:
 {{% /dialog %}}
 
 
-# Update a Cluster
+# Update Cluster
 
 Run `kops replace -f /conf/kops/manifest.yaml` to update the cluster. This will just update the cluster state in the S3 bucket, but not modify any of the underlying AWS resources for the cluster.
 

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
     {{if .Site.Params.themeStyle}}
       {{ partialCached (printf "%s/head.html" .Site.Params.themeStyle) . }}
     {{else}}
