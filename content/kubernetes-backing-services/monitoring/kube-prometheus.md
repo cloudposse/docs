@@ -110,7 +110,7 @@ grafana:
 ```
 * [Rebuild the Geodesic Module]({{< relref "geodesic/module/quickstart.md#build-install" >}})
 * [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
-* Continue from step [Install with Master Helmfile]({{< relref "#install-with-master-helmfile" >}})
+* Proceed to [Install using Master Helmfile]({{< relref "#install-using-master-helmfile" >}})
 
 ### Installation using Custom Helmfile
 
@@ -130,4 +130,4 @@ values:
   - "value.yaml"
 ```
 
-* Continue from step [Install with Custom Helmfile]({{< relref "#install-with-custom-helmfile" >}})
+* Proceed to [Install using Custom Helmfile]({{< relref "#install-using-custom-helmfile" >}})
