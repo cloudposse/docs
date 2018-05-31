@@ -15,9 +15,9 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 ## Provision IAM Role
 
-Create a file in `/conf/kops-aws-platform/external-dns.tf` with following content
+Create a file in `/conf/kops-aws-platform/external-dns.tf` with the following content
 
-{{% include-github title="External DNS IAM Role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.3" file="/aws/kops-aws-platform/external-dns.tf" language="hcl" %}}
+{{% include-github title="External DNS IAM Role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.5" file="/aws/kops-aws-platform/external-dns.tf" language="hcl" %}}
 
 ## Rebuild the Geodesic Module
 
@@ -69,7 +69,7 @@ You can install `external-dns` in a few different ways, but we recomend to use t
 ```
 chamber write kops EXTERNAL_DNS_IAM_ROLE example-staging-external-dns
 chamber write kops EXTERNAL_DNS_TXT_OWNER_ID us-west-2.staging.example.com
-chamber write kops EXTERNAL_DNS_TXT_PREFIX "$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)-"
+chamber write kops EXTERNAL_DNS_TXT_PREFIX "$(uuidgen)-"
 chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=external-dns sync
 ```
 {{% /dialog %}}
@@ -83,3 +83,24 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
+
+## Usage
+
+To leverage `external-dns`, you will need to add annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
+
+With these in place, then `kube-lego` will handle issuing of TLS certificates from Let's Encrypt and saving them to a
+Kubernetes secret specificied by the `tls` config parameter.
+
+Here are some examples:
+
+{{% include-code-block title="ingress.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-ingress.yaml" language="yaml" %}}
+
+{{% include-code-block title="values.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-values.yaml" language="yaml" %}}
+
+{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-helmfile.yaml" language="yaml" %}}
+
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+There is no unified specification on how to structure helm chart values. Different charts may have very different structures of the value parameters. The only way to know for sure what is supported is to refer to the chart manifests.
+
+The examples provided here are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
+{{% /dialog %}}

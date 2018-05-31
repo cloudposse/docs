@@ -1,8 +1,9 @@
 ---
 title: "Nginx Ingress Controller"
-description: ""
+description: "Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the Nginx configuration."
 ---
-Nginx Ingress Controller is a type of [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the nginx configuration.
+
+The Nginx Ingress Controller is a type of [Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) (think "Load Balancer") that uses a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the Nginx configuration.
 
 # Dependencies
 
@@ -10,21 +11,27 @@ None
 
 # Install
 
-You can install `nginx-ingress` in different ways, we recommend to use [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install the `nginx-ingress` controller in few different ways, but we recommend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
 
-## Install with Master Helmfile
+## Install using Master Helmfile
 
-Run the following command
-```shell
-helmfile -f /conf/kops/helmfile.yaml \
-    --selector namespace=kube-system,chart=nginx-ingress sync
+Follow these instructions:
+
+* If you're going to use [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}}), then set the `NGINX_INGRESS_HOSTNAME` environment variable to domain that will be used with [external-dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md#usage" >}})
+* Run `helmfile sync` with appropriate arguments to apply changes.
+
+{{% dialog type="code-block" icon="fa fa-code" title="Install Ingress" %}}
 ```
+chamber write kops NGINX_INGRESS_HOSTNAME ingress.us-west-2.staging.example.com
+chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=nginx-ingress sync
+```
+{{% /dialog %}}
 
-These environment variables are used to configure Nginx Ingress:
+These environment variables are supported by the Nginx Ingress in the Master Helmfile:
 
 * `NGINX_INGRESS_REPLICA_COUNT` - Nginx Ingress pod replica count
-* `NGINX_INGRESS_IMAGE_TAG` - version of [nginx ingress image](https://quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
-* `NGINX_INGRESS_BACKEND_REPLICA_COUNT` - Nginx Ingress default backend pod replica count
+* `NGINX_INGRESS_IMAGE_TAG` - Version of [`nginx-ingress` image](https://quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
+* `NGINX_INGRESS_BACKEND_REPLICA_COUNT` - Nginx default backend pod replica count
 * `NGINX_INGRESS_HOSTNAME` - Ingress hostname required by [external dns]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
 
 Environment variables can be specified in Geodesic Module `Dockerfile` or in [Chamber]({{< relref "tools/chamber.md" >}}) storage.
@@ -52,5 +59,5 @@ Here are some examples:
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests.
 
-Provided examples are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
+The examples provided here are based on the `stable/chartmuseum` chart https://github.com/kubernetes/charts/blob/master/stable/chartmuseum
 {{% /dialog %}}

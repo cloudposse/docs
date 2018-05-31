@@ -10,7 +10,7 @@ tags:
 - chart
 ---
 
-Kubernetes Nginx [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) controller is built around the [Kubernetes Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/) 
+Kubernetes Nginx [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) controller is built around the [Kubernetes Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) to store the Nginx configuration.
 
 Nginx [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) controller is deployed by [`nginx-ingress`](https://github.com/kubernetes/charts/tree/master/stable/nginx-ingress) [Helm chart]({{< relref "helm-charts/quickstart.md" >}}).
@@ -19,7 +19,7 @@ The `nginx-ingress` chart itself is deployed from the `geodesic` shell using the
 
 To scale Nginx Ingress pods horizontally, update the following settings for `nginx-ingress` in the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml):
 
-* `replicaCount` 
+* `replicaCount`
 * `nginx-default-backend.replicaCount`
 
-Then follow [`Install with Master Helmfile`]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md#install-with-master-helmfile" >}}) instructions to update the cluster with the new settings.
+Then follow the instructions to [`install using the Master Helmfile`]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md#install-using-master-helmfile" >}}) to update the cluster with the new settings.
