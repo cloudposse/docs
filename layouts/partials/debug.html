@@ -2,11 +2,11 @@
 <!-- https://github.com/kaushalmodi/ox-hugo/blob/master/test/site/themes/bare_min/layouts/partials/debug.html -->
 
 <!-- Usage examples:
-     {{/* partialCached "debug.html" .Params */}}
-     {{/* partialCached "debug.html" .Site */}}
-     {{/* partialCached "debug.html" .GitInfo */}}
-     {{/* partialCached "debug.html" .Resources */}}
-     {{/* partialCached "debug.html" .File */}}
+     {{/* partial "debug.html" .Params */}}
+     {{/* partial "debug.html" .Site */}}
+     {{/* partial "debug.html" .GitInfo */}}
+     {{/* partial "debug.html" .Resources */}}
+     {{/* partial "debug.html" .File */}}
   -->
 {{ $value              := . }}
 {{ $type               := (printf "%T" $value) }}
@@ -36,7 +36,7 @@
 {{ printf "%s" $value | safeHTML }}
 {{ else if $typeIsSlice }}
 {{ range $value }}
-{{ partialCached "debug.html" . }} <!-- Recursive call FTW! -->
+{{ partial "debug.html" . }} <!-- Recursive call FTW! -->
 {{ end }}
 {{ else if $typeIsMap }}
 {{ if (gt (len $value) 0) }}
@@ -49,12 +49,12 @@
   <!-- Print the date only if it is not at its initial value of Jan 1, 0001 -->
   {{ if (ne "0001-01-01" ($value1.Format "2006-01-02")) }}
   {{ printf "<tr><td class=\"key\">%s</td><td class=\"type\">%s</td><td class=\"value\">" $key1 $type1 | safeHTML }}
-      {{ partialCached "debug.html" $value1 }} <!-- Recursive call FTW! -->
+      {{ partial "debug.html" $value1 }} <!-- Recursive call FTW! -->
       {{ printf "</td></tr>" | safeHTML }}
   {{ end }}
   {{ else }}
   {{ printf "<tr><td class=\"key\">%s</td><td class=\"type\">%s</td><td class=\"value\">" $key1 $type1 | safeHTML }}
-      {{ partialCached "debug.html" $value1 }} <!-- Recursive call FTW! -->
+      {{ partial "debug.html" $value1 }} <!-- Recursive call FTW! -->
       {{ printf "</td></tr>" | safeHTML }}
   {{ end }}
   {{ end }}
@@ -69,7 +69,7 @@
     <tr><th class="key">SiteInfo Variable</th><th class="value">Value</th></tr>
     {{ range $idx, $elem := $siteVarNames }}
     {{ printf "<tr><td class=\"key\">%s</td><td class=\"value\">" $elem | safeHTML }}
-        {{ partialCached "debug.html" (index $siteVarSymbols $idx) }} <!-- Recursive call FTW! -->
+        {{ partial "debug.html" (index $siteVarSymbols $idx) }} <!-- Recursive call FTW! -->
         {{ printf "</td></tr>" | safeHTML }}
     {{ end }}
   </table>
@@ -80,7 +80,7 @@
     <tr><th class="key">GitInfo Variable</th><th class="value">Value</th></tr>
     {{ range $idx, $elem := $gitInfoVarNames }}
     {{ printf "<tr><td class=\"key\">%s</td><td class=\"value\">" $elem | safeHTML }}
-        {{ partialCached "debug.html" (index $gitInfoVarSymbols $idx) }} <!-- Recursive call FTW! -->
+        {{ partial "debug.html" (index $gitInfoVarSymbols $idx) }} <!-- Recursive call FTW! -->
         {{ printf "</td></tr>" | safeHTML }}
     {{ end }}
   </table>
@@ -91,7 +91,7 @@
     <tr><th class="key">OutputFormat Variable</th><th class="value">Value</th></tr>
     {{ range $idx, $elem := $OutputFormatVarNames }}
     {{ printf "<tr><td class=\"key\">%s</td><td class=\"value\">" $elem | safeHTML }}
-        {{ partialCached "debug.html" (index $OutputFormatVarSymbols $idx) }} <!-- Recursive call FTW! -->
+        {{ partial "debug.html" (index $OutputFormatVarSymbols $idx) }} <!-- Recursive call FTW! -->
         {{ printf "</td></tr>" | safeHTML }}
     {{ end }}
   </table>
@@ -102,7 +102,7 @@
     <tr><th class="key">Resource Variable</th><th class="value">Value</th></tr>
     {{ range $idx, $elem := $ResourceVarNames }}
     {{ printf "<tr><td class=\"key\">%s</td><td class=\"value\">" $elem | safeHTML }}
-        {{ partialCached "debug.html" (index $ResourceVarSymbols $idx) }} <!-- Recursive call FTW! -->
+        {{ partial "debug.html" (index $ResourceVarSymbols $idx) }} <!-- Recursive call FTW! -->
         {{ printf "</td></tr>" | safeHTML }}
     {{ end }}
   </table>
@@ -114,7 +114,7 @@
     <tr><th class="key">Page Variable</th><th class="value">Value</th></tr>
     {{ range $idx, $elem := $PageVarNames }}
     {{ printf "<tr><td class=\"key\">%s</td><td class=\"value\">" $elem | safeHTML }}
-        {{ partialCached "debug.html" (index $PageVarSymbols $idx) }} <!-- Recursive call FTW! -->
+        {{ partial "debug.html" (index $PageVarSymbols $idx) }} <!-- Recursive call FTW! -->
         {{ printf "</td></tr>" | safeHTML }}
     {{ end }}
   </table>
@@ -126,7 +126,7 @@
     <tr><th class="key">FileInfo Variable</th><th class="value">Value</th></tr>
     {{ range $idx, $elem := $FileInfoVarNames }}
     {{ printf "<tr><td class=\"key\">%s</td><td class=\"value\">" $elem | safeHTML }}
-        {{ partialCached "debug.html" (index $FileInfoVarSymbols $idx) }} <!-- Recursive call FTW! -->
+        {{ partial "debug.html" (index $FileInfoVarSymbols $idx) }} <!-- Recursive call FTW! -->
         {{ printf "</td></tr>" | safeHTML }}
     {{ end }}
   </table>
