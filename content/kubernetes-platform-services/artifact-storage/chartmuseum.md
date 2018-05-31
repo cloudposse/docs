@@ -1,0 +1,122 @@
+---
+title: "ChartMuseum"
+description: "Chartmuseum is an artifact storage for Helm charts."
+---
+
+[Chartmuseum](https://github.com/kubernetes-helm/chartmuseum) is an artifact storage
+for [Helm]({{< relref "tools/helm.md" >}}) charts.
+
+# Dependencies
+
+* [Kube2IAM]({{< relref "kubernetes-backing-services/iam/kube2iam.md" >}})
+* [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
+* [Kube Lego]({{< relref "kubernetes-backing-services/tls-management/kube-lego-lets-encrypt.md" >}})
+
+# Installation
+
+## Provision S3 Bucket and IAM Role
+
+Create a file in `/conf/kops-aws-platform/chart-repo.tf` with the following content
+
+{{% include-github title="Chartmuseum S3 bucket and IAM role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.5" file="/aws/kops-aws-platform/chart-repo.tf" language="hcl" %}}
+
+## Rebuild the Geodesic Module
+
+[Rebuild](/geodesic/module/) the module
+```shell
+> make build
+```
+
+##  Start the Geodesic Shell
+
+Run the Geodesic shell followed by `assume-role`
+```shell
+sh-3.2$ $CLUSTER_NAME
+```
+
+{{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
+
+Then login to AWS by running `assume-role`:
+
+{{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
+
+## Provision Chamber Resources
+
+Change directory to `/conf/kops-aws-platform` and run there commands to provision the `chart-repo` backend.
+```bash
+init-terraform
+terraform plan
+terraform apply
+```
+
+From the Terraform outputs, copy the following values to environment variables
+* `kops_chart_repo_bucket_bucket_id` -> `CHARTMUSEUM_STORAGE_AMAZON_BUCKET`
+* `kops_chart_repo_bucket_role_name` -> `CHARTMUSEUM_IAM_ROLE`
+
+{{% include-code-block title="terraform apply" file="kubernetes-platform-services/artifact-storage/examples/terraform-apply-chart-repo.txt" %}}
+
+In the example the bucket name is `kops_chart_repo_bucket_bucket_id = example-staging-chart-repo`.
+IAM role is `kops_chart_repo_bucket_role_name = example-staging-chart-repo`.
+
+## Install Chart
+
+To install the `chartmuseum`, you will need to define the `hostname`, which is the FQHN used to access the `chartmuseum`.
+
+In our example, we use `charts.us-west-2.staging.example.com` as the FQHN. Replace this with an appropriate value to suit your specific project.
+
+You can install `chartmuseum` in a few different ways, but we recommend using the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+
+### Install with Master Helmfile
+
+Master Helmfile provide two releases of chartmuseum:
+* `charts` - Chartmuseum that serve charts
+* `charts-api` - Chartmuseum that provide api gateway to publish charts.
+
+These releases shares the same environment variables.
+`charts-api` gateway would be available on subdomain `api` for FQHN.
+In our example it would `api.charts.us-west-2.staging.example.com`.
+
+To install releases follow these instructions:
+1. Set the `CHARTMUSEUM_STORAGE_AMAZON_BUCKET` secret with chamber to copied from output value
+2. Set the `CHARTMUSEUM_STORAGE_AMAZON_REGION` secret with chamber
+3. Set the `CHARTMUSEUM_IAM_ROLE` secret with chamber to copied from output value
+4. Set the `CHARTMUSEUM_INGRESS` secret with chamber provided by [Nginx ingress]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}})
+5. Set the `CHARTMUSEUM_HOSTNAME` secret with chamber
+6. Run command `helmfile sync` to install `chartmuseum`.
+
+{{% dialog type="code-block" icon="fa fa-code" title="Install chartmuseum" %}}
+```
+chamber write kops CHARTMUSEUM_STORAGE_AMAZON_BUCKET example-staging-chart-repo
+chamber write kops CHARTMUSEUM_STORAGE_AMAZON_REGION us-west-2
+chamber write kops CHARTMUSEUM_IAM_ROLE example-staging-chart-repo
+chamber write kops CHARTMUSEUM_INGRESS ingress.us-west-2.staging.example.com
+chamber write kops CHARTMUSEUM_HOSTNAME charts.us-west-2.staging.example.com
+chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=chartmuseum sync
+chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=chartmuseum-api sync
+```
+{{% /dialog %}}
+
+These are some of the environment variables you may want to configure:
+
+* `CHARTMUSEUM_BASIC_AUTH_USER` - HTTP basic authenticate username
+* `CHARTMUSEUM_BASIC_AUTH_PASS` - HTTP basic authenticate password
+* `CHARTMUSEUM_API_BASIC_AUTH_USER` - HTTP basic authenticate username for `charts-api`
+* `CHARTMUSEUM_API_BASIC_AUTH_PASS` - HTTP basic authenticate password for `charts-api`
+* `CHARTMUSEUM_SECRET_NAME` - Secret name to store TLS generated with [Kube Lego]({{< relref "kubernetes-backing-services/tls-management/kube-lego-lets-encrypt.md" >}})
+* `CHARTMUSEUM_API_SECRET_NAME` - Secret name to store TLS generated with [Kube Lego]({{< relref "kubernetes-backing-services/tls-management/kube-lego-lets-encrypt.md" >}}) for `charts-api`
+* `CHARTMUSEUM_STORAGE_AMAZON_PREFIX` - Prefix path to store charts in S3 bucket
+
+Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
+
+### Install with Custom Helmfile
+
+Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+
+{{% include-code-block  title="helmfile.yaml" file="kubernetes-platform-services/artifact-storage/examples/chart-repo-helmfile.yaml" language="yaml" %}}
+
+Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
+
+# Usage
+
+Read [chart museum documentation](https://github.com/kubernetes-helm/chartmuseum)
+to get usage info.
