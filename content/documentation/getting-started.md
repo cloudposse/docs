@@ -1,0 +1,103 @@
+---
+title: Getting Started with Cloud Posse
+description: >-
+  This page will help you get started with Cloud Posse. You'll be up and running
+  in a jiffy!
+---
+
+# Geodesic
+
+1. Get familiar with the [geodesic design].
+2. Create [geodesic modules]() anywhere you want to logically organize infrastructure code-climate
+3. Get intimately familiar with docker inheritance and [multi-state docker builds]. We use this pattern extensively.
+3. Check out our [terraform-root-modules] for reference architectures to easily provision infrastructure
+
+# Local Development
+
+* Get your [local environment] setup
+* Make sure you're familiar with `make` and `Makefiles` because we use them extensively
+* Docker compose
+* Docker composition mono-repo strategy
+*
+
+# Kubernetes
+
+Kubernetes is a massive part of our documentation. All of our documentation is geared towards leveraging `kops` by way of our `geodesic` strategy.
+
+## Helm
+
+Helm is central to how we deploy all services on kubernetes.
+
+* [helm] is essentially the package manager for Kubernetes
+* [helm charts] are how kubernetes resources are templatized using go templates
+* [helm repositories] are used to store helm charts, which are essentially tarball artifacts.
+* [chartmuseum] is deployed as the chart repository
+* [helmfiles] are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
+* [chamber] is used to manage secrets and provide them when provisioning with `helmfile`
+
+## CI/CD with Codefresh
+
+* Learn how codefresh is integrated with kubernetes
+* Our [build-harness] is used to distribute build tools used as part of the build steps
+* We use some terraform modules to provision resources for codefresh like a chamber user
+*
+
+## Backing Services
+
+## Platform Services
+
+# Terraform
+* Get started quickly by referencing our [terraform-root-modules]()
+
+
+## Terraform Modules
+
+
+# Monitoring
+
+Our monitoring documentation focuses on implementing
+
+
+# Load Testing
+
+After you've gotten familiar with how monitoring is working, load testing becomes more interesting. By following our load-testing methodology, you're able to put services and clusters under durress.
+
+
+
+# Secrets
+
+
+
+# Tools
+
+Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
+
+* Geodesic bundles most of these tools as part of the geodesic base image
+* Our [packages] repo provides an embeddable `Makefile` system for installing packages in other contexts (e.g. `build-harness`)
+
+Here are some of the most important tools to be aware of:
+
+- chamber
+- terraform
+- gomplate
+- kops
+- aws-vault
+-
+
+# Contributing Back
+
+Everything we provide on our [GitHub](https://github.com/cloudposse/) wouldn't have been possible if it weren't for our [phenomenal customers](https://cloudposse.com/) and the support of the [community](https://cloudposse.com/slack/) contributing bugfixes, [filing issues](https://github.com/search?q=org%3Acloudposse+type%3Aissue) and submitting a steady stream of [Pull Requests](https://github.com/search?q=org%3Acloudposse+type%3Apr).
+
+We welcome any Terraform module submissions, Helm charts, and generally any other useful tools that others could benefit from. Our only requirement is that they be licensed under `APACHE2`.
+
+Drop us a line at [hello@cloudposse.com](mailto:hello@cloudposse.com) to get in touch with us about contributing.
+
+# Getting Help
+
+* Check out our [FAQ](/faq/) which is also fully indexed by our Algolia search available on the [homepage](/).
+* Review our [glossary](/glossary/) if there are any terms that are confusing.
+* File issues anywhere you find the documentation lacking by going to our [docs repo](https://github.com/cloudposse/docs).
+* Join our [Slack Community](https://cloudposse.com/slack/) and speak directly with the maintainers
+* We provide "white glove" DevOps support. [Get in touch]({{< relref "documentation/contact-us.md" >}}) with us today!
+* [Schedule Time](https://calendly.com/cloudposse/) with us.
+*
