@@ -1,0 +1,25 @@
+env:
+  secret:
+    API_KEY: "$APP_API_KEY"
+    SERVICE_KEY: "$APP_SERVICE_KEY"
+resources:
+  limits:
+    cpu: 300m
+    memory: 4128Mi
+  requests:
+    cpu: 150m
+    memory: 1024Mi
+persistence:
+  Size: 500Gi
+ingress:
+ - name: default
+   annotations:
+     kubernetes.io/ingress.class: nginx
+     kubernetes.io/tls-acme: "true"
+     ingress.annotations.external-dns.alpha.kubernetes.io/target: "$EXTERNAL_DNS_ALPHA_KUBERNETES_IO_TARGET"
+   hosts:
+     $INGRESS_HOST: /
+   tls:
+   - secretName: app-external-ssl
+     hosts:
+     - $INGRESS_HOST
