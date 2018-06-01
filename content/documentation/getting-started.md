@@ -8,7 +8,7 @@ description: >-
 # Geodesic
 
 1. Get familiar with the [geodesic design].
-2. Create [geodesic modules]() anywhere you want to logically organize infrastructure code-climate
+2. Create [geodesic modules]() anywhere you want to logically organize infrastructure as code.
 3. Get intimately familiar with docker inheritance and [multi-state docker builds]. We use this pattern extensively.
 3. Check out our [terraform-root-modules] for reference architectures to easily provision infrastructure
 
@@ -47,10 +47,14 @@ Helm is central to how we deploy all services on kubernetes.
 ## Platform Services
 
 # Terraform
+
+* Study up on our [Best Practices] for working with terraform
 * Get started quickly by referencing our [terraform-root-modules]()
 
 
 ## Terraform Modules
+
+* Review our [Best Practices] for working with Terraform Modules.
 
 
 # Monitoring
