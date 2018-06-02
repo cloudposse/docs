@@ -7,18 +7,17 @@ description: >-
 
 # Geodesic
 
-1. Get familiar with the [geodesic design].
-2. Create [geodesic modules]() anywhere you want to logically organize infrastructure as code.
-3. Get intimately familiar with docker inheritance and [multi-state docker builds]. We use this pattern extensively.
-3. Check out our [terraform-root-modules] for reference architectures to easily provision infrastructure
+1. Get familiar with the [geodesic design]({{< relref "geodesic/design.md" >}}).
+2. Create [geodesic modules](/geodesic/module/}}) anywhere you want to logically organize infrastructure as code.
+3. Get intimately familiar with docker inheritance and [multi-stage docker builds]. We use this pattern extensively.
+3. Check out our [terraform-root-modules](https://github.com/cloudposse/terraform-root-modules) for reference architectures to easily provision infrastructure
 
 # Local Development
 
-* Get your [local environment] setup
-* Make sure you're familiar with `make` and `Makefiles` because we use them extensively
-* Docker compose
-* Docker composition mono-repo strategy
-*
+1. Get your [local environment] setup
+2. Make sure you're familiar with `make` and `Makefiles` because we use them extensively
+3. Review Docker compose
+4. Docker composition mono-repo strategy
 
 # Kubernetes
 
@@ -28,33 +27,60 @@ Kubernetes is a massive part of our documentation. All of our documentation is g
 
 Helm is central to how we deploy all services on kubernetes.
 
-* [helm] is essentially the package manager for Kubernetes
+* [helm]({{< relref "tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
 * [helm charts] are how kubernetes resources are templatized using go templates
+* [helm charts quickstart]({{< relref "helm-charts/quickstart.md"}}) is our "cheatsheet" for getting started with Helm Charts.
 * [helm repositories] are used to store helm charts, which are essentially tarball artifacts.
-* [chartmuseum] is deployed as the chart repository
-* [helmfiles] are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
-* [chamber] is used to manage secrets and provide them when provisioning with `helmfile`
+* [chartmuseum]({{< relref "kubernetes-platform-services/artifact-storage/chartmuseum.md">}}) is deployed as the chart repository
+* [helmfiles]({{< relref "tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
+* [chamber]({{< relref "tools/chamber.md">}}) is used to manage secrets and provide them when provisioning with `helmfile`. It's also a big part of our overall story on [secrets management](/secrets-management/)
 
 ## CI/CD with Codefresh
 
-* Learn how codefresh is integrated with kubernetes
-* Our [build-harness] is used to distribute build tools used as part of the build steps
+* Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md">}}) is integrated with kubernetes
+* Our [build-harness]({{< relref "release-engineering/build-harness.md">}}) is used to distribute build tools used as part of the build steps
 * We use some terraform modules to provision resources for codefresh like a chamber user
-*
+* Deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}})
 
 ## Backing Services
 
 ## Platform Services
 
+## Optimization
+
+Inevitably as your adopton of Kubernetes grows, so will the need to optimize it's performance. We've documented some of the best ways to get started.
+
+* [Scale Cluster Horizontally]({{< relref "kubernetes-optimization/scale-cluster-horizontally.md" >}}) - Scale Kubernetes cluster horizontally by adding nodes
+* [Scale Cluster Vertically]({{< relref "kubernetes-optimization/scale-cluster-vertically.md" >}}) - Scale Kubernetes cluster vertically by using different types of EC2 instances
+* [Scale Pods Horizontally]({{< relref "kubernetes-optimization/scale-pods-horizontally.md" >}}) - Scale Kubernetes pods horizontally by increasing the replica count
+* [Scale Pods Vertically]({{< relref "kubernetes-optimization/scale-pods-vertically.md" >}}) - Scale Kubernetes pods vertically by increasing CPU and Memory limits
+* [Scale Nginx Ingress Horizontally]({{< relref "kubernetes-optimization/scale-nginx-ingress-horizontally.md" >}}) - Scale Nginx Ingress pods horizontally by increasing the replica count
+* [Scale Nginx Ingress Vertically]({{< relref "kubernetes-optimization/scale-nginx-ingress-vertically.md" >}}) - Scale Nginx Ingress vertically by increasing CPU and Memory limits
+* [Tune Nginx]({{< relref "kubernetes-optimization/tune-nginx.md" >}}) - Tune Nginx parameters (timeouts, worker processes, logs, http)
+* [Optimize databases]({{< relref "kubernetes-optimization/optimize-database-indexes.md" >}}) - Optimize database queries and indexes
+
 # Terraform
 
-* Study up on our [Best Practices] for working with terraform
+* Study up on our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with terraform.
 * Get started quickly by referencing our [terraform-root-modules]()
-
 
 ## Terraform Modules
 
-* Review our [Best Practices] for working with Terraform Modules.
+* Review our [Best Practices]({{< relref "terraform-modules/best-practices.md"}}) for working with Terraform modules.
+
+We provide a staggering number of Terraform modules in our GitHub. This number is growing every week and we're also [accepting module contributions]({{< relref "documentation/our-github.md#contributing" >}}).
+
+Our modules are broken down in to specific areas of concern:
+
+- Backups
+- CI/CD
+- CDN
+- Kubernetes (kops)
+- Logging
+- Monitoring
+- Networking
+- Platform
+- Security
 
 
 # Monitoring
@@ -65,8 +91,6 @@ Our monitoring documentation focuses on implementing
 # Load Testing
 
 After you've gotten familiar with how monitoring is working, load testing becomes more interesting. By following our load-testing methodology, you're able to put services and clusters under durress.
-
-
 
 # Secrets
 
@@ -81,12 +105,17 @@ Tons of tools/clis are used as part of our solution. We distribute these tools i
 
 Here are some of the most important tools to be aware of:
 
-- chamber
-- terraform
-- gomplate
-- kops
-- aws-vault
--
+- `make`
+- `chamber`
+- `terraform`
+- `gomplate`
+- `aws-vault`
+
+If using kubernetes, then also review these tools:
+
+- `kops`
+- `helm`
+- `helmfile`
 
 # Contributing Back
 

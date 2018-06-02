@@ -10,17 +10,20 @@ We help companies achieve success in the cloud by automating systems for maximum
 
 # Hire us!
 
-|                |                                                            |
-|:-------------- |:---------------------------------------------------------- |
-| Email          | [hello@cloudposse.com](mailto:hello@cloudposse.com)         |
-| Website        | <https://cloudposse.com>                                   |
-| GitHub         | <https://github.com/cloudposse>                            |
-| Office Address | 45 S. Arroyo Parkway, Pasadena, CA 91105                   |
-| Schedule Time  | [calendly.com/cloudposse](https://calendly.com/cloudposse) |
-| Call           | +1 (310) 496-6556                                          |
+|                |                                                                                 |
+|:-------------- |:------------------------------------------------------------------------------- |
+| Email          | [hello@cloudposse.com](mailto:hello@cloudposse.com)                             |
+| Website        | <https://cloudposse.com>                                                        |
+| GitHub         | <https://github.com/cloudposse>                                                 |
+| Office Address | 45 S. Arroyo Parkway, Pasadena, CA 91105                                        |
+| Schedule Time  | [calendly.com/cloudposse](https://calendly.com/cloudposse)                      |
+| Call Us        | +1 (310) 496-6556                                                               |
+| Slack          | [`#community`](https://cloudposse.com/slack/)                                   |
+| Twitter        | [twitter.com/cloudposse](https://twitter.com/cloudposse)                        |
+| LinkedIn       | [linkedin.com/company/cloudposse](https://www.linkedin.com/company/cloudposse/) |
 
 # Partnership Opportunities
 
-Cloud Posse welcomes all partnership inquiries, including partnerships with other DevOps practicioners, freelancers and consultancies.
+Cloud Posse welcomes all partnership inquiries, including partnerships with other DevOps practicioners, freelancers and consultancies who want to leverage our methodologies with their customers.
 
 Please drop us a line at <[hello@cloudposse.com](mailto:hello@cloudposse.com)>.
