@@ -1,0 +1,128 @@
+.dialog {
+  border-left: 4px solid $red;
+  padding-top: 13px;
+  padding-bottom: 1px;
+  padding-left: 23px;
+  margin-left: 0;
+  margin-bottom: 3em;
+  color: $black_50;
+
+  p {
+    font-size: 14px;
+    padding-left: 22px;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  h4 {
+    margin-bottom: 0;
+    margin-top: 2px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .fa {
+    pointer-events: none;
+    font-size: 18px;
+    opacity: .3;
+    filter: alpha(opacity=30);
+    margin-right: 6px;
+    position: relative;
+    top: 1px;
+  }
+
+  &.info {
+    background-color: $color_mystic_approx;
+    border-color: $color_viking_approx;
+
+    h4 {
+      color: $color_viking_approx;
+    }
+
+    a {
+      background-color: $color_mystic_approx;
+      border-color: $color_viking_approx;
+    }
+  }
+
+  &.important {
+    background-color: $color_vista_white_approx;
+    border-color: $color_chestnut_rose_approx;
+
+    h4 {
+      color: $color_chestnut_rose_approx;
+    }
+
+    a {
+      background-color: $color_vista_white_approx;
+      border-color: $color_chestnut_rose_approx;
+    }
+  }
+
+  &.warning {
+    background-color: $color_bianca_approx;
+    border-color: $color_casablanca_approx;
+
+    h4 {
+      color: $color_casablanca_approx;
+    }
+
+    a {
+      background-color: $color_bianca_approx;
+      border-color: $color_casablanca_approx;
+    }
+  }
+
+  &.tip {
+    background-color: $color_mystic_approx;
+    border-color: $color_viking_approx;
+
+    h4 {
+      color: $color_viking_approx;
+    }
+
+    a {
+      background-color: $color_mystic_approx;
+      border-color: $color_viking_approx;
+    }
+  }
+
+  &.code-block {
+    width: 100%;
+    padding-left: 0;
+    margin-left: 0;
+    border-left: 0;
+    padding-top: 0;
+    position: relative;
+    left: -4rem;
+    width: 113%;
+    @extend %extend_5;
+
+    pre {
+      margin: 0;
+      padding: 5px 13px;
+      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      border-radius: 0;
+    }
+
+    h4 {
+      line-height: 2em;
+      font-size: 15px;
+      color: $color_mine_shaft_approx;
+      background-color: $color_gray_nurse_approx;
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    a {
+      @extend %extend_5;
+    }
+  }
+}

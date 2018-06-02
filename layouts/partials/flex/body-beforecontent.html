@@ -1,10 +1,10 @@
-<header>
-  <div class="logo">
+<header class="header">
+  <div class="logo header__logo">
     <a href="/"><img src="/images/logo.png" id="header-logo" /></a>
   </div>
-  <div class="burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
+  <div class="burger header__burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
   {{- with .Site.Menus.shortcuts}}
-    <nav class="shortcuts">
+    <nav class="shortcuts header__shortcuts">
         {{- range sort . "Weight"}}
             <li id="{{ .Identifier }}" class="" role="">
                 <a href="{{.URL}}" {{if eq $.Site.Params.menushortcutsnewtab true}}target="_blank"{{end}} rel="noopener">
@@ -17,7 +17,7 @@
 </header>
 {{if .IsHome}}
 <div class="landing-top">
-  <div class="landing-description">
+  <div class="landing-top__description">
     <img src="/images/cloud.png" class="whitish cloud"/>
     <h1>The Cloud Posse Developer Hub</h1>
     <div class="about">
