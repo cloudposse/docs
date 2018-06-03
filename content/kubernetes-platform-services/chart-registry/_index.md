@@ -1,6 +1,5 @@
 ---
-title: "Artifact Storage"
+title: "Chart Storage"
 description: ""
 weight: 2
-draft: true
 ---

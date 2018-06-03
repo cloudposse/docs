@@ -8,7 +8,7 @@ description: >-
 # Geodesic
 
 1. Get familiar with the [geodesic design]({{< relref "geodesic/design.md" >}}).
-2. Create [geodesic modules](/geodesic/module/}}) anywhere you want to logically organize infrastructure as code.
+2. Create [geodesic modules](/geodesic/module/) anywhere you want to logically organize infrastructure as code.
 3. Get intimately familiar with docker inheritance and [multi-stage docker builds]. We use this pattern extensively.
 3. Check out our [terraform-root-modules](https://github.com/cloudposse/terraform-root-modules) for reference architectures to easily provision infrastructure
 
@@ -30,7 +30,7 @@ Helm is central to how we deploy all services on kubernetes.
 * [helm]({{< relref "tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
 * [helm charts](/helm-charts/) are how kubernetes resources are templatized using go templates
 * [helm charts quickstart]({{< relref "helm-charts/quickstart.md" >}}) is our "cheatsheet" for getting started with Helm Charts.
-* [helm repositories] are used to store helm charts, which are essentially tarball artifacts.
+* [helm registries](/kubernetes-platform-services/chart-registry/) are used to store helm charts, which are essentially tarball artifacts.
 * [chartmuseum]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md">}}) is deployed as the chart repository
 * [helmfiles]({{< relref "tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
 * [chamber]({{< relref "tools/chamber.md">}}) is used to manage secrets and provide them when provisioning with `helmfile`. It's also a big part of our overall story on [secrets management](/secrets-management/)
