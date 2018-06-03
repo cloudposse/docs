@@ -14,10 +14,10 @@ description: >-
 
 # Local Development
 
-1. Get your [local environment] setup
-2. Make sure you're familiar with `make` and `Makefiles` because we use them extensively
+1. Get your [local environment](/local-dev-environments/) setup
+2. Make sure you're familiar with [`make`](/tools/make/) and [`Makefiles`]({{< relref "tools/make/makefile-examples.md" >}}) because we use them extensively for "executable documentation".
 3. Review Docker compose
-4. Docker composition mono-repo strategy
+4. Docker composition monorepo strategy
 
 # Kubernetes
 
@@ -28,16 +28,16 @@ Kubernetes is a massive part of our documentation. All of our documentation is g
 Helm is central to how we deploy all services on kubernetes.
 
 * [helm]({{< relref "tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
-* [helm charts] are how kubernetes resources are templatized using go templates
-* [helm charts quickstart]({{< relref "helm-charts/quickstart.md"}}) is our "cheatsheet" for getting started with Helm Charts.
+* [helm charts](/helm-charts/) are how kubernetes resources are templatized using go templates
+* [helm charts quickstart]({{< relref "helm-charts/quickstart.md" >}}) is our "cheatsheet" for getting started with Helm Charts.
 * [helm repositories] are used to store helm charts, which are essentially tarball artifacts.
-* [chartmuseum]({{< relref "kubernetes-platform-services/artifact-storage/chartmuseum.md">}}) is deployed as the chart repository
+* [chartmuseum]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md">}}) is deployed as the chart repository
 * [helmfiles]({{< relref "tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
 * [chamber]({{< relref "tools/chamber.md">}}) is used to manage secrets and provide them when provisioning with `helmfile`. It's also a big part of our overall story on [secrets management](/secrets-management/)
 
 ## CI/CD with Codefresh
 
-* Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md">}}) is integrated with kubernetes
+* Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md" >}}) is integrated with kubernetes
 * Our [build-harness]({{< relref "release-engineering/build-harness.md">}}) is used to distribute build tools used as part of the build steps
 * We use some terraform modules to provision resources for codefresh like a chamber user
 * Deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}})
@@ -62,11 +62,11 @@ Inevitably as your adopton of Kubernetes grows, so will the need to optimize it'
 # Terraform
 
 * Study up on our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with terraform.
-* Get started quickly by referencing our [terraform-root-modules]()
+* Get started quickly by referencing our [terraform-root-modules](/terraform-modules/root/)
 
 ## Terraform Modules
 
-* Review our [Best Practices]({{< relref "terraform-modules/best-practices.md"}}) for working with Terraform modules.
+* Review our [Best Practices]({{< relref "terraform-modules/best-practices.md" >}}) for working with Terraform modules.
 
 We provide a staggering number of Terraform modules in our GitHub. This number is growing every week and we're also [accepting module contributions]({{< relref "documentation/our-github.md#contributing" >}}).
 
@@ -82,11 +82,9 @@ Our modules are broken down in to specific areas of concern:
 - Platform
 - Security
 
-
 # Monitoring
 
 Our monitoring documentation focuses on implementing
-
 
 # Load Testing
 
@@ -101,7 +99,7 @@ After you've gotten familiar with how monitoring is working, load testing become
 Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
 
 * Geodesic bundles most of these tools as part of the geodesic base image
-* Our [packages] repo provides an embeddable `Makefile` system for installing packages in other contexts (e.g. `build-harness`)
+* Our [packages repo]({{< relref "tools/packages.md" >}}) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`]({{< relref "release-engineering/build-harness.md" >}})). This can also be used for local ("native") development contexts.
 
 Here are some of the most important tools to be aware of:
 
