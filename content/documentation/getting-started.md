@@ -125,10 +125,14 @@ Drop us a line at [hello@cloudposse.com](mailto:hello@cloudposse.com) to get in 
 
 # Getting Help
 
-* Check out our [FAQ](/faq/) which is also fully indexed by our Algolia search available on the [homepage](/).
-* Review our [glossary](/glossary/) if there are any terms that are confusing.
-* File issues anywhere you find the documentation lacking by going to our [docs repo](https://github.com/cloudposse/docs).
-* Join our [Slack Community](https://cloudposse.com/slack/) and speak directly with the maintainers
-* We provide "white glove" DevOps support. [Get in touch]({{< relref "documentation/contact-us.md" >}}) with us today!
-* [Schedule Time](https://calendly.com/cloudposse/) with us.
-*
+Check out our [FAQ](/faq/) which is also fully indexed by our Algolia search available on the [homepage](/).
+
+Review our [glossary](/glossary/) if there are any terms that are confusing.
+
+File issues anywhere you find the documentation lacking by going to our [docs repo](https://github.com/cloudposse/docs).
+
+Join our [Slack Community](https://cloudposse.com/slack/) and speak directly with the maintainers
+
+We provide "white glove" DevOps support. [Get in touch]({{< relref "documentation/contact-us.md" >}}) with us today!
+
+[Schedule Time](https://calendly.com/cloudposse/) with us.
