@@ -56,8 +56,12 @@ header nav.shortcuts {
   margin-left: 3vw;
 }
 
-a, section a {
+a {
   color: #364548;
+}
+
+section a {
+  color: #618c8c;
 }
 
 a:hover {
@@ -635,6 +639,7 @@ div.landing-top {
 div.landing-top h1 {
   font-size: 30px;
   font-weight: normal;
+  line-height: 1.1em;
 }
 
 div.landing-description {
