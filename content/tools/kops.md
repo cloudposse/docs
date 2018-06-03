@@ -3,6 +3,8 @@ title: Kops
 description: 'Kops is the primary tool used by geodesic to provision kubernetes clusters'
 ---
 
+{{< img src="/assets/kops-34fa3aad.png" title="Kops" >}}
+
 # Quick Start
 
 These instructions are based on [Geodesic](/geodesic), which is a cluster shell that contains a mashup of tools like `kops`, `terraform`, `kubectl`.

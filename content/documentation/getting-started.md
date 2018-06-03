@@ -48,7 +48,7 @@ Helm is central to how we deploy all services on kubernetes.
 
 ## Optimization
 
-Inevitably as your adopton of Kubernetes grows, so will the need to optimize it's performance. We've documented some of the best ways to get started.
+Inevitably, at some point comes the time when you will need to optimize performance. We've documented some of the best ways to get started.
 
 * [Scale Cluster Horizontally]({{< relref "kubernetes-optimization/scale-cluster-horizontally.md" >}}) - Scale Kubernetes cluster horizontally by adding nodes
 * [Scale Cluster Vertically]({{< relref "kubernetes-optimization/scale-cluster-vertically.md" >}}) - Scale Kubernetes cluster vertically by using different types of EC2 instances
@@ -72,8 +72,8 @@ We provide a staggering number of Terraform modules in our GitHub. This number i
 
 Our modules are broken down in to specific areas of concern:
 
-- Backups
-- CI/CD
+- [Backups](/terraform-modules/backups/)
+- [CI/CD](/terraform-modules/cicd/)
 - CDN
 - Kubernetes (kops)
 - Logging
@@ -93,7 +93,6 @@ After you've gotten familiar with how monitoring is working, load testing become
 # Secrets
 
 
-
 # Tools
 
 Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
@@ -103,17 +102,17 @@ Tons of tools/clis are used as part of our solution. We distribute these tools i
 
 Here are some of the most important tools to be aware of:
 
-- `make`
-- `chamber`
-- `terraform`
-- `gomplate`
-- `aws-vault`
+- [`make`](/tools/make/)
+- [`chamber`]({{< relref "tools/chamber.md" >}})
+- [`terraform`]
+- [`gomplate`]({{< relref "tools/gomplate.md" >}})
+- [`aws-vault`]({{< relref "tools/aws-vault.md" >}})
 
 If using kubernetes, then also review these tools:
 
-- `kops`
-- `helm`
-- `helmfile`
+- [`kops`]({{< relref "tools/kops.md" >}})
+- [`helm`]({{< relref "tools/helm.md" >}})
+- [`helmfile`]({{< relref "tools/helmfile.md" >}})
 
 # Contributing Back
 
