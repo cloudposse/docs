@@ -6,7 +6,7 @@ tags:
 - installer
 ---
 
-"Packages" is the Cloud Posse distribution of native apps. Use this repo to easily install binary releases of popular apps. This is useful for inclusion into a Dockerfile to install dependencies.
+"Packages" is the Cloud Posse distribution of native apps. Use this repo to easily install binary releases of popular apps such as all of our [standard tools](/tools/). This is useful for inclusion into a Dockerfile to install dependencies.
 
 ## Usage
 
