@@ -49,11 +49,17 @@ Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integ
 
 ## Backing Services
 
+*Coming Soon*
+
 ## Platform Services
+
+*Coming Soon*
 
 ## Optimization
 
 Inevitably, at some point comes the time when you will need to optimize performance. We've documented some of the best ways to get started.
+
+First, make sure you're familiar with kubernetes [resource management]({{< relref "kubernetes/resource-management.md"}}).
 
 * [Scale Cluster Horizontally]({{< relref "kubernetes-optimization/scale-cluster-horizontally.md" >}}) - Scale Kubernetes cluster horizontally by adding nodes
 * [Scale Cluster Vertically]({{< relref "kubernetes-optimization/scale-cluster-vertically.md" >}}) - Scale Kubernetes cluster vertically by using different types of EC2 instances
@@ -97,6 +103,7 @@ After you've gotten familiar with how monitoring is working, load testing become
 
 # Secrets
 
+*Coming Soon*
 
 # Tools
 
