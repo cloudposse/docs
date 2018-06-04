@@ -1,9 +1,11 @@
 ---
 title: "Hugo Static Site Generator"
 description: "Hugo is one of the most popular open-source static site generators."
+tags:
+- tools
 ---
 
-{{< img src="/assets/hugo-7303d89d.png" title="Hugo Static Site Generator" >}}
+{{< img src="/assets/hugo-7303d89d.png" title="Hugo Static Site Generator" class="logo" >}}
 
 [Hugo](https://gohugo.io/) is one of the most popular open-source static site generators. It also happens to be a rediculously fast framework for building static websites. We use it to build [our documentation](https://github.com/cloudposse/docs/).
 

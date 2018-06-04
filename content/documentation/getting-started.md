@@ -7,10 +7,13 @@ description: >-
 
 # Geodesic
 
-1. Get familiar with the [geodesic design]({{< relref "geodesic/design.md" >}}).
-2. Create [geodesic modules](/geodesic/module/) anywhere you want to logically organize infrastructure as code.
-3. Get intimately familiar with docker inheritance and [multi-stage docker builds]. We use this pattern extensively.
-3. Check out our [terraform-root-modules](https://github.com/cloudposse/terraform-root-modules) for reference architectures to easily provision infrastructure
+Start with getting familiar with the [geodesic design]({{< relref "geodesic/design.md" >}}).
+
+Create [geodesic modules](/geodesic/module/) anywhere you want to logically organize infrastructure as code.
+
+Get intimately familiar with docker inheritance and [multi-stage docker builds]({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}}). We use this pattern extensively.
+
+Check out our [terraform-root-modules](https://github.com/cloudposse/terraform-root-modules) for reference architectures to easily provision infrastructure
 
 # Local Development
 
@@ -21,7 +24,7 @@ description: >-
 
 # Kubernetes
 
-Kubernetes is a massive part of our documentation. All of our documentation is geared towards leveraging `kops` by way of our `geodesic` strategy.
+Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging [`kops`]({{< relref "tools/kops.md" >}}) by way of our `geodesic` strategy.
 
 ## Helm
 
@@ -34,11 +37,13 @@ Helm is central to how we deploy all services on kubernetes.
 * [chartmuseum]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md">}}) is deployed as the chart repository
 * [helmfiles]({{< relref "tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
 * [chamber]({{< relref "tools/chamber.md">}}) is used to manage secrets and provide them when provisioning with `helmfile`. It's also a big part of our overall story on [secrets management](/secrets-management/)
+* [rollbacks]({{< relref "faq/how-to-perform-rollbacks.md" >}})
+
 
 ## CI/CD with Codefresh
 
-* Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md" >}}) is integrated with kubernetes
-* Our [build-harness]({{< relref "release-engineering/build-harness.md">}}) is used to distribute build tools used as part of the build steps
+Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md" >}}) is integrated with kubernetes. Codefresh runs docker containers for each build step. We provide a dockerized [build-harness]({{< relref "release-engineering/build-harness.md">}}) to distribute common build tools that we use as part of the build steps in the `codefresh.yml`.
+
 * We use some terraform modules to provision resources for codefresh like a chamber user
 * Deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}})
 
@@ -74,13 +79,13 @@ Our modules are broken down in to specific areas of concern:
 
 - [Backups](/terraform-modules/backups/)
 - [CI/CD](/terraform-modules/cicd/)
-- CDN
-- Kubernetes (kops)
-- Logging
-- Monitoring
-- Networking
-- Platform
-- Security
+- [CDN](/terraform-modules/cdn/)
+- [Kubernetes (kops)](/terraform-modules/kops-kubernetes/)
+- [Logging](/terraform-modules/logging/)
+- [Monitoring](/terraform-modules/monitoring/)
+- [Networking](/terraform-modules/networking/)
+- [Platform](/terraform-modules/platform/)
+- [Security](/terraform-modules/security/)
 
 # Monitoring
 

@@ -45,9 +45,7 @@ At its core, Geodesic is a framework for provisioning cloud infrastructure and t
 
 | Tool                                                                 | Purpose                                                                                                                     |
 |:---------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------|
-| [`ansible`](http://docs.ansible.com/ansible/latest/index.html)       | for automating configuration management. It can configure systems, deploy software, and orchestrate more advanced IT tasks. |
 | [`goofys`](https://github.com/kahing/goofys/)                        | for mounting encrypted S3 buckets that store cluster configurations and secrets                                             |
-| [`packer`](https://github.com/hashicorp/packer/)                     | for creating identical machine images for multiple platforms                                                                |
 | [`terraform`](https://github.com/hashicorp/terraform/)               | for provisioning miscellaneous resources on pretty much any cloud                                                           |
 | [`aws-vault`](https://github.com/99designs/aws-vault)                | for securely storing and accessing AWS credentials in an encrypted vault for the purpose of assuming IAM roles              |
 | [`aws-cli`](https://github.com/aws/aws-cli/)                         | for interacting directly with the AWS APIs (E.g. s3, ec2, rds)                                                              |
@@ -55,7 +53,6 @@ At its core, Geodesic is a framework for provisioning cloud infrastructure and t
 | [`helm`](https://github.com/kubernetes/helm/)                        | for installing packages like Varnish or Apache on the Kubernetes cluster                                                    |
 | [`kops`](https://github.com/kubernetes/kops/)                        | for Kubernetes cluster orchestration                                                                                        |
 | [`kubectl`](https://kubernetes.io/docs/user-guide/kubectl-overview/) | for controlling kubernetes resources like deployments or load balancers                                                     |
-| [`gcloud`, `gsutil`](https://cloud.google.com/sdk/)                  | for integration with Google Cloud (e.g. GKE, GCE, Google Storage)                                                           |
 | [`gomplate`](https://github.com/hairyhenderson/gomplate/)            | for template rendering configuration files using the GoLang template engine. Supports lots of local and remote data sources |
 
 # Our Logo

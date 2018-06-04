@@ -1,9 +1,11 @@
 ---
 title: Kops
 description: 'Kops is the primary tool used by geodesic to provision kubernetes clusters'
+tags:
+- tools
 ---
 
-{{< img src="/assets/kops-34fa3aad.png" title="Kops" >}}
+{{< img src="/assets/kops-34fa3aad.png" title="Kops" class="logo" >}}
 
 # Quick Start
 

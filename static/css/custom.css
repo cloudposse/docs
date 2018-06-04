@@ -1124,6 +1124,17 @@ figure h4 {
   text-align: right;
 }
 
+
+figure.logo {
+  border: 0px;
+  max-width: 25%;
+}
+
+figure.logo figcaption {
+  display: none;
+}
+
+
 label abbr {
   display: initial;
 }
