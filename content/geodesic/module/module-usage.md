@@ -1,6 +1,7 @@
 ---
 title: "Geodesic Module Usage"
 description: ""
+weight: 2
 ---
 # Prerequisites
 

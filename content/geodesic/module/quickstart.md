@@ -1,6 +1,7 @@
 ---
 title: "Quick start"
 description: "Get up and running quickly with geodesic"
+weight: 1
 ---
 # Prerequisites
 
