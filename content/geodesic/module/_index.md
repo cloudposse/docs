@@ -13,7 +13,7 @@ For example, when we need to provision resources using `terraform`, we'll build 
 Geodesic modules are used to logically organize infrastructure as code by leveraging git repositories. We're able to keep code extremely DRY, while at the same time incredibly maintaining modularity and stability. We accomplish this by leveraging a few common patterns:
 
 - [Docker inheritance]({{< relref "tools/docker/best-practices.md#inheritance" >}})
-- [Multi-stage Docker Builds](({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}}))
+- [Multi-stage Docker Builds]({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}})
 - [Terraform Root modules]({{< relref "terraform-modules/root/_index.md" >}})
 - [Terraform Modules](/terraform-modules/)
 - [Polyrepos]({{< relref "glossary/polyrepo.md" >}}) to logically organize infrastructure. Use modules to import logic.

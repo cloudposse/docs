@@ -37,7 +37,7 @@ docker run -e CLUSTER_NAME \
 
 Customize module files as necessary. Edit the `Dockerfile` to reflect your settings. The files are installed to the `$CLUSTER_NAME/` folder.
 
-We recommend creating a [GitHub repo for each organization](/geodesic/modules/#reference-architectures) to store this configuration.
+We recommend creating a [GitHub repo for each organization](/geodesic/module/#reference-architectures) to store this configuration.
 
 ```
 cd $CLUSTER_NAME
