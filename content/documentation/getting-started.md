@@ -22,6 +22,27 @@ Check out our [terraform-root-modules](https://github.com/cloudposse/terraform-r
 3. Review Docker compose
 4. Docker composition monorepo strategy
 
+# Tools
+
+Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
+
+* Geodesic bundles most of these tools as part of the geodesic base image
+* Our [packages repo]({{< relref "tools/packages.md" >}}) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`]({{< relref "release-engineering/build-harness.md" >}})). This can also be used for local ("native") development contexts.
+
+Here are some of the most important tools to be aware of:
+
+- [`make`](/tools/make/)
+- [`chamber`]({{< relref "tools/chamber.md" >}})
+- [`terraform`]({{< relref "terraform/_index.md" >}})
+- [`gomplate`]({{< relref "tools/gomplate.md" >}})
+- [`aws-vault`]({{< relref "tools/aws-vault.md" >}})
+
+If using kubernetes, then also review these tools:
+
+- [`kops`]({{< relref "tools/kops.md" >}})
+- [`helm`]({{< relref "tools/helm.md" >}})
+- [`helmfile`]({{< relref "tools/helmfile.md" >}})
+- 
 # Kubernetes
 
 Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging [`kops`]({{< relref "tools/kops.md" >}}) by way of our `geodesic` strategy.
@@ -47,19 +68,19 @@ Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integ
 * We use some terraform modules to provision resources for codefresh like a chamber user
 * Deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}})
 
-## Backing Services
+## Backing Services (*Coming Soon*)
 
-*Coming Soon*
+Checkout our docs on [kubernetes backing services]({{< relref "kubernetes-backing-services/_index.md" >}}).
 
-## Platform Services
+## Platform Services (*Coming Soon*)
 
-*Coming Soon*
+Checkout our docs on [kubernetes platform services]({{< relref "kubernetes-platform-services/_index.md" >}}).
 
 ## Optimization
 
-Inevitably, at some point comes the time when you will need to optimize performance. We've documented some of the best ways to get started.
+Inevitably, at some point comes the time when you will need to optimize for performance. We've documented some of the best ways to get started.
 
-First, make sure you're familiar with kubernetes [resource management]({{< relref "kubernetes/resource-management.md"}}).
+First, make sure you're familiar with kubernetes [resource management]({{< relref "kubernetes/resource-management.md" >}}).
 
 * [Scale Cluster Horizontally]({{< relref "kubernetes-optimization/scale-cluster-horizontally.md" >}}) - Scale Kubernetes cluster horizontally by adding nodes
 * [Scale Cluster Vertically]({{< relref "kubernetes-optimization/scale-cluster-vertically.md" >}}) - Scale Kubernetes cluster vertically by using different types of EC2 instances
@@ -72,12 +93,9 @@ First, make sure you're familiar with kubernetes [resource management]({{< relre
 
 # Terraform
 
-* Study up on our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with terraform.
-* Get started quickly by referencing our [terraform-root-modules](/terraform-modules/root/)
+Study up on our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with terraform. Get started quickly provisioning infrastructure by referencing our [terraform-root-modules](/terraform-modules/root/).
 
 ## Terraform Modules
-
-* Review our [Best Practices]({{< relref "terraform-modules/best-practices.md" >}}) for working with Terraform modules.
 
 We provide a staggering number of Terraform modules in our GitHub. This number is growing every week and we're also [accepting module contributions]({{< relref "documentation/our-github.md#contributing" >}}).
 
@@ -93,42 +111,36 @@ Our modules are broken down in to specific areas of concern:
 - [Platform](/terraform-modules/platform/)
 - [Security](/terraform-modules/security/)
 
-# Monitoring
+Before writing your own modules, review our [Best Practices]({{< relref "terraform-modules/best-practices.md" >}}) for working with Terraform modules.
 
-Our monitoring documentation focuses on implementing
+# Monitoring (*Coming Soon*)
+
+In the meantime, review some of our docs on [monitoring and alerting](/monitoring-and-alerting/).
+
+If running on kubernetes, review our ["backing services" documentation for monitoring]({{< relref "kubernetes-backing-services/monitoring/_index.md" >}})
 
 # Load Testing
 
-After you've gotten familiar with how monitoring is working, load testing becomes more interesting. By following our load-testing methodology, you're able to put services and clusters under durress.
+After you've gotten familiar with how monitoring is working, you'll want to run some load tests to ensure everything meets expectations. We provide some of our "best practices", workflows, scripts and scenarios for load and performance testing of websites and applications
+(in particular those deployed on Kubernetes clusters).
 
-# Secrets
+Our strategy for load and performance testing breaks down like this:
 
-*Coming Soon*
+1. [Review Load Testing Tools]({{< relref "load-testing/load-testing-tools.md" >}}) - how we select and setup our load testing tools
+2. [Example Testing Scenarios]({{< relref "load-testing/load-testing-scenarios.md" >}}) - how we implement load testing scenarios
+3. [Run Tests and Analyze Results]({{< relref "load-testing/perform-testing-and-analyze-results.md" >}}) - how we do load testing and analyze the results
+4. [Optimization and Tuning Procedures]({{< relref "load-testing/optimization-and-tuning-procedures.md" >}}) - optimization and tuning steps that we usually perform after running load tests
 
-# Tools
 
-Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
+# Secrets (*Coming Soon*)
 
-* Geodesic bundles most of these tools as part of the geodesic base image
-* Our [packages repo]({{< relref "tools/packages.md" >}}) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`]({{< relref "release-engineering/build-harness.md" >}})). This can also be used for local ("native") development contexts.
+Have  a look at our docs on [secrets management](/secrets-management/).
 
-Here are some of the most important tools to be aware of:
 
-- [`make`](/tools/make/)
-- [`chamber`]({{< relref "tools/chamber.md" >}})
-- [`terraform`]
-- [`gomplate`]({{< relref "tools/gomplate.md" >}})
-- [`aws-vault`]({{< relref "tools/aws-vault.md" >}})
-
-If using kubernetes, then also review these tools:
-
-- [`kops`]({{< relref "tools/kops.md" >}})
-- [`helm`]({{< relref "tools/helm.md" >}})
-- [`helmfile`]({{< relref "tools/helmfile.md" >}})
 
 # Contributing Back
 
-Everything we provide on our [GitHub](https://github.com/cloudposse/) wouldn't have been possible if it weren't for our [phenomenal customers](https://cloudposse.com/) and the support of the [community](https://cloudposse.com/slack/) contributing bugfixes, [filing issues](https://github.com/search?q=org%3Acloudposse+type%3Aissue) and submitting a steady stream of [Pull Requests](https://github.com/search?q=org%3Acloudposse+type%3Apr).
+Everything we provide on our [GitHub](https://github.com/cloudposse/) wouldn't have been possible if it weren't for our [phenomenal customers](https://cloudposse.com/) and the support of the [community](https://cloudposse.com/slack/) contributing bug-fixes, [filing issues](https://github.com/search?q=org%3Acloudposse+type%3Aissue) and submitting a steady stream of [Pull Requests](https://github.com/search?q=org%3Acloudposse+type%3Apr).
 
 We welcome any Terraform module submissions, Helm charts, and generally any other useful tools that others could benefit from. Our only requirement is that they be licensed under `APACHE2`.
 
