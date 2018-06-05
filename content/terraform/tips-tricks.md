@@ -8,9 +8,27 @@ tags:
 ---
 ![Terraform](/assets/a1f105a-terraform.png)
 
+# S3 Bucket Lifecycle Rules
+
+{{% include-code-block title="Example: S3 Bucket Lifecycle Rules" file="terraform/examples/s3-bucket-lifecycle-rules.tf" language="hcl" %}}
+
+For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](https://github.com/cloudposse/terraform-aws-s3-log-storage) module.
+
+{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
+- <https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html>
+- <https://www.terraform.io/docs/providers/aws/r/s3_bucket.html#using-object-lifecycle>
+{{% /dialog %}}
+
+
+# Encrypted S3 Buckets
+
+{{% include-code-block title="Example: Encrypted S3 Bucket" file="terraform/examples/encrypted-s3-bucket.tf" language="hcl" %}}
+
+For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](https://github.com/cloudposse/terraform-aws-s3-log-storage) module.
+
 # Use Pre Commit Hooks for Linting
 
-We strongly urge that all code be linted prior to checking into to git. Running `terraform fmt` on the codebase before committing will accomplish this.
+We strongly urge that all code be linted prior to checking into Git. Running `terraform fmt` on the codebase before committing will accomplish this.
 
 To set this up so that it happens automatically prior to any commit, configure `git` pre-commit hooks using the `pre-commit` utility.
 

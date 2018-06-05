@@ -1,6 +1,8 @@
 ---
 title: "Chamber"
 description: 'Chamber is a CRUD tool for managing secrets stored in [AWS Systems Manager Parameter Store](https://aws.amazon.com/systems-manager/features/#Parameter_Store) and exposing those secrets as Environment Variables to processes.'
+tags:
+- tools
 ---
 Chamber is a cli for managing secrets stored
 in [AWS Systems Manager Parameter Store](https://aws.amazon.com/systems-manager/features/#Parameter_Store).
