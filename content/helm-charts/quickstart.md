@@ -4,28 +4,32 @@ description: ""
 ---
 Helm is a package manager for kubernetes.
 
-There are a vast number of public charts available: <https://github.com/kubernetes/charts/>
+There are a vast number of public charts available: under the official kubernetes project on GitHub: <https://github.com/kubernetes/charts/>
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Official Documentation" %}}
 Visit the [Helm Documentation Portal](https://docs.helm.sh/) for excellent documentation
 {{% /dialog %}}
 
+# Example Chart Scaffolding
+
+We maintain an advanced helm chart that we use as the basis for many of the charts we write. This is a great reference chart to use as it leverages the most common patterns for writing charts.
+
+- https://github.com/cloudposse/helm-chart-scaffolding
+
 # Values File
 
-Most packages will require some shared secrets. We recommend storing the `values.yaml` in an encrypted S3 bucket. [Geodesic Overview](/geodesic) makes this easy using the `s3` command to mount S3 buckets to the local filesystem.
+We recommend using [helmfile]({{< relref "tools/helmfile.md" >}}) to install the chart.
 
-Mount secrets:
-```
-s3 mount
-```
+Any parameters (e.g. secrets, API keys, etc) should be passed as environment variables. Then follow the [example of using helmfile with chamber]({{< relref "tools/helmfile.md#example-helmfile-with-chamber" >}}) to install the chart.
 
 # Searching for Packages
 
-Search package repository for `datadog`
+Helm makes it easy to search for available packages. For example, to search repository for a package called `datadog`, we would run:
 
 ```
 helm search datadog
 ```
+
 #### Installing GitHub Authorized Keys
 
 Install GitHub Authorized Keys if you want to enable users to login to the cluster via SSH using their GitHub Usernames & GitHub SSH keys.

@@ -4,6 +4,7 @@ description: "1Password for Teams is a the best solution for securely managing s
 tags:
 - password management
 - security
+- tools
 ---
 The [1Password for Teams](https://1password.com/teams/) product by AgileBits is argubably the most popular SaaS-based password management tool. In our opinion, it offers a better user experience over apps like LastPass as well as provides integration with [Duo](https://duo.com/docs/1password) and [Slack](https://support.1password.com/slack/) for real-time activity notifications.
 
