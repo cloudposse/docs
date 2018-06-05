@@ -1,5 +1,5 @@
 ---
-title: "Build charts step"
+title: "Build Charts Step"
 description: ""
 weight: 3
 ---

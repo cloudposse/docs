@@ -1,5 +1,5 @@
 ---
-title: "Generate versioning step"
+title: "Generate Semantic Versioning Step"
 description: ""
 weight: 2
 ---

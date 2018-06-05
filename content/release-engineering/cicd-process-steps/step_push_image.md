@@ -1,5 +1,5 @@
 ---
-title: "Push docker image"
+title: "Push Docker Image step"
 description: ""
 weight: 3
 ---

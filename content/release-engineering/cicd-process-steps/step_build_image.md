@@ -1,5 +1,5 @@
 ---
-title: "Build charts image"
+title: "Build Docker Image Step"
 description: ""
 weight: 3
 ---

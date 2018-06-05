@@ -1,5 +1,5 @@
 ---
-title: "Deploy step"
+title: "Deploy Step"
 description: ""
 weight: 4
 ---

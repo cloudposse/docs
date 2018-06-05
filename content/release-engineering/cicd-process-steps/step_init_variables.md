@@ -1,5 +1,5 @@
 ---
-title: "Init variables step"
+title: "Init Variables Step"
 description: ""
 weight: 1
 ---
