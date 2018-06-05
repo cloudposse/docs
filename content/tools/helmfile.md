@@ -8,6 +8,7 @@ tags:
 - yaml
 - chamber
 - 12-factor
+- tools
 ---
 
 We use `helmfile` to deploy collections of charts as part of geodesic. The `helmfile.yaml` is a declarative configuration file that makes it easier to deploy and manage a large number of helm charts.

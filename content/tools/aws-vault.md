@@ -1,6 +1,8 @@
 ---
 title: AWS Vault
 description: "The `aws-vault` command line tool is a utility for securely storing and accessing encrypted AWS credentials for local development environments. It makes it extremely easy to work with IAM assumed roles across multiple AWS organizations."
+tags:
+- tools
 ---
 
 The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.

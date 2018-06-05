@@ -1,6 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" />
+{{- if .Page.Params.redirect -}}
+<meta http-equiv="refresh" content="0;url={{ .Page.Params.redirect | absURL }}" />
+{{- end -}}
+
 {{ .Hugo.Generator }}
 <title>{{ .Title }}&nbsp;&mdash;&nbsp;{{ .Site.Title }}</title>
 <link rel="shortcut icon" href="{{"images/favicon.png" | relURL}}" type="image/x-icon" />

@@ -4,7 +4,7 @@ description: 'Gomplate is a command-line tool for template rendering that suppor
 tags:
 - go-template
 ---
-{{< img src="/assets/gomplate-5869374e.png" title="Gomplate Logo" >}}
+{{< img src="/assets/gomplate-5869374e.png" title="Gomplate Logo" class="logo" >}}
 
 The Go progamming language supports [native templating](https://golang.org/pkg/text/template/). The problem is that there aren't very many functions supported out-of-the-box and it cannot be called from the command line.
 

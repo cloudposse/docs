@@ -2,6 +2,7 @@
 deploy.toml
 test
 test.toml
+.htmltest.*.yaml
 node_modules
 .build-harness
 build-harness/

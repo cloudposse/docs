@@ -5,6 +5,7 @@ tags:
 - apache2
 - S3
 - KMS
+- tools
 ---
 
 Goofys is similar to the original [`s3fs`](https://github.com/s3fs-fuse/s3fs-fuse) FUSE filesystem, but written in Golang and much, much faster. Also, it works seamlessly with EC2 instance profiles for assumed-roles, which `s3fs-fuse` does not support as of `v1.82`.

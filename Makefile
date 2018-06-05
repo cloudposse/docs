@@ -92,6 +92,7 @@ lint/formatting:
 	@! grep -Eo 'CloudPosse' -R content/  # Should be Cloud Posse
 	@! grep -Eo 'Cloudposse' -R content/  # Should be Cloud Posse
 	@! grep -Eo 'Github' -R content/      # Should be GitHub
+	@! grep -Eo 'go template' -R content/ # Should be Go template
 	@! grep -Eo 'CI\\+CD' -R content/     # Should be CI/CD
 	@! grep -Eo 'ci/cd' -R content/       # Should be CI/CD
 
