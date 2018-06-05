@@ -125,4 +125,4 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 # Usage
 
 Read [chart museum documentation](https://github.com/kubernetes-helm/chartmuseum)
-to get usage info.
+for more information on `chartmuseum` usage.
