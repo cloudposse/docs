@@ -8,7 +8,7 @@ An Artifacts that are the result of CI/CD build should be stored and versioned
 allow to address them in other CI/CD pipelines builds.
 
 [Semantic versioning standard](https://semver.org/) helps to reduce entropy of
-[dependency hell](https://en.wikipedia.org/wiki/Dependency_hell)
+[Dependency Hell](https://en.wikipedia.org/wiki/Dependency_hell)
 
 Managing `SemVer` manualy is too complex for developers, so we should automate it.
 We use `Git` as a system of record and generate versions based on it's history.

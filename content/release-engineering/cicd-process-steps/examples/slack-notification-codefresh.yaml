@@ -5,7 +5,7 @@ steps:
     image: cloudposse/slack-notifier
     environment:
     - SLACK_WEBHOOK_URL=${{SLACK_WEBHOOK_URL}}
-    - SLACK_USER_NAME=CodeFresh
+    - SLACK_USER_NAME=Codefresh
     - "SLACK_ICON_EMOJI=:rocket:"
     - SLACK_FALLBACK=Deployed app to Staging environment
     - SLACK_COLOR=good

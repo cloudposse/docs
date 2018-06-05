@@ -16,12 +16,12 @@ In common case chart build step just process this steps:
 * Copy base chart to result directory
 * Set chart version and docker image version to [generated version]({{< relref "release-engineering/cicd-process/step_versioning.md" >}})
 * Fetch chart dependencies
-* Publish chart in [artifact storage]({{< relref "kubernetes-platform-services/artifact-storage/ChartMuseum.md" >}})
+* Publish chart in [artifact storage]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
 
 # Dependency
 
 * [Versioning step]({{< relref "release-engineering/cicd-process-steps/step_versioning.md" >}})
-* [Chart museum]({{< relref "kubernetes-platform-services/artifact-storage/ChartMuseum.md" >}})
+* [Chart museum]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
 
 # Examples
 
