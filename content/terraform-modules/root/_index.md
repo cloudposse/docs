@@ -13,7 +13,7 @@ Our strategy is to define various common patterns that we use in our cloud infra
 
 Here's what it looks like in practice: (only relevant portions)
 
-{{% include-code-block title="" file="terraform-modules/root/examples/Dockerfile" language="Dockerfile Snippet" %}}
+{{% include-code-block title="Dockerfile Snippet" file="terraform-modules/root/examples/Dockerfile" language="Dockerfile" %}}
 
 We use this strategy for several reasons:
 

@@ -6,7 +6,7 @@ description: "Geodesic modules are Git repositories that extend the Geodesic bas
 ⇠ Select one of these pages to learn more about the topic.
 {{% /dialog %}}
 
-We believe that infrastructure as code should be treated just like all other code: tested, bundled into artifacts and automatically deployed. This is what `geodesic` solves. A geodesic module is a docker container/image contains all the code necessary deploy infrastructure.
+We believe that infrastructure as code should be treated just like all other code: tested, bundled into artifacts and automatically deployed. This is what `geodesic` solves. A geodesic module is a docker container/image which contains all the Infrastructure as Code necessary to provsion logically related IaaS resources (e.g. AWS Organizations, IAM Roles/Permissions, CDNs, S3 Buckets, Kubernetes Clusters, etc).
 
 For example, when we need to provision resources using `terraform`, we'll build a docker container that inherits from the `geodesic` base image and `COPY` all the `*.tf` code into the image on `docker build`. Now we can run that container to provision infrastructure anywhere we have `docker` installed (for example from CI/CD systems), without needing to configure, version and maintain a bunch of native tools. In practice, we use geodesic modules to bundle terraform code, kops manifests, ansible code, and more.
 
@@ -16,9 +16,9 @@ Geodesic modules are used to logically organize infrastructure as code by levera
 - [Multi-stage Docker Builds]({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}})
 - [Terraform Root modules]({{< relref "terraform-modules/root/_index.md" >}})
 - [Terraform Modules](/terraform-modules/)
-- [Polyrepos]({{< relref "glossary/polyrepo.md" >}}) to logically organize infrastructure. Use modules to import logic.
+- [Polyrepos]({{< relref "glossary/polyrepo.md" >}}) to logically organize infrastructure. Use modules to capture/import business logic.
 
-We prefer the polyrepo approach to the monorepo approach when it comes in infrastructure. Git repositories allow us to surgically tag/version parts of infrastructure.
+We prefer the polyrepo approach to the monorepo approach when it comes in infrastructure. Git repositories allow us to surgically tag/version infrastructure code that represents some kind of business logic.
 
 For example, we often prescribe organizing repositories by AWS organization. For the purpose of documentation, we'll use `cloudposse.co` as the example organization.
 
@@ -28,11 +28,11 @@ For example, we often prescribe organizing repositories by AWS organization. For
 
 The [`root.cloudposse.co`](https://github.com/cloudposse/root.cloudposse.co) module represents an organization's "root" or "top level" AWS account. This is typically your billing organization and handles IAM user account provisioning.
 
-It should also use the `terraform` resource  [`aws_organizations_organization`](https://www.terraform.io/docs/providers/aws/r/organizations_organization.html) to provision all the subaccounts below.
+It should also use the `terraform` resource  [`aws_organizations_organization`](https://www.terraform.io/docs/providers/aws/r/organizations_organization.html) and [organizations_account](https://www.terraform.io/docs/providers/aws/r/organizations_account.html) to provision all the subaccounts within the root organization.
 
 ## prod.cloudposse.co
 
-The [`prod.cloudposse.co`](https://github.com/cloudposse/prod.cloudposse.co) module represents an organization's "production infrastructure". It's a subaccount (organization) of the [`root.cloudposse.co`](https://github.com/cloudposse/root.cloudposse.co).
+The [`prod.cloudposse.co`](https://github.com/cloudposse/prod.cloudposse.co) module represents an organization's "production infrastructure". It's a subaccount of the [`root.cloudposse.co`](https://github.com/cloudposse/root.cloudposse.co).
 
 ## staging.cloudposse.co
 
@@ -40,7 +40,7 @@ The [`staging.cloudposse.co`](https://github.com/cloudposse/staging.cloudposse.c
 
 ## dev.cloudposse.co
 
-The [`dev.cloudposse.co`](https://github.com/cloudposse/dev.cloudposse.co) module represents an organization's "development infrastructure". This module is used as a sandbox environment where developers and test the waters and get familiar with AWS. We prescribe that organizations give all developers "Administrator" level privileges to this account in order to give them an unfettered opporutnity at developing infrastructure.
+The [`dev.cloudposse.co`](https://github.com/cloudposse/dev.cloudposse.co) module represents an organization's "development infrastructure". This module is used as a sandbox environment where developers and test the waters and get familiar with AWS. We prescribe that organizations give all developers "Administrator" level privileges to this account where developers may test the waters.
 
 ## audit.cloudposse.co
 

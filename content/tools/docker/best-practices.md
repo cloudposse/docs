@@ -7,7 +7,7 @@ description: "Collection of some of our docker-specific best practices."
 
 Inheritance is when you use `FROM some-image:1.2.3` (vs `FROM scratch`) in a `Dockerfile`. We recommend to leverage lean base images (E.g. `alpine` or `busybox`).
 
-Try to leverage the same base image as many of your images as possible for faster `docker pulls`.
+Try to leverage the same base image in as many of your images as possible for faster `docker pulls`.
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 - <https://docs.docker.com/engine/reference/builder/#from>
@@ -27,6 +27,6 @@ There are two ways to leverage multi-stage builds.
 
 # Use Scratch Base Image
 
-One often overlooked, ultimately lean base-image is the `scratch` image. This is an empty filesystem which allows one to copy/distribute the minimal set of artifacts. For languages that can compile statically linked binaries, using the `scratch` base image is the most secure docker image as there will be no other exploitable packages in the image.
+One often overlooked, ultimately lean base-image is the `scratch` image. This is an empty filesystem which allows one to copy/distribute the minimal set of artifacts. For languages that can compile statically linked binaries, using the `scratch` base image (e.g. `FROM scratch`) is the most secure way as there will be no other exploitable packages bundled in the image.
 
 We use this pattern for our [`terraform-root-modules`](https://github.com/cloudposse/terraform-root-modules) distribution of terraform reference architectures.

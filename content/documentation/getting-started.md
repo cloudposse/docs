@@ -42,7 +42,7 @@ If using kubernetes, then also review these tools:
 - [`kops`]({{< relref "tools/kops.md" >}})
 - [`helm`]({{< relref "tools/helm.md" >}})
 - [`helmfile`]({{< relref "tools/helmfile.md" >}})
-- 
+
 # Kubernetes
 
 Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging [`kops`]({{< relref "tools/kops.md" >}}) by way of our `geodesic` strategy.
@@ -52,7 +52,7 @@ Kubernetes is a massive part of our solutions. Our Kubernetes documentation is g
 Helm is central to how we deploy all services on kubernetes.
 
 * [helm]({{< relref "tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
-* [helm charts](/helm-charts/) are how kubernetes resources are templatized using go templates
+* [helm charts](/helm-charts/) are how kubernetes resources are templatized using Go templates
 * [helm charts quickstart]({{< relref "helm-charts/quickstart.md" >}}) is our "cheatsheet" for getting started with Helm Charts.
 * [helm registries](/kubernetes-platform-services/chart-registry/) are used to store helm charts, which are essentially tarball artifacts.
 * [chartmuseum]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md">}}) is deployed as the chart repository

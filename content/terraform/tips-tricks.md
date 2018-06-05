@@ -28,7 +28,7 @@ For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](
 
 # Use Pre Commit Hooks for Linting
 
-We strongly urge that all code be linted prior to checking into to git. Running `terraform fmt` on the codebase before committing will accomplish this.
+We strongly urge that all code be linted prior to checking into Git. Running `terraform fmt` on the codebase before committing will accomplish this.
 
 To set this up so that it happens automatically prior to any commit, configure `git` pre-commit hooks using the `pre-commit` utility.
 
