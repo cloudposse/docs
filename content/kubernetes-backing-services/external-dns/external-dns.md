@@ -21,9 +21,9 @@ Create a file in `/conf/kops-aws-platform/external-dns.tf` with the following co
 
 ## Rebuild the Geodesic Module
 
-[Rebuild](/geodesic/module/) the module
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make build
+> make docker/build
 ```
 
 ##  Start the Geodesic Shell

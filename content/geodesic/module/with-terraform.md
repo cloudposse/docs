@@ -32,7 +32,7 @@ Replace with values to suit your specific project.
 
 ## Rebuild the Module
 
-[Rebuild](/geodesic/module/) the module
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
 sh-3.2$ make build
 ```
@@ -140,10 +140,10 @@ Update the values based on the outputs from the previous step.
 
 ## Rebuild module
 
-[Rebuild](/geodesic/module/) the module.
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module.
 
 ```shell
-> make build
+> make docker/build
 ```
 
 Now that we have provisioned all the nessary resources to operate terraform, we're ready to provision the other terraform modules needed by kops.

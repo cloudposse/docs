@@ -1,6 +1,12 @@
 ---
 title: "ChartMuseum"
 description: "Chartmuseum is an artifact storage for Helm charts."
+tags:
+- helm
+- chart
+- geodesic
+- kubernetes
+- kube2iam
 ---
 
 [Chartmuseum](https://github.com/kubernetes-helm/chartmuseum) is an artifact storage
@@ -22,9 +28,9 @@ Create a file in `/conf/kops-aws-platform/chart-repo.tf` with the following cont
 
 ## Rebuild the Geodesic Module
 
-[Rebuild](/geodesic/module/) the module
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make build
+> make docker/build
 ```
 
 ##  Start the Geodesic Shell
@@ -42,14 +48,14 @@ Then login to AWS by running `assume-role`:
 
 ## Provision Chamber Resources
 
-Change directory to `/conf/kops-aws-platform` and run there commands to provision the `chart-repo` backend.
+Change directory to `/conf/kops-aws-platform` and run these commands to provision the `chart-repo` backend.
 ```bash
 init-terraform
 terraform plan
 terraform apply
 ```
 
-From the Terraform outputs, copy the following values to environment variables
+From the Terraform outputs, copy the following values into the environment variables
 * `kops_chart_repo_bucket_bucket_id` -> `CHARTMUSEUM_STORAGE_AMAZON_BUCKET`
 * `kops_chart_repo_bucket_role_name` -> `CHARTMUSEUM_IAM_ROLE`
 
@@ -68,21 +74,21 @@ You can install `chartmuseum` in a few different ways, but we recommend using th
 
 ### Install with Master Helmfile
 
-Master Helmfile provide two releases of chartmuseum:
+Master Helmfile provides two releases of chartmuseum:
 * `charts` - Chartmuseum that serve charts
 * `charts-api` - Chartmuseum that provide api gateway to publish charts.
 
-These releases shares the same environment variables.
-`charts-api` gateway would be available on subdomain `api` for FQHN.
-In our example it would `api.charts.us-west-2.staging.example.com`.
+These releases share the same environment variables.
+`charts-api` gateway will be available on the subdomain `api` for the FQHN.
+In our example it would be `api.charts.us-west-2.staging.example.com`.
 
 To install releases follow these instructions:
-1. Set the `CHARTMUSEUM_STORAGE_AMAZON_BUCKET` secret with chamber to copied from output value
+1. Set the `CHARTMUSEUM_STORAGE_AMAZON_BUCKET` secret with chamber to the value copied from the Terraform output
 2. Set the `CHARTMUSEUM_STORAGE_AMAZON_REGION` secret with chamber
-3. Set the `CHARTMUSEUM_IAM_ROLE` secret with chamber to copied from output value
+3. Set the `CHARTMUSEUM_IAM_ROLE` secret with chamber to the value copied from the Terraform output
 4. Set the `CHARTMUSEUM_INGRESS` secret with chamber provided by [Nginx ingress]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}})
 5. Set the `CHARTMUSEUM_HOSTNAME` secret with chamber
-6. Run command `helmfile sync` to install `chartmuseum`.
+6. Run the following commands to install `chartmuseum`.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install chartmuseum" %}}
 ```
@@ -96,7 +102,7 @@ chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=k
 ```
 {{% /dialog %}}
 
-These are some of the environment variables you may want to configure:
+These are the environment variables you will need to set to configure `chartmuseum`:
 
 * `CHARTMUSEUM_BASIC_AUTH_USER` - HTTP basic authenticate username
 * `CHARTMUSEUM_BASIC_AUTH_PASS` - HTTP basic authenticate password
@@ -110,7 +116,7 @@ Environment variables can be specified in the Geodesic Module's `Dockerfile` or 
 
 ### Install with Custom Helmfile
 
-Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
 {{% include-code-block  title="helmfile.yaml" file="kubernetes-platform-services/artifact-storage/examples/chart-repo-helmfile.yaml" language="yaml" %}}
 

@@ -21,9 +21,9 @@ Create a file in `/conf/chamber/kms.tf` with following content
 
 ## Rebuild the Geodesic Module
 
-[Rebuild](/geodesic/module/) the module
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make build
+> make docker/build
 ```
 
 ##  Start the Geodesic Shell
