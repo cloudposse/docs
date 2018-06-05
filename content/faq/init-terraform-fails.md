@@ -6,6 +6,8 @@ tags:
 - ssh-agent
 - terraform
 - init-terraform
+- tfstate
+- terraform-aws-tfstate-backend
 - ssh
 ---
 
@@ -39,5 +41,3 @@ This usually happens for one of two reasons:
 2) No SSH keys have been added to your `ssh-agent`
 
 Run `ssh-add -l` to verify the keys are in your `ssh-agent`. Remember, that in geodesic `/localhost` is your `$HOME` directory.
-
-

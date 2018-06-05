@@ -180,7 +180,7 @@
 [6.100292, "o", "\r\n"]
 [6.739872, "o", "Building cloudposse/prod.cloudposse.org:latest from ./Dockerfile with [] build args...\r\n"]
 [6.986181, "o", "Sending build context to Docker daemon  44.54kB\r\r\r\n"]
-[7.09599, "o", "Step 1/29 : FROM r.cfcr.io/cloudposse/terraform-root-modules:init as terraform-root-modules\r\n"]
+[7.09599, "o", "Step 1/29 : FROM cloudposse/terraform-root-modules:0.1.5 as terraform-root-modules\r\n"]
 [7.096333, "o", " ---> 90f711273bdc\r\nStep 2/29 : FROM cloudposse/geodesic:0.9.15\r\n"]
 [7.116401, "o", " ---> 37999e933e0c\r\nStep 3/29 : ENV DOCKER_IMAGE=\"cloudposse/prod.cloudposse.org\"\r\n"]
 [7.118915, "o", " ---> Using cache\r\n ---> 144f419ed5c6\r\nStep 4/29 : ENV DOCKER_TAG=\"latest\"\r\n"]

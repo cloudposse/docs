@@ -1,6 +1,9 @@
 ---
 title: Docker Tips & Tricks
-description: ''
+description: "Here's a collection of some nice little hacks for docker."
+tags:
+- Docker
+- tips-and-tricks
 ---
 
 Here's a collection of some nice little hacks for docker. A lot of them are related to house keeping.
@@ -60,3 +63,7 @@ Are you sure you want to continue? [y/N] y
 ```
 
 By default, you are prompted to continue which can be bypassed by adding the `-f` or `--force` flag.
+
+# Simulate Multiple Inheritance
+
+Docker doesn't technically support multiple-inheritance, whereby an image can automatically merge multiple images using `FROM`. It does, however, support [multi-stage builds]({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}}) that can be used to effectiely achive the same result.
