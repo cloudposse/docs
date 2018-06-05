@@ -50,4 +50,4 @@ We provide an example invocation of this pattern in our [`terraform-root-modules
 
 ## testing.cloudposse.co
 
-The [`testing.cloudposse.co`](https://github.com/cloudposse/testing.cloudposse.co) module represents an organization used for continuous integration testing of infrastructure code. By provisioning a separate, dedicated organization for this we are able to silo testing infrastructure so it doesn't pollute or in any way impact other environments.
+The [`testing.cloudposse.co`](https://github.com/cloudposse/testing.cloudposse.co) module represents an organizational unit used for continuous integration and testing of infrastructure code. By provisioning a separate, dedicated organizational unit (or just account) for this we are able to silo testing infrastructure so it doesn't pollute or in any way impact other environments.
