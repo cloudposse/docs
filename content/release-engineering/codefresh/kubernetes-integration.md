@@ -1,6 +1,9 @@
 ---
 title: "Codefresh Kubernetes Integration"
 description: "Easily add Kubernetes Clusters in Codefresh"
+tags:
+- Codefresh
+- kubernetes
 ---
 
 # Setup
@@ -28,6 +31,10 @@ Next, you'll be presented a form. In [Geodesic Overview](/geodesic) we provide a
 https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/codefresh-settings) script to output all the necessary information you need in order to setup the Kubernetes integration.
 
 Enter the outputs of the script into the form and click save.
+
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+We recommend naming the configuration after the cluster name (e.g. `us-west-2-staging-example-org`).
+{{% /dialog %}}
 
 ## Enter Kubernetes Credentials
 
