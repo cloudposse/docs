@@ -15,13 +15,13 @@ Codefresh supports [triggers](https://codefresh.io/docs/docs/pipeline-triggers/i
 1. First setup a pipeline the way you would for any other kind of build.
 
 2. Navigate to the "Configuration" and select "Add Trigger"
-{{< img src="/static/assets/cron-trigger-7ac0cd4f.png" title="Pipeline Configuration" >}}
+{{< img src="/assets/cron-trigger-7ac0cd4f.png" title="Pipeline Configuration" >}}
 
 3. Select "CRON" as the type and select "Next"
-{{< img src="/static/assets/cron-trigger-ad77ad30.png" title="Cronjob" >}})
+{{< img src="/assets/cron-trigger-ad77ad30.png" title="Cronjob" >}})
 
 4. Pick a schedule
-{{< img src="/static/assets/cron-trigger-4d99f7d0.png" title="Pick Schedule" >}}
+{{< img src="/assets/cron-trigger-4d99f7d0.png" title="Pick Schedule" >}}
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
 If rebuilding docker images, you may need to [disable docker caching](https://codefresh.io/docs/docs/troubleshooting/common-issues/disabling-codefresh-caching-mechanisms/) by adding `no_cache: true` to the `type: build` step in the pipeline.
