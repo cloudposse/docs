@@ -6,13 +6,13 @@ description: "Geodesic provides an easy way for mounting encrypted S3 buckets to
 The geodesic base image ships with a number of utility scripts:
 
 - [`/usr/local/bin/s3`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3) - makes it easier to manage S3 filesystems in `/etc/fstab`
-- [`/usr/local/bin/s3fs`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3fs) - a thin wrapper around `goofys` for mounting S3 filesystems with a local cache in `/dev/shm`. It's the command executed by `mount` (e.g. `s3fs#/
+- [`/usr/local/bin/s3fs`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3fs) - a thin wrapper around `goofys` for mounting S3 filesystems with a local cache in `/dev/shm`. It's the command executed by `mount` (e.g. the `s3fs#/...` part in `/etc/fstab`)
 
 # Use-cases
 
 A few common use-cases have arrisen for mounting S3 buckets inside of the geodesic shell.
 
-1. **Master SSH Keys**. When using [terraform-aws-keypair](https://github.com/cloudposse/terraform-aws-key-pair) to generate a set of SSH keys, those keys need to be securely stored somewhere. An private, versioned, encrypted S3 bucket is as good a place as any. The [terraform-aws-tfstate-backend](https://github.com/cloudposse/terraform-aws-tfstate-backend) provide a bucket suitable for this purpose.
+1. **Master SSH Keys**. When using [terraform-aws-key-pair](https://github.com/cloudposse/terraform-aws-key-pair) to generate a set of SSH keys, those keys need to be securely stored somewhere. A private, versioned, encrypted S3 bucket is as good a place as any. The [terraform-aws-tfstate-backend](https://github.com/cloudposse/terraform-aws-tfstate-backend) provide a bucket suitable for this purpose.
 2. **Manipulating Terraform State**. Sometimes we move projects around and need to rename state folders. It's easy to change directory to the S3 bucket and move files around. Othertimes, in extreme cases we've needed to edit the `.tfstate` file. Being able to do this using `jq` is nice.
 3. **Storing Helmfile Values**. When deploying charts with `helm` or `helmfile`, you may need a large `values.yaml` file for a particular service. Othertimes, that `values.yaml` may contain sensitive values like TLS private keys. Storing that file in an encrypted S3 bucket works well.
 
@@ -42,5 +42,5 @@ The `${TF_BUCKET}` is evaluated (interpolated) at runtime by the `s3fs` command 
 To mount buckets, just run `mount -a` after having assumed roles. This is the same as calling `s3 mount`.
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
-The `init-terraform` command calls `s3 mount` this automatically.
+The `init-terraform` automatically command calls `s3 mount` before initializing terraform state.
 {{% /dialog %}}

@@ -9,4 +9,4 @@ tags:
 - s3fs
 - fuse
 ---
-Learn more about how to use [`goofys`]({{< relref \"tools/goofys.md\" >}}) and [how we use it]({{< relref "geodesic/s3fs.md" >}}) with geodeisc.
+Learn more about how to use [`goofys`]({{< relref "tools/goofys.md" >}}) and [how we use it]({{< relref "geodesic/s3fs.md" >}}) with geodeisc.
