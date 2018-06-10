@@ -1,6 +1,6 @@
 ---
 title: "Goofys"
-description: '[Goofys]({{< relref "tools/goofys.md" >}}) is a utility that implements S3-backed filesystems using FUSE.'
+description: "Goofys is a utility that implements S3-backed filesystems using FUSE."
 terms:
 - goofys
 tags:
@@ -9,3 +9,4 @@ tags:
 - s3fs
 - fuse
 ---
+Learn more about how to use [`goofys`]({{< relref \"tools/goofys.md\" >}}) and [how we use it]({{< relref "geodesic/s3fs.md" >}}) with geodeisc.
