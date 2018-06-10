@@ -34,8 +34,7 @@ s3fs#${TF_BUCKET} /secrets/tf fuse _netdev,allow_other,rw,nosuid,nodev,relatime,
 ```
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
-The `${TF_BUCKET}` is evaluated (interpolated) at runtime by the `s3fs` command called by `mount`.
-By removing the single quotes around `'${TF_BUCKET}'`, it will be evaluated at `docker build` time rather than at run time.
+The `${TF_BUCKET}` is evaluated (interpolated) at runtime by the `s3fs` command called by `mount`. This allows it to be highly dynamic. Under certain circumstances this may not be wanted. By removing the single quotes around `'${TF_BUCKET}'` in the `s3 fstab` command, it will be evaluated at `docker build` time rather than at run time.
 {{% /dialog %}}
 
 # Mounting Buckets
