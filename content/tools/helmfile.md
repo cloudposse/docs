@@ -40,7 +40,7 @@ Helmfile depends on the following `cli` tools.
 
 Prior to using `helmfile`, you'll need a valid [`kubectl` context]({{< relref "geodesic/module/with-kops.md#export-kubecfg" >}}).
 
-Alternatively, set the [`KUBE_CONTEXT`]({{< relref "release-engineering/codefresh-kubernetes-integration.md#usage" >}}) when using `helmfile` with a Codefresh pipeline.
+Alternatively, set the [`KUBE_CONTEXT`]({{< relref "release-engineering/codefresh/kubernetes-integration.md#usage" >}}) when using `helmfile` with a Codefresh pipeline.
 
 # Configuration File
 
