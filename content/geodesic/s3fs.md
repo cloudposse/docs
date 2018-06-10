@@ -5,8 +5,8 @@ description: "Geodesic provides an easy way for mounting encrypted S3 buckets to
 
 The geodesic base image ships with a number of utility scripts:
 
-- [`s3`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3) - makes it easier to manage S3 filesystems in `/etc/fstab`
-- [`s3fs`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3fs) - a thin wrapper around `goofys` for mounting S3 filesystems with a local cache in `/dev/shm`. It's the command executed by `mount` (e.g. `s3fs#/
+- [`/usr/local/bin/s3`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3) - makes it easier to manage S3 filesystems in `/etc/fstab`
+- [`/usr/local/bin/s3fs`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3fs) - a thin wrapper around `goofys` for mounting S3 filesystems with a local cache in `/dev/shm`. It's the command executed by `mount` (e.g. `s3fs#/
 
 # Use-cases
 
@@ -35,6 +35,7 @@ s3fs#${TF_BUCKET} /secrets/tf fuse _netdev,allow_other,rw,nosuid,nodev,relatime,
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 The `${TF_BUCKET}` is evaluated (interpolated) at runtime by the `s3fs` command called by `mount`.
+By removing the single quotes around `'${TF_BUCKET}'`, it will be evaluated at `docker build` time rather than at run time.
 {{% /dialog %}}
 
 # Mounting Buckets

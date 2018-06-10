@@ -4,6 +4,8 @@ description: "[Goofys]({{< relref "tools/goofys.md" >}}) is a utility that imple
 terms:
 - goofys
 tags:
+- aws
+- s3
 - s3fs
 - fuse
 ---
