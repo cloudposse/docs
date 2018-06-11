@@ -11,7 +11,7 @@ A CI/CD pipeline usually depends on a number of predefined environment variables
 
 See the [Codefresh shared configuration](https://g.codefresh.io/account/shared-config) documentation for an example.
 
-Our "best practice" is to store all *non-secrets* directly in the `codefresh.yml` configuration file. This solution allows us to easily keep track of the history with `git` as values change over time and let them vary by branch. To accomplish this, set all the predefined values in a step called `init_variables` and call `cf_export` to pass them to subsequent steps.
+Our "best practice" is to store all *non-secrets* directly in the `codefresh.yml` configuration file. This solution allows us to easily keep track of the history with `git` as values change over time and let them vary by branch. To accomplish this, set all the predefined values in a step called `init_variables` that calls `cf_export` to pass them to subsequent steps.
 
 # Dependencies
 
