@@ -1,6 +1,7 @@
 ---
 title: Documentation Template
 description: Example of how to structure a document
+draft: true
 ---
 
 # Synopsis

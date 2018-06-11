@@ -35,7 +35,9 @@ docker run -e CLUSTER_NAME \
 
 # Configure Project
 
-Customize module files as necessary. Edit the `Dockerfile` to reflect your settings. The files are installed to the `$CLUSTER_NAME/` folder. We recommend creating a [GitHub](doc:github) repo to store this configuration.
+Customize module files as necessary. Edit the `Dockerfile` to reflect your settings. The files are installed to the `$CLUSTER_NAME/` folder.
+
+We recommend creating a [GitHub repo for each organization](/geodesic/module/#reference-architectures) to store this configuration.
 
 ```
 cd $CLUSTER_NAME
@@ -52,19 +54,29 @@ make init
 Build the docker container
 
 ```
-make build
+make docker/build
 ```
 
 Install the module as shell
 
 ```
-make install
+docker run $image | bash -s $tag
 ```
+
+Replace `$image` which the image of the docker image built, and `$tag` with the corresponding tag of that image.
+
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Do not pass `-it` when running `docker` as this will add carriage returns (`\r`), which breaks the installer script.
+{{% /dialog %}}
 
 ## Run the shell
 
-The shell can now be easily started any time by simply running `$CLUSTER_NAME`,  which is a shell script in `/usr/local/bin`. Make sure this path is in your `PATH` environment variable.
-For more information follow [Use](doc:use)
+The shell can now be easily started any time by simply running the `$CLUSTER_NAME` script,  which is a shell script that gets installed to `/usr/local/bin/`.
+
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+- Make sure this path is in your `PATH` environment variable.
+{{% /dialog %}}
+
 
 # Authorize on AWS
 

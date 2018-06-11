@@ -17,4 +17,13 @@ figure {
     width: 100%;
     text-align: right;
   }
+
+  .logo {
+    border: 0;
+    max-width: 25%;
+
+    figcaption {
+      display: none;
+    }
+  }
 }

@@ -28,6 +28,7 @@
   h1 {
     font-size: 30px;
     font-weight: normal;
+    line-height: 1.1em;
     @media(min-width: 320px) and(max-width: 480px) {
       line-height: 1.1em;
     }

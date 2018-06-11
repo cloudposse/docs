@@ -1,9 +1,13 @@
 ---
 title: Helm
 description: 'Helm is package manager for Kubernetes.'
+tags:
+- tools
 ---
 
-Helm makes it easy to install `charts` (a application) on kubernetes clusters. Just like `npm` or `apt` make it easy to install NodeJS modules and Debian packages, `helm` makes it easy to deploy a a full-fledged application with all of its dependencies on kubernetes.
+{{< img src="/assets/helm-d7685fec.png" title="Helm Logo" class="logo" >}}
+
+Helm makes it easy to install `charts` (an application) on kubernetes clusters. Just like `npm` or `apt` make it easy to install NodeJS modules and Debian packages, `helm` makes it easy to deploy a full-fledged application with all of its dependencies on kubernetes.
 
 # Install Tiller
 
