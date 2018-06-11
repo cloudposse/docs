@@ -14,3 +14,20 @@ Helm makes it easy to install `charts` (an application) on kubernetes clusters. 
 The helm `tiller` is the server-side component of Helm. It's used to cordinate with the kubernetes cluster in order to deploy resources (E.g. `Services`, `Deployments`, `StatefulSets`, etc.)
 
 To install the `tiller`, just run `helm init` from the Geodesic Shell after assumming-role and running `kops export kubecfg $CLUSTER_NAME`.
+
+# Delete All Releases in Namespace
+
+To delete all helm releases in `NAMESPACE`, run the following command:
+```
+helm list --namespace $NAMESPACE --short | xargs helm delete --purge
+```
+
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+Deleting releases will not delete the namespace itself. This is because there may be other artifacts. For a more detailed discussion on the pros & cons of this, check out the [GitHub issue](https://github.com/kubernetes/helm/issues/1464) tracking this topic.
+{{% /dialog %}}
+
+Then after running this command, to delete the namespace, run:
+
+```
+kubectl delete namespace $NAMESPACE
+```
