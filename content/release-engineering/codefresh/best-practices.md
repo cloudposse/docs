@@ -1,6 +1,6 @@
 ---
 title: "Codefresh \"Best Practices\""
-description: ""
+description: "Our tips for working with Codefresh"
 tags:
 - best-practices
 ---
@@ -48,9 +48,8 @@ Codefresh provides a decent [cli](https://codefresh-io.github.io/cli/) tool to c
 
 Codefresh provides the ability to run jobs periodically with cron-like functionality.
 
-{{< img src="/assets/best-practices-3fbbf706.png" title="Add a Codefresh Cron trigger" >}}
+{{< img src="/assets/best-practices-3fbbf706.png" title="Add a Codefresh Cron Trigger" >}}
 
 This is ideal for a couple of use-cases:
-
 1. Rerun infrequently triggered pipelines periodically to ensure they still work
 2. Rebuild containers containing time-sensitive data (e.g. figures for a database, or MaxMind GeoIP databases)
