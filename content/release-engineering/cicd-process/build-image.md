@@ -1,6 +1,6 @@
 ---
 title: "Step 3: Build Docker Image"
-description: ""
+description: "Build docker image from `Dockerfile`"
 weight: 3
 tags:
 - cicd

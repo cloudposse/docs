@@ -11,4 +11,5 @@ steps:
     when:
       condition:
         all:
+          # Push image for all branches (e.g. no tags)
           executeForBranch: "'${{SEMVERSION_BRANCH}}' != ''"

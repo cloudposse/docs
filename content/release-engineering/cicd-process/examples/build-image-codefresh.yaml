@@ -3,6 +3,6 @@ steps:
   build_image:
     title: Build image
     type: build
-    description: Build application
-    image-name: example/app
+    description: Build Dockerfile for application
+    image_name: example/app
     dockerfile: Dockerfile

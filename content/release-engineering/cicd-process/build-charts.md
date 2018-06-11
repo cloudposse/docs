@@ -1,31 +1,32 @@
 ---
-title: "Step 3: Build Charts"
-description: ""
-weight: 3
+title: "Step 4: Build Charts"
+description: "Build helm charts pinned to docker image tags."
+weight: 4
 tags:
 - cicd
 - codefresh
 ---
 
-[Helm Chart](https://docs.helm.sh/developing_charts/#charts) is one of two artifacts
-that are the result of CI/CD build. The chart defines how to execute application
-on Kubernets cluster and what services it depends of.
+A [helm chart](https://docs.helm.sh/developing_charts/#charts) is one of the two artifacts
+that result from the CI/CD build process. The chart defines how to execute the application
+on a Kubernets cluster and what services it depends on.
 
-[Build Harness]({{< relref "release-engineering/build-harness.md" >}}) support
-building charts.
+The [build-harness]({{< relref "release-engineering/build-harness.md" >}}) supports building charts. By default, it will look for a chart in the `charts/` folder located in a project's root folder.
 
-The chart are build from a basic chart that stored in application source.
+Generally, the process of building a chart looks something like this:
 
-In common case chart build step just process this steps:
+1. Copy the `chart/` folder to a temporary directory
+2. Rewrite `Chart.yaml` and `values.yaml` (using `yq`) to pin the chart version to the docker image to the [semantic version]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}}).
+3. Fetch chart dependencies (if any)
+4. Publish the chart to the [chart registry]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
 
-* Copy base chart to result directory
-* Set chart version and docker image version to [generated version]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}})
-* Fetch chart dependencies
-* Publish chart in [artifact storage]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+The actual implementation can be found in the [build-harness helm module](https://github.com/cloudposse/build-harness/blob/master/modules/helm/Makefile.chart).
+{{% /dialog %}}
 
-# Dependency
+# Dependencies
 
-* [Semantic Versioning Step]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}})
+* [Semantic Versioning]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}})
 * [Chart Registry]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
 
 # Examples

@@ -1,6 +1,6 @@
 ---
 title: "Step 2: Generate Semantic Versions"
-description: ""
+description: "Automatically generate semantic versions based on git tag/branch and commit hash (sha)."
 weight: 2
 ---
 

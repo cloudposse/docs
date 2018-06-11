@@ -1,18 +1,13 @@
 ---
-title: "Step 3: Push Docker Image"
-description: ""
-weight: 3
+title: "Step 5: Tag & Push Docker Image"
+description: "Push docker image along with all tags up to docker registry."
+weight: 5
 tags:
 - cicd
 - codefresh
 ---
 
-[Docker Image](https://docs.docker.com/engine/reference/commandline/images/) stored
-in [Docker registry](https://docs.docker.com/registry).
-
-
-To push the Docker image you can use the [build-harness]({{< relref "release-engineering/build-harness.md" >}})
-or native tools of the CI/CD platform.
+To push the Docker image to the registry, we use the `docker/push` target of the [build-harness]({{< relref "release-engineering/build-harness.md" >}}).
 
 # Dependencies
 

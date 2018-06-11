@@ -1,7 +1,7 @@
 ---
-title: "Step 7: Deploy to Cluster"
-description: ""
-weight: 4
+title: "Step 6: Deploy to Cluster"
+description: "Deploy helm charts to cluster with helmfile and chamber"
+weight: 6
 tags:
 - cicd
 - Codefresh
