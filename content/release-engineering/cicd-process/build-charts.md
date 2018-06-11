@@ -19,7 +19,7 @@ The chart are build from a basic chart that stored in application source.
 In common case chart build step just process this steps:
 
 * Copy base chart to result directory
-* Set chart version and docker image version to [generated version]({{< relref "release-engineering/cicd-process-steps/step_versioning.md" >}})
+* Set chart version and docker image version to [generated version]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}})
 * Fetch chart dependencies
 * Publish chart in [artifact storage]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
 

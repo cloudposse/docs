@@ -12,4 +12,4 @@ After successful deployment, we recommend to trigger a notification to a Slack c
 
 # Examples
 
-{{% include-code-block title="Notify Slack with Codefresh" file="release-engineering/cicd-process-steps/examples/slack-notification-codefresh.yaml" language="yaml" %}}
+{{% include-code-block title="Notify Slack with Codefresh" file="release-engineering/cicd-process/examples/slack-notification-codefresh.yaml" language="yaml" %}}
