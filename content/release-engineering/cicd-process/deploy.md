@@ -9,15 +9,15 @@ tags:
 ---
 
 The deployment step leverages [`helmfile`]({{< relref "tools/helmfile.md" >}}) to define
-[releases](https://docs.helm.sh/using_helm/#three-big-concepts) and orchestrate the deployment them to the cluster with `helm`.
+[releases](https://docs.helm.sh/using_helm/#three-big-concepts) and orchestrate the deployment to the cluster with `helm`.
 
 We typically store the `helmfile.yaml` in the application repo under the `config/` directory. If a chart depends on some values, then we store these values in `config/chart.yaml`, which is an `envsubst` formatted template rendered upon deployment.
 
-Here's an example of what a typical helmfile looks like.
+Here's an example of what a typical `helmfile` looks like:
 
 {{% include-code-block title="config/helmfile.yaml" file="release-engineering/cicd-process/examples/app-helmfile.yaml" language="yaml" %}}
 
-Here's an example of what a typical `envsubst` parameterized helm values file looks like.
+Here's an example of what a typical `envsubst` parameterized helm values file looks like:
 
 {{% include-code-block title="config/chart.yaml" file="release-engineering/cicd-process/examples/app-chart.yaml" language="yaml" %}}
 
