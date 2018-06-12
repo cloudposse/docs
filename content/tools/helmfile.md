@@ -13,6 +13,10 @@ tags:
 
 We use `helmfile` to deploy collections of charts as part of geodesic. The `helmfile.yaml` is a declarative configuration file that makes it easier to deploy and manage a large number of helm charts.
 
+Another way to think about it is like this:
+
+> If `helm` is responsible for deploying a single application to kubernetes, then `helmfile` is responsible for deploying multiple applications by calling `helm`.
+ 
 # Features
 
 - **12-Factor Style Configurations** - Parameterize all charts using Environment Variables

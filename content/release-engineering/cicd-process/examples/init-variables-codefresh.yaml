@@ -1,0 +1,13 @@
+version: '1.0'
+
+steps:
+  init_variables:
+    title: Init variables
+    image: alpine
+    commands:
+    - cf_export BUILD_HARNESS_VERSION=0.5.5
+    - cf_export CF_BUILD_UNIX_TIMESTAMP=$(expr ${{CF_BUILD_TIMESTAMP}} / 1000)
+    - cf_export GIT_BRANCH=${{CF_BRANCH}}
+    - cf_export BASE_HOST=us-west-2.staging.example.com
+    - cf_export NAMESPACE=pr-${{CF_PULL_REQUEST_NUMBER}}-${{CF_REPO_NAME}}
+    - cf_export APP_HOST=pr-${{CF_PULL_REQUEST_NUMBER}}.${{CF_REPO_NAME}}.us-west-2.staging.example.com
