@@ -63,7 +63,12 @@ Helm is central to how we deploy all services on kubernetes.
 
 ## CI/CD with Codefresh
 
-Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md" >}}) is integrated with kubernetes. Codefresh runs docker containers for each build step. We provide a dockerized [build-harness]({{< relref "release-engineering/build-harness.md">}}) to distribute common build tools that we use as part of the build steps in the `codefresh.yml`.
+Our standard [CI/CD pipeline]({{< relref "release-engineering/cicd-process/_index.md" >}}) describes in detail each step and what it does.
+
+Codefresh runs docker containers for each build step. We provide a dockerized [build-harness]({{< relref "release-engineering/build-harness.md">}}) to distribute common build tools that we use as part of the build steps in the `codefresh.yml`.
+
+Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md" >}}) is integrated with kubernetes.
+
 
 * We use some terraform modules to provision resources for codefresh like a chamber user
 * Deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}})
