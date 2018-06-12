@@ -16,7 +16,7 @@ The [build-harness]({{< relref "release-engineering/build-harness.md" >}}) suppo
 Generally, the process of building a chart looks something like this:
 
 1. Copy the `chart/` folder to a temporary directory
-2. Rewrite `Chart.yaml` and `values.yaml` (using `yq`) to pin the chart version to the docker image to the [semantic version]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}}).
+2. Rewrite `Chart.yaml` and `values.yaml` (using `yq`) the chart version and the docker image version, using [semantic version]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}}).
 3. Fetch chart dependencies (if any)
 4. Publish the chart to the [chart registry]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
 
