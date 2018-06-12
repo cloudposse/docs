@@ -1,0 +1,10 @@
+## Ingress for load balancer
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ingress.annotations.external-dns.alpha.kubernetes.io/target: "ingress.us-west-2.staging.example.com"
+  hosts:
+    example.com:
+      - /charts
+      - /index.yaml
