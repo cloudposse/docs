@@ -1,16 +1,19 @@
 FROM node:10.4-stretch
 
-COPY Makefile .
-
-# TODO fix locales
-ENV LANG="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8" \
-    LC_CTYPE="en_US.UTF-8"  
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update \
+    && apt-get install -y \
     python3 \
     python3-pip \
-    && \
-    make init && \
-    make deps
+    locales \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+ENV LANG="en_US.UTF-8"
+
+COPY Makefile .
+
+RUN make init && make deps
+
+WORKDIR /src
+ENTRYPOINT [ "/build-harness/vendor/hugo" ]
