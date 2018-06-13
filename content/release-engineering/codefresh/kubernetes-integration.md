@@ -33,7 +33,7 @@ https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/codefres
 Enter the outputs of the script into the form and click save.
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
-We recommend naming the configuration after the cluster name (e.g. `us-west-2-staging-example-org`).
+We recommend naming the configuration after the cluster name (e.g. `us-west-2-staging-example-com`).
 {{% /dialog %}}
 
 ## Enter Kubernetes Credentials
@@ -55,7 +55,7 @@ create_namespace:
   title: Create an Example Namespace
   image: cloudposse/build-harness:0.5.4
   environment:
-    - KUBE_CONTEXT=us-west-2-staging-example-org
+    - KUBE_CONTEXT=us-west-2-staging-example-com
   commands:
     - "kubectl create namespace example"
 ```
