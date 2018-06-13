@@ -1,11 +1,11 @@
 ---
-title: "Is it possible only use some parts of the Cloud Posse solution? (For example, only leverage automated deployments)"
+title: "Is it possible to only use some parts of the Cloud Posse solution? (For example, only leverage automated deployments)"
 description: "Short answer: yes, but your mileage may vary."
 ---
 
 # Question
 
-Is it possible only use some parts of the Cloud Posse solution? (For example, only leverage automated deployments)
+Is it possible to only use some parts of the Cloud Posse solution? (For example, only leverage automated deployments)
 
 # Answer
 
@@ -17,6 +17,6 @@ For example, take our deployment strategy which depends heavily on a few things:
 2. Using `helmfile` to deploy multiple charts (could be replaced with umbrella charts)
 3. Using `chamber` for Secrets (could be swapped out with HashiCorp's Vault)
 4. Using `build-harness` to glue the piece above together
-5. Using a container-base pipeline system like Codefresh (could be replaced by )
+5. Using a container-base pipeline system like Codefresh (could be replaced by AWS CodeBuild, CircleCI, GitLab CI, Jenkins, and others)
 
-Swapping out any one of those components is possible, but we cannot anticipate what the implications of making that change.
+Swapping out any one of those components is possible, but we cannot anticipate the implications of making that change.
