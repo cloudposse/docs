@@ -9,7 +9,7 @@ description: "Quick fix: `helm delete --purge` the release and try again."
 
 # Answer
 
-This usually happens when the state of the resources in the kubernetes cluster does not match what Helm knows about. In the example above, the namespace had been deleted without first deleting the helm releases. So `helm` attempted to form an upgrade on a non-existent resource.
+This usually happens when the state of the resources (e.g. `Deployments`, `Services`, `Namespaces`, etc) in the kubernetes cluster does not match what Helm knows about. In the example above, the namespace had been deleted without first deleting the helm releases. So `helm` attempted to perform an upgrade on a non-existent resource.
 
 To fix this, simply delete the errant helm release. In this case, we would run the following command to delete the `pr-1627-app` helm release.
 
