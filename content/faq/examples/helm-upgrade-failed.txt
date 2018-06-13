@@ -1,0 +1,12 @@
+"cloudposse-incubator" has been added to your repositories
+exec: helm repo update --kube-context us-west-2-staging-example-com
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "cloudposse-incubator" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈ Happy Helming!⎈
+exec: helm upgrade --install pr-1627-app-pull-secret cloudposse-incubator/dockercfg --version 0.1.0 --namespace pr-1627-app --wait --timeout=600 --force --reset-values --kube
+-context us-west-2-staging-example-com
+Error: UPGRADE FAILED: failed to create resource: namespaces "pr-1627-app" not found
+err: exit status 1
+[SYSTEM] Error: Failed to run freestyle step: Deploy backing services with helmfile (for unlimited staging environments); caused by NonZeroExitCodeError: Container
+for step title: Deploy backing services with helmfile (for unlimited staging environments), step type: freestyle, operation: Freestyle step failed with exit code: 1
