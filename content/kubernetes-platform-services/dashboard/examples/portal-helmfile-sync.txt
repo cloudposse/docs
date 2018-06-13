@@ -2,7 +2,7 @@ chamber write kops PORTAL_HOSTNAME portal.us-west-2.staging.example.com
 chamber write kops PORTAL_INGRESS ingress.us-west-2.staging.example.com
 chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID e76XXXXXXXXXXXXXX9a0
 chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET b24XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXa1c
-chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION example-org
+chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION example-com
 chamber write kops PORTAL_OAUTH2_PROXY_GITHUB_TEAM staging-team
 chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_NAME $(uuidgen)
 chamber write kops PORTAL_OAUTH2_PROXY_COOKIE_SECRET $(uuidgen)
