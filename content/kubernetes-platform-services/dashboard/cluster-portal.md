@@ -43,7 +43,7 @@ in the GitHub `organization` and in the `team` belonging to it.
 For more details read [Creating organization](https://help.github.com/articles/creating-a-new-organization-from-scratch/)
 and [Organizing members into teams](https://help.github.com/articles/organizing-members-into-teams/)
 
-In our example we will use `example-org` as the organization and `staging-team` as the team.
+In our example we will use `example-com` as the organization and `staging-team` as the team.
 
 ## Installing on Kubernetes
 
