@@ -2,6 +2,7 @@ FROM node:10.4-stretch
 
 COPY Makefile .
 
+# TODO fix locales
 ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
     LC_CTYPE="en_US.UTF-8"  
