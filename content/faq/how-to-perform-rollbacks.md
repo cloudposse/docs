@@ -14,7 +14,7 @@ How to rollback application to previous version?
 
 # Answer
 
-[Helm]({{< relref "tools/helm.md" >}}) handles rollbacks out-of-the-box. Everytime a helm replease is performed, it creates a new revision. By pinpointing a specific helm revision and performing a rollback, the previous version will be redeployed.
+[Helm]({{< relref "tools/helm.md" >}}) handles rollbacks out-of-the-box. Everytime a helm release is performed, it creates a new revision. By pinpointing a specific helm revision and performing a rollback, the previous version will be redeployed.
 
 There are a couple ways we recommend performing rollbacks.
 

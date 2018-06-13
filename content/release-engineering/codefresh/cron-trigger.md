@@ -17,7 +17,7 @@ Codefresh supports [triggers](https://codefresh.io/docs/docs/pipeline-triggers/i
 2. Navigate to the "Configuration" and select "Add Trigger"
 {{< img src="/assets/cron-trigger-7ac0cd4f.png" title="Pipeline Configuration" >}}
 
-3. Select "CRON" as the type and select "Next"
+3. Select "CRON" as the type and click "Next"
 {{< img src="/assets/cron-trigger-ad77ad30.png" title="Cronjob" >}})
 
 4. Pick a schedule
