@@ -1,0 +1,66 @@
+version: '1.0'
+steps:
+  send_slack_notification:
+    title: Send Slack Notification to channel
+    image: cloudposse/slack-notifier:0.1.3
+    environment:
+    - SLACK_WEBHOOK_URL=${{SLACK_WEBHOOK_URL}}
+    - SLACK_USER_NAME=Codefresh
+    - "SLACK_ICON_EMOJI=:rocket:"
+    - SLACK_FALLBACK=Deployed app to Staging environment
+    - SLACK_COLOR=good
+    - SLACK_PRETEXT=${{CF_COMMIT_MESSAGE}}
+    - SLACK_AUTHOR_NAME=Auto Deploy Robot
+    - SLACK_AUTHOR_LINK=https://cloudposse.com/
+    - SLACK_AUTHOR_ICON=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/small-cute-robot-square.png
+    - SLACK_TITLE=App on Staging Updated
+    - SLACK_TITLE_LINK=${{CF_BUILD_URL}}
+    - "SLACK_TEXT=The latest changes have been deployed to\n :point_right: app.${{BASE_HOST}}"
+    - SLACK_THUMB_URL=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/SquareLogo2.png
+    - SLACK_FOOTER=Helm Deployment
+    - SLACK_FOOTER_ICON=https://cloudposse.com/wp-content/uploads/sites/29/2018/02/kubernetes.png
+    # Environment (e.g. prod, staging)
+    - SLACK_FIELD1_TITLE=Environment
+    - SLACK_FIELD1_VALUE=${{ENVIRONMENT}}
+    - SLACK_FIELD1_SHORT=true
+    # Git repository
+    - SLACK_FIELD2_TITLE=Repository
+    - SLACK_FIELD2_VALUE=${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    - SLACK_FIELD2_SHORT=true
+    # Kubernetes Namespace
+    - SLACK_FIELD3_TITLE=Namespace
+    - SLACK_FIELD3_VALUE=${{NAMESPACE}}
+    - SLACK_FIELD3_SHORT=true
+    # Branch or Tag Deployed
+    - SLACK_FIELD4_TITLE=Branch/Tag
+    - SLACK_FIELD4_VALUE=${{CF_BRANCH_TAG_NORMALIZED}}
+    - SLACK_FIELD4_SHORT=true
+    # Helm Release Name
+    - SLACK_FIELD5_TITLE=Release
+    - SLACK_FIELD5_VALUE=${{RELEASE_NAME}}
+    - SLACK_FIELD5_SHORT=true
+    # Commit Hash (SHA)
+    - SLACK_FIELD6_TITLE=Commit
+    - SLACK_FIELD6_VALUE=<${{CF_COMMIT_URL}}|${{CF_SHORT_REVISION}}>
+    - SLACK_FIELD6_SHORT=true
+    # Date & Time of Build
+    - SLACK_FIELD7_TITLE=Build Time
+    - SLACK_FIELD7_VALUE=<!date^${{CF_BUILD_UNIX_TIMESTAMP}}^{date_num} {time_secs}|Time format failed!!!>
+    - SLACK_FIELD7_SHORT=true
+    # Date & Time of Commit
+    - SLACK_FIELD8_TITLE=Commit Time
+    - SLACK_FIELD8_VALUE=<!date^${{GIT_TIMESTAMP}}^{date_num} {time_secs}|Time format failed!!!>
+    - SLACK_FIELD8_SHORT=true
+    # Type of Build Trigger
+    - SLACK_FIELD9_TITLE=Trigger
+    - SLACK_FIELD9_VALUE=@${{CF_BUILD_TRIGGER}}
+    - SLACK_FIELD9_SHORT=true
+    # Who made the last commit that triggered build
+    - SLACK_FIELD10_TITLE=Commit Author
+    - SLACK_FIELD10_VALUE=@${{CF_COMMIT_AUTHOR}}
+    - SLACK_FIELD10_SHORT=true
+    when:
+      condition:
+        all:
+          # Only send notifications on merge to master
+          executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"

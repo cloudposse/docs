@@ -93,11 +93,11 @@ Kubernetes secret specificied by the `tls` config parameter.
 
 Here are some examples:
 
-{{% include-code-block title="ingress.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-ingress.yaml" language="yaml" %}}
+{{% include-code-block title="ingress.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-usage-ingress.yaml" language="yaml" %}}
 
-{{% include-code-block title="values.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-values.yaml" language="yaml" %}}
+{{% include-code-block title="values.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-usage-values.yaml" language="yaml" %}}
 
-{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-helmfile.yaml" language="yaml" %}}
+{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification on how to structure helm chart values. Different charts may have very different structures of the value parameters. The only way to know for sure what is supported is to refer to the chart manifests.

@@ -1,0 +1,15 @@
+version: '1.0'
+steps:
+  push_image_branch:
+    title: Push image with branch based semver tags
+    type: push
+    candidate: ${{build_image}}
+    tags:
+      - "${{SEMVERSION_BRANCH}}"
+      - "${{SEMVERSION_BRANCH_COMMIT_SHORT}}"
+      - "${{SEMVERSION_BRANCH_COMMIT}}"
+    when:
+      condition:
+        all:
+          # Push image for all branches (e.g. no tags)
+          executeForBranch: "'${{SEMVERSION_BRANCH}}' != ''"

@@ -1,0 +1,10 @@
+version: '1.0'
+steps:
+  semver:
+    title: Export semantic version
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    commands:
+      - make git/show
+      - make git/export | tee -a ${{CF_VOLUME_PATH}}/env_vars_to_export
+      - make semver/show
+      - make semver/export | tee -a ${{CF_VOLUME_PATH}}/env_vars_to_export
