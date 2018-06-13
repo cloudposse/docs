@@ -4,10 +4,12 @@ export INSTALL_PATH ?= /usr/local/bin
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
-export HUGO_URL ?= http://localhost.cloudposse.com:1313/
+export HUGO_PORT ?= 1313
+export HUGO_DOCKER ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) cloudposse/docs
+export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
 export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(HUGO_EDIT_BRANCH)
-export HUGO_ARGS ?= --watch --buildDrafts
+export HUGO_ARGS ?= --port $(HUGO_PORT) --watch --buildDrafts
 export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
@@ -77,13 +79,13 @@ open:
 
 ## Start the hugo server for live editing
 run:
-	$(HUGO) server $(HUGO_ARGS)
+	$(HUGO_DOCKER) server $(HUGO_ARGS)
 
 ## Generate all static content (outputs to public/)
 build:
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
-	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
+	$(HUGO_DOCKER) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Lint check common formatting mistakes
 lint/formatting:
