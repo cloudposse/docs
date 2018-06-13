@@ -1,0 +1,44 @@
+repositories:
+  # Cloud Posse incubator repo of helm charts
+  - name: "cloudposse-incubator"
+    url: "https://charts.cloudposse.com/incubator/"
+
+  # Local chart repo
+  - name: "chart-repo"
+    url: '{{ env "CHART_REPO_URL" }}'
+
+#
+# Kubernetes
+#
+context: '{{ env "KUBE_CONTEXT" }}'
+
+#
+# Helm Releases
+#
+releases:
+  # Pull Secret (.dockercfg)
+  - name: '{{ env "NAMESPACE" }}-pull-secret'
+    labels:
+      chart: "dockercfg"
+      component: "secrets"
+    chart: "cloudposse-incubator/dockercfg"
+    version: "0.1.0"
+    namespace: '{{ env "NAMESPACE" }}'
+    set:
+    - name: "image.pullSecret.registry"
+      value: '{{ env "IMAGE_PULL_SECRET_REGISTRY" }}'
+    - name: "image.pullSecret.username"
+      value: '{{ env "IMAGE_PULL_SECRET_USERNAME" }}'
+    - name: "image.pullSecret.password"
+      value: '{{ env "IMAGE_PULL_SECRET_PASSWORD" }}'
+
+  # Application
+  - name: '{{ env "RELEASE_NAME" }}'
+    labels:
+      chart: "app"
+      component: "app"
+    version: '{{ env "CHART_VERSION" }}'
+    chart: 'chart-repo/{{ env "CHART_NAME" }}'
+    namespace: '{{ env "NAMESPACE" }}'
+    values:
+      - '{{ env "RELEASE_NAME" }}.yaml'

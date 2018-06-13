@@ -14,7 +14,7 @@ How to rollback application to previous version?
 
 # Answer
 
-[Helm]({{< relref "tools/helm.md" >}}) handles rollbacks out-of-the-box. Everytime a helm replease is performed, it creates a new revision. By pinpointing a specific helm revision and performing a rollback, the previous version will be redeployed. 
+[Helm]({{< relref "tools/helm.md" >}}) handles rollbacks out-of-the-box. Everytime a helm release is performed, it creates a new revision. By pinpointing a specific helm revision and performing a rollback, the previous version will be redeployed.
 
 There are a couple ways we recommend performing rollbacks.
 
@@ -60,7 +60,7 @@ sh-3.2 $ helm rollback $RELEASE_NAME $REVISION_NUMBER
 
 The other option is to use the Codefresh UI to perfom the rollback. The benefit with this is no console access is required.
 
-[Codefresh]({{< relref "release-engineering/codefresh.md" >}}) provides native integration
+[Codefresh]({{< relref "release-engineering/codefresh/_index.md" >}}) provides native integration
 with Kubernetes and Helm. Here's an example of how you can use their UI to perform a rollback.
 
 1. Open the [Helm Releases](https://g.codefresh.io/helm/releases/releases/) page

@@ -6,7 +6,7 @@ Welcome to the Cloud Posse Developer Hub Documentation Portal.
 
 All documentation is published to [docs.cloudposse.com](https://docs.cloudposse.com). Here you'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck.
 
-Let's jump right in!
+Let's jump right in! Here's how to get started with our documentation.
 
 ## Manifest
 
@@ -81,7 +81,7 @@ All other trademarks referenced herein are the property of their respective owne
 
 ## About
 
-`docs` is maintained and funded by [Cloud Posse, LLC][website].
+This project is maintained and funded by [Cloud Posse, LLC][website].
 
 ![Cloud Posse](https://cloudposse.com/logo-300x69.png)
 

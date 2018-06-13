@@ -1,0 +1,8 @@
+version: '1.0'
+steps:
+  build_image:
+    title: Build image
+    type: build
+    description: Build Dockerfile for application
+    image_name: example/app
+    dockerfile: Dockerfile

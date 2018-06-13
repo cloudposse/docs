@@ -1,9 +1,11 @@
 ---
 title: Semantic Versioning
 description: "Software versioning is the most widely adopted scheme for assigning unique version version numbers to software releases."
+tags:
+- semver
 ---
 
-We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. GitHub Tags/Releases, Helm Charts, Terraform Modules, Docker Images).
+We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. GitHub Tags/Releases, Helm Charts, Terraform Modules, Docker Images). Using this versioning standard helps to reduce the entropy related to [Dependency Hell](https://en.wikipedia.org/wiki/Dependency_hell).
 
 ![Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)](/assets/aa35c54-semver.png)Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)
 
@@ -26,3 +28,7 @@ We always start projects off at `0.1.0`. This is our first release of any projec
 ## 1.X.Y+
 
 As soon as our code reaches `1.X.Y`, the interface should be relatively stable - that is not changing much between minor releases.
+
+# Implementation
+
+Managing semantic versions should be automated just like everything else in our infrastructure. The [`build-harness`]({{< relref "release-engineering/build-harness.md" >}}) is used by our [Codefresh CI/CD process]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}}) to automatically generate versions based on git history.

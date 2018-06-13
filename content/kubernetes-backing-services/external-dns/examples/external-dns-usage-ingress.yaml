@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: chartmuseum
+  annotations:
+    ingress.annotations.external-dns.alpha.kubernetes.io/target: "ingress.us-west-2.staging.example.com"
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: chartmuseum-service
+          servicePort: 80

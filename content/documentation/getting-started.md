@@ -17,7 +17,7 @@ Check out our [terraform-root-modules](https://github.com/cloudposse/terraform-r
 
 # Local Development
 
-1. Get your [local environment](/local-dev-environments/) setup
+1. Get your [local environment]({{< relref "local-dev-environments/_index.md" >}}) setup
 2. Make sure you're familiar with [`make`](/tools/make/) and [`Makefiles`]({{< relref "tools/make/makefile-examples.md" >}}) because we use them extensively for "executable documentation".
 3. Review Docker compose
 4. Docker composition monorepo strategy
@@ -63,10 +63,15 @@ Helm is central to how we deploy all services on kubernetes.
 
 ## CI/CD with Codefresh
 
-Learn how [codefresh]({{< relref "release-engineering/codefresh-kubernetes-integration.md" >}}) is integrated with kubernetes. Codefresh runs docker containers for each build step. We provide a dockerized [build-harness]({{< relref "release-engineering/build-harness.md">}}) to distribute common build tools that we use as part of the build steps in the `codefresh.yml`.
+Our standard [CI/CD pipeline]({{< relref "release-engineering/cicd-process/_index.md" >}}) describes in detail each step and what it does.
 
-* We use some terraform modules to provision resources for codefresh like a chamber user
-* Deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}})
+Codefresh runs docker containers for each build step. We provide a dockerized [build-harness]({{< relref "release-engineering/build-harness.md">}}) to distribute common build tools that we use as part of the build steps in the `codefresh.yml`.
+
+Learn how [Codefresh]({{< relref "release-engineering/codefresh/kubernetes-integration.md" >}}) is integrated with kubernetes. This is also the same process used to add integrations for multiple clusters.
+
+We use some terraform modules to provision resources for codefresh like a [chamber user](https://github.com/cloudposse/terraform-aws-iam-chamber-user).
+
+Securely deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}}).
 
 ## Backing Services (*Coming Soon*)
 

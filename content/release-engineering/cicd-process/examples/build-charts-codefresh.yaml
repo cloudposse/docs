@@ -1,0 +1,16 @@
+version: '1.0'
+steps:
+  build_chart:
+    title: Build Chart and publish to chartmuseum
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    commands:
+    # Add the helm chart registry
+    - make helm/repo/add REPO_NAME=example REPO_ENDPOINT=${{STAGING_REPO_ENDPOINT}}
+    # Add other standard remotes
+    - make helm/repo/add-remote
+    # Create a clean workspace
+    - make helm/chart/clean
+    # Build all the charts
+    - make helm/chart/build-all
+    # Publish charts to helm registry
+    - make helm/chart/publish REPO_GATEWAY_ENDPOINT=${{STAGING_REPO_GATEWAY_ENDPOINT}}
