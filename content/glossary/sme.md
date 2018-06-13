@@ -10,5 +10,5 @@ terms:
 - Domain Expert
 tags:
 - DevOps
-- CloudPosse
+- cloudposse
 ---
