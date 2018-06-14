@@ -5,7 +5,6 @@ export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
 export HUGO_PORT ?= 1313
-export HUGO_DOCKER ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) cloudposse/docs
 export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
 export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(HUGO_EDIT_BRANCH)
@@ -22,6 +21,13 @@ export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/
 #export ALGOLIA_API_ENDPOINT ?= "https://httpbin.org/post"
 
 export ASCIINEMA_VERSION ?= 2.6.1
+
+export DOCKER_ORG ?= cloudposse
+export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs-toolbox
+export DOCKER_TAG ?= latest
+export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
+export DOCKER_BUILD_FLAGS = 
+export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) $(DOCKER_IMAGE_NAME)
 
 ## Install OSX deps
 deps-darwin:
@@ -78,14 +84,14 @@ open:
 	open $(HUGO_URL)
 
 ## Start the hugo server for live editing
-run:
-	$(HUGO_DOCKER) server $(HUGO_ARGS)
+run: docker/build
+	$(DOCKER_RUN) server $(HUGO_ARGS)
 
 ## Generate all static content (outputs to public/)
-build:
+build: docker/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
-	$(HUGO_DOCKER) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
+	$(DOCKER_RUN) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Lint check common formatting mistakes
 lint/formatting:
