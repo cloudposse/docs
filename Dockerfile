@@ -11,9 +11,9 @@ ENV LANG="en_US.UTF-8"
 
 COPY Makefile .
 
-ENV PORT=1313
+ENV HUGO_PORT=1313
 RUN make init && make deps
 
-EXPOSE $PORT
+EXPOSE $HUGO_PORT
 WORKDIR /src
 ENTRYPOINT [ "/build-harness/vendor/hugo" ]
