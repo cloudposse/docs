@@ -1,6 +1,6 @@
 ---
 title: "Cold Start"
-description: "Describes the `cold start` process"
+description: "Describes the *cold start* process"
 weight: 2
 tags:
 - cold start
