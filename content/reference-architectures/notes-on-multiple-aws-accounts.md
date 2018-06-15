@@ -13,10 +13,10 @@ We strongly recommend using multiple AWS accounts and provision a stage (e.g. `p
 
 However, in some cases it might be not possible for operational, organizational or other reasons. 
 
-We could have three cases here:
+We can have three use-cases:
 
 1. We are in control of the master account and can create Organization on top of it and member accounts in it
-2. We are given one account (not the master) and we can’t create an Organization. But we can create (or request) more accounts under the same Organization
+2. We are given one account (not the master) and we can’t create Organization, but we can create (or request) more accounts under the same Organization
 3. We have only one account in total
 
 All three cases are covered by our Reference Architectures and the Cold Start process described in [Cold Start]({{< relref "reference-architectures/cold-start.md" >}}).
@@ -25,17 +25,18 @@ All three cases are covered by our Reference Architectures and the Cold Start pr
 
 2. One of the member accounts will be named `root` and will behave as a root from the DevOps point of view, but not the root of the accounts hierarchy in an Organization.
 The other accounts will be named by the stage names (`prod`, `staging`. etc.).
-We just don’t provision an Organization.
+We just don’t provision Organization.
 
 3. In case of only one account, the `root` will be a virtual root, not the root of the Organization hierarchy.
 We still work in a `geodesic` shell per virtual account.
-Since we use the `label` pattern, resource naming should not be a problem and will not create any conflicts.
-We don’t provision an Organization and member accounts.
+Since we use the `label` pattern, resource naming should not be a problem and will not create any naming conflicts.
+We don’t provision Organization and member accounts.
 In `~/.aws/config` we use profiles with the same names (e.g. `cpco-testing-admin`, `cpco-root-admin`).
-The only difference is that in these profiles we use the same account name and don’t use `OrganizationAccountAccessRole`.
+The only difference is that we use the same account ID and don’t use `OrganizationAccountAccessRole`.
 
-For example, instead of this:
+For example, instead of this profile configuration:
 
+{{% dialog type="code-block" icon="fa fa-code" title="~/.aws/config" %}}
 ```
 [profile cpco-testing-admin]
 region=us-west-2
@@ -49,9 +50,11 @@ role_arn=arn:aws:iam::323330167063:role/cpco-root-admin
 mfa_serial=arn:aws:iam::323330167063:mfa/admin@cloudposse.co
 source_profile=cpco
 ```
+{{% /dialog %}}
 
-we use this:
+We use this:
 
+{{% dialog type="code-block" icon="fa fa-code" title="~/.aws/config" %}}
 ```
 [profile cpco-testing-admin]
 region=us-west-2
@@ -65,5 +68,6 @@ role_arn=arn:aws:iam::323330167063:role/cpco-root-admin
 mfa_serial=arn:aws:iam::323330167063:mfa/admin@cloudposse.co
 source_profile=cpco
 ```
+{{% /dialog %}}
 
-From different `geodesic` shells (`root` and `testing`) we will login to the same account under different IAM roles.
+From different `geodesic` shells (`root` and `testing`) we login to the same AWS account under different IAM roles.

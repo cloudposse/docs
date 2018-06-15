@@ -4,14 +4,15 @@ description: "Describes the `cold start` process"
 weight: 2
 tags:
 - cold start
+- aws-vault
 - geodesic
 ---
 
-Here we describe the `cold start` process, when you start with just one master AWS account and need to provision infrastructure for different environments.
+Here we describe the `cold start` process, when we start with just one master AWS account and provision infrastructure for different environments.
 
 # Prerequisites
 
-* Choose an AWS region in which to provision all the resources - we use `us-west-2` for our reference architecture
+* Choose an AWS region in which to provision all the resources - we use `us-west-2` for our reference architectures
 
 * Select the parent DNS domain name for your infrastructure - in these examples we use `cloudposse.co`
 
@@ -29,22 +30,30 @@ Here we describe the `cold start` process, when you start with just one master A
 
 * Install and setup [aws-vault](https://github.com/99designs/aws-vault) to store IAM credentials in your operating system's secure keystore and then generate temporary credentials from those to expose to your shell and applications
 
-You can install manually from [aws-vault](https://github.com/99designs/aws-vault/releases). On MacOS, you may use `homebrew cask`
+You can install manually from [aws-vault](https://github.com/99designs/aws-vault/releases). 
 
-```bash
+On MacOS, you may use `homebrew cask`:
+
+{{% dialog type="code-block" icon="fa fa-code" title="Install aws-vault with brew" %}}
+```shell
 brew cask install aws-vault
 ```
+{{% /dialog %}}
 
 Then setup your secret credentials in `aws-vault` in the `cpco` profile (input the IAM `Access Key ID` and `Secret Access Key` when prompted)
 
-__NOTE:__ Replace the profile name `cpco` with your own (for consistency, we recommend using the same name as the namespace in the Terraform modules)
-
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Setup aws-vault" %}}
+```shell
 export AWS_VAULT_BACKEND=file
 aws-vault add cpco
 ```
+{{% /dialog %}}
 
-__NOTE:__ You should set `AWS_VAULT_BACKEND=file` in your shell `rc` config (e.g. `~/.bashrc`) so it persists.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+Replace the profile name `cpco` with your own (for consistency, we recommend using the same name as the namespace in the Terraform modules).
+
+You should set `AWS_VAULT_BACKEND=file` in your shell `rc` config (e.g. `~/.bashrc`) so it persists.
+{{% /dialog %}}
 
 * Keep in mind that AWS has limits on the number of accounts in an organization (see [Organization reference limits](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html)).
 If you are planning on provisioning all the accounts (`prod`, `staging`, `dev`, `audit`, `testing`), contact AWS Support and request a limit increase.
@@ -54,7 +63,7 @@ If you are planning on provisioning all the accounts (`prod`, `staging`, `dev`, 
 
 In this example, we'll provision resources for the following two accounts:
 
-* `root` - always in use as the Root of the AWS accounts hierarchy and also as the main account to store all the IAM users and roles used to access the other accounts
+* `root` - always in use as the Root of the AWS accounts hierarchy and also as the main account to store all the IAM users and roles to access the other accounts
 * `testing` - we use it to quickly create and destroy infrastructure for testing 
 
 The other stages (`prod`, `staging`, `dev`, `audit`) are similar (they might differ by the resources you provision), and as has been noticed before, you might not need all of them.
@@ -76,7 +85,7 @@ Update all ENV variables in the two `Dockefiles` in the repos with the values fo
  * In `testing`, select only the resources you need to provision (using `COPY --from=terraform-root-modules`)
 
 
-## Add AWS Profile for `root`
+## Add AWS Profile For `root`
 
 We require all users to assume IAM roles to access all the accounts (including `root`).
 
@@ -86,6 +95,7 @@ We'll update this profile to use `role_arn` later after we provision the roles.
 
 In `~/.aws/config` file, add this profile for the `root` account:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Add AWS Profile For `root`" %}}
 ```
 [profile cpco-root-admin]
 region=us-west-2
@@ -95,15 +105,19 @@ source_profile=cpco
 # This profile is required by aws-vault where it stores the Access Key ID and Secret Access Key as explained in Prerequisites
 [profile cpco]
 ```
+{{% /dialog %}}
 
-__NOTE:__ Set the namespace and profile name `cpco`, the region, the `root` account ID `323330167063` and the admin user `admin@cloudposse.co` to your own values.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+Change the namespace and profile name `cpco`, the region, the `root` account ID `323330167063` and the admin user `admin@cloudposse.co` to your own values.
+{{% /dialog %}}
 
 
-## Build and Start Geodesic Module for `root`
+## Build And Start Geodesic Module For `root`
 
 Open a terminal window and execute the following commands:
- 
-```bash
+
+{{% dialog type="code-block" icon="fa fa-code" title="Build And Start Geodesic Module For `root`" %}}
+```shell
 cd ~/root.cloudposse.co
 
 # Initialize the project's build-harness
@@ -121,6 +135,7 @@ root.cloudposse.co
 # Login to AWS as the admin user with your MFA device
 assume-role
 ```
+{{% /dialog %}}
 
 You should see the `Docker` image built, `geodesic` shell started, and after you run the `assume-role` command, you will be logged in to the `root` account as the `admin` user:
 
@@ -154,7 +169,7 @@ Enter token for arn:aws:iam::323330167063:mfa/admin@cloudposse.co: 172432
 ✅   (cpco-root-admin) ~ ➤
 ```
 
-## Provision `tfstate-backend` project for `root`
+## Provision `tfstate-backend` Project For `root`
 
 We store Terraform state in an S3 bucket and use a DynamoDB table for state locking (allowing many users to work on the same project without affecting each other and corrupting the state).
 
@@ -164,34 +179,38 @@ We will create the bucket and table using local state, and then import the state
 
 Execute this sequence of steps in the `root` geodesic session:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `tfstate-backend` Project For `root`" %}}
 ```
 cd tfstate-backend
 
-Comment out the `backend          "s3"             {}` line in `tfstate-backend/main.tf`
+Comment out the `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
 Run `init-terraform`
 
 Run `terraform plan` and then `terraform apply`
 
-Re-enable `backend          "s3"             {}` line in `tfstate-backend/main.tf`
+Re-enable `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
 Re-run `init-terraform`
 
 Re-run `terraform apply`, answer `yes` when asked to import state
 
 ```
+{{% /dialog %}}
 
-__NOTE:__ You could use the following commands to comment out and then uncomment the `backend` line:
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+You could use the following commands to comment out and then uncomment the `backend` section:
 
-```bash
-sed -i 's/backend          "s3"             {}/#backend          "s3"             {}/' main.tf
-sed -i 's/#backend          "s3"             {}/backend          "s3"             {}/' main.tf
+```shell
+sed -i "s/ backend / #backend /" main.tf
+sed -i "s/ #backend / backend /" main.tf
 ```
+{{% /dialog %}}
 
 Now we have the S3 bucket and DynamoDB table provisioned, and Terraform state stored in the bucket itself.
 
 
-## Provision `iam` project to create `root` IAM Role
+## Provision `iam` Project To Create `root` IAM Role
 
 As was mentioned before, we require that all users assume roles to access the AWS accounts.
 
@@ -199,10 +218,13 @@ We executed the steps above using the `admin` user credentials without using rol
 
 Now we need to create the roles for the `root` account and update the AWS profile.
 
-__NOTE:__ Update the `TF_VAR_root_account_admin_user_names` variable in `Dockerfile` for the `root` account with your own values.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+Update the `TF_VAR_root_account_admin_user_names` variable in `Dockerfile` for the `root` account with your own values.
+{{% /dialog %}}
 
 Execute these commands in the `root` geodesic session:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `iam` Project To Create `root` IAM Role" %}}
 ```
 cd iam
 
@@ -216,9 +238,11 @@ Run `terraform apply -target=module.organization_access_group_root`
 
 Re-enable the `assume_role` section in `iam/main.tf`
 ```
+{{% /dialog %}}
 
 Now that we have the `root` role created, update the `root` AWS profile in `~/.aws/config` (again, make sure to change the values to your own):
 
+{{% dialog type="code-block" icon="fa fa-code" title="Root account profile" %}}
 ```
 [profile cpco-root-admin]
 region=us-west-2
@@ -229,16 +253,19 @@ source_profile=cpco
 # This profile is required by aws-vault where it stores the Access Key ID and Secret Access Key as explained in Prerequisites
 [profile cpco]
 ```
+{{% /dialog %}}
 
 Exit the `root` `geodesic` shell, run it again and then execute `assume-role`:
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Restart `geodesic` shell" %}}
+```shell
 # Run the shell
 root.cloudposse.co
 
 # Login to AWS with your MFA device
 assume-role
 ```
+{{% /dialog %}}
 
 You should see the `cpco-root-admin` role assumed:
 
@@ -252,53 +279,69 @@ Enter passphrase to unlock /conf/.awsvault/keys/:
 * Assumed role arn:aws:iam::323330167063:role/cpco-root-admin
 ```
 
-## Provision `organization` project for `root`
+## Provision `organization` Project For `root`
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `organization` Project For `root`" %}}
+```shell
 cd organization
 init-terraform
 terraform plan
 terraform apply
 ```
+{{% /dialog %}}
 
-__NOTE:__ If Organization was manually created for the `root` account (from the AWS console), you need to import it (change `o-cas6q267wf` to your organization ID):
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+If Organization was manually created for the `root` account (from the AWS console), you need to import it (change `o-cas6q267wf` to your organization ID):
 
-```bash
+```shell
 terraform import aws_organizations_organization.default o-cas6q267wf
 ```
+{{% /dialog %}}
 
 
-## Provision `accounts` project for `root`
+## Provision `accounts` Project For `root`
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `accounts` Project For `root`" %}}
+```shell
 cd accounts
 init-terraform
 terraform plan -target=aws_organizations_account.testing
 terraform apply -target=aws_organizations_account.testing
 ```
+{{% /dialog %}}
 
-__NOTE:__ For the purpose of this example, we create only the `testing` account. Use `-target` to add other accounts as needed.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+For the purpose of this example, we create only the `testing` account. Use `-target` to add other accounts as needed.
+{{% /dialog %}}
 
 Update the `TF_VAR_testing_account_id` variable in the `root` `Dockerfile`, then rebuild and restart the `root` `geodesic` shell:
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Rebuild and restart the `root` `geodesic` shell" %}}
+```shell
 exit
 exit
 make docker/build
 root.cloudposse.co
 assume-role
 ```
+{{% /dialog %}}
 
-## Provision `iam` project in `root` to create IAM Roles for member accounts
+## Provision `iam` Project In `root` To Create IAM Roles For Member Accounts
 
 Now we have the `testing` account ID and need to finish provisioning the `root` `iam` project.
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `iam` Project In `root` To Create IAM Roles For Member Accounts" %}}
+```shell
 cd iam
 init-terraform
-terraform plan -target=module.organization_access_group_root -target=module.organization_access_group_testing
-terraform apply -target=module.organization_access_group_root -target=module.organization_access_group_testing
+
+terraform plan -target=module.organization_access_group_root \
+    -target=module.organization_access_group_testing
+
+terraform apply -target=module.organization_access_group_root \
+    -target=module.organization_access_group_testing
 ```
+{{% /dialog %}}
 
 This will create `cpco-testing-admin` group in the `root` account and add the users (specified by `TF_VAR_testing_account_user_names`) to the group.
 
@@ -310,6 +353,7 @@ To summarize, now the users from `TF_VAR_testing_account_user_names` will be abl
 
 The last thing to do to enable that is to add the `cpco-testing-admin` profile to `~/.aws/config`:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Add `cpco-testing-admin` profile" %}}
 ```
 [profile cpco-testing-admin]
 region=us-west-2
@@ -326,22 +370,29 @@ source_profile=cpco
 # This profile is required by aws-vault where it stores the Access Key ID and Secret Access Key as explained in Prerequisites
 [profile cpco]
 ```
+{{% /dialog %}}
 
-## Provision `root-dns` project in `root` to create `parent` and `root` DNS zones
+## Provision `root-dns` Project In `root` To Create `parent` And `root` DNS Zones
 
 Now we provision DNS for the `root` account, but without the `testing` Name Servers yet.
 
 They will be provisioned later and then we'll come back to add them.
 
-
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `root-dns` Project In `root` To Create `parent` And `root` DNS Zones" %}}
+```shell
 cd root-dns
 init-terraform
-terraform apply -target=aws_route53_zone.parent_dns_zone -target=aws_route53_record.parent_dns_zone_soa -target=aws_route53_zone.root_dns_zone -target=aws_route53_record.root_dns_zone_soa -target=aws_route53_record.root_dns_zone_ns
+
+terraform apply -target=aws_route53_zone.parent_dns_zone -target=aws_route53_record.parent_dns_zone_soa \
+    -target=aws_route53_zone.root_dns_zone -target=aws_route53_record.root_dns_zone_soa \
+    -target=aws_route53_record.root_dns_zone_ns
 ```
+{{% /dialog %}}
+
 
 You should see Terraform output similar to this:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Terraform output" %}}
 ```
 parent_name_servers = [
     ns-1154.awsdns-16.org,
@@ -358,15 +409,19 @@ root_name_servers = [
 ]
 root_zone_id = Z3AZCXQQNZKZ7E
 ```
+{{% /dialog %}}
 
-__NOTE:__ If you did not buy the `parent` domain from Route53, you need to take the `parent` Name Servers from the Terraform output and update them in the registrar.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+If you did not buy the `parent` domain from Route53, you need to take the `parent` Name Servers from the Terraform output and update them in the registrar.
+{{% /dialog %}}
 
 
-## Build and Start Geodesic Module for `testing`
+## Build And Start Geodesic Module For `testing`
 
 Open a new terminal window and execute the following commands:
- 
-```bash
+
+{{% dialog type="code-block" icon="fa fa-code" title="Build And Start Geodesic Module For `testing`" %}}
+```shell
 cd ~/testing.cloudposse.co
 
 # Initialize the project's build-harness
@@ -384,6 +439,7 @@ testing.cloudposse.co
 # Login to AWS as the admin user with your MFA device
 assume-role
 ```
+{{% /dialog %}}
 
 You should see the `Docker` image built, `geodesic` shell started, and after you run the `assume-role` command, you will be logged in to the `testing` account:
 
@@ -398,42 +454,56 @@ Enter passphrase to unlock /conf/.awsvault/keys/:
 ```
 
 
-## Provision `tfstate-backend` project for `testing`
+## Provision `tfstate-backend` Project For `testing`
 
 Execute this sequence of steps in the `testing` geodesic session:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `tfstate-backend` Project For `testing`" %}}
 ```
 cd tfstate-backend
 
-Comment out the `backend          "s3"             {}` line in `tfstate-backend/main.tf`
+Comment out the `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
 Run `init-terraform`
 
 Run `terraform plan` and then `terraform apply`
 
-Re-enable `backend          "s3"             {}` line in `tfstate-backend/main.tf`
+Re-enable `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
 Re-run `init-terraform`
 
 Re-run `terraform apply`, answer `yes` when asked to import state
 
 ```
+{{% /dialog %}}
+
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+You could use the following commands to comment out and then uncomment the `backend` section:
+
+```shell
+sed -i "s/ backend / #backend /" main.tf
+sed -i "s/ #backend / backend /" main.tf
+```
+{{% /dialog %}}
 
 Now we have the S3 bucket and DynamoDB table provisioned, and Terraform state stored in the bucket itself.
 
 
-## Provision `account-dns` project in `testing` to create `testing` DNS zone
+## Provision `account-dns` Project In `testing` To Create `testing` DNS Zone
 
 In `testing` `geodesic` shell, execute the following commands:
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `account-dns` Project In `testing` To Create `testing` DNS Zone" %}}
+```shell
 cd account-dns
 init-terraform
 terraform apply
 ```
+{{% /dialog %}}
 
 You should see Terraform output similar to this:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Terraform output" %}}
 ```
 name_servers = [
     ns-1416.awsdns-49.org,
@@ -443,52 +513,67 @@ name_servers = [
 ]
 zone_id = Z3SO0TKDDQ0RGG
 ```
+{{% /dialog %}}
 
 Take the Name Servers from the output and update them in the `root` `Dockerfile` (variable `TF_VAR_testing_name_servers`).
 
 
-## Rebuild and restart the `root` `geodesic` shell
+## Rebuild And Restart `root` `geodesic` Shell
 
 Rebuild and restart the `root` `geodesic` shell by executing the following commands:
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Rebuild And Restart `root` `geodesic` Shell" %}}
+```shell
 exit
 exit
 make docker/build
 root.cloudposse.co
 assume-role
 ```
+{{% /dialog %}}
 
 
-## Finish provisioning `root-dns` project in `root` to add `testing` Name Servers
+## Finish Provisioning `root-dns` Project To Add `testing` Name Servers
 
-__NOTE:__ We use DNS zone delegation since `root` and `testing` are in different AWS accounts
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+We use DNS zone delegation since `root` and `testing` are in different AWS accounts
+{{% /dialog %}}
 
 In the `root` `geodesic` shell execute the following commands:
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Finish Provisioning `root-dns` Project To Add `testing` Name Servers" %}}
+```shell
 cd root-dns
 init-terraform
-terraform apply -target=aws_route53_zone.parent_dns_zone -target=aws_route53_record.parent_dns_zone_soa -target=aws_route53_zone.root_dns_zone -target=aws_route53_record.root_dns_zone_soa -target=aws_route53_record.root_dns_zone_ns -target=aws_route53_record.testing_dns_zone_ns
+
+terraform apply -target=aws_route53_zone.parent_dns_zone -target=aws_route53_record.parent_dns_zone_soa \
+    -target=aws_route53_zone.root_dns_zone -target=aws_route53_record.root_dns_zone_soa \
+    -target=aws_route53_record.root_dns_zone_ns -target=aws_route53_record.testing_dns_zone_ns
 ```
+{{% /dialog %}}
 
-__NOTE:__ DNS for `root` and `testing` should be done at this step.
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+DNS for `root` and `testing` should be done at this step.
 
-__NOTE:__ `root` account provisioning should be completed now.
+`root` account provisioning should be completed now.
+{{% /dialog %}}
 
 
-## Provision `acm` project in `testing` to request and validate SSL certificate
+## Provision `acm` Project in `testing` To Request And Validate SSL Certificate
 
 In `testing` `geodesic` shell, execute the following commands:
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `acm` Project in `testing` To Request And Validate SSL Certificate" %}}
+```shell
 cd acm
 init-terraform
 terraform apply
 ```
+{{% /dialog %}}
 
 You should see Terraform output similar to this:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Terraform output" %}}
 ```
 certificate_arn = arn:aws:acm:us-west-2:126450723953:certificate/56897dfe-23ac-4eb3-834d-542505491f09
 certificate_domain_name = testing.cloudposse.co
@@ -508,19 +593,24 @@ certificate_domain_validation_options = [
 ]
 certificate_id = arn:aws:acm:us-west-2:126450723953:certificate/56897dfe-23ac-4eb3-834d-542505491f09
 ```
+{{% /dialog %}}
 
-## Provision `chamber` project in `testing` to create an AIM user and KMS key for chamber
+
+## Provision `chamber` Project In `testing` To Create AIM User And KMS Key For Chamber
 
 In `testing` `geodesic` shell, execute the following commands:
 
-```bash
+{{% dialog type="code-block" icon="fa fa-code" title="Provision `chamber` Project In `testing` To Create AIM User And KMS Key For Chamber" %}}
+```shell
 cd chamber
 init-terraform
 terraform apply
 ```
+{{% /dialog %}}
 
 You should see Terraform output similar to this:
 
+{{% dialog type="code-block" icon="fa fa-code" title="Terraform output" %}}
 ```
 chamber_access_key_id = XXXXXXXXXXXXXXXXXXXXXXXX
 chamber_kms_key_alias_arn = arn:aws:kms:us-west-2:126450723953:alias/cpco-testing-chamber
@@ -532,5 +622,6 @@ chamber_user_arn = arn:aws:iam::126450723953:user/cpco-testing-chamber-codefresh
 chamber_user_name = cpco-testing-chamber-codefresh
 chamber_user_unique_id = AIDAJKJKFLZIQ4KDUXAJ2
 ```
+{{% /dialog %}}
 
-Now you'll be able to start a `geodesic` shell for any of the accounts and provision new or update the existing resources.
+Now you'll be able to start a `geodesic` shell for any of the member accounts and provision new or update the existing resources.

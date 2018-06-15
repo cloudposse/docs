@@ -42,4 +42,6 @@ At Cloud Posse, we always follow these best practices.
 Depending on your requirements, you might not need all the stages (e.g. the `audit` or `dev` stage might not be required).
 
 You also might not need to provision all the resources (e.g. `backing-services/aurora-postgres` or `acm-cloudfront`).
+
+See [Notes on Using Multiple AWS Accounts]({{< relref "reference-architectures/notes-on-multiple-aws-accounts.md" >}}) for more details.
 {{% /dialog %}}
