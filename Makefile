@@ -84,21 +84,21 @@ open:
 	open $(HUGO_URL)
 
 ## Start the hugo server for live editing using local environment
-run:
+hugo/run:
 	$(HUGO) server $(HUGO_ARGS)
 
 ## Start the hugo server for live editing using docker environment
-run-docker: docker/build
-	$(HUGO) server --bind 0.0.0.0 $(HUGO_ARGS)
+run: docker/build
+	$(DOCKER_RUN) HUGO_ARGS="$(HUGO_ARGS) --bind 0.0.0.0" hugo/run
 
 ## Generate all static content (outputs to public/) using local environment
-build:
+hugo/build:
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Generate all static content (outputs to public/) using docker environment
-build-docker: docker/build
+build: docker/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(DOCKER_RUN) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
@@ -132,7 +132,7 @@ test:
 
 ## Run smoketest
 smoketest:
-	make release build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
+	make release hugo/build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
 
 ## Generate a release config
 release:
