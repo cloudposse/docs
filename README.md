@@ -12,6 +12,8 @@ All documentation is published to [docs.cloudposse.com](https://docs.cloudposse.
 Let's jump right in! Here's how to get started with our documentation.
 
 
+---
+
 This project is part of our comprehensive ["SweetOps"](https://docs.cloudposse.com) approach towards DevOps. 
 
 
