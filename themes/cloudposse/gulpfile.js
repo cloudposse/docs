@@ -4,14 +4,11 @@ var gulp = require("gulp");
 var sass = require("gulp-sass");
 var concat = require('gulp-concat');
 var autoprefixer = require('gulp-autoprefixer');
-var sourcemaps = require('gulp-sourcemaps');
   
 // Compile SASS files
 gulp.task("sass", function() {
   gulp.src("src/scss/styles.scss")
-      .pipe(sourcemaps.init())
       .pipe(sass().on('error', sass.logError))
-      .pipe(sourcemaps.write())
       .pipe(concat('styles.css'))
       .pipe(autoprefixer({
           browsers: ['last 2 versions'],
