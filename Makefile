@@ -2,14 +2,13 @@
 
 export INSTALL_PATH ?= /usr/local/bin
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
-export PATH := $(BUILD_HARNESS_PATH)/vendor:$(PATH)
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
 export HUGO_PORT ?= 1313
 export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
 export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(HUGO_EDIT_BRANCH)
-export HUGO_ARGS ?= --port $(HUGO_PORT) --watch --buildDrafts
+export HUGO_ARGS ?= --bind 0.0.0.0 --port $(HUGO_PORT) --watch --buildDrafts
 export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
@@ -90,7 +89,7 @@ hugo/run:
 
 ## Start the hugo server for live editing using docker environment
 run: docker/build
-	$(DOCKER_RUN) HUGO_ARGS="$(HUGO_ARGS) --bind 0.0.0.0" hugo/run
+	$(DOCKER_RUN) hugo/run
 
 ## Generate all static content (outputs to public/) using local environment
 hugo/build:
@@ -121,7 +120,7 @@ lint/check-for-empty-links:
 
 ## Lint check all hugo code
 lint: lint/check-for-empty-links lint/formatting
-	hugo --renderToMemory
+	$(HUGO) --renderToMemory
 
 ## Validate all html is good
 validate: lint test
