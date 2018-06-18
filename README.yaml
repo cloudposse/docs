@@ -1,0 +1,49 @@
+name: "Developer Documentation"
+github_repo: "cloudposse/docs"
+license: "CC-BY-NC-SA-4.0"
+badges:
+  - name: "Build Status"
+    image: "https://g.codefresh.io/api/badges/build?repoOwner=cloudposse&repoName=docs&branch=master&pipelineName=docs&accountName=cloudposse&type=cf-1"
+    url: "https://g.codefresh.io/repositories/cloudposse/docs/builds?filter=trigger:build;branch:master;service:5af3ac6d081c8d00016aee46~docs"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/cloudposse/docs.svg"
+    url: "https://github.com/cloudposse/docs/releases"
+  - name: "Slack Community"
+    image: "https://slack.cloudposse.com/badge.svg"
+    url: "https://slack.cloudposse.com"
+
+related:
+  - name: "Geodesic"
+    description: "Geodesic is the fastest way to get up and running with a rock solid, production grade cloud platform"
+    url: "https://github.com/cloudposse/geodesic"
+
+description: |-
+  Welcome to the Cloud Posse Developer Hub Documentation Portal.
+
+  All documentation is published to [docs.cloudposse.com](https://docs.cloudposse.com). Here you'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck.
+
+  Let's jump right in! Here's how to get started with our documentation.
+
+include:
+  - "docs/targets.md"
+
+usage: |-
+  1. Run `make init`
+  2. Run `make run` to start local server
+  3. Run `make build` to generate static site in `public/`
+
+# Contributors to this project
+contributors:
+  - name: "Erik Osterman"
+    homepage: "https://github.com/osterman"
+    avatar: "http://s.gravatar.com/avatar/88c480d4f73b813904e00a5695a454cb?s=144"
+    github: "osterman"
+  - name: "Igor Rodionov"
+    homepage: "https://github.com/goruha/"
+    avatar: "http://s.gravatar.com/avatar/bc70834d32ed4517568a1feb0b9be7e2?s=144"
+    github: "goruha"
+  - name: "Andriy Knysh"
+    homepage: "https://github.com/aknysh/"
+    avatar: "https://avatars0.githubusercontent.com/u/7356997?v=4&u=ed9ce1c9151d552d985bdf5546772e14ef7ab617&s=144"
+    github: "aknysh"
+

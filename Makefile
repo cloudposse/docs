@@ -29,6 +29,8 @@ export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 export DOCKER_BUILD_FLAGS = 
 export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) $(DOCKER_IMAGE_NAME)
 
+export README_DEPS ?= docs/targets.md
+
 ## Install OSX deps
 deps-darwin:
 	brew install asciinema
