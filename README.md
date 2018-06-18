@@ -9,12 +9,16 @@ Welcome to the Cloud Posse Developer Hub Documentation Portal.
 
 All documentation is published to [docs.cloudposse.com](https://docs.cloudposse.com). Here you'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck.
 
-Let's jump right in! Here's how to get started with our documentation.This project is part of our comprehensive ["SweetOps"](https://docs.cloudposse.com) approach towards DevOps. 
+Let's jump right in! Here's how to get started with our documentation.
+
+
+This project is part of our comprehensive ["SweetOps"](https://docs.cloudposse.com) approach towards DevOps. 
 
 
 
 It's 100% Open Source and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](LICENSE).
-<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img title="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License" src="static/images/cc-by-nc-sa.png" width="250" /></a>
+
+<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img title="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License" src="static/images/cc-by-nc-sa.png" width="150" /></a>
 
 
 
@@ -110,8 +114,10 @@ Copyright © 2017-2018 [Cloud Posse, LLC](https://cloudposse.com)
 
 
 ## License 
+
 [![License](https://img.shields.io/badge/License-CC%20BY%20NC%20SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/) 
-<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img title="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License" src="https://docs.cloudposse.com/images/cc-by-nc-sa.png" width="250" /></a>
+
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img title="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License" src="https://docs.cloudposse.com/images/cc-by-nc-sa.png" width="150" /></a>
 
 This material may only be distributed subject to the terms and conditions set forth in the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License or later with the restrictions noted below (the latest version of the license is presently available at <http://creativecommons.org/licenses/by-nc-sa/4.0/>).
 
