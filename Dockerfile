@@ -12,7 +12,9 @@ ENV LANG="en_US.UTF-8"
 WORKDIR /src
 COPY Makefile .
 
-ENV HUGO_PORT=1313
+ENV HUGO_PORT=1313 \
+    INSTALL_PATH="/usr/local/bin"
+
 RUN make init && make deps
 
 EXPOSE $HUGO_PORT
