@@ -32,6 +32,7 @@ steps:
   build:
     title: Building Hugo static site...
     image: '${{build_image}}'
+    working_directory: ./
     commands:
       - make lint
       - make release
@@ -40,6 +41,7 @@ steps:
   test:
     title: Running tests...
     image: '${{build_image}}'
+    working_directory: ./
     environment:
       - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
     commands:
@@ -62,6 +64,7 @@ steps:
   reindex:
     title: Updating algolia search index...
     image: '${{build_image}}'
+    working_directory: ./
     commands:
       - make reindex
     when:
