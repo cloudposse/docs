@@ -1,0 +1,54 @@
+#tooltip {
+  text-align: center;
+  color: $white;
+  background: $black;
+  background: $black_80;
+  position: absolute;
+  z-index: 100;
+  padding: 15px;
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 5px;
+  //Instead of the line below you could use @include box-sizing($bs)
+  box-sizing: border-box;
+
+  &:after {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid $black_80;
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    margin-left: -10px;
+  }
+
+  &.top:after {
+    border-top-color: transparent;
+    border-bottom: 10px solid $color_woodsmoke_approx_2;
+    top: -20px;
+    bottom: auto;
+  }
+
+  &.left:after {
+    left: 10px;
+    margin: 0;
+  }
+
+  &.right:after {
+    right: 10px;
+    left: auto;
+    margin: 0;
+  }
+}
+@media only screen and(max-width: 800px) {
+  #tooltip:before {
+    content: 'x';
+    position: absolute;
+    color: $white;
+    right: 8px;
+    top: 3px;
+    font-size: 12px;
+  }
+}
