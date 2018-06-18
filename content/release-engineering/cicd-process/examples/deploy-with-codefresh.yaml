@@ -1,0 +1,34 @@
+version: '1.0'
+steps:
+  deploy_helmfile:
+    title: Deploy app with helmfile
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    environment:
+    - AWS_REGION=us-west-2
+    - AWS_ACCESS_KEY_ID=${{AWS_ACCESS_KEY_ID}}          # for chamber secrets
+    - AWS_SECRET_ACCESS_KEY=${{AWS_SECRET_ACCESS_KEY}}  # for chamber secrets
+    - CHART_NAME=app
+    # `CHART_REPO_URL` is the Helm Chart repository
+    - CHART_REPO_URL=${{STAGING_REPO_ENDPOINT}}
+    - CHART_VERSION=${{SEMVERSION_COMMIT_SHORT}}
+    # This is the ELB for the ingress controller
+    - EXTERNAL_DNS_ALPHA_KUBERNETES_IO_TARGET=ingress.${{BASE_HOST}}
+    - IMAGE_TAG=${{SEMVERSION_COMMIT_SHORT}}
+    - INGRESS_HOST=app.${{BASE_HOST}}
+    # The `KUBE_CONTEXT` determines the cluster we deploy to. Vary this to deploy to different clusters (e.g. prod, staging)
+    - KUBE_CONTEXT=${{KUBE_CONTEXT}}
+    - RELEASE_NAME=${{RELEASE_NAME}}
+    # Deploy the chart to the following namespace. Vary this for "unlimited staging environments"
+    - NAMESPACE=${{NAMESPACE}}
+    commands:
+    # Install or upgrade tiller
+    - "make helm/toolbox/upsert"
+    # Update values.yaml with envs from chamber
+    - "chamber exec kops app -- envsubst < config/chart.yaml > config/${RELEASE_NAME}.yaml"
+    # Deploy chart to cluster using helmfile (with chamber secrets)
+    - "chamber exec kops app -- helmfile --file config/helmfile.yaml sync --concurrency 1 --args '--wait --timeout=600 --recreate-pods --force --reset-values'"
+    when:
+      condition:
+        all:
+          # Only execute this build step when the branch is `master`
+          executeForMasterBranch: "'${{CF_BRANCH}}' == 'master'"
