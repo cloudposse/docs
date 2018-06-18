@@ -1,0 +1,8 @@
+thead {
+  background-color: $color_alabaster_approx;
+  border-bottom: 2px solid $color_gallery_approx;
+}
+
+th:empty {
+  display: none;
+}

@@ -1,0 +1,76 @@
+.header {
+  background-color: $color_cape_cod_approx;
+  color: $white_80;
+  height: 4.3rem;
+  top: inherit;
+  right: inherit;
+  left: inherit;
+  width: 100%;
+  position: initial;
+  margin-bottom: 0;
+  padding-left: 18vw;
+  padding-right: 10%;
+
+  &__logo {
+    width: 160px;
+    height: 40px;
+    margin-bottom: 13px;
+    @media(min-width: 320px) and(max-width: 480px) {
+      max-width: initial;
+    }
+
+    &.logo {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  &::after {
+    display: none;
+  }
+
+  &__shortcuts {
+    &.shortcuts {
+      justify-content: flex-start;
+      margin-left: 3vw;
+      @media(min-width: 320px) and(max-width: 480px) {
+        display: none;
+      }
+
+      li {
+        line-height: 1em;
+        white-space: nowrap;
+
+        .fa {
+          font-size: 1.5rem;
+          margin-right: .5rem;
+        }
+
+        .fab {
+          font-size: 1.5rem;
+          margin-right: .5rem;
+        }
+
+        a {
+          color: $white_80;
+          font-size: 14px;
+          height: 2rem;
+
+          &:hover {
+            border-radius: 3px;
+            background-color: $black_3;
+            box-shadow: 1px 1px 0 $white_15;
+            color: $white;
+            text-decoration: none;
+          }
+        }
+      }
+    }
+
+    i {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+
+.tags {
+  .label {
+    font-size: .9em;
+    padding: 0 7px 0 9px;
+    display: inline-block;
+    color: $color_waterloo__approx;
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 2px;
+    background-color: $color_black_haze_approx;
+    line-height: 26px;
+    //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    box-shadow: 0 0 0 1px $color_nebula_approx, 0 2px 2px $black_10;
+  }
+
+  .label-default[href]:hover {
+    color: $color_black_haze_approx;
+    background-color: $color_cape_cod_approx;
+  }
+}
