@@ -1,0 +1,105 @@
+.page-home {
+  display: block;
+}
+
+.homepage {
+  width: 85%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  @media(min-width: 768px) and(max-width: 1024px) {
+    width: 93%;
+    padding-left: 0;
+    padding-right: 0;
+
+    > .category {
+      flex: 0 0 50%;
+    }
+  }
+  @media(min-width: 320px) and(max-width: 480px) {
+    padding: 0;
+    width: 100%;
+    display: block;
+  }
+  @media only screen and(min-device-width: 1024px) and(max-device-width: 1366px) and(orientation: portrait) and(-webkit-min-device-pixel-ratio: 1.5) {
+    width: 80%;
+    padding-left: 5%;
+  }
+
+  * {
+    //Instead of the line below you could use @include box-sizing($bs)
+    box-sizing: border-box;
+  }
+
+  ul {
+    display: block;
+    list-style: none;
+    width: 100%;
+  }
+
+  .view-all {
+    float: right;
+    display: inline-block;
+    padding-top: 14px;
+    color: $color_pink_swan_approx;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  i {
+    margin-right: 5px;
+    color: $color_silver_chalice_approx;
+  }
+
+  h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+
+  > .category {
+    flex: 0 0 33.33%;
+    max-height: 250px;
+    display: flex;
+    padding: 20px;
+    margin: 0;
+    justify-content: end;
+    @media(max-width: 768px) {
+      min-height: none;
+    }
+
+    > li {
+      display: flex;
+      flex: 1 0 auto;
+      flex-direction: column;
+      width: 100%;
+
+      > div {
+        border-bottom: 1px solid $color_alto_approx;
+        line-height: 2em;
+        margin-bottom: 1em;
+
+        > h3 {
+          font-size: 20px;
+          text-transform: none;
+          display: inline-block;
+        }
+      }
+
+      > ul {
+        overflow-y: scroll;
+      }
+    }
+  }
+
+  li:not(.haschildren) {
+    padding-left: 5px;
+    color: $color_suva_gray_approx;
+  }
+
+  .category ul li.dd-item {
+    margin-left: 10px;
+  }
+}

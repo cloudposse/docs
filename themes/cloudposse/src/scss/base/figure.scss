@@ -1,0 +1,29 @@
+figure {
+  border: 1px solid #cccccc38;
+  max-width: 70%;
+
+  img {
+    min-width: 100%;
+  }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: .8em;
+    font-weight: normal;
+    background-color: $color_black_haze_approx;
+    padding-right: 1em;
+    display: block;
+    width: 100%;
+    text-align: right;
+  }
+
+  .logo {
+    border: 0;
+    max-width: 25%;
+
+    figcaption {
+      display: none;
+    }
+  }
+}

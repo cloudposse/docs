@@ -1,0 +1,129 @@
+body {
+  > aside {
+    background-color: transparent;
+  }
+}
+
+div {
+  &.calendly-badge-widget {
+    right: 88px;
+    bottom: 20px;
+  }
+}
+
+.excerpt {
+  color: $color_santas_gray_approx;
+  font-size: 14px;
+  border-bottom: 1px solid $color_gallery_approx;
+  margin-bottom: 30px;
+
+  p {
+    margin-top: 5px;
+    margin-bottom: 30px;
+  }
+}
+
+.at-logo {
+  display: none;
+}
+
+.calendly-badge-widget {
+  iframe {
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 10px;
+  }
+
+  .calendly-badge-content {
+    background-image: linear-gradient(-225deg,$color_viking_approx 35%,$color_shakespeare_approx);
+  }
+}
+
+.calendly-overlay {
+  iframe {
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 10px;
+  }
+
+  .calendly-popup {
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 10px;
+  }
+}
+
+.cloudposse {
+  #_hj-f5b2a1eb-9b07_feedback_open_close_phone {
+    background-image: linear-gradient(-225deg,$color_viking_approx 35%,$color_shakespeare_approx);
+  }
+
+  #_hj-f5b2a1eb-9b07_feedback ._hj-f5b2a1eb-9b07_feedback_minimized_label {
+    background-image: linear-gradient(-225deg,$color_viking_approx 35%,$color_shakespeare_approx);
+  }
+}
+@media(min-width: 1025px) and(max-width: 1280px) {
+  #nav-github {
+    display: none;
+  }
+
+  #nav-documentation {
+    display: none;
+  }
+}
+@media(min-width: 768px) and(max-width: 1024px) {
+  #nav-github {
+    display: none;
+  }
+
+  #nav-documentation {
+    display: none;
+  }
+
+  #nav-ask-a-question {
+    display: none;
+  }
+
+  .nav-select {
+    display: none;
+  }
+}
+@media(min-width: 320px) and(max-width: 480px) {
+  div {
+    &.calendly-badge-widget {
+      display: none;
+    }
+  }
+}
+@media(max-width: 768px) {
+  .nav-select {
+    background-color: transparent;
+    width: 100%;
+
+    select {
+      margin-bottom: 0;
+      display: inline-block;
+    }
+  }
+}
+
+.post-header h2 {
+  background-color: transparent;
+  font-size: 1.2rem;
+}
+
+.page-gost-framework article section.page img {
+  max-width: 13%;
+}
+
+.calendly-inline-widget iframe {
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 10px;
+}
+
+.license .fab {
+  font-size: 2em;
+}
+
+.asciinema-player-wrapper .asciinema-player {
+  max-height: 600px;
+  //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+  box-shadow: 1px 29px 61px 1px $black_30;
+}
