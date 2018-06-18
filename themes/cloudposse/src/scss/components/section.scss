@@ -1,0 +1,86 @@
+section {
+  a {
+    color: $color_mostly_desaturated_dark_cyan;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  header {
+    display: none;
+  }
+
+  article {
+    &.post {
+      display: inherit;
+
+      footer {
+        margin-left: 0;
+        padding-left: 0;
+      }
+    }
+
+    header {
+      &.post-header {
+        display: inherit;
+        position: relative;
+        background-color: transparent;
+        border-bottom: 0;
+        min-width: 100%;
+        padding-left: 0;
+      }
+
+      &:after {
+        background: transparent;
+      }
+    }
+  }
+
+  &.post-excerpt {
+    padding: 10px 15px;
+    background-color: $color_desert_storm_approx;
+    max-width: 86%;
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 2px;
+
+    .read-more {
+      float: right;
+    }
+  }
+
+  > h1 {
+    color: $color_fuscous_gray_approx;
+    font-size: 23px;
+    font-weight: 600;
+  }
+
+  > h2 {
+    color: $color_mountain_mist_approx;
+    font-size: 21px;
+    font-weight: 300;
+  }
+
+  > h3 {
+    color: $color_mountain_mist_approx;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  &.page > article {
+    p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    > header > h2 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    &.post > footer:empty.footline {
+      display: none;
+    }
+  }
+}

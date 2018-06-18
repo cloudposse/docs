@@ -21,6 +21,8 @@ export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/
 
 export ASCIINEMA_VERSION ?= 2.6.1
 
+export README_DEPS ?= docs/targets.md
+
 ## Install OSX deps
 deps-darwin:
 	brew install asciinema
