@@ -2,6 +2,7 @@
 
 export INSTALL_PATH ?= /usr/local/bin
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
+export PATH := $(BUILD_HARNESS_PATH)/vendor:$(PATH)
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
 export HUGO_PORT ?= 1313
