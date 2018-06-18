@@ -32,7 +32,6 @@ steps:
   build:
     title: Building Hugo static site...
     image: '${{build_image}}'
-    working_directory: IMAGE_WORK_DIR
     commands:
       - make lint
       - make release
@@ -41,7 +40,6 @@ steps:
   test:
     title: Running tests...
     image: '${{build_image}}'
-    working_directory: IMAGE_WORK_DIR
     environment:
       - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
     commands:
@@ -52,7 +50,7 @@ steps:
   deploy:
     title: Pushing all artifacts to S3 bucket...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
-    working_directory: IMAGE_WORK_DIR
+    working_directory: ./
     commands:
       - make deploy
     when:
@@ -64,7 +62,6 @@ steps:
   reindex:
     title: Updating algolia search index...
     image: '${{build_image}}'
-    working_directory: IMAGE_WORK_DIR
     commands:
       - make reindex
     when:
