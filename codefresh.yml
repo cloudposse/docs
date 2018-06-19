@@ -22,28 +22,29 @@ steps:
       - make semver/show
       - make semver/export | tee -a ${{CF_VOLUME_PATH}}/env_vars_to_export
 
+  build_image:
+    title: Build image
+    type: build
+    description: Build docs-toolbox image
+    image_name: cloudposse/docs
+    dockerfile: Dockerfile
+
   build:
     title: Building Hugo static site...
-    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    image: '${{build_image}}'
     working_directory: ./
     commands:
-      # Install python3 to pass install deps asciinema
-      - apk add --no-cache python3
-      - make deps
       - make lint
       - make release
-      - make build
+      - make hugo/build
 
   test:
     title: Running tests...
-    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    image: '${{build_image}}'
     working_directory: ./
     environment:
       - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
     commands:
-      # Install python3 to pass install deps asciinema
-      - apk add --no-cache python3
-      - make deps
       - make lint
       - make smoketest
 
@@ -62,7 +63,7 @@ steps:
   # Only reindex on tagged releases
   reindex:
     title: Updating algolia search index...
-    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    image: '${{build_image}}'
     working_directory: ./
     commands:
       - make reindex
