@@ -1,0 +1,20 @@
+.search-bar {
+  transition: padding .3s ease-out;
+  transition-delay: 1s;
+
+  &:focus,
+  &:active,
+  &.active {
+    padding-left: 0;
+    padding-right: 0;
+    transition: padding .3s ease-out;
+    transition-delay: .3s;
+  }
+
+  &--subnav {
+    transition: flex-basis .3s ease-out;
+    &.active {
+      flex: 1 0 600px;
+    }    
+  }
+}

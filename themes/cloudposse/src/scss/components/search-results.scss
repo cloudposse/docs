@@ -1,63 +1,4 @@
-.search-bar {
-  padding-top: 30px;
-  padding-left: 20%;
-  padding-right: 20%;
-  //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
-  transition: padding .3s ease-out;
-  //Instead of the line below you could use @include transition-delay($delay-1, $delay-2, $delay-3, $delay-4, $delay-5, $delay-6, $delay-7, $delay-8, $delay-9, $delay-10)
-  transition-delay: 1s;
-  @media(min-width: 320px) and(max-width: 480px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  &:focus {
-    @extend %extend_3;
-  }
-
-  &:active {
-    @extend %extend_3;
-  }
-
-  &.active {
-    @extend %extend_3;
-  }
-
-  .icon {
-    position: relative;
-    width: 0;
-    height: 0;
-  }
-
-  .fa {
-    position: absolute;
-    top: 9px;
-    left: 16px;
-    font-size: 21px;
-    color: $color_celeste_approx;
-    z-index: 1004;
-  }
-
-  input {
-    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-    border-radius: 5px;
-    height: 100%;
-    border: 0 none;
-    //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-    box-shadow: 0 2px 2px $black_10 inset;
-    color: $color_tundora_approx;
-    width: 100%;
-    font-size: 20px;
-    padding: 13px 13px 13px 50px;
-    font-size: 14px;
-  }
-}
-
 .searchbox {
-  padding-top: 0;
-}
-
-.ais-search-box {
   padding-top: 0;
 }
 
@@ -164,7 +105,11 @@
   border-bottom-right-radius: 5px;
 
   &.hidden {
-    @extend %extend_1;
+    @extend %hidden;
+    //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+    transition: max-height .3s;
+    //Instead of the line below you could use @include transition-delay($delay-1, $delay-2, $delay-3, $delay-4, $delay-5, $delay-6, $delay-7, $delay-8, $delay-9, $delay-10)
+    transition-delay: 0s;
   }
 
   .ais-stats {

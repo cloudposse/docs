@@ -7,9 +7,13 @@
   left: inherit;
   width: 100%;
   position: initial;
-  margin-bottom: 0;
-  padding-left: 18vw;
-  padding-right: 10%;
+  padding: 0;
+  margin: 0;
+
+  &__container {
+    display: flex;
+    align-items: center;
+  }
 
   &__logo {
     width: 160px;
