@@ -491,12 +491,10 @@ Take the Name Servers from the output and update them in the `root` `Dockerfile`
 
 ## Rebuild And Restart `root` `geodesic` Shell
 
-Rebuild and restart the `root` `geodesic` shell by executing the following commands:
+Exit the `geodesic` shell, then run these commands:
 
 {{% dialog type="code-block" icon="fa fa-code" title="Rebuild And Restart `root` `geodesic` Shell" %}}
 ```shell
-exit
-exit
 make docker/build
 root.cloudposse.co
 assume-role

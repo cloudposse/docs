@@ -72,14 +72,17 @@ source_profile=cpco
 
 From different `geodesic` shells (`root` and `testing`) we login to the same AWS account under the same IAM role.
 
-For more information on using Multiple AWS Accounts, watch these YouTube videos:
+
+## Learn More
+
+To learn more about AWS multi-account architectures, we recommend checking out these YouTube videos from AWS Re:invent:
 
 [AWS re:Invent 2017: Architecting Security and Governance Across a Multi-Account Strategy](https://www.youtube.com/watch?v=71fD8Oenwxc&feature=youtu.be)
 
-{{< youtube 71fD8Oenwxc >}}
+{{< youtube id="71fD8Oenwxc" >}}
 
 [AWS re:Invent 2016: Architecting Security and Governance Across a Multi-Account Strategy](https://www.youtube.com/watch?v=pqq39mZKQXU&feature=youtu.be)
 
-{{< youtube pqq39mZKQXU >}}
+{{< youtube id="pqq39mZKQXU" >}}
 
 <br>
