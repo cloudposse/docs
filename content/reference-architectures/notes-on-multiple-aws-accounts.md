@@ -13,7 +13,7 @@ We strongly recommend using multiple AWS accounts and provision a stage (e.g. `p
 
 However, in some cases it might be not possible for operational, organizational or other reasons. 
 
-We can have three use-cases:
+Here are three typical use-cases we've seen:
 
 1. We are in control of the master account and can create Organization on top of it and member accounts in it
 2. We are given one account (not the master) and we can’t create Organization, but we can create (or request) more accounts under the same Organization
@@ -58,7 +58,7 @@ We use this:
 ```
 [profile cpco-testing-admin]
 region=us-west-2
-role_arn=arn:aws:iam::323330167063:role/cpco-testing-admin
+role_arn=arn:aws:iam::323330167063:role/cpco-root-admin
 mfa_serial=arn:aws:iam::323330167063:mfa/admin@cloudposse.co
 source_profile=cpco
 
@@ -70,4 +70,16 @@ source_profile=cpco
 ```
 {{% /dialog %}}
 
-From different `geodesic` shells (`root` and `testing`) we login to the same AWS account under different IAM roles.
+From different `geodesic` shells (`root` and `testing`) we login to the same AWS account under the same IAM role.
+
+For more information on using Multiple AWS Accounts, watch these YouTube videos:
+
+[AWS re:Invent 2017: Architecting Security and Governance Across a Multi-Account Strategy](https://www.youtube.com/watch?v=71fD8Oenwxc&feature=youtu.be)
+
+{{< youtube 71fD8Oenwxc >}}
+
+[AWS re:Invent 2016: Architecting Security and Governance Across a Multi-Account Strategy](https://www.youtube.com/watch?v=pqq39mZKQXU&feature=youtu.be)
+
+{{< youtube pqq39mZKQXU >}}
+
+<br>
