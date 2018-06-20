@@ -1,13 +1,13 @@
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
-export INSTALL_PATH ?= /usr/local/bin
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
 export HUGO_VERSION ?= 0.40.2
-export HUGO_URL ?= http://localhost.cloudposse.com:1313/
+export HUGO_PORT ?= 1313
+export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
 export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(HUGO_EDIT_BRANCH)
-export HUGO_ARGS ?= --watch --buildDrafts
+export HUGO_ARGS ?= --bind 0.0.0.0 --port $(HUGO_PORT) --watch --buildDrafts
 export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.1.7
@@ -20,6 +20,15 @@ export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/
 #export ALGOLIA_API_ENDPOINT ?= "https://httpbin.org/post"
 
 export ASCIINEMA_VERSION ?= 2.6.1
+
+export DOCKER_ORG ?= cloudposse
+export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
+export DOCKER_TAG ?= latest
+export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
+export DOCKER_BUILD_FLAGS = 
+export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) $(DOCKER_IMAGE_NAME)
+
+export README_DEPS ?= docs/targets.md
 
 ## Install OSX deps
 deps-darwin:
@@ -75,15 +84,25 @@ deps/atom:
 open:
 	open $(HUGO_URL)
 
-## Start the hugo server for live editing
-run:
+## Start the hugo server for live editing using local environment
+hugo/run:
 	$(HUGO) server $(HUGO_ARGS)
 
-## Generate all static content (outputs to public/)
-build:
+## Start the hugo server for live editing using docker environment
+run: docker/build
+	$(DOCKER_RUN) hugo/run
+
+## Generate all static content (outputs to public/) using local environment
+hugo/build:
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
+
+## Generate all static content (outputs to public/) using docker environment
+build: docker/build
+	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
+	rm -rf $(HUGO_PUBLISH_DIR)
+	$(DOCKER_RUN) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Lint check common formatting mistakes
 lint/formatting:
@@ -102,7 +121,7 @@ lint/check-for-empty-links:
 
 ## Lint check all hugo code
 lint: lint/check-for-empty-links lint/formatting
-	hugo --renderToMemory
+	$(HUGO) --renderToMemory
 
 ## Validate all html is good
 validate: lint test
@@ -114,7 +133,7 @@ test:
 
 ## Run smoketest
 smoketest:
-	make release build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
+	make release hugo/build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
 
 ## Generate a release config
 release:
