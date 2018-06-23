@@ -102,7 +102,7 @@ hugo/build:
 build: docker/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
-	$(DOCKER_RUN) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
+	$(DOCKER_RUN) hugo/build
 
 ## Lint check common formatting mistakes
 lint/formatting:
