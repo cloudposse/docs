@@ -1,7 +1,7 @@
 ---
 title: "Using Geodesic with Terraform"
 description: "Learn how to use a Geodesic Module to manage resources using Terraform"
-weight: -1
+weight: 3
 ---
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Prerequisites" %}}
 Make sure you have [created a Geodesic Module](/geodesic/module/) before continuing with these steps.

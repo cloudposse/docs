@@ -1,6 +1,7 @@
 ---
 title: "Using Geodesic with Kops"
 description: "Learn how to provision kops clusters using Geodesic Modules."
+weight: 4
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}

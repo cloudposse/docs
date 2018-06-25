@@ -15,7 +15,7 @@
     normalizeSlashes: false
     scopes: [
       {
-        includeCurrentDirectory: false
+        includeCurrentDirectory: true
         prefixes: [
           '{{< relref "'
         ]
@@ -32,7 +32,7 @@
         ]
       },
       {
-        includeCurrentDirectory: false
+        includeCurrentDirectory: true
         prefixes: [
           '{{< img src="'
         ]
@@ -49,7 +49,7 @@
         ]
       },
       {
-        includeCurrentDirectory: false
+        includeCurrentDirectory: true
         prefixes: [
           '{{% include-code-block(\\s*\\w*=\\".*\\")*\\sfile="'
         ]
@@ -60,7 +60,7 @@
             "^content\\/(.*?)$"
             "$1"
           ]
-        ]        
+        ]
         scopes: [
           "text.md"
         ]

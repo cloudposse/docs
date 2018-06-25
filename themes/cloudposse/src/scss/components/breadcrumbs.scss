@@ -1,0 +1,90 @@
+.breadcrumbs {
+  display: inline;
+  float: left;
+
+  @media(min-width: 320px) and(max-width: 480px) {
+    display: none;
+  }
+
+  i {
+    color: $color_celeste_approx;
+    font-size: 10px;
+  }
+
+  a {
+    padding: 0 7px 0 9px;
+    display: inline-block;
+    color: $color_waterloo__approx;
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 2px;
+    line-height: 26px;
+
+    &:hover {
+      text-decoration: none;
+      background-color: $white;
+      //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+      box-shadow: 0 0 0 1px $color_nebula_approx, 0 2px 2px $black_10;
+    }
+  }
+}
+
+.subnav {
+  min-height: 38px;
+  color: $color_abbey_approx;
+  font-size: 13px;
+  vertical-align: middle;
+  border-bottom: 1px solid $color_mercury_approx;
+  background-color: $color_black_haze_approx;
+  display: block;
+  padding-top: 8px;
+
+  .searchbox {
+    display: none;
+    float: right;
+    width: 30%;
+    font-size: 15px;
+
+    .fa {
+      color: $color_suva_gray_approx;
+      position: relative;
+      left: 26px;
+    }
+
+    input[type="text"] {
+      background: transparent;
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-left: 30px;
+      margin-bottom: 0;
+      border: 0;
+    }
+  }
+
+  .ais-search-box {
+    display: inline;
+    float: right;
+    width: 30%;
+    font-size: 15px;
+
+    input {
+      background: transparent;
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-left: 30px;
+      border: 0;
+    }
+
+    .fa {
+      color: $color_suva_gray_approx;
+      position: relative;
+      left: 26px;
+    }
+  }
+
+  > .container {
+    width: 80%;
+    padding-left: 10%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

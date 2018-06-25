@@ -1,0 +1,24 @@
+.footer {
+  .footline {
+    display: block;
+    padding-top: .2rem;
+    padding-left: 5rem;
+
+    .tags {
+      display: inline-block;
+      float: left;
+      font-size: 12px;
+      margin-right: 10px;
+      @extend %extend_4;
+    }
+
+    .copyright {
+      @extend %extend_4;
+    }
+
+    .date {
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+#navigation {
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.chevrons #navigation a {
+  text-decoration: none;
+
+  &:hover {
+    color: $color_cape_cod_approx;
+  }
+}

@@ -1,6 +1,6 @@
 ---
 title: "AWS KMS+SSM"
-description: "Use Terraform to easily provision all KMS+SSM resources for Chamber."
+description: "Use Terraform to easily provision KMS+SSM resources for chamber."
 ---
 
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}

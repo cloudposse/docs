@@ -1,0 +1,51 @@
+//@extend-elements
+//original selectors
+//.hidden, #search-results.hidden
+
+%extend_1 {
+  max-height: 0;
+  border: 0;
+  overflow: hidden;
+  //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: max-height .3s;
+  //Instead of the line below you could use @include transition-delay($delay-1, $delay-2, $delay-3, $delay-4, $delay-5, $delay-6, $delay-7, $delay-8, $delay-9, $delay-10)
+  transition-delay: 0s;
+}
+//original selectors
+//article >aside .menu .dd-item div a, article >aside .menu .dd-item div a:hover
+
+%extend_2 {
+  order: 1;
+  padding-left: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+//original selectors
+//.search-bar:focus, .search-bar:active, .search-bar.active
+
+%extend_3 {
+  padding-left: 0;
+  padding-right: 0;
+  //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: padding .3s ease-out;
+  //Instead of the line below you could use @include transition-delay($delay-1, $delay-2, $delay-3, $delay-4, $delay-5, $delay-6, $delay-7, $delay-8, $delay-9, $delay-10)
+  transition-delay: .3s;
+}
+//original selectors
+//body >footer .footline .tags, body >footer .footline .copyright
+
+%extend_4 {
+  display: inline-block;
+  float: left;
+  line-height: 2.2em;
+}
+//original selectors
+//.dialog.code-block, .dialog.code-block a
+
+%extend_5 {
+  border-color: transparent;
+  background-color: $color_black_haze_approx;
+  margin-bottom: 2em;
+}
