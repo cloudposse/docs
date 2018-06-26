@@ -71,3 +71,15 @@ steps:
       condition:
         all:
           executeForTag: "'${{SEMVERSION_TAG}}' != ''"
+
+  # Only invalidate cache on tagged releases
+  invalidate_cache:
+    title: Invalidating CloudFlare cache...
+    image: '${{build_image}}'
+    working_directory: ./
+    commands:
+      - make invalidate-cache
+    when:
+      condition:
+        all:
+          executeForTag: "'${{SEMVERSION_TAG}}' != ''"
