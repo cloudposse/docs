@@ -44,6 +44,7 @@ deps: deps-$(OS) \
 	  packages/install/hugo \
 	  packages/install/htmltest
 	  asciinema auth
+	  npm install -g cloudflare-cli
 	@exit 0
 
 deps/asciinema:

@@ -1,6 +1,6 @@
 FROM node:10.4-stretch
 
-ARG APT_PACKAGES="python3 python3-pip locales" 
+ARG APT_PACKAGES="python3 python3-pip locales jq" 
 RUN apt-get update && \
     apt-get install -y ${APT_PACKAGES} && \
     rm -rf /var/lib/apt/lists/*
