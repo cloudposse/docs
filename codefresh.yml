@@ -76,7 +76,7 @@ steps:
   invalidate_cache:
     title: Invalidating CloudFlare cache...
     image: '${{build_image}}'
-    working_directory: ./
+    working_directory: IMAGE_WORK_DIR
     commands:
       - make invalidate-cache
     # when:
