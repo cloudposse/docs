@@ -21,8 +21,6 @@ export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/
 
 export ASCIINEMA_VERSION ?= 2.6.1
 
-export CLOUDFLARE_DOMAIN ?= docs.cloudposse.com
-
 export DOCKER_ORG ?= cloudposse
 export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
 export DOCKER_TAG ?= latest
@@ -177,6 +175,4 @@ reindex:
 
 ## Invalidate CloudFlare cache (all files)
 invalidate-cache:
-	cfcli purge \
-		--domain $(CLOUDFLARE_DOMAIN) \
-		--token $(CLOUDFLARE_API_KEY)
+	cfcli purge
