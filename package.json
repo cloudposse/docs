@@ -1,23 +1,22 @@
 {
-  "name": "reademe.io-to-markdown",
+  "name": "docs",
   "version": "1.0.0",
-  "description": "",
-  "main": "transform.js",
-  "dependencies": {
-    "wgetjs": "^0.3.6"
+  "description": "Cloudposse Documentation - helper scripts",
+  "dependencies": {},
+  "devDependencies": {
+    "cloudflare-cli": "3.0.0"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "invalidate-cache": "./node_modules/.bin/cfcli purge"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phantombuster/readme.io-to-markdown.git"
+    "url": "git+https://github.com/cloudposse/docs.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "CC BY-NC-SA 4.0",
   "bugs": {
-    "url": "https://github.com/phantombuster/readme.io-to-markdown/issues"
+    "url": "https://github.com/cloudposse/docs/issues"
   },
-  "homepage": "https://github.com/phantombuster/readme.io-to-markdown#readme"
+  "homepage": "https://github.com/cloudposse/docs#readme"
 }

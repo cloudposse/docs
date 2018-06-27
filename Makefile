@@ -44,7 +44,7 @@ deps: deps-$(OS) \
 	  packages/install/hugo \
 	  packages/install/htmltest
 	  asciinema auth
-	  npm install -g cloudflare-cli
+	  npm install
 	@exit 0
 
 deps/asciinema:
@@ -175,4 +175,4 @@ reindex:
 
 ## Invalidate CloudFlare cache (all files)
 invalidate-cache:
-	cfcli purge
+	npm run invalidate-cache
