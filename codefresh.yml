@@ -79,7 +79,7 @@ steps:
     working_directory: IMAGE_WORK_DIR
     commands:
       - make invalidate-cache
-    # when:
-    #   condition:
-    #     all:
-    #       executeForTag: "'${{SEMVERSION_TAG}}' != ''"
+    when:
+      condition:
+        all:
+          executeForTag: "'${{SEMVERSION_TAG}}' != ''"
