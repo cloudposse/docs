@@ -44,6 +44,8 @@ deps: deps-$(OS) \
 	  packages/install/hugo \
 	  packages/install/htmltest
 	  asciinema auth
+	  npm install -g \
+	  	cloudflare-cli@3.0.0
 	@exit 0
 
 deps/asciinema:
@@ -171,3 +173,7 @@ reindex:
 				-H "X-Algolia-Application-Id: $(ALGOLIA_APPLICATION_ID)" \
 				-d '@{}' \
 				$(ALGOLIA_API_ENDPOINT) \;
+
+## Invalidate CloudFlare cache (all files)
+invalidate-cache:
+	cfcli purge
