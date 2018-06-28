@@ -2,7 +2,7 @@
 
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
-export HUGO_VERSION ?= 0.40.2
+export HUGO_VERSION ?= 0.42.1
 export HUGO_PORT ?= 1313
 export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
