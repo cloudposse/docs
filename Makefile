@@ -43,7 +43,7 @@ deps: deps-$(OS) \
 	  packages/install/htmltest
 	  asciinema auth
 	  npm install -g \
-		atomic-algolia@0.3.15
+		atomic-algolia@0.3.15 \
 	  	cloudflare-cli@3.0.0
 	@exit 0
 
