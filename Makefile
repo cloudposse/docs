@@ -16,6 +16,8 @@ export HTMLTEST_CONFIG ?= .htmltest.yml
 
 export ALGOLIA_INDEX_FILE ?= $(HUGO_PUBLISH_DIR)/index.algolia.json
 export ALGOLIA_INDEX_NAME ?= dev
+export ALGOLIA_APP_ID ?= docs
+# export ALGOLIA_ADMIN_KEY =? <token>
 
 export ASCIINEMA_VERSION ?= 2.6.1
 
