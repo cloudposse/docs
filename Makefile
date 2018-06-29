@@ -15,9 +15,9 @@ export HTMLTEST_LOG_LEVEL ?= 2
 export HTMLTEST_CONFIG ?= .htmltest.yml
 
 export ALGOLIA_INDEX_FILE ?= $(HUGO_PUBLISH_DIR)/index.algolia.json
-export ALGOLIA_APPLICATION_INDEX ?= dev
-export ALGOLIA_API_ENDPOINT ?= "https://$(ALGOLIA_APPLICATION_ID).algolia.net/1/indexes/$(ALGOLIA_APPLICATION_INDEX)"
-#export ALGOLIA_API_ENDPOINT ?= "https://httpbin.org/post"
+export ALGOLIA_INDEX_NAME ?= dev
+export ALGOLIA_APP_ID ?= docs
+export ALGOLIA_ADMIN_KEY =?
 
 export ASCIINEMA_VERSION ?= 2.6.1
 
@@ -45,6 +45,7 @@ deps: deps-$(OS) \
 	  packages/install/htmltest
 	  asciinema auth
 	  npm install -g \
+		atomic-algolia@0.3.15 \
 	  	cloudflare-cli@3.0.0
 	@exit 0
 
@@ -159,20 +160,7 @@ deploy:
 
 ## Update algolia search index
 reindex:
-	rm -rf algolia/
-	mkdir -p algolia
-	jq -c .[] $(ALGOLIA_INDEX_FILE) | split -l 1 - algolia/
-	find algolia/ -type f -exec \
-			curl -X POST \
-				--connect-timeout 5 \
-				--max-time 10 \
-				--retry 5 \
-				--retry-delay 5 \
-				--retry-max-time 60 \
-				-H "X-Algolia-API-Key: $(ALGOLIA_API_KEY)" \
-				-H "X-Algolia-Application-Id: $(ALGOLIA_APPLICATION_ID)" \
-				-d '@{}' \
-				$(ALGOLIA_API_ENDPOINT) \;
+	atomic-algolia
 
 ## Invalidate CloudFlare cache (all files)
 invalidate-cache:
