@@ -2,7 +2,7 @@
 
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
-export HUGO_VERSION ?= 0.40.2
+export HUGO_VERSION ?= 0.42.1
 export HUGO_PORT ?= 1313
 export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
@@ -44,6 +44,8 @@ deps: deps-$(OS) \
 	  packages/install/hugo \
 	  packages/install/htmltest
 	  asciinema auth
+	  npm install -g \
+	  	cloudflare-cli@3.0.0
 	@exit 0
 
 deps/asciinema:
@@ -171,3 +173,7 @@ reindex:
 				-H "X-Algolia-Application-Id: $(ALGOLIA_APPLICATION_ID)" \
 				-d '@{}' \
 				$(ALGOLIA_API_ENDPOINT) \;
+
+## Invalidate CloudFlare cache (all files)
+invalidate-cache:
+	cfcli purge
