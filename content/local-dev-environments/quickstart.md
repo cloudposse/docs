@@ -29,6 +29,8 @@ To install Homebrew, simply run the following command:
 
 Docker for Mac is a Docker Community Edition (CE) version which is completely FREE. It includes everything you need to run Docker on a Mac and installed using the standard DMG/installer process.
 
+**IMPORTANT:** It is recommended to install the latest Docker CE, however at a minimum Docker CE >= 17.05 is required this was the release which introduced multistage builds, more info [here](https://docs.docker.com/develop/develop-images/multistage-build/).
+
 Visit the [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) site or just go ahead and directly download the [`Docker.dmg`](https://download.docker.com/mac/stable/Docker.dmg)
 
 - <https://download.docker.com/mac/stable/Docker.dmg>
