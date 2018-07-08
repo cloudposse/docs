@@ -158,11 +158,9 @@ Run `terraform plan` and then `terraform apply`
 
 Re-enable `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
-Re-run `init-terraform`
+Re-run `init-terraform`, answer `yes` when asked to import state
 
-Re-run `terraform apply`, answer `yes` when asked to import state
-
-Re-enable the `assume_role` section in `tfstate-backend/main.tf`
+(No need to re-enable the `assume_role` section in `tfstate-backend/main.tf` - that change will revert when rerunning the container)
 
 ```
 {{% /dialog %}}
@@ -432,19 +430,13 @@ cd tfstate-backend
 
 Comment out the `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
-Comment out the `assume_role` section in `tfstate-backend/main.tf`
-
 Run `init-terraform`
 
 Run `terraform plan` and then `terraform apply`
 
 Re-enable `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
-Re-run `init-terraform`
-
-Re-run `terraform apply`, answer `yes` when asked to import state
-
-Re-enable the `assume_role` section in `tfstate-backend/main.tf`
+Re-run `init-terraform`, answer `yes` when asked to import state
 ```
 {{% /dialog %}}
 
