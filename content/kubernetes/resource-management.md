@@ -22,7 +22,7 @@ some-pod        0/1       OOMKilled   1          24s
 
 ## How can we tell if we're oversubscribed on CPU/Memory?
 
-By inspecting a "Node" in the kubernetes dashboard, it's really easy to tell if a cluster is oversubscribed. In the example below, we can see that pods have requested 54% of available CPU, but the hard limit has been set to 100% of available CPU. This means, that nothing else should be scheduled do this node as 100% of total available capacity has been allocated.
+By inspecting a "Node" in the kubernetes dashboard, it's really easy to tell if a cluster is oversubscribed. In the example below, we can see that pods have requested 54% of available CPU, but the hard limit has been set to 100% of available CPU. This means, that nothing else should be scheduled to this node as 100% of total available capacity has been allocated.
 
 In terms of memory, we see that all pods of a total memory limit of 4.3GB, which is 113% of available resources. This means the cluster is overcommitted in terms of the maximum permitted amount of memory. In terms of actually requested memory, we're still under the threshold.
 
