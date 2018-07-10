@@ -31,7 +31,7 @@ If you are planning on provisioning all the accounts (`prod`, `staging`, `dev`, 
   * Enable MFA for the user (we recommend using Google Authenticator as Virtual MFA device)
   * Generate `Access Key ID` and `Secret Access Key` for the user (you'll need them in the next steps)
 
-* Install and setup [aws-vault](https://github.com/99designs/aws-vault) to store IAM credentials in your operating system's secure keystore 
+* Install and setup [aws-vault](https://github.com/99designs/aws-vault) to store IAM credentials in your operating system's secure keystore
 and then generate temporary credentials from those to expose to your shell and applications
 
 To install [aws-vault](https://github.com/99designs/aws-vault/releases), follow the instructions in [The Cloud Posse Developer Hub](https://docs.cloudposse.com/tools/aws-vault/).
@@ -54,7 +54,7 @@ Replace the profile name `cpco` with your own (for consistency, we recommend usi
 In this example, we'll provision resources for the following two accounts:
 
 * `root` - always in use as the Root of the AWS accounts hierarchy and also as the main account to store all the IAM users and roles to access the other accounts
-* `testing` - we use it to quickly create and destroy infrastructure for testing 
+* `testing` - we use it to quickly create and destroy infrastructure for testing
 
 The other stages (`prod`, `staging`, `dev`, `audit`) are similar (they might differ by the resources you provision), and as has been noticed before, you might not need all of them.
 
@@ -65,7 +65,7 @@ Copy the [root](https://github.com/cloudposse/root.cloudposse.co) and [testing](
 into two different folders. For this example, we'll use `~/root.cloudposse.co` and `~/testing.cloudposse.co` respectively.
 
 Update all ENV variables in the two `Dockefiles` in the repos with the values for your project:
- 
+
  * Change `DOCKER_IMAGE`
  * Replace the namespace `cpco` with your own in all ENV vars
  * Change the domain names from `cloudposse.co` to your own
@@ -158,11 +158,9 @@ Run `terraform plan` and then `terraform apply`
 
 Re-enable `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
-Re-run `init-terraform`
+Re-run `init-terraform`, answer `yes` when asked to import state
 
-Re-run `terraform apply`, answer `yes` when asked to import state
-
-Re-enable the `assume_role` section in `tfstate-backend/main.tf`
+(No need to re-enable the `assume_role` section in `tfstate-backend/main.tf` - that change will revert when rerunning the container)
 
 ```
 {{% /dialog %}}
@@ -432,19 +430,13 @@ cd tfstate-backend
 
 Comment out the `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
-Comment out the `assume_role` section in `tfstate-backend/main.tf`
-
 Run `init-terraform`
 
 Run `terraform plan` and then `terraform apply`
 
 Re-enable `backend          "s3"             {}` section in `tfstate-backend/main.tf`
 
-Re-run `init-terraform`
-
-Re-run `terraform apply`, answer `yes` when asked to import state
-
-Re-enable the `assume_role` section in `tfstate-backend/main.tf`
+Re-run `init-terraform`, answer `yes` when asked to import state
 ```
 {{% /dialog %}}
 
@@ -565,7 +557,7 @@ certificate_id = arn:aws:acm:us-west-2:126450723953:certificate/56897dfe-23ac-4e
 {{% /dialog %}}
 
 
-## Provision `chamber` Project in `testing` to Create AIM User and KMS Key for Chamber
+## Provision `chamber` Project in `testing` to Create IAM User and KMS Key for Chamber
 
 In `testing` `geodesic` shell, execute the following commands:
 
