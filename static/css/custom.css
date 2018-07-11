@@ -1,1 +1,5 @@
-/* Custom css for quickfixes without compiling should be added here. */
+/* Custom CSS for quickfixes without compiling should be added here. */
+
+.subnav .__slackin {
+  float: right;
+}
