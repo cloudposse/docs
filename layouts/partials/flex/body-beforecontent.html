@@ -38,13 +38,14 @@
   <div class="container">
     {{if not .IsHome}}
     <div class="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-      {{ template "breadcrumb" dict "page" . "value" .Title }}   
+      {{ template "breadcrumb" dict "page" . "value" .Title }}
     </div>
     <div class="searchbox">
       <div class="fa fa-search"></div>
       <input type="text" placeholder="Search" class="search-box">
     </div>
     {{end}}
+    <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
     <div class="nav-select">
       <center>
         <select onchange="javascript:location.href = this.value;">
@@ -128,7 +129,7 @@
 {{define "breadcrumb"}}
 {{ if .page.Parent}}
 {{$value := (printf "<a href='%s'>%s</a> <i class='fa fa-chevron-right'></i> %s" .page.Parent.URL .page.Parent.Title .value)}}
-{{ template "breadcrumb" dict "page" .page.Parent "value" $value }} 
+{{ template "breadcrumb" dict "page" .page.Parent "value" $value }}
 {{else}}
  {{.value|safeHTML}}
 {{end}}
