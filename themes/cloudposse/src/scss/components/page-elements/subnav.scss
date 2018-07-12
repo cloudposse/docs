@@ -1,24 +1,21 @@
 .subnav {
-  min-height: 38px;
   color: $color_abbey_approx;
   font-size: 13px;
   border-bottom: 1px solid $color_mercury_approx;
   background-color: $color_black_haze_approx;
 
   &__container {
+    min-height: 38px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     position: relative;
   }
 
-  &__breadcrumbs {
-    display: inline;
-    position: absolute;
-    left: 0;
-  }
+  &__breadcrumbs {}
 
   &__search-bar {
-    flex: 0 0 30%;
+    position: absolute;
+    right: 0;
   }
 }

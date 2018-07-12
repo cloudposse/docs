@@ -3,23 +3,25 @@
     display: none;
   }
 
-  i {
+  &__separator {
     color: $color_celeste_approx;
     font-size: 10px;
+    width: 7px;
   }
 
-  a {
-    padding: 0 7px 0 9px;
+  &__item,
+  &__title {
+    padding: 0 9px 0 9px;
     display: inline-block;
+  }
+
+  &__item {
     color: $color_waterloo__approx;
-    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
     border-radius: 2px;
-    line-height: 26px;
 
     &:hover {
       text-decoration: none;
       background-color: $white;
-      //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
       box-shadow: 0 0 0 1px $color_nebula_approx, 0 2px 2px $black_10;
     }
   }

@@ -1,0 +1,22 @@
+.search-results {
+  background-color: $white;
+  transition: max-height .3s;
+  overflow: hidden;
+  max-height: 768px;
+  position: absolute;
+  top: 100%;
+  box-shadow: 1px 29px 61px 1px $black_30;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  width: 100%;
+  z-index: 1000;
+
+  &.hidden {
+    @extend %hidden;
+    visibility: hidden;
+  }
+
+  &--big {
+    top: calc(100% - 3px);
+  }
+}

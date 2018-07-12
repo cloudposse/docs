@@ -28,7 +28,7 @@
     </div>
     <div class="landing-top__search-bar search-bar search-bar--landing">
       <div id="search-box" class="search-box search-box--big"><!-- SearchBox widget will appear here --></div>
-      <div id="search-results" class="search-results">
+      <div id="search-results" class="search-results search-results--big">
         <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
         <div id="search-hits" class="search-hits"></div>
       </div>
@@ -40,7 +40,7 @@
   <div class="subnav__container container">
     {{if not .IsHome}}
       <div class="subnav__breadcrumbs breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-        {{ template "breadcrumb" dict "page" . "value" .Title }}   
+        {{ template "breadcrumb" dict "page" . "value" (printf "<span class='breadcrumbs__title'>%s</span>" .Title) }}
       </div>
 
       <div class="subnav__search-bar search-bar search-bar--subnav">
@@ -130,12 +130,3 @@
         <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
       </div>
   {{end}}
-
-{{define "breadcrumb"}}
-{{ if .page.Parent}}
-{{$value := (printf "<a href='%s'>%s</a> <i class='fa fa-chevron-right'></i> %s" .page.Parent.URL .page.Parent.Title .value)}}
-{{ template "breadcrumb" dict "page" .page.Parent "value" $value }} 
-{{else}}
- {{.value|safeHTML}}
-{{end}}
-{{end}}

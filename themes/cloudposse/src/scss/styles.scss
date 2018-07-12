@@ -14,20 +14,22 @@
 @import 'components/ui/ais';
 @import 'components/ui/searchbar';
 @import 'components/ui/searchbox';
+@import 'components/ui/searchresults';
+@import 'components/ui/searchhits';
+@import 'components/ui/searchstats';
 
-@import 'components/page-elements/subnav';
 @import 'components/page-elements/container';
+@import 'components/page-elements/header';
+@import 'components/page-elements/subnav';
 
 @import 'components/article';
 @import 'components/aside';
 @import 'components/breadcrumbs';
 @import 'components/dialog';
-@import 'components/header';
 @import 'components/footer';
 @import 'components/landing-top';
 @import 'components/page-navigation';
 @import 'components/related-list';
-@import 'components/search-results';
 @import 'components/section';
 @import 'components/tags';
 @import 'components/tooltip';

@@ -1,5 +1,7 @@
 article {
   margin-top: 0;
+  position: relative;
+  z-index: 1;
 
   > aside {
     top: inherit;

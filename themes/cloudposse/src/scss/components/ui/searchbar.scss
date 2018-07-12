@@ -1,20 +1,19 @@
 .search-bar {
-  transition: padding .3s ease-out;
-  transition-delay: 1s;
+  position: relative;
+  transition: margin .3s ease-out;
 
-  &:focus,
-  &:active,
   &.active {
-    padding-left: 0;
-    padding-right: 0;
-    transition: padding .3s ease-out;
-    transition-delay: .3s;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   &--subnav {
-    transition: flex-basis .3s ease-out;
+    background-color: $color_black_haze_approx;
+    transition: width .3s ease-out;
+
     &.active {
-      flex: 1 0 600px;
+      transition: width .3s ease-out;
+      width: 100%;
     }    
   }
 }

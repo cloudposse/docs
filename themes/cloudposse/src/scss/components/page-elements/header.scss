@@ -2,17 +2,16 @@
   background-color: $color_cape_cod_approx;
   color: $white_80;
   height: 4.3rem;
-  top: inherit;
-  right: inherit;
-  left: inherit;
   width: 100%;
   position: initial;
   padding: 0;
   margin: 0;
+  display: block;
 
   &__container {
     display: flex;
     align-items: center;
+    width: auto;
   }
 
   &__logo {

@@ -1,0 +1,59 @@
+.search-hits {
+  max-width: 100%;
+  overflow: hidden;
+  background: $white;
+  padding-top: 0;
+  padding-bottom: 15px;
+
+  &:empty {
+    display: none;
+  }
+
+  .text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 40px;
+    display: inline-block;
+  }
+
+  p {
+    margin: 0;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .ais-hits--item {
+    padding: 5px 20px;
+
+    &:hover {
+      background-color: $color_half_colonial_white_approx;
+    }
+  }
+
+  em {
+    font-weight: bold;
+
+    &.section {
+      font-weight: normal;
+      padding-left: 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-style: normal;
+      color: $color_silver_chalice_approx;
+    }
+
+    &.tags {
+      font-weight: normal;
+      font-size: 11px;
+      font-style: normal;
+      color: $color_silver_chalice_approx;
+      display: block;
+    }
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+}

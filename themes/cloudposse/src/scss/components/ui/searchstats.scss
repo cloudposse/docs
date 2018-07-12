@@ -1,0 +1,24 @@
+.search-stats {
+  border-top: 1px solid $color_mercury_approx;
+  display: inline-block;
+  padding-left: 20px;
+  padding-top: 20px;
+  width: 100%;
+  background-color: $white;
+
+  &:empty {
+    display: none;
+  }
+
+  h3 {
+    color: $color_cape_cod_approx;
+    font-size: 1.5em;
+    margin-bottom: .7em;
+    display: inline-block;
+    float: left;
+  }
+
+  span {
+    display: none;
+  }
+}
