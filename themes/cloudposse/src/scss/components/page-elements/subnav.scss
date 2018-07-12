@@ -8,7 +8,6 @@
     min-height: 38px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     position: relative;
   }
 
@@ -18,4 +17,9 @@
     position: absolute;
     right: 0;
   }
+
+  .__slackin {
+    order: 2;
+    margin: 0 20px;
+  }  
 }

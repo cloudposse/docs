@@ -453,13 +453,14 @@ div.calendly-badge-widget {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
     position: relative; }
   .subnav__search-bar {
     position: absolute;
     right: 0; }
+  .subnav .__slackin {
+    -webkit-box-ordinal-group: 3;
+    -ms-flex-order: 2;
+    order: 2; }
 
 article {
   margin-top: 0;
