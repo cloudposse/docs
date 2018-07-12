@@ -97,7 +97,7 @@ First, ensure that the `kubectl` context has been set. If running in `geodesic`,
 kops export kubecfg
 ```
 
-(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $CLUSTER_NAME`)
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
 By default, `helmfile` will look for a configuration file called `helmfile.yaml` in your current working directory (`./`). The alternative is to explicitly pass `--file some-path/helmfile.yaml` to specify a non-standard location.
 

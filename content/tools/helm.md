@@ -21,7 +21,7 @@ kops export kubecfg
 helm init
 ```
 
-(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $CLUSTER_NAME`)
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
 # Delete All Releases in Namespace
 
