@@ -12,7 +12,7 @@ tags:
 This assumes you've followed the [Geodesic Module Usage]({{< relref "geodesic/module/with-kops.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
-Kops cluster can be scaled horizontally by adding EC2 instances. 
+Kops cluster can be scaled horizontally by adding EC2 instances.
 
 Kops supports rolling cluster upgrades where the master and worker nodes are upgraded one by one.
 
@@ -39,8 +39,10 @@ Then, ensure that the `kubectl` context has been set.
 In `geodesic` shell run:
 
 ```sh
-kops export kubecfg $KOPS_CLUSTER_NAME
+kops export kubecfg
 ```
+
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $CLUSTER_NAME`)
 
 Check and apply the latest Kubernetes update:
 
@@ -66,7 +68,7 @@ kops rolling-update cluster --yes
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 Using `--yes` updates all nodes in the cluster, first master nodes and then worker nodes.
-There is a 5-minute delay between restarting master nodes, and a 2-minute delay between restarting nodes. 
+There is a 5-minute delay between restarting master nodes, and a 2-minute delay between restarting nodes.
 These values can be altered using `--master-interval` and `--node-interval` options, respectively.
 
 Only the worker nodes may be updated by using the [`--instance-group`](https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md) node option.

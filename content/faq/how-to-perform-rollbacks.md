@@ -39,10 +39,12 @@ When you start the Geodesic shell, you will need to export the `kubecfg` which p
 
 {{% dialog type="code-block" icon="fa fa-code" title="Export kops config" %}}
 ```
-✅   (example-staging-admin) ~ ➤  kops export kubecfg $KOPS_CLUSTER_NAME
+✅   (example-staging-admin) ~ ➤  kops export kubecfg
 kops has set your kubectl context to us-west-2.staging.example.com
 ```
 {{% /dialog %}}
+
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $CLUSTER_NAME`)
 
 ### Rollback Helm Release
 

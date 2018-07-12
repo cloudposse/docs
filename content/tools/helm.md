@@ -13,7 +13,15 @@ Helm makes it easy to install `charts` (an application) on kubernetes clusters. 
 
 The helm `tiller` is the server-side component of Helm. It's used to cordinate with the kubernetes cluster in order to deploy resources (E.g. `Services`, `Deployments`, `StatefulSets`, etc.)
 
-To install the `tiller`, just run `helm init` from the Geodesic Shell after assumming-role and running `kops export kubecfg $CLUSTER_NAME`.
+To install the `tiller`, just run `helm init` from the Geodesic Shell after assumming-role and running `kops export kubecfg`.
+
+```
+assume-role
+kops export kubecfg
+helm init
+```
+
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $CLUSTER_NAME`)
 
 # Delete All Releases in Namespace
 
