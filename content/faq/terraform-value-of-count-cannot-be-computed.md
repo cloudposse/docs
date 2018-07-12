@@ -26,26 +26,29 @@ Terraform (in the current incarnation) is very sensitive to these two things:
 2. It does not especially like those dynamic `counts` in `maps` and `lists`
 
 Some know issues about that:
-- <https://github.com/hashicorp/terraform/issues/13980>
-- <https://github.com/hashicorp/terraform/issues/10857>
-- <https://github.com/hashicorp/terraform/issues/12570>
-- <https://github.com/hashicorp/terraform/issues/17048>
+
+> - <https://github.com/hashicorp/terraform/issues/13980>
+> - <https://github.com/hashicorp/terraform/issues/10857>
+> - <https://github.com/hashicorp/terraform/issues/12570>
+> - <https://github.com/hashicorp/terraform/issues/17048>
 
 This issue has come up for us time and again. If a module has a map variable and has interpolation inside this map variable, count inside a module results in value of `count` that cannot be computed. It appears that this error only occurs when running `terraform apply` on a new environment, but not any existing environment! So the problem often goes unnoticed.
 
 Here's an example from one of our modules.
 
 Here the `count` depends on the `map` and the input `var.tags`:
-<https://github.com/cloudposse/terraform-null-label/blob/master/main.tf#L23>
+
+> - <https://github.com/cloudposse/terraform-null-label/blob/master/main.tf#L23>
 
 And here `var.tags` depends on the `map`, the other inputs and on the `data` provider:
-<https://github.com/cloudposse/terraform-aws-ec2-instance/blob/master/main.tf#L68>
+
+> - <https://github.com/cloudposse/terraform-aws-ec2-instance/blob/master/main.tf#L68a>
 
 This circular dependency breaks TF.
 
 It’s very difficult to say for sure what’s going on, because it could work in some cases and in some environments, but not in the others (see the complaints in the issues above).
 
-Unfortunately, this is not a good explanation. Rest assured, however, the Terraform community has been discussing the issue for years and can’t explain it either, probably because nobody fully understands the scope of the problem.
+Unfortunately, this is not a good explanation. The Terraform community has been discussing the issue for years and can’t explain it either, probably because nobody fully understands the scope of the problem.
 
 Here are a few ways to address it:
 
