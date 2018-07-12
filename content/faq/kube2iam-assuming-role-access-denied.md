@@ -1,4 +1,3 @@
-
 ---
 title: "Kubernetes Pods Emit Error: not authorized to perform `sts:AssumeRole`"
 description: "Assuming roles are properly configured, this usually happens due to AWS API rate limiting. "
