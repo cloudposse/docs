@@ -3,3 +3,7 @@
 .subnav .__slackin {
   float: right;
 }
+
+.utterances-wrapper {
+  margin: 10em auto 0 auto;
+}
