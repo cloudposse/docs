@@ -1,0 +1,20 @@
+.subnav {
+  color: $color_abbey_approx;
+  font-size: 13px;
+  border-bottom: 1px solid $color_mercury_approx;
+  background-color: $color_black_haze_approx;
+
+  &__container {
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &__breadcrumbs {}
+
+  &__search-bar {
+    position: absolute;
+    right: 0;
+  }
+}

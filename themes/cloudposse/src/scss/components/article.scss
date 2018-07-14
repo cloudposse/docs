@@ -1,5 +1,7 @@
 article {
   margin-top: 0;
+  position: relative;
+  z-index: 1;
 
   > aside {
     top: inherit;
@@ -98,8 +100,13 @@ article {
         line-height: 30px;
         word-wrap: break-word;
         text-transform: none;
-        max-width: 90%;
+        float: left;
+        max-width: 80%;
       }
+
+      .__slackin {
+        float: right;
+      }  
 
       li img {
         padding-top: 20px;

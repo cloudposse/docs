@@ -1,52 +1,57 @@
 <header class="header">
-  <div class="logo header__logo">
-    <a href="/"><img src="/images/logo.png" id="header-logo" /></a>
+  <div class="header__container container">
+    <div class="logo header__logo">
+        <a href="/"><img src="/images/logo.png" id="header-logo" /></a>
+      </div>
+      <div class="burger header__burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
+      {{- with .Site.Menus.shortcuts}}
+        <nav class="shortcuts header__shortcuts">
+            {{- range sort . "Weight"}}
+                <li id="{{ .Identifier }}" class="" role="">
+                    <a href="{{.URL}}" {{if eq $.Site.Params.menushortcutsnewtab true}}target="_blank"{{end}} rel="noopener">
+                      {{safeHTML .Name}}
+                    </a>
+                </li>
+            {{- end}}
+        </nav>
+      {{- end}}
   </div>
-  <div class="burger header__burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
-  {{- with .Site.Menus.shortcuts}}
-    <nav class="shortcuts header__shortcuts">
-        {{- range sort . "Weight"}}
-            <li id="{{ .Identifier }}" class="" role="">
-                <a href="{{.URL}}" {{if eq $.Site.Params.menushortcutsnewtab true}}target="_blank"{{end}} rel="noopener">
-                  {{safeHTML .Name}}
-                </a>
-            </li>
-        {{- end}}
-    </nav>
-  {{- end}}
 </header>
 {{if .IsHome}}
 <div class="landing-top">
   <div class="landing-top__description">
-    <img src="/images/cloud.png" class="whitish cloud"/>
-    <h1>The Cloud Posse Developer Hub</h1>
+    <img src="/images/cloud.png" class="landing-top__image whitish cloud"/>
+    <h1 class="landing-top__title">The Cloud Posse Developer Hub</h1>
     <a class="button green" href="/documentation/getting-started/">Get Started</a>
     <div class="about">
       Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!
     </div>
-    <div class="search-bar">
-      <div id="search-box"><!-- SearchBox widget will appear here --></div>
-      <div id="search-results">
-        <div id="search-stats"><!-- Search status widget will appear here --></div>
-        <div id="search-hits"></div>
+    <div class="landing-top__search-bar search-bar search-bar--landing">
+      <div id="search-box" class="search-box search-box--big"><!-- SearchBox widget will appear here --></div>
+      <div id="search-results" class="search-results search-results--big">
+        <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
+        <div id="search-hits" class="search-hits"></div>
       </div>
     </div>
   </div>
 </div>
 {{ end }}
 <div class="subnav">
-  <div class="container">
+  <div class="subnav__container container">
     {{if not .IsHome}}
-    <div class="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-      {{ template "breadcrumb" dict "page" . "value" .Title }}
-    </div>
-    <div class="searchbox">
-      <div class="fa fa-search"></div>
-      <input type="text" placeholder="Search" class="search-box">
-    </div>
+      <div class="subnav__breadcrumbs breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+        {{ template "breadcrumb" dict "page" . "value" (printf "<span class='breadcrumbs__title'>%s</span>" .Title) }}
+      </div>
+
+      <div class="subnav__search-bar search-bar search-bar--subnav">
+        <div id="search-box" class="search-box"><!-- SearchBox widget will appear here --></div>
+        <div id="search-results" class="search-results">
+          <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
+          <div id="search-hits" class="search-hits"></div>
+        </div>
+      </div>
     {{end}}
-    <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
-    <div class="nav-select">
+    <div class="subnav__nav-select nav-select">
       <center>
         <select onchange="javascript:location.href = this.value;">
           {{partial "flex/selectnavigation.html" .}}
@@ -112,8 +117,12 @@
         <script type="text/javascript" src="{{"js/search.js" | relURL}}"></script>
       </div>
     {{- end}}
-      <h1 class="title">{{.Title}}</h1>
-      <div class="excerpt">
+      <!-- TODO: Manage in BEM classes. -->
+      <div style="clear: both"> 
+        <h1 class="title">{{.Title}}</h1>
+        <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
+      </div>
+      <div class="excerpt" style="clear: both">
         {{ if .Description }}
         <p>{{ .Description | markdownify }}</p>
         {{ end }}
@@ -125,12 +134,3 @@
         <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
       </div>
   {{end}}
-
-{{define "breadcrumb"}}
-{{ if .page.Parent}}
-{{$value := (printf "<a href='%s'>%s</a> <i class='fa fa-chevron-right'></i> %s" .page.Parent.URL .page.Parent.Title .value)}}
-{{ template "breadcrumb" dict "page" .page.Parent "value" $value }}
-{{else}}
- {{.value|safeHTML}}
-{{end}}
-{{end}}

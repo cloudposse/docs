@@ -25,28 +25,12 @@
     height: 21vh;
   }
 
-  h1 {
+  &__title {
     font-size: 30px;
     font-weight: normal;
     line-height: 1.1em;
     @media(min-width: 320px) and(max-width: 480px) {
       line-height: 1.1em;
-    }
-  }
-
-  .ais-search-box {
-    text-align: left;
-    //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-    box-shadow: 0 0 0 5px $black_10, 0 0 0 1px $black_10;
-    width: 100%;
-    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-    border-radius: 5px;
-    max-width: 100%;
-
-    input {
-      width: 100%;
-      margin-bottom: 0;
-      background-color: $color_black_haze_approx;
     }
   }
 
@@ -70,13 +54,24 @@
       width: 100%;
     }
   }
-}
 
-img.cloud {
-  max-width: 125px;
-  margin-right: 10px;
-  float: left;
-  @media(min-width: 320px) and(max-width: 480px) {
-    display: none;
+  &__image {
+    max-width: 125px;
+    margin-right: 10px;
+    float: left;
+    @media(min-width: 320px) and(max-width: 480px) {
+      display: none;
+    }
+  }
+
+  &__search-bar {
+    padding-top: 30px;
+    margin-left: 20%;
+    margin-right: 20%;
+
+    @media(min-width: 320px) and(max-width: 480px) {
+      padding-left: 0;
+      padding-right: 0;
+    }  
   }
 }
