@@ -151,7 +151,8 @@ div.calendly-badge-widget {
   color: #9ea6ad;
   font-size: 14px;
   border-bottom: 1px solid #eff0f0;
-  margin-bottom: 30px; }
+  margin-bottom: 30px;
+  clear: both; }
   .excerpt p {
     margin-top: 5px;
     margin-bottom: 30px; }
@@ -265,7 +266,7 @@ div.calendly-badge-widget {
       width: 100%; }
 
 .search-box input[type="text"] {
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1;
   background: transparent;
   padding-top: 0;
@@ -457,10 +458,6 @@ div.calendly-badge-widget {
   .subnav__search-bar {
     position: absolute;
     right: 0; }
-  .subnav .__slackin {
-    -webkit-box-ordinal-group: 3;
-    -ms-flex-order: 2;
-    order: 2; }
 
 article {
   margin-top: 0;
@@ -526,7 +523,10 @@ article {
         line-height: 30px;
         word-wrap: break-word;
         text-transform: none;
-        max-width: 90%; }
+        float: left;
+        max-width: 80%; }
+      article section.page .__slackin {
+        float: right; }
       article section.page li img {
         padding-top: 20px;
         padding-bottom: 20px;

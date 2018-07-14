@@ -50,7 +50,6 @@
           <div id="search-hits" class="search-hits"></div>
         </div>
       </div>
-      <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
     {{end}}
     <div class="subnav__nav-select nav-select">
       <center>
@@ -118,8 +117,12 @@
         <script type="text/javascript" src="{{"js/search.js" | relURL}}"></script>
       </div>
     {{- end}}
-      <h1 class="title">{{.Title}}</h1>
-      <div class="excerpt">
+      <!-- TODO: Manage in BEM classes. -->
+      <div style="clear: both"> 
+        <h1 class="title">{{.Title}}</h1>
+        <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
+      </div>
+      <div class="excerpt" style="clear: both">
         {{ if .Description }}
         <p>{{ .Description | markdownify }}</p>
         {{ end }}
