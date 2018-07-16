@@ -5,7 +5,7 @@
 <script type="application/ld+json">
 {{- $url := replace .Permalink ( printf "%s" .Site.BaseURL) "" -}}
 {{- $.Scratch.Add "path" .Site.BaseURL -}}
-{{- $.Scratch.Add "breadcrumbs" (slice (dict "@type" "ListItem" "position" 1 "item" (dict "@id" "/" "name" "Home"))) -}}
+{{- $.Scratch.Add "breadcrumbs" (slice (dict "@type" "ListItem" "position" 1 "item" (dict "@id" .Site.BaseURL "name" "Home"))) -}}
 {{- range $index, $element := split $url "/" -}}
   {{- $.Scratch.Add "path" $element -}}
   {{- if ne $element "" -}}
