@@ -8,10 +8,10 @@
 {{- $.Scratch.Add "breadcrumbs" (slice (dict "@type" "ListItem" "position" 1 "item" (dict "@id" "/" "name" "Home"))) -}}
 {{- range $index, $element := split $url "/" -}}
   {{- $.Scratch.Add "path" $element -}}
-    {{- if ne $element "" -}}
-      {{- $.Scratch.Add "breadcrumbs" (dict "@type" "ListItem" "position" (add $index 2) "item" (dict "@id" ($.Scratch.Get "path") "name" .)) -}}
-      {{- $.Scratch.Add "path" "/" -}}
-    {{- end -}}
+  {{- if ne $element "" -}}
+    {{- $.Scratch.Add "breadcrumbs" (dict "@type" "ListItem" "position" (add $index 2) "item" (dict "@id" ($.Scratch.Get "path") "name" (humanize .))) -}}
+    {{- $.Scratch.Add "path" "/" -}}
+  {{- end -}}
 {{- end -}}
 {{- (dict "@context" "http://schema.org" "@type" "BreadcrumbList" "itemListElement" ($.Scratch.Get "breadcrumbs")) | jsonify -}}
 </script>
