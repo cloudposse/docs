@@ -95,16 +95,26 @@ hugo/run:
 run: docker/build
 	$(DOCKER_RUN) hugo/run
 
+## Build customized utterances widget
+utterances/build:
+	rm -rf utterances
+	git clone --branch master https://github.com/cloudposse/utterances.git
+	cd utterances && yarn && yarn build
+	mkdir -p public/utterances
+	mv utterances/dist/ public/utterances
+	rm -rf utterances
+
+## Build front-end components
+components/build: utterances/build
+
 ## Generate all static content (outputs to public/) using local environment
-hugo/build:
+hugo/build: components/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Generate all static content (outputs to public/) using docker environment
 build: docker/build
-	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
-	rm -rf $(HUGO_PUBLISH_DIR)
 	$(DOCKER_RUN) hugo/build
 
 ## Lint check common formatting mistakes
