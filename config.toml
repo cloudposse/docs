@@ -5,6 +5,10 @@ theme = "hugo-theme-docdock"
 pygmentsCodeFences = true
 pygmentsStyle = "monokailight"
 
+#SEO
+enableRobotsTXT = true
+canonifyURLs = true
+
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
 enableMissingTranslationPlaceholders = false
