@@ -53,7 +53,7 @@ Create a file in `./conf/aws-kops-backend/main.tf` with following content
 
 Run the Geodesic shell. The wrapper script is installed in `/usr/local/bin/$CLUSTER_NAME`, so you should be able to just run something like:
 ```shell
-sh-3.2$ $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
@@ -216,10 +216,12 @@ All done. At this point, the `kops` cluster is now updated and running.
 
 When you run into the Geodesic module shell you need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` to authenticate with the cluster.
 
-Run `kops export kubecfg $KOPS_CLUSTER_NAME` to export the `kubecfg`. This will export the `kubecfg` to the location set in the `KUBECONFIG` environment variable.
+Run `kops export kubecfg` to export the `kubecfg`. This will export the `kubecfg` to the location set in the `KUBECONFIG` environment variable.
+
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
 ```
-✅   (example-staging-admin) ~ ➤  kops export kubecfg $KOPS_CLUSTER_NAME
+✅   (example-staging-admin) ~ ➤  kops export kubecfg
 kops has set your kubectl context to us-west-2.staging.example.com
 ```
 

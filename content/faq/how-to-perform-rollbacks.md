@@ -24,7 +24,7 @@ There are a couple ways we recommend performing rollbacks.
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
-sh-3.2$ $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
@@ -39,19 +39,21 @@ When you start the Geodesic shell, you will need to export the `kubecfg` which p
 
 {{% dialog type="code-block" icon="fa fa-code" title="Export kops config" %}}
 ```
-✅   (example-staging-admin) ~ ➤  kops export kubecfg $KOPS_CLUSTER_NAME
+✅   (example-staging-admin) ~ ➤  kops export kubecfg
 kops has set your kubectl context to us-west-2.staging.example.com
 ```
 {{% /dialog %}}
+
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
 ### Rollback Helm Release
 
 Run the following commands to identify the helm release and corresponding revision that you want to rollback to. Note, we're using `$RELEASE_NAME` and `$REVISION_NUMBER` to symbolically represent the values you should enter in their place.
 
 ```
-sh-3.2 $ helm list
-sh-3.2 $ helm history $RELEASE_NAME
-sh-3.2 $ helm rollback $RELEASE_NAME $REVISION_NUMBER
+helm list
+helm history $RELEASE_NAME
+helm rollback $RELEASE_NAME $REVISION_NUMBER
 ```
 
 {{% include-code-block title="Helm rollback" file="faq/examples/helm-rollback.txt" %}}

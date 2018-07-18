@@ -16,7 +16,7 @@ We use `helmfile` to deploy collections of charts as part of geodesic. The `helm
 Another way to think about it is like this:
 
 > If `helm` is responsible for deploying a single application to kubernetes, then `helmfile` is responsible for deploying multiple applications by calling `helm`.
- 
+
 # Features
 
 - **12-Factor Style Configurations** - Parameterize all charts using Environment Variables
@@ -94,8 +94,10 @@ An alternative way to express this is with the `coalesce` function (Sprig functi
 First, ensure that the `kubectl` context has been set. If running in `geodesic`, then run:
 
 ```
-kops export kubecfg $KOPS_CLUSTER_NAME
+kops export kubecfg
 ```
+
+(Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
 By default, `helmfile` will look for a configuration file called `helmfile.yaml` in your current working directory (`./`). The alternative is to explicitly pass `--file some-path/helmfile.yaml` to specify a non-standard location.
 
