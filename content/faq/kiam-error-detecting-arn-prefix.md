@@ -1,5 +1,5 @@
 ---
-title: "Kiam: error detecting arn prefix: aws metadata api not available"
+title: "Kiam: Error Detecting ARN Prefix: AWS Metadata API Not Available"
 description: "Make sure your TLS certificates match the `kiam-server` hostname and that no orphaned `iptable` rules exist for legacy IAM metadata service such as `kube2iam`"
 tags:
 - kiam

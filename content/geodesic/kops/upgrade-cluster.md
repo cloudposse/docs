@@ -61,7 +61,7 @@ Then [rebuild the manifest and update the cluster]({{< relref "geodesic/kops/man
 
 # Update Manifest
 
-The [`build-kops-manifest`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/build-kops-manifest) command will regenerate the `/conf/kops/manifest.yaml`.
+The [`build-kops-manifest`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/build-kops-manifest) command will regenerate the `/conf/kops/manifest.yaml` file.
 
 ```
 build-kops-manifest

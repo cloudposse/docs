@@ -25,6 +25,11 @@ It's 100% Open Source and licensed under the [Creative Commons Attribution-NonCo
 
 
 
+
+
+
+
+
 ## Usage
 
 1. Run `make init`
@@ -144,6 +149,13 @@ Distribution of substantively modified versions of this document is prohibited w
 
 Distribution of the work or derivative of the work in any standard (paper) book form for commercial purposes is prohibited unless prior permission is obtained from the copyright holder.
 
+
+
+
+
+
+
+
 ## Trademarks
 
 All other trademarks referenced herein are the property of their respective owners.
@@ -173,7 +185,7 @@ Check out [our other projects][github], [apply for a job][jobs], or [hire us][hi
 
 ### Contributors
 
-|  [![Erik Osterman][osterman_avatar]](osterman_homepage)<br/>[Erik Osterman][osterman_homepage] | [![Igor Rodionov][goruha_avatar]](goruha_homepage)<br/>[Igor Rodionov][goruha_homepage] | [![Andriy Knysh][aknysh_avatar]](aknysh_homepage)<br/>[Andriy Knysh][aknysh_homepage] |
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] |
 |---|---|---|
 
   [osterman_homepage]: https://github.com/osterman

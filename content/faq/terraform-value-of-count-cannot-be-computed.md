@@ -23,7 +23,7 @@ Terraform has well-known issues with `counts` in `maps`.
 Terraform (in the current incarnation) is very sensitive to these two things:
 
 1. Dynamic `counts` across modules -- when you have a dynamic count (calculated by some expression with input params) in one module and then use the module from other modules
-2. It does not especially like those dynamic `counts` in `maps` and `lists`
+2. It does not especially like dynamic `counts` with `maps` and `lists`
 
 Some know issues about that:
 
