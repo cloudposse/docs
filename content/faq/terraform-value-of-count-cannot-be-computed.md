@@ -38,11 +38,11 @@ Here's an example from one of our modules.
 
 Here the `count` depends on the `map` and the input `var.tags`:
 
-> - <https://github.com/cloudposse/terraform-null-label/blob/master/main.tf#L23>
+> - <https://github.com/cloudposse/terraform-null-label/blob/0.3.7/main.tf#L23>
 
 And here `var.tags` depends on the `map`, the other inputs and on the `data` provider:
 
-> - <https://github.com/cloudposse/terraform-aws-ec2-instance/blob/master/main.tf#L68a>
+> - <https://github.com/cloudposse/terraform-aws-ec2-instance/blob/0.7.4/main.tf#L68a>
 
 This circular dependency breaks TF.
 
