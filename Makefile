@@ -98,14 +98,19 @@ run: docker/build
 ## Build customized utterances widget
 utterances/build:
 	rm -rf utterances
-	git clone --branch master https://github.com/cloudposse/utterances.git
+	git clone --branch feature/integration https://github.com/cloudposse/utterances.git
 	cd utterances && yarn && yarn build
-	mkdir -p public/utterances
-	mv utterances/dist/ public/utterances
+	mv utterances/dist/*.js public/js
+	mv utterances/dist/*.css public/css
+	mv utterances/dist/*.png public/assets
+	mv utterances/dist/*.svg public/assets
+	mkdir -p public/utterances/
+	mv utterances/dist/utterances.html public/utterances/index.html
 	rm -rf utterances
 
 ## Build front-end components
 components/build: utterances/build
+	@exit 0
 
 ## Generate all static content (outputs to public/) using local environment
 hugo/build: components/build
