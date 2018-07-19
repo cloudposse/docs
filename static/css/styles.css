@@ -143,6 +143,9 @@ th:empty {
 body > aside {
   background-color: transparent; }
 
+body > .__slackin {
+  z-index: 2; }
+
 div.calendly-badge-widget {
   right: 88px;
   bottom: 20px; }
@@ -499,6 +502,7 @@ article {
         margin: 0;
         max-width: 50%; }
       article section.page table {
+        clear: both;
         width: auto;
         border: 3px solid #eff0f0;
         border-radius: 5px;
@@ -861,7 +865,8 @@ section.post-excerpt {
 section > h1 {
   color: #555;
   font-size: 23px;
-  font-weight: 600; }
+  font-weight: 600;
+  clear: both; }
 
 section > h2 {
   color: #999;
@@ -873,6 +878,9 @@ section > h3 {
   font-size: 13px;
   font-weight: 500;
   text-transform: uppercase; }
+
+section > p {
+  clear: both; }
 
 section.page > article p {
   margin-top: 0;
