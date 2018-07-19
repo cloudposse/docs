@@ -1,23 +1,9 @@
 article {
-  margin-top: 0;
-  position: relative;
-  z-index: 1;
 
   > aside {
-    top: inherit;
-    left: inherit;
-    padding: 0;
-    width: 24rem;
 
     .menu .dd-item {
       div {
-        a {
-          @extend %extend_2;
-
-          &:hover {
-            @extend %extend_2;
-          }
-        }
 
         i.category-icon {
           color: $color_pink_swan_approx;
@@ -106,7 +92,7 @@ article {
 
       .__slackin {
         float: right;
-      }  
+      }
 
       li img {
         padding-top: 20px;

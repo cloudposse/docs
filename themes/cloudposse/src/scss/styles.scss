@@ -12,6 +12,7 @@
 @import 'custom';
 
 @import 'components/ui/ais';
+@import 'components/ui/left-sidebar-menu';
 @import 'components/ui/searchbar';
 @import 'components/ui/searchbox';
 @import 'components/ui/searchresults';
@@ -21,9 +22,11 @@
 @import 'components/page-elements/container';
 @import 'components/page-elements/header';
 @import 'components/page-elements/subnav';
+@import 'components/page-elements/main';
+@import 'components/page-elements/left-sidebar';
+@import 'components/page-elements/right-sidebar';
 
 @import 'components/article';
-@import 'components/aside';
 @import 'components/breadcrumbs';
 @import 'components/dialog';
 @import 'components/footer';

@@ -19,20 +19,20 @@
   {{- if and .IsSection (or (not .Params.hidden) $.showhidden)}}
     {{- $numberOfPages := (add (len .Pages) (len .Sections)) }}
     {{- safeHTML .Params.head}}
-    <li data-nav-id="{{.URL}}" class="dd-item
+    <li data-nav-id="{{.URL}}" class="left-sidebar-menu__item
         {{- if .IsAncestor $currentNode}} parent{{end}}
         {{- if eq .URL $currentNode.URL}} active{{end}}
         {{- if .Params.alwaysopen}} alwaysopen{{end -}}
         {{- if ne $numberOfPages 0 }} haschildren{{end}}
         ">
-      <div>
-      <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a>
-        
+      <div class="left-sidebar-menu__item-title">
+      <a href="{{ .RelPermalink}}" class="left-sidebar-menu__link">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a>
+
         {{- if ne $numberOfPages 0 }}
           {{- if or (.IsAncestor $currentNode) (.Params.alwaysopen) }}
-            <i class="fa fa-angle-down fa-lg category-icon"></i>
+            <i class="fa fa-angle-down fa-lg category-icon left-sidebar-menu__icon"></i>
           {{- else -}}
-            <i class="fa fa-angle-right fa-lg category-icon"></i>
+            <i class="fa fa-angle-right fa-lg category-icon left-sidebar-menu__icon"></i>
           {{- end}}
         {{- end}}
 
@@ -66,10 +66,10 @@
     </li>
   {{- else}}
     {{- if not .Params.Hidden }}
-      <li data-nav-id="{{.URL}}" class="dd-item
+      <li data-nav-id="{{.URL}}" class="left-sidebar-menu__item
      {{- if eq .URL $currentNode.URL}} active{{end -}}
       ">
-        <div>
+        <div class="left-sidebar-menu__item-title">
           <a href="{{ .RelPermalink}}">
             {{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}
           </a>
