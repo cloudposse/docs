@@ -53,6 +53,7 @@ section {
     color: $color_fuscous_gray_approx;
     font-size: 23px;
     font-weight: 600;
+    clear: both;
   }
 
   > h2 {
@@ -66,6 +67,10 @@ section {
     font-size: 13px;
     font-weight: 500;
     text-transform: uppercase;
+  }
+
+  > p {
+    clear: both;
   }
 
   &.page > article {

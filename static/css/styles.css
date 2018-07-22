@@ -136,6 +136,9 @@ th:empty {
 body > aside {
   background-color: transparent; }
 
+body > .__slackin {
+  z-index: 2; }
+
 div.calendly-badge-widget {
   right: 88px;
   bottom: 20px; }
@@ -536,6 +539,7 @@ div.calendly-badge-widget {
   margin-top: 0;
   position: relative;
   z-index: 1; }
+<<<<<<< HEAD
 
 .left-sidebar {
   background: #fff;
@@ -551,6 +555,90 @@ div.calendly-badge-widget {
   flex-direction: column;
   overflow-y: auto;
   padding: 0 0 0 30px;
+=======
+  article > aside {
+    top: inherit;
+    left: inherit;
+    padding: 0;
+    width: 24rem; }
+    article > aside .menu .dd-item div i.category-icon {
+      color: #bbb;
+      opacity: .5;
+      filter: alpha(opacity=50);
+      font-weight: bold;
+      font-size: 20px; }
+    article > aside .menu .dd-item li {
+      border-left: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+    article > aside .menu .dd-item.haschildren > div {
+      margin-left: initial; }
+  article section {
+    max-width: 1024px; }
+    article section.page {
+      margin: 0;
+      scroll-behavior: smooth; }
+      article section.page pre {
+        margin: 20px 30px;
+        padding: 20px;
+        border-radius: 6px;
+        color: #eff0f0;
+        background-color: #364548; }
+        article section.page pre.asciinema-terminal {
+          margin: 0;
+          border-radius: 0; }
+      article section.page img {
+        margin: 0;
+        max-width: 50%; }
+      article section.page table {
+        clear: both;
+        width: auto;
+        border: 3px solid #eff0f0;
+        border-radius: 5px;
+        overflow: auto;
+        border-collapse: separate !important;
+        color: #4c555a; }
+        article section.page table td {
+          border-bottom: 0;
+          border: 0; }
+        article section.page table th {
+          border-bottom: 0;
+          border: 0;
+          text-transform: inherit;
+          font-weight: 300; }
+      article section.page h1:first-of-type {
+        font-family: "Proxima Nova", "Open Sans", sans-serif;
+        text-align: left;
+        font-weight: 300;
+        font-size: 30px;
+        margin-bottom: 5px;
+        color: #33383c;
+        line-height: 30px;
+        word-wrap: break-word;
+        text-transform: none;
+        float: left;
+        max-width: 80%; }
+      article section.page .__slackin {
+        float: right; }
+      article section.page li img {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px; }
+  article.faq > header {
+    padding: 10px 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+    article.faq > header a {
+      white-space: nowrap;
+      overflow: hidden;
+      width: 87%;
+      display: inline-block;
+      text-overflow: ellipsis; }
+
+aside#left-sidebar {
+>>>>>>> origin/master
   position: relative;
   top: 0;
   width: 24rem; }
@@ -916,7 +1004,8 @@ section.post-excerpt {
 section > h1 {
   color: #555;
   font-size: 23px;
-  font-weight: 600; }
+  font-weight: 600;
+  clear: both; }
 
 section > h2 {
   color: #999;
@@ -928,6 +1017,9 @@ section > h3 {
   font-size: 13px;
   font-weight: 500;
   text-transform: uppercase; }
+
+section > p {
+  clear: both; }
 
 section.page > article p {
   margin-top: 0;

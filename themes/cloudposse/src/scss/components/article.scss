@@ -55,6 +55,7 @@ article {
       }
 
       table {
+        clear: both;
         width: auto;
         border: 3px solid $color_gallery_approx;
         //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
