@@ -1,6 +1,9 @@
+@import "breakpoint";
+
 @import 'base/colors';
 @import 'base/fonts';
 @import 'base/typography';
+@import 'base/breakpoints';
 
 @import 'base/placeholders';
 
@@ -13,6 +16,7 @@
 
 @import 'components/ui/ais';
 @import 'components/ui/left-sidebar-menu';
+@import 'components/ui/pre';
 @import 'components/ui/searchbar';
 @import 'components/ui/searchbox';
 @import 'components/ui/searchresults';
@@ -25,6 +29,7 @@
 @import 'components/page-elements/main';
 @import 'components/page-elements/left-sidebar';
 @import 'components/page-elements/right-sidebar';
+@import 'components/page-elements/page';
 
 @import 'components/article';
 @import 'components/breadcrumbs';
@@ -38,4 +43,5 @@
 @import 'components/tooltip';
 
 @import 'pages/home';
+@import 'pages/faq';
 @import 'pages/404';

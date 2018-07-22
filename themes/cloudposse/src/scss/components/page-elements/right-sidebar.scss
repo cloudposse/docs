@@ -5,7 +5,14 @@
   top: 0;
   right: 0;
   margin-right: 20px;
-  h3 {
+  overflow-y: auto;
+  display: none;
+
+  @include respond-to('large') {
+    display: block;
+  }
+
+  &__title {
     padding-left: 2px;
     margin-bottom: 8px;
     text-transform: uppercase;
@@ -13,18 +20,22 @@
     font-weight: 700;
     color: $color_tapa_approx;
   }
+
   .fa {
     margin-right: 5px;
   }
+
   nav {
     color: $color_pink_swan_approx;
     font-size: 13px;
     text-decoration: none; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
     border-radius: 2px;
     padding-left: 10px;
+
     a {
       padding-left: 10px;
       display: block;
+
       &:hover {
         background-color: $color_desert_storm_approx;
         color: $color_fuscous_gray_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
@@ -32,9 +43,11 @@
         text-decoration: none;
       }
     }
-    >ul {
+
+    > ul {
       list-style: none;
       margin-top: 0;
+
       ul {
         list-style: none;
         margin-left: 15px;

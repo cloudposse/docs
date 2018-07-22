@@ -39,7 +39,7 @@
         {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
       </div>
       {{- if ne $numberOfPages 0 }}
-        <ul>
+        <ul class="left-sidebar-menu__submenu">
           {{- .Scratch.Set "pages" .Pages }}
           {{- if .Sections}}
           {{- .Scratch.Set "pages" (.Pages | union .Sections) }}

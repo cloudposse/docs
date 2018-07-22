@@ -11,10 +11,56 @@
     position: relative;
   }
 
-  &__breadcrumbs {}
+  &__breadcrumbs {
+    @include respond-to('mobile') {
+      display: none;
+    }
+  }
 
   &__search-bar {
+
+    @include respond-to('mobile') {
+      display: none;
+    }
+
+    @include respond-to('desktop') {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  &__nav-select {
+    background: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-transform: uppercase;
+    display: block;
+
+    @include respond-to('desktop') {
+      display: none;
+    }
+  }
+
+  &__nav-select-item {
+    display: block;
+    width: 100%;
+    font-size: 1.4rem;
+    padding: 1.4rem;
+    background: transparent;
+    border: 0;
+    margin: 0;
+    appearance:none;
+    line-height: 1;
+  }
+
+  &__nav-select-icon {
     position: absolute;
+    z-index: 1;
     right: 0;
+    top: 0;
+    font-size: 1.4rem;
+    padding: 1.4rem;
+    line-height: 1;
   }
 }

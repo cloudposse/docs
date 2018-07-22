@@ -1,3 +1,4 @@
+  </div>
   {{if not .IsHome}}
     {{ partial "related.html" . }}
   {{end}}
@@ -9,8 +10,8 @@
 
   </section>
   {{ if and (gt .WordCount 400 ) (ne .Params.toc "false") }}
-  <aside id="right-sidebar">
-    <h3><i class="fa fa-align-left"></i>Table of Contents</h3>
+  <aside class="right-sidebar">
+    <h3 class="right-sidebar__title"><i class="fa fa-align-left"></i>Table of Contents</h3>
     {{ .TableOfContents }}
   </aside>
   {{ end }}

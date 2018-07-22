@@ -1,3 +1,9 @@
+// Cleanup for wierd code
+header {
+  line-height: 1.4;
+  height: auto;
+}
+
 .header {
   background-color: $color_cape_cod_approx;
   color: $white_80;
@@ -12,20 +18,27 @@
     display: flex;
     align-items: center;
     width: auto;
+    padding: 10px;
+    justify-content: space-between;
+    position: relative;
+
+    @include respond-to('desktop') {
+      padding: 0;
+    }
   }
 
   &__logo {
     width: 160px;
     height: 40px;
-    margin-bottom: 13px;
-    @media(min-width: 320px) and(max-width: 480px) {
-      max-width: initial;
+
+    @include respond-to('desktop') {
+      margin: 10px 0;
     }
 
     &.logo {
       img {
         width: 100%;
-        height: 100%;
+        height: auto;
       }
     }
   }
@@ -35,16 +48,34 @@
   }
 
   &__shortcuts {
+
     &.shortcuts {
-      justify-content: flex-start;
-      margin-left: 3vw;
-      @media(min-width: 320px) and(max-width: 480px) {
-        display: none;
+
+      @include respond-to('mobile') {
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        flex-direction: column;
+        left: 0;
+        background-color: $white;
+        z-index: 5;
+        max-height: 0px;
+        overflow: hidden;
+        transition: all 0.3s ease-out;
+
+        &.opened {
+          max-height: 1000px;
+          transition: all 0.25s ease-in;
+          border-bottom: 1px solid #dee5e8;
+        }
+      }
+
+      @include respond-to('desktop') {
+        justify-content: flex-start;
+        margin-left: 3vw;
       }
 
       li {
-        line-height: 1em;
-        white-space: nowrap;
 
         .fa {
           font-size: 1.5rem;
@@ -57,16 +88,33 @@
         }
 
         a {
-          color: $white_80;
-          font-size: 14px;
-          height: 2rem;
-
           &:hover {
-            border-radius: 3px;
-            background-color: $black_3;
-            box-shadow: 1px 1px 0 $white_15;
-            color: $white;
             text-decoration: none;
+          }
+          @include respond-to('mobile') {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            padding: 1rem 10px;
+            justify-content: center;
+
+            &:hover {
+              color: $white;
+              background-color: $color_cape_cod_approx;
+            }
+          }
+
+          @include respond-to('desktop') {
+            font-size: 1rem;
+            color: $white_80;
+            padding: 5px 1rem;
+            height: auto;
+
+            &:hover {
+              border-radius: 3px;
+              background-color: $black_3;
+              box-shadow: 1px 1px 0 $white_15;
+              color: $white;
+            }
           }
         }
       }
@@ -74,6 +122,25 @@
 
     i {
       display: none;
+    }
+  }
+
+  &__burger {
+    display: block;
+
+    @include respond-to('desktop') {
+      display: none;
+    }
+  }
+
+  &__burger-link {
+    color: $white;
+    font-size: 2rem;
+    transition: all 0.3s ease-out;
+
+    &:hover {
+      text-decoration: none;
+      color: $white;
     }
   }
 }

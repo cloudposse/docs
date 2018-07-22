@@ -1,0 +1,161 @@
+.page-content {
+  max-width: 1024px;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  padding: 10px;
+  flex: 1;
+
+  @include respond-to('desktop') {
+    padding: 2rem 4rem;
+  }
+
+  &__slack {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  &__header {
+    display: flex;
+    border-bottom: 1px solid $color_gallery_approx;
+    align-items: flex-end;
+
+    @include respond-to('mobile') {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__title {
+    font-family: $font_0, $font_1, sans-serif;
+    text-align: left;
+    font-weight: 300;
+    font-size: 30px;
+    margin-bottom: 5px;
+    color: $color_outer_space_approx;
+    line-height: 30px;
+    word-wrap: break-word;
+    text-transform: none;
+  }
+
+  &__title-wrapper {
+    flex-grow: 1;
+  }
+
+  &__excerpt-text {
+    color: $color_santas_gray_approx;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+  }
+
+  &__ask-a-question {
+    flex: 0 0 auto;
+    margin: 5px 0;
+  }
+
+  &__github-link {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 10px;
+
+    a {
+      padding-left: 8px;
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 700;
+      color: $color_tapa_approx;
+      display: inline-block;
+    }
+
+    i {
+      margin-right: 5px;
+    }
+  }
+
+  &__content {
+
+    > h1 {
+      color: $color_fuscous_gray_approx;
+      font-size: 23px;
+      font-weight: 600;
+      clear: both;
+      margin-top: 4rem;
+
+      &:first-of-type {
+        font-family: $font_0, $font_1, sans-serif;
+        text-align: left;
+        font-weight: 300;
+        font-size: 30px;
+        margin-bottom: 5px;
+        color: $color_outer_space_approx;
+        line-height: 30px;
+        word-wrap: break-word;
+        text-transform: none;
+        margin-top: 3rem;
+      }
+    }
+
+    > h2 {
+      color: $color_mountain_mist_approx;
+      font-size: 21px;
+      font-weight: 300;
+      margin-top: 3rem;
+    }
+
+    > h3 {
+      color: $color_mountain_mist_approx;
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    img {
+      margin: 0;
+      max-width: 50%;
+    }
+
+    p {
+      margin: 1.7rem 0;
+      clear: both;
+    }
+  }
+
+  table {
+    clear: both;
+    width: auto;
+    border: 3px solid $color_gallery_approx;
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 5px;
+    overflow: auto;
+    border-collapse: separate !important;
+    color: $color_abbey_approx;
+
+    td {
+      border-bottom: 0;
+      border: 0;
+      padding: .5rem;
+      color: #323232;
+    }
+
+    th {
+      border-bottom: 0;
+      border: 0;
+      text-transform: inherit;
+      font-weight: 300;
+      padding: .5rem;
+      vertical-align: middle;
+      text-align: center;
+    }
+  }
+
+  img {
+    display: block;
+    text-align: center;
+  }
+
+  li img {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+  }
+}
