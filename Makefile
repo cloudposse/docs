@@ -95,17 +95,22 @@ hugo/run:
 run: docker/build
 	$(DOCKER_RUN) hugo/run
 
+## TODO change /static to /public
 ## Build customized utterances widget
 utterances/build:
 	rm -rf utterances
 	git clone --branch feature/integration https://github.com/cloudposse/utterances.git
 	cd utterances && yarn && yarn build
-	mv utterances/dist/*.js public/js
-	mv utterances/dist/*.css public/css
-	mv utterances/dist/*.png public/assets
-	mv utterances/dist/*.svg public/assets
-	mkdir -p public/utterances/
-	mv utterances/dist/utterances.html public/utterances/index.html
+	mkdir -p static/js/utterances static/css/utterances static/assets/utterances
+	mv utterances/dist/*.js static/js/utterances
+	mv utterances/dist/*.css static/css/utterances
+	mv utterances/dist/*.png static/assets/utterances
+	mv utterances/dist/*.svg static/assets/utterances
+	mkdir -p static/utterances/authorized
+	mv utterances/dist/utterances.html static/utterances/index.html
+	mv utterances/dist/authorized.html static/utterances/authorized/index.html
+	sed -i 's|href="/|href="/css/utterances/|g' static/utterances/index.html
+	sed -i 's|src="/|href="/js/utterances/|g' static/utterances/index.html
 	rm -rf utterances
 
 ## Build front-end components
