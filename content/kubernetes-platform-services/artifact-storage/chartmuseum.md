@@ -30,14 +30,14 @@ Create a file in `/conf/kops-aws-platform/chart-repo.tf` with the following cont
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make docker/build
+make docker/build
 ```
 
 ##  Start the Geodesic Shell
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
-sh-3.2$ $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
@@ -98,7 +98,6 @@ chamber write kops CHARTMUSEUM_IAM_ROLE example-staging-chart-repo
 chamber write kops CHARTMUSEUM_INGRESS ingress.us-west-2.staging.example.com
 chamber write kops CHARTMUSEUM_HOSTNAME charts.us-west-2.staging.example.com
 chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=chartmuseum sync
-chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=chartmuseum-api sync
 ```
 {{% /dialog %}}
 

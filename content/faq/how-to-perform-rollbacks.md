@@ -24,7 +24,7 @@ There are a couple ways we recommend performing rollbacks.
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
-sh-3.2$ $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}

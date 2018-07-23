@@ -34,7 +34,7 @@ Replace with values to suit your specific project.
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-sh-3.2$ make build
+make build
 ```
 
 ## Add tfstate-bucket backing service
@@ -47,7 +47,7 @@ Create a file in `./conf/tfstate-backend/main.tf` with following content
 
 Run the Geodesic Module shell.
 ```shell
-> $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
@@ -143,7 +143,7 @@ Update the values based on the outputs from the previous step.
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module.
 
 ```shell
-> make docker/build
+make docker/build
 ```
 
 Now that we have provisioned all the nessary resources to operate terraform, we're ready to provision the other terraform modules needed by kops.

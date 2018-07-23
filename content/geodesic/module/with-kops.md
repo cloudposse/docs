@@ -40,7 +40,7 @@ Replace with values to suit your specific project. Note, the variables correspon
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make docker/build
+make docker/build
 ```
 
 ### Add Kops State Terraform Module
@@ -53,7 +53,7 @@ Create a file in `./conf/aws-kops-backend/main.tf` with following content
 
 Run the Geodesic shell. The wrapper script is installed in `/usr/local/bin/$CLUSTER_NAME`, so you should be able to just run something like:
 ```shell
-sh-3.2$ $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
@@ -103,7 +103,7 @@ Replace with values to suit your specific project.
 ### Rebuild Module
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make docker/build
+make docker/build
 ```
 
 ## Configure Kops Manifest
@@ -137,7 +137,7 @@ Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availabilit
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make docker/build
+make docker/build
 ```
 
 After building the manifest, we can apply it with kops to spin up or update the cluster.
@@ -148,8 +148,8 @@ After building the manifest, we can apply it with kops to spin up or update the 
 
 Run the Geodesic shell.
 ```shell
-> $CLUSTER_NAME
-> assume-role
+$CLUSTER_NAME
+assume-role
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}

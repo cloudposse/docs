@@ -23,14 +23,14 @@ Create a file in `/conf/chamber/kms.tf` with following content
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make docker/build
+make docker/build
 ```
 
 ##  Start the Geodesic Shell
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
-sh-3.2$ $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}

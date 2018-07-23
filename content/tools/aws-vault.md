@@ -95,7 +95,7 @@ This should open a browser and log you into the AWS console as the assumed role 
 `aws-vault` is available in the geodesic shell. To start the shell, run:
 
 ```bash
-> $CLUSTER_NAME
+$CLUSTER_NAME
 ```
 
 # Add your profile to AWS Vault
