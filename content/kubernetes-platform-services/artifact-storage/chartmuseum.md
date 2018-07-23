@@ -74,6 +74,43 @@ You can install `chartmuseum` in a few different ways, but we recommend using th
 
 ### Install with Master Helmfile
 
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Breaking changes" %}}
+
+If you are updating Geodesic to __`>= 0.9.29`__ from previous version pay attention to
+
+* Starting from __`0.9.29`__ using aws s3 as default storage (previously local disk used), so after update your current charts would be lost
+* __`chart-repo`__ release was __depricated__, so please remove it with command
+
+```
+helm delete --purge chart-repo
+```
+
+* Naming of environment variables changed, so update the values with chamber and delete unnessasery old ones
+
+| __prior `0.9.29`__                   | __after `0.9.29`__                  |
+| ------------------------------------ | ----------------------------------- |
+| `CHART_REPO_IMAGE_TAG`               | __REMOVED__                         |
+| `CHART_REPO_STORAGE`                 | __REMOVED__                         |
+| `CHART_REPO_DEBUG`                   | `CHARTMUSEUM_DEBUG`                 |
+| `CHART_REPO_STORAGE_AMAZON_BUCKET`   | `CHARTMUSEUM_STORAGE_AMAZON_BUCKET` |
+| `CHART_REPO_STORAGE_AMAZON_PREFIX`   | `CHARTMUSEUM_STORAGE_AMAZON_PREFIX` |
+| `CHART_REPO_STORAGE_AMAZON_REGION`   | `CHARTMUSEUM_STORAGE_AMAZON_REGION` |
+| `CHART_REPO_STORAGE_AWS_IAM_ROLE`    | `CHARTMUSEUM_IAM_ROLE`              |
+| `CHART_REPO_SERVER_SECRET_NAME`      | `CHARTMUSEUM_SECRET_NAME`           |
+| `CHART_REPO_SERVER_HOSTNAME`         | `CHARTMUSEUM_HOSTNAME`              |
+| `CHART_REPO_SERVER_REPLICA_COUNT`    | __REMOVED__                         |
+| `CHART_REPO_SERVER_TTL`              | __REMOVED__                         |
+| `CHART_REPO_SERVER_BASIC_AUTH_USER`  | `CHARTMUSEUM_BASIC_AUTH_USER`       |
+| `CHART_REPO_SERVER_BASIC_AUTH_PASS`  | `CHARTMUSEUM_BASIC_AUTH_PASS`       |
+| `CHART_REPO_GATEWAY_HOSTNAME`        | `CHARTMUSEUM_API_HOSTNAME`          |
+| `CHART_REPO_GATEWAY_INGRESS`         | __REMOVED__                         |
+| `CHART_REPO_GATEWAY_REPLICA_COUNT`   | __REMOVED__                         |
+| `CHART_REPO_GATEWAY_SECRET_NAME`     | `CHARTMUSEUM_API_SECRET_NAME`       |
+| `CHART_REPO_GATEWAY_BASIC_AUTH_USER` | `CHARTMUSEUM_API_BASIC_AUTH_USER`   |
+| `CHART_REPO_GATEWAY_BASIC_AUTH_PASS` | `CHARTMUSEUM_API_BASIC_AUTH_PASS`   |
+
+{{% /dialog %}}
+
 Master Helmfile provides two releases of chartmuseum:
 * `charts` - Chartmuseum that serve charts
 * `charts-api` - Chartmuseum that provide api gateway to publish charts.
