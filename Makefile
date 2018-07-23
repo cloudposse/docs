@@ -109,8 +109,8 @@ utterances/build:
 	mkdir -p static/utterances/authorized
 	mv utterances/dist/utterances.html static/utterances/index.html
 	mv utterances/dist/authorized.html static/utterances/authorized/index.html
-	sed -i 's|href="/|href="/css/utterances/|g' static/utterances/index.html
-	sed -i 's|src="/|href="/js/utterances/|g' static/utterances/index.html
+	sed -i '' 's|href="/|href="/css/utterances/|g' static/utterances/index.html
+	sed -i '' 's|src="/|src="/js/utterances/|g' static/utterances/index.html
 	rm -rf utterances
 
 ## Build front-end components
