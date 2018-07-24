@@ -75,6 +75,9 @@ deps/atom:
 		tool-bar \
 		local-config \
 		autocomplete-paths \
+		linter \
+		intentions \
+		busy-signal \
 		https://github.com/cloudposse/atom-markdown-image-assistant.git
 
 	@echo "Now complete the setup by performing the following tasks:"

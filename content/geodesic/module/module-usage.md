@@ -38,7 +38,7 @@ Run the wrapper script to start a new shell. The first thing you will need to do
 
 {{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
 ```shell
-> staging.example.com
+staging.example.com
 # Mounting /home/goruha into container
 # Starting new staging.example.com session from cloudposse/staging.example.com:dev
 # Exposing port 48934
@@ -58,11 +58,11 @@ IMPORTANT:
 
 -> Run 'assume-role' to login to AWS
 ⧉  staging example
-> ❌   (none) ~ ➤  assume-role
+❌   (none) ~ ➤  assume-role
 Enter passphrase to unlock /conf/.awsvault/keys/:
 Enter token for arn:aws:iam::xxxxxxx:mfa/goruha: 365322
 * Assumed role arn:aws:iam::xxxxxxx:role/OrganizationAccountAccessRole
 ⧉  staging example
-> ✅   (example-staging-admin) ~ ➤
+✅   (example-staging-admin) ~ ➤
 ```
 {{% /dialog %}}

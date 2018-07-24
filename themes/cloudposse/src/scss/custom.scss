@@ -1,6 +1,7 @@
 body {
-  > aside {
-    background-color: transparent;
+
+  >.__slackin {
+    z-index: 2;
   }
 }
 
@@ -11,18 +12,6 @@ div {
   }
 }
 
-.excerpt {
-  color: $color_santas_gray_approx;
-  font-size: 14px;
-  border-bottom: 1px solid $color_gallery_approx;
-  margin-bottom: 30px;
-  clear: both;
-
-  p {
-    margin-top: 5px;
-    margin-bottom: 30px;
-  }
-}
 
 .at-logo {
   display: none;
@@ -60,47 +49,11 @@ div {
     background-image: linear-gradient(-225deg,$color_viking_approx 35%,$color_shakespeare_approx);
   }
 }
-@media(min-width: 1025px) and(max-width: 1280px) {
-  #nav-github {
-    display: none;
-  }
 
-  #nav-documentation {
-    display: none;
-  }
-}
-@media(min-width: 768px) and(max-width: 1024px) {
-  #nav-github {
-    display: none;
-  }
-
-  #nav-documentation {
-    display: none;
-  }
-
-  #nav-ask-a-question {
-    display: none;
-  }
-
-  .nav-select {
-    display: none;
-  }
-}
 @media(min-width: 320px) and(max-width: 480px) {
   div {
     &.calendly-badge-widget {
       display: none;
-    }
-  }
-}
-@media(max-width: 768px) {
-  .nav-select {
-    background-color: transparent;
-    width: 100%;
-
-    select {
-      margin-bottom: 0;
-      display: inline-block;
     }
   }
 }

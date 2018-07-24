@@ -1,0 +1,21 @@
+.faq {
+  > .post-header {
+    padding: 10px 15px 0 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    h2 {
+      margin: 0;
+      padding-bottom: 0;
+    }
+
+    a {
+      white-space: nowrap;
+      overflow: hidden;
+      width: 87%;
+      display: inline-block;
+      text-overflow: ellipsis;
+    }
+  }
+}

@@ -47,25 +47,15 @@ section {
     .read-more {
       float: right;
     }
+
+    p {
+      margin: 0;
+    }
   }
 
-  > h1 {
-    color: $color_fuscous_gray_approx;
-    font-size: 23px;
-    font-weight: 600;
-  }
 
-  > h2 {
-    color: $color_mountain_mist_approx;
-    font-size: 21px;
-    font-weight: 300;
-  }
-
-  > h3 {
-    color: $color_mountain_mist_approx;
-    font-size: 13px;
-    font-weight: 500;
-    text-transform: uppercase;
+  > p {
+    clear: both;
   }
 
   &.page > article {
