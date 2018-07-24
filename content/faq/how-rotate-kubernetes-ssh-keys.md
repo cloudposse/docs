@@ -1,4 +1,4 @@
----
+-=----
 title: "How to rotate ssh keys for Kubernetes?"
 description: "Learn how to rotate ssh keys for kubernetes."
 tags:
@@ -14,10 +14,10 @@ How to rotate ssh keys for Kubernetes?
 
 # Answer
 
-Geodesic creates ssh keys with [terraform-aws-key-pair]({{< relref "terraform-modules/security/terraform-aws-key-pair.md" >}}) module.
+We provision SSH keys in geodesic using [terraform-aws-key-pair]({{< relref "terraform-modules/security/terraform-aws-key-pair.md" >}}) module.
 Following this [documentation](https://www.terraform.io/docs/providers/tls/r/private_key.html#generating-a-new-key) you need to taint ssh key with terraform, then provision new one and update the cluster.
 
-To rotate ssh keys please follow this instruction:
+To rotate SSH keys, follow these instructions:
 
 ##  Start the Geodesic Shell
 
@@ -34,7 +34,7 @@ Then login to AWS by running `assume-role`:
 
 ## Configure `kubectl` and `helm`
 
-When you start the Geodesic shell, you will need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` and `helm` to authenticate with the cluster.
+When you start the Geodesic shell, you will need to export the `kubecfg`, which provides the TLS client certificates necessary for `kubectl` and `helm` to authenticate with the cluster.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Export kops config" %}}
 ```
@@ -45,7 +45,7 @@ kops has set your kubectl context to us-west-2.staging.example.com
 
 (Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
-## Recreate `ssh keys`
+## Recreate SSH key
 
 ```shell
 cd /conf/kops
@@ -55,10 +55,10 @@ terraform apply
 ```
 
 
-## Update Kubernetes cluster
+## Update Kubernetes Cluster
 
-Following this [instrunctions](https://github.com/kubernetes/kops/blob/master/docs/security.md)
-we prepared commands to apply new ssh key to Kubernetes cluster
+According to the [instrunctions](https://github.com/kubernetes/kops/blob/master/docs/security.md),
+execute the following commands to apply the new SSH key to the Kubernetes cluster:
 
 ```shell
 s3 mount
