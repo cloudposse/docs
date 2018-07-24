@@ -31,7 +31,7 @@ export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PO
 export README_DEPS ?= docs/targets.md
 
 export COMPONENTS_DIR ?= static/components
-export UTTERANCES_VERSION ?= master
+export UTTERANCES_VERSION ?= 0.0.1
 
 ## Install OSX deps
 deps-darwin:
