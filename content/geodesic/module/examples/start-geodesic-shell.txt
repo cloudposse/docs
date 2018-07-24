@@ -1,4 +1,4 @@
-sh-3.2$ staging.example.com
+staging.example.com
 # Mounting /home/goruha into container
 # Starting new staging.example.com session from cloudposse/staging.example.com:dev
 # Exposing port 41179
