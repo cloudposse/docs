@@ -30,6 +30,9 @@ export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PO
 
 export README_DEPS ?= docs/targets.md
 
+export COMPONENTS_DIR ?= static/components
+export UTTERANCES_VERSION ?= master
+
 ## Install OSX deps
 deps-darwin:
 	brew install asciinema
@@ -88,29 +91,23 @@ open:
 	open $(HUGO_URL)
 
 ## Start the hugo server for live editing using local environment
-hugo/run:
+hugo/run: components/build
 	$(HUGO) server $(HUGO_ARGS)
 
 ## Start the hugo server for live editing using docker environment
 run: docker/build
 	$(DOCKER_RUN) hugo/run
 
-## TODO change /static to /public
 ## Build customized utterances widget
 utterances/build:
-	rm -rf utterances
-	git clone --branch feature/integration https://github.com/cloudposse/utterances.git
+	rm -rf utterances $(COMPONENTS_DIR)/utterances
+	git clone --branch $(UTTERANCES_VERSION) https://github.com/cloudposse/utterances.git
 	cd utterances && yarn && yarn build
-	mkdir -p static/js/utterances static/css/utterances static/assets/utterances
-	mv utterances/dist/*.js static/js/utterances
-	mv utterances/dist/*.css static/css/utterances
-	mv utterances/dist/*.png static/assets/utterances
-	mv utterances/dist/*.svg static/assets/utterances
-	mkdir -p static/utterances/authorized
-	mv utterances/dist/utterances.html static/utterances/index.html
-	mv utterances/dist/authorized.html static/utterances/authorized/index.html
-	sed -i '' 's|href="/|href="/css/utterances/|g' static/utterances/index.html
-	sed -i '' 's|src="/|src="/js/utterances/|g' static/utterances/index.html
+	mkdir -p $(COMPONENTS_DIR)/utterances
+	mv utterances/dist/* $(COMPONENTS_DIR)/utterances
+	rm -f $(COMPONENTS_DIR)/utterances/index.html
+	sed -i 's|href="/|href="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
+	sed -i 's|src="/|src="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
 	rm -rf utterances
 
 ## Build front-end components
