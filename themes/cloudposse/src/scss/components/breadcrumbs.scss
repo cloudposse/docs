@@ -1,8 +1,4 @@
 .breadcrumbs {
-  @media(min-width: 320px) and(max-width: 480px) {
-    display: none;
-  }
-
   &__separator {
     color: $color_celeste_approx;
     font-size: 10px;

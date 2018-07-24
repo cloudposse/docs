@@ -1,12 +1,19 @@
 'use strict';
 
 $(function(){
-  $('.page').glossarizer({
+  $('.page-content').glossarizer({
     sourceURL: '/glossary.json',
     callback: function(){
       // Callback fired after glossarizer finishes its job
       new tooltip();
     }
+  });
+});
+
+$(function(){
+  $('.header__burger-link').click(function () {
+    $(this).children('i').toggleClass('fa-rotate-90');
+    $('.header__shortcuts').toggleClass('opened');
   });
 });
 

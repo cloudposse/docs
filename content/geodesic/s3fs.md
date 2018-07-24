@@ -6,7 +6,7 @@ description: "Geodesic provides an easy way for mounting encrypted S3 buckets to
 The geodesic base image ships with a number of utility scripts:
 
 - [`/usr/local/bin/s3`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3) - makes it easier to manage S3 filesystems in `/etc/fstab`
-- [`/usr/local/bin/s3fs`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3fs) - a thin wrapper around `goofys` for mounting S3 filesystems with a local cache in `/dev/shm`. It's the command executed by `mount` (e.g. the `s3fs#/...` part in `/etc/fstab`)
+- [`/usr/bin/s3fs`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/bin/s3fs) - a thin wrapper around `goofys` for mounting S3 filesystems with a local cache in `/dev/shm`. It's the command executed by `mount` (e.g. the `s3fs#/...` part in `/etc/fstab`)
 
 # Use-cases
 

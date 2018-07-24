@@ -1,0 +1,20 @@
+pre {
+  margin: 20px 30px;
+  padding: 20px;
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 6px;
+  color: $color_gallery_approx;
+  background-color: $color_cape_cod_approx;
+
+  &.asciinema-terminal {
+    margin: 0;
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 0;
+  }
+
+  .copy-to-clipboard {
+    float: right;
+    position: relative;
+    right: 0;
+  }
+}

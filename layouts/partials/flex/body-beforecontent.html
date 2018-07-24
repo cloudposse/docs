@@ -3,8 +3,12 @@
     <div class="logo header__logo">
         <a href="/"><img src="/images/logo.png" id="header-logo" /></a>
       </div>
-      <div class="burger header__burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
       {{- with .Site.Menus.shortcuts}}
+        <div class="burger header__burger">
+          <a class="header__burger-link" href="javascript:void(0);">
+            <i class="fa fa-bars"></i>
+          </a>
+        </div>
         <nav class="shortcuts header__shortcuts">
             {{- range sort . "Weight"}}
                 <li id="{{ .Identifier }}" class="" role="">
@@ -52,11 +56,10 @@
       </div>
     {{end}}
     <div class="subnav__nav-select nav-select">
-      <center>
-        <select onchange="javascript:location.href = this.value;">
-          {{partial "flex/selectnavigation.html" .}}
-        </select><i class="fa fa-angle-down"></i>
-      </center>
+      <select class="subnav__nav-select-item" onchange="javascript:location.href = this.value;">
+        {{partial "flex/selectnavigation.html" .}}
+      </select>
+      <i class="fa fa-angle-down subnav__nav-select-icon"></i>
     </div>
   </div>
 </div>
@@ -69,20 +72,20 @@
   <!-- Algolia Hits widget will appear here -->
 </div>
 
- <div id="pagination">
-    <!-- Pagination widget will appear here -->
-  </div>
+<div id="pagination">
+  <!-- Pagination widget will appear here -->
+</div>
 
-<article>
+<div class="page-layout">
   {{if .IsHome}}
     <div class="homepage">
       {{ partial "homepage.html" . }}
     </div>
   {{else}}
-  <aside id="left-sidebar">
-    <ul class="menu">
+  <aside class="left-sidebar">
+    <ul class="left-sidebar-menu">
       {{- if not .Site.Params.disableHomeIcon}}
-        <li data-nav-id="{{"/" | relLangURL}}" class="dd-item">
+        <li data-nav-id="{{"/" | relLangURL}}" class="left-sidebar-menu__item">
           <a href="{{"/" | relLangURL}}">
             <i class="fa fa-fw fa-home"></i>
           </a>
@@ -97,40 +100,23 @@
     </section>
   </aside>
 
-  <section class="page">
-
-    {{- if not .Site.Params.disableSearch}}
-      <div>
-        <div class="searchbox">
-          <input data-search-input id="search-by" type="text" placeholder="{{T "Search-placeholder"}}">
-        </div>
-        <script type="text/javascript" src="{{"js/lunr.min.js" | relURL}}"></script>
-        <script type="text/javascript" src="{{"js/auto-complete.js" | relURL}}"></script>
-        <link href="{{"css/auto-complete.css" | relURL}}" rel="stylesheet">
-        <script type="text/javascript">
-          {{ if .Site.IsMultiLingual }}
-              var baseurl = "{{.Site.BaseURL}}{{.Site.LanguagePrefix}}";
-          {{ else }}
-              var baseurl = "{{.Site.BaseURL}}";
-          {{ end }}
-        </script>
-        <script type="text/javascript" src="{{"js/search.js" | relURL}}"></script>
-      </div>
-    {{- end}}
-      <!-- TODO: Manage in BEM classes. -->
-      <div style="clear: both"> 
-        <h1 class="title">{{.Title}}</h1>
+  <section class="page-content">
+      <div class="page-content__slack">
         <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
       </div>
-      <div class="excerpt" style="clear: both">
-        {{ if .Description }}
-        <p>{{ .Description | markdownify }}</p>
-        {{ end }}
+      <div class="page-content__header">
+        <div class="page-content__title-wrapper">
+          <h1 class="page-content__title">{{.Title}}</h1>
+          {{ if .Description }}
+          <p class="page-content__excerpt-text">{{ .Description | markdownify }}</p>
+          {{ end }}
+        </div>
+        <div class="page-content__ask-a-question">
+          <a class="button green" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
+        </div>
       </div>
-      <div class="ask-a-question">
-        <a class="button green" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
-      </div>
-      <div class="github-link">
+      <div class="page-content__github-link">
         <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
       </div>
+      <div class="page-content__content">
   {{end}}
