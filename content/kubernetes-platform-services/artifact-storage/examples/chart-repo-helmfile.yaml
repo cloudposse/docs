@@ -1,0 +1,134 @@
+repositories:
+- name: "stable"
+  url: "https://kubernetes-charts.storage.googleapis.com"
+
+releases:
+- name: "charts"
+  namespace: "kube-system"
+  labels:
+    chart: "chartmuseum"
+    component: "platform"
+    namespace: "kube-system"
+    vendor: "kubernetes-helm"
+    default: "true"
+  chart: "stable/chartmuseum"
+  version: "1.4.0"
+  set:
+    - name: "env.open.DISABLE_API"
+      value: "true"
+
+    - name: "env.open.ALLOW_OVERWRITE"
+      value: "false"
+
+    - name: "env.open.STORAGE"
+      value: "amazon"
+
+    - name: "env.open.STORAGE_AMAZON_BUCKET"
+      value: 'example-staging-charts-bucket'
+
+    - name: "env.open.STORAGE_AMAZON_REGION"
+      value: 'us-west-2'
+
+    - name: "env.secret.BASIC_AUTH_USER"
+      value: 'admin'
+
+    - name: "env.secret.BASIC_AUTH_PASS"
+      value: 'admin'
+
+    - name: "replica.annotations.iam\\.amazonaws\\.com/role"
+      value: 'example-staging-iam-role'
+
+    - name: "resources.limits.cpu"
+      value: "100m"
+
+    - name: "resources.limits.memory"
+      value: "512Mi"
+
+    - name: "requests.cpu"
+      value: "5m"
+
+    - name: "requests.memory"
+      value: "256Mi"
+
+    - name: "ingress.enabled"
+      value: "true"
+
+    - name: "ingress.annotations.kubernetes\\.io/ingress\\.class"
+      value: "nginx"
+
+    - name: "ingress.annotations.external-dns\\.alpha\\.kubernetes\\.io/target"
+      value: 'ingress.us-west-2.staging.example.com'
+
+    - name: "ingress.hosts.charts\\.us-west-2\\.staging\\.example\\.com[0]"
+      value: "/charts"
+
+    - name: 'ingress.hosts.charts\\.us-west-2\\.staging\\.example\\.com[1]'
+      value: "/index.yaml"
+
+    - name: "ingress.tls[0].hosts[0]"
+      value: 'charts.us-west-2.staging.example.com'
+
+- name: "charts-api"
+  namespace: "kube-system"
+  labels:
+    chart: "chartmuseum-api"
+    component: "platform"
+    namespace: "kube-system"
+    vendor: "kubernetes-helm"
+    default: "true"
+  chart: "stable/chartmuseum"
+  version: "1.4.0"
+  values:
+    - "values/chartmuseum.yaml"
+  set:
+
+    - name: "env.open.DISABLE_API"
+      value: "false"
+
+    - name: "env.open.ALLOW_OVERWRITE"
+      value: "true"
+
+    - name: "env.open.STORAGE"
+      value: "amazon"
+
+    - name: "env.open.STORAGE_AMAZON_BUCKET"
+      value: 'example-staging-charts-bucket'
+
+    - name: "env.open.STORAGE_AMAZON_REGION"
+      value: 'us-west-2'
+
+    - name: "env.secret.BASIC_AUTH_USER"
+      value: 'admin'
+
+    - name: "env.secret.BASIC_AUTH_PASS"
+      value: 'admin'
+
+    - name: "replica.annotations.iam\\.amazonaws\\.com/role"
+      value: 'example-staging-iam-role'
+
+    - name: "resources.limits.cpu"
+      value: "100m"
+
+    - name: "resources.limits.memory"
+      value: "512Mi"
+
+    - name: "requests.cpu"
+      value: "5m"
+
+    - name: "requests.memory"
+      value: "256Mi"
+
+    - name: "ingress.enabled"
+      value: "true"
+
+    - name: "ingress.annotations.kubernetes\\.io/ingress\\.class"
+      value: "nginx"
+
+    - name: "ingress.annotations.external-dns\\.alpha\\.kubernetes\\.io/target"
+      value: 'ingress.us-west-2.staging.example.com'
+
+    - name: "ingress.hosts.api\\.charts\\.us-west-2\\.staging\\.example\\.com[0]"
+      value: "/api"
+
+    - name: "ingress.tls[0].hosts[0]"
+      value: 'api.charts.us-west-2.staging.example.com'

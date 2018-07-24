@@ -1,0 +1,199 @@
+✅   (example-staging-admin) kops-aws-platform ➤  terraform apply
+null_resource.default: Refreshing state... (ID: 6903789342022752579)
+data.aws_iam_role.nodes: Refreshing state...
+data.aws_iam_role.nodes: Refreshing state...
+data.aws_vpc.kops: Refreshing state...
+data.aws_caller_identity.default: Refreshing state...
+data.aws_caller_identity.current: Refreshing state...
+data.aws_route53_zone.default: Refreshing state...
+data.aws_iam_role.masters: Refreshing state...
+data.aws_caller_identity.default: Refreshing state...
+data.aws_iam_role.masters: Refreshing state...
+data.aws_vpc.kops: Refreshing state...
+data.aws_iam_policy_document.assume_role: Refreshing state...
+aws_iam_role.default: Refreshing state... (ID: example-staging-external-dns)
+data.aws_iam_policy_document.role_trust: Refreshing state...
+data.aws_iam_policy_document.default: Refreshing state...
+aws_iam_policy.default: Refreshing state... (ID: arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-external-dns)
+aws_iam_role_policy_attachment.default: Refreshing state... (ID: example-staging-external-dns-20180523104524972800000001)
+data.aws_subnet_ids.private: Refreshing state...
+data.aws_security_group.bastion: Refreshing state...
+data.aws_subnet_ids.utility: Refreshing state...
+data.aws_security_group.masters: Refreshing state...
+data.aws_security_group.nodes: Refreshing state...
+data.aws_security_group.masters: Refreshing state...
+data.aws_subnet_ids.utility: Refreshing state...
+data.aws_subnet_ids.private: Refreshing state...
+data.aws_security_group.nodes: Refreshing state...
+data.aws_security_group.bastion: Refreshing state...
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+ <= module.kops_chart_repo.data.aws_iam_policy_document.default
+      id:                                                                                                    <computed>
+      json:                                                                                                  <computed>
+      statement.#:                                                                                           "2"
+      statement.0.actions.#:                                                                                 "1"
+      statement.0.actions.486976917:                                                                         "s3:ListBucket"
+      statement.0.effect:                                                                                    "Allow"
+      statement.0.resources.#:                                                                               "1"
+      statement.0.resources.2679715827:                                                                      "*"
+      statement.1.actions.#:                                                                                 "3"
+      statement.1.actions.2071725391:                                                                        "s3:GetObject"
+      statement.1.actions.3009670498:                                                                        "s3:DeleteObject"
+      statement.1.actions.315547055:                                                                         "s3:PutObject"
+      statement.1.effect:                                                                                    "Allow"
+      statement.1.resources.#:                                                                               <computed>
+
+  + module.kops_chart_repo.aws_iam_policy.default
+      id:                                                                                                    <computed>
+      arn:                                                                                                   <computed>
+      description:                                                                                           "Allow Kops nodes to get/put/delete objects from the chart repo S3 bucket"
+      name:                                                                                                  "example-staging-chart-repo"
+      path:                                                                                                  "/"
+      policy:                                                                                                "${data.aws_iam_policy_document.default.json}"
+
+  + module.kops_chart_repo.aws_iam_role.default
+      id:                                                                                                    <computed>
+      arn:                                                                                                   <computed>
+      assume_role_policy:                                                                                    "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    },\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::XXXXXXXXXXXX:role/nodes.us-west-2.staging.example.com\"\n      }\n    }\n  ]\n}"
+      create_date:                                                                                           <computed>
+      description:                                                                                           "Allow Kops nodes to get/put/delete objects from the chart repo S3 bucket"
+      force_detach_policies:                                                                                 "false"
+      max_session_duration:                                                                                  "3600"
+      name:                                                                                                  "example-staging-chart-repo"
+      path:                                                                                                  "/"
+      unique_id:                                                                                             <computed>
+
+  + module.kops_chart_repo.aws_iam_role_policy_attachment.default
+      id:                                                                                                    <computed>
+      policy_arn:                                                                                            "${aws_iam_policy.default.arn}"
+      role:                                                                                                  "example-staging-chart-repo"
+
+  + module.kops_chart_repo.aws_s3_bucket.default
+      id:                                                                                                    <computed>
+      acceleration_status:                                                                                   <computed>
+      acl:                                                                                                   "private"
+      arn:                                                                                                   <computed>
+      bucket:                                                                                                "example-staging-chart-repo"
+      bucket_domain_name:                                                                                    <computed>
+      force_destroy:                                                                                         "false"
+      hosted_zone_id:                                                                                        <computed>
+      region:                                                                                                <computed>
+      request_payer:                                                                                         <computed>
+      server_side_encryption_configuration.#:                                                                "1"
+      server_side_encryption_configuration.0.rule.#:                                                         "1"
+      server_side_encryption_configuration.0.rule.0.apply_server_side_encryption_by_default.#:               "1"
+      server_side_encryption_configuration.0.rule.0.apply_server_side_encryption_by_default.0.sse_algorithm: "AES256"
+      tags.%:                                                                                                "4"
+      tags.Cluster:                                                                                          "us-west-2.staging.example.com"
+      tags.Name:                                                                                             "example-staging-chart-repo"
+      tags.Namespace:                                                                                        "example"
+      tags.Stage:                                                                                            "staging"
+      versioning.#:                                                                                          "1"
+      versioning.0.enabled:                                                                                  "true"
+      versioning.0.mfa_delete:                                                                               "false"
+      website_domain:                                                                                        <computed>
+      website_endpoint:                                                                                      <computed>
+
+  + module.kops_chart_repo.module.label.null_resource.default
+      id:                                                                                                    <computed>
+      triggers.%:                                                                                            "5"
+      triggers.attributes:                                                                                   ""
+      triggers.id:                                                                                           "example-staging-chart-repo"
+      triggers.name:                                                                                         "chart-repo"
+      triggers.namespace:                                                                                    "example"
+      triggers.stage:                                                                                        "staging"
+
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+module.kops_chart_repo.module.label.null_resource.default: Creating...
+  triggers.%:          "" => "5"
+  triggers.attributes: "" => ""
+  triggers.id:         "" => "example-staging-chart-repo"
+  triggers.name:       "" => "chart-repo"
+  triggers.namespace:  "" => "example"
+  triggers.stage:      "" => "staging"
+module.kops_chart_repo.module.label.null_resource.default: Creation complete after 0s (ID: 1148822555500323326)
+module.kops_chart_repo.aws_iam_role.default: Creating...
+  arn:                   "" => "<computed>"
+  assume_role_policy:    "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    },\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::XXXXXXXXXXXX:role/nodes.us-west-2.staging.example.com\"\n      }\n    }\n  ]\n}"
+  create_date:           "" => "<computed>"
+  description:           "" => "Allow Kops nodes to get/put/delete objects from the chart repo S3 bucket"
+  force_detach_policies: "" => "false"
+  max_session_duration:  "" => "3600"
+  name:                  "" => "example-staging-chart-repo"
+  path:                  "" => "/"
+  unique_id:             "" => "<computed>"
+module.kops_chart_repo.aws_s3_bucket.default: Creating...
+  acceleration_status:                                                                                   "" => "<computed>"
+  acl:                                                                                                   "" => "private"
+  arn:                                                                                                   "" => "<computed>"
+  bucket:                                                                                                "" => "example-staging-chart-repo"
+  bucket_domain_name:                                                                                    "" => "<computed>"
+  force_destroy:                                                                                         "" => "false"
+  hosted_zone_id:                                                                                        "" => "<computed>"
+  region:                                                                                                "" => "<computed>"
+  request_payer:                                                                                         "" => "<computed>"
+  server_side_encryption_configuration.#:                                                                "" => "1"
+  server_side_encryption_configuration.0.rule.#:                                                         "" => "1"
+  server_side_encryption_configuration.0.rule.0.apply_server_side_encryption_by_default.#:               "" => "1"
+  server_side_encryption_configuration.0.rule.0.apply_server_side_encryption_by_default.0.sse_algorithm: "" => "AES256"
+  tags.%:                                                                                                "" => "4"
+  tags.Cluster:                                                                                          "" => "us-west-2.staging.example.com"
+  tags.Name:                                                                                             "" => "example-staging-chart-repo"
+  tags.Namespace:                                                                                        "" => "example"
+  tags.Stage:                                                                                            "" => "staging"
+  versioning.#:                                                                                          "" => "1"
+  versioning.0.enabled:                                                                                  "" => "true"
+  versioning.0.mfa_delete:                                                                               "" => "false"
+  website_domain:                                                                                        "" => "<computed>"
+  website_endpoint:                                                                                      "" => "<computed>"
+module.kops_chart_repo.aws_iam_role.default: Creation complete after 2s (ID: example-staging-chart-repo)
+module.kops_chart_repo.aws_s3_bucket.default: Still creating... (10s elapsed)
+module.kops_chart_repo.aws_s3_bucket.default: Still creating... (20s elapsed)
+module.kops_chart_repo.aws_s3_bucket.default: Creation complete after 23s (ID: example-staging-chart-repo)
+module.kops_chart_repo.data.aws_iam_policy_document.default: Refreshing state...
+module.kops_chart_repo.aws_iam_policy.default: Creating...
+  arn:         "" => "<computed>"
+  description: "" => "Allow Kops nodes to get/put/delete objects from the chart repo S3 bucket"
+  name:        "" => "example-staging-chart-repo"
+  path:        "" => "/"
+  policy:      "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"s3:ListBucket\",\n      \"Resource\": \"*\"\n    },\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:PutObject\",\n        \"s3:GetObject\",\n        \"s3:DeleteObject\"\n      ],\n      \"Resource\": \"arn:aws:s3:::example-staging-chart-repo/*\"\n    }\n  ]\n}"
+module.kops_chart_repo.aws_iam_policy.default: Creation complete after 1s (ID: arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-chart-repo)
+module.kops_chart_repo.aws_iam_role_policy_attachment.default: Creating...
+  policy_arn: "" => "arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-chart-repo"
+  role:       "" => "example-staging-chart-repo"
+module.kops_chart_repo.aws_iam_role_policy_attachment.default: Creation complete after 3s (ID: example-staging-chart-repo-20180531112544049600000001)
+
+Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+kops_chart_repo_bucket_bucket_arn = arn:aws:s3:::example-staging-chart-repo
+kops_chart_repo_bucket_bucket_id = example-staging-chart-repo
+kops_chart_repo_bucket_domain_name = example-staging-chart-repo.s3.amazonaws.com
+kops_chart_repo_bucket_policy_arn = arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-chart-repo
+kops_chart_repo_bucket_policy_id = arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-chart-repo
+kops_chart_repo_bucket_policy_name = example-staging-chart-repo
+kops_chart_repo_bucket_role_arn = arn:aws:iam::XXXXXXXXXXXX:role/example-staging-chart-repo
+kops_chart_repo_bucket_role_name = example-staging-chart-repo
+kops_chart_repo_bucket_role_unique_id = XXXXXXXXXXXXXXXXXXXX
+kops_external_dns_policy_arn = arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-external-dns
+kops_external_dns_policy_id = arn:aws:iam::XXXXXXXXXXXX:policy/example-staging-external-dns
+kops_external_dns_policy_name = example-staging-external-dns
+kops_external_dns_role_arn = arn:aws:iam::XXXXXXXXXXXX:role/example-staging-external-dns
+kops_external_dns_role_name = example-staging-external-dns
+kops_external_dns_role_unique_id = XXXXXXXXXXXXXXXXXXXXX
