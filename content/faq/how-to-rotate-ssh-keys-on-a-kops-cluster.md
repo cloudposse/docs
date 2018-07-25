@@ -1,6 +1,6 @@
--=----
-title: "How to rotate ssh keys for Kubernetes?"
-description: "Learn how to rotate ssh keys for kubernetes."
+---
+title: "How do we rotate the master SSH keys on a Kubernetes cluster provisioned with kops?"
+description: "Learn how to rotate ssh keys on a kops cluster by generating new ones and then performing a rolling-update on the cluster to apply the changes."
 tags:
 - kops
 - geodesic
@@ -10,7 +10,7 @@ tags:
 
 # Question
 
-How to rotate ssh keys for Kubernetes?
+How do we rotate the master SSH keys on a Kubernetes cluster provisioned with `kops`?
 
 # Answer
 
@@ -45,7 +45,7 @@ kops has set your kubectl context to us-west-2.staging.example.com
 
 (Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
-## Recreate SSH key
+## Recreate SSH Key
 
 ```shell
 cd /conf/kops
