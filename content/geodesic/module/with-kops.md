@@ -38,9 +38,9 @@ Replace with values to suit your specific project. Note, the variables correspon
 
 ### Rebuild Module
 
-[Rebuild](/geodesic/module/) the module
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make docker/build
+make docker/build
 ```
 
 ### Add Kops State Terraform Module
@@ -101,9 +101,9 @@ RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 Replace with values to suit your specific project.
 
 ### Rebuild Module
-[Rebuild](/geodesic/module/) the module
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make build
+make docker/build
 ```
 
 ## Configure Kops Manifest
@@ -135,9 +135,9 @@ Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availabilit
 
 ### Rebuild Module
 
-[Rebuild](/geodesic/module/) the module
+[Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
-> make build
+make docker/build
 ```
 
 After building the manifest, we can apply it with kops to spin up or update the cluster.
@@ -148,8 +148,8 @@ After building the manifest, we can apply it with kops to spin up or update the 
 
 Run the Geodesic shell.
 ```shell
-> $CLUSTER_NAME
-> assume-role
+$CLUSTER_NAME
+assume-role
 ```
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}

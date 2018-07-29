@@ -30,6 +30,9 @@ export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PO
 
 export README_DEPS ?= docs/targets.md
 
+export COMPONENTS_DIR ?= static/components
+export UTTERANCES_VERSION ?= 0.1.0
+
 ## Install OSX deps
 deps-darwin:
 	brew install asciinema
@@ -72,6 +75,9 @@ deps/atom:
 		tool-bar \
 		local-config \
 		autocomplete-paths \
+		linter \
+		intentions \
+		busy-signal \
 		https://github.com/cloudposse/atom-markdown-image-assistant.git
 
 	@echo "Now complete the setup by performing the following tasks:"
@@ -88,23 +94,37 @@ open:
 	open $(HUGO_URL)
 
 ## Start the hugo server for live editing using local environment
-hugo/run:
+hugo/run: components/build
 	$(HUGO) server $(HUGO_ARGS)
 
 ## Start the hugo server for live editing using docker environment
 run: docker/build
 	$(DOCKER_RUN) hugo/run
 
+## Build customized utterances widget
+utterances/build:
+	rm -rf utterances $(COMPONENTS_DIR)/utterances
+	git clone --branch $(UTTERANCES_VERSION) https://github.com/cloudposse/utterances.git
+	cd utterances && yarn && yarn build
+	mkdir -p $(COMPONENTS_DIR)/utterances
+	mv utterances/dist/* $(COMPONENTS_DIR)/utterances
+	rm -f $(COMPONENTS_DIR)/utterances/index.html
+	sed -i 's|href="/|href="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
+	sed -i 's|src="/|src="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
+	rm -rf utterances
+
+## Build front-end components
+components/build: utterances/build
+	@exit 0
+
 ## Generate all static content (outputs to public/) using local environment
-hugo/build:
+hugo/build: components/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
 ## Generate all static content (outputs to public/) using docker environment
 build: docker/build
-	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
-	rm -rf $(HUGO_PUBLISH_DIR)
 	$(DOCKER_RUN) hugo/build
 
 ## Lint check common formatting mistakes
