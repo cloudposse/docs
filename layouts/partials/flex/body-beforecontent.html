@@ -118,7 +118,7 @@
           {{ end }}
         </div>
         <div class="page-content__ask-a-question">
-          <a class="button green" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
+          <a class="btn btn-success" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
         </div>
       </div>
       <div class="page-content__github-link">
