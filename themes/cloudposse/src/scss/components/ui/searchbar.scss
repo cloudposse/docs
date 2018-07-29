@@ -2,10 +2,7 @@
   position: relative;
   transition: margin .3s ease-out;
 
-  &.active {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  &.active {}
 
   &--subnav {
     background-color: $color_black_haze_approx;
