@@ -38,28 +38,6 @@ SSH access is controlled by the `spec.sshAccess` setting in the kops manifest. I
 
 The bastion hostname is determined by the `KOPS_BASTION_PUBLIC_NAME` environment variable, which defaults to `bastion`. This name is concatenated with the `KOPS_CLUSTER_NAME` to form the FQHN.
 
-## Key Rotation
-
-Master key rotation requires a `rolling-update` of the cluster after applying the changes.
-
-{{% dialog type="code-block" icon="fa fa-code" title="Example" %}}
-```
-# Mount all S3 filesystems
-mount -a
-
-# Import SSH public key
-kops create secret sshpublickey admin \
-  -i /secrets/tf/ssh/example-staging-kops-us-west-2.pub \
-  --name us-west-2.staging.example.com
-```
-{{% /dialog %}}
-
-{{< relref "geodesic/kops/update-cluster.md#rolling-update" >}}
-
-{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
-<https://github.com/kubernetes/kops/blob/master/docs/rotate-secrets.md>
-{{% /dialog %}}
-
 # Connecting to Bastion
 
 The default username is `admin`. After adding the SSH keys to your `ssh-agent`, run the following:
