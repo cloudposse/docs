@@ -1,4 +1,4 @@
-FROM node:10.4-stretch
+FROM node:10.8-stretch
 
 ARG APT_PACKAGES="python3 python3-pip locales jq" 
 RUN apt-get update && \
