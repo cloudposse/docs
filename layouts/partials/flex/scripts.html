@@ -1,0 +1,9 @@
+<script src="{{"js/clipboard.min.js" | relURL}}"></script>
+
+<link href="{{"css/featherlight.min.css" | relURL}}" rel="stylesheet">
+<script src="{{"js/featherlight.min.js" | relURL}}"></script>
+
+{{if eq .Site.Params.highlightClientSide true}}
+<script src="{{"js/highlight.pack.js" | relURL}}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{{end}}
