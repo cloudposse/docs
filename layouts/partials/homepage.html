@@ -1,76 +1,91 @@
-{{- $currentNode := . }}
-{{- if eq .Site.Params.ordersectionsby "title"}}
-  {{- range .Site.Home.Sections.ByTitle}}
-    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1 }}
+<div class="homepage">
+  {{- $currentNode := . }}
+  {{- if eq .Site.Params.ordersectionsby "title"}}
+    {{- range .Site.Home.Sections.ByTitle}}
+      {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1 }}
+    {{- end}}
+  {{- else}}
+    {{- range .Sections}}
+      {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1 }}
+    {{- end}}
   {{- end}}
-{{- else}}
-  {{- range .Sections}}
-    {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" 1 }}
-  {{- end}}
-{{- end}}
+</div>
 
 <!-- templates -->
 {{- define "homepage-nav" }}
   {{- $currentNode := .currentnode }}
   {{- $depth := .depth }}
   {{- with .sect}}
-  {{ if lt $depth 4  }}
-    <ul class="category">
-      {{- if .IsSection }}
-      <!-- IsSection -->
-        {{- $numberOfPages := (add (len .Pages) (len .Sections)) }}
-        {{- safeHTML .Params.head}}
-        <li data-nav-id="{{.URL}}" class="dd-item
+    {{ if lt $depth 4  }}
+      <ul class="homepage__category homepage__category--depth{{ $depth }}">
+        {{- if .IsSection }}
+          <!-- IsSection -->
+          {{- $numberOfPages := (add (len .Pages) (len .Sections)) }}
+          {{- safeHTML .Params.head}}
+          <li data-nav-id="{{.URL}}" class="dd-item
             {{- if .IsAncestor $currentNode}} parent{{end}}
             {{- if ne $numberOfPages 0 }} haschildren{{end}}
+            homepage__category-li
+            homepage__category-li--depth{{ $depth }}
             ">
-          <div>
-            <h3>{{ if eq $depth 1 }}<i class="{{ .Params.icon | default "fa fa-bullhorn" }}" aria-hidden="true"></i>{{end}}<a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a></h3>
-            {{ if eq $depth 1 }}
-            <a class="view-all" href="{{ .RelPermalink}}">View All</a>
-            {{ end }}
-          </div>
-          {{- if ne $numberOfPages 0 }}
-            <!-- begin A: $numberOfPages ne 0 -->
-            <ul>
-              {{- .Scratch.Set "pages" .Pages }}
-              {{- if .Sections}}
-              {{- .Scratch.Set "pages" (.Pages | union .Sections) }}
-              {{- end}}
-              {{- $pages := (.Scratch.Get "pages") }}
-              {{- if eq .Site.Params.ordersectionsby "title"}}
-                {{- range $pages.ByTitle }}
-                  {{- if and .Params.hidden }}
-                  <!-- hidden -->
-                  {{- else}}
-                  {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" (add $depth 1)}}
+            <div class="homepage__title-wrapper homepage__title-wrapper--depth{{ $depth }}">
+              <h3 class="homepage__title homepage__title--depth{{ $depth }}">
+                <a href="{{ .RelPermalink}}">
+                  {{ if eq $depth 1 }}
+                    <i class="homepage__title-icon {{ .Params.icon | default "fa fa-bullhorn" }}" aria-hidden="true"></i>
+                  {{end}}
+                  {{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}
+                </a>
+              </h3>
+              {{ if eq $depth 1 }}
+                <a class="homepage__view-all" href="{{ .RelPermalink}}">View All</a>
+              {{ end }}
+            </div>
+            <div class="homepage__items-wrapper homepage__items-wrapper--depth{{ $depth }}">
+              {{- if ne $numberOfPages 0 }}
+                <!-- begin A: $numberOfPages ne 0 -->
+                {{- .Scratch.Set "pages" .Pages }}
+                {{- if .Sections}}
+                  {{- .Scratch.Set "pages" (.Pages | union .Sections) }}
+                {{- end}}
+                {{- $pages := (.Scratch.Get "pages") }}
+                {{- if eq .Site.Params.ordersectionsby "title"}}
+                  {{- range $pages.ByTitle }}
+                    {{- if and .Params.hidden }}
+                      <!-- hidden -->
+                    {{- else}}
+                      {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" (add $depth 1)}}
+                    {{- end}}
+                  {{- end}}
+                {{- else}}
+                  {{- range $pages.ByWeight }}
+                    {{- if and .Params.hidden }}
+                      <!-- hidden -->
+                    {{- else}}
+                      {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" (add $depth 1)}}
+                    {{- end}}
                   {{- end}}
                 {{- end}}
-              {{- else}}
-                {{- range $pages.ByWeight }}
-                  {{- if and .Params.hidden }}
-                  <!-- hidden -->
-                  {{- else}}
-                  {{- template "homepage-nav" dict "sect" . "currentnode" $currentNode "depth" (add $depth 1)}}
-                  {{- end}}
-                {{- end}}
-              {{- end}}
-            <!-- end A -->
-            </ul>
-          <!-- end $numberOfPages -->
-          {{- end}}
-        </li>
-      {{- else}}
-        <li data-nav-id="{{.URL}}" class="dd-item {{- if eq .URL $currentNode.URL}} active{{end -}}">
-          <div>
-            <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}</a>
-          </div>
-        </li>
-      <!-- end .IsSection -->
-      {{- end}}
-    </ul>
-  {{end }}
-  <!-- end with -->
+                <!-- end A -->
+                <!-- end $numberOfPages -->
+            </div>
+            {{- end}}
+          </li>
+        {{- else}}
+          <li data-nav-id="{{.URL}}" class="dd-item
+            {{- if eq .URL $currentNode.URL}} active{{end -}}
+            homepage__category-li
+            homepage__category-li--depth{{ $depth }}
+            ">
+            <div class="homepage__title-wrapper homepage__title-wrapper--depth{{ $depth }}">
+              <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}</a>
+            </div>
+          </li>
+          <!-- end .IsSection -->
+        {{- end}}
+      </ul>
+    {{end }}
+    <!-- end with -->
   {{- end}}
-<!-- end define -->
+  <!-- end define -->
 {{- end}}
