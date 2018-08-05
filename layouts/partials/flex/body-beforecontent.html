@@ -84,9 +84,7 @@
 
 <div class="page-layout">
   {{if .IsHome}}
-    <div class="homepage">
-      {{ partial "homepage.html" . }}
-    </div>
+    {{ partial "homepage.html" . }}
   {{else}}
   <aside class="left-sidebar">
     <ul class="left-sidebar-menu">
