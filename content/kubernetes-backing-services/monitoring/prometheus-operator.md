@@ -12,7 +12,7 @@ None
 
 # Install
 
-You can install `prometheus-operator` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install `prometheus-operator` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0400.prometheus-operator.yaml).
 
 ## Install using Master Helmfile
 
@@ -20,7 +20,7 @@ To install `prometheus-operator` run
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install prometheus-operator" %}}
 ```
-helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=prometheus-operator sync
+helmfile -f helmfile.d/0400.prometheus-operator.yaml sync
 ```
 {{% /dialog %}}
 
@@ -35,9 +35,9 @@ Environment variables can be specified in the Geodesic Module's `Dockerfile` or 
 
 ## Install using Custom Helmfile
 
-Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/monitoring/examples/prometheus-operator-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile" file="kubernetes-backing-services/monitoring/examples/prometheus-operator-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
@@ -47,7 +47,7 @@ Prometheus operator provides these new Kubernetes resources:
 
 * Prometheus
 * ServiceMonitor
-* Alertmanager
+* AlertManager
 
 These resources can be configured to interact with each other.
 

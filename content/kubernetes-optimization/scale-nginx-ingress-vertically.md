@@ -10,7 +10,7 @@ tags:
 - chart
 ---
 
-To scale Nginx Ingress pods vertically, update the following settings for `nginx-ingress` in the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml):
+To scale Nginx Ingress pods vertically, update the following settings for `nginx-ingress` in the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0320.nginx-ingress.yaml):
 
 * `resources.limits.cpu`
 * `resources.limits.memory`

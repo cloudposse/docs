@@ -56,7 +56,7 @@ In the example the iam role name is `kops_external_dns_role_name = example-stagi
 
 ## Install Chart
 
-You can install `external-dns` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install `external-dns` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0100.external-dns.yaml).
 
 ## Install with Master Helmfile
 
@@ -70,7 +70,7 @@ You can install `external-dns` in a few different ways, but we recomend to use t
 chamber write kops EXTERNAL_DNS_IAM_ROLE example-staging-external-dns
 chamber write kops EXTERNAL_DNS_TXT_OWNER_ID us-west-2.staging.example.com
 chamber write kops EXTERNAL_DNS_TXT_PREFIX "$(uuidgen)-"
-chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=external-dns sync
+chamber exec kops -- helmfile -f 0100.external-dns.yaml sync
 ```
 {{% /dialog %}}
 
@@ -78,9 +78,9 @@ Replace with values to suit your specific project.
 
 ## Install with Custom Helmfile
 
-Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile" file="kubernetes-backing-services/external-dns/examples/external-dns-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
@@ -97,7 +97,7 @@ Here are some examples:
 
 {{% include-code-block title="values.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-usage-values.yaml" language="yaml" %}}
 
-{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/external-dns/examples/external-dns-usage-helmfile.yaml" language="yaml" %}}
+{{% include-code-block title="helmfile" file="kubernetes-backing-services/external-dns/examples/external-dns-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification on how to structure helm chart values. Different charts may have very different structures of the value parameters. The only way to know for sure what is supported is to refer to the chart manifests.
