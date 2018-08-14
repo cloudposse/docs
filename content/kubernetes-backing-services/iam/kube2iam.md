@@ -49,9 +49,9 @@ Now to leverage IAM Roles with your `kops` cluster, you'll need to install `kube
 
 ### Install with Helmfile
 
-{{% dialog type="code-block" icon="fa fa-code" title="Install `kube-lego`" %}}
+{{% dialog type="code-block" icon="fa fa-code" title="Install `kube2iam`" %}}
 ```
-helmfile -f 0110.kube-lego.yaml sync
+helmfile --selector chart=kube2iam sync
 ```
 {{% /dialog %}}
 

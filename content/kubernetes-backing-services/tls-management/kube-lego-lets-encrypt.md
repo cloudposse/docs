@@ -23,7 +23,7 @@ You can install `kube-lego` in a few different ways, but we recommend to use the
 {{% dialog type="code-block" icon="fa fa-code" title="Install kube-lego" %}}
 ```
 chamber write kops KUBE_LEGO_EMAIL devops@example.com
-chamber exec kops -- helmfile -f 0110.kube-lego.yaml sync
+chamber exec kops --selector chart=kube-lego sync
 ```
 {{% /dialog %}}
 

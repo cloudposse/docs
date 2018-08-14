@@ -20,9 +20,9 @@ You can skip `heapster` installation if there is no need to monitor resources.
 
 Run the following commands:
 ```bash
-helmfile -f 0600.heapster.yaml sync
+helmfile --selector chart=heapster sync
 
-helmfile -f 0610.dashboard.yaml sync
+helmfile --selector chart=kubernetes-dashboard sync
 ```
 
 These environment variables are used to configure the service:

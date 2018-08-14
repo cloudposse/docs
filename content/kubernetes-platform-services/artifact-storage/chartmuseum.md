@@ -134,7 +134,7 @@ chamber write kops CHARTMUSEUM_STORAGE_AMAZON_REGION us-west-2
 chamber write kops CHARTMUSEUM_IAM_ROLE example-staging-chart-repo
 chamber write kops CHARTMUSEUM_INGRESS ingress.us-west-2.staging.example.com
 chamber write kops CHARTMUSEUM_HOSTNAME charts.us-west-2.staging.example.com
-chamber exec kops -- helmfile -f 0300.chartmuseum.yaml sync
+chamber exec kops -- helmfile --selector chart=chartmuseum sync
 ```
 {{% /dialog %}}
 

@@ -14,13 +14,13 @@ None
 
 You can install `prometheus-operator` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0400.prometheus-operator.yaml).
 
-## Install using Master Helmfile
+## Install using Helmfile
 
 To install `prometheus-operator` run
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install prometheus-operator" %}}
 ```
-helmfile -f helmfile.d/0400.prometheus-operator.yaml sync
+helmfile --selector chart=prometheus-operator sync
 ```
 {{% /dialog %}}
 
@@ -53,14 +53,14 @@ These resources can be configured to interact with each other.
 
 {{% dialog type="tip" icon="fa fa-hand-o-right" title="Tip" %}}
 We recommend to install [kube-prometheus]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
-that installs Prometheus, Alert Manager and ServiceMonitors+Exporters to collect all required metrics from Kubernetes cluster.
+that installs Prometheus, AlertManager and ServiceMonitors+Exporters to collect all required metrics from Kubernetes cluster.
 {{% /dialog %}}
 
 ## Prometheus
 
 [Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#prometheus) about the Prometheus design.
 
-## Alert Manager
+## AlertManager
 
 [Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager) about the Alert Manager design.
 

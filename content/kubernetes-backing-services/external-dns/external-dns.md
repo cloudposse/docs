@@ -62,15 +62,15 @@ You can install `external-dns` in a few different ways, but we recommend using t
 
 1. Set with chamber the `EXTERNAL_DNS_IAM_ROLE` secret to IAM role name from previous step.
 2. Set with chamber the `EXTERNAL_DNS_TXT_OWNER_ID` secret to cluster name.
-3. Set with chamber the `EXTERNAL_DNS_TXT_PREFIX` secret to random string.
-4. Run then install `external-dns` using `helmfile sync`.
+3. Set with chamber the `EXTERNAL_DNS_TXT_PREFIX` secret to a random string.
+4. Install `external-dns` using `helmfile sync`.
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install external-dns" %}}
 ```
 chamber write kops EXTERNAL_DNS_IAM_ROLE example-staging-external-dns
 chamber write kops EXTERNAL_DNS_TXT_OWNER_ID us-west-2.staging.example.com
 chamber write kops EXTERNAL_DNS_TXT_PREFIX "$(uuidgen)-"
-chamber exec kops -- helmfile -f 0100.external-dns.yaml sync
+chamber exec kops -- helmfile --selector chart=external-dns sync
 ```
 {{% /dialog %}}
 
