@@ -23,7 +23,7 @@ Follow these instructions:
 {{% dialog type="code-block" icon="fa fa-code" title="Install Ingress" %}}
 ```
 chamber write kops NGINX_INGRESS_HOSTNAME ingress.us-west-2.staging.example.com
-chamber exec kops -- helmfile --selector chart=nginx-ingress sync
+chamber exec kops -- helmfile --selector chart=nginx-ingress,repo=stable sync
 ```
 {{% /dialog %}}
 

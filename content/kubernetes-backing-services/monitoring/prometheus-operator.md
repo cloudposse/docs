@@ -4,7 +4,7 @@ description: ""
 ---
 [PrometheusOperator](https://github.com/coreos/prometheus-operator) provides
 [CRUD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
-that simplifies creation/configuration/managment of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
+that simplifies creation/configuration/management of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
 
 # Dependencies
 
@@ -47,7 +47,7 @@ Prometheus operator provides these new Kubernetes resources:
 
 * Prometheus
 * ServiceMonitor
-* AlertManager
+* Alertmanager
 
 These resources can be configured to interact with each other.
 
@@ -60,10 +60,10 @@ that installs Prometheus, AlertManager and ServiceMonitors+Exporters to collect 
 
 [Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#prometheus) about the Prometheus design.
 
-## AlertManager
+## Alertmanager
 
-[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager) about the Alert Manager design.
+[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager) about the Alertmanager design.
 
 ## ServiceMonitor
 
-[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#servicemonitor) about the Service Monitor design.
+[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#servicemonitor) about the ServiceMonitor design.
