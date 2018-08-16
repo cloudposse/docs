@@ -45,13 +45,13 @@ Follow the instructions to [apply changes to the kops cluster]({{< relref "geode
 
 ## Kops Integration
 
-Now to leverage IAM Roles with your `kops` cluster, you'll need to install `kube2iam`. There are a number of ways to go about this, but we recommend to use our Master Helmfile that ships with Geodesic.
+Now to leverage IAM Roles with your `kops` cluster, you'll need to install `kube2iam`. There are a number of ways to go about this, but we recommend to use our [Helmfiles](https://github.com/cloudposse/helmfiles).
 
-### Install with Master Helmfile
+### Install with Helmfile
 
-{{% dialog type="code-block" icon="fa fa-code" title="Install `kube-lego`" %}}
+{{% dialog type="code-block" icon="fa fa-code" title="Install `kube2iam`" %}}
 ```
-helmfile -f /conf/kops/helmfile.yaml --selector chart=kube2iam sync
+helmfile --selector chart=kube2iam sync
 ```
 {{% /dialog %}}
 
@@ -81,7 +81,7 @@ Here are some examples:
 
 {{% include-code-block title="values.yaml" file="kubernetes-backing-services/iam/examples/kube2iam-usage-values.yaml" language="yaml" %}}
 
-{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/iam/examples/kube2iam-usage-helmfile.yaml" language="yaml" %}}
+{{% include-code-block title="helmfile" file="kubernetes-backing-services/iam/examples/kube2iam-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification for the structure of helm chart values. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests. Additionally, there's no schema validation for `values.yaml`, so specifying an incorrect structure will not raise any alarms.

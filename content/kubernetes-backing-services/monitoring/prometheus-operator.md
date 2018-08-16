@@ -4,7 +4,7 @@ description: ""
 ---
 [PrometheusOperator](https://github.com/coreos/prometheus-operator) provides
 [CRUD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
-that simplifies creation/configuration/managment of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
+that simplifies creation/configuration/management of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
 
 # Dependencies
 
@@ -12,15 +12,15 @@ None
 
 # Install
 
-You can install `prometheus-operator` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install `prometheus-operator` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0400.prometheus-operator.yaml).
 
-## Install using Master Helmfile
+## Install using Helmfile
 
 To install `prometheus-operator` run
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install prometheus-operator" %}}
 ```
-helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=prometheus-operator sync
+helmfile --selector chart=prometheus-operator sync
 ```
 {{% /dialog %}}
 
@@ -35,9 +35,9 @@ Environment variables can be specified in the Geodesic Module's `Dockerfile` or 
 
 ## Install using Custom Helmfile
 
-Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
+Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/monitoring/examples/prometheus-operator-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile" file="kubernetes-backing-services/monitoring/examples/prometheus-operator-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
@@ -53,17 +53,17 @@ These resources can be configured to interact with each other.
 
 {{% dialog type="tip" icon="fa fa-hand-o-right" title="Tip" %}}
 We recommend to install [kube-prometheus]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
-that installs Prometheus, Alert Manager and ServiceMonitors+Exporters to collect all required metrics from Kubernetes cluster.
+that installs Prometheus, AlertManager and ServiceMonitors+Exporters to collect all required metrics from Kubernetes cluster.
 {{% /dialog %}}
 
 ## Prometheus
 
 [Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#prometheus) about the Prometheus design.
 
-## Alert Manager
+## Alertmanager
 
-[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager) about the Alert Manager design.
+[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager) about the Alertmanager design.
 
 ## ServiceMonitor
 
-[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#servicemonitor) about the Service Monitor design.
+[Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#servicemonitor) about the ServiceMonitor design.
