@@ -15,7 +15,7 @@ We typically store the `helmfile.yaml` in the application repo under the `config
 
 Here's an example of what a typical `helmfile` looks like:
 
-{{% include-code-block title="config/helmfile.yaml" file="release-engineering/cicd-process/examples/app-helmfile.yaml" language="yaml" %}}
+{{% include-code-block title="helmfile" file="release-engineering/cicd-process/examples/app-helmfile.yaml" language="yaml" %}}
 
 Here's an example of what a typical `envsubst` parameterized helm values file looks like:
 

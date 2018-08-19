@@ -70,7 +70,7 @@ To install the `chartmuseum`, you will need to define the `hostname`, which is t
 
 In our example, we use `charts.us-west-2.staging.example.com` as the FQHN. Replace this with an appropriate value to suit your specific project.
 
-You can install `chartmuseum` in a few different ways, but we recommend using the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install `chartmuseum` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0300.chartmuseum.yaml).
 
 ### Install with Master Helmfile
 
@@ -134,7 +134,7 @@ chamber write kops CHARTMUSEUM_STORAGE_AMAZON_REGION us-west-2
 chamber write kops CHARTMUSEUM_IAM_ROLE example-staging-chart-repo
 chamber write kops CHARTMUSEUM_INGRESS ingress.us-west-2.staging.example.com
 chamber write kops CHARTMUSEUM_HOSTNAME charts.us-west-2.staging.example.com
-chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=chartmuseum sync
+chamber exec kops -- helmfile --selector chart=chartmuseum sync
 ```
 {{% /dialog %}}
 
@@ -154,7 +154,7 @@ Environment variables can be specified in the Geodesic Module's `Dockerfile` or 
 
 Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-platform-services/artifact-storage/examples/chart-repo-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile" file="kubernetes-platform-services/artifact-storage/examples/chart-repo-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 

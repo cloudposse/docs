@@ -47,11 +47,11 @@ In our example we will use `example-com` as the organization and `staging-team` 
 
 ## Installing on Kubernetes
 
-You can install `portal` in a few different ways, but we recommend using the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install `portal` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0620.portal.yaml).
 
 ### Install with Master Helmfile
 
-[Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml)
+[Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0620.portal.yaml)
 uses GitHub OAuth provider and is configured to expose the following dashboards:
 
 * [Kubernetes Dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})
@@ -136,7 +136,7 @@ Install the `portal` using `helmfile sync`
 
 Add the following code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-platform-services/dashboard/examples/portal-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile" file="kubernetes-platform-services/dashboard/examples/portal-helmfile.yaml" language="yaml" %}}
 
 {{% include-code-block  title="values/portal.yaml" file="kubernetes-platform-services/dashboard/examples/values-portal.yaml" language="yaml" %}}
 

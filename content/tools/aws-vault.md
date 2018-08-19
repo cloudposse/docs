@@ -39,7 +39,7 @@ brew cask install aws-vault
 Download the precompiled binary from the GitHub releases page, unless a package exists for your distro.
 
 ```
-sudo curl -o /usr/local/bin/aws-vault https://github.com/99designs/aws-vault/releases/download/v4.2.0/aws-vault-linux-amd64
+sudo curl -L -o /usr/local/bin/aws-vault https://github.com/99designs/aws-vault/releases/download/v4.2.0/aws-vault-linux-amd64
 sudo chmod 755 /usr/local/bin/aws-vault
 ```
 

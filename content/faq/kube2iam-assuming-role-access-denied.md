@@ -19,8 +19,8 @@ time="2018-06-19T19:58:43Z" level=error msg="Error assuming role AccessDenied: U
 
 # Answer
 
-We've seen this error with `kube2iam` many times due to AWS API rate limiting. It affects even small kubernetes clusters running `kube2iam`. For AWS, the request rate limit is account-wide and other applications deployed in the same account may be depleting the budget independently. There are fundamental [problems with the architecutre of `kube2iam`](https://medium.com/@pingles/kiam-iterating-for-security-and-reliability-5e793ab93ec3) that are addressed in [`kiam`](https://github.com/uswitch/kiam).
+We've seen this error with `kube2iam` many times due to AWS API rate limiting. It affects even small Kubernetes clusters running `kube2iam`. For AWS, the request rate limit is account-wide and other applications deployed in the same account may be depleting the budget independently. There are fundamental [problems with the architecutre of `kube2iam`](https://medium.com/@pingles/kiam-iterating-for-security-and-reliability-5e793ab93ec3) that are addressed in [`kiam`](https://github.com/uswitch/kiam).
 
 The only "quick fix" we've seen is to `kubectl drain` drain afflicted node and then terminate it so a new one is spawned in its place. You may need to perform this action repeatedly on all nodes. New nodes will have their rate limits reset to zero, however, this is only a temporary fix and the problem will resurface as soon as limits are exceeded.
 
-The long-term fix is to switch to `kiam`. Geodesic ships with support for `kiam` in our [`helmfile`](https://github.com/cloudposse/geodesic/tree/master/rootfs/conf/kops) distribution.
+The long-term fix is to switch to `kiam`. Our comprehensive distribution of [`helmfiles`](https://github.com/cloudposse/helmfiles) ships with support for [`kiam`](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0010.kiam.yaml).
