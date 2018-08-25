@@ -403,20 +403,17 @@ pre {
 
 .search-stats {
   border-top: 1px solid #e2e3e3;
-  display: inline-block;
   padding-left: 20px;
   padding-top: 20px;
   width: 100%;
   background-color: #fff; }
   .search-stats:empty {
     display: none; }
-  .search-stats h3 {
+  .search-stats__title {
     color: #364548;
     font-size: 1.5em;
-    margin-bottom: .7em;
-    display: inline-block;
-    float: left; }
-  .search-stats span {
+    margin-bottom: .7em; }
+  .search-stats__subtitle {
     display: none; }
 
 .container {

@@ -53,7 +53,7 @@ $(function(){
       instantsearch.widgets.stats({
         container: '#search-stats',
         templates: {
-          body: "<h3>Search results for \"<em>{{query}}</em>\"</h3><span>(found {{nbHits}} results in {{processingTimeMS}} ms)</span>"
+          body: "<h3 class='search-stats__title'>Search results for \"<em>{{query}}</em>\"</h3>"
         }
       }),
       instantsearch.widgets.searchBox({
@@ -108,17 +108,68 @@ $(function(){
       searchResults.classList.add('hidden');
     }, 300);
   }
+  search.start();
+});
 
-  /*
-  search.addWidget(
-    instantsearch.widgets.pagination({
-      container: '#pagination',
-      maxPages: 20,
-      // default is to scroll to 'body', here we disable this behavior
-      // scrollTo: false
-    })
+// Add search results page specifics.
+$(function(){
+  const searchResults = document.querySelector('#search-results');
+  const searchBar = document.querySelector('.search-bar');
+
+  if (searchResults === null) {
+    return;
+  }
+
+  const search = instantsearch({
+    appId: '32YOERUX83',
+    apiKey: '557985309adf0e4df9dcf3cb29c61928',
+    indexName: document.location.hostname.match(/localhost/) === null ? 'prod' : 'dev',
+    urlSync: true,
+  });
+
+  search.addWidgets(
+    [
+      instantsearch.widgets.stats({
+        container: '#search-page-stats',
+        templates: {
+          body: "<h3 class='search-stats__title'>Search results for \"<em>{{query}}</em>\"</h3>"
+        }
+      }),
+      instantsearch.widgets.searchBox({
+        container: '#search-page-box',
+        placeholder: 'Search',
+        poweredBy: false,    
+        placeholder: 'Search',
+        autofocus: true,
+        loadingIndicator: true,
+      }),
+      instantsearch.widgets.hits({
+        container: '#search-page-hits',
+        //autoHideContainer: true,
+        //collapsible: true,
+        templates: {
+          empty: "We didn't find any results for the search <em>\"{{query}}\"</em>",
+          item: '<a href="{{ url }}"><p class="search-hit-container"><div><strong class="search-hit-title">{{{ _highlightResult.title.value }}}</strong><em class="section">{{{ section }}}</em></div><p class="text-overflow">{{{ _highlightResult.description.value }}}</p><em class="tags">{{{ tags_text }}}</em></div></a>',
+        },
+        showMoreLabel: "Load more results...",
+        transformData: {
+          item: function(data) {
+            // Process tags
+            if(data.tags) {
+              const tags = data.tags.map(function(value) {
+                return '#' + value.toLowerCase().replace(' ', '-')
+              })
+              data.tags_text = tags.join(' ')
+            } else {
+              data.tags_text = ""
+            }
+  
+            // return normalized data
+            return data
+          }
+        }
+      })
+    ]
   );
-  */
-
   search.start();
 });

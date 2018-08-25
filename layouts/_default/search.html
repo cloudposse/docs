@@ -1,0 +1,25 @@
+{{ define "search" }}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{ partial "flex/head.html" . }}
+  </head>
+  <body data-url="{{ .RelPermalink }}" class="cloudposse page-search">
+
+    {{ partial "flex/body-beforecontent.html" . }}
+    
+
+      <div id="search-page-box"></div>
+      <div id="search-page-results">
+        <div id="search-page-stats"></div>
+        <div id="search-page-hits"></div>
+      </div>
+
+    {{ partial "flex/body-aftercontent.html" . }}
+
+    {{ block "footer" . }}
+
+    {{ partial "custom-footer.html" . }}
+  </body>
+</html>
+{{ end }}
