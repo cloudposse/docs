@@ -1,4 +1,3 @@
--include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 export HUGO ?= hugo
@@ -32,6 +31,8 @@ export README_DEPS ?= docs/targets.md
 
 export COMPONENTS_DIR ?= static/components
 export UTTERANCES_VERSION ?= 0.1.0
+
+-include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
 ## Install OSX deps
 deps-darwin:
