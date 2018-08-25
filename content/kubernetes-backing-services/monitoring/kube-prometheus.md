@@ -29,15 +29,15 @@ Kube Prometheus includes the following packages:
 
 # Install
 
-You can install `kube-prometheus` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install `kube-prometheus` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0410.kube-prometheus.yaml).
 
-## Install using Master Helmfile
+## Install using Helmfile
 
 To install `kube-prometheus` run:
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install kube-prometheus" %}}
 ```
-helmfile -f /conf/kops/helmfile.yaml --selector namespace=monitoring,chart=kube-prometheus sync
+helmfile --selector chart=kube-prometheus sync
 ```
 {{% /dialog %}}
 
@@ -56,7 +56,7 @@ Environment variables can be specified in the Geodesic Module's `Dockerfile` or 
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/monitoring/examples/prometheus-operator-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile" file="kubernetes-backing-services/monitoring/examples/prometheus-operator-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
@@ -65,7 +65,7 @@ Then follow the instructions for running [`helmfile sync`]({{< relref "tools/hel
 You can extend the default functionality of `kube-prometheus` to collect custom
 metrics and send alerts based on the metrics, and display the metric in Grafana charts.
 
-## Custom Netrics Collection
+## Custom Metrics Collection
 
 1. Check the [list of available exporters](https://prometheus.io/docs/instrumenting/exporters) to make sure there isn't already an Exporter that will meet your needs. For example, there are exporters that will work with [JMX](https://github.com/prometheus/jmx_exporter) out-of-the-box.
 2. If there is no exporter, then you'll need to [write your own](https://prometheus.io/docs/instrumenting/writing_exporters/) exporter that will provide required [metrics in correct format](https://prometheus.io/docs/instrumenting/exposition_formats/)
@@ -110,7 +110,7 @@ grafana:
 ```
 * [Rebuild the Geodesic Module]({{< relref "geodesic/module/quickstart.md#build-install" >}})
 * [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
-* Proceed to [install using the Master Helmfile]({{< relref "#install-using-master-helmfile" >}})
+* Proceed to [install using the Master Helmfile]({{< relref "#install-using-helmfile" >}})
 
 ### Installation using Custom Helmfile
 

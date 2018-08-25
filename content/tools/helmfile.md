@@ -50,7 +50,7 @@ Alternatively, set the [`KUBE_CONTEXT`]({{< relref "release-engineering/codefres
 
 The `helmfile.yaml` is a [go-template](https://golang.org/pkg/text/template/) formatted "YAML" file. Note, this means that it is first evaluated as a plain-text go-template before getting processed as YAML. It essential that the go-template result in well-formed YAML with properly escaped values.
 
-For a complex example, review the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml) that ships with `geodesic`.
+For complete examples, review our comprehensive distribution of [helmfiles](https://github.com/cloudposse/helmfiles/tree/master/helmfile.d).
 
 ## Example `helmfile.yaml`
 
@@ -146,4 +146,4 @@ chamber exec $service -- helmfile sync
 
 - [Official Helmfile documentation](https://github.com/roboll/helmfile)
 - [Sprig functions documentation](http://masterminds.github.io/sprig/)
-- [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml)
+- [Helmfiles](https://github.com/cloudposse/helmfiles/tree/master/helmfile.d/)

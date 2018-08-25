@@ -13,7 +13,7 @@ Out of the box, `kube-lego` support 2 types of [ingress controllers](https://git
 
 # Install
 
-You can install `kube-lego` in a few different ways, but we recomend to use the [Master Helmfile](https://github.com/cloudposse/geodesic/blob/master/rootfs/conf/kops/helmfile.yaml).
+You can install `kube-lego` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0110.kube-lego.yaml).
 
 ## Install with Master Helmfile
 
@@ -23,7 +23,7 @@ You can install `kube-lego` in a few different ways, but we recomend to use the 
 {{% dialog type="code-block" icon="fa fa-code" title="Install kube-lego" %}}
 ```
 chamber write kops KUBE_LEGO_EMAIL devops@example.com
-chamber exec kops -- helmfile -f /conf/kops/helmfile.yaml --selector namespace=kube-system,chart=kube-lego sync
+chamber exec kops --selector chart=kube-lego sync
 ```
 {{% /dialog %}}
 
@@ -40,7 +40,7 @@ Environment variables can be specified in the Geodesic Module's `Dockerfile` or 
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
-{{% include-code-block  title="helmfile.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-helmfile.yaml" language="yaml" %}}
+{{% include-code-block  title="helmfile" file="kubernetes-backing-services/tls-management/examples/kube-lego-helmfile.yaml" language="yaml" %}}
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
@@ -56,7 +56,7 @@ Here are some examples:
 
 {{% include-code-block title="values.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-values.yaml" language="yaml" %}}
 
-{{% include-code-block title="helmfile.yaml" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-helmfile.yaml" language="yaml" %}}
+{{% include-code-block title="helmfile" file="kubernetes-backing-services/tls-management/examples/kube-lego-usage-helmfile.yaml" language="yaml" %}}
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 There is no unified specification for helm chart values structure. Different charts may have very different structures to values. The only way to know for sure what is supported is to refer to the chart manifests.

@@ -31,6 +31,6 @@ The `kiam-server` also has problems:
 
 Here are a few common causes of this problem:
 
-  1. The TLS certs don't match the hostname of the `kiam-server`. If [using our script](https://github.com/cloudposse/geodesic/tree/master/rootfs/conf/kops/kiam) and helmfile, this should be mitigated.
+  1. The TLS certs don't match the hostname of the `kiam-server`. If [using our script](https://github.com/cloudposse/helmfiles/tree/master/scripts/kiam) and helmfile, this should be mitigated.
   2. When upgrading from `kube2iam` to `kiam`, some `iptables` rules are orphaned that cause problems. Reboot all servers to flush orphaned `iptables` rules.
   3. Make sure any previous `kube2iam` helm release has been deleted
