@@ -567,7 +567,8 @@ header {
     margin: 0;
     width: 100%;
     text-transform: uppercase;
-    display: block; }
+    display: block;
+    min-height: 58px; }
     @media (min-width: 1024px) {
       .subnav__nav-select {
         display: none; } }
@@ -622,7 +623,17 @@ header {
   width: 24rem; }
   @media (min-width: 0) and (max-width: 1023px) {
     .left-sidebar {
-      display: none; } }
+      position: fixed;
+      z-index: 1000;
+      width: 100%;
+      top: 120px;
+      bottom: 0;
+      left: -100%;
+      -webkit-transition: all .5s;
+      transition: all .5s;
+      padding: 0; }
+      .left-sidebar.opened {
+        left: 0; } }
 
 .right-sidebar {
   width: 300px;

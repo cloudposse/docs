@@ -36,6 +36,7 @@
     width: 100%;
     text-transform: uppercase;
     display: block;
+    min-height: 58px;
 
     @include respond-to('desktop') {
       display: none;

@@ -17,6 +17,13 @@ $(function(){
   });
 });
 
+$(function(){
+  $('.subnav__nav-select-icon').click(function () {
+    $(this).toggleClass('fa-rotate-90');
+    $('.left-sidebar').toggleClass('opened');
+  });
+});
+
 Calendly.initBadgeWidget({url: 'https://calendly.com/cloudposse/30min', text: 'Schedule Support', branding: false});
 
 $(function(){
