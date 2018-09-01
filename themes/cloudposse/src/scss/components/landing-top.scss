@@ -6,7 +6,7 @@
   color: $white;
   padding-bottom: 40px;
   @include respond-to('desktop') {
-    padding: 60px 50px;
+    padding: 20px 160px 60px;
   }
 
   &__title {
@@ -15,15 +15,18 @@
     line-height: 1;
     margin: 0;
     @include respond-to('desktop') {
-      font-size: 7rem;
+      font-size: 6rem;
     }
   }
 
   &__wrapper {
     margin: 0 auto;
-    align-items: center;
     @include respond-to('desktop') {
-      display: flex;
+      text-align: center;
+    }
+
+    @include respond-to('large') {
+      max-width: 1040px;
     }
   }
 
@@ -37,9 +40,10 @@
     } 
 
     @include respond-to('desktop') {
-      margin-right: 50px;
-      flex: 0 0 35%;
       display: block;
+      max-width: 180px;
+      margin: 0 auto 24px;
+      padding-left: 24px;
     }
   }
 
@@ -47,7 +51,7 @@
     padding-top: 30px;
     margin: 0 auto;
     @include respond-to('desktop') {
-      max-width: 50%;
+      max-width: 640px;
       padding-top: 60px;
     }
   }
@@ -56,8 +60,10 @@
     display: block;
 
     @include respond-to('desktop') {
-      max-width: 80%;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      max-width: 640px;
+      margin: 0 auto;
     }
   }
 
