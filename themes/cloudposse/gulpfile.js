@@ -15,7 +15,7 @@ var sass_config = {
 };
 
 // Compile SASS files
-gulp.task("sass", function() {
+gulp.task("sass", function(cb) {
   gulp.src("src/scss/styles.scss")
       .pipe(sass(sass_config).on('error', sass.logError))
       .pipe(concat('styles.css'))
@@ -23,19 +23,21 @@ gulp.task("sass", function() {
           browsers: ['last 2 versions'],
           cascade: false
       }))
-      .pipe(gulp.dest("static/css/"))
+      .pipe(gulp.dest("static/css/"));
+  cb();
 });
 
 // Copy css to static dir.
-gulp.task("copy", function() {
+gulp.task("copy", function(cb) {
   gulp.src("static/css/**/*.css")
-      .pipe(gulp.dest("../../static/css"))
+      .pipe(gulp.dest("../../static/css"));
+  cb()
 });
 
 // Watch task for dedelopment.
-gulp.task("watch", ["sass", "copy"], function() {
-  gulp.watch("src/scss/**/*.scss", ["sass", "copy"]);
+gulp.task("watch", gulp.series("sass", "copy"), function() {
+  gulp.watch("src/scss/**/*.scss", gulp.series("sass", "copy"));
 });
 
 
-gulp.task("default", ["sass", "copy"]);
+gulp.task("default", gulp.series("sass", "copy"));
