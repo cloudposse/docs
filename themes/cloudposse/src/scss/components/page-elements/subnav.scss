@@ -20,7 +20,7 @@
   &__search-bar {
 
     @include respond-to('mobile') {
-      display: none;
+      flex: 1 0 auto;
     }
 
     @include respond-to('desktop') {
@@ -33,10 +33,10 @@
     background: none;
     padding: 0;
     margin: 0;
-    width: 100%;
     text-transform: uppercase;
     display: block;
     min-height: 58px;
+    flex: 0 0 auto;
 
     @include respond-to('desktop') {
       display: none;
@@ -56,7 +56,6 @@
   }
 
   &__nav-select-icon {
-    position: absolute;
     z-index: 1;
     right: 0;
     top: 0;

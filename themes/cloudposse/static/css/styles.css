@@ -160,7 +160,7 @@ div.calendly-badge-widget {
 
 .ais-search-box {
   max-width: none; }
-  .ais-search-box--magnifier {
+  .ais-search-box--magnifier, .ais-search-box--loading-indicator-wrapper {
     fill: #bfc7d8;
     left: 12px;
     top: calc(50% - 18px/2); }
@@ -306,6 +306,10 @@ pre {
       -webkit-transition: width .3s ease-out;
       transition: width .3s ease-out;
       width: 100%; }
+      @media (min-width: 0) and (max-width: 1023px) {
+        .search-bar--subnav.active {
+          position: absolute;
+          z-index: 5; } }
 
 .search-box input[type="text"] {
   font-size: 13px;
@@ -316,6 +320,9 @@ pre {
   padding: 10px 10px 10px 40px;
   margin-bottom: 0;
   border: 0; }
+  @media (min-width: 0) and (max-width: 1023px) {
+    .search-box input[type="text"] {
+      min-height: 58px; } }
 
 .search-box--big .ais-search-box {
   display: block;
@@ -556,7 +563,9 @@ header {
       display: none; } }
   @media (min-width: 0) and (max-width: 1023px) {
     .subnav__search-bar {
-      display: none; } }
+      -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+      flex: 1 0 auto; } }
   @media (min-width: 1024px) {
     .subnav__search-bar {
       position: absolute;
@@ -565,10 +574,12 @@ header {
     background: none;
     padding: 0;
     margin: 0;
-    width: 100%;
     text-transform: uppercase;
     display: block;
-    min-height: 58px; }
+    min-height: 58px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto; }
     @media (min-width: 1024px) {
       .subnav__nav-select {
         display: none; } }
@@ -585,7 +596,6 @@ header {
     appearance: none;
     line-height: 1; }
   .subnav__nav-select-icon {
-    position: absolute;
     z-index: 1;
     right: 0;
     top: 0;
