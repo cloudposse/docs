@@ -5,6 +5,7 @@
   &.active {
     margin-left: 0;
     margin-right: 0;
+
   }
 
   &--subnav {
@@ -14,6 +15,11 @@
     &.active {
       transition: width .3s ease-out;
       width: 100%;
+
+      @include respond-to('mobile') {
+        position: absolute;
+        z-index: 5;
+      }
     }    
   }
 }
