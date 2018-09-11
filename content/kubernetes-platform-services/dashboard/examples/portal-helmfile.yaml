@@ -27,10 +27,10 @@ releases:
       value: "github"
 
     - name: "oauth2-proxy.app.clientID"
-      value: '{{ env "PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID" }}'
+      value: '{{ env "PORTAL_OAUTH2_PROXY_CLIENT_ID" }}'
 
     - name: "oauth2-proxy.app.clientSecret"
-      value: '{{ env "PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET" }}'
+      value: '{{ env "PORTAL_OAUTH2_PROXY_CLIENT_SECRET" }}'
 
     - name: "oauth2-proxy.app.githubOrg"
       value: '{{ env "PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION" }}'
