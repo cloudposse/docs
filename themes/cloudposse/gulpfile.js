@@ -1,10 +1,11 @@
 "use strict";
 
-var gulp = require("gulp");
-var sass = require("gulp-sass");
-var concat = require('gulp-concat');
-var autoprefixer = require('gulp-autoprefixer');
-var importer = require('node-sass-globbing');
+var gulp = require("gulp"),
+  sass = require("gulp-sass"),
+  concat = require('gulp-concat'),
+  autoprefixer = require('gulp-autoprefixer'),
+  importer = require('node-sass-globbing'),
+  webpack = require('webpack-stream');
 
 
 var sass_config = {
@@ -27,6 +28,13 @@ gulp.task("sass", function(cb) {
   cb();
 });
 
+gulp.task('scripts', function () {
+  return gulp.src('./src/js/app.js')
+    .pipe(webpack(require('./webpack.config.js')))
+    .pipe(gulp.dest('./static/js/'));
+});
+
+
 // Copy css to static dir.
 gulp.task("copy", function(cb) {
   gulp.src("static/css/**/*.css")
@@ -34,9 +42,16 @@ gulp.task("copy", function(cb) {
   cb()
 });
 
+// Copy css to static dir.
+gulp.task("copy-js", function(cb) {
+  gulp.src("static/js/**/*.js")
+      .pipe(gulp.dest("../../static/js"));
+  cb()
+});
+
 // Watch task for dedelopment.
-gulp.task("watch", gulp.series("sass", "copy"), function() {
-  gulp.watch("src/scss/**/*.scss", gulp.series("sass", "copy"));
+gulp.task("watch", function() {
+  gulp.watch(["src/scss/**/*.scss", "static/js/**/*.js"], gulp.series("sass", "copy", "copy-js"));
 });
 
 
