@@ -12,7 +12,7 @@ None
 
 # Install
 
-You can install `prometheus-operator` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0400.prometheus-operator.yaml).
+You can install `prometheus-operator` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0000.prometheus-operator.yaml).
 
 ## Install using Helmfile
 
