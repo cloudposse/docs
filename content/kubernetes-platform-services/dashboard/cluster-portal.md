@@ -33,7 +33,7 @@ Replace the FQHN to suit your specific project.
 To create OAuth2 application, follow these instructions:
 
 1. [Create a GitHub OAuth2 App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) to obtain `Client ID` and `Client Secret`
-2. [Configure OAuth2 Proxy with GitHub](https://github.com/bitly/oauth2_proxy#github-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
+2. [Configure OAuth2 Proxy](https://github.com/bitly/oauth2_proxy#github-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
 
 #### Create Team
 
@@ -49,8 +49,8 @@ In our example we will use `example-com` as the organization and `staging-team` 
 
 To create OAuth2 application, follow these instructions:
 
-1. [Create a GitLab OAuth2 App](https://docs.gitlab.com/ce/integration/oauth_provider.html) to obtain `Application ID` (use as `Client ID`) and `Secret` (use as `Client Secret`). Pay attention to set correct [list of redirect URI](https://docs.gitlab.com/ce/integration/img/oauth_provider_application_form.png)
-2. [Configure OAuth2 Proxy with GitHub](https://github.com/bitly/oauth2_proxy#gitlab-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
+1. [Create a GitLab OAuth2 App](https://docs.gitlab.com/ce/integration/oauth_provider.html) to obtain `Application ID` (use as `Client ID`) and `Secret` (use as `Client Secret`). Pay attention to setting the correct [list of redirect URI](https://docs.gitlab.com/ce/integration/img/oauth_provider_application_form.png)
+2. [Configure OAuth2 Proxy](https://github.com/bitly/oauth2_proxy#gitlab-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 If you are using self-hosted `GitLab` you have to set
@@ -96,8 +96,8 @@ If you want to add some additional tabs, follow these instructions:
 #### Helmfile sync
 
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Breaking changes" %}}
-[helmfiles](https://github.com/cloudposse/helmfiles) version >= 0.7.0
-replaced environment variables:
+For [helmfiles](https://github.com/cloudposse/helmfiles) version >= 0.7.0
+these environment variables have been changed starting (please use the new variables):
 * `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID` -> `PORTAL_OAUTH2_PROXY_CLIENT_ID`
 * `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET` -> `PORTAL_OAUTH2_PROXY_CLIENT_SECRET`
 {{% /dialog %}}
@@ -116,7 +116,7 @@ These environment variables are required:
 * Set `PORTAL_OAUTH2_PROXY_GITHUB_TEAM` with chamber or Dockerfile to GitHub `Team name`
 
 ##### GitLab Auth Provider
-* Set `PORTAL_OAUTH2_PROXY_CLIENT_ID` with chamber to GitLab OAuth app `Application ID
+* Set `PORTAL_OAUTH2_PROXY_CLIENT_ID` with chamber to GitLab OAuth app `Application ID`
 * Set `PORTAL_OAUTH2_PROXY_CLIENT_SECRET` with chamber to GitLab OAuth app `Secret`
 * Set `PORTAL_OAUTH2_PROXY_REDIRECT_URL` with chamber to `https://<PORTAL_HOSTNAME>/oauth2/callback`
 
