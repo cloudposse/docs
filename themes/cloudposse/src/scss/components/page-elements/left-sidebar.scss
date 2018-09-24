@@ -10,6 +10,17 @@
   width: 24rem;
 
   @include respond-to('mobile') {
-    display: none;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    top: 120px;
+    bottom: 0;
+    left: -100%;
+    transition: all .5s;
+    padding: 0;
+
+    &.opened {
+      left: 0;
+    }
   }
 }
