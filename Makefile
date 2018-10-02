@@ -114,12 +114,16 @@ utterances/build:
 	sed -i 's|src="/|src="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
 	rm -rf utterances
 
-sass/build:
+front/build:
 	cd themes/cloudposse && yarn && yarn run gulp
+
+# TODO: add command for running dev script in themes/cloudposse/package.json
+front/build-dev:
+	cd themes/cloudposse && yarn && yarn run dev
 
 ## Build front-end components
 components/build: utterances/build \
-	sass/build
+	front/build
 	@exit 0
 
 ## Generate all static content (outputs to public/) using local environment

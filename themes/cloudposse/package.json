@@ -4,7 +4,8 @@
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "gulp": "gulp",
+    "dev": "NODE_ENV=development gulp"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,21 @@
     "webpack-stream": "^5.1.1"
   },
   "dependencies": {
-    "instantsearch.js": "^2.10.2"
+    "@babel/core": "^7.0.1",
+    "@babel/preset-env": "^7.0.0",
+    "@fortawesome/fontawesome-free": "^5.3.1",
+    "babel-loader": "^8.0.2",
+    "clipboard": "^2.0.1",
+    "featherlight": "^1.7.13",
+    "glossarizer": "^1.5.2",
+    "gulp-cssnano": "^2.1.3",
+    "highlight.js": "^9.12.0",
+    "hubspot": "^1.3.2",
+    "imports-loader": "^0.8.0",
+    "instantsearch.js": "^2.10.2",
+    "jquery": "^3.3.1",
+    "raven-js": "^3.27.0",
+    "tooltippp.js": "https://github.com/osvaldasvalutis/tooltippp.js",
+    "uglifyjs-webpack-plugin": "^2.0.0"
   }
 }
