@@ -62,13 +62,13 @@
           <div id="search-hits" class="search-hits"></div>
         </div>
       </div>
+      <div class="subnav__nav-select nav-select">
+        {{/*  <select class="subnav__nav-select-item" onchange="javascript:location.href = this.value;">
+          {{partial "flex/selectnavigation.html" .}}
+        </select>  */}}
+        <i class="fa fa-angle-down subnav__nav-select-icon"></i>
+      </div>
     {{end}}
-    <div class="subnav__nav-select nav-select">
-      <select class="subnav__nav-select-item" onchange="javascript:location.href = this.value;">
-        {{partial "flex/selectnavigation.html" .}}
-      </select>
-      <i class="fa fa-angle-down subnav__nav-select-icon"></i>
-    </div>
   </div>
 </div>
 

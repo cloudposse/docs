@@ -5,7 +5,7 @@ weight: 2
 ---
 
 [Cluster portal](https://github.com/cloudposse/charts/tree/master/incubator/portal) allows to access
-internal dashboards after authorization with a third party [OAuth2](https://en.wikipedia.org/wiki/OAuth) service like GitHub or Okta.
+internal dashboards after authorization with a third party [OAuth2](https://en.wikipedia.org/wiki/OAuth) service like GitHub, GitLab or Okta.
 
 Cluster Portal follows the [BeyondCorp](https://www.beyondcorp.com/) security model and uses the Bitly [`oauth2-proxy`](https://github.com/bitly/oauth2_proxy) as an Identity Aware Proxy ("IAP").
 
@@ -33,7 +33,7 @@ Replace the FQHN to suit your specific project.
 To create OAuth2 application, follow these instructions:
 
 1. [Create a GitHub OAuth2 App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) to obtain `Client ID` and `Client Secret`
-2. [Configure OAuth2 Proxy with GitHub](https://github.com/bitly/oauth2_proxy#github-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
+2. [Configure OAuth2 Proxy](https://github.com/bitly/oauth2_proxy#github-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
 
 #### Create Team
 
@@ -44,6 +44,22 @@ For more details read [Creating organization](https://help.github.com/articles/c
 and [Organizing members into teams](https://help.github.com/articles/organizing-members-into-teams/)
 
 In our example we will use `example-com` as the organization and `staging-team` as the team.
+
+### GitLab Auth Provider
+
+To create OAuth2 application, follow these instructions:
+
+1. [Create a GitLab OAuth2 App](https://docs.gitlab.com/ce/integration/oauth_provider.html) to obtain `Application ID` (use as `Client ID`) and `Secret` (use as `Client Secret`). Pay attention to setting the correct [list of redirect URI](https://docs.gitlab.com/ce/integration/img/oauth_provider_application_form.png)
+2. [Configure OAuth2 Proxy](https://github.com/bitly/oauth2_proxy#gitlab-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
+
+{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+If you are using self-hosted `GitLab` you have to set
+```
+-login-url="<your gitlab url>/oauth/authorize"
+-redeem-url="<your gitlab url>/oauth/token"
+-validate-url="<your gitlab url>/api/v4/user"
+```
+{{% /dialog %}}
 
 ## Installing on Kubernetes
 
@@ -79,16 +95,35 @@ If you want to add some additional tabs, follow these instructions:
 
 #### Helmfile sync
 
+{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Breaking changes" %}}
+For [helmfiles](https://github.com/cloudposse/helmfiles) version >= 0.7.0
+these environment variables have been changed starting (please use the new variables):
+* `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID` -> `PORTAL_OAUTH2_PROXY_CLIENT_ID`
+* `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET` -> `PORTAL_OAUTH2_PROXY_CLIENT_SECRET`
+{{% /dialog %}}
+
 These environment variables are required:
 
 * Set `PORTAL_HOSTNAME` with chamber or Dockerfile pointing to the cluster `hostname`
 * Set `PORTAL_INGRESS` with chamber or Dockerfile to `ingress host`
-* Set `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_ID` with chamber to GitHub OAuth app `Client ID`
-* Set `PORTAL_OAUTH2_PROXY_GITHUB_CLIENT_SECRET` with chamber to GitHub OAuth app `Client Secret`
-* Set `PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION` with chamber or Dockerfile to GitHub `Organization name`
-* Set `PORTAL_OAUTH2_PROXY_GITHUB_TEAM` with chamber or Dockerfile to GitHub `Team name`
 * Set `PORTAL_OAUTH2_PROXY_COOKIE_NAME` with chamber to a random string
 * Set `PORTAL_OAUTH2_PROXY_COOKIE_SECRET` with chamber to a random string
+
+##### GitHub Auth Provider
+* Set `PORTAL_OAUTH2_PROXY_CLIENT_ID` with chamber to GitHub OAuth app `Client ID`
+* Set `PORTAL_OAUTH2_PROXY_CLIENT_SECRET` with chamber to GitHub OAuth app `Client Secret`
+* Set `PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION` with chamber or Dockerfile to GitHub `Organization name`
+* Set `PORTAL_OAUTH2_PROXY_GITHUB_TEAM` with chamber or Dockerfile to GitHub `Team name`
+
+##### GitLab Auth Provider
+* Set `PORTAL_OAUTH2_PROXY_CLIENT_ID` with chamber to GitLab OAuth app `Application ID`
+* Set `PORTAL_OAUTH2_PROXY_CLIENT_SECRET` with chamber to GitLab OAuth app `Secret`
+* Set `PORTAL_OAUTH2_PROXY_REDIRECT_URL` with chamber to `https://<PORTAL_HOSTNAME>/oauth2/callback`
+
+If you are using selfhosted `GitLab`
+* Set `PORTAL_OAUTH2_PROXY_LOGIN_URL` with chamber to `<your gitlab url>/oauth/authorize`
+* Set `PORTAL_OAUTH2_PROXY_REDEEM_URL` with chamber to `<your gitlab url>/oauth/token`
+* Set `PORTAL_OAUTH2_PROXY_VALIDATE_URL` with chamber to `<your gitlab url>/api/v4/user`
 
 Customize the portal UI appearance with these environment variables:
 
