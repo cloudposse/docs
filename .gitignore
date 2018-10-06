@@ -16,3 +16,9 @@ tmp/*
 package-lock.json
 static/components/*
 utterances/*
+
+themes/cloudposse/static/css/*
+themes/cloudposse/static/js/*
+static/webfonts/*
+static/css/*
+static/js/*
