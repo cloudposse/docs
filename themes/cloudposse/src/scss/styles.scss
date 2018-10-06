@@ -1,4 +1,26 @@
-@import "breakpoint";
+@import 'breakpoint';
+
+@import 'fontawesome-free/scss/fontawesome';
+@import 'fontawesome-free/scss/brands';
+@import 'fontawesome-free/scss/solid';
+@import 'fontawesome-free/scss/regular';
+
+// Hugo theme dockdock src.
+// @import 'style';
+
+// Hugo theme nucleus css
+@import 'vendors/nucleus';
+@import 'vendors/custom-bootstrap';
+@import 'flex/style';
+
+@import 'vendors/calendly.scss';
+
+
+
+// TODO: Manage that css loading. SInce it is deprecated call.
+@import 'featherlight';
+@import 'dist/instantsearch.min';
+
 
 @import 'base/colors';
 @import 'base/fonts';

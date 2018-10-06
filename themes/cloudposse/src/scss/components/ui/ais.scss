@@ -4,7 +4,8 @@
   &-search-box {
     max-width: none;
 
-    &--magnifier {
+    &--magnifier,
+    &--loading-indicator-wrapper {
       fill: #bfc7d8;
       left: 12px;
       top: calc(50% - 18px/2);
