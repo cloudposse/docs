@@ -1,9 +1,10 @@
 .search-stats {
+  background-color: $white;
   border-top: 1px solid $color_mercury_approx;
+  color: $color_celeste_approx;
   padding-left: 20px;
   padding-top: 20px;
   width: 100%;
-  background-color: $white;
 
   &:empty {
     display: none;

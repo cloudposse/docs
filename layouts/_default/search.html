@@ -1,25 +1,39 @@
-{{ define "search" }}
 <!DOCTYPE html>
 <html>
   <head>
-    {{ partial "flex/head.html" . }}
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/head.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/head.html" . }}
+    {{end}}
   </head>
-  <body data-url="{{ .RelPermalink }}" class="cloudposse page-search">
 
-    {{ partial "flex/body-beforecontent.html" . }}
-    
 
-      <div id="search-page-box"></div>
-      <div id="search-page-results">
-        <div id="search-page-stats"></div>
-        <div id="search-page-hits"></div>
+  <body data-url="{{ .RelPermalink }}" class="cloudposse page-search-results">
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/body-beforecontent.html" . }}
+    {{end}}
+
+    {{ block "main" . }}
+      <div id="search-results-page">
+        <div id="search-stats-page"></div>
+        <div id="hits-per-page-selector"></div>
+        <div id="search-hits-page" class="search-hits search-hits--page"></div>
+        <div id="pagination-container"></div>
       </div>
+    {{ end }}
 
-    {{ partial "flex/body-aftercontent.html" . }}
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/body-aftercontent.html" . }}
+    {{ end }}
 
     {{ block "footer" . }}
+    {{ end }}
 
     {{ partial "custom-footer.html" . }}
   </body>
 </html>
-{{ end }}

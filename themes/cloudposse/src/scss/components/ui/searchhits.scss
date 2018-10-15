@@ -56,4 +56,10 @@
   a:hover {
     text-decoration: none;
   }
+
+  &--page {
+    .ais-hits--item {
+      @extend .card;
+    }
+  }
 }
