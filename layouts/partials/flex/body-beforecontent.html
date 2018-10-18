@@ -1,8 +1,10 @@
+{{- if .Site.Params.gtmContainerId -}}
 <!-- Google Tag Manager (noscript) -->
 <noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQWH2XV" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-{{ .Site.Params.gtmContainerId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
 <!-- End Google Tag Manager (noscript) -->
+{{- end -}}
 <header class="header">
   <div class="header__container container">
     <div class="logo header__logo">
