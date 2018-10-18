@@ -33,6 +33,10 @@
       {{- template "_internal/schema.html" . -}}
       {{- template "_internal/twitter_cards.html" . -}}
 
+      {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+        {{ partial "gtag" . }}
+      {{ end }}
+
   </head>
   <body class="ma0 sans-serif bg-primary-color-light{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
     {{ block "nav" . }}{{ partial "site-nav.html" . }}{{ end }}
