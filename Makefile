@@ -126,11 +126,18 @@ components/build: utterances/build \
 	front/build
 	@exit 0
 
+content/release-copy:
+	mkdir -p release/$(SEMVERSION_TAG)
+	cp -r content/* release/$(SEMVERSION_TAG)
+	mv release content
+
 ## Generate all static content (outputs to public/) using local environment
-hugo/build: components/build
+hugo/build: components/build \
+	content/release-copy \
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
+	rm -rf content/release/$(SEMVERSION_TAG)
 
 ## Generate all static content (outputs to public/) using docker environment
 build: docker/build
@@ -185,7 +192,7 @@ release:
 ## Deploy static site to S3
 deploy:
 	aws s3 sync --delete --acl public-read --exclude 'release/*' --exact-timestamps $(HUGO_PUBLISH_DIR)/ s3://$(S3_BUCKET_NAME)/
-	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/ s3://$(S3_BUCKET_NAME)/release/$(SEMVERSION_TAG)
+	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/release/$(SEMVERSION_TAG) s3://$(S3_BUCKET_NAME)/release/$(SEMVERSION_TAG)
 
 ## Update algolia search index
 reindex:
