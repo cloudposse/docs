@@ -17,10 +17,12 @@
     {{end}}
 
     {{ block "main" . }}
-      <div id="search-results-page">
-        <div id="search-stats-page"></div>
-        <div id="hits-per-page-selector"></div>
-        <div id="search-hits-page" class="search-hits search-hits--page"></div>
+      <div id="search-results-page" class="search-results--page">
+        <div class="search-results--page__head">
+          <div id="search-stats-page" class="search-results--page__stats"></div>
+          <div id="hits-per-page-selector" class="search-results--page__hits-per-page"></div>
+        </div>
+        <div id="search-hits-page" class="search-hits--page"></div>
         <div id="pagination-container"></div>
       </div>
     {{ end }}

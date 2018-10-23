@@ -111,7 +111,7 @@ search.addWidget(hits({
   container: hitsContainer,
   templates: {
     empty: "We didn't find any results for the search <em>\"{{query}}\"</em>",
-    item: '<a href="{{ url }}"><p class="search-hit-container"><div><strong class="search-hit-title">{{{ _highlightResult.title.value }}}</strong><em class="section">{{{ section }}}</em></div><p class="text-overflow">{{{ _highlightResult.description.value }}}</p><em class="tags">{{{ tags_text }}}</em></div></a>',
+    item: '<a href="{{ url }}"><div class="search-hit-container"><div><strong class="search-hit-title">{{{ _highlightResult.title.value }}}</strong><em class="section">{{{ section }}}</em></div><p class="text-overflow">{{{ _highlightResult.description.value }}}</p><em class="tags">{{{ tags_text }}}</em></div></a>',
   },
   showMoreLabel: "Load more results...",
   transformData: {

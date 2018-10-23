@@ -58,8 +58,28 @@
   }
 
   &--page {
-    .ais-hits--item {
-      @extend .card;
+    .ais-hits--item > a {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      display: block;
+      color: #212529;
+
+      &:hover {
+        background-color: #eee;
+        text-decoration: none;
+      }
+    }
+
+    .search-hit-container {
+
+      .section {
+        font-weight: 400;
+        font-size: 11px;
+        font-style: normal;
+        color: #aaa;
+        padding-left: 10px;
+        text-transform: uppercase;
+      }
     }
   }
 }

@@ -19,4 +19,12 @@
   &--big {
     top: calc(100% - 3px);
   }
+
+  &--page {
+    &__head {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+  }
 }
