@@ -133,7 +133,7 @@ content/release-copy:
 
 ## Generate all static content (outputs to public/) using local environment
 hugo/build: components/build \
-	content/release-copy \
+	content/release-copy
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
