@@ -127,9 +127,13 @@ components/build: utterances/build \
 	@exit 0
 
 content/release-copy:
+ifeq ($(SEMVERSION_TAG),)
+	@exit 0
+else
 	mkdir -p release/$(SEMVERSION_TAG)
 	cp -r content/* release/$(SEMVERSION_TAG)
 	mv release content
+endif
 
 ## Generate all static content (outputs to public/) using local environment
 hugo/build: components/build \
