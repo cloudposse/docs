@@ -1,3 +1,6 @@
+# These icons are from https://github.com/ionic-team/ionicons/tree/v2.0.1/src
+# They are licensed MIT Copyright (c) 2015-present Ionic (http://ionic.io/)
+#   https://github.com/ionic-team/ionicons/blob/master/LICENSE
 ICON_PACK ?= ionicons
 ICON_VERSION ?= 2.0.1
 ICON_RAW_URL ?= https://raw.githubusercontent.com/ionic-team/$(ICON_PACK)/v$(ICON_VERSION)/src/
@@ -20,7 +23,7 @@ clean:
 
 fetch:
 	for icon in $(ICONS); do \
-		output=$(ICON_PACK)-$(ICON_VERSION)-$$(basename $${icon} .svg).svg; \
+		output=$$(basename $${icon} .svg)-$(ICON_VERSION).svg; \
 		curl -sSL -o $${output} $(ICON_RAW_URL)/$${icon}; \
 		resize=$$(basename $${output} .svg)-$(ICON_WIDTH)x$(ICON_HEIGHT)-$(ICON_COLOR).svg; \
 		rsvg-convert -a -h $(ICON_HEIGHT) -w $(ICON_WIDTH) -f svg $${output} -o $${resize}; \
