@@ -35,10 +35,9 @@ header {
       margin: 10px 0;
     }
 
-    &.logo {
-      img {
-        width: 100%;
-        height: auto;
+    svg {
+      g > * {
+        fill: $white;
       }
     }
   }
