@@ -15,6 +15,8 @@ ICONS +=  ios-email-outline.svg
 deps:
 	sudo yum -y install librsvg2-tools
 
+clean:
+	rm -f *.svg
 
 fetch:
 	for icon in $(ICONS); do \
@@ -22,6 +24,6 @@ fetch:
 		curl -sSL -o $${output} $(ICON_RAW_URL)/$${icon}; \
 		resize=$$(basename $${output} .svg)-$(ICON_WIDTH)x$(ICON_HEIGHT)-$(ICON_COLOR).svg; \
 		rsvg-convert -a -h $(ICON_HEIGHT) -w $(ICON_WIDTH) -f svg $${output} -o $${resize}; \
-		sed -i 's/rgb(0%,0%,0%)/#$(ICON_COLOR)/' $${output}; \
+		sed -i 's/rgb(0%,0%,0%)/#$(ICON_COLOR)/' $${resize}; \
 	done
 
