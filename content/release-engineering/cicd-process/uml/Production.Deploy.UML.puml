@@ -1,0 +1,73 @@
+@startuml
+skinparam monochrome true
+
+actor User as "Deploy Manager"
+participant CPPM as "Production Codefresh\nProduction Deploy Manual Pipeline"
+participant CPP as "Production Codefresh\nProduction Deploy Pipeline"
+participant PC as "Production Chamber"
+participant PK8S as "Production Kubernetes"
+participant PDR as "Production Docker Registry"
+participant SPCICD as "Slack #cicd-production"
+
+participant PG as "Production GitLab"
+
+
+note left of User : Specify VERSION = {number}.{number}.{number}\nExpect Codefresh Staging Docker Registry have image for that version
+activate User
+User -> CPPM : Trigger build
+activate CPPM
+destroy User
+
+CPPM -> CPP : Trigger build
+activate CPP
+destroy CPPM
+
+
+CPP -> PG : Pull source code
+activate PG
+PG -> CPP : Source code
+destroy PG
+
+note right of CPP : From ./codefresh/production-deploy.yml
+
+group Analysis metadata and export env vars
+
+  note over CPP : make app/export
+  note right of CPP : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
+
+  note over CPP : make git/export
+  note right of CPP : GIT_TAG=???
+
+  note over CPP : make semver/export
+  note right of CPP : SEMVERSION_TAG="${GIT_TAG}"
+
+  note over CPP : make codefresh/pipeline/export
+  note right of CPP : FEATURE=pre-prod\nNAMESPACE="${PROJECT}-${FEATURE}"\nRELEASE_NAME="${NAMESPACE}-${APP_NAME}"\nAPP_HOST="${APP_NAME}.${NAMESPACE}.${BASE_HOST}"\n\nPIPELINE_ACTION="deploy"
+end
+
+group Deploy Application
+  CPP -> PC : Fetch secrets "kops","app","production","${NAMESPACE}"
+  activate PC
+  PC -> CPP : Secrets
+  destroy PC
+
+  CPP -> PK8S : Deploy application to ${NAMESPACE}
+  activate PK8S
+  PK8S -> PDR : Pull Image
+  activate PDR
+  PDR -> PK8S : Image
+  destroy PDR
+  PK8S -> CPP : Done
+  destroy PK8S
+end
+
+group Notify Slack
+  CPP -> SPCICD : Deployed succesfully
+  activate SPCICD
+  SPCICD -> CPP : OK
+  destroy SPCICD
+end
+
+destroy CPP
+
+@enduml

@@ -1,0 +1,142 @@
+@startuml
+
+skinparam sequenceMessageAlign center
+
+!include <cloudogu/tools/k8s.puml>
+!include <cloudogu/dogus/cloudogu.puml>
+!include <cloudogu/tools/prometheus.puml>
+!include <cloudogu/tools/grafana.puml>
+!include <tupadr3/devicons/redis.puml>
+!include <tupadr3/devicons/mysql.puml>
+!include <tupadr3/font-awesome/cogs.puml>
+!include <tupadr3/font-awesome/cog.puml>
+!include <tupadr3/font-awesome/lock.puml>
+!include <tupadr3/font-awesome-5/skyatlas.puml>
+!include <tupadr3/font-awesome-5/database.puml>
+!include <tupadr3/font-awesome-5/chart_bar.puml>
+!include <tupadr3/font-awesome-5/empire.puml>
+!include <tupadr3/devicons/code_badge.puml>
+
+!include <cloudinsight/bell.puml>
+!include <cloudinsight/dashboard.puml>
+!include <cloudinsight/nginx.puml>
+!include <cloudinsight/copy.puml>
+
+
+!include <aws/common.puml>
+!include <aws/General/AWScloud/AWScloud.puml>
+!include <aws/Database/AmazonRDS/AmazonRDS.puml>
+!include <aws/Database/AmazonElasticCache/AmazonElasticCache.puml>
+!include <aws/Analytics/AmazonES/AmazonES.puml>
+!include <aws/SecurityIdentityCompliance/AWSIAM/AWSIAM.puml>
+!include <aws/NetworkingContentDelivery/AmazonRoute53/AmazonRoute53.puml>
+
+
+AWSCLOUD(aws) #FFFFFF {
+
+	rectangle "<$k8s>\nKubernetes" as k8s #326de6 {
+
+		rectangle "<$empire>\nHelm\nTiller" #FFFFFF
+
+		package "Backing Services" #FFFFFF {
+			frame "Ingress" #FFFFFF {
+				rectangle "<$nginx>\nNginx Ingress" as ingress #FFFFFF
+				rectangle "<$code_badge>\nNginx Ingress\nDefault Backend" as ingress_backend #FFFFFF
+				rectangle "<$nginx><$prometheus>\nNginx Ingress\nMonitoring" as ingress_monitoring #FFFFFF
+
+				ingress -right-> ingress_backend
+        ingress_monitoring -> ingress
+			}
+
+			frame "K8S Dashboard" #FFFFFF {
+				rectangle "<$dashboard>\nDashboard" as dashboard #FFFFFF
+				rectangle "<$chart_bar>\nHeapster" as heapster #FFFFFF
+
+				dashboard -> heapster
+			}
+
+			frame "Other" #FFFFFF {
+				rectangle "<$AmazonRoute53{scale=0.6}><$cog>\nExternal DNS" as dns #FFFFFF
+				rectangle "<$copy>\nFluentD" as fluentd_elasticsearch_logs #FFFFFF
+				rectangle "<$AWSIAM{scale=0.5}><$cog>\nKiam" as kiam #FFFFFF
+				rectangle "<$prometheus><$cog>\nPrometheus Operator" as prometheus_operator #FFFFFF
+				rectangle "<$lock>\nLet's Encrypt" as tls #FFFFFF
+
+			}
+
+		}
+
+		package "Monitoring" #FFFFFF {
+			frame "Kube Prometheus" #FFFFFF {
+				rectangle "<$prometheus>\nPrometheus" as prometheus #FFFFFF
+				rectangle "<$prometheus><$bell>\nPrometheus\nAlerts Manager" as prometheus_alerts_manager #FFFFFF
+				rectangle "<$prometheus>\nPrometheus Push Gateway" as prometheus_push_gateway #FFFFFF
+
+				prometheus -left-> prometheus_alerts_manager
+        prometheus_push_gateway -left-> prometheus
+			}
+
+			frame "Portal" #FFFFFF {
+				rectangle "<$cloudogu>" as portal #FFFFFF
+			}
+
+			frame "Grafana" #FFFFFF {
+				rectangle "<$grafana>\nGrafana" as grafana #FFFFFF
+				rectangle "<$grafana><$database>\nGrafana DB" as grafana_db #FFFFFF
+				grafana -left-> grafana_db
+			}
+		}
+
+		package "Staging" #FFFFFF {
+			database "<$mysql>\nOffline MariaDB" as staging_offline_mariadb #FFFFFF
+			rectangle "<$cog>\nOffline API" as staging_offline_api #FFFFFF
+			database "<$redis>\nOffline Redis" as staging_offline_redis #FFFFFF
+			rectangle "<$cogs>\nOffline Redis Worker" as staging_offline_redis_worker #FFFFFF
+			rectangle "<$cogs>\nPrice Server" as staging_price_server #FFFFFF
+
+			staging_offline_api -down-> staging_offline_mariadb
+			staging_offline_api -left-> staging_offline_redis
+			staging_offline_redis_worker -up-> staging_offline_redis
+		}
+
+		package "Integration" #FFFFFF {
+			database "<$mysql>\nOffline MariaDB" as integration_offline_mariadb #FFFFFF
+			rectangle "<$cog>\nOffline API" as integration_offline_api #FFFFFF
+			database "<$redis>\nOffline Redis" as integration_offline_redis #FFFFFF
+			rectangle "<$cogs>\nOffline Redis Worker" as integration_offline_redis_worker #FFFFFF
+			rectangle "<$cogs>\nPrice Server" as integration_price_server #FFFFFF
+
+			integration_offline_api -down-> integration_offline_mariadb
+      integration_offline_api -left-> integration_offline_redis
+      integration_offline_redis_worker -up-> integration_offline_redis
+		}
+
+		package "Pre Production" #FFFFFF {
+			rectangle "<$cog>\nOffline API" as pre_production_offline_api #FFFFFF
+			rectangle "<$cogs>\nOffline Redis Worker" as pre_production_offline_redis_worker #FFFFFF
+			rectangle "<$cogs>\nPrice Server" as pre_production_price_server #FFFFFF
+		}
+
+	}
+
+	frame "Backing Services VPC" as backing_services_vpc {
+		AMAZONRDS(rds, MariaDB, database) #FFFFFF
+		AMAZONELASTICCACHE(redis, Redis, database) #FFFFFF
+		AMAZONES(elastics_kibana, ElasticSearch And Kibana, rectangle) #FFFFFF
+	}
+}
+
+pre_production_offline_api -down-> rds
+pre_production_offline_api -> redis
+pre_production_offline_redis_worker -down-> redis
+
+portal -> prometheus
+portal -left-> grafana
+portal -> prometheus_alerts_manager
+portal -> dashboard
+portal -> elastics_kibana
+
+fluentd_elasticsearch_logs -down-> elastics_kibana
+
+
+@enduml

@@ -1,0 +1,84 @@
+@startuml
+skinparam monochrome true
+
+actor User as "Developer"
+participant CSPPM as "Staging Codefresh\nPre-Production Deploy Manual Pipeline"
+participant CPPB as "Production Codefresh\nProduction Build Pipeline"
+participant CSPP as "Staging Codefresh\nPre-Production Pipeline"
+participant SC as "Staging Chamber"
+participant SK8S as "Staging Kubernetes"
+participant CSDR as "Codefresh Staging\nDocker Registry"
+participant SSCICD as "Slack #cicd-staging"
+
+participant GD as "Develop GitLab"
+
+
+alt Automatic Deploy
+
+  note left of User : Webhook to build for TAG {number}.{number}.{number}\nExpect Codefresh Staging Docker Registry have image for that version
+  activate CPPB
+  CPPB -> CSPP : Trigger build
+  activate CSPP
+  destroy CPPB
+
+else Manual Deploy
+
+  note left of User : Specify VERSION = {number}.{number}.{number}\nExpect Codefresh Staging Docker Registry have image for that version
+  activate User
+  User -> CSPPM : Trigger build
+  activate CSPPM
+  destroy User
+
+  CSPPM -> CSPP : Trigger build
+	destroy CSPPM
+end
+
+
+CSPP -> GD : Pull source code
+activate GD
+GD -> CSPP : Source code
+destroy GD
+
+note right of CSPP : From ./codefresh/production-deploy.yml
+
+group Analysis metadata and export env vars
+
+  note over CSPP : make app/export
+  note right of CSPP : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
+
+  note over CSPP : make git/export
+  note right of CSPP : GIT_TAG=???
+
+  note over CSPP : make semver/export
+  note right of CSPP : SEMVERSION_TAG="${GIT_TAG}"
+
+  note over CSPP : make codefresh/pipeline/export
+  note right of CSPP : FEATURE=pre-prod\nNAMESPACE="${PROJECT}-${FEATURE}"\nRELEASE_NAME="${NAMESPACE}-${APP_NAME}"\nAPP_HOST="${APP_NAME}.${NAMESPACE}.${BASE_HOST}"\n\nPIPELINE_ACTION="deploy"
+end
+
+group Deploy Application
+  CSPP -> SC : Fetch secrets "kops","app","pre-production","${NAMESPACE}"
+  activate SC
+  SC -> CSPP : Secrets
+  destroy SC
+
+  CSPP -> SK8S : Deploy application to ${NAMESPACE}
+  activate SK8S
+  SK8S -> CSDR : Pull Image
+  activate CSDR
+  CSDR -> SK8S : Image
+  destroy CSDR
+  SK8S -> CSPP : Done
+  destroy SK8S
+end
+
+group Notify Slack
+  CSPP -> SSCICD : Deployed succesfully
+  activate SSCICD
+  SSCICD -> CSPP : OK
+  destroy SSCICD
+end
+
+destroy CSPP
+
+@enduml

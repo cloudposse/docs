@@ -1,0 +1,89 @@
+@startuml
+skinparam monochrome true
+
+actor User as "Developer"
+participant GD as "Develop GitLab"
+participant CSI as "Codefresh Staging\nIntegration Pipeline"
+participant SC as "Staging Chamber"
+participant SK8S as "Staging Kubernets"
+participant CSDR as "Codefresh Staging\nDocker Registry"
+participant SSCICD as "Slack #cicd-staging"
+
+
+
+alt Automatic Destroy
+
+  note left of User : PR {text}/{issue}/{text} -> develop\nCF_PULL_REQUEST_ACTION IN ("close", "merge")
+  activate GD
+  GD -> CSI : PR Event
+  activate CSI
+  destroy GD
+
+else Manual Destroy
+
+  note left of User : Branch {text}/{issue}/{text}\nPIPELINE_ACTION="destroy"
+  activate User
+  User -> CSI : Trigger build
+  destroy User
+
+else Manual Destroy
+
+  note left of User : Any branch\nFEATURE="{issue}"\nPIPELINE_ACTION="destroy"
+  User -> CSI : Trigger build
+  activate User
+  destroy User
+end
+
+
+CSI -> GD : Pull source code
+activate GD
+GD -> CSI : Source code
+destroy GD
+
+newpage
+
+note right of CSI : From ./codefresh/staging.yml
+
+group Analysis metadata and export env vars
+
+  note over CSI : make app/export
+  note right of CSI : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
+
+  note over CSI : make git/export
+  note right of CSI : GIT_COMMIT_SHORT=???
+
+  note over CSI : make semver/export
+  note right of CSI : SEMVERSION_COMMIT_SHORT="0.0.0-sha.${GIT_COMMIT_SHORT}"
+
+  note over CSI : make codefresh/pipeline/export
+  note right of CSI : FEATURE={issue}\nNAMESPACE="${PROJECT}-${FEATURE}"\nRELEASE_NAME="${NAMESPACE}-${APP_NAME}"\nAPP_HOST="${APP_NAME}.${NAMESPACE}.${BASE_HOST}"\n\nPIPELINE_ACTION="destroy"
+
+end
+
+group Destroy environment
+  CSI -> SC : Fetch secrets "kops","app","integration","${NAMESPACE}"
+  activate SC
+  SC -> CSI : Secrets
+  destroy SC
+
+  CSI -> SK8S : Delete all release in ${NAMESPACE}
+  activate SK8S
+  SK8S -> CSI : Done
+  destroy SK8S
+
+  CSI -> SK8S : Delete ${NAMESPACE}
+  activate SK8S
+  SK8S -> CSI : Done
+  destroy SK8S
+end
+
+group Notify Slack
+  CSI -> SSCICD : Destroyed succesfully
+  activate SSCICD
+  SSCICD -> CSI : OK
+  destroy SSCICD
+end
+
+destroy CSI
+
+@enduml

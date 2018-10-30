@@ -1,0 +1,148 @@
+@startuml
+skinparam monochrome true
+
+actor User as "Developer"
+
+participant GD as "Develop GitLab"
+participant GP as "Production GitLab"
+
+participant CPPB as "Production Codefresh\nProduction Build Pipeline"
+
+participant CPDR as "Production\nDocker Registry"
+
+participant SPCICD as "Slack #cicd-production"
+
+participant CSPP as "Staging Codefresh\nPre-Production Pipeline"
+participant SC as "Staging Chamber"
+participant SK8S as "Staging Kubernetes"
+participant CSDR as "Codefresh Staging\nDocker Registry"
+participant SSCICD as "Slack #cicd-staging"
+
+
+note left of User : Create Tag {number}.{number}.{number}
+activate User
+User -> GD : Create tag
+destroy User
+
+== Once in 20 minutes ==
+
+activate GP
+GP -> GD : Syncronize (once in 20 minutes)
+activate GD
+GD -> GP : Source code
+destroy GD
+GP -> CPPB: Tigger build
+activate CPPB
+destroy GP
+
+newpage
+== Production build ==
+
+CPPB -> GP : Pull source code
+activate GP
+GP -> CPPB : Source code
+destroy GP
+
+
+note right of CPPB : From ./codefresh/production-build.yml
+
+group Analysis metadata and export env vars
+
+  note over CPPB : make app/export
+  note right of CPPB : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
+
+  note over CPPB : make git/export
+  note right of CPPB : GIT_TAG=???
+
+  note over CPPB : make semver/export
+  note right of CPPB : SEMVERSION_TAG="${GIT_TAG}"
+
+  note over CPPB : make codefresh/pipeline/export
+  note right of CPPB : PIPELINE_ACTION="build"
+end
+
+note over CPPB : Build Image
+note over CPPB : Build Test Image
+note over CPPB : Run Tests
+
+group Publish Image To Production
+	CPPB -> CPDR : Push Image
+	activate CPDR
+	CPDR -> CPPB : Ok
+	destroy CPDR
+end
+
+group Publish Image To Staging
+  CPPB -> CSDR : Push Image
+  activate CSDR
+  CSDR -> CPPB : Ok
+  destroy CSDR
+end
+
+group Trigger deploy on pre-production
+  CPPB -> CSPP : Build pre-production pipeline
+  activate CSPP
+  CPPB -> CSPP : Build started
+end
+
+group Notify Slack
+  CPPB -> SPCICD : Builed succesfully
+  activate SPCICD
+  SPCICD -> CPPB : OK
+  destroy SPCICD
+end
+
+destroy CPPB
+
+newpage
+
+== Pre-production deploy ==
+
+CSPP -> GD : Pull source code
+activate GD
+GD -> CSPP : Source code
+destroy GD
+
+note right of CSPP : From ./codefresh/production-deploy.yml
+
+group Analysis metadata and export env vars
+
+  note over CSPP : make app/export
+  note right of CSPP : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
+
+  note over CSPP : make git/export
+  note right of CSPP : GIT_TAG=???
+
+  note over CSPP : make semver/export
+  note right of CSPP : SEMVERSION_TAG="${GIT_TAG}"
+
+  note over CSPP : make codefresh/pipeline/export
+  note right of CSPP : FEATURE=pre-prod\nNAMESPACE="${PROJECT}-${FEATURE}"\nRELEASE_NAME="${NAMESPACE}-${APP_NAME}"\nAPP_HOST="${APP_NAME}.${NAMESPACE}.${BASE_HOST}"\n\nPIPELINE_ACTION="deploy"
+end
+
+group Deploy Application
+  CSPP -> SC : Fetch secrets "kops","app","pre-production","${NAMESPACE}"
+  activate SC
+  SC -> CSPP : Secrets
+  destroy SC
+
+  CSPP -> SK8S : Deploy application to ${NAMESPACE}
+  activate SK8S
+  SK8S -> CSDR : Pull Image
+  activate CSDR
+  CSDR -> SK8S : Image
+  destroy CSDR
+  SK8S -> CSPP : Done
+  destroy SK8S
+end
+
+group Notify Slack
+  CSPP -> SSCICD : Deployed succesfully
+  activate SSCICD
+  SSCICD -> CSPP : OK
+  destroy SSCICD
+end
+
+destroy CSPP
+
+@enduml

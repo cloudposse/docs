@@ -1,0 +1,104 @@
+@startuml
+skinparam monochrome true
+
+actor User as "Developer"
+participant GD as "Develop GitLab"
+participant CSS as "Staging Codefresh\nStaging Pipeline"
+participant SC as "Staging Chamber"
+participant SK8S as "Staging Kubernetes"
+participant CSDR as "Codefresh Staging\nDocker Registry"
+participant SSCICD as "Slack #cicd-staging"
+
+
+alt Automatic Deploy
+
+  note left of User : Commit into develop branch
+  activate GD
+  GD -> CSS : PR Event
+  activate CSS
+  destroy GD
+
+else Manual Deploy
+
+  note left of User : Any branch
+  activate User
+  User -> CSS : Trigger build
+  destroy User
+
+end
+
+
+CSS -> GD : Pull source code
+activate GD
+GD -> CSS : Source code
+destroy GD
+
+newpage
+
+note right of CSS : From ./codefresh/staging.yml
+
+
+group Analysis metadata and export env vars
+
+  note over CSS : make app/export
+  note right of CSS : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
+
+  note over CSS : make git/export
+  note right of CSS : GIT_COMMIT_SHORT=???
+
+  note over CSS : make semver/export
+  note right of CSS : SEMVERSION_COMMIT_SHORT="0.0.0-sha.${GIT_COMMIT_SHORT}"
+
+  note over CSS : make codefresh/pipeline/export
+  note right of CSS : FEATURE=stage\nNAMESPACE="${PROJECT}-${FEATURE}"\nRELEASE_NAME="${NAMESPACE}-${APP_NAME}"\nAPP_HOST="${APP_NAME}.${NAMESPACE}.${BASE_HOST}"\n\nPIPELINE_ACTION="deploy"
+end
+
+note over CSS : Build Image
+note over CSS : Build Test Image
+note over CSS : Run Tests
+
+group Publish Image
+  CSS -> CSDR : Push Image
+  activate CSDR
+  CSDR -> CSS : Ok
+  destroy CSDR
+end
+
+group Deploy Backing Services
+  CSS -> SC : Fetch secrets "kops","app","staging","${NAMESPACE}"
+  activate SC
+  SC -> CSS : Secrets
+  destroy SC
+
+  CSS -> SK8S : Deploy backing services to ${NAMESPACE}
+  activate SK8S
+  SK8S -> CSS : Done
+  destroy SK8S
+end
+
+group Deploy Application
+  CSS -> SC : Fetch secrets "kops","app","staging","${NAMESPACE}"
+  activate SC
+  SC -> CSS : Secrets
+  destroy SC
+
+  CSS -> SK8S : Deploy application to ${NAMESPACE}
+  activate SK8S
+  SK8S -> CSDR : Pull Image
+  activate CSDR
+  CSDR -> SK8S : Image
+  destroy CSDR
+  SK8S -> CSS : Done
+  destroy SK8S
+end
+
+group Notify Slack
+  CSS -> SSCICD : Deployed succesfully
+  activate SSCICD
+  SSCICD -> CSS : OK
+  destroy SSCICD
+end
+
+destroy CSS
+
+@enduml
