@@ -88,32 +88,32 @@ AWSCLOUD(aws) #FFFFFF {
 		}
 
 		package "Staging" #FFFFFF {
-			database "<$mysql>\nOffline MariaDB" as staging_offline_mariadb #FFFFFF
-			rectangle "<$cog>\nOffline API" as staging_offline_api #FFFFFF
-			database "<$redis>\nOffline Redis" as staging_offline_redis #FFFFFF
-			rectangle "<$cogs>\nOffline Redis Worker" as staging_offline_redis_worker #FFFFFF
+			database "<$mysql>\n MariaDB" as staging__mariadb #FFFFFF
+			rectangle "<$cog>\n API" as staging__api #FFFFFF
+			database "<$redis>\n Redis" as staging__redis #FFFFFF
+			rectangle "<$cogs>\n Redis Worker" as staging__redis_worker #FFFFFF
 			rectangle "<$cogs>\nPrice Server" as staging_price_server #FFFFFF
 
-			staging_offline_api -down-> staging_offline_mariadb
-			staging_offline_api -left-> staging_offline_redis
-			staging_offline_redis_worker -up-> staging_offline_redis
+			staging__api -down-> staging__mariadb
+			staging__api -left-> staging__redis
+			staging__redis_worker -up-> staging__redis
 		}
 
 		package "Integration" #FFFFFF {
-			database "<$mysql>\nOffline MariaDB" as integration_offline_mariadb #FFFFFF
-			rectangle "<$cog>\nOffline API" as integration_offline_api #FFFFFF
-			database "<$redis>\nOffline Redis" as integration_offline_redis #FFFFFF
-			rectangle "<$cogs>\nOffline Redis Worker" as integration_offline_redis_worker #FFFFFF
+			database "<$mysql>\n MariaDB" as integration__mariadb #FFFFFF
+			rectangle "<$cog>\n API" as integration__api #FFFFFF
+			database "<$redis>\n Redis" as integration__redis #FFFFFF
+			rectangle "<$cogs>\n Redis Worker" as integration__redis_worker #FFFFFF
 			rectangle "<$cogs>\nPrice Server" as integration_price_server #FFFFFF
 
-			integration_offline_api -down-> integration_offline_mariadb
-      integration_offline_api -left-> integration_offline_redis
-      integration_offline_redis_worker -up-> integration_offline_redis
+			integration__api -down-> integration__mariadb
+      integration__api -left-> integration__redis
+      integration__redis_worker -up-> integration__redis
 		}
 
 		package "Pre Production" #FFFFFF {
-			rectangle "<$cog>\nOffline API" as pre_production_offline_api #FFFFFF
-			rectangle "<$cogs>\nOffline Redis Worker" as pre_production_offline_redis_worker #FFFFFF
+			rectangle "<$cog>\n API" as pre_production__api #FFFFFF
+			rectangle "<$cogs>\n Redis Worker" as pre_production__redis_worker #FFFFFF
 			rectangle "<$cogs>\nPrice Server" as pre_production_price_server #FFFFFF
 		}
 
@@ -126,9 +126,9 @@ AWSCLOUD(aws) #FFFFFF {
 	}
 }
 
-pre_production_offline_api -down-> rds
-pre_production_offline_api -> redis
-pre_production_offline_redis_worker -down-> redis
+pre_production__api -down-> rds
+pre_production__api -> redis
+pre_production__redis_worker -down-> redis
 
 portal -> prometheus
 portal -left-> grafana
