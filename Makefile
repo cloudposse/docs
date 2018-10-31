@@ -127,7 +127,7 @@ components/build: utterances/build \
 	@exit 0
 
 ## Generate all static content (outputs to public/) using local environment
-hugo/build: components/build \
+hugo/build: components/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
