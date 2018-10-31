@@ -2,6 +2,9 @@
 title: Contact Us
 description: 'Cloud Posse is a **DevOps Professional Services** company.'
 parent: home
+comments: false
+editable: false
+questions: false
 ---
 
 We're developers and ops practitioners who are gungho about doing things the "right way" (tm).
@@ -29,7 +32,7 @@ We help companies achieve success in the cloud by automating systems for maximum
 | Schedule Time  | [calendly.com/cloudposse](https://calendly.com/cloudposse)                                 |
 | Call Us        | [+1 (310) 496-6556](tel:+13104966556)                                                      |
 | Slack          | [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com) | 
-| Newsletter     | [cloudposse.com/newsletter](https://cloudposse.com/newsletter                              | 
+| Newsletter     | [cloudposse.com/newsletter](https://cloudposse.com/newsletter)                             | 
 | Twitter        | [twitter.com/cloudposse](https://twitter.com/cloudposse)                                   |
 | LinkedIn       | [linkedin.com/company/cloudposse](https://www.linkedin.com/company/cloudposse/)            |
 
