@@ -9,3 +9,6 @@ Disallow: /discuss
 Disallow: /docs/*
 Disallow: /blog/*
 Disallow: /_footer/
+
+# Block versioned releases
+Disallow: /release/*
