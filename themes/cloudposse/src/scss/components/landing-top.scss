@@ -1,77 +1,73 @@
 .landing-top {
-  min-height: 293px;
-  padding: 60px 50px;
+  padding: 20px;
   background-color: $color_cape_cod_approx;
   display: block;
   width: 100%;
   color: $white;
   padding-bottom: 40px;
-  @media(min-width: 768px) and(max-width: 1024px) and(orientation: landscape) {
-    height: 28vh;
-  }
-  @media(min-width: 320px) and(max-width: 480px) {
-    padding: 20px;
-  }
-  @media only screen and(min-device-width : 375px) and(max-device-width : 667px) {
-    height: 53vh;
-  }
-  @media only screen and(min-device-width : 375px) and(max-device-width : 812px) and(-webkit-device-pixel-ratio : 3) and(orientation : portrait) {
-    height: 45vh;
-  }
-  @media only screen and(min-device-width : 414px) and(max-device-width : 736px) and(orientation : portrait) {
-    height: 48vh;
-  }
-  @media only screen and(min-device-width: 1024px) and(max-device-width: 1366px) and(orientation: portrait) and(-webkit-min-device-pixel-ratio: 1.5) {
-    height: 21vh;
+  @include respond-to('desktop') {
+    padding: 60px 50px;
   }
 
   &__title {
-    font-size: 30px;
-    font-weight: normal;
-    line-height: 1.1em;
-    @media(min-width: 320px) and(max-width: 480px) {
-      line-height: 1.1em;
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    margin: 0;
+    @include respond-to('desktop') {
+      font-size: 3rem;
     }
   }
 
-  &__description {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    @media(min-width: 768px) and(max-width: 1024px) and(orientation: landscape) {
-      max-width: initial;
-      width: auto;
-    }
-    @media(min-width: 481px) and(max-width: 767px) {
-      max-width: initial;
-      width: auto;
-    }
-    @media(min-width: 320px) and(max-width: 480px) {
-      max-width: initial;
-      width: auto;
-    }
-    @media(min-width: 768px) and(max-width: 1024px) {
-      width: 100%;
+  &__wrapper {
+    margin: 0 auto;
+    align-items: center;
+    @include respond-to('desktop') {
+      display: flex;
+      max-width: 1200px;
     }
   }
 
-  &__image {
-    max-width: 125px;
-    margin-right: 10px;
-    float: left;
-    @media(min-width: 320px) and(max-width: 480px) {
-      display: none;
+  &__image-wrapper {
+    display: none;
+
+    svg {
+      g > * {
+        fill: $white;
+      }
+    } 
+
+    @include respond-to('desktop') {
+      margin-right: 50px;
+      flex: 0 0 25%;
+      display: block;
     }
   }
 
   &__search-bar {
     padding-top: 30px;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin: 0 auto;
+    @include respond-to('desktop') {
+      max-width: 50%;
+      padding-top: 60px;
+    }
+  }
 
-    @media(min-width: 320px) and(max-width: 480px) {
-      padding-left: 0;
-      padding-right: 0;
-    }  
+  &__about {
+    display: block;
+
+    @include respond-to('desktop') {
+      max-width: 80%;
+      font-size: 1.2rem;
+    }
+  }
+
+  &__button {
+    display: block;
+
+    @include respond-to('desktop') {
+      width: auto;
+      display: inline-block;
+    }
   }
 }
