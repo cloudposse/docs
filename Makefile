@@ -126,18 +126,8 @@ components/build: utterances/build \
 	front/build
 	@exit 0
 
-content/release-copy:
-ifeq ($(SEMVERSION_TAG),)
-	@exit 0
-else
-	mkdir -p release/$(SEMVERSION_TAG)
-	cp -r content/* release/$(SEMVERSION_TAG)
-	mv release content
-endif
-
 ## Generate all static content (outputs to public/) using local environment
-hugo/build: components/build \
-	content/release-copy
+hugo/build: components/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
