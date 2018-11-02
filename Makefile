@@ -131,7 +131,6 @@ hugo/build: components/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
-	rm -rf content/release/$(SEMVERSION_TAG)
 
 ## Generate all static content (outputs to public/) using docker environment
 build: docker/build
