@@ -8,7 +8,9 @@
 <header class="header">
   <div class="header__container container">
     <div class="logo header__logo">
-        <a href="/"><img src="/images/logo.png" id="header-logo" /></a>
+        <a href="/">
+          {{- partial "logo.html" . }}
+        </a>
       </div>
       {{- with .Site.Menus.shortcuts}}
         <div class="burger header__burger">
@@ -30,21 +32,27 @@
 </header>
 {{if .IsHome}}
 <div class="landing-top">
-  <div class="landing-top__description">
-    <img src="/images/cloud.png" class="landing-top__image whitish cloud"/>
-    <h1 class="landing-top__title">The Cloud Posse Developer Hub</h1>
-    <a class="button green" href="/documentation/getting-started/">Get Started</a>
-    <div class="about">
-      Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!
+  <div class="landing-top__wrapper">
+    <div class="landing-top__image-wrapper">
+      {{- partial "cloud.html" . }}
     </div>
-    <div class="landing-top__search-bar search-bar search-bar--landing">
-      <div id="search-box" class="search-box search-box--big"><!-- SearchBox widget will appear here --></div>
-      <div id="search-results" class="search-results search-results--big">
-        <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
-        <div id="search-hits" class="search-hits"></div>
-        <div class="search-more">
-          <a class="search-more__link" href="/search/">view all results</a>
-        </div>
+    <div class="landing-top__description">
+      <h1 class="landing-top__title">The Cloud Posse Developer Hub</h1>
+      <div class="landing-top__about">
+        <p>
+          Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!
+        </p>
+      </div>
+      <a class="landing-top__button btn btn-success btn-lg" href="/documentation/getting-started/">Get Started</a>
+    </div>
+  </div>
+  <div class="landing-top__search-bar search-bar search-bar--landing">
+    <div id="search-box" class="search-box search-box--big"><!-- SearchBox widget will appear here --></div>
+    <div id="search-results" class="search-results search-results--big">
+      <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
+      <div id="search-hits" class="search-hits"></div>
+      <div class="search-more">
+        <a class="search-more__link" href="/search/">view all results</a>
       </div>
     </div>
   </div>
@@ -109,12 +117,16 @@
           <p class="page-content__excerpt-text">{{ .Description | markdownify }}</p>
           {{ end }}
         </div>
+        {{ if and (isset .Params "questions") (.Params.questions) }}
         <div class="page-content__ask-a-question">
-          <a class="button green" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
+          <a class="btn btn-success" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
         </div>
+        {{ end }}
       </div>
+      {{ if and (isset .Params "editable") (.Params.editable) }}
       <div class="page-content__github-link">
         <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
       </div>
+      {{ end }}
       <div class="page-content__content">
   {{end}}

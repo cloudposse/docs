@@ -131,6 +131,7 @@ hugo/build: components/build
 	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
+	rm -rf content/release/$(SEMVERSION_TAG)
 
 ## Generate all static content (outputs to public/) using docker environment
 build: docker/build
@@ -182,10 +183,10 @@ release:
 		> $(HTMLTEST_CONFIG)
 	@echo "Wrote $(HTMLTEST_CONFIG) for codefresh..."
 
-
 ## Deploy static site to S3
 deploy:
-	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/ s3://$(S3_BUCKET_NAME)/
+	aws s3 sync --delete --acl public-read --exclude 'release/*' --exact-timestamps $(HUGO_PUBLISH_DIR)/ s3://$(S3_BUCKET_NAME)/
+	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/release/$(SEMVERSION_TAG) s3://$(S3_BUCKET_NAME)/release/$(SEMVERSION_TAG)
 
 ## Update algolia search index
 reindex:
