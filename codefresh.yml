@@ -39,12 +39,12 @@ steps:
       - make hugo/build
 
   build_versioned_release:
-    title: Building Hugo static site...
+    title: Building Hugo static site versioned release...
     image: '${{build_image}}'
     working_directory: ./
     environment:
-      - "HUGO_URL=${{HUGO_URL}}/release/${{SEMVERSION_TAG}}"
-      - "HUGO_PUBLISH_DIR=${{HUGO_PUBLISH_DIR}}/release/${{SEMVERSION_TAG}}"
+      - "HUGO_URL=${{HUGO_URL}}release/${{SEMVERSION_TAG}}"
+      - "HUGO_PUBLISH_DIR=public/release/${{SEMVERSION_TAG}}"
     commands:
       - make lint
       - make release
