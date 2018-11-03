@@ -28,7 +28,8 @@
     text-transform: uppercase;
   }
 
-  .fa {
+  .fa,
+  .fas {
     pointer-events: none;
     font-size: 18px;
     opacity: .3;
@@ -101,8 +102,6 @@
     border-left: 0;
     padding-top: 0;
     position: relative;
-    left: -4rem;
-    width: 113%;
     @extend %extend_5;
 
     pre {
@@ -123,6 +122,27 @@
 
     a {
       @extend %extend_5;
+    }
+
+    &.processed {
+      overflow: hidden;
+      max-height: 250px;
+
+      &:after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        content: "";
+        height: 30px;
+        width: 100%;
+        background: linear-gradient(180deg,transparent,#fff);
+      }
+    }
+
+    .code-expand {
+      background: none;
+      float: right;
+      margin-right: 18px;
     }
   }
 }
