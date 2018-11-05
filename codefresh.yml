@@ -38,6 +38,22 @@ steps:
       - make release
       - make hugo/build
 
+  build_versioned_release:
+    title: Building Hugo static site versioned release...
+    image: '${{build_image}}'
+    working_directory: ./
+    environment:
+      - "HUGO_URL=${{HUGO_URL}}release/${{SEMVERSION_TAG}}"
+      - "HUGO_PUBLISH_DIR=public/release/${{SEMVERSION_TAG}}"
+    commands:
+      - make lint
+      - make release
+      - make hugo/build
+    when:
+      condition:
+        all:
+          executeForTag: "'${{SEMVERSION_TAG}}' != ''"
+
   test:
     title: Running tests...
     image: '${{build_image}}'

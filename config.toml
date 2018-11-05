@@ -96,14 +96,14 @@ weight = 45
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-question'></i> <label>Support</label>"
 identifier = "nav-support"
-url = "https://github.com/cloudposse/docs/issues"
+url = "https://cloudposse.com/commercial-support"
 weight = 50
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-edit'></i> <label>Ask a Question</label>"
 identifier = "nav-ask-a-question"
-url = "https://github.com/cloudposse/docs/issues/new"
+url = "/documentation/question/"
 weight = 60
 
 [[menu.shortcuts]]
