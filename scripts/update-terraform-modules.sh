@@ -43,7 +43,7 @@ do
     module=$(basename $module_dir)
     module_readme_yaml=$module_dir/README.yaml
     module_page=content/terraform-modules/$module.md
-    if [ -f $module_readme ]; then
+    if [ -f $module_readme_yaml ]; then
         make readme README_TEMPLATE_FILE=$module_template README_FILE=$module_page README_YAML=$module_readme_yaml README_INCLUDES=$(pwd)/$module_dir
     fi
 done
