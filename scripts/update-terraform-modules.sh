@@ -13,10 +13,12 @@ modules=[]
 ## Fetch repository names
 echo "Fetching repository names..."
 if [ ! -f $tmp_dir/modules_cache.txt ]; then
-    modules=$(seq $github_api_pages | \
+    modules=$(
+        seq $github_api_pages | \
         xargs -I "{}" curl -sSL "https://api.github.com/orgs/${github_org}/repos?per_page=${github_api_limit}&page={}" | \
         jq -r '.[] | .name' | \
-        sort | grep terraform-*)
+        sort | grep terraform-*
+    )
     echo "$modules" > $tmp_dir/modules_cache.txt
 else
     modules=$(<$tmp_dir/modules_cache.txt)
