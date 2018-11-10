@@ -1,8 +1,6 @@
 .dialog {
   border-left: 4px solid $red;
-  padding-top: 13px;
-  padding-bottom: 1px;
-  padding-left: 23px;
+  padding: 13px 23px;
   margin-left: 0;
   margin-bottom: 3em;
   color: $black_50;
@@ -14,10 +12,6 @@
     padding-top: 0;
     margin-top: 10px;
     margin-bottom: 10px;
-
-    &:empty {
-      display: none;
-    }
   }
 
   h4 {
@@ -97,27 +91,15 @@
 
   &.code-block {
     width: 100%;
-    padding-left: 0;
-    margin-left: 0;
-    border-left: 0;
-    padding-top: 0;
-    position: relative;
-    @extend %extend_5;
+    background-color: $color_gray_nurse_approx;
+    border-color: $color_shakespeare_approx;
 
     pre {
-      margin: 0;
-      padding: 5px 13px;
-      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-      border-radius: 0;
+      margin: 0 7px;
     }
 
     h4 {
-      line-height: 2em;
-      font-size: 15px;
-      color: $color_mine_shaft_approx;
-      background-color: $color_gray_nurse_approx;
-      padding-left: 18px;
-      margin-bottom: 0;
+      color: $color_shakespeare_approx;
     }
 
     a {
@@ -125,24 +107,32 @@
     }
 
     &.processed {
-      overflow: hidden;
-      max-height: 250px;
 
-      &:after {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        content: "";
-        height: 30px;
-        width: 100%;
-        background: linear-gradient(180deg,transparent,#fff);
+      pre {
+        overflow: hidden;
+        max-height: 250px;
+        position: relative;
+        &:after {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          content: "";
+          height: 20px;
+          width: 100%;
+          background: linear-gradient(180deg,transparent, $color_gray_nurse_approx);
+        }
       }
     }
 
     .code-expand {
       background: none;
+      color: $color_shakespeare_approx;
       float: right;
-      margin-right: 18px;
+      margin: 0;
     }
+  }
+
+  .copy-to-clipboard .fa {
+    font-size: 1.05rem;
   }
 }

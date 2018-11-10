@@ -60,19 +60,23 @@ function getUrlParameter(sPageURL) {
 let code = document.querySelectorAll('.dialog.code-block');
 for (let index = 0; index < code.length; index++) {
   let element = code[index];
-  let id = 'featherlight-' + index;
-  let link = document.createElement('a');
-  let title = element.querySelector('h4');
-  let highlight = element.querySelector('.highlight') ? element.querySelector('.highlight') : element.querySelector('pre');
+  let highlight = element.querySelector('pre');
 
-  element.classList.add('processed');
+  if (highlight.offsetHeight > 250) {
 
-  link.classList.add('code-expand');
-  link.innerHTML = '<i class="fas fa-expand-arrows-alt"></i>';
-  link.dataset.featherlight = '#' + id;
-  link.setAttribute('href', '#' + id);
+    let id = 'featherlight-' + index;
+    let link = document.createElement('a');
+    let title = element.querySelector('h4');
 
-  title.appendChild(link);
+    element.classList.add('processed');
 
-  highlight.id = id;
+    link.classList.add('code-expand');
+    link.innerHTML = '<i class="fas fa-expand-arrows-alt"></i>';
+    link.dataset.featherlight = '#' + id;
+    link.setAttribute('href', '#' + id);
+
+    title.appendChild(link);
+
+    highlight.id = id;
+  }
 }
