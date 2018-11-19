@@ -56,3 +56,27 @@ function getUrlParameter(sPageURL) {
     return undefined;
   }
 };
+
+let code = document.querySelectorAll('.dialog.code-block');
+for (let index = 0; index < code.length; index++) {
+  let element = code[index];
+  let highlight = element.querySelector('pre');
+
+  if (highlight.offsetHeight > 250) {
+
+    let id = 'featherlight-' + index;
+    let link = document.createElement('a');
+    let title = element.querySelector('h4');
+
+    element.classList.add('processed');
+
+    link.classList.add('code-expand');
+    link.innerHTML = '<i class="fas fa-expand-arrows-alt"></i>';
+    link.dataset.featherlight = '#' + id;
+    link.setAttribute('href', '#' + id);
+
+    title.appendChild(link);
+
+    highlight.id = id;
+  }
+}
