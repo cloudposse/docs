@@ -51,6 +51,9 @@
     <div id="search-results" class="search-results search-results--big">
       <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
       <div id="search-hits" class="search-hits"></div>
+      <div class="search-more">
+        <a class="search-more__link" href="/search/">view all results</a>
+      </div>
     </div>
   </div>
 </div>
@@ -67,6 +70,9 @@
         <div id="search-results" class="search-results">
           <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
           <div id="search-hits" class="search-hits"></div>
+          <div class="search-more">
+            <a class="search-more-link" href="/search/">view all results</a>
+          </div>
         </div>
       </div>
       <div class="subnav__nav-select nav-select">
@@ -78,19 +84,6 @@
     {{end}}
   </div>
 </div>
-
-<div id="refinement-list">
-  <!-- Algolia RefinementList widget will appear here -->
-</div>
-
-<div id="hits">
-  <!-- Algolia Hits widget will appear here -->
-</div>
-
-<div id="pagination">
-  <!-- Pagination widget will appear here -->
-</div>
-
 <div class="page-layout">
   {{if .IsHome}}
     {{ partial "homepage.html" . }}
