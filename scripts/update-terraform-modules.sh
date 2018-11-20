@@ -42,7 +42,7 @@ done
 
 ## Render pages
 echo "Rendering pages..."
-make init
+# make init
 make readme/deps
 module_template=templates/terraform-module-page.md
 for module_dir in $tmp_dir/projects/terraform/*
