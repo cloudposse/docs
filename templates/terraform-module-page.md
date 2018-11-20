@@ -4,7 +4,15 @@
 title: {{ (ds "config").name }}
 {{- if has (ds "config") "description" }}
 description: |-
-{{ (ds "config").description }}
+{{ (ds "config").description | strings.Indent 2 }}
+{{- end }}
+{{- if has (ds "config") "categories" }}
+categories:
+{{ (ds "config").categories | data.ToYAML | strings.Indent 2 }}
+{{- end }}
+{{- if has (ds "config") "tags" }}
+tags:
+{{ (ds "config").tags | data.ToYAML | strings.Indent 2 }}
 {{- end }}
 ---
 
