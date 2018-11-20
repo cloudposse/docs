@@ -10,11 +10,12 @@
 
 // Hugo theme nucleus css
 @import 'vendors/nucleus';
-@import 'vendors/custom-bootstrap';
+// @import 'vendors/custom-bootstrap';
 @import 'flex/style';
 
 @import 'vendors/calendly.scss';
 
+@import 'bootstrap';
 
 
 // TODO: Manage that css loading. SInce it is deprecated call.
@@ -44,6 +45,7 @@
 @import 'components/ui/searchresults';
 @import 'components/ui/searchhits';
 @import 'components/ui/searchstats';
+@import 'components/ui/searchmore';
 
 @import 'components/page-elements/container';
 @import 'components/page-elements/header';
