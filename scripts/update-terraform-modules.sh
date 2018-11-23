@@ -55,3 +55,6 @@ do
         make readme README_TEMPLATE_FILE=$module_template README_FILE=$module_page README_YAML=$module_readme_yaml README_TEMPLATE_YAML=$module_readme_yaml README_INCLUDES=$(pwd)/$module_dir
     fi
 done
+
+## Delete temp data
+rm -rf $tmp_dir/projects
