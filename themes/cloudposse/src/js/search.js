@@ -47,10 +47,10 @@ const search = instantsearch({
 
     if (query.length === 1) {
       showHits();
+    }
 
-      if (searchMoreLink) {
-        showMore(query);
-      }
+    if (searchMoreLink) {
+      showMore(query);
     }
     helper.search();
   }
