@@ -5,7 +5,7 @@ title: "Development Secrets"
 Inevitably, developers working with external APIs will need access to some number of secrets.
 
 
-# Docker Compose
+## Docker Compose
 
 Since we prescribe using `docker-compose` for local development environments, externalizing all parameters and secrets is possible by using environment variables. Combined with [`chamber`]({{< relref "tools/chamber.md" >}}), there's an easy way to secure as much as possible the secrets for local consumption and easily rotate them as necessary without needing to distribute/communicate/coordinate the changes to the various engineering teams.
 
@@ -27,7 +27,7 @@ compose/up:
     docker-compose up
 ```
 
-# Shared Services
+## Shared Services
 
 While using shared logins is one of the *defacto* anti-patterns, it's sometimes unavoidable. Some servies do not support multiple logins, other times SAML integration is simply not supported. The other *gotcha* is that many SaaS providers charge literally 2-3x more per-seat for enalbing SAML (GitHub, Slack, and Jira are some notable examples). With this large multiplier, enabling SAML might not be within the budget.
 

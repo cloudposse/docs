@@ -2,7 +2,7 @@
 title: "terraform-aws-codebuild"
 description: "Terraform module to create AWS CodeBuild project for AWS CodePipeline"
 ---
-# Terraform AWS CodeBuild
+## Terraform AWS CodeBuild
 
 |                  |                                                                                                                                                            |
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,11 +12,11 @@ description: "Terraform module to create AWS CodeBuild project for AWS CodePipel
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-codebuild.svg)](https://travis-ci.org/cloudposse/terraform-aws-codebuild)                  |
 
 
-# Usage
+## Usage
 
 Include this repository as a module in your existing terraform code:
 
-##### HCL
+### HCL
 ```hcl
 module "build" {
     source              = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=master"
@@ -41,7 +41,7 @@ module "build" {
 }
 ```
 
-# Input
+## Input
 
 | Name               | Default                     | Description                                                                                                                                          |
 |:-------------------|:----------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -58,7 +58,7 @@ module "build" {
 | aws_region         | ""                          | (Optional) AWS Region, _e.g._ `us-east-1`. Used as `CodeBuild` ENV variable when building Docker images                                              |
 | aws_account_id     | ""                          | (Optional) AWS Account ID. Used as `CodeBuild` ENV variable when building Docker images                                                              |
 
-# Output
+## Output
 
 | Name         | Description            |
 |:-------------|:-----------------------|

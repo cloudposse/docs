@@ -3,7 +3,7 @@ title: Postmortem Example
 description: "Example of a well-executed postmortem for Root Cause Analysis for an actual outage that affected an Elastic Beanstalk cluster running on AWS."
 ---
 
-# Incident #1 - Rollout Caused Unplanned Outage (2017-06-29)
+## Incident #1 - Rollout Caused Unplanned Outage (2017-06-29)
 
 |                  |                      |
 |:-----------------|:---------------------|
@@ -13,13 +13,13 @@ description: "Example of a well-executed postmortem for Root Cause Analysis for 
 | Total Duration   | 39 Minutes           |
 | Affected Systems | Production Web Tier  |
 
-# Summary
+## Summary
 
-## TL;DR
+### TL;DR
 
 Cascading failures caused prolonged, unplanned site outage. Outage was not caught in staging because there is no server load in staging. Lack of monitoring for critical functionality, led to lost sales.
 
-## Overview
+### Overview
 
 On Thursday, 6/29/2017 ~13:00 we performed a routine ElasticBeanstalk deployment that took the latest artifact from staging and deployed that to production. Shortly afterward, the site started experiencing severe degradation before going entirely offline.
 
@@ -27,7 +27,7 @@ The rollout included multiple fixes, including WordPress core and plugin updates
 
 Due to insufficient monitoring, certain conditions were not caught. This meant the fallout of the incident was further prolonged. GadgetReview lost 4-5 days of Amazon Sales because certain WordPress settings were lost.
 
-## Five Whys
+### Five Whys
 
 The site experienced the classic cascading failure that affected all components (`varnish`, `apache`, `php-fpm`, and database).
 
@@ -72,37 +72,37 @@ The site experienced the classic cascading failure that affected all components 
   4. Since the rollout failed only after moving on, the rollout process was not aborted
   5. Since the rollout was not aborted, ultimately all servers were destablilized at which point the site went offline
 
-## Unexplained problems
+### Unexplained problems
 
 - During the rollout, API keys for the `amazon-associates-link-builder` plugin got cleared ![Amazon Associates Link Builder Credentials Lost](/assets/e82e21a-image_10.png)
 - During the rollout, TablePress options got cleared ![TablePress Options Reset](/assets/4204bed-image_11.png)
 
-## Remediations
+### Remediations
 
 List of actions performed to resolve the problem:
 
 - Redeployed previous version of GadgetReview (Igor )
 
-## What did not help/work:
+### What did not help/work:
 
 - Continuously/Manually restarted apache & php-fpm to attempt to serve some pages
 - Scale out Elastic Beanstalk instances (made problem worse since more instances maxed out DB connections)
 
-## TODO List
+### TODO List
 
-### Short term
+#### Short term
 
 - Varnish health probe should ping synthetic URI (e.g. /healthcheck) that only tests varnish, not backends
 - PHP-FPM should not use persistent mysqli connections
 - Ensure wp-plugins are all explicitly activated/deactivated as part of deployment
 - Investigate what happens if wordpress plugin activated before all servers upgraded
 
-### Medium term
+#### Medium term
 
 - Replace Varnish Caching with Cloud Front CDN to improve Reliability
 - PHP-FPM should be restarted by monit, if not responsive <http://richard.wallman.org.uk/2010/03/monitor-a-fastcgi-server-using-monit/>
 
-### Other Considerations
+#### Other Considerations
 
 - Disable Varnish Caching of Images to Reduce Memory Pressure
 - Reduce rate of rolling deployments to ensure servers are stable for a longer period of time (~5 minutes)
@@ -110,13 +110,13 @@ List of actions performed to resolve the problem:
 - Add Pingdom Monitoring for Amazon Affiliate Codes to ensure `amazon-associates-link-builder` is working
 - Add Pingdom Monitoring for TablePress CSS options
 
-# Appendix
+## Appendix
 
-## Supporting Charts & Documentation
+### Supporting Charts & Documentation
 
 Prior to rollout, all 3 production instances indicated high memory pressure (90%+), however, swap was still unused so this was acceptable at the time.
 
-### Pingom
+#### Pingom
 
 {{< img src="/assets/1f27db8-image_12.png" title="Pingdom 1" >}}
 
@@ -124,7 +124,7 @@ Prior to rollout, all 3 production instances indicated high memory pressure (90%
 
 {{< img src="/assets/9d3f441-image_14.png" title="Pingdom 1" >}}
 
-### Elastic Beanstalk
+#### Elastic Beanstalk
 
 ElasticBeanstalk saw a massive increase in requests which manifested as a Denial of Service Attack. This was triggered probably by mod_pagespeed generating pages for webp assets which could not be served by upgraded servers. Varnish does not cache 404s.
 
@@ -132,30 +132,30 @@ ElasticBeanstalk saw a massive increase in requests which manifested as a Denial
 
 {{< img src="/assets/dc4dbd3-image_16.png" title="ElasticBeanstalk Request Spike" >}}
 
-### RDS
+#### RDS
 
 There were no deadlocks. There was no increase in IOPS (r/w)
 
-#### CPU Utilization spiked.
+##### CPU Utilization spiked.
 
 {{< img src="/assets/2e1d7be-image_17.png" title="CPU Utilization Spiked" >}}
 
-#### Connections peaked and maxed out.
+##### Connections peaked and maxed out.
 
 {{< img src="/assets/8f2e7d3-image_18.png" title="DB Connections Peaked" >}}
 
-#### Selects went through the roof.
+##### Selects went through the roof.
 
 {{< img src="/assets/43dfb04-image_19.png" title="DB Selects Spiked" >}}
 
-#### CPU credits were not exhausted, so we had excess capacity
+##### CPU credits were not exhausted, so we had excess capacity
 
 {{< img src="/assets/7bd6416-image_20.png" title="CPU Credits Okay" >}}
 
-#### Commits / Writes went through the roof
+##### Commits / Writes went through the roof
 
 {{< img src="/assets/b7a608c-image_21.png" title="DB Commits Spiked" >}}
 
-## Related Post Mortems
+### Related Post Mortems
 
 - [Incident #2 - Rollout Caused Unplanned Outage (2017-07-06)](https://cloudposse.quip.com/MkEwAYbanvJ8)

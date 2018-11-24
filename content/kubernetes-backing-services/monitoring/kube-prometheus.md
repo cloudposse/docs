@@ -23,15 +23,15 @@ Kube Prometheus includes the following packages:
 * [Kubernetes Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kubernetes)
 * [Node Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-node)
 
-# Dependencies
+## Dependencies
 
 [Prometheus Operator]({{< relref "kubernetes-backing-services/monitoring/prometheus-operator.md" >}})
 
-# Install
+## Install
 
 You can install `kube-prometheus` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0400.kube-prometheus.yaml).
 
-## Install using Helmfile
+### Install using Helmfile
 
 To install `kube-prometheus` run:
 
@@ -52,7 +52,7 @@ These are some of the environment variables you may want to configure:
 
 Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-## Install using Custom Helmfile
+### Install using Custom Helmfile
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
@@ -60,25 +60,25 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-# Extending Functionality
+## Extending Functionality
 
 You can extend the default functionality of `kube-prometheus` to collect custom
 metrics and send alerts based on the metrics, and display the metric in Grafana charts.
 
-## Custom Metrics Collection
+### Custom Metrics Collection
 
 1. Check the [list of available exporters](https://prometheus.io/docs/instrumenting/exporters) to make sure there isn't already an Exporter that will meet your needs. For example, there are exporters that will work with [JMX](https://github.com/prometheus/jmx_exporter) out-of-the-box.
 2. If there is no exporter, then you'll need to [write your own](https://prometheus.io/docs/instrumenting/writing_exporters/) exporter that will provide required [metrics in correct format](https://prometheus.io/docs/instrumenting/exposition_formats/)
 3. Create a Kubernetes service that provides an [exporter http endpoint](https://kubernetes.io/docs/concepts/services-networking/service). We recommend then deploying this service using a Helm Chart.
 4. Register the exporter for service discovery by creating a Kubernetes resource of type `ServiceMonitor` that points to the service created in step 3.
 
-### Examples
+#### Examples
 
 * Running Exporters with [Prometheus Operator](https://coreos.com/operators/prometheus/docs/latest/user-guides/running-exporters.html)
 * Custom configuration of [Service Monitor](https://coreos.com/operators/prometheus/docs/latest/custom-configuration.html)
 * Helm chart that exposes [Etcd metrics](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
 
-## Custom Dashboards using Grafana
+### Custom Dashboards using Grafana
 
 Before you start, read the basic introduction about grafana [dashboards and panels](http://docs.grafana.org/features/panels/graph/)
 
@@ -97,7 +97,7 @@ Follow [Grafana dashboards documentations](http://docs.grafana.org/reference/tem
 
 The next steps depend on the way you installed `kube-prometheus`
 
-### Installation using Master Helmfile
+#### Installation using Master Helmfile
 
 * Put the exported content into the `/conf/kops/values/kube-prometheus.grafana.dashboards.yaml`
 in format
@@ -112,7 +112,7 @@ grafana:
 * [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
 * Proceed to [install using the Master Helmfile]({{< relref "#install-using-helmfile" >}})
 
-### Installation using Custom Helmfile
+#### Installation using Custom Helmfile
 
 * Put the exported content into the `value.yaml` file in this format
 

@@ -2,7 +2,7 @@
 title: "terraform-aws-cloudfront-s3-cdn"
 description: "Terraform module to easily provision an AWS CloudFront CDN with an S3 or custom origin."
 ---
-# Terraform AWS CloudFront S3 CDN
+## Terraform AWS CloudFront S3 CDN
 
 |                  |                                                                                                                                                                            |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,11 +12,11 @@ description: "Terraform module to easily provision an AWS CloudFront CDN with an
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn)    |
 
 
-# Usage
+## Usage
 
 Include this module in your existing terraform code.
 
-##### HCL
+### HCL
 ```hcl
 module "cdn" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn.git?ref=master"
@@ -26,7 +26,7 @@ module "cdn" {
 }
 ```
 
-# Generating ACM Certificate
+## Generating ACM Certificate
 
 Use the AWS cli to [request new ACM certifiates](http://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request.html) (requires email validation)
 ```
@@ -43,7 +43,7 @@ aws acm request-certificate --domain-name example.com --subject-alternative-name
 * To use an ACM Certificate with Amazon CloudFront, you must request or import the certificate in the US East (N. Virginia) region. ACM Certificates in this region that are associated with a CloudFront distribution are distributed to all the geographic locations configured for that distribution. This is a fundamental requirement of CloudFront, and you will need to request the certificate in `us-east-1` region.
 {{% /dialog %}}
 
-# Variables
+## Variables
 
 | Name                           | Default                | Description                                                                                                                                                       | Required |
 |:-------------------------------|:-----------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------|
@@ -89,7 +89,7 @@ aws acm request-certificate --domain-name example.com --subject-alternative-name
 | `allowed_methods`              | `["*"]`                | List of allowed methods (e.g. ` GET, PUT, POST, DELETE, HEAD`) for AWS CloudFront                                                                                 | No       |
 | `cached_methods`               | `["GET", "HEAD"]`      | List of cached methods (e.g. ` GET, PUT, POST, DELETE, HEAD`)                                                                                                     | No       |
 
-# Outputs
+## Outputs
 
 | Name                    | Description                                       |
 |:------------------------|:--------------------------------------------------|

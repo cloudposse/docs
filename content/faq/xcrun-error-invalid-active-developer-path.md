@@ -8,7 +8,7 @@ tags:
 - faq
 ---
 
-# Question
+## Question
 
 When using `git`, I get the following error on OSX:
 
@@ -16,7 +16,7 @@ When using `git`, I get the following error on OSX:
 xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools
 ```
 
-# Answer
+## Answer
 
 This usually happens when upgrading to a new OSX release or on a new workstation.
 

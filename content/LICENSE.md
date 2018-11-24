@@ -8,11 +8,11 @@ tags:
 - open publication license
 ---
 
-# Copyright
+## Copyright
 
 Copyright 2017-{{< year >}} © Cloud Posse, LLC.
 
-# License
+## License
 
 <div class="license">
 <i class="fab fa-creative-commons" title="Creative Commons License"></i>
@@ -30,13 +30,13 @@ This material may only be distributed subject to the terms and conditions set fo
 **Share Alike** The licensor permits others to distribute derivative works only under the same license or one compatible with the one that governs the licensor's work.
 
 
-# Distribution
+## Distribution
 
 Distribution of the work or derivative of the work in any standard (paper) book form for commercial purposes is prohibited unless prior permission is obtained from the copyright holder.
 
 Distribution of substantively modified versions of this document is prohibited without the explicit permission of the copyright holder.
 
-# Trademarks
+## Trademarks
 
 All other trademarks referenced herein are the property of their respective owners.
 

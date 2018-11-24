@@ -14,10 +14,10 @@ that result from the CI/CD build process (the other one is a [helm chart]({{< re
 
 To build Docker image you can use the [build-harness]({{< relref "release-engineering/build-harness.md" >}}) or native tools of the CI/CD platform.
 
-# Dependency
+## Dependency
 
 None
 
-# Examples
+## Examples
 
 {{% include-code-block title="Build Docker Image with Codefresh" file="release-engineering/cicd-process/examples/build-image-codefresh.yaml" language="yaml" %}}

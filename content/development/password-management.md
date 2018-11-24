@@ -5,7 +5,7 @@ description: ''
 
 We strongly advise all companies to use "1Password for Teams" as their password management solution.
 
-# Features
+## Features
 
 - Shared MFA - useful for root accounts like AWS
 - MFA Integration with Duo
@@ -14,6 +14,6 @@ We strongly advise all companies to use "1Password for Teams" as their password 
 - Cloud Storage
 - Cross-platform support (OSX, Windows, Linux, & Web)
 
-# Alternatives
+## Alternatives
 
 - LastPass

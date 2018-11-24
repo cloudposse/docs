@@ -3,7 +3,7 @@ title: terraform-datadog-aws-integration
 description: Terraform Module for integration DataDog with AWS
 ---
 
-# Terraform Datadog AWS Integration
+## Terraform Datadog AWS Integration
 
 |                  |                                                                                                                                                                                |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,7 +12,7 @@ description: Terraform Module for integration DataDog with AWS
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-datadog-aws-integration.svg)](https://github.com/cloudposse/terraform-datadog-aws-integration/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-datadog-aws-integration.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-datadog-aws-integration)    |
 
-# Usage
+## Usage
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 At the moment the module supports `RDS integration only`. It will be modified as necessary to integrate the needful services.
@@ -20,7 +20,7 @@ At the moment the module supports `RDS integration only`. It will be modified as
 
 Include this module in your existing terraform code:
 
-## HCL
+### HCL
 
 ```hcl
 module "datadog_aws_integration" {
@@ -31,7 +31,7 @@ module "datadog_aws_integration" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                   | Default        | Description                                                                              | Required |
 |:-----------------------|:---------------|:-----------------------------------------------------------------------------------------|:---------|
@@ -44,7 +44,7 @@ module "datadog_aws_integration" {
 | datadog_aws_account_id | `464622532012` | Datadog's AWS account ID                                                                 | No       |
 | integrations           | []             | List of AWS Services to integration with the DataDog service (e.g EC2, RDS, Billing ...) | Yes      |
 
-# Outputs
+## Outputs
 
 | Name   | Description                                               |
 |:-------|:----------------------------------------------------------|

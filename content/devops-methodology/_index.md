@@ -7,30 +7,30 @@ Cloud Posse is a **DevOps Professional Services** company. Everything we do is O
 
 This is our methodology.
 
-# Project Management
+## Project Management
 * [GOST Framework]({{< relref "project-management/gost-framework.md" >}})
 * [RACI Matrix]({{< relref "project-management/raci-matrix.md" >}})
 
-# Local Development Environments
+## Local Development Environments
 1. Create easy functional environments using [Docker Compose]({{< relref "local-dev-environments/docker-compose.md" >}})
 2. Use [Makefile](/tools/make) targets for automation of routine tasks across toolchains
 3. Use [Dockerfile](/local-dev-environments/dockerfile) to capture application dependencies
 
-# Release Engineering
+## Release Engineering
 * [Build Harness]({{< relref "release-engineering/build-harness.md" >}})
 * [Semantic Versioning]({{< relref "development/semver.md" >}})
 
-# Platform
+## Platform
 * [Kops]({{< relref "tools/kops.md" >}}) with [Geodesic](/geodesic)
 
-# Monitoring & Alerting
+## Monitoring & Alerting
 * [Root Cause Analysis (Postmortem)](/devops-methodology/root-cause-analysis-postmortem)
 
-# Infrastructure as Code
+## Infrastructure as Code
 * [Terraform Supported Modules](/terraform-modules)
 * [Helm Charts](/helm-charts)
 
-# Best Practices
+## Best Practices
 * [Pull Request Best Practices]({{< relref "development/github/pull-requests.md" >}})
 * [Terraform Best Practices]({{< relref "terraform/best-practices.md" >}})
 * [Terraform Module Best Practices]({{< relref "terraform-modules/best-practices.md" >}})
@@ -39,7 +39,7 @@ This is our methodology.
 * [Development Best Practices]({{< relref "development/development-best-practices.md" >}})
 * [Workstation Best Practices]({{< relref "development/workstation-best-practices.md" >}})
 
-# Tips & Tricks
+## Tips & Tricks
 * [Docker Tips & Tricks]({{< relref "tools/docker/tips-tricks.md" >}})
 * [Terraform Tips & Tricks]({{< relref "terraform/tips-tricks.md" >}})
 * [Fancy Shell Prompts]({{< relref "local-dev-environments/fancy-shell-prompts.md" >}})

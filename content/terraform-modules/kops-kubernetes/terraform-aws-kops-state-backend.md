@@ -5,7 +5,7 @@ description: >-
   zone).
 ---
 
-# Terraform AWS Kops State Backend
+## Terraform AWS Kops State Backend
 
 |                  |                                                                                                                                                                              |
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -19,13 +19,13 @@ The module supports the following:
 1. Forced server-side encryption at rest for the S3 bucket
 2. S3 bucket versioning to allow for `kops` state recovery in the case of accidental deletions or human errors
 
-# Usage
+## Usage
 
 This example will create a DNS zone called `kops.cloudxl.net` and delegate it from the parent zone `cloudxl.net` by setting `NS` and `SOA` records in the parent zone.
 
 It will also create an S3 bucket with the name `cp-prod-kops-state` for storing `kops` manifests.
 
-## HCL
+### HCL
 
 ```hcl
 module "kops" {
@@ -75,7 +75,7 @@ aws route53 list-tags-for-resources --resource-type hostedzone --resource-ids Z5
 }
 ```
 
-# Variables
+## Variables
 
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}

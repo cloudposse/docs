@@ -7,26 +7,26 @@ description: "The `external-dns` controller synchronizes exposed Kubernetes `Ser
 This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relref "geodesic/module/with-terraform.md" >}}) guide which covers all the scaffolding necessary to get started.
 {{% /dialog %}}
 
-# Dependencies
+## Dependencies
 
 * [Kube2IAM]({{< relref "kubernetes-backing-services/iam/kube2iam.md" >}})
 
-# Installation
+## Installation
 
-## Provision IAM Role
+### Provision IAM Role
 
 Create a file in `/conf/kops-aws-platform/external-dns.tf` with the following content
 
 {{% include-github title="External DNS IAM Role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.5" file="/aws/kops-aws-platform/external-dns.tf" language="hcl" %}}
 
-## Rebuild the Geodesic Module
+### Rebuild the Geodesic Module
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
 make docker/build
 ```
 
-##  Start the Geodesic Shell
+### Start the Geodesic Shell
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
@@ -39,7 +39,7 @@ Then login to AWS by running `assume-role`:
 
 {{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
-## Provision Chamber Resources
+### Provision Chamber Resources
 
 Change directory to `/conf/kops-aws-platform` and run there commands to provision the `external-dns` backend.
 ```bash
@@ -54,11 +54,11 @@ From the Terraform outputs, copy the `kops_external_dns_role_name`into the ENV v
 
 In the example the iam role name is `kops_external_dns_role_name = example-staging-external-dns`.
 
-## Install Chart
+### Install Chart
 
 You can install `external-dns` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0100.external-dns.yaml).
 
-## Install with Master Helmfile
+### Install with Master Helmfile
 
 1. Set with chamber the `EXTERNAL_DNS_IAM_ROLE` secret to IAM role name from previous step.
 2. Set with chamber the `EXTERNAL_DNS_TXT_OWNER_ID` secret to cluster name.
@@ -76,7 +76,7 @@ chamber exec kops -- helmfile --selector chart=external-dns sync
 
 Replace with values to suit your specific project.
 
-## Install with Custom Helmfile
+### Install with Custom Helmfile
 
 Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
@@ -84,7 +84,7 @@ Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-## Usage
+### Usage
 
 To leverage `external-dns`, you will need to add annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
 

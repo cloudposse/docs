@@ -11,7 +11,7 @@ We advocate using `chamber` with all CI/CD pipelines to access secrets. Chamber 
 
 Enabling CI/CD systems to access chamber depends on the CI/CD solution. For CodeBuild/CodePipeline, it's possible to leverage IAM Roles to grant access to KMS+SSM, while for other systems which are external to AWS, it's necessary to [provision a chamber IAM user](https://github.com/cloudposse/terraform-aws-iam-chamber-user) with a very limited scope (the link provides an example for how we do this using `terraform`).
 
-# Using Chamber with Codefresh
+## Using Chamber with Codefresh
 
 If using Codefresh, there a few things that need to happen.
 

@@ -23,7 +23,7 @@ When alert conditions are satisfied, Prometheus passes alert notifications to [A
 
 The Prometheus API service is used by other services to query for metrics data. For example, Grafana uses this endpoint to fetch the data needed by charts.
 
-# Prometheus Exporter (aka Exporter)
+## Prometheus Exporter (aka Exporter)
 
 The Prometheus Exporter is an http service that exposes metrics in a format suitable for Prometheus consumption.
 
@@ -32,7 +32,7 @@ Sometimes this will be a simple service like the
 
 Othertimes, software exposes metrics in a prometheus-compatable format out-of-the-box. For a list of software that integrates natively with Prometheus, check out the [list of software exposing prometheus metrics](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)
 
-## Collecting Custom Metrics
+### Collecting Custom Metrics
 
 To collect custom metrics a few things need to happen:
 

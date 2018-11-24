@@ -8,19 +8,19 @@ tags:
 - faq
 ---
 
-# Question
+## Question
 
 How to rollback application to previous version?
 
-# Answer
+## Answer
 
 [Helm]({{< relref "tools/helm.md" >}}) handles rollbacks out-of-the-box. Everytime a helm release is performed, it creates a new revision. By pinpointing a specific helm revision and performing a rollback, the previous version will be redeployed.
 
 There are a couple ways we recommend performing rollbacks.
 
-## Rollback using Helm Client
+### Rollback using Helm Client
 
-###  Start the Geodesic Shell
+####  Start the Geodesic Shell
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
@@ -33,7 +33,7 @@ Then login to AWS by running `assume-role`:
 
 {{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
-### Configure `kubectl` and `helm`
+#### Configure `kubectl` and `helm`
 
 When you start the Geodesic shell, you will need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` and `helm` to authenticate with the cluster.
 
@@ -46,7 +46,7 @@ kops has set your kubectl context to us-west-2.staging.example.com
 
 (Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
-### Rollback Helm Release
+#### Rollback Helm Release
 
 Run the following commands to identify the helm release and corresponding revision that you want to rollback to. Note, we're using `$RELEASE_NAME` and `$REVISION_NUMBER` to symbolically represent the values you should enter in their place.
 
@@ -58,7 +58,7 @@ helm rollback $RELEASE_NAME $REVISION_NUMBER
 
 {{% include-code-block title="Helm rollback" file="faq/examples/helm-rollback.txt" %}}
 
-## Rollback using Codefresh UI
+### Rollback using Codefresh UI
 
 The other option is to use the Codefresh UI to perfom the rollback. The benefit with this is no console access is required.
 

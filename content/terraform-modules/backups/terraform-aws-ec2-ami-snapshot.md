@@ -3,7 +3,7 @@ title: terraform-aws-ec2-ami-snapshot
 description: ''
 ---
 
-# Terraform AWS EC2 AMI Snapshot
+## Terraform AWS EC2 AMI Snapshot
 
 |                  |                                                                                                                                                                          |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,11 +12,11 @@ description: ''
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ec2-ami-snapshot.svg)](https://github.com/cloudposse/terraform-aws-ec2-ami-snapshot/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-ec2-ami-snapshot.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-ec2-ami-snapshot)    |
 
-# Module usage
+## Module usage
 
-## Create an AWS instance
+### Create an AWS instance
 
-### HCL
+#### HCL
 
 ```hcl
 resource "aws_instance" "default" {
@@ -29,11 +29,11 @@ resource "aws_instance" "default" {
 }
 ```
 
-## Create AMI from an AWS instance.
+### Create AMI from an AWS instance.
 
 Instance ID is required.
 
-### HCL
+#### HCL
 
 ```hcl
 module "tf_ami_from_instance" {

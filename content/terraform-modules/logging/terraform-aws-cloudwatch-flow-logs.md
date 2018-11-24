@@ -6,7 +6,7 @@ description: >-
   for `vpc` and `subnets`.
 ---
 
-# Terraform AWS CloudWatch Flow Logs
+## Terraform AWS CloudWatch Flow Logs
 
 |                  |                                                                                                                                                                                  |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -15,9 +15,9 @@ description: >-
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudwatch-flow-logs.svg)](https://github.com/cloudposse/terraform-aws-cloudwatch-flow-logs/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudwatch-flow-logs.svg)](https://travis-ci.org/cloudposse/terraform-aws-cloudwatch-flow-logs)                  |
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "flow_logs" {
@@ -28,7 +28,7 @@ module "flow_logs" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                  | Default                                | Description                                                                                             | Required |
 |:----------------------|:---------------------------------------|:--------------------------------------------------------------------------------------------------------|:---------|
@@ -52,7 +52,7 @@ module "flow_logs" {
 | `subnet_ids`          | `[]`                                   | IDs of subnets                                                                                          | No       |
 | `eni_ids`             | `[]`                                   | IDs of ENIs                                                                                             | No       |
 
-# Outputs
+## Outputs
 
 | Name                  | Description                |
 |:----------------------|:---------------------------|

@@ -12,28 +12,28 @@ tags:
 [Chartmuseum](https://github.com/kubernetes-helm/chartmuseum) is an artifact storage
 for [Helm]({{< relref "tools/helm.md" >}}) charts.
 
-# Dependencies
+## Dependencies
 
 * [Kube2IAM]({{< relref "kubernetes-backing-services/iam/kube2iam.md" >}})
 * [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
 * [Kube Lego]({{< relref "kubernetes-backing-services/tls-management/kube-lego-lets-encrypt.md" >}})
 
-# Installation
+## Installation
 
-## Provision S3 Bucket and IAM Role
+### Provision S3 Bucket and IAM Role
 
 Create a file in `/conf/kops-aws-platform/chart-repo.tf` with the following content
 
 {{% include-github title="Chartmuseum S3 bucket and IAM role" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="0.1.5" file="/aws/kops-aws-platform/chart-repo.tf" language="hcl" %}}
 
-## Rebuild the Geodesic Module
+### Rebuild the Geodesic Module
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
 make docker/build
 ```
 
-##  Start the Geodesic Shell
+### Start the Geodesic Shell
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
@@ -46,7 +46,7 @@ Then login to AWS by running `assume-role`:
 
 {{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
-## Provision Chamber Resources
+### Provision Chamber Resources
 
 Change directory to `/conf/kops-aws-platform` and run these commands to provision the `chart-repo` backend.
 ```bash
@@ -64,7 +64,7 @@ From the Terraform outputs, copy the following values into the environment varia
 In the example the bucket name is `kops_chart_repo_bucket_bucket_id = example-staging-chart-repo`.
 IAM role is `kops_chart_repo_bucket_role_name = example-staging-chart-repo`.
 
-## Install Chart
+### Install Chart
 
 To install the `chartmuseum`, you will need to define the `hostname`, which is the FQHN used to access the `chartmuseum`.
 
@@ -72,7 +72,7 @@ In our example, we use `charts.us-west-2.staging.example.com` as the FQHN. Repla
 
 You can install `chartmuseum` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0300.chartmuseum.yaml).
 
-### Install with Master Helmfile
+#### Install with Master Helmfile
 
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Breaking changes" %}}
 
@@ -150,7 +150,7 @@ These are the environment variables you will need to set to configure `chartmuse
 
 Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-### Install with Custom Helmfile
+#### Install with Custom Helmfile
 
 Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
@@ -158,7 +158,7 @@ Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-# Usage
+## Usage
 
 Read [chart museum documentation](https://github.com/kubernetes-helm/chartmuseum)
 for more information on `chartmuseum` usage.

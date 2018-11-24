@@ -10,7 +10,7 @@ tags:
 - assume-role
 ---
 
-# Question
+## Question
 
 When attempting to `assume-role` or call `aws-vault exec`, it errors with a message like:
 
@@ -19,7 +19,7 @@ aws-vault: error: Failed to get credentials for joany (source profile for xxxxx-
         status code: 403, request id: ec5b2b11-391e-11e8-8986-bf22dc40d072
 ```
 
-# Answer
+## Answer
 
 This usually happens due to time drift. If using Docker for Mac, this error is pretty common, especially on laptops which go into sleep or hibernation mode.
 

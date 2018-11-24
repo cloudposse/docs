@@ -2,7 +2,7 @@
 title: "terraform-aws-s3-website"
 description: "Terraform module for creating S3 backed Websites"
 ---
-# Terraform AWS S3 Website
+## Terraform AWS S3 Website
 
 |                  |                                                                                                                                                              |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,15 +12,15 @@ description: "Terraform module for creating S3 backed Websites"
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-s3-website.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-s3-website)    |
 
 
-# Further Reading
+## Further Reading
 
 * http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html
 
-# Usage
+## Usage
 
-## Create s3 website bucket
+### Create s3 website bucket
 
-##### HCL
+#### HCL
 ```hcl
 module "website" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-s3-website.git?ref=master"
@@ -31,9 +31,9 @@ module "website" {
 ```
 
 
-## Create S3 Website Bucket with Route53 DNS
+### Create S3 Website Bucket with Route53 DNS
 
-##### HCL
+#### HCL
 ```hcl
 module "website" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-s3-website.git?ref=master"
@@ -47,7 +47,7 @@ module "website" {
 Only specify `parent_zone_id` or `parent_zone_name`, but not both.
 {{% /dialog %}}
 
-# Variables
+## Variables
 
 | Name                                 | Default       | Description                                                                                                     | Required |
 |:-------------------------------------|:--------------|:----------------------------------------------------------------------------------------------------------------|:---------|
@@ -82,7 +82,7 @@ Only specify `parent_zone_id` or `parent_zone_name`, but not both.
 | `parent_zone_id`                     | ``            | ID of the hosted zone to contain the record or specify `parent_zone_name` instead                               | No       |
 | `parent_zone_name`                   | ``            | Name of the hosted zone to contain the record or specify `parent_zone_id` instead                               | No       |
 
-# Outputs
+## Outputs
 
 | Name                    | Description                                             |
 |:------------------------|:--------------------------------------------------------|

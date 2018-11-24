@@ -10,7 +10,7 @@ tags:
 
 Here we describe the *cold start* process, when we start with just one master AWS account and provision infrastructure for different environments.
 
-# Prerequisites
+## Prerequisites
 
 * Choose an AWS region in which to provision all the resources - we use `us-west-2` for our reference architectures
 
@@ -49,7 +49,7 @@ Replace the profile name `cpco` with your own (for consistency, we recommend usi
 {{% /dialog %}}
 
 
-# Cold Start Process
+## Cold Start Process
 
 In this example, we'll provision resources for the following two accounts:
 
@@ -59,7 +59,7 @@ In this example, we'll provision resources for the following two accounts:
 The other stages (`prod`, `staging`, `dev`, `audit`) are similar (they might differ by the resources you provision), and as has been noticed before, you might not need all of them.
 
 
-## Copy Our Reference Architectures
+### Copy Our Reference Architectures
 
 Copy the [root](https://github.com/cloudposse/root.cloudposse.co) and [testing](https://github.com/cloudposse/testing.cloudposse.co) repos to your local workstation
 into two different folders. For this example, we'll use `~/root.cloudposse.co` and `~/testing.cloudposse.co` respectively.
@@ -75,7 +75,7 @@ Update all ENV variables in the two `Dockefiles` in the repos with the values fo
  * In `testing`, select only the resources you need to provision (using `COPY --from=terraform-root-modules`)
 
 
-## Add AWS Profile for `root`
+### Add AWS Profile for `root`
 
 We require all users to assume IAM roles to access all the accounts (including `root`).
 
@@ -102,7 +102,7 @@ Change the namespace and profile name `cpco`, the region, the `root` account ID 
 {{% /dialog %}}
 
 
-## Build And Start Geodesic Module for `root`
+### Build And Start Geodesic Module for `root`
 
 Open a terminal window and execute the following commands:
 
@@ -132,7 +132,7 @@ You should see the `Docker` image built, `geodesic` shell started, and after you
 {{% include-code-block title="Assume role admin@cloudposse.co" file="reference-architectures/examples/assume_role_admin_cloudposse_co.txt" %}}
 
 
-## Provision `tfstate-backend` Project for `root`
+### Provision `tfstate-backend` Project for `root`
 
 We store Terraform state in an S3 bucket and use a DynamoDB table for state locking (allowing many users to work on the same project without affecting each other and corrupting the state).
 
@@ -177,7 +177,7 @@ sed -i "s/ #backend / backend /" main.tf
 Now we have the S3 bucket and DynamoDB table provisioned, and Terraform state stored in the bucket itself.
 
 
-## Provision `iam` Project to Create `root` IAM Role
+### Provision `iam` Project to Create `root` IAM Role
 
 As was mentioned before, we require that all users assume roles to access the AWS accounts.
 
@@ -246,7 +246,7 @@ Enter passphrase to unlock /conf/.awsvault/keys/:
 * Assumed role arn:aws:iam::323330167063:role/cpco-root-admin
 ```
 
-## Provision `organization` Project for `root`
+### Provision `organization` Project for `root`
 
 {{% dialog type="code-block" icon="fa fa-code" title="Provision `organization` Project for `root`" %}}
 ```shell
@@ -266,7 +266,7 @@ terraform import aws_organizations_organization.default o-cas6q267wf
 {{% /dialog %}}
 
 
-## Provision `accounts` Project for `root`
+### Provision `accounts` Project for `root`
 
 {{% dialog type="code-block" icon="fa fa-code" title="Provision `accounts` Project for `root`" %}}
 ```shell
@@ -292,7 +292,7 @@ assume-role
 ```
 {{% /dialog %}}
 
-## Provision `iam` Project in `root` to Create IAM Roles for Member Accounts
+### Provision `iam` Project in `root` to Create IAM Roles for Member Accounts
 
 Now we have the `testing` account ID and need to finish provisioning the `root` `iam` project.
 
@@ -338,7 +338,7 @@ source_profile=cpco
 ```
 {{% /dialog %}}
 
-## Provision `root-dns` Project in `root` to Create `parent` and `root` DNS Zones
+### Provision `root-dns` Project in `root` to Create `parent` and `root` DNS Zones
 
 Now we provision DNS for the `root` account, but without the `testing` Name Servers yet.
 
@@ -382,7 +382,7 @@ If you did not buy the `parent` domain from Route53, you need to take the `paren
 {{% /dialog %}}
 
 
-## Build And Start Geodesic Module for `testing`
+### Build And Start Geodesic Module for `testing`
 
 Open a new terminal window and execute the following commands:
 
@@ -420,7 +420,7 @@ Enter passphrase to unlock /conf/.awsvault/keys/:
 ```
 
 
-## Provision `tfstate-backend` Project for `testing`
+### Provision `tfstate-backend` Project for `testing`
 
 Execute this sequence of steps in the `testing` geodesic session:
 
@@ -452,7 +452,7 @@ sed -i "s/ #backend / backend /" main.tf
 Now we have the S3 bucket and DynamoDB table provisioned, and Terraform state stored in the bucket itself.
 
 
-## Provision `account-dns` Project in `testing` to Create `testing` DNS Zone
+### Provision `account-dns` Project in `testing` to Create `testing` DNS Zone
 
 In `testing` `geodesic` shell, execute the following commands:
 
@@ -481,7 +481,7 @@ zone_id = Z3SO0TKDDQ0RGG
 Take the Name Servers from the output and update them in the `root` `Dockerfile` (variable `TF_VAR_testing_name_servers`).
 
 
-## Rebuild And Restart `root` `geodesic` Shell
+### Rebuild And Restart `root` `geodesic` Shell
 
 Exit the `geodesic` shell, then run these commands:
 
@@ -494,7 +494,7 @@ assume-role
 {{% /dialog %}}
 
 
-## Finish Provisioning `root-dns` Project to Add `testing` Name Servers
+### Finish Provisioning `root-dns` Project to Add `testing` Name Servers
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 We use DNS zone delegation since `root` and `testing` are in different AWS accounts
@@ -520,7 +520,7 @@ DNS for `root` and `testing` should be done at this step.
 {{% /dialog %}}
 
 
-## Provision `acm` Project in `testing` to Request and Validate SSL Certificate
+### Provision `acm` Project in `testing` to Request and Validate SSL Certificate
 
 In `testing` `geodesic` shell, execute the following commands:
 
@@ -557,7 +557,7 @@ certificate_id = arn:aws:acm:us-west-2:126450723953:certificate/56897dfe-23ac-4e
 {{% /dialog %}}
 
 
-## Provision `chamber` Project in `testing` to Create IAM User and KMS Key for Chamber
+### Provision `chamber` Project in `testing` to Create IAM User and KMS Key for Chamber
 
 In `testing` `geodesic` shell, execute the following commands:
 

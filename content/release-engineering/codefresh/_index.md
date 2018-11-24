@@ -2,9 +2,9 @@
 title: "Codefresh"
 description: ""
 ---
-# Quick Start
+## Quick Start
 
-## Docker Login to Codefresh Registry
+### Docker Login to Codefresh Registry
 
 In order to push/pull images from the Codefresh docker registry, you'll need to login via the command line API. This is a one-time operation, so you won't need to do this very often.
 
