@@ -18,7 +18,8 @@ var sass_config = {
     'node_modules/@fortawesome/',
     '../hugo-theme-docdock/static/scss/',
     'node_modules/instantsearch.js/',
-    'node_modules/featherlight/src/'
+    'node_modules/featherlight/src/',
+    'node_modules/bootstrap/scss/'
   ]
 };
 
@@ -42,7 +43,7 @@ gulp.task("sass", function(cb) {
 
 gulp.task("scripts", function () {
   return webpackStream(require('./webpack.config.js'))
-    .pipe(gulp.dest('./static/js/'));    
+    .pipe(gulp.dest('./static/js/'));
 });
 
 gulp.task('fonts', function () {
