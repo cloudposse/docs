@@ -1,4 +1,10 @@
 .footer {
+  display: none;
+
+  @include respond-to(desktop) {
+    display: block;
+  }
+
   .footline {
     display: block;
     padding-top: .2rem;
