@@ -50,7 +50,7 @@ spec:
 ```
 
 
-# Ingress Controllers
+## Ingress Controllers
 
 In order for the Ingress resource to work, the cluster must have an Ingress controller running. Only one ingress controller per cluster is required.
 

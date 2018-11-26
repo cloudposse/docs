@@ -16,11 +16,11 @@ homepage: true
 | Release      | [![Release](https://img.shields.io/github/release/cloudposse/geodesic.svg)](https://github.com/cloudposse/geodesic/releases) |
 | Build Status | [![Build Status](https://travis-ci.org/cloudposse/geodesic.svg?branch=master)](https://travis-ci.org/cloudposse/geodesic)    |
 
-# Introduction
+## Introduction
 
 Geodesic provides a fully customizable framework for defining and building world-class cloud infrastructures backed by [AWS](https://aws.amazon.com/) and powered by [kubernetes](https://kubernetes.io/). It couples best-of-breed technologies with engineering best-practices to equip organizations with the tooling that enables clusters to be spun up in record time without compromising security.
 
-# Demo
+## Demo
 
 {{% asciinema src="/assets/geodesic-demo.cast" autoplay="true" title="Geodesic Demo" %}}
 
@@ -31,7 +31,7 @@ Geodesic is composed of two parts:
 
 An organization may choose to leverage all of these components or just the parts that make their life easier.
 
-# Features
+## Features
 
 - **Secure** - TLS/PKI, OAuth2, MFA Everywhere, remote access VPN, [ultra secure bastion/jumphost](https://github.com/cloudposse/bastion) with audit capabilities and slack notifications, [IAM assumed roles](https://github.com/99designs/aws-vault/), automatic key rotation, encryption at rest, and VPCs
 - **Repeatable** - 100% Infrastructure-as-Code with change automation and support for scriptable admin tasks in any language, including Terraform
@@ -39,7 +39,7 @@ An organization may choose to leverage all of these components or just the parts
 - **Comprehensive** - our [helm charts library](https://github.com/cloudposse/charts) are designed to tightly integrate your cloud-platform with GitHub Teams and Slack Notifications and CI/CD systems like TravisCI, CircleCI or Jenkins
 - **OpenSource** - Permissive [APACHE 2.0](https://github.com/cloudposse/geodesic/blob/master/LICENSE) license means no lock-in and no on-going license fees
 
-# Technologies
+## Technologies
 
 At its core, Geodesic is a framework for provisioning cloud infrastructure and the applications that sit on top of it. We leverage as many existing tools as possible to facilitate cloud fabrication and administration. We're like the connective tissue that sits between all of the components of a modern cloud.
 
@@ -55,7 +55,7 @@ At its core, Geodesic is a framework for provisioning cloud infrastructure and t
 | [`kubectl`](https://kubernetes.io/docs/user-guide/kubectl-overview/) | for controlling kubernetes resources like deployments or load balancers                                                     |
 | [`gomplate`](https://github.com/hairyhenderson/gomplate/)            | for template rendering configuration files using the GoLang template engine. Supports lots of local and remote data sources |
 
-# Our Logo
+## Our Logo
 
 In mathematics, a geodesic line is the shortest distance between two points on a sphere. It's also a solid structure composed of geometric shapes such as hexagons.
 

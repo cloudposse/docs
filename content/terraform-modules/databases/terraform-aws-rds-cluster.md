@@ -2,7 +2,7 @@
 title: "terraform-aws-rds-cluster"
 description: "Terraform module to provision an [`RDS Aurora`](https://aws.amazon.com/rds/aurora) cluster for MySQL or Postgres."
 ---
-# Terraform AWS RDS Cluster
+## Terraform AWS RDS Cluster
 
 |                  |                                                                                                                                                                |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -11,12 +11,12 @@ description: "Terraform module to provision an [`RDS Aurora`](https://aws.amazon
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-rds-cluster.svg)](https://github.com/cloudposse/terraform-aws-rds-cluster/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-rds-cluster.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-rds-cluster)    |
 
-# Usage
+## Usage
 
 Basic [example](https://github.com/cloudposse/terraform-aws-rds-cluster/tree/master/examples/basic)
 
 
-##### HCL
+### HCL
 ```hcl
 module "rds_cluster_aurora" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-rds-cluster.git?ref=master"
@@ -29,7 +29,7 @@ module "rds_cluster_aurora" {
 
 With [cluster parameters](https://github.com/cloudposse/terraform-aws-rds-cluster/tree/master/examples/with_cluster_parameters)
 
-##### HCL
+### HCL
 ```hcl
 module "rds_cluster_aurora" {
   source             = "git::https://github.com/cloudposse/terraform-aws-rds-cluster.git?ref=master"
@@ -91,7 +91,7 @@ module "rds_cluster_aurora" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                | Default               | Description                                                                                                             |
 |:--------------------|:----------------------|:------------------------------------------------------------------------------------------------------------------------|
@@ -122,7 +122,7 @@ module "rds_cluster_aurora" {
 | cluster_parameters  | []                    | List of DB parameters to apply                                                                                          |
 | cluster_size        | "2"                   | Number of DB instances to create in the cluster                                                                         |
 
-# Outputs
+## Outputs
 
 | Name          | Description                     |
 |:--------------|:--------------------------------|

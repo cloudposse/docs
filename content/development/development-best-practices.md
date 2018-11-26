@@ -3,8 +3,8 @@ title: Development Best Practices
 description: ''
 ---
 
-# Linting
+## Linting
 
-# Define `LICENSE` and/or `COPYRIGHT` file
+## Define `LICENSE` and/or `COPYRIGHT` file
 
-# Include a well-formed `README.md`
+## Include a well-formed `README.md`

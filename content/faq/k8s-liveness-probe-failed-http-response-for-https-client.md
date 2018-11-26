@@ -7,7 +7,7 @@ tags:
 - probe
 ---
 
-# Question
+## Question
 
 While trying to deploy the `master` branch of our app to a new namespace in staging, we're getting the following error:
 
@@ -15,7 +15,7 @@ While trying to deploy the `master` branch of our app to a new namespace in stag
 Liveness probe failed: Get https://100.112.158.75:3000/healthz: http: server gave HTTP response to HTTPS client
 ```
 
-# Answer
+## Answer
 
 Ensure that the scheme of the probes match that of the service. Since TLS usually terminates at the ingress, services should typically define `scheme: HTTP`.
 

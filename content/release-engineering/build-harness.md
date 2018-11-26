@@ -15,11 +15,11 @@ It's designed to work with CI/CD systems such as Travis CI, CircleCI, Codefresh 
 
 It's 100% Open Source and licensed under [APACHE2]({{< relref "LICENSE.md" >}}).
 
-# Usage
+## Usage
 
 At the top of your `Makefile` add, the following...
 
-## Makefile
+### Makefile
 
 ```shell
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
@@ -35,7 +35,7 @@ Run `make help` for a list of available targets.
 The `/` in target names is interchangeable with the `:` in target names
 {{% /dialog %}}
 
-# Real World Examples
+## Real World Examples
 
 We leverage the `build-harness` in nearly every project on our [GitHub]({{< relref "documentation/our-github.md" >}}).
 
@@ -46,7 +46,7 @@ We leverage the `build-harness` in nearly every project on our [GitHub]({{< relr
 | [`bastion`](https://github.com/cloudposse/bastion/)                               | A docker image that leverages `docker/%` and `bash/lint` targets           |
 | [`terraform-null-label`](https://github.com/cloudposse/terraform-null-label/)     | A terraform module that leverages `terraform/%` targets                    |
 
-# Makefile Targets
+## Makefile Targets
 
 Running `make help` will produce this helpful output of all available make targets.
 

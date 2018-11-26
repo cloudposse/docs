@@ -6,18 +6,18 @@ tags:
 - kubernetes
 ---
 
-# Setup
+## Setup
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 The "administrator" permission on Codefresh is required to carry out these steps. Ask your Codefresh administrator to grant these permissions on the [collaborators](https://g.codefresh.io/account/collaborators) page on Codefresh or to carry out the following steps on your behalf.
 {{% /dialog %}}
 
 
-## Login
+### Login
 
 Login to Codefresh and navigate to the [Kubernetes Integration](https://g.codefresh.io/kubernetes/services/) under account settings.
 
-## Add Cluster
+### Add Cluster
 
 Click "Add Provider" and select the relevant cloud platform.
 
@@ -36,7 +36,7 @@ Enter the outputs of the script into the form and click save.
 We recommend naming the configuration after the cluster name (e.g. `us-west-2-staging-example-com`).
 {{% /dialog %}}
 
-## Enter Kubernetes Credentials
+### Enter Kubernetes Credentials
 
 ![Enter Kubernetes API Details](/assets/c5273c7-Screen_Shot_2018-04-16_at_5.20.30_PM.png)
 
@@ -44,7 +44,7 @@ We recommend naming the configuration after the cluster name (e.g. `us-west-2-st
 The complete docs for configuring Codefresh with Kubernetes can be found on their [documentation portal](https://docs.codefresh.io/v1.0/docs/adding-non-gke-kubernetes-cluster).
 {{% /dialog %}}
 
-# Usage
+## Usage
 
 Once you've setup the Kubernetes integration with Codefresh, you can leverage it in your `codefresh.yaml` pipelines by setting the `KUBE_CONTEXT` environment variable to the name of the connection.
 

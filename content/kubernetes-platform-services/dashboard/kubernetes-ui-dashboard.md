@@ -4,11 +4,11 @@ description: "The Kubernetes Dashboard is a web-based UI for managing Kubernetes
 weight: 1
 ---
 
-# Dependencies
+## Dependencies
 
 * None
 
-# Installation
+## Installation
 
 You can install `kubernetes-dashboard` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0610.dashboard.yaml).
 
@@ -16,7 +16,7 @@ The Kubernetes dashboard requires [heapster](https://github.com/kubernetes/heaps
 
 You can skip `heapster` installation if there is no need to monitor resources.
 
-## Install with Master Helmfile
+### Install with Master Helmfile
 
 Run the following commands:
 ```bash
@@ -33,7 +33,7 @@ These environment variables are used to configure the service:
 
 Environment variables can be specified in either the Geodesic module's `Dockerfile` or with [chamber]({{< relref "tools/chamber.md" >}}).
 
-## Install with Custom Helmfile
+### Install with Custom Helmfile
 
 Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 
@@ -41,6 +41,6 @@ Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-# Usage
+## Usage
 
 * [Cluster Portal]({{< relref "kubernetes-platform-services/dashboard/cluster-portal.md" >}}) describes usage and how to expose Kubernetes UI Dashboard publicly

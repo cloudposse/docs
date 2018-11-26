@@ -11,7 +11,7 @@ tags:
 - ssh
 ---
 
-# Question
+## Question
 
 When running `init-terraform`, it fails while trying to fetch a private github repository.
 
@@ -33,7 +33,7 @@ and the repository exists.
 ```
 
 
-# Answer
+## Answer
 
 This usually happens for one of two reasons:
 

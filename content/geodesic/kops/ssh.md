@@ -9,9 +9,9 @@ tags:
 
 The standard kops topology deployed by Cloud Posse includes a `bastion` node (sometimes called a `kastion`).
 
-# Configuration
+## Configuration
 
-## Master Keys
+### Master Keys
 
 The master SSH keys were created and associated with the cluster when it was created. They are by default persisted to the terraform state encrypted state bucket.
 
@@ -30,15 +30,15 @@ Add the master key to the local `ssh-agent`:
 ssh-add /secrets/tf/ssh/*
 ```
 
-## ACLs
+### ACLs
 
 SSH access is controlled by the `spec.sshAccess` setting in the kops manifest. It defaults to `0.0.0.0/0`.
 
-## Hostname
+### Hostname
 
 The bastion hostname is determined by the `KOPS_BASTION_PUBLIC_NAME` environment variable, which defaults to `bastion`. This name is concatenated with the `KOPS_CLUSTER_NAME` to form the FQHN.
 
-# Connecting to Bastion
+## Connecting to Bastion
 
 The default username is `admin`. After adding the SSH keys to your `ssh-agent`, run the following:
 
@@ -46,6 +46,6 @@ The default username is `admin`. After adding the SSH keys to your `ssh-agent`, 
 ssh -A admin@bastion.$KOPS_CLUSTER_NAME
 ```
 
-# References
+## References
 - <https://github.com/kubernetes/kops/blob/master/docs/bastion.md>
 -

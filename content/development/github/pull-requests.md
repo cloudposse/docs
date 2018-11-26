@@ -3,7 +3,7 @@ title: Pull Requests
 description: ''
 ---
 
-# Submitting a Pull Request
+## Submitting a Pull Request
 
 Prior to submitting your pull request, you might want to do a few things to clean up your branch and make it as simple as possible for the original repo's maintainer to test, accept, and merge your work. If any commits have been made to the upstream master branch, you should rebase your development branch so that merging it will be a simple fast-forward that won't require any conflict resolution work.
 
@@ -27,7 +27,7 @@ git push origin newfeature -f
 
 Then follow these instructions once you're ready: <https://help.github.com/articles/creating-a-pull-request/>
 
-# Pull Request Template
+## Pull Request Template
 
 Use the following markdown template to describe the Pull Request.
 

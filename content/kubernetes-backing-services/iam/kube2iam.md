@@ -3,12 +3,12 @@ title: "Kube2IAM"
 description: ""
 ---
 
-# Dependencies
+## Dependencies
 None
 
-# Install
+## Install
 
-## Enable Assumed Roles
+### Enable Assumed Roles
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
 By default, the kops manifest that ships with Geodesic is configured to permit nodes to assume roles.
@@ -43,11 +43,11 @@ spec:
 
 Follow the instructions to [apply changes to the kops cluster]({{< relref "geodesic/module/with-kops.md#update-cluster" >}})
 
-## Kops Integration
+### Kops Integration
 
 Now to leverage IAM Roles with your `kops` cluster, you'll need to install `kube2iam`. There are a number of ways to go about this, but we recommend to use our [Helmfiles](https://github.com/cloudposse/helmfiles).
 
-### Install with Helmfile
+#### Install with Helmfile
 
 {{% dialog type="code-block" icon="fa fa-code" title="Install `kube2iam`" %}}
 ```
@@ -61,7 +61,7 @@ This service depends on the following environment variables:
 
 Environment variables can be specified in Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage.
 
-### Install with Custom Helmfile
+#### Install with Custom Helmfile
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code snippet.
 
@@ -69,7 +69,7 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 
 Then run [`helmfile sync`]({{< relref "tools/helmfile.md" >}}) to install.
 
-# Usage
+## Usage
 
 Add an annotation login `iam.amazonaws.com/role: "some-aws-role"` to the kubernetes resource (e.g. `Deployment`, `CronJob`, `ReplicaSet`, `Pod`, etc). Replace `some-aws-role` with an IAM role that you've previously provisioned.
 

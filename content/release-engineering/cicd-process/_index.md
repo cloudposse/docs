@@ -6,7 +6,7 @@ tags:
 - codefresh
 ---
 
-# Unlimited Staging Environments
+## Unlimited Staging Environments
 
 We use the following CI/CD process to implement "Unlimited Staging Environments".
 
@@ -18,7 +18,7 @@ We use the following CI/CD process to implement "Unlimited Staging Environments"
 6. [**Deploy Helm Charts**]({{< relref "release-engineering/cicd-process/deploy.md" >}}) to the clusters
 7. [**Send Slack Notification**]({{< relref "release-engineering/cicd-process/slack-notification.md" >}}) upon success
 
-# Demo
+## Demo
 
 In a collaboration with Codefresh, we presented a demo of how we implemented it. Our strategy is still largely the same, however, since this demo we've added suport for `chamber` to manage secrets and `helmfile` for deploying collections of charts.
 

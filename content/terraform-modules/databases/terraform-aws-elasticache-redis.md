@@ -2,7 +2,7 @@
 title: "terraform-aws-elasticache-redis"
 description: "Terraform module to provision an [`ElastiCache`](https://aws.amazon.com/elasticache/) Redis Cluster"
 ---
-# Terraform AWS Elasticache Redis
+## Terraform AWS Elasticache Redis
 
 |                  |                                                                                                                                                                            |  |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-|
@@ -12,11 +12,11 @@ description: "Terraform module to provision an [`ElastiCache`](https://aws.amazo
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-elasticache-redis.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-elasticache-redis)    |  |
 
 
-# Usage
+## Usage
 
 Include this repository as a module in your existing terraform code:
 
-##### HCL
+### HCL
 ```hcl
 module "example_redis" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-elasticache-redis.git?ref=master"
@@ -26,7 +26,7 @@ module "example_redis" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                         | Default                | Description                                                     |
 |:-----------------------------|:-----------------------|:----------------------------------------------------------------|
@@ -55,7 +55,7 @@ module "example_redis" {
 | cluster_size                 | 1                      | Count of nodes in cluster                                       |
 | instance_type                | cache.t2.micro         | Elastic cache instance type                                     |
 
-# Output
+## Output
 
 | Name              | Description       |
 |:------------------|:------------------|

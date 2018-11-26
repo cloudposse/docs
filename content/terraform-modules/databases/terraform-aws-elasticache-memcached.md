@@ -2,7 +2,7 @@
 title: "terraform-aws-elasticache-memcached"
 description: "Terraform module to provision an [`ElastiCache`](https://aws.amazon.com/elasticache/) Memcached Cluster"
 ---
-# Terraform AWS Elasticache Memcached
+## Terraform AWS Elasticache Memcached
 
 |                  |                                                                                                                                                                                    |
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
