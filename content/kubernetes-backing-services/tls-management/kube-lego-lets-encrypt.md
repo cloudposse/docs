@@ -3,7 +3,7 @@ title: "Kube Lego (Let's Encrypt)"
 description: ""
 ---
 
-# Dependencies
+## Dependencies
 
 The way `kube-lego` works is by looking for annotations on `Ingress` and `Service` resources. Thus to use `kube-lego`, it's necessary to first install an [ingress controller]({{< relref "kubernetes-backing-services/ingress/_index.md" >}}).
 
@@ -11,11 +11,11 @@ Out of the box, `kube-lego` support 2 types of [ingress controllers](https://git
 * GCE Load Balancers
 * Nginx Ingress Controller
 
-# Install
+## Install
 
 You can install `kube-lego` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0110.kube-lego.yaml).
 
-## Install with Master Helmfile
+### Install with Master Helmfile
 
 1. Set the `KUBE_LEGO_EMAIL` secret with chamber
 2. Run then install `kube-lego` using `helmfile sync`.
@@ -36,7 +36,7 @@ These are some of the environment variables you may want to configure:
 
 Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-## Install with Custom Helmfile
+### Install with Custom Helmfile
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
@@ -44,7 +44,7 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-# Usage
+## Usage
 
 To leverage `kube-lego`, you will need to add an annotations (e.g. `kubernetes.io/tls-acme: "true"`) to the `Ingress` resource.
 

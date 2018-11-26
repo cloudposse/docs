@@ -3,11 +3,11 @@ title: "Is it possible to only use some parts of the Cloud Posse solution? (For 
 description: "Short answer: yes, but your mileage may vary."
 ---
 
-# Question
+## Question
 
 Is it possible to only use some parts of the Cloud Posse solution? (For example, only leverage automated deployments)
 
-# Answer
+## Answer
 
 Yes, it's possible to leverage just specific parts of our strategy, however, we are only able to document and support our prescribed approach. There are simply too many permutations and variations to address that would make it very difficult for us to become SMEs in all the different ways it could be done.
 

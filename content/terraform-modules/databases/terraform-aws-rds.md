@@ -2,7 +2,7 @@
 title: "terraform-aws-rds"
 description: "Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances"
 ---
-# Terraform AWS RDS
+## Terraform AWS RDS
 
 |                  |                                                                                                                                                |
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -18,7 +18,7 @@ The module will create:
 * DB Security Group
 * DNS Record in Route53 for the DB endpoint
 
-# Variables
+## Variables
 
 - `stage` - The deployment stage (_e.g._ `prod`, `staging`, `dev`)
 - `namespace` - The namespace of the application the DB instance belongs to (_e.g._ `global`, `shared`, or the name of your company like `cloudposse`)
@@ -55,7 +55,7 @@ The module will create:
 - `final_snapshot_identifier` - Specifies whether or not to create a final snapshot for this database when destroing. This option **must** be set if `skip_final_snapshot` = `false`. E.g.: `"dbname-final-snapshot-${md5(timestamp())}"`
 - `parameter_group_name` - (Optional) Name of the DB parameter group to associate (e.g. `mysql-5-6`)
 
-# Outputs
+## Outputs
 
 - `instance_id` - ID of the instance
 - `instance_address` - Address of the instance

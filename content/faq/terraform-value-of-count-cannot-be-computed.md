@@ -6,7 +6,7 @@ tags:
 - terraform-module
 ---
 
-# Question
+## Question
 
 When running `terraform apply`, we encounter the following error. We're passing a `list` of values from an output of one module as `variable` inputs to another module.
 
@@ -16,7 +16,7 @@ For example, we get the following error:
 module.ec2_instance.module.label.null_resource.tags_as_list_of_maps: null_resource.tags_as_list_of_maps: value of 'count' cannot be computed
 ```
 
-# Answer
+## Answer
 
 Terraform has well-known issues with `counts` in `maps`.
 

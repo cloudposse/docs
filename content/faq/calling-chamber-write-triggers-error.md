@@ -3,13 +3,13 @@ title: "Calling `chamber write` triggers `Error: InvalidKeyId: ... parameter_sto
 description: "Chamber expects to find a KMS key with alias `parameter_store_key`"
 ---
 
-# Question
+## Question
 
 ```
 Error: InvalidKeyId: Alias arn:aws:kms:us-west-2:671362398325:alias/parameter_store_key is not found. (Service: AWSKMS; Status Code: 400; Error Code: NotFoundException; Request ID: bf9b3240-39f5-11e8-921d-e9dc98bd5b1a)
 ```
 
-# Answer
+## Answer
 
 Per the [documentation](https://github.com/segmentio/chamber/blob/master/README.md#setting-up-kms), Chamber expects to find a KMS key with alias `parameter_store_key` in the account that you are writing/reading secrets.
 

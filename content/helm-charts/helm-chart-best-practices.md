@@ -3,7 +3,7 @@ title: "Helm Chart Best Practices"
 description: ""
 draft: true
 ---
-# Use Validation
+## Use Validation
 
 e.g.
 ```

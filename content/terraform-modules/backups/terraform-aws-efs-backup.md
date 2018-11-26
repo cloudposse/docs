@@ -5,7 +5,7 @@ description: >-
   DataPipeline.
 ---
 
-# Terraform AWS EFS Backup
+## Terraform AWS EFS Backup
 
 ```
              |
@@ -22,11 +22,11 @@ The workflow is simple:
 - Publish the success or failure of the activity to an `SNS` topic
 - Automatically rotate the backups using `S3 lifecycle rule`
 
-# Usage
+## Usage
 
 Include this module in your existing terraform code:
 
-## HCL
+### HCL
 
 ```hcl
 module "efs_backup" {
@@ -49,7 +49,7 @@ output "efs_backup_security_group" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                               | Default                                                                                            | Description                                                                            | Required |
 |:-----------------------------------|:---------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------|:---------|
@@ -68,7 +68,7 @@ output "efs_backup_security_group" {
 | modify_security_group              | `false`                                                                                            | Should the module modify the `EFS` security group                                      | No       |
 | noncurrent_version_expiration_days | `35`                                                                                               | S3 object versions expiration period (days)                                            | Yes      |
 
-# DataPipeline Config Variables
+## DataPipeline Config Variables
 
 | Name          | Default      | Description                                                                 | Required |
 |:--------------|:-------------|:----------------------------------------------------------------------------|:---------|
@@ -77,13 +77,13 @@ output "efs_backup_security_group" {
 | period        | `24 hours`   | Frequency of pipeline execution (frequency of backups)                      | Yes      |
 | timeout       | `60 Minutes` | Pipeline execution timeout                                                  | Yes      |
 
-# Integration with EFS
+## Integration with EFS
 
 To enable connectivity between the `DataPipeline` instances and the `EFS`, use one of the following methods to configure Security Groups:
 
 1. Explicitly add the `DataPipeline` SG (the output of this module `security_group_id`) to the list of the `ingress` rules of the `EFS` SG. For example:
 
-## HCL
+### HCL
 
 ```hcl
 module "elastic_beanstalk_environment" {

@@ -8,18 +8,18 @@ tags:
 - faq
 ---
 
-# Question
+## Question
 
 How do we rotate the master SSH keys on a Kubernetes cluster provisioned with `kops`?
 
-# Answer
+## Answer
 
 We provision SSH keys in geodesic using [terraform-aws-key-pair]({{< relref "terraform-modules/security/terraform-aws-key-pair.md" >}}) module.
 Following this [documentation](https://www.terraform.io/docs/providers/tls/r/private_key.html#generating-a-new-key) you need to taint ssh key with terraform, then provision new one and update the cluster.
 
 To rotate SSH keys, follow these instructions:
 
-##  Start the Geodesic Shell
+### Start the Geodesic Shell
 
 Run the Geodesic shell followed by `assume-role`
 ```shell
@@ -32,7 +32,7 @@ Then login to AWS by running `assume-role`:
 
 {{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
-## Configure `kubectl` and `helm`
+### Configure `kubectl` and `helm`
 
 When you start the Geodesic shell, you will need to export the `kubecfg`, which provides the TLS client certificates necessary for `kubectl` and `helm` to authenticate with the cluster.
 
@@ -45,7 +45,7 @@ kops has set your kubectl context to us-west-2.staging.example.com
 
 (Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
-## Recreate SSH Key
+### Recreate SSH Key
 
 ```shell
 cd /conf/kops
@@ -55,7 +55,7 @@ terraform apply
 ```
 
 
-## Update Kubernetes Cluster
+### Update Kubernetes Cluster
 
 According to the [instrunctions](https://github.com/kubernetes/kops/blob/master/docs/security.md),
 execute the following commands to apply the new SSH key to the Kubernetes cluster:

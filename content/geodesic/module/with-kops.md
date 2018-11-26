@@ -10,7 +10,7 @@ This assumes you've followed the [Geodesic Module Usage with Terraform]({{< relr
 
 Geodesic uses [kops]({{< relref "tools/kops.md" >}}) to manage kubernetes clusters.
 
-# Create Cluster
+## Create Cluster
 
 Provisioning a `kops` cluster takes three steps:
 
@@ -18,9 +18,9 @@ Provisioning a `kops` cluster takes three steps:
 2. Update the `Dockerfile` and rebuild the Geodesic Module to generate a kops manifest file (and restart shell)
 3. Launch a kops cluster from the manifest file
 
-## Provision State Backend
+### Provision State Backend
 
-### Configure Environment Variables
+#### Configure Environment Variables
 
 Update the environment variables in the module's `Dockerfile`:
 
@@ -36,20 +36,20 @@ ENV TF_VAR_parent_zone_name=staging.example.com
 Replace with values to suit your specific project. Note, the variables correspond to the outputs of the `terraform-aws-kops-state-backend` module, which follows a strict naming convention.
 
 
-### Rebuild Module
+#### Rebuild Module
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
 make docker/build
 ```
 
-### Add Kops State Terraform Module
+#### Add Kops State Terraform Module
 
 Create a file in `./conf/aws-kops-backend/main.tf` with following content
 
 {{% include-code-block title="./conf/aws-kops-backend/main.tf" file="geodesic/module/examples/aws-kops-backend.tf" language="hcl" %}}
 
-###  Start the Shell
+#### Start the Shell
 
 Run the Geodesic shell. The wrapper script is installed in `/usr/local/bin/$CLUSTER_NAME`, so you should be able to just run something like:
 ```shell
@@ -58,7 +58,7 @@ $CLUSTER_NAME
 
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
 
-### Authorize on AWS
+#### Authorize on AWS
 Assume role by running
 ```bash
 assume-role
@@ -66,7 +66,7 @@ assume-role
 
 {{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
-### Provision aws-kops-backend
+#### Provision aws-kops-backend
 
 Change directory to `/conf/aws-kops-backend` and run there commands to provision the `aws-kopstate-backend` backend (S3 bucket, DNS zone, and SSH keypair)
 ```bash
@@ -82,7 +82,7 @@ From the Terraform outputs, copy the `zone_name` and `bucket_name` into the ENV 
 In the example the bucket name is `bucket_name = example-staging-kops-state` and `zone_name = us-west-2.staging.example.com`.
 The public and private SSH keys are created and stored automatically in the encrypted S3 bucket.
 
-### Configure Environment Variables
+#### Configure Environment Variables
 
 Add to module's `Dockerfile` the following environment variables
 
@@ -100,13 +100,13 @@ RUN s3 fstab '${TF_BUCKET}' '/' '/secrets/tf'
 
 Replace with values to suit your specific project.
 
-### Rebuild Module
+#### Rebuild Module
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
 make docker/build
 ```
 
-## Configure Kops Manifest
+### Configure Kops Manifest
 
 `Geodesic` creates a `kops` cluster from a manifest.
 [Kops manifest](https://github.com/kubernetes/kops/blob/master/docs/manifests_and_customizing_via_api.md) is yaml file that describe resources that determinates Kubernetes cluster.
@@ -117,7 +117,7 @@ and is compiled to `/conf/kops/manifest.yaml` by running the `build-kops-manifes
 
 The geodesic module can overload the template if a different architecture is desired. All of our examples will rely on our default manifest.
 
-### Configure Environment Variables
+#### Configure Environment Variables
 
 Add to the module `Dockerfile` environment variables
 
@@ -133,7 +133,7 @@ You might want to adjust these settings:
 
 Note, `NODE_MIN_SIZE` must be equal to or greater than the number of availability zones.
 
-### Rebuild Module
+#### Rebuild Module
 
 [Rebuild]({{< relref "geodesic/module/_index.md" >}}) the module
 ```shell
@@ -142,9 +142,9 @@ make docker/build
 
 After building the manifest, we can apply it with kops to spin up or update the cluster.
 
-## Launch Cluster
+### Launch Cluster
 
-### Start Geodesic Shell
+#### Start Geodesic Shell
 
 Run the Geodesic shell.
 ```shell
@@ -155,13 +155,13 @@ assume-role
 {{% include-code-block title="Run the Geodesic Shell" file="geodesic/module/examples/start-geodesic-shell.txt" %}}
 {{% include-code-block title="Assume role" file="geodesic/module/examples/assume-role.txt" %}}
 
-### Create Cluster
+#### Create Cluster
 
 Run `kops create -f /conf/kops/manifest.yaml` to create the cluster (this will just create the cluster state and store it in the S3 bucket, but not the AWS resources for the cluster).
 
 {{% include-code-block title="Example" file="content/geodesic/module/examples/kops-create.txt" %}}
 
-### Add SSH Keys
+#### Add SSH Keys
 
 To add [ssh keys generated previously]({{< relref "geodesic/module/with-kops.md#provision-aws-kops-backend" >}}), run the following command to mount the s3 bucket containing the SSH keys and register the SSH public key with the cluster.
 
@@ -177,7 +177,7 @@ kops create secret sshpublickey admin \
 ```
 {{% /dialog %}}
 
-### Provision Cluster
+#### Provision Cluster
 
 Run the following to provision the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
 
@@ -198,11 +198,11 @@ For more information, check out the following links:
 {{% /dialog %}}
 
 
-# Update Cluster
+## Update Cluster
 
 Run `kops replace -f /conf/kops/manifest.yaml` to update the cluster. This will just update the cluster state in the S3 bucket, but not modify any of the underlying AWS resources for the cluster.
 
-## Apply the Updates
+### Apply the Updates
 
 Run the following command to update the AWS resources for the cluster. The `--yes` will apply the changes non-interactively.
 
@@ -212,7 +212,7 @@ kops update cluster --name us-west-2.staging.example.com --yes
 
 All done. At this point, the `kops` cluster is now updated and running.
 
-# Export `kubecfg`
+## Export `kubecfg`
 
 When you run into the Geodesic module shell you need to export the `kubecfg` which provides the TLS client certificates necessary for `kubectl` to authenticate with the cluster.
 
@@ -228,6 +228,6 @@ kops has set your kubectl context to us-west-2.staging.example.com
 By default, geodesic exports `KUBECONFIG=/dev/shm` to ensure this config does not pesist.
 
 
-# Provision Platform Backing Services
+## Provision Platform Backing Services
 
 We provide a number of well-tested [Terraform Modules]({{< relref "terraform-modules/overview.md" >}}) to provision essential AWS resources needed by Helm Charts like [external-dns](/kubernetes-backing-services/external-dns/) and [chart-repo]({{<relref "helm-charts/supported-charts/chart-repo.md" >}}). See our [Terraform modules for Kubernetes (Kops)](/terraform-modules/kops-kubernetes).

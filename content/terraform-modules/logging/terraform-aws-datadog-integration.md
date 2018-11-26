@@ -3,7 +3,7 @@ title: terraform-aws-datadog-integration
 description: Terraform Module for DataDog integration with AWS.
 ---
 
-# Terraform AWS DataDog Integration
+## Terraform AWS DataDog Integration
 
 |                  |                                                                                                                                                                                |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,11 +12,11 @@ description: Terraform Module for DataDog integration with AWS.
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-datadog-integration.svg)](https://github.com/cloudposse/terraform-aws-datadog-integration/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-datadog-aws-integration.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-datadog-aws-integration)    |
 
-# Usage
+## Usage
 
 Include this module in your existing terraform code.
 
-## HCL
+### HCL
 
 ```hcl
 module "datadog_aws_integration" {
@@ -31,7 +31,7 @@ module "datadog_aws_integration" {
 At the moment the module supports `RDS integration only`. It will be modified as necessary to integrate the needful services.
 {{% /dialog %}}
 
-# Variables
+## Variables
 
 | Name                   | Default        | Description                                                                              |
 |:-----------------------|:---------------|:-----------------------------------------------------------------------------------------|
@@ -44,7 +44,7 @@ At the moment the module supports `RDS integration only`. It will be modified as
 | datadog_aws_account_id | `464622532012` | Datadog's AWS account ID                                                                 |
 | integrations           | []             | List of AWS Services to integration with the DataDog service (e.g EC2, RDS, Billing ...) |
 
-# Outputs
+## Outputs
 
 | Name   | Description                                               |
 |:-------|:----------------------------------------------------------|

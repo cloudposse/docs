@@ -3,7 +3,7 @@ title: terraform-aws-ec2-ami-backup
 description: Terraform module for automatic AMI creation
 ---
 
-# Terraform AWS EC2 AMI Backup
+## Terraform AWS EC2 AMI Backup
 
 |                  |                                                                                                                                                                      |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -19,11 +19,11 @@ It is based on the code at:
 - <https://serverlesscode.com/post/lambda-schedule-ebs-snapshot-backups/> and
 - <https://serverlesscode.com/post/lambda-schedule-ebs-snapshot-backups-2/>.
 
-# Usage
+## Usage
 
 Include this repository as a module in your existing terraform code:
 
-## HCL
+### HCL
 
 ```hcl
 module "lambda_ami_backup" {
@@ -39,7 +39,7 @@ module "lambda_ami_backup" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name             | Default               | Description                                                                       | Required |
 |:-----------------|:----------------------|:----------------------------------------------------------------------------------|:---------|

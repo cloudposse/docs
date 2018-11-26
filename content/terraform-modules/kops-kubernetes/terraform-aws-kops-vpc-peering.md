@@ -5,7 +5,7 @@ description: >-
   and a VPC created by [Kops](https://github.com/kubernetes/kops).
 ---
 
-# Terraform AWS Kops VPC Peering
+## Terraform AWS Kops VPC Peering
 
 |                  |                                                                                                                                                                          |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -19,9 +19,9 @@ The module depends on the following Terraform modules
 - [terraform-aws-kops-metadata]({{< relref "terraform-modules/kops-kubernetes/terraform-aws-kops-metadata.md" >}}) - to lookup resources within a Kops cluster
 - [terraform-aws-vpc-peering]({{< relref "terraform-modules/networking/terraform-aws-vpc-peering.md" >}}) - to create a peering connection between two VPCs
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "kops_vpc_peering" {
@@ -36,7 +36,7 @@ module "kops_vpc_peering" {
 The backing services VPC must have subnets associated with route tables.
 {{% /dialog %}}
 
-# Variables
+## Variables
 
 | Name                                               | Default   | Description                                                                                                                          | Required |
 |:---------------------------------------------------|:----------|:-------------------------------------------------------------------------------------------------------------------------------------|:---------|
@@ -63,7 +63,7 @@ This can be done using the [`enable_dns_hostnames`](https://www.terraform.io/doc
 Read more: [www.terraform.io/docs/providers/aws/r/vpc_peering.html](https://www.terraform.io/docs/providers/aws/r/vpc_peering.html#allow_remote_vpc_dns_resolution)
 {{% /dialog %}}
 
-# Outputs
+## Outputs
 
 | Name            | Description                                      |
 |:----------------|:-------------------------------------------------|

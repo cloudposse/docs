@@ -80,19 +80,6 @@
       font-weight: 700;
       clear: both;
       margin-top: 4rem;
-
-      &:first-of-type {
-        font-family: $font_0, $font_1, sans-serif;
-        text-align: left;
-        font-weight: 300;
-        font-size: 30px;
-        margin-bottom: 5px;
-        color: $color_outer_space_approx;
-        line-height: 30px;
-        word-wrap: break-word;
-        text-transform: none;
-        margin-top: 3rem;
-      }
     }
 
     > h2 {

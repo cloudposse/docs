@@ -4,7 +4,7 @@ description: ''
 weight: -1
 ---
 
-# Follow Official Conventions
+## Follow Official Conventions
 
 Following official conventions is especially important if the module will ever be published to the [terraform module registry](https://registry.terraform.io). Either way, we suggest following these conventions to create more standardized/portable modules.
 
@@ -23,7 +23,7 @@ Following official conventions is especially important if the module will ever b
 {{% /dialog %}}
 
 
-# Root Module Pattern
+## Root Module Pattern
 
 This refers to the "root" or top-level invocation of terraform modules. We provide examples of these on our [`github.com/cloudposse/terraform-root-modules`](https://github.com/cloudposse/terraform-root-modules) repo.
 

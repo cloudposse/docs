@@ -24,11 +24,11 @@ Generally, the process of building a chart looks something like this:
 The actual implementation can be found in the [build-harness helm module](https://github.com/cloudposse/build-harness/blob/master/modules/helm/Makefile.chart).
 {{% /dialog %}}
 
-# Dependencies
+## Dependencies
 
 * [Semantic Versioning]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}})
 * [Chart Registry]({{< relref "kubernetes-platform-services/chart-registry/chartmuseum.md" >}})
 
-# Examples
+## Examples
 
 {{% include-code-block title="Build charts with Codefresh" file="release-engineering/cicd-process/examples/build-charts-codefresh.yaml" language="yaml" %}}

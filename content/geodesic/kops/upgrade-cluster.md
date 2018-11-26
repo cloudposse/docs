@@ -1,7 +1,7 @@
 ---
 title: "Upgrading Kops Clusters"
 ---
-# Upgrading `kops`
+## Upgrading `kops`
 
 To upgrade the `kops` release, there are a couple of options. First check to [see if there a new release of `geodesic`](https://github.com/cloudposse/geodesic/releases) with an upgraded version of `kops`. If there is one and this is the desired release, update the `FROM` image tag in the geodesic module to point to this release.
 
@@ -19,7 +19,7 @@ Then follow the instructions below for upgrading Kubernetes.
 <https://github.com/kubernetes/kops/blob/master/docs/releases.md>
 {{% /dialog %}}
 
-# Upgrading Kubernetes Release
+## Upgrading Kubernetes Release
 
 Upgrading `kops` cluster to a new release of kubernetes requires that we upgrade the `kubectl` client in `geodesic` as well as select a kubernetes release that is compatible with kops. Note, `kops` usually lags behind in support for the latest release of Kubernetes. If the latest release of `kops` is `v1.9`, then that means it supports up to kubernetes `v1.9` and will not be compatible with `v1.10` or newer.
 
@@ -41,7 +41,7 @@ Set the `KUBERNETES_VERSION` in the `Dockerfile`
 
 Then follow the instructions to update the manifest and update the cluster.
 
-# Upgrading EC2 Image for Nodes
+## Upgrading EC2 Image for Nodes
 
 Identify the AMI that should be used by following the [official documentation](https://github.com/kubernetes/kops/blob/master/docs/images.md). The latest AMI is published in the [stable channel manifest](https://github.com/kubernetes/kops/blob/master/channels/stable).
 
@@ -59,7 +59,7 @@ Then [rebuild the manifest and update the cluster]({{< relref "geodesic/kops/man
 {{% /dialog %}}
 
 
-# Update Manifest
+## Update Manifest
 
 The [`build-kops-manifest`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/build-kops-manifest) command will regenerate the `/conf/kops/manifest.yaml` file.
 

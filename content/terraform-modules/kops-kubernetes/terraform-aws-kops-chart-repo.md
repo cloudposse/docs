@@ -6,7 +6,7 @@ description: >-
   access the bucket.
 ---
 
-# Terraform AWS Kops Chart Repo
+## Terraform AWS Kops Chart Repo
 
 |                  |                                                                                                                                                                        |
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -17,9 +17,9 @@ description: >-
 
 The module uses [terraform-aws-kops-metadata](https://github.com/cloudposse/terraform-aws-kops-metadata) to lookup resources within a Kops cluster for easier integration with Terraform.
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "kops_chart_repo" {
@@ -35,7 +35,7 @@ module "kops_chart_repo" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name         | Default | Description                                                                 | Required |
 |:-------------|:--------|:----------------------------------------------------------------------------|:---------|
@@ -47,7 +47,7 @@ module "kops_chart_repo" {
 | `delimiter`  | `-`     | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes` | No       |
 | `nodes_name` | `nodes` | k8s nodes subdomain name in the Kops DNS zone                               | No       |
 
-# Outputs
+## Outputs
 
 | Name                 | Description           |
 |:---------------------|:----------------------|

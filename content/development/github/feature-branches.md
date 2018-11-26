@@ -3,7 +3,7 @@ title: Feature Branches
 description: "The Feature Branch Workflow is a requirement for CI/CD. It's a process by which all feature development takes place in a dedicated branch instead of the `master` branch. This makes it easy for multiple developers to collaborate on a particular feature while at the same time ensuring that the master branch remains stable."
 ---
 
-# Problem
+## Problem
 
 When you're working on a project, there will be a bunch of different features or ideas in progress at any given time, not all of which are ready for prime time. Further more, as business priorities change, you might need to prioritize certain features and put others on the back burner.
 
@@ -11,7 +11,7 @@ At the same time, business requirements mandate that you have a stable version t
 
 **TL;DR:** If everyone is working on the same branch such as master, it pollutes the commit history making it all but impossible to figure out which commits relate to specific features making rollbacks impossible.
 
-# Solution
+## Solution
 
 To solve this problem, the standard workflow called _branching_ should be used religiously. Any time a new feature is developed it must be worked on in a separate branch. When you create a branch, you're creating an environment where you can freely test out new ideas without impacting others because changes made on a branch don't affect the `master` branch (or any other one).
 
@@ -36,9 +36,9 @@ A _Pull Request_ allows many things to happen:
 - **History of Features** and when they were added {{< img src="/assets/f9a3727-image_7.png" title="History of Features" >}}
 - **Reverting**: If a feature needs to be removed, with the click of a single button it can be removed from the `master` branch {{< img src="/assets/28887e9-image_8.png" title="Example of Reverting Changes" >}}
 
-  # Technical Details
+## Technical Details
 
-## Create a Branch
+### Create a Branch
 
 Whenever you begin work on a new feature or bugfix, it's important that you create a new branch. Not only is it proper git workflow, but it also keeps your changes organized and separated from the master branch so that you can easily submit and manage multiple pull requests for every task you complete.
 

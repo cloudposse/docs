@@ -23,7 +23,7 @@ Read more about k6's features and metrics:
 * [Interpret test results](http://support.loadimpact.com/knowledgebase/articles/174121-how-do-i-interpret-test-results)
 
 
-# Installation
+## Installation
 
 We use [Docker Compose](https://docs.docker.com/compose/) for defining and running multi-container Docker applications
 

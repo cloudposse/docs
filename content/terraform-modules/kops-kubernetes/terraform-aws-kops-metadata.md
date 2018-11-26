@@ -5,7 +5,7 @@ description: >-
   [Kops](https://github.com/kubernetes/kops) cluster
 ---
 
-# Terraform AWS Kops Metadata
+## Terraform AWS Kops Metadata
 
 |                  |                                                                                                                                                                    |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -14,9 +14,9 @@ description: >-
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-kops-metadata.svg)](https://github.com/cloudposse/terraform-aws-kops-metadata/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-kops-metadata.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-kops-metadata)    |
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "kops_metadatas" {
@@ -27,7 +27,7 @@ module "kops_metadatas" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name           | Default   | Description                                                                   | Required |
 |:---------------|:----------|:------------------------------------------------------------------------------|:---------|
@@ -37,7 +37,7 @@ module "kops_metadatas" {
 | `masters_name` | `masters` | K8s masters subdomain name in the Kops DNS zone                               | No       |
 | `nodes_name`   | `nodes`   | K8s nodes subdomain name in the Kops DNS zone                                 | No       |
 
-# Outputs
+## Outputs
 
 | Name                         | Description                       |
 |:-----------------------------|:----------------------------------|

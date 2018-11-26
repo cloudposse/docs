@@ -5,7 +5,7 @@ description: >-
   in a jiffy!
 ---
 
-# Geodesic
+## Geodesic
 
 Start with getting familiar with the [geodesic design]({{< relref "geodesic/design.md" >}}).
 
@@ -15,14 +15,14 @@ Get intimately familiar with docker inheritance and [multi-stage docker builds](
 
 Check out our [terraform-root-modules](https://github.com/cloudposse/terraform-root-modules) for reference architectures to easily provision infrastructure
 
-# Local Development
+## Local Development
 
 1. Get your [local environment]({{< relref "local-dev-environments/_index.md" >}}) setup
 2. Make sure you're familiar with [`make`](/tools/make/) and [`Makefiles`]({{< relref "tools/make/makefile-examples.md" >}}) because we use them extensively for "executable documentation".
 3. Review Docker compose
 4. Docker composition monorepo strategy
 
-# Tools
+## Tools
 
 Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
 
@@ -43,11 +43,11 @@ If using kubernetes, then also review these tools:
 - [`helm`]({{< relref "tools/helm.md" >}})
 - [`helmfile`]({{< relref "tools/helmfile.md" >}})
 
-# Kubernetes
+## Kubernetes
 
 Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging [`kops`]({{< relref "tools/kops.md" >}}) by way of our `geodesic` strategy.
 
-## Helm
+### Helm
 
 Helm is central to how we deploy all services on kubernetes.
 
@@ -61,7 +61,7 @@ Helm is central to how we deploy all services on kubernetes.
 * [rollbacks]({{< relref "faq/how-to-perform-rollbacks.md" >}})
 
 
-## CI/CD with Codefresh
+### CI/CD with Codefresh
 
 Our standard [CI/CD pipeline]({{< relref "release-engineering/cicd-process/_index.md" >}}) describes in detail each step and what it does.
 
@@ -73,15 +73,15 @@ We use some terraform modules to provision resources for codefresh like a [chamb
 
 Securely deploy [apps with secrets]({{< relref "secrets-management/cicd.md" >}}).
 
-## Backing Services (*Coming Soon*)
+### Backing Services (*Coming Soon*)
 
 Checkout our docs on [kubernetes backing services]({{< relref "kubernetes-backing-services/_index.md" >}}).
 
-## Platform Services (*Coming Soon*)
+### Platform Services (*Coming Soon*)
 
 Checkout our docs on [kubernetes platform services]({{< relref "kubernetes-platform-services/_index.md" >}}).
 
-## Optimization
+### Optimization
 
 Inevitably, at some point comes the time when you will need to optimize for performance. We've documented some of the best ways to get started.
 
@@ -96,11 +96,11 @@ First, make sure you're familiar with kubernetes [resource management]({{< relre
 * [Tune Nginx]({{< relref "kubernetes-optimization/tune-nginx.md" >}}) - Tune Nginx parameters (timeouts, worker processes, logs, http)
 * [Optimize databases]({{< relref "kubernetes-optimization/optimize-database-indexes.md" >}}) - Optimize database queries and indexes
 
-# Terraform
+## Terraform
 
 Study up on our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with terraform. Get started quickly provisioning infrastructure by referencing our [terraform-root-modules](/terraform-modules/root/).
 
-## Terraform Modules
+### Terraform Modules
 
 We provide a staggering number of Terraform modules in our GitHub. This number is growing every week and we're also [accepting module contributions]({{< relref "documentation/our-github.md#contributing" >}}).
 
@@ -118,13 +118,13 @@ Our modules are broken down in to specific areas of concern:
 
 Before writing your own modules, review our [Best Practices]({{< relref "terraform-modules/best-practices.md" >}}) for working with Terraform modules.
 
-# Monitoring (*Coming Soon*)
+## Monitoring (*Coming Soon*)
 
 In the meantime, review some of our docs on [monitoring and alerting](/monitoring-and-alerting/).
 
 If running on kubernetes, review our ["backing services" documentation for monitoring]({{< relref "kubernetes-backing-services/monitoring/_index.md" >}})
 
-# Load Testing
+## Load Testing
 
 After you've gotten familiar with how monitoring is working, you'll want to run some load tests to ensure everything meets expectations. We provide some of our "best practices", workflows, scripts and scenarios for load and performance testing of websites and applications
 (in particular those deployed on Kubernetes clusters).
@@ -137,13 +137,13 @@ Our strategy for load and performance testing breaks down like this:
 4. [Optimization and Tuning Procedures]({{< relref "load-testing/optimization-and-tuning-procedures.md" >}}) - optimization and tuning steps that we usually perform after running load tests
 
 
-# Secrets (*Coming Soon*)
+## Secrets (*Coming Soon*)
 
 Have  a look at our docs on [secrets management](/secrets-management/).
 
 
 
-# Contributing Back
+## Contributing Back
 
 Everything we provide on our [GitHub](https://github.com/cloudposse/) wouldn't have been possible if it weren't for our [phenomenal customers](https://cloudposse.com/) and the support of the [community](https://cloudposse.com/slack/) contributing bug-fixes, [filing issues](https://github.com/search?q=org%3Acloudposse+type%3Aissue) and submitting a steady stream of [Pull Requests](https://github.com/search?q=org%3Acloudposse+type%3Apr).
 
@@ -151,7 +151,7 @@ We welcome any Terraform module submissions, Helm charts, and generally any othe
 
 Drop us a line at [hello@cloudposse.com](mailto:hello@cloudposse.com) to get in touch with us about contributing.
 
-# Getting Help
+## Getting Help
 
 Check out our [FAQ](/faq/) which is also fully indexed by our Algolia search available on the [homepage](/).
 
