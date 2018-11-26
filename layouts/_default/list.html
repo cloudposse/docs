@@ -15,7 +15,7 @@
 {{- if .Sections -}}
 {{- range .Sections -}}
 <div class="articles-list">
-  <h4 class="articles-list__title">{{.Title}}</h4>
+  <h4 class="articles-list__title">{{.Title | markdownify}}</h4>
   {{- range $i, $e := .Data.Pages -}}
   {{ .Render "li" }}
   {{- end -}}
