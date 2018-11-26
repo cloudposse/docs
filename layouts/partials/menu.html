@@ -26,7 +26,7 @@
         {{- if ne $numberOfPages 0 }} haschildren{{end}}
         ">
       <div class="left-sidebar-menu__item-title">
-      <a href="{{ .RelPermalink}}" class="left-sidebar-menu__link">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a>
+      <a href="{{ .RelPermalink}}" class="left-sidebar-menu__link">{{safeHTML .Params.Pre}}{{.Title | markdownify}}{{safeHTML .Params.Post}}</a>
 
         {{- if ne $numberOfPages 0 }}
           {{- if or (.IsAncestor $currentNode) (.Params.alwaysopen) }}
@@ -71,7 +71,7 @@
       ">
         <div class="left-sidebar-menu__item-title">
           <a href="{{ .RelPermalink}}">
-            {{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}
+            {{safeHTML .Params.Pre}}{{ .LinkTitle | markdownify }}{{safeHTML .Params.Post}}
           </a>
           {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
         </div>
