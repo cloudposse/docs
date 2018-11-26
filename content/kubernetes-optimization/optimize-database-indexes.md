@@ -9,15 +9,15 @@ tags:
 - query
 ---
 
-# Reduce Indexes
+## Reduce Indexes
 
 Consider the cost of maintaining indexes. Pick the most important queries and set up indexes for those first
 
-# Retrieve Less Data
+## Retrieve Less Data
 
 Retrieve less data from the database. It will consume less bandwidth and will require less processing.
 
-# Avoid Point Queries
+## Avoid Point Queries
 
 Avoid point queries and point index lookup within range queries.
 
@@ -25,19 +25,19 @@ Random access is slow, sequential access is fast.
 
 If possible, make indexes covering.
 
-# Avoid Sorting and Grouping
+## Avoid Sorting and Grouping
 
 Avoid sorting and grouping the result after query execution.
 
 Indexes on the sorting and grouping fields can help get rid of this.
 
-# Use Equality Check in Queries With Compound Indexes
+## Use Equality Check in Queries With Compound Indexes
 
 Compound indexes on composite primary keys in many-to-many tables will only work for range queries if an equality check on the first column in the index is included in the query.
 
 If the equality check on the first column in the index is not included in the query, the indexes are useless and only consume disk space and slow down writes.
 
-# Compound Indexes Rules
+## Compound Indexes Rules
 
 When creating compound indexes, follow these rules for queries combining equality tests, sort fields, and range filters:
 

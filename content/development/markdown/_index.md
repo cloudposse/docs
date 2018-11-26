@@ -3,9 +3,9 @@ title: Markdown
 description: "Markdown is a simple way to format plain text that looks great on any device without using any HTML or CSS. It doesn't permit anything fancy like changing fonts, color, or typeface -- just the bare essentials that can be expressed using keyboard symbols you already know."
 ---
 
-![Markdown Logo](/assets/5a735a9-markdown.png) 
+![Markdown Logo](/assets/5a735a9-markdown.png)
 
-# Standard Formatting
+## Standard Formatting
 
 | Preferred Syntax              | Alternative Syntax       | Example                       |
 |:------------------------------|:-------------------------|:------------------------------|
@@ -19,51 +19,51 @@ description: "Markdown is a simple way to format plain text that looks great on 
 | `---`                         | `***`                    | ---                           |
 
 
-# Bulleted Lists
+## Bulleted Lists
 
-## Preferred Syntax
+### Preferred Syntax
 ```
 * Item 1
 * Item 2
 * Item 3
 ```
 
-## Alternative Syntax
+### Alternative Syntax
 ```
 - Item 1
 - Item 2
 - Item 3
 ```
 
-## Example
+### Example
 
 * Item 1
 * Item 2
 * Item 3
 
-# Numbered lists
+## Numbered lists
 
-## Preferred Syntax
+### Preferred Syntax
 ```
 1. Item 1
 2. Item 2
 3. Item 3
 ```
 
-## Alternative Syntax
+### Alternative Syntax
 ```
 1) Item 1
 2) Item 2
 3) Item 3
 ```
 
-## Example
+### Example
 
 1. Item 1
 2. Item 2
 3. Item 3
 
-# Simple Links
+## Simple Links
 
 #####
 ```markdown
@@ -74,9 +74,9 @@ description: "Markdown is a simple way to format plain text that looks great on 
 
 --------------------------------------------------------------------------------
 
-# Footnote Links
-
 ## Footnote Links
+
+### Footnote Links
 
 ```markdown
 [Cloud Posse][1]
@@ -92,9 +92,9 @@ description: "Markdown is a simple way to format plain text that looks great on 
 
 --------------------------------------------------------------------------------
 
-# Standard Images
+## Standard Images
 
-## Standard Image
+### Standard Image
 
 ```markdown
 ![Image](/assets/40ee68a-cloudposse-64x64.png)
@@ -104,9 +104,9 @@ description: "Markdown is a simple way to format plain text that looks great on 
 
 --------------------------------------------------------------------------------
 
-# Footnote Images
+## Footnote Images
 
-## Footnote Image Example
+### Footnote Image Example
 
 ```markdown
 ![Image][1]
@@ -118,9 +118,9 @@ description: "Markdown is a simple way to format plain text that looks great on 
 
 --------------------------------------------------------------------------------
 
-# Code Block
+## Code Block
 
-## Code Block Examples
+### Code Block Examples
 
 ~~~~
 ```
@@ -134,7 +134,7 @@ $i = 0;
 $i++;
 ```
 
-# Tables
+## Tables
 
 - Colons can be used to align columns.
 - There must be at least 3 dashes separating each header cell.
@@ -142,7 +142,7 @@ $i++;
 - Columns do not need to be neatly formatted.
 - Supports inline Markdown.
 
-## Table Examples
+### Table Examples
 
 ```markdown
 | Animals | Fruits  |   Coins |
@@ -159,7 +159,7 @@ $i++;
 | Dogs    | Oranges | Quarter |
 | Zebras  | Oranges |    Dime |
 
-# References
+## References
 
 - <https://guides.github.com/features/mastering-markdown/>
 - <https://help.github.com/articles/basic-writing-and-formatting-syntax/>

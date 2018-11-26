@@ -3,7 +3,7 @@ title: "Quick start"
 description: "Get up and running quickly with geodesic"
 weight: 1
 ---
-# Prerequisites
+## Prerequisites
 
 * Follow the "Quick Start" for [Local Development Environments]({{< relref "local-dev-environments/quickstart.md" >}})
 
@@ -11,16 +11,16 @@ weight: 1
 All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
 {{% /dialog %}}
 
-# Creating a New Module
+## Creating a New Module
 
-## Name New Module
+### Name New Module
 
 Geodesic new module should have a name. We recommend to follow this pattern ${stage}.${base_host}.
 Set the name to `$CLUSTER_NAME` environment variable.
 
 Example: `staging.example.com` - where `${stage} = staging` and `${base_host} = example.com`
 
-## Generate Scaffolding
+### Generate Scaffolding
 
 This will create a new module in your current working directory called `$CLUSTER_NAME`, complete with `Dockerfile` and `Makefile`.
 
@@ -34,7 +34,7 @@ docker run -e CLUSTER_NAME \
               cloudposse/geodesic:latest -c new-project | tar -xv -C .
 ```
 
-# Configure Project
+## Configure Project
 
 Customize module files as necessary. Edit the `Dockerfile` to reflect your settings. The files are installed to the `$CLUSTER_NAME/` folder.
 
@@ -44,7 +44,7 @@ We recommend creating a [GitHub repo for each organization](/geodesic/module/#re
 cd $CLUSTER_NAME
 ```
 
-## Build & Install
+### Build & Install
 
 Initialize the [Build Harness]({{< relref "release-engineering/build-harness.md" >}})
 
@@ -70,7 +70,7 @@ Replace `$image` which the image of the docker image built, and `$tag` with the 
 Do not pass `-it` when running `docker` as this will add carriage returns (`\r`), which breaks the installer script.
 {{% /dialog %}}
 
-## Run the shell
+### Run the shell
 
 The shell can now be easily started any time by simply running the `$CLUSTER_NAME` script,  which is a shell script that gets installed to `/usr/local/bin/`.
 
@@ -79,7 +79,7 @@ The shell can now be easily started any time by simply running the `$CLUSTER_NAM
 {{% /dialog %}}
 
 
-# Authorize on AWS
+## Authorize on AWS
 
 Config AWS credentials and roles following [Authorization]({{< relref "aws/iam/authorization.md" >}})
 
@@ -87,7 +87,7 @@ Config AWS credentials and roles following [Authorization]({{< relref "aws/iam/a
 By default, Geodesic uses [AWS Vault]({{< relref "tools/aws-vault.md" >}}) to authorize on AWS so ensure you add source profile name to [AWS Vault]({{< relref "tools/aws-vault.md" >}})
 {{% /dialog %}}
 
-## Set default profile in Geodesic Module
+### Set default profile in Geodesic Module
 
 Add to you module `Dockerfile` :
 

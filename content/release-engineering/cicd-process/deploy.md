@@ -23,12 +23,12 @@ Here's an example of what a typical `envsubst` parameterized helm values file lo
 
 When we need to pass secrets, we advise using [chamber]({{< relref "tools/chamber.md" >}}) to store application secrets. Our strategy for that is documented under [secrets management for CI/CD]{{< relref "secrets-management/cicd.md" >}})
 
-# Dependencies
+## Dependencies
 
 * [Build Helm Charts]({{< relref "release-engineering/cicd-process/build-charts.md" >}})
 * [Chamber for Secrets]({{< relref "tools/chamber.md" >}})
 * [Helmfile for Chart Deployment]({{< relref "tools/chamber.md" >}})
 
-# Examples
+## Examples
 
 {{% include-code-block title="Deploy with Codefresh" file="release-engineering/cicd-process/examples/build-charts-codefresh.yaml" language="yaml" %}}

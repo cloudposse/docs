@@ -6,7 +6,7 @@ description: >-
   bucket](https://github.com/cloudposse/terraform-aws-log-storage).
 ---
 
-# Terraform AWS CloudFront CDN
+## Terraform AWS CloudFront CDN
 
 |                  |                                                                                                                                                                      |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -17,11 +17,11 @@ description: >-
 
 If you need to accelerate an S3 bucket, we suggest using [`terraform-aws-cloudfront-s3-cdn`](https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn) instead.
 
-# Usage
+## Usage
 
 Include this module in your existing terraform code.
 
-## HCL
+### HCL
 
 ```hcl
 module "cdn" {
@@ -35,7 +35,7 @@ module "cdn" {
 }
 ```
 
-# Example 2
+## Example 2
 
 Here's an example of creating an S3 "website" bucket that supports CORS and frontented by a CDN.
 
@@ -86,11 +86,11 @@ module "cdn" {
 Pass the `deployment_arns` parameter to the `terraform-aws-s3-website` module to enable a [CI/CD]({{< relref "terraform-modules/security/terraform-aws-iam-system-user.md" >}}) user to upload assets to the bucket.
 {{% /dialog %}}
 
-# More Examples
+## More Examples
 
 A complete example of setting up CloudFront Distribution with Cache Behaviors for a WordPress site: [`examples/wordpress`](https://github.com/cloudposse/terraform-aws-cloudfront-cdn/blob/master/examples/wordpress/main.tf)
 
-# Generating ACM Certificate
+## Generating ACM Certificate
 
 There are two options:
 
@@ -104,7 +104,7 @@ aws acm request-certificate \
      --subject-alternative-names a.example.com b.example.com *.c.example.com
 ```
 
-# Variables
+## Variables
 
 | Name                                | Default                           | Description                                                                                                                    | Required |
 |:------------------------------------|:----------------------------------|:-------------------------------------------------------------------------------------------------------------------------------|:---------|
@@ -151,7 +151,7 @@ aws acm request-certificate \
 | `custom_error_response`             | `[]`                              | List of one or more custom error response element maps                                                                         | No       |
 | `allowed_methods`                   | `["*"]`                           | List of allowed methods (e.g. `GET, PUT, POST, DELETE, HEAD`) for AWS CloudFront                                               | No       |
 
-## Outputs
+### Outputs
 
 | Name                        | Description                                                                     |
 |:----------------------------|:--------------------------------------------------------------------------------|

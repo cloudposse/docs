@@ -13,10 +13,10 @@ See the [Codefresh shared configuration](https://g.codefresh.io/account/shared-c
 
 Our "best practice" is to store all *non-secrets* directly in the `codefresh.yml` configuration file. This solution allows us to easily keep track of the history with `git` as values change over time and let them vary by branch. To accomplish this, set all the predefined values in a step called `init_variables` that calls `cf_export` to pass them to subsequent steps.
 
-# Dependencies
+## Dependencies
 
 *None*
 
-# Examples
+## Examples
 
 {{% include-code-block title="Init variables with Codefresh" file="release-engineering/cicd-process/examples/init-variables-codefresh.yaml" language="yaml" %}}

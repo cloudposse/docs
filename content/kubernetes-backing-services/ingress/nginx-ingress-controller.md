@@ -5,15 +5,15 @@ description: "Nginx Ingress Controller is a type of [Ingress controller](https:/
 
 The Nginx Ingress Controller is a type of [Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) (think "Load Balancer") that uses a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) to store the Nginx configuration.
 
-# Dependencies
+## Dependencies
 
 None
 
-# Install
+## Install
 
 You can install the `nginx-ingress` controller in few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0320.nginx-ingress.yaml).
 
-## Install using Master Helmfile
+### Install using Master Helmfile
 
 Follow these instructions:
 
@@ -36,7 +36,7 @@ These environment variables are supported by the Nginx Ingress in the Master Hel
 
 Environment variables can be specified in Geodesic Module `Dockerfile` or in [Chamber]({{< relref "tools/chamber.md" >}}) storage.
 
-## Install with custom Helmfile
+### Install with custom Helmfile
 
 Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile this code
 
@@ -44,7 +44,7 @@ Add to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile
 
 Then do [Helmfile]({{< relref "tools/helmfile.md" >}}) sync follow instructions
 
-# Usage
+## Usage
 
 After the ingress controller is installed, you can create [Ingress Resources](/kubernetes-backing-services/ingress/) with [kubectl]({{< relref "kubernetes/kubectl.md" >}}) or specifying them in [Helm Chart](/helm-charts) values directly or with [Helmfile]({{< relref "tools/helmfile.md" >}}).
 

@@ -5,7 +5,7 @@ description: >-
   with Fluentd.
 ---
 
-# Terraform AWS CloudWatch Logs
+## Terraform AWS CloudWatch Logs
 
 |                  |                                                                                                                                                                        |
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -14,9 +14,9 @@ description: >-
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-cloudwatch-logs.svg)](https://github.com/cloudposse/terraform-aws-cloudwatch-logs/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudwatch-logs.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudwatch-logs)    |
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "cloudwatch_log" {
@@ -26,7 +26,7 @@ module "cloudwatch_log" {
 }
 ```
 
-# Input
+## Input
 
 | Name                   | Default      | Description                                                     |
 |:-----------------------|:-------------|:----------------------------------------------------------------|
@@ -41,7 +41,7 @@ module "cloudwatch_log" {
 | stream_names           | []           | Names of streams                                                |
 | tags                   | {}           | Additional tags (e.g. map(`BusinessUnit`,`XYZ`)                 |
 
-# Output
+## Output
 
 | Name              | Description            |
 |:------------------|:-----------------------|

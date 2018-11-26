@@ -7,7 +7,7 @@ tags:
 - kubernetes
 ---
 
-# Question
+## Question
 
 When attempting to release kiam we're running into this liveness probe issue:
 
@@ -27,7 +27,7 @@ The `kiam-server` also has problems:
 {"level":"fatal","msg":"error creating listener: error detecting arn prefix: aws metadata api not available","time":"2018-07-02T17:17:13Z"}
 ```
 
-# Answer
+## Answer
 
 Here are a few common causes of this problem:
 

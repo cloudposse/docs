@@ -8,7 +8,7 @@ The geodesic base image ships with a number of utility scripts:
 - [`/usr/local/bin/s3`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/s3) - makes it easier to manage S3 filesystems in `/etc/fstab`
 - [`/usr/bin/s3fs`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/bin/s3fs) - a thin wrapper around `goofys` for mounting S3 filesystems with a local cache in `/dev/shm`. It's the command executed by `mount` (e.g. the `s3fs#/...` part in `/etc/fstab`)
 
-# Use-cases
+## Use-cases
 
 A few common use-cases have arrisen for mounting S3 buckets inside of the geodesic shell.
 
@@ -16,7 +16,7 @@ A few common use-cases have arrisen for mounting S3 buckets inside of the geodes
 2. **Manipulating Terraform State**. Sometimes we move projects around and need to rename state folders. It's easy to change directory to the S3 bucket and move files around. Othertimes, in extreme cases we've needed to edit the `.tfstate` file. Being able to do this using `jq` is nice.
 3. **Storing Helmfile Values**. When deploying charts with `helm` or `helmfile`, you may need a large `values.yaml` file for a particular service. Othertimes, that `values.yaml` may contain sensitive values like TLS private keys. Storing that file in an encrypted S3 bucket works well.
 
-# Configuring S3 Bucket Mount Points
+## Configuring S3 Bucket Mount Points
 
 Add the following to your `Dockerfile` to make it easy to mount S3 buckets inside of a geodesic shell.
 
@@ -37,7 +37,7 @@ s3fs#${TF_BUCKET} /secrets/tf fuse _netdev,allow_other,rw,nosuid,nodev,relatime,
 The `${TF_BUCKET}` is evaluated (interpolated) at runtime by the `s3fs` command called by `mount`. This allows it to be highly dynamic. Under certain circumstances this may not be wanted. By removing the single quotes around `'${TF_BUCKET}'` in the `s3 fstab` command, it will be evaluated at `docker build` time rather than at run time.
 {{% /dialog %}}
 
-# Mounting Buckets
+## Mounting Buckets
 
 To mount buckets, just run `mount -a` after having assumed roles. This is the same as calling `s3 mount`.
 

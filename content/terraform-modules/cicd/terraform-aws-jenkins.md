@@ -2,7 +2,7 @@
 title: "terraform-aws-jenkins"
 description: "This is an enterprise-ready, scalable and fault-tolerant architecture and the CI/CD pattern to build and deploy Jenkins."
 ---
-# Terraform AWS Jenkins
+## Terraform AWS Jenkins
 
 |                  |                                                                                                                                                        |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -26,7 +26,7 @@ The module uses these open-source Cloud Posse modules:
 * https://github.com/cloudposse/terraform-aws-codebuild
 
 
-# Features
+## Features
 
 The module will create the following AWS resources:
 
@@ -41,7 +41,7 @@ The module will create the following AWS resources:
 
 After all of the AWS resources are created,
 
-## CodePipeline
+### CodePipeline
 
 CodePipeline will:
 
@@ -52,7 +52,7 @@ CodePipeline will:
   * Monitor the GitHub repo for changes and re-run the steps above if new commits are pushed
 
 
-## DataPipeline
+### DataPipeline
 
 DataPipeline will run on the specified schedule and will backup all Jenkins files to an S3 bucket by doing the following:
 
@@ -62,13 +62,13 @@ DataPipeline will run on the specified schedule and will backup all Jenkins file
   * Notify about the status of the backup (Success or Failure) via email
   * Destroy the EC2 instance
 
-# Usage
+## Usage
 
 For complete examples, see [examples](https://github.com/cloudposse/terraform-aws-jenkins/tree/master/examples).
 
-## Deploy Jenkins into an existing VPC with existing subnets
+### Deploy Jenkins into an existing VPC with existing subnets
 
-##### HCL
+#### HCL
 ```hcl
 variable "max_availability_zones" {
   default = "2"
@@ -119,9 +119,9 @@ module "jenkins" {
 }
 ```
 
-## Deploy Jenkins into an existing VPC and new subnets
+### Deploy Jenkins into an existing VPC and new subnets
 
-##### HCL
+#### HCL
 ```hcl
 variable "max_availability_zones" {
   default = "2"
@@ -190,9 +190,9 @@ module "subnets" {
 }
 ```
 
-## Deploy Jenkins into a new VPC and new subnets
+### Deploy Jenkins into a new VPC and new subnets
 
-##### HCL
+#### HCL
 ```hcl
 variable "max_availability_zones" {
   default = "2"
@@ -275,7 +275,7 @@ module "subnets" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                               |                                             Default                                              | Description                                                                                                                        | Required |
 |:-----------------------------------|:------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------|:--------:|
@@ -313,7 +313,7 @@ module "subnets" {
 | tags                               |                                                {}                                                | Additional tags (_e.g._ `map("BusinessUnit","ABC")`                                                                                |    No    |
 | delimiter                          |                                                -                                                 | Delimiter to be used between `name`, `namespace`, `stage` and `attributes`                                                         |    No    |
 
-# DataPipeline Config Variables
+## DataPipeline Config Variables
 
 | Name          | Default    | Description                                                                | Required |
 |:--------------|:-----------|:---------------------------------------------------------------------------|:---------|

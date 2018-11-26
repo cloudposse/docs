@@ -7,7 +7,7 @@ tags:
 - aws
 ---
 
-# Question
+## Question
 
 While attempting to run `terraform apply`, the execution failed with the following error:
 
@@ -24,11 +24,11 @@ Error: Error applying plan:
 * module.aurora_postgres.output.name: Resource 'aws_rds_cluster.default' does not have attribute 'database_name' for variable 'aws_rds_cluster.default.*.database_name'
 ```
 
-This was previously working and only broke after upgrading the underlying module release. 
+This was previously working and only broke after upgrading the underlying module release.
 
 The module had made a significant change which involved adding a `count` parameter to underlying resources.
 
-# Answer
+## Answer
 
 We've encountered this error as well, although it happens very seldom. Basically what happens is that terraform chokes because it is referencing some old `output` names from a previous generation. We don't know how to avoid it, but rerunning `terraform apply` tends to fix it. Please contact us by clicking the "Ask a Question" link, if this does not resolve your issues.
 

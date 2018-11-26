@@ -7,7 +7,7 @@ tags:
 - faq
 ---
 
-# Question
+## Question
 
 When calling `aws-vault exec` or using `assume-role` in `geodesic`, a single line is output that simply says:
 
@@ -15,7 +15,7 @@ When calling `aws-vault exec` or using `assume-role` in `geodesic`, a single lin
 'aws_access_key_id'
 ```
 
-# Answer
+## Answer
 
 This is usually because there's a `[default]` section in your `~/.aws/config`. Remove that and it should start to work.
 
