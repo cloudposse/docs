@@ -15,8 +15,10 @@ It works together with the `docker push` and `docker pull` commands for standard
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Example Docker Registries" %}}
 Examples of Docker registry:
+
 * [Docker Hub](https://hub.docker.com/)
 * [Codefresh Registry](https://codefresh.io/docs/docs/docker-registries/codefresh-registry/)
 * [AWS Elastic Container Registry](https://aws.amazon.com/ecr/)
 * [Quay Registry](https://quay.io/)
+
 {{% /dialog %}}

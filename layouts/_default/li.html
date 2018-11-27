@@ -1,6 +1,6 @@
 <article class="post {{ .Section }}">
     <header class="post-header">
-        <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></h2>
     </header>
     <section class="post-excerpt">
       {{ if .Description }}
@@ -15,7 +15,7 @@
         {{- end -}}
         {{- if .Params.tags -}}  
             {{ range $index, $tag := .Params.tags }}
-                <a class="label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}/">{{ $tag }}</a>
+                <a class="label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}/">#{{ $tag }}</a>
             {{ end }}
         {{- end -}}
     </footer>
