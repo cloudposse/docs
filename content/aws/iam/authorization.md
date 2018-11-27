@@ -2,6 +2,7 @@
 title: AWS IAM Authorization
 description: ''
 ---
+{{< wip >}}
 
 You can access AWS by Web console or AWS CLI.
 

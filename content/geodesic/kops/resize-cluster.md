@@ -5,6 +5,8 @@ tags:
 - kops
 - geodesic
 ---
+{{< wip >}}
+
 ## Resize Number Master Nodes
 
 ## Resize Number of Worker Nodes
