@@ -25,12 +25,13 @@ export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
 export DOCKER_TAG ?= latest
 export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 export DOCKER_BUILD_FLAGS = 
-export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e COMPONENTS_BUILD=$(COMPONENTS_BUILD) $(DOCKER_IMAGE_NAME)
 
 export README_DEPS ?= docs/targets.md
 
 export COMPONENTS_DIR ?= static/components
 export UTTERANCES_VERSION ?= 0.1.0
+export COMPONENTS_BUILD ?= true
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
@@ -122,9 +123,14 @@ front/build-dev:
 	cd themes/cloudposse && yarn && yarn run dev
 
 ## Build front-end components
+ifeq ($(COMPONENTS_BUILD),true)
 components/build: utterances/build \
 	front/build
 	@exit 0
+else
+components/build:
+	@exit 0
+endif
 
 ## Generate all static content (outputs to public/) using local environment
 hugo/build: components/build
