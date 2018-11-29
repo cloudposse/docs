@@ -6,6 +6,8 @@ tags:
   - "Best Practices"
   - "Terraform"
 ---
+{{< wip >}}
+
 ![Terraform](/assets/08bcd99-terraform.png)
 
 # Use Git Workflow
