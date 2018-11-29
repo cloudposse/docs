@@ -5,6 +5,24 @@
 
 .chevrons #navigation a {
   text-decoration: none;
+  flex-wrap: nowrap;
+
+  label {
+    font-size: 1rem;
+    padding: 0 10px;
+
+    @include respond-to(desktop) {
+      font-size: 1.3rem;
+    }
+  }
+
+  .fa {
+    font-size: 2rem;
+
+    @include respond-to(desktop) {
+      font-size: 4rem;
+    }
+  }
 
   &:hover {
     color: $color_cape_cod_approx;
