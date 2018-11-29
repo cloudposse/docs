@@ -5,6 +5,11 @@
   padding: 10px;
   flex: 1;
 
+  @supports (-webkit-overflow-scrolling: touch) {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+  }
+
   @include respond-to('desktop') {
     padding: 2rem 4rem;
   }
@@ -74,6 +79,11 @@
 
   &__content {
 
+    @supports (-webkit-overflow-scrolling: touch) {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: scroll;
+    }
+
     > h1 {
       color: $color_fuscous_gray_approx;
       font-size: 23px;
@@ -104,6 +114,10 @@
     p {
       margin: 1.7rem 0;
       clear: both;
+    }
+
+    .wip {
+      margin: 15px 0;
     }
   }
 
