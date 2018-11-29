@@ -45,7 +45,7 @@ const search = instantsearch({
       return;
     }
 
-    if (query.length === 1) {
+    if (query.length >= 1) {
       showHits();
     }
 
