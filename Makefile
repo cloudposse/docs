@@ -31,7 +31,6 @@ export README_DEPS ?= docs/targets.md
 
 export COMPONENTS_DIR ?= static/components
 export UTTERANCES_VERSION ?= 0.1.0
-export COMPONENTS_BUILD ?= true
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
@@ -115,22 +114,23 @@ utterances/build:
 	sed -i 's|src="/|src="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
 	rm -rf utterances
 
-front/build:
+yarn/build:
 	cd themes/cloudposse && yarn && yarn run gulp
 
 # TODO: add command for running dev script in themes/cloudposse/package.json
-front/build-dev:
+yarn/build-dev:
 	cd themes/cloudposse && yarn && yarn run dev
 
-## Build front-end components
-ifeq ($(COMPONENTS_BUILD),true)
-components/build: utterances/build \
-	front/build
-	@exit 0
-else
-components/build:
-	@exit 0
+ifneq ($(YARN_BUILD_DISABLED),true)
+COMPONENTS_DEPS += yarn/build
 endif
+ifneq ($(UTTERANCES_BUILD_DISABLED),true)
+COMPONENTS_DEPS += utterances/build
+endif
+
+## Build front-end components
+components/build: $(COMPONENTS_DEPS)
+	@exit 0
 
 ## Generate all static content (outputs to public/) using local environment
 hugo/build: components/build

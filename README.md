@@ -33,7 +33,7 @@ It's 100% Open Source and licensed under the [Creative Commons Attribution-NonCo
 ## Usage
 
 1. Run `make init`
-2. Run `COMPONENTS_BUILD=true/false make run` to start local server
+2. Run `make run` to start local server (to skip building of intermediate components use env, e.g `UTTERANCES_BUILD_DISABLED=true`)
 3. Run `make build` to generate static site in `public/`
 
 
