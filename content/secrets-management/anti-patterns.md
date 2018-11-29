@@ -1,6 +1,7 @@
 ---
 title: "Secrets Management Anti-patterns"
 ---
+{{< wip >}}
 
 There are a number of things that should be avoided at all costs.
 
