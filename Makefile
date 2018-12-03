@@ -25,7 +25,7 @@ export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
 export DOCKER_TAG ?= latest
 export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 export DOCKER_BUILD_FLAGS = 
-export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e COMPONENTS_BUILD=$(COMPONENTS_BUILD) $(DOCKER_IMAGE_NAME)
 
 export README_DEPS ?= docs/targets.md
 
@@ -114,16 +114,22 @@ utterances/build:
 	sed -i 's|src="/|src="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
 	rm -rf utterances
 
-front/build:
+yarn/build:
 	cd themes/cloudposse && yarn && yarn run gulp
 
 # TODO: add command for running dev script in themes/cloudposse/package.json
-front/build-dev:
+yarn/build-dev:
 	cd themes/cloudposse && yarn && yarn run dev
 
+ifneq ($(YARN_BUILD_DISABLED),true)
+COMPONENTS_DEPS += yarn/build
+endif
+ifneq ($(UTTERANCES_BUILD_DISABLED),true)
+COMPONENTS_DEPS += utterances/build
+endif
+
 ## Build front-end components
-components/build: utterances/build \
-	front/build
+components/build: $(COMPONENTS_DEPS)
 	@exit 0
 
 ## Generate all static content (outputs to public/) using local environment
