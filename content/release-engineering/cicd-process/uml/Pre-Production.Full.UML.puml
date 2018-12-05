@@ -79,7 +79,7 @@ group Publish Image To Staging
   destroy CSDR
 end
 
-group Trigger deploy on pre-production
+group Trigger Deploy to Pre-production
   CPPB -> CSPP : Build pre-production pipeline
   activate CSPP
   CPPB -> CSPP : Build started
