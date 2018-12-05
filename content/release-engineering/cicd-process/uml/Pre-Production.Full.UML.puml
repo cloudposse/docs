@@ -105,7 +105,7 @@ destroy GD
 
 note right of CSPP : From ./codefresh/production-deploy.yml
 
-group Analysis metadata and export env vars
+group Export Environment Variables
 
   note over CSPP : make app/export
   note right of CSPP : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
