@@ -25,7 +25,7 @@ export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
 export DOCKER_TAG ?= latest
 export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 export DOCKER_BUILD_FLAGS = 
-export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e COMPONENTS_BUILD=$(COMPONENTS_BUILD) $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e COMPONENTS_BUILD="$(COMPONENTS_BUILD)" $(DOCKER_IMAGE_NAME)
 
 export README_DEPS ?= docs/targets.md
 
