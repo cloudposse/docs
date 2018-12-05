@@ -96,7 +96,7 @@ destroy CPPB
 
 newpage
 
-== Pre-production deploy ==
+== Pre-production Deploy ==
 
 CSPP -> GD : Pull source code
 activate GD
