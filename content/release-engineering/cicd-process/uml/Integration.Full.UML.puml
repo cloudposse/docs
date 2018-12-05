@@ -5,7 +5,7 @@ actor User as "Developer"
 participant GD as "Develop GitLab"
 participant CSI as "Codefresh Staging\nIntegration Pipeline"
 participant SC as "Staging Chamber"
-participant SK8S as "Staging Kubernets"
+participant SK8S as "Staging Kubernetes"
 participant CSDR as "Codefresh Staging\nDocker Registry"
 participant SSCICD as "Slack #cicd-staging"
 
