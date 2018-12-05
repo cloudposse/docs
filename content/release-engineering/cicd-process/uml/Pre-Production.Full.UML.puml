@@ -46,7 +46,7 @@ destroy GP
 
 note right of CPPB : From ./codefresh/production-build.yml
 
-group Analysis metadata and export env vars
+group Export Environment Variables
 
   note over CPPB : make app/export
   note right of CPPB : PROJECT=???\nAPP_NAME=???\nCHART_NAME=???\nIMAGE_NAME=???
