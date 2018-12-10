@@ -81,20 +81,32 @@ if (document.querySelector('.page-search-results')) {
       },
     ]
   }));
-  search.addWidget(
-    pagination({
-      container: '#pagination-container',
-      maxPages: 20,
-      scrollTo: false,
-      showFirstLast: false,
-      cssClasses: {
-        root: "pagination",
-        item: "page-item",
-        link: "page-link",
-        active: "active"
-      }
-    })
-  );
+
+  let paginationContainer = document.querySelector('#pagination-container');
+  var paginationWidget = pagination({
+    container: paginationContainer,
+    maxPages: 20,
+    scrollTo: false,
+    showFirstLast: false,
+    cssClasses: {
+      root: "pagination",
+      item: "page-item",
+      link: "page-link",
+      active: "active"
+    }
+  });
+  var oldRender = paginationWidget.render;
+
+  // Rewrite original render function.
+  paginationWidget.render = function (params) {
+    var currentState = params.results;
+
+    if (currentState.nbPages <= 1) paginationContainer.style.display = 'none';
+    else paginationContainer.style.display = 'block';
+    oldRender.call(this, params);
+  }
+
+  search.addWidget(paginationWidget);
 }
 
 search.addWidget(searchBox({
