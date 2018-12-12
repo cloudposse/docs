@@ -62,7 +62,7 @@
   <div class="subnav__container container">
     {{if not .IsHome}}
       <div class="subnav__breadcrumbs breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-        {{ template "breadcrumb" dict "page" . "value" (printf "<span class='breadcrumbs__title'>%s</span>" .Title) }}
+        {{ template "breadcrumb" dict "page" . "value" (printf "<span class='breadcrumbs__title'>%s</span>" (.Title | markdownify)) }}
       </div>
 
       <div class="subnav__search-bar search-bar search-bar--subnav">
@@ -71,7 +71,7 @@
           <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
           <div id="search-hits" class="search-hits"></div>
           <div class="search-more">
-            <a class="search-more-link" href="/search/">view all results</a>
+            <a class="search-more__link" href="/search/">view all results</a>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@
       </div>
       <div class="page-content__header">
         <div class="page-content__title-wrapper">
-          <h1 class="page-content__title">{{.Title}}</h1>
+          <h1 class="page-content__title">{{.Title | markdownify }}</h1>
           {{ if .Description }}
           <p class="page-content__excerpt-text">{{ .Description | markdownify }}</p>
           {{ end }}

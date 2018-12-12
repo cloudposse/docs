@@ -2,6 +2,7 @@
 title: "Updating Kops Cluster"
 description: "This describes the process of updating kops settings for clusters provisioned using geodesic modules."
 ---
+{{< wip >}}
 
 There are a few ways that we'll need to know in order to update `kops` clusters.
 
@@ -10,9 +11,6 @@ There are a few ways that we'll need to know in order to update `kops` clusters.
 The `kops` configuration is an imperative
 
 ## Applying Configuration Changes
-
-```
-```
 
 ## Rolling Updates
 

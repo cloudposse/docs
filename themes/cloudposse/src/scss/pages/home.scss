@@ -67,6 +67,7 @@
 
     &--depth1 {
       border-bottom: 1px solid $color_alto_approx;
+      flex: 0 0 auto;
       margin-top: 0;
 
       @include respond-to('tablet') {
@@ -88,8 +89,6 @@
     &--depth1 {
       font-size: 1.6rem;
       text-transform: none;
-      display: flex;
-      align-items: center;
 
       > a {
         transition: color .2s;

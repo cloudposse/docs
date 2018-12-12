@@ -34,7 +34,7 @@
                   {{ if eq $depth 1 }}
                     <i class="homepage__title-icon {{ .Params.icon | default "fa fa-bullhorn" }}" aria-hidden="true"></i>
                   {{end}}
-                  {{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}
+                  {{safeHTML .Params.Pre}}{{.Title | markdownify }}{{safeHTML .Params.Post}}
                 </a>
               </h3>
               {{ if eq $depth 1 }}
@@ -78,7 +78,7 @@
             homepage__category-li--depth{{ $depth }}
             ">
             <div class="homepage__title-wrapper homepage__title-wrapper--depth{{ $depth }}">
-              <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}</a>
+              <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.LinkTitle | markdownify}}{{safeHTML .Params.Post}}</a>
             </div>
           </li>
           <!-- end .IsSection -->
