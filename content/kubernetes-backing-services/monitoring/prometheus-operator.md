@@ -6,15 +6,15 @@ description: ""
 [CRUD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
 that simplifies creation/configuration/management of [Prometheus]({{< relref "monitoring-and-alerting/prometheus.md" >}}) and [AlertManager]({{< relref "monitoring-and-alerting/alert-manager.md" >}}).
 
-# Dependencies
+## Dependencies
 
 None
 
-# Install
+## Install
 
 You can install `prometheus-operator` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0000.prometheus-operator.yaml).
 
-## Install using Helmfile
+### Install using Helmfile
 
 To install `prometheus-operator` run
 
@@ -33,7 +33,7 @@ These are some of the environment variables you may want to configure:
 
 Environment variables can be specified in the Geodesic Module's `Dockerfile` or using [Chamber]({{< relref "tools/chamber.md" >}}) storage, which is recommended for all secrets.
 
-## Install using Custom Helmfile
+### Install using Custom Helmfile
 
 Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
@@ -41,7 +41,7 @@ Add this code to your [Kubernetes Backing Services](/kubernetes-backing-services
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-# Usage
+## Usage
 
 Prometheus operator provides these new Kubernetes resources:
 
@@ -56,14 +56,14 @@ We recommend to install [kube-prometheus]({{< relref "kubernetes-backing-service
 that installs Prometheus, AlertManager and ServiceMonitors+Exporters to collect all required metrics from Kubernetes cluster.
 {{% /dialog %}}
 
-## Prometheus
+### Prometheus
 
 [Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#prometheus) about the Prometheus design.
 
-## Alertmanager
+### Alertmanager
 
 [Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#alertmanager) about the Alertmanager design.
 
-## ServiceMonitor
+### ServiceMonitor
 
 [Read More](https://github.com/coreos/prometheus-operator/blob/master/Documentation/design.md#servicemonitor) about the ServiceMonitor design.

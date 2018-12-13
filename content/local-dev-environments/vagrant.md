@@ -12,7 +12,7 @@ VirtualBox by Oracle is responsible for running Linux Virtual Machines.
 
 Both packages are free and Open Source.
 
-# Setup
+## Setup
 
 Download and install *Vagrant* for your OS here: https://www.vagrantup.com/downloads.html
 
@@ -20,7 +20,7 @@ As of this writing, the current version is 1.9.7. You can find out what version 
 
 Vagrant depends on VirtualBox. Make sure you install that first.
 
-# Dependencies
+## Dependencies
 
 - *Vagrant v1.9.7+*  <https://www.vagrantup.com/downloads.html>
 - *VirtualBox v5.1+* <https://www.virtualbox.org/wiki/Downloads>

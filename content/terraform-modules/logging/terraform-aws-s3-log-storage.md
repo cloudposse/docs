@@ -5,7 +5,7 @@ description: >-
   services such as `S3`, `CloudFront`, and `CloudTrails`.
 ---
 
-# Terraform AWS S3 Log Storage
+## Terraform AWS S3 Log Storage
 
 |                  |                                                                                                                                                                      |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -18,13 +18,13 @@ It implements a configurable log retention policy, which allows you to efficient
 
 It enables server-side default encryption.
 
-# References
+## References
 
 - <https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html>
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "log_storage" {
@@ -35,7 +35,7 @@ module "log_storage" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                                 | Default              | Description                                                                                                                                                                                                                                           | Required |
 |:-------------------------------------|:---------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------|
@@ -59,7 +59,7 @@ module "log_storage" {
 | `prefix`                             |                      | Object key prefix identifying one or more objects to which the lifecycle rule applies                                                                                                                                                                 | No       |
 | `region`                             |                      | If specified, the AWS region this bucket should reside in. Defaults to region of callee.                                                                                                                                                              | No       |
 
-# Outputs
+## Outputs
 
 | Name                 | Description                           |
 |:---------------------|:--------------------------------------|

@@ -2,7 +2,7 @@
 title: "terraform-aws-cicd"
 description: "Terraform module to create AWS [CodePipeline](https://aws.amazon.com/codepipeline/) with [CodeBuild](https://aws.amazon.com/codebuild/) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD)"
 ---
-# Terraform AWS CI/CD
+## Terraform AWS CI/CD
 
 |                  |                                                                                                                                                  |
 |:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,11 +12,11 @@ description: "Terraform module to create AWS [CodePipeline](https://aws.amazon.c
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cicd.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cicd)    |
 
 
-# Use-cases
+## Use-cases
 
 This module supports three specific use-cases.
 
-## GitHub → S3 (build artifact) → Elastic Beanstalk (running application stack)
+### GitHub → S3 (build artifact) → Elastic Beanstalk (running application stack)
 
 The module gets the code from a GitHub repository (public or private), builds it by executing the `buildspec.yml` file from the repository pushes the built artifact to an S3 bucket,
 and deploys the artifact to Elastic Beanstalk running one of the supported stacks (_e.g._ Java, Go, Node, IIS, Python, Ruby, etc.).
@@ -28,7 +28,7 @@ and deploys the artifact to Elastic Beanstalk running one of the supported stack
 {{% /dialog %}}
 
 
-## GitHub → ECR (Docker image) → Elastic Beanstalk (running Docker stack)
+### GitHub → ECR (Docker image) → Elastic Beanstalk (running Docker stack)
 
 The module gets the code from a `GitHub` repository, builds a Docker image from it by executing the `buildspec.yml` and `Dockerfile` files from the repository,
 pushes the Docker image to an ECR repository, and deploys the Docker image to Elastic Beanstalk running Docker stack.
@@ -37,7 +37,7 @@ pushes the Docker image to an ECR repository, and deploys the Docker image to El
 - http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
 {{% /dialog %}}
 
-## GitHub → ECR (Docker image)
+### GitHub → ECR (Docker image)
 
 The module gets the code from a GitHub repository, builds a Docker image from it by executing the `buildspec.yml` and `Dockerfile` files from the repository,
 and pushes the Docker image to an ECR repository. This is used when we want to build a Docker image from the code and push it to ECR without deploying to Elastic Beanstalk.
@@ -48,11 +48,11 @@ To activate this mode, don't specify the `app` and `env` attributes for the modu
 - http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
 {{% /dialog %}}
 
-# Usage
+## Usage
 
 Include this repository as a module in your existing terraform code.
 
-##### HCL
+#### HCL
 ```hcl
 module "build" {
     source              = "git::https://github.com/cloudposse/terraform-aws-cicd.git?ref=master"
@@ -90,11 +90,11 @@ module "build" {
 }
 ```
 
-# Example: GitHub, NodeJS, S3 and EB
+## Example: GitHub, NodeJS, S3 and EB
 
 This is an example to build a Node app, store the build artifact to an S3 bucket, and then deploy it to Elastic Beanstalk running ``Node`` stack
 
-##### buildspec.yml
+### buildspec.yml
 ```yaml
 version: 0.2
 
@@ -122,11 +122,11 @@ artifacts:
 ```
 
 
-# Example: GitHub, NodeJS, Docker, ECR, and EB
+## Example: GitHub, NodeJS, Docker, ECR, and EB
 
 This is an example to build a ``Docker`` image for a Node app, push the ``Docker`` image to an ECR repository, and then deploy it to Elastic Beanstalk running ``Docker`` stack `buildspec.yml` file
 
-##### buildspec.yml
+### buildspec.yml
 ```yaml
 version: 0.2
 
@@ -152,7 +152,7 @@ artifacts:
 ```
 
 
-##### Dockerfile
+### Dockerfile
 ```text
 FROM node:latest
 
@@ -167,7 +167,7 @@ CMD [ "npm", "start" ]
 
 ```
 
-# Variables
+## Variables
 
 | Name                | Default                       | Description                                                                                                                                                                                                               |  |
 |:--------------------|:------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-|

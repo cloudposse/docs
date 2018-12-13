@@ -3,6 +3,7 @@ title: "Kubernetes Core Concepts"
 description: ""
 draft: true
 ---
+{{< wip >}}
 ## Resources
 
 ## Controllers

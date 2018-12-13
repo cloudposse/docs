@@ -2,7 +2,7 @@ import 'featherlight';
 
 // Images
 // Execute actions on images generated from Markdown pages
-var images = $("article img, .page-content__content img").not(".inline");
+var images = $("article img, .page-content__content img").not(".inline, .no-popup");
 // Wrap image inside a featherlight (to get a full size view in a popup)
 images.wrap(function () {
   var image = $(this);
@@ -56,3 +56,27 @@ function getUrlParameter(sPageURL) {
     return undefined;
   }
 };
+
+let code = document.querySelectorAll('.dialog.code-block');
+for (let index = 0; index < code.length; index++) {
+  let element = code[index];
+  let highlight = element.querySelector('pre');
+
+  if (highlight.offsetHeight > 250) {
+
+    let id = 'featherlight-' + index;
+    let link = document.createElement('a');
+    let title = element.querySelector('h4');
+
+    element.classList.add('processed');
+
+    link.classList.add('code-expand');
+    link.innerHTML = '<i class="fas fa-expand-arrows-alt"></i>';
+    link.dataset.featherlight = '#' + id;
+    link.setAttribute('href', '#' + id);
+
+    title.appendChild(link);
+
+    highlight.id = id;
+  }
+}

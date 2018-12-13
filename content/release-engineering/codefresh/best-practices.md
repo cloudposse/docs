@@ -5,30 +5,30 @@ tags:
 - best-practices
 ---
 
-# Managing Secrets
+## Managing Secrets
 
 Use `chamber` to manage secrets. Provision a dedicated IAM user with limited scope by using the  [terraform-aws-iam-chamber-user](https://github.com/cloudposse/terraform-aws-iam-chamber-user) terraform module. Review our guide on [managing secrets with CI/CD]({{< relref "secrets-management/cicd.md" >}}).
 Also, a sample invocation of `terraform-aws-iam-chamber-user` is part of "[root modules](https://github.com/cloudposse/terraform-root-modules/blob/master/aws/chamber/user.tf)".
 
 {{% include-github title="Example AWS IAM Chamber User for Codefresh" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="master" file="/aws/chamber/user.tf" language="hcl" %}}
 
-# Naming Kubernetes Contexts
+## Naming Kubernetes Contexts
 
 Use cluster name. e.g. `us-west-2-staing-example-com`
 
 {{< img src="/assets/best-practices-d9e507c5.png" title="Codefresh Kubernetes Integration" >}}
 
-# Use a `codefresh.yml` build file
+## Use a `codefresh.yml` build file
 
 Always include the pipeline manifest in the source repo. This allows it to be versioned alongside the code it builds.
 
 {{< img src="/assets/best-practices-70ab60e9.png" title="Use YAML from Repository" >}}
 
-# Stick non-secrets in `codefresh.yml`
+## Stick non-secrets in `codefresh.yml`
 
 Set all non-secret values in the pipeline config so that they can be versioned.
 
-# Use Conditions to Control Flow
+## Use Conditions to Control Flow
 
 Use conditions to control when a build step should be run. This is useful for deploying to various kubernetes clusters by setting the `KUBE_CONTEXT` based on the branch or tag.
 
@@ -39,7 +39,7 @@ when:
       executeForTag: "'${{SEMVERSION_TAG}}' != ''"
 ```
 
-# Use a Containerized Build Harness
+## Use a Containerized Build Harness
 
 A [`build-harness`]({{< relref "release-engineering/build-harness.md" >}}) is like a "[test harness](https://en.wikipedia.org/wiki/Test_harness)". It provides reusable methods for building and deploying software. This allows to keep things DRY by offloading the business logic to a centralized repo that can be versioned and shared across multiple projects. We provide one that we use in nearly all of our projects.
 
@@ -49,11 +49,11 @@ Cloud Posse's Build Harness is free.
 
 An example invocation can be found in our CI/CD process for [how we build helm charts]({{< relref "release-engineering/cicd-process/build-charts.md" >}})
 
-# Use the `cli`
+## Use the `cli`
 
 Codefresh provides a decent [cli](https://codefresh-io.github.io/cli/) tool to control pipelines.
 
-# Use Cron Triggers
+## Use Cron Triggers
 
 Codefresh provides the ability to run jobs periodically with cron-like functionality.
 

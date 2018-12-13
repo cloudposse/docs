@@ -7,11 +7,11 @@ description: "Using Markdown is essential for clear communication on mediums suc
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Markdown Cheatsheet" %}} If you're new to Markdown or need a refresher, check out our [Markdown cheatsheet](/development/markdown). {{% /dialog %}}
 
-# Code Blocks
+## Code Blocks
 
 Use code blocks for anything more than 1 line. Use `code` for inline code, filenames, commands, etc.
 
-## Code Block
+### Code Block
 
 ~~~~markdown
 ```
@@ -20,7 +20,7 @@ Use code blocks for anything more than 1 line. Use `code` for inline code, filen
 ~~~~
 
 
-## Table of Options
+### Table of Options
 
 Use tables to communicate lists of options.
 
@@ -48,22 +48,22 @@ Which will render to something like this:
 
 {{< img src="/assets/a2761a9-image_22.png" title="Example Markdown Table Rendering" >}}
 
-# Feature List Formatting
+## Feature List Formatting
 
 Use this format describe the features & benefits.
 
-## Feature List Example
+### Feature List Example
 
 ```markdown
 1. **Feature 1** - Explanation of benefits
 2. **Feature 2** - Explanation of benefits
 ```
 
-# Use Block Quotes
+## Use Block Quotes
 
 Reference copyrighted text, quotes, and other unoriginal copy using `>`
 
-## Block Quote Example
+### Block Quote Example
 
 ```markdown
 > Amazon Simple Storage Service (Amazon S3) makes it simple and practical to collect, store, and analyze data - regardless of format – all at massive scale.

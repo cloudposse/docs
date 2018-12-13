@@ -1,7 +1,12 @@
-# Use `.gitignore`
+---
+title: "GitHub Best Practices"
+---
+{{< wip >}}
 
-Use a `.gitignore` file in the root of every repo to exclude files that should never be committed. 
+## Use `.gitignore`
 
-Here's an example of the [`.gitignore`](https://github.com/cloudposse/docs/blob/master/.gitignore) from our documentation repository. 
+Use a `.gitignore` file in the root of every repo to exclude files that should never be committed.
+
+Here's an example of the [`.gitignore`](https://github.com/cloudposse/docs/blob/master/.gitignore) from our documentation repository.
 
 {{% include-code-block file=".gitignore" title="Example .gitignore" language="text" %}}

@@ -10,7 +10,7 @@ tags:
 
 Codefresh supports [triggers](https://codefresh.io/docs/docs/pipeline-triggers/introduction-triggers/) which can execute a pipeline based on external webooks or cronjobs.
 
-# Configuration
+## Configuration
 
 1. First setup a pipeline the way you would for any other kind of build.
 
@@ -38,7 +38,7 @@ build_image:
 
 {{% /dialog %}}
 
-# References
+## References
 
 - https://codefresh.io/docs/docs/pipeline-triggers/configure-cron-trigger/
 - https://github.com/codefresh-io/cronus/blob/master/docs/expression.md

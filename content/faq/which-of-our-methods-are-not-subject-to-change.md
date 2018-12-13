@@ -5,11 +5,11 @@ tags:
 - devops
 ---
 
-# Question
+## Question
 
 We want to know Which of your methods/approaches to DevOps or Cloud Architecture are not subject to change? What can we change?
 
-# Answer
+## Answer
 
 This is a hard question to answer, generally speaking. 100% of the "Cloud Posse" solution is Open Source, which means everything is subject to change by you or us, or even the community at large.
 

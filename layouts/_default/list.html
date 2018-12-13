@@ -12,6 +12,17 @@
    {{ .Render "li" }}
 {{ end }}
 
+{{- if .Sections -}}
+{{- range .Sections -}}
+<div class="articles-list">
+  <h4 class="articles-list__title">{{.Title | markdownify}}</h4>
+  {{- range $i, $e := .Data.Pages -}}
+  {{ .Render "li" }}
+  {{- end -}}
+</div>
+{{- end -}}
+{{- end -}}
+
 <div style="margin-bottom:2rem"></div>
 
 {{ partial "pagination.html" $paginator }}

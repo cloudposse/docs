@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/head.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/head.html" . }}
+    {{end}}
+  </head>
+
+
+  <body data-url="{{ .RelPermalink }}" class="cloudposse page-search-results">
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/body-beforecontent.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/body-beforecontent.html" . }}
+    {{end}}
+
+    {{ block "main" . }}
+      <div id="search-results-page" class="search-results--page">
+        <div class="search-results--page__head">
+          <div id="search-stats-page" class="search-results--page__stats"></div>
+          <div id="hits-per-page-selector" class="search-results--page__hits-per-page"></div>
+        </div>
+        <div id="search-hits-page" class="search-hits--page"></div>
+        <div id="pagination-container"></div>
+      </div>
+    {{ end }}
+
+    {{if .Site.Params.themeStyle}}
+      {{ partial (printf "%s/body-aftercontent.html" .Site.Params.themeStyle) . }}
+    {{else}}
+      {{ partial "flex/body-aftercontent.html" . }}
+    {{ end }}
+
+    {{ block "footer" . }}
+    {{ end }}
+
+    {{ partial "custom-footer.html" . }}
+  </body>
+</html>

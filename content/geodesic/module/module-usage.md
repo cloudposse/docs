@@ -3,7 +3,7 @@ title: "Geodesic Module Usage"
 description: ""
 weight: 2
 ---
-# Prerequisites
+## Prerequisites
 
 * Follow the "Quick Start" for [Quick start]({{< relref "geodesic/module/quickstart.md" >}})
 
@@ -11,14 +11,14 @@ weight: 2
 All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
 {{% /dialog %}}
 
-# Start the Geodesic Shell
+## Start the Geodesic Shell
 
 A Geodesic Module is docker container that extends Geodesic and used as a shell.
 
 Each Geodesic Module will have a unique name. The shell can be easily started any time by simply running that name in a terminal.
 The name is a shell script in `/usr/local/bin`. Make sure this path is in your `PATH` environment variable.
 
-# Development Iterations
+## Development Iterations
 
 After you [create a Geodesic Module]({{< relref "geodesic/module/quickstart.md" >}}), there will be `/conf` directory in the image.
 
@@ -28,11 +28,11 @@ During development, it would be very painful to have to rebuild the container ev
 
 Finally, once you have everything working, we recommend that you rebuild the Geodesic Module container to incorporate your changes in the container and do one more final test.
 
-# Build new version
+## Build new version
 
 To build Geodesic Module just run `make build` in the module directory
 
-# Start the Shell
+## Start the Shell
 
 Run the wrapper script to start a new shell. The first thing you will need to do is to login to AWS by assuming a correct role (e.g. run `assume-role`) before you can work with many of the tools in the Geodesic Module.
 

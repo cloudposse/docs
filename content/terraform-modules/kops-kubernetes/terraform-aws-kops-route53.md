@@ -6,7 +6,7 @@ description: >-
   sets.
 ---
 
-# Terraform AWS Kops Route53
+## Terraform AWS Kops Route53
 
 |                  |                                                                                                                                                                  |
 |:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -19,9 +19,9 @@ It provides the IAM permissions needed by [route53-kubernetes](https://github.co
 
 This is useful to make Kubernetes services discoverable via AWS DNS services.
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "kops_route53" {
@@ -32,7 +32,7 @@ module "kops_route53" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name           | Default   | Description                                                                 | Required |
 |:---------------|:----------|:----------------------------------------------------------------------------|:---------|
@@ -44,7 +44,7 @@ module "kops_route53" {
 | `delimiter`    | `-`       | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes` | No       |
 | `masters_name` | `masters` | K8s masters subdomain name in the Kops DNS zone                             | No       |
 
-# Outputs
+## Outputs
 
 | Name          | Description |
 |:--------------|:------------|

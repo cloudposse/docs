@@ -6,7 +6,7 @@ description: >-
   Route53 record sets.
 ---
 
-# Terraform AWS Kops External DNS
+## Terraform AWS Kops External DNS
 
 |                  |                                                                                                                                                                            |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -15,7 +15,7 @@ description: >-
 | Release          | [![Release](https://img.shields.io/github/release/cloudposse/terraform-aws-kops-external-dns.svg)](https://github.com/cloudposse/terraform-aws-kops-external-dns/releases) |
 | Build Status     | [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-kops-external-dns.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-kops-external-dns)    |
 
-# Overview
+## Overview
 
 This module assumes you are running [external-dns](https://github.com/kubernetes-incubator/external-dns) in a Kops cluster.
 
@@ -25,9 +25,9 @@ This is useful to make Kubernetes services discoverable via AWS DNS services.
 
 The module uses [terraform-aws-kops-metadata](https://github.com/cloudposse/terraform-aws-kops-metadata) to lookup resources within a Kops cluster for easier integration with Terraform.
 
-# Usage
+## Usage
 
-## HCL
+### HCL
 
 ```hcl
 module "kops_external_dns" {
@@ -38,7 +38,7 @@ module "kops_external_dns" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name           | Default   | Description                                                                 | Required |
 |:---------------|:----------|:----------------------------------------------------------------------------|:---------|
@@ -50,7 +50,7 @@ module "kops_external_dns" {
 | `delimiter`    | `-`       | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes` | No       |
 | `masters_name` | `masters` | k8s masters subdomain name in the Kops DNS zone                             | No       |
 
-# Outputs
+## Outputs
 
 | Name             | Description        |
 |:-----------------|:-------------------|

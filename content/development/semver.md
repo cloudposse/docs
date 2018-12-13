@@ -9,7 +9,7 @@ We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. Gi
 
 ![Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)](/assets/aa35c54-semver.png)Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)
 
-# Semantics
+## Semantics
 
 Generally, all of our versions follow this convention: `X.Y.Z` (e.g. `1.2.3`). Sometimes, we'll use this format: `X.Y.Z-branch` when we need to disambiguate between versions existing in multiple branches.
 
@@ -19,16 +19,16 @@ Generally, all of our versions follow this convention: `X.Y.Z` (e.g. `1.2.3`). S
 
 We use GitHub tags & releases for all versioning. All docker images follow the same convention.
 
-# Versioning
+## Versioning
 
-## 0.X.Y
+### 0.X.Y
 
 We always start projects off at `0.1.0`. This is our first release of any project. While we try to keep our interfaces stable, as long as `X=0`, it indicates that our code does not yet have a stable API and may vary radically between minor releases.
 
-## 1.X.Y+
+### 1.X.Y+
 
 As soon as our code reaches `1.X.Y`, the interface should be relatively stable - that is not changing much between minor releases.
 
-# Implementation
+## Implementation
 
 Managing semantic versions should be automated just like everything else in our infrastructure. The [`build-harness`]({{< relref "release-engineering/build-harness.md" >}}) is used by our [Codefresh CI/CD process]({{< relref "release-engineering/cicd-process/semantic-versioning.md" >}}) to automatically generate versions based on git history.

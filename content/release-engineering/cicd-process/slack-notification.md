@@ -8,10 +8,10 @@ After a successful deployment to the cluster, we generally trigger a notificatio
 
 {{< img src="/assets/slack-notification-4f496aeb.png" title="Sample Notification to Slack Channel" >}}
 
-# Dependencies
+## Dependencies
 
 * [Slack Web Hook URL](https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack
 
-# Examples
+## Examples
 
 {{% include-code-block title="Notify Slack with Codefresh" file="release-engineering/cicd-process/examples/slack-notification-codefresh.yaml" language="yaml" %}}

@@ -9,18 +9,18 @@ internal dashboards after authorization with a third party [OAuth2](https://en.w
 
 Cluster Portal follows the [BeyondCorp](https://www.beyondcorp.com/) security model and uses the Bitly [`oauth2-proxy`](https://github.com/bitly/oauth2_proxy) as an Identity Aware Proxy ("IAP").
 
-# Dependencies
+## Dependencies
 
 * [External DNS]({{< relref "kubernetes-backing-services/external-dns/external-dns.md" >}})
 * [Kube Lego]({{< relref "kubernetes-backing-services/tls-management/kube-lego-lets-encrypt.md" >}})
 
-# Installation
+## Installation
 
 To install the `portal`, you will need to define the `hostname`, which is the FQHN used to access the `portal`.
 
 In our example, we use `portal.us-west-2.staging.example.com` as the FQHN. Replace this with an appropriate value to suit your specific project.
 
-## Create OAuth2 Application
+### Create OAuth2 Application
 
 For authentication we'll need to create an OAuth2 application with one of the supported external providers.
 
@@ -28,14 +28,14 @@ The OAuth2 callback URL should be `https://portal.us-west-2.staging.example.com/
 
 Replace the FQHN to suit your specific project.
 
-### GitHub Auth Provider
+#### GitHub Auth Provider
 
 To create OAuth2 application, follow these instructions:
 
 1. [Create a GitHub OAuth2 App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) to obtain `Client ID` and `Client Secret`
 2. [Configure OAuth2 Proxy](https://github.com/bitly/oauth2_proxy#github-auth-provider) to configure OAuth2 proxy using the `Client ID` and `Client Secret` from the previous step
 
-#### Create Team
+##### Create Team
 
 With GitHub OAuth provider you need to restrict access to the `portal` by user membership
 in the GitHub `organization` and in the `team` belonging to it.
@@ -45,7 +45,7 @@ and [Organizing members into teams](https://help.github.com/articles/organizing-
 
 In our example we will use `example-com` as the organization and `staging-team` as the team.
 
-### GitLab Auth Provider
+#### GitLab Auth Provider
 
 To create OAuth2 application, follow these instructions:
 
@@ -61,11 +61,11 @@ If you are using self-hosted `GitLab` you have to set
 ```
 {{% /dialog %}}
 
-## Installing on Kubernetes
+### Installing on Kubernetes
 
 You can install `portal` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0620.portal.yaml).
 
-### Install with Master Helmfile
+#### Install with Master Helmfile
 
 [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0620.portal.yaml)
 uses GitHub OAuth provider and is configured to expose the following dashboards:
@@ -80,7 +80,7 @@ uses GitHub OAuth provider and is configured to expose the following dashboards:
   - accessible at `https://grafana.portal.us-west-2.staging.example.com`
 * [External Documentation](https://docs.cloudposse.com)
 
-#### Adding Additional Tabs
+##### Adding Additional Tabs
 
 If you want to add some additional tabs, follow these instructions:
 
@@ -93,7 +93,7 @@ If you want to add some additional tabs, follow these instructions:
 4. [Run into the Geodesic Module shell]({{< relref "geodesic/module/quickstart.md#run-the-shell" >}})
 5. Proceed to [Helmfile sync]({{< relref "#helmfile-sync" >}})
 
-#### Helmfile sync
+##### Helmfile sync
 
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Breaking changes" %}}
 For [helmfiles](https://github.com/cloudposse/helmfiles) version >= 0.7.0
@@ -109,13 +109,13 @@ These environment variables are required:
 * Set `PORTAL_OAUTH2_PROXY_COOKIE_NAME` with chamber to a random string
 * Set `PORTAL_OAUTH2_PROXY_COOKIE_SECRET` with chamber to a random string
 
-##### GitHub Auth Provider
+###### GitHub Auth Provider
 * Set `PORTAL_OAUTH2_PROXY_CLIENT_ID` with chamber to GitHub OAuth app `Client ID`
 * Set `PORTAL_OAUTH2_PROXY_CLIENT_SECRET` with chamber to GitHub OAuth app `Client Secret`
 * Set `PORTAL_OAUTH2_PROXY_GITHUB_ORGANIZATION` with chamber or Dockerfile to GitHub `Organization name`
 * Set `PORTAL_OAUTH2_PROXY_GITHUB_TEAM` with chamber or Dockerfile to GitHub `Team name`
 
-##### GitLab Auth Provider
+###### GitLab Auth Provider
 * Set `PORTAL_OAUTH2_PROXY_CLIENT_ID` with chamber to GitLab OAuth app `Application ID`
 * Set `PORTAL_OAUTH2_PROXY_CLIENT_SECRET` with chamber to GitLab OAuth app `Secret`
 * Set `PORTAL_OAUTH2_PROXY_REDIRECT_URL` with chamber to `https://<PORTAL_HOSTNAME>/oauth2/callback`
@@ -167,7 +167,7 @@ Install the `portal` using `helmfile sync`
 
 {{% include-code-block title="Install portal using helmfile sync" file="kubernetes-platform-services/dashboard/examples/portal-helmfile-sync.txt" %}}
 
-### Install with Custom Helmfile
+#### Install with Custom Helmfile
 
 Add the following code to your [Kubernetes Backing Services](/kubernetes-backing-services) Helmfile:
 
@@ -177,6 +177,6 @@ Add the following code to your [Kubernetes Backing Services](/kubernetes-backing
 
 Then follow the instructions for running [`helmfile sync`]({{< relref "tools/helmfile.md" >}}).
 
-# Usage
+## Usage
 
 To access the portal, open `https://portal.us-west-2.staging.example.com` and authenticate using your GitHub credentials.

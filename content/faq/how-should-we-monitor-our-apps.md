@@ -14,11 +14,11 @@ tags:
 - EFK
 ---
 
-# Question
+## Question
 
 How should we monitor our applications running under Kubernetes? Our internal applications generate logs and export metrics. Is it possible to provide a dashboard where these are displayed?
 
-# Answer
+## Answer
 
 In the past, we've used Sumologic, CloudWatch Logs and Datadog Logs to aggregate logs from all Kubernetes pods. For self-hosted alternatives, we would rollout EFK (ElasticSearch, [Fluentd](https://github.com/kubernetes/charts/tree/master/incubator/fluentd-elasticsearch) and [Kibana](https://github.com/kubernetes/charts/tree/master/stable/kibana)) to aggregate logs.
 

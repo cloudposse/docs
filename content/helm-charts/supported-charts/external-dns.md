@@ -3,11 +3,12 @@ title: "external-dns"
 description: "Configure external DNS servers (AWS Route53, Google CloudDNS and others) for Kubernetes Ingresses and Services"
 draft: true
 ---
+{{< wip >}}
 ![](/assets/61e5a81-external-dns.png)
 
-# FAQ
+## FAQ
 
-## Test Metadata API from Container
+### Test Metadata API from Container
 
 First, `kubectl exec -it` into a pod/container. Then run the following command:
 

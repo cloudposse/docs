@@ -2,7 +2,7 @@
 title: "terraform-aws-dynamodb"
 description: "Terraform module to provision a DynamoDB table with autoscaling."
 ---
-# Terraform AWS DynamoDB
+## Terraform AWS DynamoDB
 
 |                  |                                                                                                                                                          |
 |:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -14,12 +14,12 @@ description: "Terraform module to provision a DynamoDB table with autoscaling."
 
 Autoscaler scales up/down the provisioned IOPS for the DynamoDB table based on the load.
 
-# Usage
+## Usage
 
 Include this module in your existing terraform code:
 
 
-##### HCL
+### HCL
 ```hcl
 module "dynamodb_table" {
   source                           = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
@@ -29,7 +29,7 @@ module "dynamodb_table" {
 }
 ```
 
-# Variables
+## Variables
 
 | Name                           | Default | Description                                                                 | Required |
 |:-------------------------------|:--------|:----------------------------------------------------------------------------|:---------|
@@ -51,7 +51,7 @@ module "dynamodb_table" {
 | `attributes`                   | `[]`    | Additional attributes (_e.g._ `policy` or `role`)                           | No       |
 | `tags`                         | `{}`    | Additional tags  (_e.g._ `map("BusinessUnit","XYZ")`                        | No       |
 
-# Outputs
+## Outputs
 
 | Name         | Description         |
 |:-------------|:--------------------|

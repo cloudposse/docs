@@ -4,7 +4,7 @@ description: ""
 ---
 ![Minikube](/assets/a58bf7c-minikube.png)
 
-# Setting Up “minikube" on OSX
+## Setting Up “minikube" on OSX
 
 Just run...
 ```

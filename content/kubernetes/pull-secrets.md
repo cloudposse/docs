@@ -7,11 +7,11 @@ There are a few ways to handle docker "pull secrets" under kubernetes. One way i
 First you'll need to obtain a pull secret from your registry of choice.
 e.g. ECR, Docker Hub or [Codefresh](https://codefresh.io/docs/docs/docker-registries/codefresh-registry/).
 
-# Kops Pull Secret
+## Kops Pull Secret
 
 This works by installing a docker config on each master or node. It will be available to all pods on the node by default. This is the easiest solution and is compatible with the kubernetes managed pull secrets.
 
-##  Synopsis
+### Synopsis
 
 ```
 kops create secret dockerconfig
@@ -20,7 +20,7 @@ kops create secret dockerconfig
 1. __Create a docker config.__ Create a new docker config, and store it in the state store. Used to configure docker on each master or node (ie. for auth) Use update to modify it, this command will only create a new entry.
 2. __Update Cluster__
 
-## Examples
+### Examples
 
 ```
   # Create an new docker config.
@@ -38,10 +38,10 @@ kops create secret dockerconfig
 [github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md](https://github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md)
 {{% /dialog %}}
 
-# Kubernetes
+## Kubernetes
 
-## Create Secret
+### Create Secret
 
-## Pod Pull Secrets
+### Pod Pull Secrets
 
-## Namespace Pull Secrets
+### Namespace Pull Secrets
