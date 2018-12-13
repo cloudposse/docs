@@ -17,9 +17,9 @@ Whether invoking `helm` directly or via `helmfile` all secrets should be passed 
 
 ## Kubernetes API Credentials
 
-The kubernetes TLS keys are stored by `kops` in a private, encrypted S3 bucket. When using the geodesic shell, you'll need to export these credentials in order to access the kubernetes cluster using `kubectl` or `helm`.
+The kubernetes TLS keys are stored by `kops` in a private, encrypted S3 bucket. When using the geodesic shell, you'll need to export these credentials in order to access the kubernetes cluster using `kops` or `helm`.
 
-This is done by running `kubectl export kubecfg $KOPS_CLUSTER_NAME`
+This is done by running `kops export kubecfg`
 
 ## SSH Access
 
