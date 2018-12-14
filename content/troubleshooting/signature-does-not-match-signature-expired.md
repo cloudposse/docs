@@ -8,6 +8,8 @@ tags:
 - faq
 - geodesic
 - assume-role
+aliases:
+- "/faq/signature-does-not-match-signature-expired/"
 ---
 
 ## Question

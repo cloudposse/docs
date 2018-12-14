@@ -6,6 +6,8 @@ tags:
 - kubernetes
 - faq
 - kops
+aliases:
+- "/faq/running-kubectl-fails-connection-refused/"
 ---
 
 ## Question

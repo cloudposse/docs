@@ -5,6 +5,8 @@ tags:
 - geodesic
 - aws-vault
 - faq
+aliases:
+- "/faq/aws-vault-outputs-key-and-does-nothing/"
 ---
 
 ## Question

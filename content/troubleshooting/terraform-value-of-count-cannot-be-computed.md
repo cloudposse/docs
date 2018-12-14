@@ -4,6 +4,8 @@ description: "Use of `count` on dynamic variables passed as inputs from other mo
 tags:
 - terraform
 - terraform-module
+aliases:
+- "/faq/terraform-value-of-count-cannot-be-computed/"
 ---
 
 ## Question
