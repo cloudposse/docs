@@ -23,7 +23,14 @@ We have seen approaches to automated testing of terraform.
 
 ### Test Kitchen
 
-This is the original testing framework 
+[Test Kitchen](https://github.com/newcontext-oss/kitchen-terraform) is the original testing framework for terraform written in ruby. 
+It presents a familiar testing interface for terraform, for anyone with a software development background. The lightweight DSL presents an 
+easy way to define tests plus with the full support of the ruby language, a `gem` for everything under the sun. Ruby is a fanastic language
+for writing DSLs and aptly suited for the purpose of writing tests.
+
+For non-ruby developers, ruby is a bit of a mystery. Most developers require something like `rbenv` or `rvm` to run Ruby due to issues with version compatibilities. If a company depends on Ruby, this is not a big deal, but for companies that do not use it make it a daunting task. Gems install gems install gems and before you know it, you have installed the actual "kitchen sink". This is to say, ruby apps are anything but lightweight and installing gems across platforms is a hit-or-miss business, especially when they require [`ffi`](https://github.com/ffi/ffi) to compile dependencies (which also means you need developer tools installed). Ruby is also a polarizing language, much the same way of 
+Python, Go or Java.
+
 
 ### Terratest
 
