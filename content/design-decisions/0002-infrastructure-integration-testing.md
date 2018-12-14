@@ -14,6 +14,8 @@ weight: 2
 We maintain 250+ active projects on GitHub. These projects receive a lot of contributions from community members. 
 
 We need a way to test `terraform` modules, `kops` clusters, `helm` charts, `helmfile` deployments, and more generally the functionality of our `geodesic` containers.
+Our situation is a bit unique in that we need to test the integration of dozens of tools that span languages, authors, and organizations. 
+We do not have the privilege of just testing one language or framework.
 
 To date, we have not done much in the form of automated testing. When we receive contributions from members, someone on our team needs to manually checkout the changes to validate them. This is time consuming and we do not have the engineering resources to scale with the growth in popularity of our Open Source projects.
 
@@ -67,11 +69,9 @@ Also, `make` is not a well understood language by developers because a `Makefile
 We love `make` and will continue to use it. In fact, we should use it to call our test-suite, just the `Makefile` itself should not be our test-suite.
 
 
-
 ## Decision
 
-Use [bats-core]() for implementing automated tests.
-
+Use [bats-core](https://github.com/bats-core/bats-core) for implementing automated tests.
 
 ## Consequences
 
