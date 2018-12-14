@@ -116,7 +116,7 @@ Most problems stem from misconfiguration.
 
 If using `--server` mode, ensure the following credentials are not exported:
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
-Since running `aws-vault` using `--server` binds to the `169.254.169.254` local ip address to mock the AWS metadata server, you can run only one process per host machine. More info can be found [here]({{< relref "/faq/aws-vault-error-failed-to-start-credential-server" >}}).
+Since running `aws-vault` using `--server` binds to the `169.254.169.254` local ip address to mock the AWS metadata server, you can run only one process per host machine. More info can be found [here]({{< relref "/troubleshooting/aws-vault-error-failed-to-start-credential-server" >}}).
 {{% /dialog %}}
 
 - `AWS_ACCESS_KEY_ID`

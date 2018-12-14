@@ -122,30 +122,31 @@
   }
 
   table {
-    clear: both;
-    width: auto;
-    border: 3px solid $color_gallery_approx;
-    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-    border-radius: 5px;
+    display: block;
+    width: 100%;
     overflow: auto;
-    border-collapse: separate !important;
-    color: $color_abbey_approx;
-
-    td {
-      border-bottom: 0;
-      border: 0;
-      padding: .5rem;
-      color: #323232;
-    }
 
     th {
-      border-bottom: 0;
-      border: 0;
-      text-transform: inherit;
-      font-weight: 300;
-      padding: .5rem;
-      vertical-align: middle;
+      font-weight: 600;
       text-align: center;
+    }
+
+    th,
+    td {
+      padding: .9rem 1.5rem;
+      border: 1px solid $color_mercury_approx;
+    }
+
+    tr {
+      background-color: #fff;
+    }
+
+    tr:nth-child(2n) {
+      background-color: $color_black_haze_approx;
+    }
+
+    code {
+      word-break: inherit;
     }
   }
 

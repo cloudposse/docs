@@ -9,6 +9,8 @@ tags:
 - tfstate
 - terraform-aws-tfstate-backend
 - ssh
+aliases:
+- "/faq/init-terraform-fails/"
 ---
 
 ## Question

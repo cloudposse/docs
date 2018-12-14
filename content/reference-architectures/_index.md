@@ -1,7 +1,7 @@
 ---
 title: "Reference Architectures"
 description: "Collection of Terraform root module invocations for provisioning reference architectures"
-icon: "fa fa-chart-bar"
+icon: "fas fa-book-open"
 ---
 
 This is a collection of Terraform root module invocations and best practices for provisioning reference architectures.

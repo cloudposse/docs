@@ -6,6 +6,8 @@ tags:
 - kubernetes
 - faq
 - kops
+aliases:
+- "/faq/running-kubectl-fails-connection-refused/"
 ---
 
 ## Question
@@ -21,11 +23,11 @@ The connection to the server localhost:8080 was refused - did you specify the ri
 
 This is most likely caused by not setting the `kubectl` context to use the kops cluster.
 
-To fix this, run `kubectl export kubecfg --name us-west-2.staging.cloudposse.org` (replace our kops cluster name with yours or use the `$KOPS_CLUSTER_NAME` variable, if set). =)
+To fix this, run `kops export kubecfg` (this assumes the`$KOPS_CLUSTER_NAME` variable is already set to the cluster name)
 
 e.g.
 ```
-kubectl export kubecfg --name $KOPS_CLUSTER_NAME
+kops export kubecfg
 ```
 
 This will export the `kubecfg` to `/dev/shm`, temporary flash memory storage that should get erased when the container exits.

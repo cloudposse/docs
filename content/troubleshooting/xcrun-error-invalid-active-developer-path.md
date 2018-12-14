@@ -6,6 +6,8 @@ tags:
 - darwin
 - git
 - faq
+aliases:
+- "/faq/xcrun-error-invalid-active-developer-path/"
 ---
 
 ## Question
