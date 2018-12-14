@@ -25,9 +25,19 @@ export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
 export DOCKER_TAG ?= latest
 export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 export DOCKER_BUILD_FLAGS = 
-export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e COMPONENTS_BUILD="$(COMPONENTS_BUILD)" $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED="$(YARN_BUILD_DISABLED)" -e UTTERANCES_BUILD_DISABLED="$(UTTERANCES_BUILD_DISABLED)" $(DOCKER_IMAGE_NAME)
 
 export README_DEPS ?= docs/targets.md
+
+export YARN_BUILD_DISABLED ?= false
+export UTTERANCES_BUILD_DISABLED ?= false
+
+ifneq ($(YARN_BUILD_DISABLED),true)
+COMPONENTS_DEPS += yarn/build
+endif
+ifneq ($(UTTERANCES_BUILD_DISABLED),true)
+COMPONENTS_DEPS += utterances/build
+endif
 
 export COMPONENTS_DIR ?= static/components
 export UTTERANCES_VERSION ?= 0.1.0
@@ -120,13 +130,6 @@ yarn/build:
 # TODO: add command for running dev script in themes/cloudposse/package.json
 yarn/build-dev:
 	cd themes/cloudposse && yarn && yarn run dev
-
-ifneq ($(YARN_BUILD_DISABLED),true)
-COMPONENTS_DEPS += yarn/build
-endif
-ifneq ($(UTTERANCES_BUILD_DISABLED),true)
-COMPONENTS_DEPS += utterances/build
-endif
 
 ## Build front-end components
 components/build: $(COMPONENTS_DEPS)
