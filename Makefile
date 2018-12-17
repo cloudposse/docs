@@ -200,3 +200,7 @@ reindex:
 ## Invalidate CloudFlare cache (all files)
 invalidate-cache:
 	cfcli purge
+
+## Update terraform-modules pages
+terraform-modules/update:
+	./scripts/update-terraform-modules.sh
