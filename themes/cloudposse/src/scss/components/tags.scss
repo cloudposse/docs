@@ -1,8 +1,9 @@
 
 .tags {
   &__label {
-    background-color: $color_desert_storm_approx;
+    background-color: $color-tag-bg;
     border-radius: .2rem;
+    color: $color-tag;
     display: inline-block;
     font-size: .8rem;
     line-height: 1;
@@ -12,7 +13,7 @@
     white-space: nowrap;
 
     &:hover {
-      background-color: $color_santas_gray_approx;
+      background-color: $color-tag-bg-hover;
       text-decoration: none;
     }
   }
