@@ -4,8 +4,9 @@ var gulp        = require("gulp"),
   sass          = require("gulp-sass"),
   concat        = require('gulp-concat'),
   cssnano       = require('gulp-cssnano'),
-  autoprefixer   = require('gulp-autoprefixer'),
+  autoprefixer  = require('gulp-autoprefixer'),
   importer      = require('node-sass-globbing'),
+  kss           = require('kss'),
   webpack       = require('webpack'),
   webpackStream = require('webpack-stream'),
   env           = process.env.NODE_ENV || 'production';
@@ -26,6 +27,20 @@ var sass_config = {
 var cssSources = [
   'src/scss/styles.scss',
 ]
+
+var styleGuide = {
+  source: [
+    'src/scss'
+  ],
+  destination: '../../static/styleguide/',
+
+  css: [
+  ],
+  js: [
+  ],
+  homepage: 'styleguide-homepage.md',
+  title: 'Cloudposse docs Style Guide'
+};
 
 // Compile SASS files
 gulp.task("sass", function(cb) {
@@ -68,8 +83,11 @@ gulp.task("copy-js", function(cb) {
 
 // Watch task for dedelopment.
 gulp.task("watch", function() {
-  gulp.watch(["src/scss/**/*.scss", "static/js/**/*.js"], gulp.series("sass", "copy", "copy-js"));
+  gulp.watch(["src/scss/**/*.scss", "static/js/**/*.js"], gulp.series("sass", gulp.parallel("copy", "copy-js", "styleguide")));
 });
 
+gulp.task('styleguide', function () {
+  return kss(styleGuide);
+});
 
 gulp.task("default", gulp.series("sass", "scripts", "copy", "copy-js", "fonts"));

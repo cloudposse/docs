@@ -15,6 +15,7 @@ tmp/*
 *.iml
 package-lock.json
 static/components/*
+static/styleguide/*
 utterances/*
 
 themes/cloudposse/static/css/*
