@@ -1,6 +1,7 @@
 ---
 title: "Secrets Management"
 description: "Secrets management services allow to put all secrets in one place and protect it."
+icon: "fas fa-user-secret"
 ---
 Secrets management services allow to put all secrets in one place and protect it.
 The goal is to reduce [attack surface](https://en.wikipedia.org/wiki/Attack_surface) and

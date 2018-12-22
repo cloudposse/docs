@@ -5,6 +5,8 @@ tags:
 - terraform
 - terraform-modules
 - aws
+aliases:
+- "/faq/error-applying-terraform-plan/"
 ---
 
 ## Question

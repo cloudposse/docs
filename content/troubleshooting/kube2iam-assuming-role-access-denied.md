@@ -7,6 +7,8 @@ tags:
 - aws
 - iam
 - kubernetes
+aliases:
+- "/faq/kube2iam-assuming-role-access-denied/"
 ---
 
 ## Question

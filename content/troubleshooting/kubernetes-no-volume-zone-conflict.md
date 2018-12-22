@@ -5,6 +5,8 @@ tags:
 - kubernetes
 - kops
 - multi-az
+aliases:
+- "/faq/kubernetes-no-volume-zone-conflict/"
 ---
 
 ## Question

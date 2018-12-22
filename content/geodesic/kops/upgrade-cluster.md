@@ -19,6 +19,11 @@ Then follow the instructions below for upgrading Kubernetes.
 <https://github.com/kubernetes/kops/blob/master/docs/releases.md>
 {{% /dialog %}}
 
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Before attempting to upgrade any Kops cluster, ensure that it is in a
+healthy state by running [`kops validate cluster`](https://github.com/kubernetes/kops/blob/master/docs/cli/kops_validate.md). If the cluster is not in a healthy state, do not proceed because the `kops rolling-update` process relies on the cluster state in order to determine if it should proceed. For example, if any `Pods` are in a crash loop, we recommend deleting or fixing those apps before attempting any upgrades. 
+{{% /dialog %}}
+
 ## Upgrading Kubernetes Release
 
 Upgrading `kops` cluster to a new release of kubernetes requires that we upgrade the `kubectl` client in `geodesic` as well as select a kubernetes release that is compatible with kops. Note, `kops` usually lags behind in support for the latest release of Kubernetes. If the latest release of `kops` is `v1.9`, then that means it supports up to kubernetes `v1.9` and will not be compatible with `v1.10` or newer.
