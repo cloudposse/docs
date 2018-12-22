@@ -5,6 +5,8 @@ tags:
 - aws-vault
 - geodesic
 - faq
+aliases:
+- "/faq/aws-vault-error-failed-to-get-credentials/"
 ---
 
 ## Question

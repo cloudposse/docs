@@ -7,6 +7,8 @@ tags:
 - tls
 - kubernetes
 - letsencrypt
+aliases:
+- "/faq/kube-lego-privacy-error/"
 ---
 
 ## Question
