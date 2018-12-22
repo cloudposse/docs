@@ -1,58 +1,32 @@
-  </div>
-  {{if not .IsHome}}
-    {{ partial "related.html" . }}
-  {{end}}
+    </div>
+    {{if not .IsHome}}
+      {{ partial "related.html" . }}
+    {{end}}
 
-  {{if not .IsHome}}
-  <div class="chevrons">
-    {{ partial "next-prev-page.html" . }}
-  </div>
+    {{if not .IsHome}}
+    <div class="chevrons">
+      {{ partial "next-prev-page.html" . }}
+    </div>
 
-  {{ if and (isset .Params "comments") (.Params.comments) }}
-  <div class="utterances-wrapper">
-    <script src="/components/utterances/client.js"
-            repo="cloudposse/docs"
-            issue-term="pathname"
-            async>
-    </script>
-  </div>
-  {{ end }}
+    {{ if and (isset .Params "comments") (.Params.comments) }}
+    <div class="utterances-wrapper">
+      <script src="/components/utterances/client.js"
+              repo="cloudposse/docs"
+              issue-term="pathname"
+              async>
+      </script>
+    </div>
+    {{ end }}
 
-  </section>
+    </section>
+    {{ partial "footer.html" . }}
+  </div>
   {{ if and (gt .WordCount 400 ) (ne .Params.toc "false") }}
-  <aside class="right-sidebar">
-    <h3 class="right-sidebar__title"><i class="fa fa-align-left"></i>Table of Contents</h3>
-    {{ .TableOfContents }}
-  </aside>
+  {{ partial "right-sidebar.html" . }}
   {{ end }}
   {{end}}
 
 </div>
-<footer class="footer">
-  <div class="footline">
-    {{if .Params.tags }}
-    <div class="tags">
-      {{ range $index, $tag := .Params.tags }}
-        <a class="label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}">{{ $tag }}</a>
-      {{ end }}
-    </div>
-    {{end}}
 
-
-    <div class="copyright"> © {{ now.Format "2006"}} Cloud Posse, LLC. <a rel="license" href="/license/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a></div>
-
-    {{with .Params.LastModifierDisplayName}}
-    <div class="author">
-        <i class='fa fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a>
-    </div>
-    {{end}}
-
-    {{ if not .Page.Lastmod.IsZero }}
-    <div class="date">
-        <i class='fa fa-calendar'></i> {{T "last-update-on"}} {{ .Page.Lastmod.Format "2006-01-02" }}
-    </div>
-    {{end}}
-   </div>
-</footer>
 
 {{ partial "flex/scripts.html" . }}
