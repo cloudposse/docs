@@ -19,11 +19,11 @@ We do not have the privilege of just testing one language or framework.
 
 To date, we have not done much in the form of automated testing. When we receive contributions from members, someone on our team needs to manually checkout the changes to validate them. This is time consuming and we do not have the engineering resources to scale with the growth in popularity of our Open Source projects.
 
-We have seen approaches to automated testing of terraform.
+We have seen some formal approaches to automated testing of terraform, but nothing for the other tools.
 
 ### Test Kitchen
 
-[Test Kitchen](https://github.com/newcontext-oss/kitchen-terraform) is the original testing framework for terraform written in ruby. 
+[Test Kitchen](https://github.com/newcontext-oss/kitchen-terraform) is the original testing framework for Terraform written in Ruby. 
 It presents a familiar testing interface for terraform, for anyone with a software development background. The lightweight DSL presents an 
 easy way to define tests plus with the full support of the ruby language, a `gem` for everything under the sun. Ruby is a fanastic language
 for writing DSLs and aptly suited for the purpose of writing tests.
@@ -59,9 +59,9 @@ in a matter of minutes.
 The downside with `bats` is that it is written in `bash`, which is not a *modern* programming language. The underlying code that powers `bats` is complicated
 for the uniniated shell programmers. Also, since it is interpreted (not compiled), lots of files/libraries get installed on the system much like a python or ruby app. The tests we write will most likely run commands like `curl` or `jq`, so there are more *native dependencies* that need to be installed. 
 
-Using the `bats` strategy will probably necessistate running tests in a container to avoid needing to install too many native dependecies. 
+Using the `bats` strategy will probably necessitate running tests in a container to avoid needing to install too many native dependencies. 
 
-We noticed that [HashiCorp](https://www.hashicorp.com/) is using `bats-core` for the automated testing of their [`consul-helm`](https://github.com/hashicorp/consul-helm) chart. This is a good example of the verstatility of `bats` for testing.
+We noticed that [HashiCorp](https://www.hashicorp.com/) is using `bats-core` for the automated testing of their [`consul-helm`](https://github.com/hashicorp/consul-helm) chart. This is a good example of the versatility of `bats` for testing.
 
 
 ### Makefile
@@ -71,7 +71,7 @@ We could of course use a simple (or not so simple) `Makefile` to run our tests. 
 The problem with using a general purpose tool like `make` is that it is overloading the purpose of the tool: task running. We would need to develop
 our own testing framework and methodology on top of it, which is not our core competency or business differentiator. 
 
-Also, `make` is not a well understood language by developers because a `Makefile` is basically templated shell scrits, so the execution flow is awkward. 
+Also, `make` is not a well understood language by developers because a `Makefile` is basically templated shell scripts, so the execution flow is awkward. 
 
 We love `make` and will continue to use it. In fact, we should use it to call our test-suite, just the `Makefile` itself should not be our test-suite.
 
