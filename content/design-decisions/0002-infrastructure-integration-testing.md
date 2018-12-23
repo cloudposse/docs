@@ -51,7 +51,7 @@ Since the tests are just commands wrapped with a simple DSL plus some syntactic 
 The downside with `bats` is that it is written in `bash`, which is not a *modern* programming language. The underlying code that powers `bats` is complicated
 for the uninitiated shell programmers. Also, since it is interpreted (not compiled), lots of files/libraries get installed on the system much like a Python or Ruby app. The tests we write will most likely run commands like `curl` or `jq`, so there are more *native dependencies* that need to be installed.
 
-Using the `bats` strategy will probably necessitate running tests in a container to avoid needing to install too many native dependencies.
+Using the `bats` strategy will probably necessitate running tests in a container to avoid needing to install too many native dependencies. It also does not preclude using other native testing frameworks (e.g. Terratest).
 
 We noticed that [HashiCorp](https://www.hashicorp.com/) is using `bats-core` for the automated testing of their [`consul-helm`](https://github.com/hashicorp/consul-helm) chart. This is a good example of the versatility of `bats` for testing.
 
