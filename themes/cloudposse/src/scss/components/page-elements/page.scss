@@ -121,6 +121,13 @@
     }
   }
 
+  &__wrapper {
+    @include respond-to('desktop') {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
   table {
     display: block;
     width: 100%;
@@ -153,11 +160,5 @@
   img {
     display: block;
     text-align: center;
-  }
-
-  li img {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
   }
 }

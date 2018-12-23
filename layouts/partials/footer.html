@@ -1,0 +1,27 @@
+<footer class="footer">
+  <div class="footline">
+    {{if .Params.tags }}
+    <div class="tags">
+      {{ range $index, $tag := .Params.tags }}
+      <a class="label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}">{{ $tag }}</a>
+      {{ end }}
+    </div>
+    {{end}}
+
+
+    <div class="copyright"> © {{ now.Format "2006"}} Cloud Posse, LLC. <a rel="license" href="/license/">Creative
+        Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a></div>
+
+    {{with .Params.LastModifierDisplayName}}
+    <div class="author">
+      <i class='fa fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a>
+    </div>
+    {{end}}
+
+    {{ if not .Page.Lastmod.IsZero }}
+    <div class="date">
+      <i class='fa fa-calendar'></i> {{T "last-update-on"}} {{ .Page.Lastmod.Format "2006-01-02" }}
+    </div>
+    {{end}}
+  </div>
+</footer>
