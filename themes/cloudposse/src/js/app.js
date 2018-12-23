@@ -7,12 +7,13 @@ import './clipboard';
 import './ui';
 import './search';
 import './featherlight'
+import './mermaid'
 
 
 $(document).ready(function () {
 
 
-// TODO: Check if this code needed 
+// TODO: Check if this code needed
 // ====================================
 
   var ajax;
