@@ -121,6 +121,13 @@
     }
   }
 
+  &__wrapper {
+    @include respond-to('desktop') {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
   table {
     display: block;
     width: 100%;

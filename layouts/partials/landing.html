@@ -1,0 +1,32 @@
+<div class="landing-top">
+  <div class="landing-top__wrapper">
+    <div class="landing-top__image-wrapper">
+      {{- partial "cloud.html" . }}
+    </div>
+    <div class="landing-top__description">
+      <h1 class="landing-top__title">The Cloud Posse Developer Hub</h1>
+      <div class="landing-top__about">
+        <p>
+          Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you
+          start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get
+          stuck. Let's jump right in!
+        </p>
+      </div>
+      <a class="landing-top__button btn btn-success btn-lg" href="/documentation/getting-started/">Get Started</a>
+    </div>
+  </div>
+  <div class="landing-top__search-bar search-bar search-bar--landing">
+    <div id="search-box" class="search-box search-box--big">
+      <!-- SearchBox widget will appear here -->
+    </div>
+    <div id="search-results" class="search-results search-results--big">
+      <div id="search-stats" class="search-stats">
+        <!-- Search status widget will appear here -->
+      </div>
+      <div id="search-hits" class="search-hits"></div>
+      <div class="search-more">
+        <a class="search-more__link" href="/search/">view all results</a>
+      </div>
+    </div>
+  </div>
+</div>
