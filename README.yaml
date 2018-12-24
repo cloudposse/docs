@@ -28,9 +28,21 @@ include:
   - "docs/targets.md"
 
 usage: |-
-  1. Run `make init`
-  2. Run `COMPONENTS_BUILD=true/false make run` to start local server
-  3. Run `make build` to generate static site in `public/`
+  1. Download [Docker](https://www.docker.com/).
+  2. Install the [Atom editor](https://atom.io/)(optional).
+
+    *After installation, run `make deps/atom`.
+
+    *Select _Activate the Atom_ --> _Install Shell Commands_ menu item.
+
+    *Ensure that /usr/local/bin is in the PATH.
+  3. Run the following commands for faster development:
+```export YARN_BUILD_DISABLED=true
+export UTTERANCES_BUILD_DISABLED=true```
+  4. Run `make init`.
+  5. Run `COMPONENTS_BUILD=true/false make run` to start the local server.
+  6. Run `make build` to generate static site in `public/`.
+
 
 # Contributors to this project
 contributors:
@@ -40,4 +52,3 @@ contributors:
     github: "goruha"
   - name: "Andriy Knysh"
     github: "aknysh"
-
