@@ -31,16 +31,18 @@ usage: |-
   1. Download [Docker](https://www.docker.com/).
   2. Install the [Atom editor](https://atom.io/)(optional).
 
-    *After installation, run `make deps/atom`.
+    * After installation, run `make deps/atom`.
 
-    *Select _Activate the Atom_ --> _Install Shell Commands_ menu item.
+    * Select _Activate the Atom_ &#8594; _Install Shell Commands_ menu item.
 
-    *Ensure that /usr/local/bin is in the PATH.
+    * Ensure that `/usr/local/bin` is in the `PATH`.
   3. Run the following commands for faster development:
-```export YARN_BUILD_DISABLED=true
-export UTTERANCES_BUILD_DISABLED=true```
+     ```
+     export YARN_BUILD_DISABLED=true
+     export UTTERANCES_BUILD_DISABLED=true
+     ```
   4. Run `make init`.
-  5. Run `COMPONENTS_BUILD=true/false make run` to start the local server.
+  5. Run `make run COMPONENTS_BUILD=true/false` to start the local server.
   6. Run `make build` to generate static site in `public/`.
 
 
