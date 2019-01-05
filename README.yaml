@@ -32,9 +32,7 @@ usage: |-
   2. Install the [Atom editor](https://atom.io/)(optional).
 
     * After installation, run `make deps/atom`.
-
-    * Select _Activate the Atom_ &#8594; _Install Shell Commands_ menu item.
-
+    * Select _Activate the Atom_ → _Install Shell Commands_ menu item.
     * Ensure that `/usr/local/bin` is in the `PATH`.
   3. Run the following commands for faster development:
      ```

@@ -6,9 +6,9 @@ Available targets:
   components/build                    Build front-end components
   deploy                              Deploy static site to S3
   deps                                Install package dependencies
-  deps/atom                           Install useful atom plugins
   deps-darwin                         Install OSX deps
   deps-linux                          Install Linux deps
+  deps/atom                           Install useful atom plugins
   help                                Help screen
   help/all                            Display help for all targets
   help/short                          This help short screen
@@ -23,6 +23,7 @@ Available targets:
   release                             Generate a release config
   run                                 Start the hugo server for live editing using docker environment
   smoketest                           Run smoketest
+  terraform-modules/update            Update terraform-modules pages
   test                                Run tests
   utterances/build                    Build customized utterances widget
   validate                            Validate all html is good
