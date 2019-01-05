@@ -1,3 +1,7 @@
-import mermaid from 'mermaid'
+import mermaid from 'mermaid';
 
-mermaid.initialize()
+const config = {
+  startOnLoad: true
+};
+
+mermaid.initialize(config);
