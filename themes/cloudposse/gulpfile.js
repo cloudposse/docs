@@ -4,8 +4,8 @@ var gulp        = require("gulp"),
   sass          = require("gulp-sass"),
   concat        = require('gulp-concat'),
   cssnano       = require('gulp-cssnano'),
-  autoprefixer  = require('gulp-autoprefixer'),
-  importer      = require('node-sass-magic-importer'),
+  autoprefixer   = require('gulp-autoprefixer'),
+  importer      = require('node-sass-globbing'),
   webpack       = require('webpack'),
   webpackStream = require('webpack-stream'),
   env           = process.env.NODE_ENV || 'production';
@@ -13,6 +13,14 @@ var gulp        = require("gulp"),
 
 var sass_config = {
   importer: importer,
+  includePaths: [
+    'node_modules/breakpoint-sass/stylesheets/',
+    'node_modules/@fortawesome/',
+    '../hugo-theme-docdock/static/scss/',
+    'node_modules/instantsearch.js/',
+    'node_modules/featherlight/src/',
+    'node_modules/bootstrap/scss/'
+  ]
 };
 
 var cssSources = [
