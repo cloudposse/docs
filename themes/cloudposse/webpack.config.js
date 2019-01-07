@@ -1,11 +1,14 @@
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const webpack = require('webpack');
 const env = process.env.NODE_ENV
 
 var config = {
   entry: {
-    app: './src/js/app.js'
+    app: './src/js/app.js',
+    search: './src/js/search.js',
+    mermaid: './src/js/mermaid.js',
   },
   output: {
     path: path.resolve(__dirname, 'static/js'),
@@ -17,9 +20,9 @@ var config = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        query: {
-          presets: ['@babel/preset-env']
-        }
+        options: {
+          presets: ['@babel/preset-env'],
+        },
       }
     ],
   },
@@ -28,11 +31,13 @@ var config = {
       $: 'jquery',
       jQuery: 'jquery',
     }),
+    // new BundleAnalyzerPlugin() // Disabled by default.
   ],
   optimization: {
-    minimizer: [new UglifyJsPlugin({
-      extractComments: true
-    })]
+    splitChunks: {
+      chunks: 'all'
+    },
+    minimizer: [new UglifyJsPlugin()]
   },
 };
 

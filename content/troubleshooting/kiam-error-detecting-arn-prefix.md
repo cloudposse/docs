@@ -5,6 +5,8 @@ tags:
 - kiam
 - iam
 - kubernetes
+aliases:
+- "/faq/kiam-error-detecting-arn-prefix/"
 ---
 
 ## Question

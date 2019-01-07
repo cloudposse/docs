@@ -1,11 +1,13 @@
 ---
 title: "Error: UPGRADE FAILED: failed to create resource: namespaces \"...\" not found"
 description: "Quick fix: `helm delete --purge` the release and try again."
+aliases:
+- "/faq/helm-upgrade-failed-to-create-resource/"
 ---
 
 ## Question
 
-{{% include-code-block title="Helm Upgrade Failed" file="faq/examples/helm-upgrade-failed.txt" language="sh" %}}
+{{% include-code-block title="Helm Upgrade Failed" file="troubleshooting/examples/helm-upgrade-failed.txt" language="sh" %}}
 
 ## Answer
 

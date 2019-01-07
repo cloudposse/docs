@@ -23,7 +23,6 @@
   &__header {
     display: flex;
     border-bottom: 1px solid $color_gallery_approx;
-    align-items: flex-end;
 
     @include respond-to('mobile') {
       flex-wrap: wrap;
@@ -44,13 +43,14 @@
 
   &__title-wrapper {
     flex-grow: 1;
+    padding-bottom: 6px;
   }
 
   &__excerpt-text {
     color: $color_santas_gray_approx;
     font-size: 14px;
-    margin-top: 5px;
-    margin-bottom: 30px;
+    margin-top: 12px;
+    margin-bottom: 4px;
   }
 
   &__ask-a-question {
@@ -121,42 +121,44 @@
     }
   }
 
-  table {
-    clear: both;
-    width: auto;
-    border: 3px solid $color_gallery_approx;
-    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-    border-radius: 5px;
-    overflow: auto;
-    border-collapse: separate !important;
-    color: $color_abbey_approx;
-
-    td {
-      border-bottom: 0;
-      border: 0;
-      padding: .5rem;
-      color: #323232;
+  &__wrapper {
+    @include respond-to('desktop') {
+      display: flex;
+      flex-direction: column;
     }
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow: auto;
 
     th {
-      border-bottom: 0;
-      border: 0;
-      text-transform: inherit;
-      font-weight: 300;
-      padding: .5rem;
-      vertical-align: middle;
+      font-weight: 600;
       text-align: center;
+    }
+
+    th,
+    td {
+      padding: .9rem 1.5rem;
+      border: 1px solid $color_mercury_approx;
+    }
+
+    tr {
+      background-color: #fff;
+    }
+
+    tr:nth-child(2n) {
+      background-color: $color_black_haze_approx;
+    }
+
+    code {
+      word-break: inherit;
     }
   }
 
   img {
     display: block;
     text-align: center;
-  }
-
-  li img {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
   }
 }

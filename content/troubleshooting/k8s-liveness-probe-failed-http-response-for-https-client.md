@@ -5,6 +5,8 @@ tags:
 - kubernetes
 - healthcheck
 - probe
+aliases:
+- "/faq/k8s-liveness-probe-failed-http-response-for-https-client/"
 ---
 
 ## Question
