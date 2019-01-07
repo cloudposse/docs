@@ -1,132 +1,29 @@
 {{- if .Site.Params.gtmContainerId -}}
 <!-- Google Tag Manager (noscript) -->
 <noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id={{ .Site.Params.gtmContainerId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  <iframe src="https://www.googletagmanager.com/ns.html?id={{ .Site.Params.gtmContainerId }}" height="0" width="0"
+    style="display:none;visibility:hidden"></iframe>
 </noscript>
 <!-- End Google Tag Manager (noscript) -->
 {{- end -}}
-<header class="header">
-  <div class="header__container container">
-    <div class="logo header__logo">
-        <a href="/">
-          {{- partial "logo.html" . }}
-        </a>
-      </div>
-      {{- with .Site.Menus.shortcuts}}
-        <div class="burger header__burger">
-          <a class="header__burger-link" href="javascript:void(0);">
-            <i class="fa fa-bars"></i>
-          </a>
-        </div>
-        <nav class="shortcuts header__shortcuts">
-            {{- range sort . "Weight"}}
-                <li id="{{ .Identifier }}" class="" role="">
-                    <a href="{{.URL}}" {{if eq $.Site.Params.menushortcutsnewtab true}}target="_blank"{{end}} rel="noopener">
-                      {{safeHTML .Name}}
-                    </a>
-                </li>
-            {{- end}}
-        </nav>
-      {{- end}}
-  </div>
-</header>
+
+{{ partial "header.html" . }}
+
 {{if .IsHome}}
-<div class="landing-top">
-  <div class="landing-top__wrapper">
-    <div class="landing-top__image-wrapper">
-      {{- partial "cloud.html" . }}
-    </div>
-    <div class="landing-top__description">
-      <h1 class="landing-top__title">The Cloud Posse Developer Hub</h1>
-      <div class="landing-top__about">
-        <p>
-          Welcome to the Cloud Posse developer hub. You'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let's jump right in!
-        </p>
-      </div>
-      <a class="landing-top__button btn btn-success btn-lg" href="/documentation/getting-started/">Get Started</a>
-    </div>
-  </div>
-  <div class="landing-top__search-bar search-bar search-bar--landing">
-    <div id="search-box" class="search-box search-box--big"><!-- SearchBox widget will appear here --></div>
-    <div id="search-results" class="search-results search-results--big">
-      <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
-      <div id="search-hits" class="search-hits"></div>
-      <div class="search-more">
-        <a class="search-more__link" href="/search/">view all results</a>
-      </div>
-    </div>
-  </div>
-</div>
+{{ partial "landing.html" . }}
 {{ end }}
-<div class="subnav">
-  <div class="subnav__container container">
-    {{if not .IsHome}}
-      <div class="subnav__breadcrumbs breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-        {{ template "breadcrumb" dict "page" . "value" (printf "<span class='breadcrumbs__title'>%s</span>" (.Title | markdownify)) }}
-      </div>
 
-      <div class="subnav__search-bar search-bar search-bar--subnav">
-        <div id="search-box" class="search-box"><!-- SearchBox widget will appear here --></div>
-        <div id="search-results" class="search-results">
-          <div id="search-stats" class="search-stats"><!-- Search status widget will appear here --></div>
-          <div id="search-hits" class="search-hits"></div>
-          <div class="search-more">
-            <a class="search-more__link" href="/search/">view all results</a>
-          </div>
-        </div>
-      </div>
-      <div class="subnav__nav-select nav-select">
-        {{/*  <select class="subnav__nav-select-item" onchange="javascript:location.href = this.value;">
-          {{partial "flex/selectnavigation.html" .}}
-        </select>  */}}
-        <i class="fa fa-angle-down subnav__nav-select-icon"></i>
-      </div>
-    {{end}}
-  </div>
-</div>
+{{ partial "subnav.html" . }}
+
 <div class="page-layout">
+
   {{if .IsHome}}
-    {{ partial "homepage.html" . }}
+  {{ partial "homepage.html" . }}
   {{else}}
-  <aside class="left-sidebar">
-    <ul class="left-sidebar-menu">
-      {{- if not .Site.Params.disableHomeIcon}}
-        <li data-nav-id="{{"/" | relLangURL}}" class="left-sidebar-menu__item">
-          <a href="{{"/" | relLangURL}}">
-            <i class="fa fa-fw fa-home"></i>
-          </a>
-        </li>
-      {{- end}}
+  {{ partial "left-sidebar.html" . }}
+  <div class="page-content__wrapper">
 
-      {{- partial "menu.html" . }}
-    </ul>
-    {{- partial "language-selector.html" . }}
-    <section>
-      {{- partial "menu-footer.html" . }}
-    </section>
-  </aside>
-
-  <section class="page-content">
-      <div class="page-content__slack">
-        <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
-      </div>
-      <div class="page-content__header">
-        <div class="page-content__title-wrapper">
-          <h1 class="page-content__title">{{.Title | markdownify }}</h1>
-          {{ if .Description }}
-          <p class="page-content__excerpt-text">{{ .Description | markdownify }}</p>
-          {{ end }}
-        </div>
-        {{ if and (isset .Params "questions") (.Params.questions) }}
-        <div class="page-content__ask-a-question">
-          <a class="btn btn-success" href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">Ask a Question</a>
-        </div>
-        {{ end }}
-      </div>
-      {{ if and (isset .Params "editable") (.Params.editable) }}
-      <div class="page-content__github-link">
-        <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank"><i class="fa fa-edit"></i>{{T "Edit-this-page"}}</a>
-      </div>
-      {{ end }}
+    <section class="page-content">
+      {{ partial "page-content-header.html" . }}
       <div class="page-content__content">
-  {{end}}
+        {{end}}

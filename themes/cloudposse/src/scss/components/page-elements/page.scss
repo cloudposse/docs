@@ -23,7 +23,6 @@
   &__header {
     display: flex;
     border-bottom: 1px solid $color_gallery_approx;
-    align-items: flex-end;
 
     @include respond-to('mobile') {
       flex-wrap: wrap;
@@ -44,13 +43,14 @@
 
   &__title-wrapper {
     flex-grow: 1;
+    padding-bottom: 6px;
   }
 
   &__excerpt-text {
     color: $color_santas_gray_approx;
     font-size: 14px;
-    margin-top: 5px;
-    margin-bottom: 30px;
+    margin-top: 12px;
+    margin-bottom: 4px;
   }
 
   &__ask-a-question {
@@ -118,6 +118,13 @@
 
     .wip {
       margin: 15px 0;
+    }
+  }
+
+  &__wrapper {
+    @include respond-to('desktop') {
+      display: flex;
+      flex-direction: column;
     }
   }
 

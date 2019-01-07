@@ -1,0 +1,26 @@
+<div class="subnav">
+  <div class="subnav__container container">
+    {{if not .IsHome}}
+    <div class="subnav__breadcrumbs breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+      {{ template "breadcrumb" dict "page" . "value" (printf "<span class='breadcrumbs__title'>%s</span>" (.Title | markdownify)) }}
+    </div>
+
+    <div class="subnav__search-bar search-bar search-bar--subnav">
+      <div id="search-box" class="search-box"></div>
+      <div id="search-results" class="search-results">
+        <div id="search-stats" class="search-stats"></div>
+        <div id="search-hits" class="search-hits"></div>
+        <div class="search-more">
+          <a class="search-more__link" href="/search/">view all results</a>
+        </div>
+      </div>
+    </div>
+    <div class="subnav__nav-select nav-select">
+      {{/* <select class="subnav__nav-select-item" onchange="javascript:location.href = this.value;">
+        {{partial "flex/selectnavigation.html" .}}
+      </select> */}}
+      <i class="fa fa-angle-down subnav__nav-select-icon"></i>
+    </div>
+    {{end}}
+  </div>
+</div>

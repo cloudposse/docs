@@ -1,18 +1,14 @@
 'use strict';
 
-import jQuery from 'jquery/dist/jquery.slim';
-
 import './glossarizer'
 import './clipboard';
 import './ui';
-import './search';
 import './featherlight'
-
 
 $(document).ready(function () {
 
 
-// TODO: Check if this code needed 
+// TODO: Check if this code needed
 // ====================================
 
   var ajax;

@@ -1,0 +1,36 @@
+<div class="page-content__slack">
+  <script async defer src="https://slack.cloudposse.com/slackin.js"></script>
+</div>
+<div class="page-content__header">
+  <div class="page-content__title-wrapper">
+    <h1 class="page-content__title">{{.Title | markdownify }}</h1>
+    {{ if .Description }}
+    <p class="page-content__excerpt-text">{{ .Description | markdownify }}</p>
+    {{ end }}
+
+    {{if .Params.tags }}
+    <div class="tags">
+      {{ range $index, $tag := .Params.tags }}
+      <a class="tags__label label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}">{{ $tag }}</a>
+      {{ end }}
+    </div>
+    {{end}}
+
+  </div>
+  {{ if and (isset .Params "questions") (.Params.questions) }}
+  <div class="page-content__ask-a-question">
+    <a class="btn btn-success"
+      href="https://github.com/cloudposse/docs/issues/new?{{ (querify "title" (printf "Question about %s" .Title) "body" (printf "## Question\n\nDetails about your question...\n\n## References\n- <%s>" (.URL | absURL) ) ) | safeURL }}">
+      Ask a Question
+    </a>
+  </div>
+  {{ end }}
+</div>
+{{ if and (isset .Params "editable") (.Params.editable) }}
+<div class="page-content__github-link">
+  <a href="{{ .Site.Params.editURL }}/content/{{ .File.Path }}" target="blank">
+    <i class="fa fa-edit"></i>
+    {{T "Edit-this-page"}}
+  </a>
+</div>
+{{ end }}
