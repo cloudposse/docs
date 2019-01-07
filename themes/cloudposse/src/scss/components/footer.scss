@@ -10,14 +10,6 @@
     display: block;
     padding-top: .2rem;
 
-    .tags {
-      display: inline-block;
-      float: left;
-      font-size: 12px;
-      margin-right: 10px;
-      @extend %extend_4;
-    }
-
     .copyright {
       @extend %extend_4;
     }
