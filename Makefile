@@ -9,7 +9,6 @@ export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(HUGO_EDIT_BRAN
 export HUGO_ARGS ?= --bind 0.0.0.0 --port $(HUGO_PORT) --watch --buildDrafts
 export HUGO_CONFIG ?= config.toml
 export HUGO_PUBLISH_DIR ?= public
-export PACKAGES_VERSION ?= 0.1.7
 export HTMLTEST_LOG_LEVEL ?= 2
 export HTMLTEST_CONFIG ?= .htmltest.yml
 

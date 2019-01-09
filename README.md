@@ -47,9 +47,9 @@ It's 100% Open Source and licensed under the [Creative Commons Attribution-NonCo
 1. Download [Docker](https://www.docker.com/).
 2. Install the [Atom editor](https://atom.io/)(optional).
 
-  * After installation, run `make deps/atom`.
-  * Select _Activate the Atom_ → _Install Shell Commands_ menu item.
-  * Ensure that `/usr/local/bin` is in the `PATH`.
+    * After installation, run `make deps/atom`.
+    * Select _Activate the Atom_ → _Install Shell Commands_ menu item.
+    * Ensure that `/usr/local/bin` is in the `PATH`.
 3. Run the following commands for faster development:
    ```
    export YARN_BUILD_DISABLED=true
