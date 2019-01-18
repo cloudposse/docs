@@ -5,6 +5,7 @@ pre {
   border-radius: 6px;
   color: $color_gallery_approx;
   background-color: $color_cape_cod_approx;
+  white-space: pre-line;
 
   &.asciinema-terminal {
     margin: 0;
