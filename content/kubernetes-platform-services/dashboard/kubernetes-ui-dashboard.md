@@ -10,7 +10,7 @@ weight: 1
 
 ## Installation
 
-You can install `kubernetes-dashboard` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0610.dashboard.yaml).
+You can install `kubernetes-dashboard` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/dashboard.yaml).
 
 The Kubernetes dashboard requires [heapster](https://github.com/kubernetes/heapster) to collect and interpret various signals like compute and memory resource usage and lifecycle events.
 

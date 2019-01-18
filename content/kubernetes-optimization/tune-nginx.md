@@ -22,9 +22,9 @@ We optimized Nginx configuration settings to fine-tune Nginx performance in a Ku
 As mentioned above, these settings are stored in the Kubernetes cluster as [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/),
 and get deployed by [`nginx-ingress`](https://github.com/kubernetes/charts/tree/master/stable/nginx-ingress#configuration) [Helm chart]({{< relref "helm-charts/quickstart.md" >}}).
 
-The `nginx-ingress` chart is deployed from the `geodesic` shell using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0320.nginx-ingress.yaml).
+The `nginx-ingress` chart is deployed from the `geodesic` shell using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/nginx-ingress.yaml).
 
-To apply the new Nginx parameters, modify `controller.config` settings in the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0320.nginx-ingress.yaml) 
+To apply the new Nginx parameters, modify `controller.config` settings in the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/nginx-ingress.yaml) 
 and then follow [`Install with Master Helmfile`]({{< relref "kubernetes-backing-services/ingress/nginx-ingress-controller.md" >}}) instructions to update the cluster with the new Nginx settings.
 
 
