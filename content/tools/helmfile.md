@@ -146,4 +146,4 @@ chamber exec $service -- helmfile sync
 
 - [Official Helmfile documentation](https://github.com/roboll/helmfile)
 - [Sprig functions documentation](http://masterminds.github.io/sprig/)
-- [Helmfiles](https://github.com/cloudposse/helmfiles/tree/master/helmfile.d/)
+- [Helmfiles](https://github.com/cloudposse/helmfiles/tree/master/releases/)

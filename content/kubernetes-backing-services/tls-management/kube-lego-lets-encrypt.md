@@ -13,7 +13,7 @@ Out of the box, `kube-lego` support 2 types of [ingress controllers](https://git
 
 ## Install
 
-You can install `kube-lego` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0110.kube-lego.yaml).
+You can install `kube-lego` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/kube-lego.yaml).
 
 ### Install with Master Helmfile
 

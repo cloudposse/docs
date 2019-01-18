@@ -25,4 +25,4 @@ We've seen this error with `kube2iam` many times due to AWS API rate limiting. I
 
 The only "quick fix" we've seen is to `kubectl drain` drain afflicted node and then terminate it so a new one is spawned in its place. You may need to perform this action repeatedly on all nodes. New nodes will have their rate limits reset to zero, however, this is only a temporary fix and the problem will resurface as soon as limits are exceeded.
 
-The long-term fix is to switch to `kiam`. Our comprehensive distribution of [`helmfiles`](https://github.com/cloudposse/helmfiles) ships with support for [`kiam`](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0020.kiam.yaml).
+The long-term fix is to switch to `kiam`. Our comprehensive distribution of [`helmfiles`](https://github.com/cloudposse/helmfiles) ships with support for [`kiam`](https://github.com/cloudposse/helmfiles/blob/master/releases/kiam.yaml).
