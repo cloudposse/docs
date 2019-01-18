@@ -38,7 +38,6 @@
       justify-content: end;
 
       @include respond-to('desktop') {
-        max-height: 270px;
         display: flex;
         flex: 0 0 50%;
       }
@@ -102,8 +101,8 @@
 
   &__items-wrapper {
     &--depth1 {
-      overflow-y: scroll;
       margin-top: 1.2rem;
+      height: 250px;
     }
 
     &--depth2 {

@@ -5104,6 +5104,11 @@ signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
+simple-scrollbar@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/simple-scrollbar/-/simple-scrollbar-0.4.0.tgz#cd0b7a4f8dcf7c0bb8d4c83b0ac5b0acebf2579b"
+  integrity sha512-mK4cZtoa7UdmwxxMT44kXF3SdNs+Ml/IiFTML0wDJpDi3zVRevlkiJcrZJ7vVyTKUw6OmDyijdNJecHpnd5y3w==
+
 slugify@^1.3.1:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.3.4.tgz#78d2792d7222b55cd9fc81fa018df99af779efeb"

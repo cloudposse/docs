@@ -4,6 +4,7 @@ import './glossarizer'
 import './clipboard';
 import './ui';
 import './featherlight'
+import './scroll'
 
 $(document).ready(function () {
 
