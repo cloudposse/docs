@@ -50,7 +50,7 @@ Alternatively, set the [`KUBE_CONTEXT`]({{< relref "release-engineering/codefres
 
 The `helmfile.yaml` is a [go-template](https://golang.org/pkg/text/template/) formatted "YAML" file. Note, this means that it is first evaluated as a plain-text go-template before getting processed as YAML. It essential that the go-template result in well-formed YAML with properly escaped values.
 
-For complete examples, review our comprehensive distribution of [helmfiles](https://github.com/cloudposse/helmfiles/tree/master/helmfile.d).
+For complete examples, review our comprehensive distribution of [helmfiles](https://github.com/cloudposse/helmfiles/tree/master/releases).
 
 ## Example `helmfile.yaml`
 
