@@ -15,9 +15,9 @@ that uses [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/c
 
 Nginx [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) controller is deployed by [`nginx-ingress`](https://github.com/kubernetes/charts/tree/master/stable/nginx-ingress) [Helm chart]({{< relref "helm-charts/quickstart.md" >}}).
 
-The `nginx-ingress` chart itself is deployed from the `geodesic` shell using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0320.nginx-ingress.yaml).
+The `nginx-ingress` chart itself is deployed from the `geodesic` shell using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/nginx-ingress.yaml).
 
-To scale Nginx Ingress pods horizontally, update the following settings for `nginx-ingress` in the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0320.nginx-ingress.yaml):
+To scale Nginx Ingress pods horizontally, update the following settings for `nginx-ingress` in the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/nginx-ingress.yaml):
 
 * `replicaCount`
 * `nginx-default-backend.replicaCount`

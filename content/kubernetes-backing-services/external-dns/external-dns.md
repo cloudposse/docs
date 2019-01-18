@@ -56,7 +56,7 @@ In the example the iam role name is `kops_external_dns_role_name = example-stagi
 
 ### Install Chart
 
-You can install `external-dns` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0100.external-dns.yaml).
+You can install `external-dns` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/external-dns.yaml).
 
 ### Install with Master Helmfile
 
