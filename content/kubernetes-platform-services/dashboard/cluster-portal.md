@@ -63,11 +63,11 @@ If you are using self-hosted `GitLab` you have to set
 
 ### Installing on Kubernetes
 
-You can install `portal` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0620.portal.yaml).
+You can install `portal` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/portal.yaml).
 
 #### Install with Master Helmfile
 
-[Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0620.portal.yaml)
+[Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/portal.yaml)
 uses GitHub OAuth provider and is configured to expose the following dashboards:
 
 * [Kubernetes Dashboard]({{< relref "kubernetes-platform-services/dashboard/kubernetes-ui-dashboard.md" >}})

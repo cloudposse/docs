@@ -11,7 +11,7 @@ None
 
 ## Install
 
-You can install the `nginx-ingress` controller in few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0320.nginx-ingress.yaml).
+You can install the `nginx-ingress` controller in few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/nginx-ingress.yaml).
 
 ### Install using Master Helmfile
 
