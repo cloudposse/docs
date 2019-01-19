@@ -90,4 +90,4 @@ gulp.task('styleguide', function () {
   return kss(styleGuide);
 });
 
-gulp.task("default", gulp.series("sass", "scripts", "copy", "copy-js", "fonts"));
+gulp.task("default", gulp.series("sass", "scripts", "copy", "copy-js", "fonts", "styleguide"));
