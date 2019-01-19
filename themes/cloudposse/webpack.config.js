@@ -7,7 +7,6 @@ const env = process.env.NODE_ENV
 var config = {
   entry: {
     app: './src/js/app.js',
-    search: './src/js/search.js',
     mermaid: './src/js/mermaid.js',
   },
   output: {
@@ -34,9 +33,6 @@ var config = {
     // new BundleAnalyzerPlugin() // Disabled by default.
   ],
   optimization: {
-    splitChunks: {
-      chunks: 'all'
-    },
     minimizer: [new UglifyJsPlugin()]
   },
 };
