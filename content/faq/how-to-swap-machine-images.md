@@ -6,6 +6,7 @@ tags:
 - Kubernetes
 - manifest
 - clusters
+- AMI
 ---
 
 ## Question
