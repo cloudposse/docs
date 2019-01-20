@@ -1,6 +1,6 @@
 ---
 title: "How can we implement multiple worker pools?"
-description: "We use kops manifests (YAML) to define imperative Kubernetes architectures."
+description: "We use `kops` manifests (YAML) to define imperative Kubernetes architectures."
 tags:
 - kops
 - Kubernetes
