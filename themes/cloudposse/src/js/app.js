@@ -1,9 +1,11 @@
 'use strict';
 
-import './glossarizer'
+import './glossarizer';
 import './clipboard';
 import './ui';
-import './featherlight'
+import './featherlight';
+import './scroll';
+import './search';
 
 $(document).ready(function () {
 
