@@ -1,11 +1,12 @@
 ---
-title: "How can we implement multiple worker pools?"
+title: "How can we implement multiple `kubernetes` worker pools?"
 description: "We use kops manifests (YAML) to define imperative Kubernetes architectures."
 tags:
 - kops
 - Kubernetes
 - manifest
 - clusters
+- AMI
 ---
 
 ## Question
@@ -22,4 +23,4 @@ An example manifest is provided [here](https://github.com/cloudposse/geodesic/bl
 
 An example of a project with the [Van Valen Research Lab at Caltech](https://github.com/vanvalenlab/kiosk/blob/master/conf/patches/gpu-nodes.yaml) demonstrates where a GPU node pool was added that is scaled down to zero by default.
 
-Using the cluster autoscaler, the node pool is automatically scaled up when a pod is scheduled with the proper labels.
+Using the cluster autoscaler, when a pod is scheduled with the proper labels, the node pool is automatically scaled up.
