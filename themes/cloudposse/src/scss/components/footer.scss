@@ -1,16 +1,7 @@
 .footer {
   display: none;
   margin: 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  padding: 1rem 0;
->>>>>>> Footer fixes 275
-=======
-  padding: 0;
   border-top: 1px solid $color_mercury_approx;
->>>>>>> reworked tags position
-
   @include respond-to(desktop) {
     display: block;
   }
@@ -18,27 +9,6 @@
   .footline {
     display: flex;
     flex-wrap: nowrap;
-    line-height: 2.2rem;
-    padding-top: .2rem;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    padding-left: 4rem;
-    // sidebar + max-content-width
-    max-width: calc(1024px + 24rem);
-
-    .tags {
-      font-size: 12px;
-      margin-right: 10px;
-      order: 0;
-      flex: 0 0 auto;
-    }
->>>>>>> Footer fixes 275
-=======
-    padding-left: 28rem;
-    // sidebar + max-content-width
-    max-width: 1024px;
->>>>>>> reworked tags position
 
     .copyright {
       flex: 0 1 auto;
