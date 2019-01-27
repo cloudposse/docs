@@ -10,11 +10,8 @@
 
 // Hugo theme nucleus css
 @import 'vendors/nucleus';
-// @import 'vendors/custom-bootstrap';
 @import 'flex/style';
-
 @import 'vendors/calendly.scss';
-
 @import 'bootstrap';
 
 
@@ -22,7 +19,9 @@
 @import 'featherlight';
 @import 'dist/instantsearch.min';
 
-
+// Sass colors
+//
+// Style guide: 1
 @import 'base/colors';
 @import 'base/fonts';
 @import 'base/typography';
@@ -38,6 +37,9 @@
 
 @import 'custom';
 
+// Components
+//
+// Style guide: 2
 @import 'components/ui/ais';
 @import 'components/ui/left-sidebar-menu';
 @import 'components/ui/pagination';
