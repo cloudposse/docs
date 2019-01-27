@@ -14,10 +14,15 @@
     padding: 2rem 4rem;
   }
 
-  &__slack {
+  &__preheader {
     display: flex;
+    align-items: flex-start;
     justify-content: flex-end;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
+  }
+
+  &__slack {
+    margin-left: 10px;
   }
 
   &__header {
