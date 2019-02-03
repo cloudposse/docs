@@ -70,7 +70,7 @@ To install the `chartmuseum`, you will need to define the `hostname`, which is t
 
 In our example, we use `charts.us-west-2.staging.example.com` as the FQHN. Replace this with an appropriate value to suit your specific project.
 
-You can install `chartmuseum` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0300.chartmuseum.yaml).
+You can install `chartmuseum` in a few different ways, but we recommend using the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/chartmuseum.yaml).
 
 #### Install with Master Helmfile
 

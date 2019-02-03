@@ -44,10 +44,10 @@ kops export kubecfg
 
 (Note, in older versions of `kops` you will need to pass the cluster name, so run `kops export kubecfg $KOPS_CLUSTER_NAME`)
 
-Check and apply the latest Kubernetes update:
+Apply the lastest kops manifest:
 
 ```sh
-kops upgrade cluster --yes
+kops replace -f /conf/kops/manifest.yaml
 ```
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}

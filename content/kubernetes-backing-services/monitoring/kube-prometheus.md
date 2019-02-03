@@ -29,7 +29,7 @@ Kube Prometheus includes the following packages:
 
 ## Install
 
-You can install `kube-prometheus` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/helmfile.d/0400.kube-prometheus.yaml).
+You can install `kube-prometheus` in a few different ways, but we recommend to use the [Helmfile](https://github.com/cloudposse/helmfiles/blob/master/releases/kube-prometheus.yaml).
 
 ### Install using Helmfile
 
