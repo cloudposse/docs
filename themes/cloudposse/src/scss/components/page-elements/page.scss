@@ -162,6 +162,11 @@
     }
   }
 
+  &__link,
+  a {
+    color: $color_deep_blue_sky;
+  }
+
   img {
     display: block;
     text-align: center;
