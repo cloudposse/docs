@@ -24,3 +24,11 @@
     {{end}}
   </div>
 </div>
+
+{{ if and (isset .Params "archived") (.Params.archived) }}
+<div class="archived-banner">
+  <div class="container archived-banner__container">
+    <div class="archived-banner__text">This page has been archived.</div>
+  </div>
+</div>
+{{ end }}
