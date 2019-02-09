@@ -1,22 +1,29 @@
 <article class="post {{ .Section }}">
-    <header class="post-header">
-        <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></h2>
-    </header>
-    <section class="post-excerpt">
+    <div class="post__header">
+        <h2 class="post__title">
+            <a class="post__title-link" href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+        </h2>
+    </div>
+    <div class="post__excerpt">
       {{ if .Description }}
-        <p>{{ .Description | markdownify | plainify | htmlUnescape | default "Read More"}} <a class="read-more" href="{{.RelPermalink}}">read more &raquo;</a></p>
+        <div class="post__paragraph">{{ .Description | markdownify | plainify | htmlUnescape | default "Read More"}}</div>
       {{ else }}
-        <p>{{ .Summary | markdownify | plainify | htmlUnescape | default "Read More"}} <a class="read-more" href="{{.RelPermalink}}">read more &raquo;</a></p>
+        <div class="post__paragraph">{{ .Summary | markdownify | plainify | htmlUnescape | default "Read More"}}</div>
       {{ end }}
-    </section>
-    <footer class=" footline" >
-        {{- with .Params.LastModifierDisplayName -}}
-            <i class='fa fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a> {{with $.Date}} <i class='fa fa-calendar'></i> {{ .Format "02/01/2006" }}{{end}}
-        {{- end -}}
-        {{- if .Params.tags -}}  
-            {{ range $index, $tag := .Params.tags }}
-                <a class="label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}/">#{{ $tag }}</a>
-            {{ end }}
-        {{- end -}}
-    </footer>
+    </div>
+    <div class="post__footer footline" >
+        <div class="post__tags">
+            {{- with .Params.LastModifierDisplayName -}}
+                <i class='fa fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a> {{with $.Date}} <i class='fa fa-calendar'></i> {{ .Format "02/01/2006" }}{{end}}
+            {{- end -}}
+            {{- if .Params.tags -}}
+                <div class="tags">
+                    {{ range $index, $tag := .Params.tags }}
+                        <a class="tags__label label label-default" href="{{$.Site.BaseURL}}tags/{{ $tag | urlize }}/">#{{ $tag }}</a>
+                    {{ end }}
+                </div>
+            {{- end -}}
+        </div>
+        <a class="post__readmore read-more" href="{{.RelPermalink}}">read more &raquo;</a>
+    </div>
 </article>
