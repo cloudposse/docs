@@ -1,6 +1,6 @@
 ---
 title: "Can we use kubectl with RBAC?"
-description: "Recent releases of Kubernetes support custom authentication providers."
+description: "Yes, recent releases of Kubernetes support custom authentication providers including support for AWS IAM."
 tags:
 - kubectl
 - RBAC
