@@ -1,6 +1,6 @@
 ---
 title: "How do we achieve image updates with zero downtime?"
-description: "his is similar to scaling a cluster vertically."
+description: "This is similar to scaling a cluster vertically."
 tags:
 - VM
 - image
