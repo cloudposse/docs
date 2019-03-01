@@ -3,6 +3,17 @@ title: QuickStart
 description: ''
 ---
 
+Summary:
+
+- `make`
+- `git`
+- `docker` & `docker-compose`
+- `aws-vault`
+
+## Linux Dependencies
+
+WIP
+
 ## OSX Dependencies
 
 ### Install Developer Tools
