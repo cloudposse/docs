@@ -47,6 +47,8 @@ After installing, you'll now see a new docker icon in your task bar.
 Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on a 2010 or newer Mac, with Intel's hardware support for MMU virtualization.
 {{% /dialog %}}
 
+## OS Independent
+
 ### Configure AWS Vault
 
 Now set up your AWS credentials so you can interact with AWS on the command line.
