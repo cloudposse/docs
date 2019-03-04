@@ -186,24 +186,24 @@ We executed the steps above using the `admin` user credentials without using rol
 Now we need to create the roles for the `root` account and update the AWS profile.
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-Update the `TF_VAR_root_account_admin_user_names` variable in `Dockerfile` for the `root` account with your own values.
+Update the `root_account_admin_user_names` variable in `conf/root-iam/terraform.tfvars` with your own values.
 {{% /dialog %}}
 
 Execute these commands in the `root` geodesic session:
 
 {{% dialog type="code-block" icon="fa fa-code" title="Provision `iam` Project to Create `root` IAM Role" %}}
 ```
-cd iam
+cd root-iam
 
-Comment out the `assume_role` section in `iam/main.tf`
+Comment out the `assume_role` section in `main.tf`
 
 Run `init-terraform`
 
-Run `terraform plan -target=module.organization_access_group_root`
+Run `terraform plan`
 
-Run `terraform apply -target=module.organization_access_group_root`
+Run `terraform apply`
 
-Re-enable the `assume_role` section in `iam/main.tf`
+Re-enable the `assume_role` section in `main.tf`
 ```
 {{% /dialog %}}
 
@@ -586,3 +586,4 @@ chamber_user_unique_id = AIDAJKJKFLZIQ4KDUXAJ2
 {{% /dialog %}}
 
 Now you'll be able to start a `geodesic` shell for any of the member accounts and provision new or update the existing resources.
+
