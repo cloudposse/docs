@@ -10,7 +10,7 @@ tags:
 
 ## Question
 
-How does Cloudflare Access/Argo integration work?
+How does Cloudflare Access/Argo integration work with Kubernetes Ingress?
 
 ## Answer
 
