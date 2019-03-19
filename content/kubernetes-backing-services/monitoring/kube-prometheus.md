@@ -7,21 +7,21 @@ tags:
 - "alert-manager"
 ---
 
-[Kube Prometheus](https://github.com/coreos/prometheus-operator/tree/master/helm/kube-prometheus) provides an easy-to-operate end-to-end Kubernetes cluster monitoring solution using Prometheus together with `PrometheusOperator`.
+[Kube Prometheus](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/kube-prometheus) provides an easy-to-operate end-to-end Kubernetes cluster monitoring solution using Prometheus together with `PrometheusOperator`.
 
 Kube Prometheus includes the following packages:
 
-* [Prometheus](https://github.com/coreos/prometheus-operator/tree/master/helm/prometheus)
-* [Grafana](https://github.com/coreos/prometheus-operator/tree/master/helm/grafana)
-* [Alert Manager](https://github.com/coreos/prometheus-operator/tree/master/helm/alertmanager)
-* [Kube Controller Manager Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-controller-manager)
-* [Kube DNS Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-dns)
-* [Kube Etcd Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
-* [Kube Scheduler Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-scheduler)
-* [Kube State Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-state)
-* [Kubelets Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kubelets)
-* [Kubernetes Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kubernetes)
-* [Node Exporter](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-node)
+* [Prometheus](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/prometheus)
+* [Grafana](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/grafana)
+* [Alert Manager](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/alertmanager)
+* [Kube Controller Manager Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kube-controller-manager)
+* [Kube DNS Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kube-dns)
+* [Kube Etcd Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kube-etcd)
+* [Kube Scheduler Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kube-scheduler)
+* [Kube State Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kube-state)
+* [Kubelets Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kubelets)
+* [Kubernetes Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kubernetes)
+* [Node Exporter](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-node)
 
 ## Dependencies
 
@@ -76,7 +76,7 @@ metrics and send alerts based on the metrics, and display the metric in Grafana 
 
 * Running Exporters with [Prometheus Operator](https://coreos.com/operators/prometheus/docs/latest/user-guides/running-exporters.html)
 * Custom configuration of [Service Monitor](https://coreos.com/operators/prometheus/docs/latest/custom-configuration.html)
-* Helm chart that exposes [Etcd metrics](https://github.com/coreos/prometheus-operator/tree/master/helm/exporter-kube-etcd)
+* Helm chart that exposes [Etcd metrics](https://github.com/coreos/prometheus-operator/tree/v0.29.0/helm/exporter-kube-etcd)
 
 ### Custom Dashboards using Grafana
 
