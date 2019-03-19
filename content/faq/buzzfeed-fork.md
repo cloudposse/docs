@@ -1,6 +1,6 @@
 ---
 title: "What about the Buzzfeed fork of the Bitly proxy?"
-description: "The Buzzfeed SSO proxy has been labeled a "fork" of the Bitly OAuth 2 proxy; but it technically shares very little, if anything."
+description: 'The Buzzfeed SSO proxy has been labeled a "fork" of the Bitly OAuth 2 proxy; but it technically shares very little, if anything.'
 tags:
 - Buzzfeed
 - Bitly
