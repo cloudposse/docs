@@ -35,6 +35,7 @@
 
     </section>
     {{ partial "footer.html" . }}
+
   </div>
   {{ if and (gt .WordCount 400 ) (ne .Params.toc "false") }}
   {{ partial "right-sidebar.html" . }}
