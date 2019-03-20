@@ -1,10 +1,11 @@
 ---
 title: "Do you recommend starting with a fresh root account?"
-description: "We recommend starting fresh with a completely clean account provisioned 100% from the ground up."
+description: "We recommend starting fresh with a completely clean account provisioned 100% from the ground up using Infrastructure as Code."
 tags:
 - root account
 - AWS
 - Terraform
+- Infrastructure as Code
 ---
 
 ## Question
