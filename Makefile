@@ -186,12 +186,10 @@ release:
 		sed 's,^editURL.*,editURL = "$(HUGO_EDIT_URL)",' \
 		> $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
-	@grep -n --color=never . $(HUGO_CONFIG)
 	cat .htmltest.yml | \
 		sed 's,^OutputDir:.*,OutputDir: "$(TMPDIR)/.htmltest",' \
 		> $(HTMLTEST_CONFIG)
 	@echo "Wrote $(HTMLTEST_CONFIG) for codefresh..."
-	@grep -n --color=never . $(HTMLTEST_CONFIG)
 
 ## Deploy static site to S3
 deploy:
