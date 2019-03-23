@@ -1,9 +1,10 @@
 ---
 title: "terragrunt"
-description: "Transform environment variables for use with Terraform (e.g. `HOSTNAME` ⇨ `TF_VAR_hostname`)"
+description: "Terragrunt is a thin wrapper for Terraform that provides extra tools for working with multiple Terraform modules."
 tags:
 - terraform
 - task-runner
+- wrapper
 ---
 
 Terragrunt is a well-built tool that offers a lot of functionality making terraform easier. Like all well-built tools, it's opinionated and consistent. Perhaps, one of the best things about `terragrunt` is the community around it. The community (and gruntworks) provides the documentation, best practices, and the framework for terraform operations that it pioneered. Because of terragrunt, people have taken terraform beyond its limits and taught us a lot. If a company can rely solely on the capabilities of terraform, then terragrunt is aptly suited for the task at hand.
