@@ -5,6 +5,7 @@ import './clipboard';
 import './ui';
 import './featherlight';
 import './scroll';
+import './scrollspy';
 import './search';
 
 $(document).ready(function () {

@@ -43,6 +43,12 @@
         border-radius: 3px;
         text-decoration: none;
       }
+
+      &.active {
+        color: white;
+        background-color: #364548;
+        border-radius: 3px;
+      }
     }
 
     > ul {
