@@ -1,5 +1,5 @@
 ---
-title: "Do you recommend arge batch jobs, streaming pipelines, and interactive Jupyter notebooks be provisioned within the customer-facing production account/environment/Kubernetes cluster?"
+title: "Do you recommend large batch jobs, streaming pipelines, and interactive Jupyter notebooks be provisioned within the customer-facing production account/environment/Kubernetes cluster?"
 description: "We think it makes the most sense to create a separate data account and put all of your BI in there."
 tags:
 - Kubernetes
