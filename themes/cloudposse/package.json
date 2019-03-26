@@ -36,6 +36,7 @@
     "instantsearch.js": "^2.10.2",
     "jquery": "^3.3.1",
     "mermaid": "^8.0.0-rc.8",
+    "parcel-bundler": "1.12.2",
     "kss": "^3.0.0-beta.23",
     "raven-js": "^3.27.0",
     "simple-scrollbar": "^0.4.0",
