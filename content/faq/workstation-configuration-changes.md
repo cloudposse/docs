@@ -1,6 +1,6 @@
 ---
 title: "What changes should be made to engineers' workstation configurations?"
-description: "asically, they should have Docker."
+description: "Basically, they should have Docker."
 tags:
 - workstation
 - Docker
