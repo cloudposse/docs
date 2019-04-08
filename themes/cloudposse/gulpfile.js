@@ -83,7 +83,7 @@ gulp.task("copy-js", function(cb) {
 
 // Watch task for dedelopment.
 gulp.task("watch", function() {
-  gulp.watch(["src/scss/**/*.scss", "static/js/**/*.js"], gulp.series("sass", gulp.parallel("copy", "copy-js", "styleguide")));
+  gulp.watch(["src/scss/**/*.scss", "src/js/**/*.js"], gulp.series("sass", "scripts" , gulp.parallel("copy", "copy-js", "styleguide")));
 });
 
 gulp.task('styleguide', function () {
