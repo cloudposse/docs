@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const toc = document.getElementById('TableOfContents');
 
-  if (toc.length) {
+  if (toc) {
     const menuItems = toc.getElementsByTagName('a');
     const page = document.querySelector('.page-content');
     const links = [];

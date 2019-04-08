@@ -1,38 +1,38 @@
-    </div>
-    {{if not .IsHome}}
-      {{ partial "related.html" . }}
-    {{end}}
+      </div>
+      {{if not .IsHome}}
+        {{ partial "related.html" . }}
+      {{end}}
 
-    {{if not .IsHome}}
-    <div class="chevrons">
-      {{ partial "next-prev-page.html" . }}
-    </div>
+      {{if not .IsHome}}
+      <div class="chevrons">
+        {{ partial "next-prev-page.html" . }}
+      </div>
 
-    <!--{{ if and (isset .Params "comments") (.Params.comments) }}-->
-    <!--<div class="utterances-wrapper">-->
-      <!--<script src="/components/utterances/client.js"-->
-              <!--repo="cloudposse/docs"-->
-              <!--issue-term="pathname"-->
-              <!--async>-->
-      <!--</script>-->
-    <!--</div>-->
-    <!--{{ end }}-->
+      <!--{{ if and (isset .Params "comments") (.Params.comments) }}-->
+      <!--<div class="utterances-wrapper">-->
+        <!--<script src="/components/utterances/client.js"-->
+                <!--repo="cloudposse/docs"-->
+                <!--issue-term="pathname"-->
+                <!--async>-->
+        <!--</script>-->
+      <!--</div>-->
+      <!--{{ end }}-->
 
-    <br/>
-    <div id='discourse-comments'></div>
+      <br/>
+      <div id='discourse-comments'></div>
 
-    <script type="text/javascript">
-        DiscourseEmbed = {
-            discourseUrl: 'https://ask.sweetops.com/',
-            discourseEmbedUrl: '{{ .Permalink }}' };
+      <script type="text/javascript">
+          DiscourseEmbed = {
+              discourseUrl: 'https://ask.sweetops.com/',
+              discourseEmbedUrl: '{{ .Permalink }}' };
 
-        (function() {
-            var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-            d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-        })();
-    </script>
-
+          (function() {
+              var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+              d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+          })();
+      </script>
+      </div>
     </section>
     {{ partial "footer.html" . }}
 
