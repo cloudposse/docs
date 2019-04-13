@@ -28,7 +28,7 @@ This will create a new module in your current working directory called `$CLUSTER
 ```shell
 export CLUSTER_NAME=staging.example.com
 
-docker run -e CLUSTER_NAME \
+docker run -e KOPS_CLUSTER_NAME=${CLUSTER_NAME} \
            -e DOCKER_IMAGE=cloudposse/${CLUSTER_NAME} \
            -e DOCKER_TAG=dev \
               cloudposse/geodesic:latest -c new-project | tar -xv -C .
