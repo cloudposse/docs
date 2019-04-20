@@ -1,5 +1,5 @@
 ---
-title: "How do we SSH into a kops Kubernetes cluster? "
+title: "How do we SSH into a `kops` Kubernetes cluster? "
 description: "There's the way it works out of the box and then there's the fancy way, which is recommended."
 tags:
 - kops
