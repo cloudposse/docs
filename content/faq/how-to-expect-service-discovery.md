@@ -14,4 +14,4 @@ How do we expect to accomplish service discovery? Simple DNS-based using Kuberne
 
 ## Answer
 
-Yes, cluster DNS of services.
+Yes, in Kubernetes, most often service discovery is performed using DNS, which is what Kubernetes ships with out of the box (e.g. `coredns` and `kubedns`).
