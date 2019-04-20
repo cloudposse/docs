@@ -4,7 +4,9 @@ import './glossarizer';
 import './clipboard';
 import './ui';
 import './featherlight';
+import './expandable';
 import './scroll';
+import './scrollspy';
 import './search';
 
 $(document).ready(function () {
