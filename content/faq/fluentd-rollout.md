@@ -1,6 +1,6 @@
 ---
-title: "How will fluentd be rolled out?"
-description: "We deploy fluentd as a DaemonSet that runs on all nodes."
+title: "How will `fluentd` be rolled out?"
+description: "We deploy `fluentd` as a `DaemonSet` that runs on all nodes."
 tags:
 - fluentd
 - DaemonSet
