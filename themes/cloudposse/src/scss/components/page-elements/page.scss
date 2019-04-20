@@ -12,7 +12,7 @@
   }
 
   @include respond-to('desktop') {
-    padding: 2rem 4rem;
+    padding: 0;
   }
 
   &__preheader {
@@ -24,6 +24,12 @@
 
   &__slack {
     margin-left: 10px;
+  }
+
+  &__scroller {
+    @include respond-to('desktop') {
+      padding: 2rem 4rem;
+    }
   }
 
   &__header {
