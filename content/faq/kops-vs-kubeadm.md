@@ -1,6 +1,6 @@
 ---
 title: "Why use `kops` instead of `kubeadm`?"
-description: "kops handles everything (top to bottom), so that the output is a Kubernetes cluster and a tool to easily manage the lifecycle of the cluster."
+description: "`kops` handles everything (top to bottom), so that the output is a Kubernetes cluster and a tool to easily manage the lifecycle of the cluster."
 tags:
 - kops
 - kubeadm
