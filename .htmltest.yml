@@ -50,6 +50,8 @@ IgnoreURLs:
 - "github.com/cloudposse/docs/blob"
 # Site started blocking us
 - "blog.gopheracademy.com"
+# x509 certificate has expired:
+- "richard.wallman.org.uk"
 
 # Array of regexs of directories to ignore when scanning for HTML files.
 IgnoreDirs:
