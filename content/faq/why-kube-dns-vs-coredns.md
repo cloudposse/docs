@@ -1,5 +1,5 @@
 ---
-title: "Why do you refer to kube-dns?"
+title: "Why do you refer to `kube-dns`?"
 description: "It just comes down to what version of k8s we’re running."
 tags:
 - kube-dns
