@@ -1,6 +1,6 @@
 ---
 title: "Are we able to configure our backend server logs to forward to S3?"
-description: "Yes, we deploy fluentd as a DaemonSet that runs on all nodes."
+description: "Yes, we deploy `fluentd` as a `DaemonSet` that runs on all nodes."
 tags:
 - fluentd
 - DaemonSet
