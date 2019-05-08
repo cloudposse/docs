@@ -24,23 +24,18 @@ export DOCKER_ORG ?= cloudposse
 export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
 export DOCKER_TAG ?= latest
 export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
-export DOCKER_BUILD_FLAGS = 
-export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e UTTERANCES_BUILD_DISABLED $(DOCKER_IMAGE_NAME)
+export DOCKER_BUILD_FLAGS =
+export DOCKER_RUN ?= docker run -it --rm -v `pwd`:/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED $(DOCKER_IMAGE_NAME)
 
 export README_DEPS ?= docs/targets.md
 
 export YARN_BUILD_DISABLED ?= false
-export UTTERANCES_BUILD_DISABLED ?= false
 
 ifneq ($(YARN_BUILD_DISABLED),true)
 COMPONENTS_DEPS += yarn/build
 endif
-ifneq ($(UTTERANCES_BUILD_DISABLED),true)
-COMPONENTS_DEPS += utterances/build
-endif
 
 export COMPONENTS_DIR ?= static/components
-export UTTERANCES_VERSION ?= 0.1.0
 
 -include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
 
@@ -112,18 +107,6 @@ hugo/run: components/build
 run: docker/build
 	$(DOCKER_RUN) hugo/run
 
-## Build customized utterances widget
-utterances/build:
-	rm -rf utterances $(COMPONENTS_DIR)/utterances
-	git clone --branch $(UTTERANCES_VERSION) https://github.com/cloudposse/utterances.git
-	cd utterances && yarn && yarn build
-	mkdir -p $(COMPONENTS_DIR)/utterances
-	mv utterances/dist/* $(COMPONENTS_DIR)/utterances
-	rm -f $(COMPONENTS_DIR)/utterances/index.html
-	sed -i 's|href="/|href="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
-	sed -i 's|src="/|src="/components/utterances/|g' $(COMPONENTS_DIR)/utterances/utterances.html
-	rm -rf utterances
-
 yarn/build:
 	cd themes/cloudposse && yarn && yarn run gulp
 
@@ -137,7 +120,7 @@ components/build: $(COMPONENTS_DEPS)
 
 ## Generate all static content (outputs to public/) using local environment
 hugo/build: components/build
-	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1) 
+	@[ "$(HUGO_PUBLISH_DIR)" != "/" ] || (echo "Invalid HUGO_PUBLISH_DIR=$(HUGO_PUBLISH_DIR)"; exit 1)
 	rm -rf $(HUGO_PUBLISH_DIR)
 	$(HUGO) --templateMetrics --stepAnalysis --config $(HUGO_CONFIG)
 
