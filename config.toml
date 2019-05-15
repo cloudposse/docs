@@ -61,15 +61,21 @@ home = [ "HTML", "RSS", "algolia"]
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
-name = "<i class='fa fa-book'></i> <label>Documentation</label>"
-identifier = "nav-documentation"
-url = "/"
+name = "<i class='fa fa-book'></i> <label>Forum</label>"
+identifier = "nav-forum"
+url = "https://ask.sweetops.com"
 weight = 10
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-bullhorn'></i> <label>Announcements</label>"
-identifier = "nav-announcements"
-url = "/announcements/"
+name = "<i class='fa fa-bullhorn'></i> <label>Slack</label>"
+identifier = "nav-slack"
+url = "https://slack.sweetops.com"
+weight = 20
+
+[[menu.shortcuts]]
+name = "<i class='fa fa-bullhorn'></i> <label>Community</label>"
+identifier = "nav-community"
+url = "https://sweetops.com"
 weight = 20
 
 [[menu.shortcuts]]
@@ -78,12 +84,6 @@ name = "<i class='fab fa-github'></i> <label>Our GitHub</label>"
 identifier = "nav-github"
 url = "https://github.com/cloudposse/"
 weight = 30
-
-[[menu.shortcuts]]
-name = "<i class='fa fa-bookmark'></i> <label>Blog</label>"
-identifier = "nav-blog"
-url = "https://cloudposse.com/blog/"
-weight = 40
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"
@@ -98,13 +98,6 @@ name = "<i class='fa fa-question'></i> <label>Support</label>"
 identifier = "nav-support"
 url = "https://cloudposse.com/commercial-support"
 weight = 50
-
-[[menu.shortcuts]]
-pre = "<h3>More</h3>"
-name = "<i class='fa fa-edit'></i> <label>Ask a Question</label>"
-identifier = "nav-ask-a-question"
-url = "/documentation/question/"
-weight = 60
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-envelope'></i> <label>Contact Us</label>"

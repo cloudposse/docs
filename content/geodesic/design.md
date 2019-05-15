@@ -8,7 +8,7 @@ weight: -1
 
 We designed this shell as the last layer of abstraction. It stitches all the tools together like `make`, `aws-cli`, `kops`, `helm`, `kubectl`, and `terraform`. As time progresses, there will undoubtedly be even more that come into play. For this reason, we chose to use a combination of `bash` and `make` which together are ideally suited to combine the strengths of all these wonderful tools into one powerful shell, without raising the barrier to entry too high.
 
-For the default environment variables, check out `Dockerfile`. We believe using ENVs this way is both consistent with the "cloud" ([12 Factor Pattern]({{< relref "development/12-factor-pattern.md" >}})) way of doing things, as well as a clear way of communicating what values are being passed without using a complicated convention. Additionally, you can set & forget these ENVs in your shell.
+For the default environment variables, check out `.envrc` and `Dockerfile`. We believe using ENVs this way is both consistent with the "cloud" ([12 Factor Pattern]({{< relref "development/12-factor-pattern.md" >}})) way of doing things, as well as a clear way of communicating what values are being passed without using a complicated convention. Additionally, you can set & forget these ENVs in your shell.
 
 ## Layout Inside the Shell
 
