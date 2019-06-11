@@ -30,7 +30,7 @@ to customize by changing inputs, while at the same time making it easy to use by
 as many reasonable defaults as possible.
 
 Each Terraform module is placed in its own GitHub repository. Cloud Posse has published
-[dozens](https://github.com/cloudposse?utf8=✓&q=terraform&type=&language=) and you can
+[hundreds](https://github.com/cloudposse?utf8=✓&q=terraform&type=&language=) and you can
 follow those examples or use your own pattern. Cloud Posse maintains a repo called
 [build-harness](https://github.com/cloudposse/build-harness) which contains tools for,
 among other things, creating `README.md` and other documentation files from a combination
@@ -58,7 +58,7 @@ We recommend you break down your Terraform module into 3 files:
 1. `variables.tf` contains all the inputs to the module, with defaults if possible. All the 
 information from `variables.tf` including descriptions will be included in the generated 
 documentation.
-1. `output.tf` contains all the outputs from the module. Again, all the information will
+1. `outputs.tf` contains all the outputs from the module. Again, all the information will
 be included in the documentation.
 1. `main.tf` conatins all the logic and other "code" that implements the module.
 
@@ -75,11 +75,11 @@ its inputs from Environment variables or AWS SSM Parameter Store parameters or s
 Each Terraform root module is stored inside its own directory in the shared Terraform
 root module Git repository. Cloud Posse's public repo is 
 [cloudposse/terraform-root-modules](https://github.com/cloudposse/terraform-root-modules) and
-each company should also have thier own private repo for any variations that the public repo
+each company should also have their own private repo for any variations that the public repo
 does not support.
 
 
-#### 3. The project folder inside Geodesic
+#### 3. Project Layout
 
 Each account/environment should have its own, customized Geodesic container, made 
 from its own GitHub repository. In that container,
@@ -87,7 +87,7 @@ under `/conf` are directories, one per "project". Generally that means one for a
 one for `kops` (which has both Terraform and `kops` artifacts), and one for each Terraform
 root module to install. 
 
-In the repo for the envoronment's Geodesic, create a directory under `/conf` for 
+In the repo for the environment's Geodesic, create a directory under `/conf` for 
 your Terraform root module. Copy the `.envrc`, `Makefile.tasks`, and `terraform.envrc` files 
 from `/conf/kops` into the new directory. The `.envrc` and `Makefile.tasks` files are boilerplate
 and do not need to be changed. 
@@ -95,7 +95,7 @@ and do not need to be changed.
 Edit the `terraform.envrc` file so that the `TF_CLI_INIT_FROM_MODULE` points to your 
 Terraform root module. Be sure to pin it to a specific version.
 
-If needed (and it usually is), add a `terraform.tfvars` file, in which you set the vaules
+If needed (and it usually is), add a `terraform.tfvars` file, in which you set the values
 of all the inputs to your Terraform root module that need to be set (i.e. that do not 
 have acceptable defaults).
 
@@ -149,7 +149,7 @@ $HOME=/Users/john
             |- prod.cpco.io/conf/widgets/
 ```
 
-Then, in `prod.cpco.io/conf/widgets/` you would set 
+Then, in `prod.cpco.io/conf/widgets/terraform.envrc` you would set 
 ```
 export TF_CLI_INIT_FROM_MODULE=/Users/john/src/terraform-root-modules/aws/widgets
 ```
