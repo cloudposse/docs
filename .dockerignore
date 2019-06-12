@@ -1,4 +1,6 @@
 .git/
-node_modules/
+build-harness/
+bin/
+**/node_modules/
 public/
 test/
