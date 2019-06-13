@@ -25,7 +25,9 @@ export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 export DOCKER_BUILD_FLAGS =
 
 ifeq ($(wildcard /.dockerenv),)
-export DOCKER_RUN ?= docker run -it --rm -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN := docker run -it --rm -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED $(DOCKER_IMAGE_NAME)
+else
+export DOCKER_RUN :=
 endif
 
 export README_DEPS ?= docs/targets.md
