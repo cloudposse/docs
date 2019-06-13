@@ -26,7 +26,7 @@ var sass_config = {
 
 var cssSources = [
   'src/scss/styles.scss',
-]
+];
 
 var styleGuide = {
   source: [

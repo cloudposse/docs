@@ -35,11 +35,10 @@ usage: |-
       * Select _Activate the Atom_ → _Install Shell Commands_ menu item.
       * Ensure that `/usr/local/bin` is in the `PATH`.
 
-      
+
   3. Run the following commands for faster development:
      ```
      export YARN_BUILD_DISABLED=true
-     export UTTERANCES_BUILD_DISABLED=true
      ```
   4. Run `make init`.
   5. Run `make run COMPONENTS_BUILD=true/false` to start the local server.
