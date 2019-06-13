@@ -18,7 +18,6 @@ tmp/*
 package-lock.json
 static/components/*
 static/styleguide/*
-utterances/*
 
 themes/cloudposse/static/css/*
 themes/cloudposse/static/js/*

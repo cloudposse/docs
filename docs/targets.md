@@ -25,7 +25,6 @@ Available targets:
   smoketest                           Run smoketest
   terraform-modules/update            Update terraform-modules pages
   test                                Run tests
-  utterances/build                    Build customized utterances widget
   validate                            Validate all html is good
 
 ```
