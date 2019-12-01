@@ -5,7 +5,7 @@ RUN mkdir -p ${INSTALL_PATH}
 RUN make -C /packages/install hugo HUGO_VERSION=0.42.1
 RUN make -C /packages/install htmltest HTMLTEST_VERSION=0.9.1
 
-FROM node:11.2-stretch
+FROM node:13.2.0-stretch
 
 COPY --from=packages /dist/ /usr/local/bin/
 
