@@ -1,4 +1,4 @@
-FROM cloudposse/packages:0.93.0 as packages
+FROM cloudposse/packages:0.124.0 as packages
 
 ENV INSTALL_PATH=/dist
 RUN mkdir -p ${INSTALL_PATH}
