@@ -30,7 +30,7 @@ enableEmoji = true
 [params]
 showVisitedLinks = true # default is false
 themeStyle = "flex"
-ordersectionsby = "weight" 
+ordersectionsby = "weight"
 # ordersectionsby = "title"
 disableHomeIcon = true
 disableSearch = true
@@ -96,7 +96,7 @@ weight = 45
 pre = "<h3>More</h3>"
 name = "<i class='fa fa-question'></i> <label>Support</label>"
 identifier = "nav-support"
-url = "https://cloudposse.com/commercial-support"
+url = "https://cloudposse.com/accelerate"
 weight = 50
 
 [[menu.shortcuts]]
