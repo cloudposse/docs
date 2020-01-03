@@ -27,7 +27,7 @@ ENV KOPS_STATE_STORE "s3://example-staging-kops-state"
 ENV KOPS_STATE_STORE_REGION "${AWS_REGION}"
 
 # https://github.com/kubernetes/kops/blob/master/channels/stable
-# https://github.com/kubernetes/kops/blob/master/docs/images.md
+# https://github.com/kubernetes/kops/blob/master/docs/operations/images.md
 ENV KOPS_BASE_IMAGE="kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08"
 ENV KOPS_DNS_ZONE "${KOPS_CLUSTER_NAME}"
 ENV KOPS_BASTION_PUBLIC_NAME="bastion"

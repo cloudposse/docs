@@ -36,7 +36,7 @@ RUN make -C /packages/install kubectl KUBECTL_VERSION=1.10.0
 
 The `kubectl` release version corresponds to the kubernetes release. Find the latest release of kubernetes [here](https://github.com/kubernetes/kubernetes/releases).
 
-Then follow the [official instructions](https://github.com/kubernetes/kops/blob/master/docs/upgrade.md) for upgrading kops.
+Then follow the [official instructions](https://github.com/kubernetes/kops/blob/master/docs/operations/updates_and_upgrades.md) for upgrading kops.
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 <https://github.com/kubernetes/kops/blob/master/docs/tutorial/upgrading-kubernetes.md>
@@ -48,7 +48,7 @@ Then follow the instructions to update the manifest and update the cluster.
 
 ## Upgrading EC2 Image for Nodes
 
-Identify the AMI that should be used by following the [official documentation](https://github.com/kubernetes/kops/blob/master/docs/images.md). The latest AMI is published in the [stable channel manifest](https://github.com/kubernetes/kops/blob/master/channels/stable).
+Identify the AMI that should be used by following the [official documentation](https://github.com/kubernetes/kops/blob/master/docs/operations/images.md). The latest AMI is published in the [stable channel manifest](https://github.com/kubernetes/kops/blob/master/channels/stable).
 
 The AMI will look something like this:
 ```

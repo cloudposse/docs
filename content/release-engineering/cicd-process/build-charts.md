@@ -7,7 +7,7 @@ tags:
 - codefresh
 ---
 
-A [helm chart](https://docs.helm.sh/developing_charts/#charts) is one of the two artifacts
+A [helm chart](https://helm.sh/docs/topics/charts/) is one of the two artifacts
 that result from the CI/CD build process. The chart defines how to execute the application
 on a Kubernets cluster and what services it depends on.
 

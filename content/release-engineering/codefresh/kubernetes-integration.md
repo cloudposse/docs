@@ -41,7 +41,7 @@ We recommend naming the configuration after the cluster name (e.g. `us-west-2-st
 ![Enter Kubernetes API Details](/assets/c5273c7-Screen_Shot_2018-04-16_at_5.20.30_PM.png)
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
-The complete docs for configuring Codefresh with Kubernetes can be found on their [documentation portal](https://docs.codefresh.io/v1.0/docs/adding-non-gke-kubernetes-cluster).
+The complete docs for configuring Codefresh with Kubernetes can be found on their [documentation portal](https://codefresh.io/docs/docs/deploy-to-kubernetes/add-kubernetes-cluster/).
 {{% /dialog %}}
 
 ## Usage
