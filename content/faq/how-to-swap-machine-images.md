@@ -19,4 +19,4 @@ Inside the `kops` manifest,  the base images are parameterized with an environme
 
 An example is provided [here](https://github.com/cloudposse/geodesic/blob/master/rootfs/templates/kops/default.yaml#L150).
 
-More information is provided [here](https://github.com/kubernetes/kops/blob/master/docs/images.md).
+More information is provided [here](https://github.com/kubernetes/kops/blob/master/docs/operations/images.md).
