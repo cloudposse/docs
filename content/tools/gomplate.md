@@ -14,4 +14,4 @@ additional template data-sources such as: JSON, YAML, and even AWS EC2 metadata.
 We love `envsubst` for its super-minimalist template processing, but sometimes more advanced templating with conditions is necessary. In geodesic, we use `gomplate` to parameterize the {{< relref "geodesic/kops/manifest.md" >}}. Gomplate is an alternative to `envsubst` that provides some useful built-in functions to make templates even more expressive.
 
 # References
-- [Official Documentation](https://gomplate.hairyhenderson.ca/)
+- [Official Documentation](https://docs.gomplate.ca/)
