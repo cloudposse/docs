@@ -1,6 +1,6 @@
 ---
-title: "Why do you refer to `kube-dns`?"
-description: "It just comes down to what version of k8s we’re running."
+title: "What's the relationship between `kube-dns` and `coredns`?"
+description: "Both `kube-dns` and `coredns` do the same thing. Earlier versions of Kubernetes used `kube-dns`. "
 tags:
 - kube-dns
 - coredns
@@ -9,9 +9,9 @@ tags:
 
 ## Question
 
-Why do you refer to `kube-dns` instead of `coredns`?
+What's the relationship between `kube-dns` and `coredns`?
 
 
 ## Answer
 
-The `coredns` service went GA in Kubernetes 1.11. It just comes down to what version of k8s we’re running. Practically speaking, there’s no difference between them. When we refer to `kube-dns`, just think that it’s the "dns provider" that ships with the Kubernetes version.
+The `coredns` service went GA in Kubernetes 1.11. It just comes down to what version of k8s is running. Practically speaking, there’s no difference between them. We might refer to `kube-dns` in our documentation, but what we mean to say is the dns controller that ships with the Kubernetes version.
