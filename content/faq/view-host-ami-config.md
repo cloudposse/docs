@@ -1,6 +1,6 @@
 ---
-title: "Can we see host machine configuration?"
-description: "Yes, host machine AMI and image configuration is viewable."
+title: "Can we see host machine configuration for `kops`?"
+description: "Yes, host machine AMI and image configuration is on GitHub."
 tags:
 - host machine
 - AMI
@@ -9,9 +9,9 @@ tags:
 
 ## Question
 
-Can we see host machine AMI & image configuration?
+Can we see host machine AMI & image configuration for `kops`?
 
 
 ## Answer
 
-Yes. Read more about it [here.](https://github.com/kubernetes/kops/blob/master/docs/images.md)
+Yes, read more about it [here](https://github.com/kubernetes/kops/blob/master/docs/images.md).
