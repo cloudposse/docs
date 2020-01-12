@@ -1,6 +1,6 @@
 ---
 title: "Can this infrastructure autoscale at the node (VM) level?"
-description: "Yes, using the cluster autoscaler."
+description: "Yes, node autoscaling is using the Kubernetes cluster autoscaler as well as SpotInst.com."
 tags:
 - infrastructure
 - autoscale
@@ -14,4 +14,4 @@ In what ways can this infrastructure autoscale at the node (VM) level?
 
 ## Answer
 
-Yes, using the cluster autoscaler. An example of this is our Van Valen Research Lab project. The trick is always when to scale. This will be business specific. Sometimes you scale based on queue size, memory, CPU, or network throughput. Scaling on all dimensions simultaneously is not recommended.
+We've implementeded support for the Kubernetes cluster autoscaler. The trick is always when to scale. This will be business specific based on the workloads. Sometimes you scale based on queue size, memory, CPU, or network throughput. Scaling on all dimensions simultaneously is not recommended. Scaling on request latency is also not recommended as it will often overload upstream resources like databases.
