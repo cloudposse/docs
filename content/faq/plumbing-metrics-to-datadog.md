@@ -1,19 +1,22 @@
 ---
-title: "How are we plumbing metrics to Datadog?"
-description: "To date, we setup Datadog metrics and log forwarding."
+title: "How do we ship Kubernetes cluster metrics and logs to Datadog?"
+description: "We provide a helmfile to deploy the datadog monitoring agent on Kubernetes."
 tags:
 - Datadog
 - metrics
 - Prometheus
 - Grafana
+- Helmfile
 ---
 
 ## Question
 
-How are we plumbing metrics to Datadog to support our existing monitors/alerts?
+How do we ship Kubernetes cluster metrics and logs to Datadog?
 
 ## Answer
 
-To date, we setup Datadog metrics and log forwarding. We've not fine-tuned Datadog for operational intelligence. We're banking mostly on Prometheus and Grafana, since that seems to be where most momentum is in the community.
+We provide a [helmfile](https://github.com/cloudposse/helmfiles) to setup Datadog metrics and log forwarding. 
 
-We are able to funnel Prometheus metrics to Datadog to enable compatibility with existing workflows. We recommend deploying both; that will provide a point of comparison. There are some canned dashboards in Datadog for Kubernetes. However, they are pretty weak when compared to the ones provided by the community for Grafana.
+That said, we have not fine-tuned Datadog for operational intelligence. We invest heavily in Prometheus and Grafana because that has the most community adoption.
+
+We are able to funnel Prometheus metrics to Datadog to enable compatibility with existing workflows. We recommend deploying both Datadog in addtion to Prometheus. The fact is that most Open Source tools that support monitoring out-of-the-box will support Prometheus, not Datadog. Also, we find the community dashboards for Grafana to be more insightful than those provided by Datadog.
