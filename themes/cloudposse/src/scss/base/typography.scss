@@ -3,8 +3,11 @@ html {
 }
 body,
 html {
-  font-family: $font_0, $font_1, sans-serif;
-  line-height: 1.4;
+  font-family: $font_0, $font_1, $font_2, sans-serif;
+  line-height: 1.8;
+  font-weight: 300;
+  color: $color_lucky_point_approx;
+  letter-spacing: -0.004em;
 }
 
 strong {
