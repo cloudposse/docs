@@ -1,5 +1,7 @@
 
 export OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
+
+export HUGO ?= hugo
 export HUGO_PORT ?= 1313
 export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
@@ -68,6 +70,7 @@ shell: docker/build
 
 ## Build front-end components
 components/build: $(COMPONENTS_DEPS)
+	@echo "Enabled components: $(COMPONENT_DEPS)
 	@exit 0
 
 ## Generate all static content (outputs to public/) using docker environment

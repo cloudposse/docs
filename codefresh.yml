@@ -19,6 +19,7 @@ steps:
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
+      - set +e -xo pipefail
       - make git/show
       - make git/export | tee -a ${{CF_VOLUME_PATH}}/env_vars_to_export
       - make semver/show
@@ -36,6 +37,7 @@ steps:
     image: '${{build_image}}'
     working_directory: ./
     commands:
+      - set +e -xo pipefail
       - make lint
       - make release
       - make hugo/build
@@ -48,6 +50,7 @@ steps:
       - "HUGO_URL=${{HUGO_URL}}release/${{SEMVERSION_TAG}}"
       - "HUGO_PUBLISH_DIR=public/release/${{SEMVERSION_TAG}}"
     commands:
+      - set +e -xo pipefail
       - make lint
       - make release
       - make hugo/build
@@ -63,6 +66,7 @@ steps:
     environment:
       - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
     commands:
+      - set +e -xo pipefail
       - make lint
       - make smoketest
 
@@ -72,6 +76,7 @@ steps:
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
+      - set +e -xo pipefail
       - make deploy
     when:
       condition:
@@ -84,6 +89,7 @@ steps:
     image: '${{build_image}}'
     working_directory: ./
     commands:
+      - set +e -xo pipefail
       - make reindex
     when:
       condition:
@@ -96,6 +102,7 @@ steps:
     image: '${{build_image}}'
     working_directory: IMAGE_WORK_DIR
     commands:
+      - set +e -xo pipefail
       - make invalidate-cache
     when:
       condition:
