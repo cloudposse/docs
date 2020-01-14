@@ -11,12 +11,15 @@ steps:
       - cf_export HUGO_CONFIG=deploy.toml
       - cf_export HTMLTEST_CONFIG=.htmltest.codefresh.yml
       - cf_export TMPDIR=/codefresh/volume
+      - cf_export YARN_BUILD_DISABLED=false
+      - cf_export COMPONENTS_BUILD=true
 
   semver:
     title: Export semantic version
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
+      - set +e -x
       - make git/show
       - make git/export | tee -a ${{CF_VOLUME_PATH}}/env_vars_to_export
       - make semver/show
@@ -34,9 +37,10 @@ steps:
     image: '${{build_image}}'
     working_directory: ./
     commands:
+      - set +e -x
       - make lint
       - make release
-      - make hugo/build
+      - make real-clean hugo/build
 
   build_versioned_release:
     title: Building Hugo static site versioned release...
@@ -46,9 +50,10 @@ steps:
       - "HUGO_URL=${{HUGO_URL}}release/${{SEMVERSION_TAG}}"
       - "HUGO_PUBLISH_DIR=public/release/${{SEMVERSION_TAG}}"
     commands:
+      - set +e -x
       - make lint
       - make release
-      - make hugo/build
+      - make real-clean hugo/build
     when:
       condition:
         all:
@@ -61,8 +66,9 @@ steps:
     environment:
       - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
     commands:
+      - set +e -x
       - make lint
-      - make smoketest
+      - make real-clean smoketest
 
   # Only deploy on tagged releases
   deploy:
@@ -70,6 +76,7 @@ steps:
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
     commands:
+      - set +e -x
       - make deploy
     when:
       condition:
@@ -82,6 +89,7 @@ steps:
     image: '${{build_image}}'
     working_directory: ./
     commands:
+      - set +e -x
       - make reindex
     when:
       condition:
@@ -94,6 +102,7 @@ steps:
     image: '${{build_image}}'
     working_directory: IMAGE_WORK_DIR
     commands:
+      - set +e -x
       - make invalidate-cache
     when:
       condition:
