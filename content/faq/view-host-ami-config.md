@@ -14,4 +14,4 @@ Can we see host machine AMI & image configuration for `kops`?
 
 ## Answer
 
-Yes, read more about it [here](https://github.com/kubernetes/kops/blob/master/docs/images.md).
+Yes, read more about it [here](https://github.com/kubernetes/kops/blob/master/docs/operations/images.md).
