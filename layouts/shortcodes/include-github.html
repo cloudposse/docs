@@ -1,5 +1,5 @@
 <div class="github-snippet">
-{{- $url := printf "https://api.github.com/repos/%s/%s/contents/%s?ref=%s" (.Get "org" | default "cloudposse") (.Get "repo") (.Get "file" | default "README.md") (.Get "ref" | default "master") -}}
+  {{- $url := printf "https://%s@api.github.com/repos/%s/%s/contents/%s?ref=%s" ( getenv "GITHUB_BASIC_AUTH" ) (.Get "org" | default "cloudposse") (.Get "repo") (.Get "file" | default "README.md") (.Get "ref" | default "master") -}}
 {{- $resp := getJSON $url -}}
 {{- $content := $resp.content | base64Decode -}}
 {{ if eq (.Get "type") "code-block" }} 

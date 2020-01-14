@@ -1,6 +1,6 @@
 ---
 title: Contact Us
-description: 'Cloud Posse is a **DevOps Professional Services** company.'
+description: 'Cloud Posse is a **DevOps Accelerator**.'
 parent: home
 comments: false
 editable: false

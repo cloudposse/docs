@@ -11,6 +11,6 @@ terms:
 - "!cloudposse.org"
 tags:
 - DevOps
-description: "Cloud Posse is a DevOps professional services company"
+description: "Cloud Posse is a DevOps Accelerator"
 ---
-Cloud Posse is a DevOps professional services company. Let us know how we can help. Reach us at <hello@cloudposse.com>.
+Cloud Posse is a DevOps Accelerator. Let us know how we can help. Reach us at <hello@cloudposse.com>.
