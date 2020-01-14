@@ -3,7 +3,7 @@ title: "DevOps Methodology"
 description: ""
 icon: "fa fa-terminal"
 ---
-Cloud Posse is a **DevOps Professional Services** company. Everything we do is Open Source. [Hire us]({{< relref "documentation/contact-us.md" >}}) to help you implement it.
+Cloud Posse is a **DevOps Accelerator**. Everything we do is Open Source. [Hire us]({{< relref "documentation/contact-us.md" >}}) to help you implement it.
 
 This is our methodology.
 

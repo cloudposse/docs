@@ -144,7 +144,7 @@ We provide [*commercial support*][commercial_support] for all of our [Open Sourc
 
 ## Slack Community
 
-Join our [Open Source Community][slack] on Slack. It's **FREE** for everyone! Our "SweetOps" community is where you get to talk with others who share a similar vision for how to rollout and manage infrastructure. This is the best place to talk shop, ask questions, solicit feedback, and work together as a community to build totally *sweet* infrastructure.
+Join our [Open Source Community][slack] on Slack. It's **FREE** for everyone! Our "SweetOps" community is where you get to talk with others who share a similar vision for how to roll out and manage infrastructure. This is the best place to talk shop, ask questions, solicit feedback, and work together as a community to build totally *sweet* infrastructure.
 
 ## Newsletter
 
@@ -215,7 +215,7 @@ This project is maintained and funded by [Cloud Posse, LLC][website]. Like it? P
 
 [![Cloud Posse][logo]][website]
 
-We're a [DevOps Professional Services][hire] company based in Los Angeles, CA. We ❤️  [Open Source Software][we_love_open_source].
+We're a [DevOps Accelerator][hire] based in Los Angeles, CA. We ❤️  [Open Source Software][we_love_open_source].
 
 We offer [paid support][commercial_support] on all of our projects.  
 
