@@ -40,7 +40,7 @@ steps:
       - set +e -x
       - make lint
       - make release
-      - make hugo/build
+      - make real-clean hugo/build
 
   build_versioned_release:
     title: Building Hugo static site versioned release...
@@ -53,7 +53,7 @@ steps:
       - set +e -x
       - make lint
       - make release
-      - make hugo/build
+      - make real-clean hugo/build
     when:
       condition:
         all:
@@ -68,7 +68,7 @@ steps:
     commands:
       - set +e -x
       - make lint
-      - make smoketest
+      - make real-clean smoketest
 
   # Only deploy on tagged releases
   deploy:
