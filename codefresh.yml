@@ -11,6 +11,8 @@ steps:
       - cf_export HUGO_CONFIG=deploy.toml
       - cf_export HTMLTEST_CONFIG=.htmltest.codefresh.yml
       - cf_export TMPDIR=/codefresh/volume
+      - cf_export YARN_BUILD_DISABLED=false
+      - cf_export COMPONENTS_BUILD=true
 
   semver:
     title: Export semantic version
