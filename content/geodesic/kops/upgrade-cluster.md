@@ -16,7 +16,7 @@ Find the latest release of kops [here](https://github.com/kubernetes/kops/releas
 Then follow the instructions below for upgrading Kubernetes.
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
-<https://github.com/kubernetes/kops/blob/master/docs/releases.md>
+<https://github.com/kubernetes/kops/releases>
 {{% /dialog %}}
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}

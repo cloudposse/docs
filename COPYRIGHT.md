@@ -4,7 +4,7 @@ Copyright 2017-2018 © Cloud Posse, LLC.
 
 # License
 
-This material may only be distributed subject to the terms and conditions set forth in the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License or later with the restrictions noted below (the latest version of the license is presently available at <http://creativecommons.org/licenses/by-nc-sa/4.0/>).
+This material may only be distributed subject to the terms and conditions set forth in the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License or later with the restrictions noted below (the latest version of the license is presently available at <https://creativecommons.org/licenses/by-nc-sa/4.0/>).
 
 **Attribution** You must attribute the work in the manner specified by the author or licensor.
 
