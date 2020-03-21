@@ -1,8 +1,13 @@
 # Build a service with environment variables
 version: '1.0'
 
+stages:
+  - Build
+  - Test
+  - Deploy
 steps:
   init_variables:
+    stage: Build
     title: Initializing variables...
     image: alpine
     commands:
@@ -15,6 +20,7 @@ steps:
       - cf_export COMPONENTS_BUILD=true
 
   semver:
+    stage: Build
     title: Export semantic version
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
@@ -26,6 +32,7 @@ steps:
       - make semver/export | tee -a ${{CF_VOLUME_PATH}}/env_vars_to_export
 
   build_image:
+    stage: Build
     title: Build image
     type: build
     description: Build docs-toolbox image
@@ -33,6 +40,7 @@ steps:
     dockerfile: Dockerfile
 
   build:
+    stage: Build
     title: Building Hugo static site...
     image: '${{build_image}}'
     working_directory: ./
@@ -43,6 +51,7 @@ steps:
       - make real-clean hugo/build
 
   build_versioned_release:
+    stage: Build
     title: Building Hugo static site versioned release...
     image: '${{build_image}}'
     working_directory: ./
@@ -60,6 +69,7 @@ steps:
           executeForTag: "'${{SEMVERSION_TAG}}' != ''"
 
   test:
+    stage: Test
     title: Running tests...
     image: '${{build_image}}'
     working_directory: ./
@@ -72,6 +82,7 @@ steps:
 
   # Only deploy on tagged releases
   deploy:
+    stage: Deploy
     title: Pushing all artifacts to S3 bucket...
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: ./
@@ -85,6 +96,7 @@ steps:
 
   # Only reindex on tagged releases
   reindex:
+    stage: Deploy
     title: Updating algolia search index...
     image: '${{build_image}}'
     working_directory: ./
@@ -98,6 +110,7 @@ steps:
 
   # Only invalidate cache on tagged releases
   invalidate_cache:
+    stage: Deploy
     title: Invalidating CloudFlare cache...
     image: '${{build_image}}'
     working_directory: IMAGE_WORK_DIR
