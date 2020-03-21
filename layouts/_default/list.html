@@ -2,7 +2,7 @@
 {{if .Content}}
 {{ .Content }}
 {{else }}
-{{ $paginator := .Paginator }}
+{{ $paginator := .Paginator (default 10 .Params.items) }}
 
 <div class="extra-pagination inner">
 {{ partial "pagination.html" $paginator }}
