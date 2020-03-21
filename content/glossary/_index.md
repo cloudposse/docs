@@ -7,4 +7,5 @@ outputs:
 - HTML
 - RSS
 - glossary
+hidden: true
 ---

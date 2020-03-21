@@ -17,17 +17,22 @@
   {{- $depth := .depth }}
   {{- with .sect}}
     {{ if lt $depth 4  }}
+      {{- if .Params.hidden }}
+        <!-- Category "{{.Title }}" hidden -->
+      {{- else -}}
       <ul class="homepage__category homepage__category--depth{{ $depth }}">
         {{- if .IsSection }}
           <!-- IsSection -->
           {{- $numberOfPages := (add (len .Pages) (len .Sections)) }}
           {{- safeHTML .Params.head}}
+          
           <li data-nav-id="{{.URL}}" class="dd-item
             {{- if .IsAncestor $currentNode}} parent{{end}}
             {{- if ne $numberOfPages 0 }} haschildren{{end}}
             homepage__category-li
             homepage__category-li--depth{{ $depth }}
             ">
+
             <div class="homepage__title-wrapper homepage__title-wrapper--depth{{ $depth }}">
               <h3 class="homepage__title homepage__title--depth{{ $depth }}">
                 <a href="{{ .RelPermalink}}">
@@ -41,6 +46,7 @@
                 <a class="homepage__view-all" href="{{ .RelPermalink}}">View All</a>
               {{ end }}
             </div>
+  
             <div class="homepage__items-wrapper homepage__items-wrapper--depth{{ $depth }}">
               {{- if ne $numberOfPages 0 }}
                 <!-- begin A: $numberOfPages ne 0 -->
@@ -69,6 +75,7 @@
                 <!-- end A -->
                 <!-- end $numberOfPages -->
             </div>
+            
             {{- end}}
           </li>
         {{- else}}
@@ -84,6 +91,8 @@
           <!-- end .IsSection -->
         {{- end}}
       </ul>
+      {{- end }}
+      <!-- end hidden -->
     {{end }}
     <!-- end with -->
   {{- end}}
