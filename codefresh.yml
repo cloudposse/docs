@@ -6,6 +6,15 @@ stages:
   - Test
   - Deploy
 steps:
+  main_clone:
+    stage: Build
+    title: "Clone repository"
+    type: git-clone
+    description: "Initialize"
+    repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    git: CF-default
+    revision: ${{CF_REVISION}}
+
   init_variables:
     stage: Build
     title: Initializing variables...
