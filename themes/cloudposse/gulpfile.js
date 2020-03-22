@@ -3,7 +3,6 @@
 var gulp        = require("gulp"),
   sass          = require("gulp-sass"),
   concat        = require('gulp-concat'),
-  cssnano       = require('gulp-cssnano'),
   autoprefixer  = require('gulp-autoprefixer'),
   importer      = require('node-sass-globbing'),
   kss           = require('kss'),
@@ -48,10 +47,8 @@ gulp.task("sass", function(cb) {
       .pipe(sass(sass_config).on('error', sass.logError))
       .pipe(concat('styles.css'))
       .pipe(autoprefixer({
-          browsers: ['last 2 versions'],
           cascade: false
       }))
-      .pipe(cssnano())
       .pipe(gulp.dest("static/css/"));
   cb();
 });
