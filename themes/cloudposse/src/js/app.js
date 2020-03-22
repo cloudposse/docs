@@ -148,11 +148,13 @@ $.fn.highlight = function (words, options) {
 
 
 // TODO: manage calendly with webback externals.
+/*
 Calendly.initBadgeWidget({
   url: 'https://calendly.com/cloudposse/30min',
   text: 'Schedule Support',
   branding: false
 });
+*/
 
 import Raven from 'raven-js';
 
