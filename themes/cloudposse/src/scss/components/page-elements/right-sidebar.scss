@@ -11,6 +11,7 @@
 
   @include respond-to('large') {
     display: block;
+    flex: 1 0 300px;
   }
 
   &__title {
