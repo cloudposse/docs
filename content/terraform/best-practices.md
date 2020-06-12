@@ -145,7 +145,7 @@ All `variable` inputs need a `description` field. When the field is provided by 
 
 Modules should be as turnkey as possible. The `default` value should ensure the most secure configuration (E.g. with encryption enabled).
 
-## Use variables for all secrets with no `default` password
+## Use variables for all secrets with no `default` value
 
 All `variable` inputs for secrets must never define a `default` value. This ensures that `terraform` is able to validate user input.
 The exception to this is if the secret is optional and will be generated for the user automatically when left `null` or `""` (empty).
