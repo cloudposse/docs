@@ -23,7 +23,7 @@ Here are some of the tools we depend on for running our Open Source organization
 
 ## How to Become a Contributor
 
-To become a contributor is easy. Just start opening Pull Requests with enhancements, bugfixes, or other improvements. 
+Becoming a contributor is easy. Just start opening Pull Requests with enhancements, bugfixes, or other improvements. 
 Once we take notice, we'll reach out to you. We recommend that you start by participating in the 
 [`#pr-reviews`](https://slack.cloudposse.com/) channel. This way we'll work with you directly. 
 
