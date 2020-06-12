@@ -91,7 +91,7 @@ test:
 
 ## Run smoketest
 smoketest:
-	$(DOCKER_RUN) make release hugo/build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
+	$(DOCKER_RUN) make release hugo/build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml || true
 
 ## Generate a release config
 release:
