@@ -48,7 +48,7 @@ All tests run from the [`cloudposse/actions`](https://github.com/cloudposse/acti
 
 If you're a contributor who wants to intialize one of our terraform modules, this is the process. Note, if a repo has already been configured for chatops, there's no need to proceed with these steps.
 
-To initialize one of our modules with chat, run the following commands:
+To initialize one of our modules with chatops, run the following commands:
 
 1. `git clone` the terraform module repository
 2. `cd $repo` to enter the repository directory
