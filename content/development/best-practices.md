@@ -38,4 +38,4 @@ For the same reason we release regular software projects, we should practice the
 
 ## CI/CD
 
-Using `atlantis` it’s possible to introduce the standard CI/CD process to manage infrastructure rollouts. As it relates to terraform, the integration test should involve a “make plan” and a merge to master or other symbolic branch triggers a `make apply`. Consider using `atlantis` as part of the workflow.
+Using `atlantis` it’s possible to introduce the standard CI/CD process to manage infrastructure rollouts. As it relates to terraform, the integration test should involve a “make plan”, and a merge to master or other symbolic branch should trigger a `make apply`. Consider using `atlantis` as part of the workflow.
