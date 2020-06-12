@@ -285,7 +285,7 @@ re-inventing the same patterns over and over again.
 
 ## Use `variable` inputs
 
-Modules should accept as many parameters as possible. Avoid using inputs of `type = object` has they are harder to document. Of course,
+Modules should accept as many parameters as possible. Avoid using inputs of `type = object` since they are harder to document. Of course,
 this is not a hard rule and sometimes objects just make the most sense. Just be weary of the ability for tools like [`terraform-docs`](https://github.com/segmentio/terraform-docs) to be able to
 generate meaningful documentation.
 
