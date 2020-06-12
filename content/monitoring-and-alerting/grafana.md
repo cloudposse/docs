@@ -1,7 +1,7 @@
 ---
 title: "Grafana"
-description: "[Grafana](http://docs.grafana.org/guides/basic_concepts/) is an Open Source tool for data visualization."
+description: "[Grafana](https://grafana.com/docs/grafana/latest/getting-started/getting-started/) is an Open Source tool for data visualization."
 ---
 {{< wip >}}
 
-Read more about `Grafana` [dashboards and panels](http://docs.grafana.org/features/panels/graph/).
+Read more about `Grafana` [dashboards and panels](https://grafana.com/docs/grafana/latest/panels/panels-overview/).

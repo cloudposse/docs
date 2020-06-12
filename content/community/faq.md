@@ -5,7 +5,7 @@ description: ''
 
 ## How do I see all open Pull Requests?
 
-You can find all open Pull Requests by going to [GitHub and searching for open PRs](https://github.com/pulls?q=is:pr+is:open+org:cloudposse).
+You can find all open Pull Requests by going to [GitHub and searching for open PRs](https://github.com/pulls?q=is%3Apr+is%3Aopen+org%3Acloudposse).
 
 ## What if we approve and merge a Pull Request with a problem?
 
