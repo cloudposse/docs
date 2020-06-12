@@ -5,7 +5,7 @@ description: ''
 
 ## How do I see all open Pull Requests?
 
-You can find all open Pull Requests by going [GitHub and searching for open PRs](https://github.com/pulls?q=is:pr+is:open+org:cloudposse).
+You can find all open Pull Requests by going to [GitHub and searching for open PRs](https://github.com/pulls?q=is:pr+is:open+org:cloudposse).
 
 ## What if we approve and merge a Pull Request with a problem?
 
@@ -29,4 +29,3 @@ All of our contributors are volunteers. Granted, some of our "volunteers" happen
 ## How do contributors collaborate?
 
 Contributors participate in a private Slack channel on the [SweetOps Slack team](https://slack.sweetops.com/) and via GitHub on issues and pull requests.
-
