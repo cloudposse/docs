@@ -12,7 +12,7 @@ categories:
 
 ![Terraform](/assets/08bcd99-terraform.png)
 
-These are the *opinionated* best-practices we follow at Cloud Posse. The are inspired by years of experience writing terraform
+These are the *opinionated* best-practices we follow at Cloud Posse. They are inspired by years of experience writing terraform
 and borrow on the many other helpful resources like those by [HashiCorp](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html).
 
 See our general [Development Best Practices]({{< relref "development/best-practices.md" >}}) which also apply to Terraform.
