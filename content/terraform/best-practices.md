@@ -147,7 +147,7 @@ Modules should be as turnkey as possible. The `default` value should ensure the 
 
 ## Use variables for all secrets with no `default` password
 
-All `variable` inputs must never define a `default` value. This ensures that `terraform` is able to validate user input.
+All `variable` inputs for secrets must never define a `default` value. This ensures that `terraform` is able to validate user input.
 The exception to this is if the secret is optional and will be generated for the user automatically when left `null` or `""` (empty).
 
 # Outputs
