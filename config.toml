@@ -27,6 +27,10 @@ enableEmoji = true
 # weight = 2
 # languageName = "Français"
 
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  
 [params]
 showVisitedLinks = true # default is false
 themeStyle = "flex"
