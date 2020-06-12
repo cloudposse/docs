@@ -56,7 +56,7 @@ To initialize one of our modules with chat, run the following commands:
 4. `make github/init` to write all the scaffolding
 5. `git add *` to add the changes
 6. `git rm -rf codefresh/` to remove legacy codefresh pipelines no longer needed
-7. Add the build badge to the `README.yaml` under the `badges` section. Also, remove any Codefresh badge, since that's also no longer needed. 
+7. Add the build badge to the `README.yaml` under the `badges` section. Also, remove any Codefresh badge, since that's also no longer needed
 8. `make readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
 9. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/terraform-github-repository-webhooks/pull/17).
 10. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)
