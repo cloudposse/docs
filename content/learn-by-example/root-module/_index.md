@@ -2,6 +2,7 @@
 title: "Root Module"
 description: ""
 weight: 1
+archived: true
 ---
 * Clone reference architecture repo for Geodesic Root Module.
 * Update the follow settings: XYZ

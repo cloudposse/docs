@@ -1,6 +1,7 @@
 ---
 title: "Cold Start"
 description: "Describes the *cold start* process for provisioning all AWS accounts"
+archived: true
 weight: 2
 tags:
 - cold start

@@ -24,8 +24,6 @@ Recommend using a consistent naming convention for branch names by all developer
 
 Pull Requests should express `## what` changed and `## why` it changed (e.g. business justification). This forces contributors to be clear about what is happening and makes it easier for others to follow along.
 
-Attach a `terraform plan` against current master as a comment to all PRs.
-
 ## Code Reviews
 
 ## Tagging

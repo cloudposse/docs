@@ -1,7 +1,7 @@
 ---
 title: Community Resources
 slug: "community"
-icon: "fas fa-users"
+icon: "fa fa-users"
 description: ''
 hidden: false
 ---

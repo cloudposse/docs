@@ -1,6 +1,7 @@
 ---
 title: "Introduction to Reference Architectures"
 description: "Introduction to Cloud Posse Reference Architectures"
+archived: true
 weight: 1
 tags:
 - aws
