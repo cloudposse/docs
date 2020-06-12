@@ -46,6 +46,5 @@ We're grateful to our of volunteers helping to review community pull requests.
 | ![jamengual](https://img.cloudposse.com/75x75/http://github.com/jamengual.png)   | [@jamengual](https://github.com/jamengual)  | PePe Amengual |
 | ![adamcrews](https://img.cloudposse.com/75x75/http://github.com/adamcrews.png)   | [@adamcrews](https://github.com/jamengual)  | Adam Crews    |
 | ![nitrocode](https://img.cloudposse.com/75x75/http://github.com/nitrocode.png)   | [@nitrocode](https://github.com/nitrocode)  | Ronak         |
-| ![jamengual](https://img.cloudposse.com/75x75/http://github.com/jamengual.png)   | [@jamengual](https://github.com/jamengual)  | PePe Amengual |
-| ![RothAndrew](https://img.cloudposse.com/75x75/http://github.com/RothAndrew.png) | [@RothAndrew](https://github.com/RothAndrew) | Andrew Roth   |
+| ![RothAndrew](https://img.cloudposse.com/75x75/http://github.com/RothAndrew.png) | [@RothAndrew](https://github.com/RothAndrew) | Andrew Roth  |
 | ![Gowiem](https://img.cloudposse.com/75x75/http://github.com/Gowiem.png)         | [@Gowiem](https://github.com/Gowiem)        | Matt Gowie    |
