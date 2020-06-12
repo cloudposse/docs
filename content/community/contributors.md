@@ -18,7 +18,7 @@ Here are some of the tools we depend on for running our Open Source organization
 | `geodesic`      | [Cloud Automation Shell](https://github.com/cloudposse/geodesic) that we use as the base Docker image for many of our projects |
 | `build-harness` | Our collection of GNU-style `Makefiles` for building stuff                                                                     |
 | `README.yaml`   | Our specification for generating beautiful READMEs                                                                             |
-| `packages`      | Our toolchain  that we rely on throughout our projects                                                                         |
+| `packages`      | Our toolchain that we rely on throughout our projects                                                                         |
 | GitHub Actions  | Our CI/CD Platform                                                                                                             |
 
 ## How to Become a Contributor
