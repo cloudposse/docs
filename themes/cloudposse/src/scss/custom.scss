@@ -12,6 +12,25 @@ div {
   }
 }
 
+pre + code {
+  background-color: inherit;
+  border: 0;
+  white-space: pre;
+  box-shadow: 0 4px 16px rgba(0,0,0,.24);
+}
+
+code {
+  white-space: pre;
+  word-break: inherit;
+  color: rgba(0, 0, 0, 0.8);
+  word-wrap: break-word;
+  padding: .143em .286em;
+  font-size: .85em;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  background-color: #ffffff7a;
+  font-family: Consolas,andale mono wt,andale mono,lucida console,lucida sans typewriter,dejavu sans mono,bitstream vera sans mono,liberation mono,nimbus mono l,Monaco,courier new,Courier,monospace;
+}
 
 .at-logo {
   display: none;

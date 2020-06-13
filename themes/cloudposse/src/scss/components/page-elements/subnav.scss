@@ -3,6 +3,8 @@
   font-size: 13px;
   border-bottom: 1px solid $color_mercury_approx;
   background-color: $color_black_haze_approx;
+  box-shadow: 0 4px 16px rgba(0,0,0,.24);
+  z-index: 100;
 
   &__container {
     min-height: 38px;

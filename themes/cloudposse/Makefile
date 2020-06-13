@@ -1,9 +1,12 @@
-node_modules:
+node_modules: 
 	yarn
+
+static/css/styles.css: $(shell find src/ -type f -name '*.scss')
 	yarn run gulp
+	@touch $@
 
 .PHONY : build
-build: node_modules
+build: node_modules static/css/styles.css
 
 .PHONY : build-dev
 build-dev:

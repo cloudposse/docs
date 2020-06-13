@@ -32,7 +32,7 @@ header {
     height: 40px;
 
     @include respond-to('desktop') {
-      margin: 10px 0;
+      margin: 10px 10px;
     }
 
     svg {

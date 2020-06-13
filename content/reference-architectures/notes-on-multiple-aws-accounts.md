@@ -1,6 +1,7 @@
 ---
 title: "Notes on Using Multiple AWS Accounts"
 description: "Describes why Cloud Posse recommends using multiple AWS accounts to provision infrastructure into different environments"
+archived: true
 weight: 3
 tags:
 - account

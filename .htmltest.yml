@@ -48,6 +48,8 @@ IgnoreURLs:
 - "img.shields.io"
 # Rate limiting precludes us from testing GitHub links
 - "github.com/cloudposse/docs/blob"
+# GitHub returning 404
+- "github.com/pulls"
 # Site started blocking us
 - "blog.gopheracademy.com"
 # x509 certificate has expired:

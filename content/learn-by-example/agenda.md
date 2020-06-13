@@ -2,6 +2,7 @@
 title: "Agenda"
 description: ""
 weight: -1
+archived: true
 ---
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}

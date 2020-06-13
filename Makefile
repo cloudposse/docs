@@ -77,6 +77,10 @@ components/build: $(COMPONENTS_DEPS)
 build: docker/build
 	$(DOCKER_RUN) make hugo/build
 
+## Generate all static content (outputs to public/) using docker environment
+css: docker/build
+	$(DOCKER_RUN) make yarn/build
+
 ## Validate all html is good
 validate: lint test
 

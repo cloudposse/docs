@@ -1,9 +1,12 @@
 .archived-banner {
   background: $color_half_colonial_white_approx;
-  border-bottom: 1px solid $color_mercury_approx;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.24);
+  z-index: 100;
+  line-height: 1.2em;
 
   &__text {
     font-weight: bold;
     padding: 9px;
+    text-align: center;
   }
 }

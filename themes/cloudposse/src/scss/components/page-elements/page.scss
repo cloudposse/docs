@@ -43,7 +43,7 @@
   &__title {
     font-family: $font_0, $font_1, $font_2, sans-serif;
     text-align: left;
-    font-weight: 300;
+    font-weight: bold;
     font-size: 30px;
     margin-bottom: 5px;
     color: $color_outer_space_approx;
@@ -104,14 +104,12 @@
     }
 
     > h2 {
-      color: $color_mountain_mist_approx;
       font-size: 21px;
       font-weight: 300;
       margin-top: 3rem;
     }
 
     > h3 {
-      color: $color_mountain_mist_approx;
       font-size: 13px;
       font-weight: 500;
       text-transform: uppercase;
@@ -166,12 +164,20 @@
 
     code {
       word-break: inherit;
+      color: rgba(0, 0, 0, 0.8);
+      word-wrap: break-word;
+      padding: .143em .286em;
+      font-size: .85em;
+      border: 1px solid #e5e5e5;
+      border-radius: 3px;
+      background-color: #ffffff7a;
+      font-family: Consolas,andale mono wt,andale mono,lucida console,lucida sans typewriter,dejavu sans mono,bitstream vera sans mono,liberation mono,nimbus mono l,Monaco,courier new,Courier,monospace;
     }
   }
 
   &__link,
   a {
-    color: $color_deep_blue_sky;
+    color: $color_navy_blue;
   }
 
   img {
