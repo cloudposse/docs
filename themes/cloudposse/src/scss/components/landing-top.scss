@@ -1,10 +1,15 @@
+div.landing-top + div.subnav {
+  display: none;
+}
+
 .landing-top {
   padding: 20px;
   background-color: $color_black_pearl_approx;
   display: block;
   width: 100%;
   color: $white;
-  padding-bottom: 40px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.24);
+
   @include respond-to('desktop') {
     padding: 60px 50px;
   }
