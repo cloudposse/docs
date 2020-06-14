@@ -1,4 +1,4 @@
-title: "Code Reviews"
+title: "Code Review Guidelines"
 description: ""
 slug: "code-reviews"
 categories:
@@ -18,4 +18,4 @@ Here are some of our tips for conducting *Code Reviews* the SweetOps way. If you
 5. Use ChatOps commands like `/rebuild-readme` or `/terraform-fmt` to fix common problems
 6. Use ChatOps commands like `/test all`, `/test bats`, `/test readme`, `/test terratest` to run integration tests
 7. Recommend changes to better conform to our best-practices.
-8. Quote comments you're replying to to make it more clear what your response is in relation to.
+8. Quote comments you're replying to make your responses more clear.
