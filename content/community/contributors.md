@@ -18,12 +18,12 @@ Here are some of the tools we depend on for running our Open Source organization
 | `geodesic`      | [Cloud Automation Shell](https://github.com/cloudposse/geodesic) that we use as the base Docker image for many of our projects |
 | `build-harness` | Our collection of GNU-style `Makefiles` for building stuff                                                                     |
 | `README.yaml`   | Our specification for generating beautiful READMEs                                                                             |
-| `packages`      | Our toolchain that we rely on throughout our projects                                                                         |
+| `packages`      | Our toolchain that we rely on throughout our projects                                                                          |
 | GitHub Actions  | Our CI/CD Platform                                                                                                             |
 
 ## How to Become a Contributor
 
-Becoming a contributor is easy. Just start opening Pull Requests with enhancements, bugfixes, or other improvements. 
+Becoming a contributor is easy. Just start opening Pull Requests with enhancements, bug fixes, or other improvements. 
 Once we take notice, we'll reach out to you. We recommend that you start by participating in the 
 [`#pr-reviews`](https://slack.cloudposse.com/) channel. This way we'll work with you directly. 
 
@@ -32,10 +32,11 @@ Once we take notice, we'll reach out to you. We recommend that you start by part
 * Participate in Code Reviews. Help us out by reviewing pull requests from our community.
 * Report issues and provide feedback for how we can improve processes.
 * Help answer questions from our community of tens of thousands users from around the world.
+* Cutting releases when Pull Requests are merged to master.
 
 ## Current Contributors
 
-We're grateful to our of volunteers helping to review community pull requests.
+We're grateful to our volunteers helping to review community pull requests.
 
 | Avatar                                                                           | GitHub Username                             | Name          |
 | -------------------------------------------------------------------------------- | ------------------------------------------- | ------------- |

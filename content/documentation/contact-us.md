@@ -7,7 +7,7 @@ editable: false
 questions: false
 ---
 
-We're developers and ops practitioners who are gungho about doing things the "right way" (tm).
+We're developers and ops practitioners who are gung-ho about doing things the "right way" (tm).
 
 We help companies achieve success in the cloud by automating systems for maximum efficiency and 24x7 uptime. Our solutions deliver world-class infrastructure by leveraging [Open Source technologies](/tools/) coupled with proprietary integrations to reduce total cost of ownership. Following our [proven methodology]({{< relref "documentation/getting-started.md" >}}) empowers companies to adopt the most current "best practices" including end-to-end CI/CD Pipelines, GitOps and Automated Deployments. The results are human-centric systems that are easier to maintain and thus reduce technical debt. By prioritization of automation, the Cloud Posse approach improves developer productivity and increases overall platform stability.
 
@@ -38,6 +38,6 @@ We help companies achieve success in the cloud by automating systems for maximum
 
 ## Partnership Opportunities
 
-Cloud Posse welcomes all partnership inquiries, including partnerships with other DevOps practicioners, freelancers and consultancies who want to leverage our methodologies with their customers.
+Cloud Posse welcomes all partnership inquiries, including partnerships with other DevOps practitioners, freelancers and consultancies who want to leverage our methodologies with their customers.
 
 Please drop us a line at <[hello@cloudposse.com](mailto:hello@cloudposse.com)>.
