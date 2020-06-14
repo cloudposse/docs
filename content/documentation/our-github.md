@@ -13,7 +13,7 @@ From time to time, we might decide we can no longer maintain a repository. If th
 
 The best way to get involved is to checkout our "[getting started]({{< relref "documentation/getting-started.md" >}})" guide.
 
-Then join us in our [`#community`](https://cloudposse.com/slack/) channel to get support or talk with others in the community.
+Then join us in our Slack [`#community`](https://cloudposse.com/slack/) channel to get support or talk with others in the community.
 
 ## Contributing
 

@@ -29,3 +29,47 @@ All of our contributors are volunteers. Granted, some of our "volunteers" happen
 ## How do contributors collaborate?
 
 Contributors participate in a private Slack channel on the [SweetOps Slack team](https://slack.sweetops.com/) and via GitHub on issues and pull requests.
+
+## When do we cut new releases?
+
+**TL;DR:** We cut a release every single merge to `master`. 
+
+This versioning strategy allows us to systematically and consistently increase patch, minor and major releases. When in doubt, bump the minor release.
+Following this strategy allows us to move quickly, release often while enabling our community to version pin for stability, and still convey the *semantics* of the kind of change that happened.
+
+1. **Patch Releases** We bump the patch release for bug fixes of *existing* functionality or small updates to documentation
+2. **Minor Releases** Projects that are `< 1.x`, every merge to `master` else is a minor release. This is the proper [semver convention](https://semver.org/#spec-item-4) for `0.x.y` releases.
+   - While we always try to ensure the interfaces won't change radically, we cannot promise that will remain the case, especially when the tool itself (e.g. `terraform` is not yet `1.0`).
+   - Once the interface is more or less guaranteed to be stable we will release a 1.0.
+3. **Major Releases** The major version is milestone-driven (e.g. `> 1.x`). The first milestone is always stability. A major release will correspond to the previous minor release that closes out that milestone.
+    - The 1.0 milestone doesn’t happen until we have had a very long burn-in period where it is stable and the interface works. For comparison, the `terraform` language is still `0.x` since July 28, 2014. 
+   -  **After 1.0** all major releases are driven by achieving a particular feature set
+
+A common strategy practiced by other organizations is to bump the major release when there's a “known breaking change” and usually includes many changes all at once. This is typically practiced post-1.0 and it's still somewhat arbitrary and difficult to verify. Philosophically speaking, every change is breaking for somebody. 
+For example, if a project has a bug, chances are that someone has implemented a workaround for that bug. If we release a bug fix as a patch release, that could very well be a breaking change for anyone who had a workaround. By releasing frequently on every commit to `master`,
+we allow the greatest number of users to benefit from the work we do. If we break something, no big deal. Users should always practice strict version pinning - never using `master` directly. That way, users can just pin to the previous release of of a module. As a small organization managing *hundreds* of projects, attempting a formal release schedule for each project is not feasible.
+
+## How do we create a new release?
+
+As a member of the `@cloudposse/contributors` team, create a new release, use the [built-in GitHub release functionality](https://help.github.com/en/enterprise/2.13/user/articles/creating-releases). Please do not create releases manually by creating tags and pushing them as this lacks all the metadata associated with a release, which can have a rich markdown description. All GitHub releases also have tags, but not all tags have a GitHub release.
+
+## Why are releases not always in sequential order?
+
+Some of our `terraform` modules support backwards compatibility with HCLv1 (pre terraform 0.12). You'll notice these projects usually have a branch named `0.11/master`. When we accept a bugfix for one of these projects and merge to `master`, we will cut a patch release against the last minor release version for terraform 0.11. 
+
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+We're not accepting new features for pre-terraform-0.12 modules.
+{{% /dialog %}}
+
+## Why is my Terraform Pull Request not yet reviewed or merged?
+
+If your Pull Request is to upgrade a Terraform module from HCLv1 to HCLv2, then chances are we haven't approved it because it does not have `terratest` integration tests. As a general policy, we're only upgrading modules to HCLv2 that have `terratest` integration tests. Attemting to maintain stability
+with hundreds of modules is only possible with integration testing.
+
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+All Terraform Modules updated to HCL2 **must** have `terratest` integration tests.
+{{% /dialog %}}
+
+## Do we have to update integration tests?
+
+We do not expect contributors to be experts at integration testing or writing Golang. For that reason, we do not require that Open Source community contributors update integration tests. However, if existing tests break due to changes in a Pull Request, we will not accept the contributions until the tests pass.

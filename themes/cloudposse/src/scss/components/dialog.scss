@@ -3,8 +3,10 @@
   padding: 13px 23px;
   margin-left: 0;
   margin-bottom: 3em;
-  color: $black_50;
-
+  color: $black;
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+  
   &__text,
   p {
     font-size: 14px;

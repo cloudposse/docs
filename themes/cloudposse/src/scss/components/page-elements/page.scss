@@ -105,13 +105,13 @@
 
     > h2 {
       font-size: 21px;
-      font-weight: 300;
+      font-weight: 500;
       margin-top: 3rem;
     }
 
     > h3 {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 300;
       text-transform: uppercase;
     }
 
@@ -172,6 +172,11 @@
       border-radius: 3px;
       background-color: #ffffff7a;
       font-family: Consolas,andale mono wt,andale mono,lucida console,lucida sans typewriter,dejavu sans mono,bitstream vera sans mono,liberation mono,nimbus mono l,Monaco,courier new,Courier,monospace;
+    }
+    
+    pre code {
+      background-color: inherit;
+      border: none;
     }
   }
 
