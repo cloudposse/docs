@@ -1,9 +1,7 @@
+---
 title: "Code Review Guidelines"
 description: ""
 slug: "code-reviews"
-categories:
-  - community
-  - development
 tags:
   - "Best Practices"
   - "Development"

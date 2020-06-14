@@ -32,6 +32,11 @@ code {
   font-family: Consolas,andale mono wt,andale mono,lucida console,lucida sans typewriter,dejavu sans mono,bitstream vera sans mono,liberation mono,nimbus mono l,Monaco,courier new,Courier,monospace;
 }
 
+pre code {
+  background-color: inherit;
+  border: none;
+}
+
 .at-logo {
   display: none;
 }
