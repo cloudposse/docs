@@ -47,14 +47,14 @@ It's important to note that everything after the = is treated literally. Thus qu
 There are many built-in functions. A few of the most common uses are explained below.
 
 `$(call foobar,arg1,arg2)`
-This will call a macro called “
+This will call a macro called "foobar"
 
 `$(shell /bin/ls)`
 This will run the command “/bin/ls” and output the results. Results always have new-lines & carriage returns stripped off. There's no way around it.
 
 `$(eval FOO=bar)`
 
-This will evaluate the “`FOO=bar`” as “`make`” language formatted code. In this case, since “`FOO=bar`” is how a variable is defined, the result is that a variable named `FOO` gets set to bar in the global male namespace.
+This will evaluate the “`FOO=bar`” as “`make`” language formatted code. In this case, since “`FOO=bar`” is how a variable is defined, the result is that a variable named `FOO` gets set to bar in the global make namespace.
 
 ## Macros
 
@@ -81,8 +81,10 @@ There are 3 ways target names can be defined.
 1. `:` - the default way. allows exactly one target to use this name. if another target attempts to use the same name, you'll see a warning
 2. `::` - this works like #1, but allows a target to be redefined in multiple places. This is nice when you want to decompose a Makefile into many sub-makefiles. e.g. `deps::` is a good target to define this way, since multiple makefiles might want to define dependencies.
 3. `%:` - This is a wildcard. You might want to do this if you want to write one target for multiple use-cases. For example, the following example could be used to create a target that installs a brew package (e.g. `make install-vim`)
-     `install-%:
-        brew install $(subst,install-,)`
+```
+install-%:
+    brew install $(subst,install-,)
+```  
 
 ### Dependencies
 
@@ -210,8 +212,10 @@ Here's what our template looks like:
 3. `/tmp/env` does not exist, so nothing got included. Even if it did exist, it would be from some previous execution
 4. Then it finds `$(TODAY)` which is not set, so it's evaluated to an empty string.
 5. All `$(...)` processing is complete, so the rendered contents look like:
-    `@echo "TODAY=wednesday" > /tmp/env
-    @echo "Today is: ''"`
+```
+@echo "TODAY=wednesday" > /tmp/env
+@echo "Today is: ''"`
+```
 
 6. Make proceeds to execute the contents, line by line
 7. `/bin/bash -c 'echo “TODAY=wednesday” > /tmp/env'`
