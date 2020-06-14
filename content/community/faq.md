@@ -49,9 +49,13 @@ A common strategy practiced by other organizations is to bump the major release 
 For example, if a project has a bug, chances are that someone has implemented a workaround for that bug. If we release a bug fix as a patch release, that could very well be a breaking change for anyone who had a workaround. By releasing frequently on every commit to `master`,
 we allow the greatest number of users to benefit from the work we do. If we break something, no big deal. Users should always practice strict version pinning - never using `master` directly. That way, users can just pin to the previous release of of a module. As a small organization managing *hundreds* of projects, attempting a formal release schedule for each project is not feasible.
 
+## How do we create a new release?
+
+As a member of the `@cloudposse/contributors` team, create a new release, use the [built-in GitHub release functionality](https://help.github.com/en/enterprise/2.13/user/articles/creating-releases). Please do not create releases manually by creating tags and pushing them as this lacks all the metadata associated with a release, which can have a rich markdown description. All GitHub releases also have tags, but not all tags have a GitHub release.
+
 ## Why are releases not always in sequential order?
 
-Some of our `terraform` modules support backwards compatibility with HCLv1 (pre terraform 0.12). You'll noticed these projects usually have a branch like `0.11/master`. When we accept a bugfix for one of these projects and merge to `master`, we will cut a patch release against the last minor release version for terraform 0.11. 
+Some of our `terraform` modules support backwards compatibility with HCLv1 (pre terraform 0.12). You'll notice these projects usually have a branch named `0.11/master`. When we accept a bugfix for one of these projects and merge to `master`, we will cut a patch release against the last minor release version for terraform 0.11. 
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 We're not accepting new features for pre-terraform-0.12 modules.
