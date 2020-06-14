@@ -23,18 +23,18 @@ We help companies achieve success in the cloud by automating systems for maximum
 
 ## Contact Information
 
-|                |                                                                                            |
-|:-------------- |:------------------------------------------------------------------------------------------ |
-| Email          | [hello@cloudposse.com](mailto:hello@cloudposse.com)                                        |
-| Website        | <https://cloudposse.com>                                                                   |
-| GitHub         | <https://github.com/cloudposse>                                                            |
-| Office Address | 45 S. Arroyo Parkway, Pasadena, CA 91105                                                   |
-| Schedule Time  | [calendly.com/cloudposse](https://calendly.com/cloudposse)                                 |
-| Call Us        | [+1 (310) 496-6556](tel:+13104966556)                                                      |
-| Slack          | [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com) |
-| Newsletter     | [cloudposse.com/newsletter](https://cloudposse.com/newsletter)                             |
-| Twitter        | [twitter.com/cloudposse](https://twitter.com/cloudposse)                                   |
-| LinkedIn       | [linkedin.com/company/cloudposse](https://www.linkedin.com/company/cloudposse/)            |
+|                 |                                                                                            |
+|:--------------- |:------------------------------------------------------------------------------------------ |
+| Email           | [hello@cloudposse.com](mailto:hello@cloudposse.com)                                        |
+| Website         | <https://cloudposse.com>                                                                   |
+| GitHub          | <https://github.com/cloudposse>                                                            |
+| Mailing Address | 340 S Lemon Ave Suite 1430, Walnut, CA 91789                                               |
+| Schedule Time   | [calendly.com/cloudposse](https://calendly.com/cloudposse)                                 |
+| Call Us         | [+1 (310) 496-6556](tel:+13104966556)                                                      |
+| Slack           | [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com) |
+| Newsletter      | [cloudposse.com/newsletter](https://cloudposse.com/newsletter)                             |
+| Twitter         | [twitter.com/cloudposse](https://twitter.com/cloudposse)                                   |
+| LinkedIn        | [linkedin.com/company/cloudposse](https://www.linkedin.com/company/cloudposse/)            |
 
 ## Partnership Opportunities
 
