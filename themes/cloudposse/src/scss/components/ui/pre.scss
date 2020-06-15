@@ -1,5 +1,5 @@
 pre {
-  margin: 20px 30px;
+  margin: 0px 0px;
   padding: 20px;
   //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
   border-radius: 6px;
@@ -16,6 +16,8 @@ pre {
   .copy-to-clipboard {
     float: right;
     position: relative;
-    right: 0;
+    right: -3px;
+    top: -18px;
+    width: 0px;
   }
 }
