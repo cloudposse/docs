@@ -6,6 +6,10 @@
     display: block;
   }
 
+  a {
+    color: $color_black_pearl_approx;
+  }
+
   .footline {
     display: flex;
     flex-wrap: nowrap;
