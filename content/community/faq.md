@@ -92,7 +92,7 @@ While we try to keep `master` stable, it's just a best-effort. If something goes
 
 We recommend users version pin to releases for stability and never pin to master.
 
-After merging a Pull Request to `master`, then cut a release. We cut a release for every merge to master. If it's a bug fix, bump the patch release (e.g. `0.0.x`) or if it's a new feature bump the minor (e.g. `0.x.0`). It's that easy! Review the rest of this FAQ for more details on our `semver` strategy.
+After merging a Pull Request to `master`, then cut a release. We cut a release for every merge to master. If it's a bug fix, bump the patch release (e.g. `0.0.x`). If it's a new feature, bump the minor (e.g. `0.x.0`). It's that easy! Review the rest of this FAQ for more details on our `semver` strategy.
 
 ## What are the merge constraints?
 
