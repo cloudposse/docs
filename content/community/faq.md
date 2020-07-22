@@ -32,9 +32,13 @@ Contributors participate in a private Slack channel on the [SweetOps Slack team]
 
 ## When do we cut new releases?
 
-**TL;DR:** We cut a release every single merge to `master`. 
+We cut a release every single merge to `master`. 
 
-This versioning strategy allows us to systematically and consistently increase patch, minor and major releases. When in doubt, bump the minor release.
+## What is our versioning strategy?
+
+We practice [`semver`](https://semver.org).
+
+Our versioning strategy allows us to systematically and consistently increase patch, minor and major releases. When in doubt, bump the minor release.
 Following this strategy allows us to move quickly, release often while enabling our community to version pin for stability, and still convey the *semantics* of the kind of change that happened.
 
 1. **Patch Releases** We bump the patch release for bug fixes of *existing* functionality or small updates to documentation
@@ -52,6 +56,12 @@ we allow the greatest number of users to benefit from the work we do. If we brea
 ## How do we create a new release?
 
 As a member of the `@cloudposse/contributors` team, create a new release, use the [built-in GitHub release functionality](https://help.github.com/en/enterprise/2.13/user/articles/creating-releases). Please do not create releases manually by creating tags and pushing them as this lacks all the metadata associated with a release, which can have a rich markdown description. All GitHub releases also have tags, but not all tags have a GitHub release.
+
+
+{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+Versions must follow the [`semver`](https://semver.org) convention. Do not prefix releases with a version specifier (e.g. a *good* version is `0.1.0` and a *bad* version is `v0.1.0`). 
+{{% /dialog %}}
+
 
 ## Why are releases not always in sequential order?
 
@@ -73,3 +83,21 @@ All Terraform Modules updated to HCL2 **must** have `terratest` integration test
 ## Do we have to update integration tests?
 
 We do not expect contributors to be experts at integration testing or writing Golang. For that reason, we do not require that Open Source community contributors update integration tests. However, if existing tests break due to changes in a Pull Request, we will not accept the contributions until the tests pass.
+
+## How are Pull Requests merged? Can I merge my own Pull Requests?
+
+Once a Pull Request is approved and tests pass, then it may be merged. Anyone with permissions to merge is permitted to merge. Note, if any changes are pushed to the branch, the approval is automatically dismissed. This is why we let you merge your own PRs. Approvers are free to leave a Pull Request open so that the originator of the PR may have the recourse to change things if something comes up.
+
+While we try to keep `master` stable, it's just a best-effort. If something goes wrong, it's better that we address what broke down procedurally (e.g. improving tests, communication, etc.), than micro-managing the merging process.
+
+We recommend users version pin to releases for stability and never pin to master.
+
+After merging a Pull Request to `master`, then cut a release. We cut a release for every merge to master. If it's a bug fix, bump the patch release (e.g. `0.0.x`) or if it's a new feature bump the minor (e.g. `0.x.0`). It's that easy! Review the rest of this FAQ for more details on our `semver` strategy.
+
+## What are the merge constraints?
+
+All of our GitHub repositories implement the following convention with branch protections:
+
+1. At least (1) approver determined by the [`CODEOWNER`](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners) file
+2. Required tests passing
+   

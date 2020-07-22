@@ -167,6 +167,13 @@ to look uniform. It also makes code more consistent when using outputs together 
 Secrets should never be outputs of modules. Rather, they should be written to secure storage such as AWS Secrets Manager, AWS SSM Parameter Store with KMS encryption, or S3 with KMS encryption at rest. Our preferred mechanism on AWS is using SSM Parameter Store. Values written to SSM are easily
 retrieved by other terraform modules, or even on the command-line using tools like [chamber](https://github.com/segmentio/chamber) by Segment.io.
 
+We are very strict about this in "root" modules (or the top-most module), because these sensitive outputs are easily leaked in CI/CD pipelines (see [`tfmask`](https://github.com/cloudposse/tfmask) for masking secrets in output only as a last resort). We are less sensitive to this in modules that are typically nested inside of other modules.
+
+## Use symmetrical names
+
+We prefer to keep terraform outputs symmetrical as much as possible with the upstream resource or module, with exception of prefixes. This reduces the amount of entropy in the code or possible ambiguity, while increasing consistency. Below is an example of what **not* to do. The expected output name is `user_secret_access_key`. This is because the other IAM user outputs in the upstream module are prefixed with `user_`, and then we should borrow the upstream's output name of `secret_access_key` to become `user_secret_access_key` for consistency. 
+
+{{< img src="assets/terraform-outputs-should-be-symmetrical.png" title="Terraform outputs should be symmetrical" >}}
 
 # State
 
@@ -174,7 +181,7 @@ retrieved by other terraform modules, or even on the command-line using tools li
 
 ## Use Terraform to create state bucket
 
-This requires a two-phased approach, whereby you first provision the bucket without the remote state enabled. Then enable remote state (e.g. `s3 {}`) and import remote state by simply rerunning `terraform init`. We recommend this strategy because it promotes use of one tool for the job and makes it easier to define requirements and use consistent tooling.
+This requires a two-phased approach, whereby you first provision the bucket without the remote state enabled. Then enable remote state (e.g. `s3 {}`) and import remote state by simply rerunning `terraform init`. We recommend this strategy because it promotes using the best tool for the job and makes it easier to define requirements and use consistent tooling.
 
 Using the [`terraform-aws-tfstate-backend`](https://github.com/cloudposse/terraform-aws-tfstate-backend) module it is easy to provision state buckets.
 
@@ -194,7 +201,7 @@ Terraform state is incompatible between versions of cli. We suggest using a cont
 
 ## Use `terraform` cli to set backend parameters
 
-Promote reusability of a root module across accounts by not hardcoding backend requirements. Instead, use terraform cli to set the current context.
+Promote the reusability of a root module across accounts by avoiding hardcoded backend requirements. Instead, use the terraform cli to set the current context.
 
 ```hcl
 terraform {
@@ -206,7 +213,7 @@ terraform {
 
 ## Use encrypted S3 bucket with versioning, encryption and strict IAM policies
 
-We recommend not commingling state in the same bucket. This could cause state to get overridden or compromised. Note, state contains cached values of all outputs. Where ever possible, keep stages 100% isolated with physical barriers (separate buckets, separate organizations)
+We recommend not commingling state in the same bucket. This could cause the state to get overridden or compromised. Note, the state contains cached values of all outputs. Where ever possible, keep stages 100% isolated with physical barriers (separate buckets, separate organizations)
 
 **Pro Tip:** Using the [`terraform-aws-tfstate-backend`](https://github.com/cloudposse/terraform-aws-tfstate-backend) to easily provision buckets for each stage.
 
