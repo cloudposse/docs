@@ -47,6 +47,8 @@ steps:
     description: Build docs-toolbox image
     image_name: cloudposse/docs
     dockerfile: Dockerfile
+    disable_push: false
+    registry: dockerhub
 
   build:
     stage: Build
@@ -77,9 +79,9 @@ steps:
         all:
           executeForTag: "'${{SEMVERSION_TAG}}' != ''"
 
-  test:
+  lint:
     stage: Test
-    title: Running tests...
+    title: Linting...
     image: '${{build_image}}'
     working_directory: ./
     environment:
@@ -87,7 +89,28 @@ steps:
     commands:
       - set +e -x
       - make lint
-      - make real-clean smoketest
+	
+  cache:
+    stage: Test
+    title: Hydrate the cache...
+    image: '${{build_image}}'
+    working_directory: ./
+    environment:
+      - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
+    # Codefresh will only persist the /codefresh/volume cache on successful builds.
+    # The cache is critical so we don't hit the 429 rate limit issues with GitHub.
+    commands:
+      - make real-clean smoketest || true
+
+  smoketest:
+    stage: Test
+    title: Testing HTML for validity
+    image: '${{build_image}}'
+    working_directory: ./
+    environment:
+      - "HUGO_EDIT_BRANCH=${{CF_BRANCH}}"
+    commands:
+      - make smoketest
 
   # Only deploy on tagged releases
   deploy:
