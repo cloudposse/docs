@@ -47,6 +47,8 @@ steps:
     description: Build docs-toolbox image
     image_name: cloudposse/docs
     dockerfile: Dockerfile
+    disable_push: true
+    registry: dockerhub
 
   build:
     stage: Build
