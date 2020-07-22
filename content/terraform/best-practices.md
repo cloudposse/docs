@@ -213,7 +213,7 @@ terraform {
 
 ## Use encrypted S3 bucket with versioning, encryption and strict IAM policies
 
-We recommend not commingling state in the same bucket. This could cause the state to get overridden or compromised. Note, the state contains cached values of all outputs. Where ever possible, keep stages 100% isolated with physical barriers (separate buckets, separate organizations)
+We recommend not commingling state in the same bucket. This could cause the state to get overridden or compromised. Note, the state contains cached values of all outputs. Wherever possible, keep stages 100% isolated with physical barriers (separate buckets, separate organizations)
 
 **Pro Tip:** Using the [`terraform-aws-tfstate-backend`](https://github.com/cloudposse/terraform-aws-tfstate-backend) to easily provision buckets for each stage.
 
