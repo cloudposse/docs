@@ -38,14 +38,14 @@ Once we take notice, we'll reach out to you. We recommend that you start by part
 
 We're grateful to our volunteers helping to review community pull requests.
 
-| Avatar                                                                           | GitHub Username                             | Name          |
-| -------------------------------------------------------------------------------- | ------------------------------------------- | ------------- |
-| ![osterman](https://img.cloudposse.com/75x75/http://github.com/osterman.png)     | [@osterman](https://github.com/osterman)    | Erik Osterman |
-| ![aknysh](https://img.cloudposse.com/75x75/http://github.com/aknysh.png)         | [@aknysh](https://github.com/aknysh)        | Andriy Knyshh |
-| ![goruha](https://img.cloudposse.com/75x75/http://github.com/goruha.png)         | [@goruha](https://github.com/goruha)        | Igor Rodionov |
-| ![nuru](https://img.cloudposse.com/75x75/http://github.com/osterman.png)         | [@nuru](https://github.com/nuru)            | Jeremy        |
-| ![jamengual](https://img.cloudposse.com/75x75/http://github.com/jamengual.png)   | [@jamengual](https://github.com/jamengual)  | PePe Amengual |
-| ![adamcrews](https://img.cloudposse.com/75x75/http://github.com/adamcrews.png)   | [@adamcrews](https://github.com/jamengual)  | Adam Crews    |
-| ![nitrocode](https://img.cloudposse.com/75x75/http://github.com/nitrocode.png)   | [@nitrocode](https://github.com/nitrocode)  | Ronak         |
-| ![RothAndrew](https://img.cloudposse.com/75x75/http://github.com/RothAndrew.png) | [@RothAndrew](https://github.com/RothAndrew) | Andrew Roth  |
-| ![Gowiem](https://img.cloudposse.com/75x75/http://github.com/Gowiem.png)         | [@Gowiem](https://github.com/Gowiem)        | Matt Gowie    |
+| Avatar                                                                           | GitHub Username                              | Name          |
+| -------------------------------------------------------------------------------- | -------------------------------------------- | ------------- |
+| ![osterman](https://img.cloudposse.com/75x75/http://github.com/osterman.png)     | [@osterman](https://github.com/osterman)     | Erik Osterman |
+| ![aknysh](https://img.cloudposse.com/75x75/http://github.com/aknysh.png)         | [@aknysh](https://github.com/aknysh)         | Andriy Knyshh |
+| ![goruha](https://img.cloudposse.com/75x75/http://github.com/goruha.png)         | [@goruha](https://github.com/goruha)         | Igor Rodionov |
+| ![nuru](https://img.cloudposse.com/75x75/http://github.com/nuru.png)             | [@nuru](https://github.com/nuru)             | Jeremy        |
+| ![jamengual](https://img.cloudposse.com/75x75/http://github.com/jamengual.png)   | [@jamengual](https://github.com/jamengual)   | PePe Amengual |
+| ![adamcrews](https://img.cloudposse.com/75x75/http://github.com/adamcrews.png)   | [@adamcrews](https://github.com/jamengual)   | Adam Crews    |
+| ![nitrocode](https://img.cloudposse.com/75x75/http://github.com/nitrocode.png)   | [@nitrocode](https://github.com/nitrocode)   | Ronak         |
+| ![RothAndrew](https://img.cloudposse.com/75x75/http://github.com/RothAndrew.png) | [@RothAndrew](https://github.com/RothAndrew) | Andrew Roth   |
+| ![Gowiem](https://img.cloudposse.com/75x75/http://github.com/Gowiem.png)         | [@Gowiem](https://github.com/Gowiem)         | Matt Gowie    |
