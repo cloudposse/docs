@@ -10,7 +10,7 @@ This document is intended to describe common and not-so-common processes that th
 
 ## Tips & Tricks
 
-### Update Many Repos
+### Update Multiple Repos at Once
 
 To update many of the open source repos with a common change such as updating Terraform `required_version` pinning, adding GitHub actions, or updating pinned providers, the contributor team has adopted using [microplane](https://github.com/Clever/microplane). This tool allows us to execute automated changes across dozens or even hundreds of our open source repos, which saves many hours of contributor time.
 
@@ -28,27 +28,31 @@ Here is a standard usage pattern that contributors can adopt to specific changes
    1. Initializing creates an `mp/` folder in your current directoy, finds all of the Cloud Posse public projects, and then creates an `mp/init.json` file describing them.
    1. NOTE: microplane supposedly has the ability to search against an organization and narrow the returned repos that end up in `init.json`, but that functionality seems buggy and not working. We do our repo filtering manually in the next step.
 1. Manually edit `mp/init.json` to only include the repos which you want to make changes against.
-   1. Your editor's multi-select and edit capabilities are your friend here!
+   1. Your editor's multi-select and edit capabilities are your friend here! (or maybe some [`jq`](https://stedolan.github.io/jq/) if that's your thing)
    1. Duplicate the original `init.json` so you don't need to re-run `mp init` in the case that you want to start fresh.
 1. Run microplane's clone command to pull all of the repos specified in `init.json` down to your local machine for mass changes:
    1. `mp clone`
 1. Create a bash script to facilitate the changes that you're attempting to make against the many repos you've specified.
    1. Use the microplane `-r` or `--repo` flag to operate on a single repo for testing your script prior to making the changes across all repos.
-   1. Go through the full microplane process (complete the following steps) for this single repo test-run and get it signed off by the other Cloud Posse contributors to ensure everyone agrees with the change prior to making it.
+   1. Go through the full microplane process (complete the following steps) for this single repo test-run and get it signed off by the other Cloud Posse `#contributors` to ensure everyone agrees with the change prior to making it.
 1. Once you've got a script that is working like you expect, you can run the microplane plan command. This step executes the given script across all the repos specified in `init.json` and then commits the result. You should format your `mp plan` command as follows:
-    > mp plan -b $YOUR_BRANCH_NAME -m "[AUTOMATED] $YOUR_PR_TITLE
-    >
-    > ## What
-    >
-    > 1. $INFO_ON_YOUR_CHANGE_NUMBER_ONE
-    > 1. $INFO_ON_YOUR_CHANGE_NUMBER_TWO
-    >
-    > ## Why
-    >
-    > 1. $INFO_ON_WHY_YOU_MADE_YOUR_CHANGE_NUMBER_ONE
-    > 1. $INFO_ON_WHY_YOU_MADE_YOUR_CHANGE_NUMBER_TWO" \
-    > -- \
-    > sh -c $PWD/$YOUR_SCRIPT_NAME.sh
+    ```bash
+    mp plan -b $YOUR_BRANCH_NAME -m "[AUTOMATED] $YOUR_PR_TITLE
+
+    ## What
+
+    1. $INFO_ON_YOUR_CHANGE_NUMBER_ONE
+    1. $INFO_ON_YOUR_CHANGE_NUMBER_TWO
+
+    ## Why
+
+    1. $INFO_ON_WHY_YOU_MADE_YOUR_CHANGE_NUMBER_ONE
+    1. $INFO_ON_WHY_YOU_MADE_YOUR_CHANGE_NUMBER_TWO" \
+    -- \
+    sh -c $PWD/$YOUR_SCRIPT_NAME.sh
+    ```
+
+    __NOTE__ the quotes around the message passing this as an argument to `-m` (message)
 1. Verify one of the repos that you're updating exemplifies the changes you're trying to make:
    1. `cd mp/terraform-aws-tfstate-backend/plan/planned/`
    1. `git show`
