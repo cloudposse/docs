@@ -1,5 +1,5 @@
 ---
-title: Contributor How-Tos
+title: Contributor Tips & Tricks
 description: ''
 ---
 
@@ -8,7 +8,7 @@ description: ''
 This document is intended to describe common and not-so-common processes that the contributor team executes as part of maintaining the 300+ open source projects within the Cloud Posse Organization.
 
 
-## How-Tos
+## Tips & Tricks
 
 ### Update Many Repos
 
