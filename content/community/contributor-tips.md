@@ -12,7 +12,7 @@ This document is intended to describe common and not-so-common processes that th
 
 ### Update Many Repos
 
-To update many of the open source repos with a common change such as updating Terraform `required_version` pinning, adding GitHub actions, or updating pinned providers, the contributor team has adopted using [microplane](https://github.com/Clever/microplane). This tool allows us to execute automated changes across dozens or even hundreds of our open source repos, which saves many man hours of contributor time.
+To update many of the open source repos with a common change such as updating Terraform `required_version` pinning, adding GitHub actions, or updating pinned providers, the contributor team has adopted using [microplane](https://github.com/Clever/microplane). This tool allows us to execute automated changes across dozens or even hundreds of our open source repos, which saves many hours of contributor time.
 
 Here is a standard usage pattern that contributors can adopt to specific changes as they see fit:
 
