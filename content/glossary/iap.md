@@ -11,7 +11,7 @@ The IAP is part of the BeyondCorp enterprise security model pioneered by Google.
 
 IAP Providers and Implementations:
 
-- https://www.cloudflare.com/products/cloudflare-access/
+- https://www.cloudflare.com/teams-access/
 - https://cloud.google.com/iap/
 - https://beyondcorp.com/
 - https://github.com/bitly/oauth2_proxy
