@@ -1,5 +1,9 @@
-## Updating Cloud Posse Terraform modules for Terraform 0.14
+---
+title: Tools for Updating Terraform Modules
+description: 'How to update our Terraform modules for Terraform 0.14'
+---
 
+## Updating Cloud Posse Terraform modules for Terraform 0.14
 
 
 We have some tools you can use for updating our Terraform modules to support Terraform 0.14. This should work for any Terraform modules we have published that currently support Terraform 0.12 or later and contain a `context.tf` file. 
