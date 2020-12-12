@@ -10,7 +10,7 @@ tags:
 Use `chamber` to manage secrets. Provision a dedicated IAM user with limited scope by using the  [terraform-aws-iam-chamber-user](https://github.com/cloudposse/terraform-aws-iam-chamber-user) terraform module. Review our guide on [managing secrets with CI/CD]({{< relref "secrets-management/cicd.md" >}}).
 Also, a sample invocation of `terraform-aws-iam-chamber-user` is part of "[root modules](https://github.com/cloudposse/terraform-root-modules/blob/master/aws/chamber/user.tf)".
 
-{{% include-github title="Example AWS IAM Chamber User for Codefresh" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="master" file="/aws/chamber/user.tf" language="hcl" %}}
+{{% include-github title="Example AWS IAM Chamber User for Codefresh" type="code-block" org="cloudposse" repo="terraform-root-modules" ref="master" file="/deprecated/aws/chamber/user.tf" language="hcl" %}}
 
 ## Naming Kubernetes Contexts
 
