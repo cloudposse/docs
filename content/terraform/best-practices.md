@@ -110,7 +110,7 @@ indent_style = space
 
 Terraform's providers are constantly in flux. It is hard to know if the module you write today will work with older versions of the provider APIs, and usually not worth the effort to find out.  For that reason we want to advertise the minimum version of the provider we have tested with.
 
-What it is possible that future versions may introduce breaking changes, our experience has been that this is no longer likely. Furthermore, in a library of code such as what Cloud Posse publishes, we cannot test updated providers to find out about problems if we have placed upper limits on versions. Therefore for all our modules, we only place lower limits on versions.
+While it is possible that future versions may introduce breaking changes, our experience has been that this is no longer likely. Furthermore, in a library of code such as what Cloud Posse publishes, we cannot test updated providers to find out about problems if we have placed upper limits on versions. Therefore for all our modules, we only place lower limits on versions.
 
 In your root modules, you may want to include upper limits or pin to exact versions to avoid suprises. It is a trade-off between stability and ease of staying current you will have to evaluate for your own situation.
 
@@ -121,7 +121,7 @@ instead move that expression to a `local` and reference the `local` in the resou
 
 # Variables
 
-## Use upstream module variable names where applicable
+## Use upstream module or provider variable names where applicable
 
 When writing a module that accepts `variable` inputs, make sure to use the same names as the upstream to avoid confusion and ambiguity.
 
