@@ -36,4 +36,4 @@ We have tooling to help with some of this. Before opening a PR, but after making
 make pr/prepare
 ```
 
-in the root directory of the repository. That will format your Terraform code and rebuild the README. (If you have done that and the tests still complain about a bad `README`, it is possible you have cached an old version of the builder Docker image. Try updating it with `make builder/pull` and run `make pr/prepare` again.)
+in the root directory of the repository. That will format your Terraform code and rebuild the README. (If you have done that and the tests still complain about a bad `README`, it is possible you have cached an old version of the builder Docker image. Try updating it with `make init && make builder/pull` and run `make pr/prepare` again.)
