@@ -304,7 +304,7 @@ generate meaningful documentation.
 
 # Module Usage
 
-## Use Terriform registry format with exact version numbers
+## Use Terraform registry format with exact version numbers
 
 There are many ways to express a module's source. Our convention is to use Terraform registry syntax with an explicit version.
 
