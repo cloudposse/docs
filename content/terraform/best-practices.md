@@ -171,7 +171,7 @@ retrieved by other terraform modules, or even on the command-line using tools li
 
 We are very strict about this in "root" modules (or the top-most module), because these sensitive outputs are easily leaked in CI/CD pipelines (see [`tfmask`](https://github.com/cloudposse/tfmask) for masking secrets in output only as a last resort). We are less sensitive to this in modules that are typically nested inside of other modules.
 
-Rather than outputting a secret, you may output plain text indicating where the secret is stored, for example `RDS master password is in SSM parameter /rds/master_password`.
+Rather than outputting a secret, you may output plain text indicating where the secret is stored, for example `RDS master password is in SSM parameter /rds/master_password`. You may also want to have another output just for the key for the secret in the secret store, so the key is available to other programs which may be able to retrvieve the value given the key.
 
 ## Use symmetrical names
 
@@ -317,13 +317,12 @@ The reason to pin to an explicit version rather than a range like `>= 0.22.0` is
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 
-Prior to Terraform v0.13, our convention was to use the pure git url. 
+Prior to Terraform v0.13, our convention was to use the pure git url:
 
 ```hcl
 source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
 ```
 
-Note, that the `ref` always points explicitly to a `tags` pinned to a specific version. Dropping the `tags/` qualifier means it could be a branch or a tag.
-That's why we prefer to be explicit.
+Note that the `ref` always points explicitly to a `tags` pinned to a specific version. Dropping the `tags/` qualifier means it could be a branch or a tag; we prefer to be explicit.
 
 {{% /dialog %}}
