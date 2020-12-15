@@ -106,11 +106,13 @@ indent_size = 2
 indent_style = space
 ```
 
-## Use version pinning on all providers
+## Use miminum version pinning on all providers
 
-Terraform's providers are constantly influx. There are frequent deprecations and refactoring of APIs that can lead to instability. 
-It's pretty common as well for some terraform projects to change very seldom, thus what worked 6 months ago might not work today on the latest
-provider. For that reason we need to ensure that providers are pinned at the most recently confirmed working version. 
+Terraform's providers are constantly in flux. It is hard to know if the module you write today will work with older versions of the provider APIs, and usually not worth the effort to find out.  For that reason we want to advertise the minimum version of the provider we have tested with.
+
+While it is possible that future versions may introduce breaking changes, our experience has been that this is no longer likely. Furthermore, in a library of code such as what Cloud Posse publishes, we cannot test updated providers to find out about problems if we have placed upper limits on versions. Therefore for all our modules, we only place lower limits on versions.
+
+In your root modules, you may want to include upper limits or pin to exact versions to avoid suprises. It is a trade-off between stability and ease of staying current you will have to evaluate for your own situation.
 
 ## Use `locals` to baptize opaque resource IDs
 
@@ -119,7 +121,7 @@ instead move that expression to a `local` and reference the `local` in the resou
 
 # Variables
 
-## Use provider variable names where applicable
+## Use upstream module or provider variable names where applicable
 
 When writing a module that accepts `variable` inputs, make sure to use the same names as the upstream to avoid confusion and ambiguity.
 
@@ -169,6 +171,8 @@ retrieved by other terraform modules, or even on the command-line using tools li
 
 We are very strict about this in "root" modules (or the top-most module), because these sensitive outputs are easily leaked in CI/CD pipelines (see [`tfmask`](https://github.com/cloudposse/tfmask) for masking secrets in output only as a last resort). We are less sensitive to this in modules that are typically nested inside of other modules.
 
+Rather than outputting a secret, you may output plain text indicating where the secret is stored, for example `RDS master password is in SSM parameter /rds/master_password`. You may also want to have another output just for the key for the secret in the secret store, so the key is available to other programs which may be able to retrvieve the value given the key.
+
 ## Use symmetrical names
 
 We prefer to keep terraform outputs symmetrical as much as possible with the upstream resource or module, with exception of prefixes. This reduces the amount of entropy in the code or possible ambiguity, while increasing consistency. Below is an example of what **not* to do. The expected output name is `user_secret_access_key`. This is because the other IAM user outputs in the upstream module are prefixed with `user_`, and then we should borrow the upstream's output name of `secret_access_key` to become `user_secret_access_key` for consistency. 
@@ -193,15 +197,15 @@ We recommend using the S3 backend with DynamoDB for state locking.
 
 https://www.terraform.io/docs/backends/types/s3.html
 
-## Use strict enforcement of version of `terraform` cli
+## Use strict enforcement of version of `terraform` CLI
 
-Terraform state is incompatible between versions of cli. We suggest using a container to promote the use of identical tooling for all devs.
+Terraform state is incompatible between versions of CLI. We suggest using a container to promote the use of identical tooling for all devs.
 
 **Pro Tip:**  Use [`geodesic`](https://github.com/cloudposse/geodesic) to manage all `terraform` interactions
 
-## Use `terraform` cli to set backend parameters
+## Use `terraform` CLI to set backend parameters
 
-Promote the reusability of a root module across accounts by avoiding hardcoded backend requirements. Instead, use the terraform cli to set the current context.
+Promote the reusability of a root module across accounts by avoiding hardcoded backend requirements. Instead, use the Terraform CLI to set the current context.
 
 ```hcl
 terraform {
@@ -210,6 +214,8 @@ terraform {
   backend "s3" {}
 }
 ```
+
+Future versions of Terraform are usually at least mostly compatible of previous versions, and we want to be able to test the modules with future versions to find out. Therefore, do not place an upper limit on the `required_version` like `~>0.12.26` or `>= 0.13, < 0.15`. Always use `>=` and enforce Terraform versions in your environment by controlling which  CLI you use.
 
 ## Use encrypted S3 bucket with versioning, encryption and strict IAM policies
 
@@ -298,17 +304,25 @@ generate meaningful documentation.
 
 # Module Usage
 
-## Use fully-qualified git URLs
+## Use Terraform registry format with exact version numbers
 
-There are many ways to express a module's source. Our convention is to use the pure git url. 
+There are many ways to express a module's source. Our convention is to use Terraform registry syntax with an explicit version.
+
+```
+  source  = "cloudposse/label/null"
+  version = "0.22.0" 
+```
+
+The reason to pin to an explicit version rather than a range like `>= 0.22.0` is that any update is capable of breaking something. Any changes to your infrastructure should be implemented and reviewed under your control, not blindly automatic based on when you deployed it.
+
+{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+
+Prior to Terraform v0.13, our convention was to use the pure git url:
 
 ```hcl
 source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
 ```
 
-Note, that the `ref` always points explicitly to a `tags` pinned to a specific version. Dropping the `tags/` qualifier means it could be a branch or a tag.
-That's why we prefer to be explicit.
+Note that the `ref` always points explicitly to a `tags` pinned to a specific version. Dropping the `tags/` qualifier means it could be a branch or a tag; we prefer to be explicit.
 
-{{% dialog type="warning" icon="fa fa-exclamation-circle" title="Warning" %}}
-Never pin modules to the `master` branch. While we try to ensure `master` is always stable, any change is conceivably breaking for someone.
 {{% /dialog %}}
