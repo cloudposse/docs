@@ -18,7 +18,7 @@ We have some tools you can use for updating our Terraform modules to support Ter
 
 - *Optional:* Update any internal label modules to refer to version `0.22.0` of `cloudposse/label/null`
 
-- If you have made any changes, run `make pr/prepare` to rebuild the README
+- If you have made any changes, run `make pr/auto-format` to rebuild the README
 
 - Check in the changes and open a PR request with the name "Terraform 0.14 upgrade"
 

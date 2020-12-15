@@ -33,7 +33,8 @@ We use automated testing to enforce certain standards for our Terraform modules.
 We have tooling to help with some of this. Before opening a PR, but after making all your changes, run 
 
 ```
-make pr/prepare
+make pr/auto-format
 ```
 
-in the root directory of the repository. That will format your Terraform code and rebuild the README. (If you have done that and the tests still complain about a bad `README`, it is possible you have cached an old version of the builder Docker image. Try updating it with `make init && make builder/pull` and run `make pr/prepare` again.)
+in the root directory of the repository. That will format your Terraform code and rebuild the README. (If you have done that and the tests still complain about a bad `README`, it is possible you have cached an old version of the builder Docker image. Try updating it with `make init && make builder/pull` and run `make pr/auto-format` again.)
+
