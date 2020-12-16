@@ -1,5 +1,5 @@
 ---
-title: Tools for Updating Terraform Modules
+title: Updating Modules for Terraform 0.14
 description: 'How to update our Terraform modules for Terraform 0.14'
 ---
 
@@ -22,13 +22,13 @@ We have some tools you can use for updating our Terraform modules to support Ter
 
 - Check in the changes and open a PR request with the name "Terraform 0.14 upgrade"
 
-- ```
-  ## what
-  - Upgrade to support Terraform 0.14 and bring up to current Cloud Posse standard
-  
-  ## why
-  - Support Terraform 0.14
-  ```
+```
+## what
+- Upgrade to support Terraform 0.14 and bring up to current Cloud Posse standard
+
+## why
+- Support Terraform 0.14
+```
 
 - *Optional:* If the core Terraform provider version did not change, label the PR with "patch"
 

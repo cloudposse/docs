@@ -1,11 +1,12 @@
 ---
 title: "Terraform Tips & Tricks"
-description: ""
+description: "A small collection of helpful hints"
 tags:
   - terraform
-  - Tips & Tricks
+  - "Tips & Tricks"
   - git
 ---
+
 ![Terraform](/assets/a1f105a-terraform.png)
 
 # S3 Bucket Lifecycle Rules
