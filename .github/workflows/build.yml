@@ -11,7 +11,7 @@ env:
   MASTER_BRANCH: master
   BUILD_HARNESS_VERSION: 0.5.5
   HUGO_CONFIG: deploy.toml
-  HTMLTEST_CONFIG: .htmltest.codefresh.yml
+  #HTMLTEST_CONFIG: .htmltest.codefresh.yml
   #TMPDIR: /codefresh/volume
   YARN_BUILD_DISABLED: false
   COMPONENTS_BUILD: true
