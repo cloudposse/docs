@@ -8,7 +8,7 @@ runs:
   using: "docker"
   #image: "docker://cloudposse/build-harness:0.5.5"
   image: "Dockerfile"
-  entrypoint: "entrypoint.sh"
+  entrypoint: "/build-harness/entrypoint.sh"
 branding:
   icon: "check"
   color: "green"
