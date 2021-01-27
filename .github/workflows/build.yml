@@ -70,7 +70,7 @@ jobs:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
     - name: "Build Hugo"
-      run: ${{ github.workspace }}/docs/.github/build-hugo/entrypoint.sh
+      run: ./.github/build-hugo/entrypoint.sh
 
   build-versioned-hugo:
     name: "Build versioned Hugo"
