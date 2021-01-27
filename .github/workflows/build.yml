@@ -68,8 +68,8 @@ jobs:
     steps:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
-    - name: "Build Hugo"
-      uses: ../build-hugo
+    #- name: "Build Hugo"
+    #  uses: ../build-hugo
 
   build-versioned-hugo:
     name: "Build versioned Hugo"
