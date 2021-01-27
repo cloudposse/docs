@@ -6,9 +6,9 @@ description: "Build Hugo"
 #    description: "0 if no source file has been updated, 1 if source files has been updated"
 runs:
   using: "docker"
-  image: "docker://cloudposse/build-harness:0.5.5"
-  #image: "Dockerfile"
-  post-entrypoint: "entrypoint.sh"
+  #image: "docker://cloudposse/build-harness:0.5.5"
+  image: "Dockerfile"
+  entrypoint: "entrypoint.sh"
 branding:
   icon: "check"
   color: "green"

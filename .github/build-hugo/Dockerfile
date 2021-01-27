@@ -21,6 +21,8 @@ ENV INSTALL_PATH /usr/local/bin
 
 WORKDIR /build-harness
 
+COPY entrypoint.sh .
+
 RUN make -s chamber/install helm/install helmfile/install template/deps aws/install
 
 ENTRYPOINT ["/bin/bash"]
