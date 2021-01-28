@@ -7,7 +7,7 @@ description: "Build Hugo"
 runs:
   using: "docker"
   #image: "docker://cloudposse/build-harness:0.5.5"
-  image: "${container_name}"
+  image: "${steps.prepare.outputs.first_tag}"
   #image: "Dockerfile"
   entrypoint: "/build-harness/entrypoint.sh"
 branding:
