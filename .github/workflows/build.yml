@@ -102,11 +102,11 @@ jobs:
         echo ::set-output name=first_tag::${TAG_ARRAY[0]}
         #echo ::set-output name=second_tag::${TAG_ARRAY[1]}
     - name: "Build Hugo"
-      use: ./.github/build-hugo
+      uses: ./.github/build-hugo
       with:
         container_name: ${{ steps.prepare.outputs.first_tag }}
       #container: cloudposse/build-harness:0.5.5
-      run: ./.github/build-hugo/entrypoint.sh
+      #run: ./.github/build-hugo/entrypoint.sh
 
   build-versioned-hugo:
     name: "Build versioned Hugo"
