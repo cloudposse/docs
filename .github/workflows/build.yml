@@ -102,7 +102,10 @@ jobs:
         echo ::set-output name=first_tag::${TAG_ARRAY[0]}
         #echo ::set-output name=second_tag::${TAG_ARRAY[1]}
     - name: "Fill In Image Name"
-      run: envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
+      run: |
+        envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
+        printenv
+        cat ./.github/build-hugo/action.yml
     - name: "Build Hugo"
       uses: ./.github/build-hugo
       #with:
