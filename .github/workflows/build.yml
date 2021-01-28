@@ -64,18 +64,18 @@ jobs:
       with:
         push: ${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
         tags: ${{ steps.prepare.outputs.tags }}
-    - name: "Docker push debug"
-      run: |
-        echo ${{ steps.prepare.outputs.tags }}
-        echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
-        echo ${{ steps.prepare.outputs.first_tag }}
-        #echo ${{ steps.prepare.outputs.second_tag }}
+#    - name: "Docker push debug"
+#      run: |
+#        echo ${{ steps.prepare.outputs.tags }}
+#        echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
+#        echo ${{ steps.prepare.outputs.first_tag }}
+#        #echo ${{ steps.prepare.outputs.second_tag }}
 
   build-hugo:
     name: 'Build Hugo'
     runs-on: ubuntu-latest
-    container: cloudposse/build-harness:0.5.5
-    #container: ${{ steps.prepare.outputs.first_tag }}
+    #container: cloudposse/build-harness:0.5.5
+    container: ${{ steps.prepare.outputs.first_tag }}
 
     steps:
     - name: "Checkout source code at current commit"
