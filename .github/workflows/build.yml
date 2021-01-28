@@ -66,6 +66,10 @@ jobs:
 #        echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
 #        echo ${{ steps.prepare.outputs.first_tag }}
 #        #echo ${{ steps.prepare.outputs.second_tag }}
+    - name: "Build Hugo"
+      uses: ./.github/build-hugo
+      #container: cloudposse/build-harness:0.5.5
+      #run: ./.github/build-hugo/entrypoint.sh
 
   build-hugo:
     name: 'Build Hugo'
