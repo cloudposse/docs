@@ -1,14 +1,15 @@
 name: 'Build and push new website'
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-  release:
-    types:
-    - created
-  push:
-    branches:
-      - move-codefresh-to-actions
+  push
+#  pull_request:
+#    types: [opened, synchronize, reopened]
+#  release:
+#    types:
+#    - created
+#  push:
+#    branches:
+#      - move-codefresh-to-actions
 
 env:
   MASTER_BRANCH: master
