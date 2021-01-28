@@ -46,6 +46,10 @@ jobs:
         fi
         echo ::set-output name=tags::${TAGS}
         echo ::set-output name=slim-tags::${SLIM_TAGS}
+        # generate individual tags as outputs
+        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+        #echo ::set-output name=second_tag::${TAG_ARRAY[1]}
     - name: "Set up Docker Buildx"
       uses: docker/setup-buildx-action@v1
     - name: "Login to DockerHub"
