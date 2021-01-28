@@ -64,7 +64,7 @@ jobs:
   build-hugo:
     name: 'Build Hugo'
     runs-on: ubuntu-latest
-    container: cloudposse/build-harness:0.5.5
+    container: ${{ steps.prepare.outputs.tags }}
 
     steps:
     - name: "Checkout source code at current commit"
