@@ -6,6 +6,9 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - move-codefresh-to-actions
 
 env:
   MASTER_BRANCH: master
