@@ -102,8 +102,10 @@ jobs:
         echo ::set-output name=first_tag::${TAG_ARRAY[0]}
         #echo ::set-output name=second_tag::${TAG_ARRAY[1]}
     - name: "Fill In Image Name"
-      with:
-        container_name: ${{ steps.prepare.outputs.first_tag }}
+      env:
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      #with:
+      #  container_name: ${{ steps.prepare.outputs.first_tag }}
       run: |
         envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
         printenv
