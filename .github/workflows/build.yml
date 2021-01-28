@@ -66,6 +66,18 @@ jobs:
 #        echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
 #        echo ${{ steps.prepare.outputs.first_tag }}
 #        #echo ${{ steps.prepare.outputs.second_tag }}
+    - name: "Fill In Image Name"
+      env:
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      #with:
+      #  container_name: ${{ steps.prepare.outputs.first_tag }}
+      run: |
+        envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/build-hugo
+        cat ./.github/build-hugo/action.yml
     - name: "Build Hugo"
       uses: ./.github/build-hugo
       #container: cloudposse/build-harness:0.5.5
