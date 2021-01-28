@@ -106,10 +106,10 @@ jobs:
         envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
         printenv
         cat ./.github/build-hugo/action.yml
+      with:
+        container_name: ${{ steps.prepare.outputs.first_tag }}
     - name: "Build Hugo"
       uses: ./.github/build-hugo
-      #with:
-      #  container_name: ${{ steps.prepare.outputs.first_tag }}
       #container: cloudposse/build-harness:0.5.5
       #run: ./.github/build-hugo/entrypoint.sh
 
