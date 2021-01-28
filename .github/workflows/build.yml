@@ -49,6 +49,7 @@ jobs:
         # generate individual tags as outputs
         IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
         echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+        echo ::set-output name=second_tag::${TAG_ARRAY[1]}
     - name: "Set up Docker Buildx"
       uses: docker/setup-buildx-action@v1
     - name: "Login to DockerHub"
@@ -67,6 +68,8 @@ jobs:
       run: |
         echo ${{ steps.prepare.outputs.tags }}
         echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
+        echo ${{ steps.prepare.outputs.first_tag }}
+        echo ${{ steps.prepare.outputs.second_tag }}
 
   build-hugo:
     name: 'Build Hugo'
