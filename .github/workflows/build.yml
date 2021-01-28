@@ -61,7 +61,9 @@ jobs:
         push: ${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
         tags: ${{ steps.prepare.outputs.tags }}
     - name: "Docker push debug"
-      run: echo ${{ steps.prepare.outputs.tags }}
+      run: |
+        echo ${{ steps.prepare.outputs.tags }}
+        echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
 
   build-hugo:
     name: 'Build Hugo'
