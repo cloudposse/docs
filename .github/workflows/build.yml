@@ -69,7 +69,7 @@ jobs:
         echo ${{ steps.prepare.outputs.tags }}
         echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
         echo ${{ steps.prepare.outputs.first_tag }}
-        echo ${{ steps.prepare.outputs.second_tag }}
+        #echo ${{ steps.prepare.outputs.second_tag }}
 
   build-hugo:
     name: 'Build Hugo'
