@@ -60,11 +60,14 @@ jobs:
       with:
         push: ${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
         tags: ${{ steps.prepare.outputs.tags }}
+    - name: "Docker push debug"
+      run: echo ${{ steps.prepare.outputs.tags }}
 
   build-hugo:
     name: 'Build Hugo'
     runs-on: ubuntu-latest
-    container: ${{ steps.prepare.outputs.tags }}
+    container: cloudposse/build-harness:0.5.5
+    #container: ${{ steps.prepare.outputs.tags }}
 
     steps:
     - name: "Checkout source code at current commit"
