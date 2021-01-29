@@ -137,12 +137,12 @@ jobs:
       env:
         INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
       run: |
-        envsubst < "./.github/build-hugo/Dockerfile-template" > "./.github/build-hugo/Dockerfile"
+        envsubst < "./.github/build-versioned-hugo/Dockerfile-template" > "./.github/build-versioned-hugo/Dockerfile"
         printenv
         pwd
         ls -ahltr .
-        ls -ahltr .github/build-hugo
-        cat ./.github/build-hugo/action.yml
+        ls -ahltr .github/build-versioned-hugo
+        cat ./.github/build-versioned-hugo/action.yml
     - name: "Build versioned Hugo"
       uses: ./.github/build-versioned-hugo
 
