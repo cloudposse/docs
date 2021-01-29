@@ -84,6 +84,11 @@ jobs:
       with:
         name: image
         path: /tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
 
   build-hugo:
     name: 'Build Hugo'
