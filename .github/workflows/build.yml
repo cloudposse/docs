@@ -210,7 +210,7 @@ jobs:
         ls -ahltr .github/lint
         cat ./.github/lint/action.yml
     - name: "Linting"
-      run: ./.github/lint
+      uses: ./.github/lint
 
   cache:
     name: "Build Cache"
@@ -275,7 +275,7 @@ jobs:
         ls -ahltr .github/cache
         cat ./.github/cache/action.yml
     - name: "Hydrate Cache"
-      run: ./.github/cache
+      uses: ./.github/cache
 
   # Testing HTML for validity
   smoketest:
@@ -341,7 +341,7 @@ jobs:
         ls -ahltr .github/smoketest
         cat ./.github/smoketest/action.yml
     - name: "Smoketest"
-      run: ./.github/smoketest
+      uses: ./.github/smoketest
 
   # Only deploy on tagged releases
   # Pushing all artifacts to S3 bucket...
@@ -408,7 +408,7 @@ jobs:
         ls -ahltr .github/deploy
         cat ./.github/deploy/action.yml
     - name: "Deploy"
-      run: ./.github/deploy
+      uses: ./.github/deploy
 
   # Only reindex on tagged releases
   # Updating algolia search index...
@@ -475,4 +475,4 @@ jobs:
         ls -ahltr .github/reindex-algolia
         cat ./.github/reindex-algolia/action.yml
     - name: "Reindex Algolia"
-      run: ./.github/reindex-algolia
+      uses: ./.github/reindex-algolia
