@@ -63,6 +63,11 @@ jobs:
       with:
         tags: ${{ steps.prepare.outputs.tags }}
         outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
     - name: "Fill In Image Name"
       env:
         INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
@@ -123,6 +128,11 @@ jobs:
       with:
         tags: ${{ steps.prepare.outputs.tags }}
         outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
     - name: "Fill In Image Name"
       env:
         INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
