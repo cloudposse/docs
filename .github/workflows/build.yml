@@ -63,7 +63,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         tags: ${{ steps.prepare.outputs.tags }}
-        outputs: type=oci,dest=/tmp/image.tar
+        outputs: type=docker,dest=/tmp/image.tar
             #type=image,push=${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
 #    - name: "Docker push debug"
 #      run: |
@@ -89,6 +89,21 @@ jobs:
         ls -lraht /tmp
         docker load --input /tmp/image.tar
         docker image ls -a
+    - name: "Fill In Image Name"
+      env:
+        #INPUT_CONTAINER_NAME: cloudposse/geodesic
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      #with:
+      #  container_name: ${{ steps.prepare.outputs.first_tag }}
+      run: |
+        envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/build-hugo
+        cat ./.github/build-hugo/action.yml
+    - name: "Build Hugo"
+      uses: ./.github/build-hugo
 
   build-hugo:
     name: 'Build Hugo'
