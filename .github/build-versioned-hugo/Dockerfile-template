@@ -1,4 +1,5 @@
-FROM ${INPUT_CONTAINER_NAME}
+#FROM ${INPUT_CONTAINER_NAME}
+FROM cloudposse/build-harness:0.5.5
 
 COPY entrypoint.sh /
 
