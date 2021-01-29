@@ -10,7 +10,7 @@ runs:
   #image: "${steps.prepare.outputs.first_tag}"
   image: "${INPUT_CONTAINER_NAME}"
   #image: "Dockerfile"
-  entrypoint: "/build-harness/entrypoint.sh"
+  entrypoint: "entrypoint.sh"
 branding:
   icon: "check"
   color: "green"
