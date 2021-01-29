@@ -82,6 +82,12 @@ jobs:
         ls -ahltr .
         ls -ahltr .github/build-hugo
         cat ./.github/build-hugo/action.yml
+    - name: "Login to DockerHub"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: "Build Hugo"
       uses: ./.github/build-hugo
       #container: cloudposse/build-harness:0.5.5
