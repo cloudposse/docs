@@ -1,4 +1,4 @@
-name: 'Builds'
+name: 'Building, Linting, and Testing'
 
 on:
   pull_request:
