@@ -5,6 +5,6 @@ make git/show
 make git/export | tee -a $(pwd)/env_vars_to_export
 make semver/show
 make semver/export | tee -a $(pwd)/env_vars_to_export
-if "${SEMVERSION_TAG}" != ''; do
+if [ "${SEMVERSION_TAG}" != '' ]; then
   make reindex
 fi
