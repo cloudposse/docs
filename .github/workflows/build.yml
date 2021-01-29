@@ -64,8 +64,8 @@ jobs:
       with:
         tags: ${{ steps.prepare.outputs.tags }}
         outputs: | 
-            type=image,push=${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
             type=oci,dest=/tmp/image.tar
+            #type=image,push=${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
 #    - name: "Docker push debug"
 #      run: |
 #        echo ${{ steps.prepare.outputs.tags }}
