@@ -2,6 +2,8 @@
 title: "Kubernetes Backing Services"
 description: "Kubernetes Backing Services are foundational services that other services in the cluster depend on such as IAM, ingress, external dns, TLS certificates, etc."
 icon: "fa fa-database"
+hidden: true
+archived: true
 ---
 {{% dialog type="warning" icon="fa-info-circle" title="Prerequisites" %}}
 This assumes you've followed the [Helm server-side install]({{< relref "tools/helm.md" >}}) guide which covers all the necessary steps to get started.

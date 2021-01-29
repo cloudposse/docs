@@ -2,6 +2,8 @@
 title: "Kubernetes Optimization"
 description: "Procedures and recommendations to scale and optimize Kubernetes cluster and its components"
 icon: "fa fa-chart-bar"
+hidden: true
+archived: true
 ---
 
 * [Scale Cluster Horizontally]({{< relref "kubernetes-optimization/scale-cluster-horizontally.md" >}}) - Scale Kubernetes cluster horizontally by adding nodes

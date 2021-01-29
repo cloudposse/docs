@@ -2,6 +2,8 @@
 title: "Load Testing"
 description: "Load testing best practices, workflows, scripts and scenarios"
 icon: "fas fa-balance-scale"
+hidden: true
+archived: true
 ---
 This is a collection of best practices, workflows, scripts and scenarios that Cloud Posse uses for load and performance testing of websites and applications
 (in particular those deployed on Kubernetes clusters).

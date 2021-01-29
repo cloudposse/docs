@@ -3,6 +3,8 @@ title: "Kops Administration"
 description: "Documentation for administering kops clusters on `geodesic`"
 tags:
 - kops
+hidden: true
+archived: true
 ---
 
 ## References
