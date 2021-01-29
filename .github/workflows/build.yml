@@ -72,8 +72,8 @@ jobs:
 #        #echo ${{ steps.prepare.outputs.second_tag }}
     - name: "Fill In Image Name"
       env:
-        INPUT_CONTAINER_NAME: cloudposse/geodesic
-        #INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+        #INPUT_CONTAINER_NAME: cloudposse/geodesic
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
       #with:
       #  container_name: ${{ steps.prepare.outputs.first_tag }}
       run: |
@@ -85,6 +85,9 @@ jobs:
         cat ./.github/build-hugo/action.yml
     - name: "Build Hugo"
       uses: ./.github/build-hugo
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
       #container: cloudposse/build-harness:0.5.5
       #run: ./.github/build-hugo/entrypoint.sh
 
