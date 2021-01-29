@@ -8,9 +8,9 @@ runs:
   using: "docker"
   #image: "docker://cloudposse/build-harness:0.5.5"
   #image: "${steps.prepare.outputs.first_tag}"
-  image: "${INPUT_CONTAINER_NAME}"
-  #image: "Dockerfile"
-  entrypoint: "entrypoint.sh"
+  #image: "${INPUT_CONTAINER_NAME}"
+  image: "Dockerfile"
+  entrypoint: "/entrypoint.sh"
 branding:
   icon: "check"
   color: "green"
