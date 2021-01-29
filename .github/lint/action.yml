@@ -1,0 +1,13 @@
+name: "Lint"
+author: "Cloud Posse"
+description: "Lint Hugo"
+#outputs:
+#  has_updated_sources:
+#    description: "0 if no source file has been updated, 1 if source files has been updated"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  entrypoint: "/entrypoint.sh"
+branding:
+  icon: "check"
+  color: "green"

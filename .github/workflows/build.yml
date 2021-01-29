@@ -152,21 +152,130 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Linting"
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "Prepare tags for Docker image"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      id: prepare
       run: |
-        set +e -x
-        export HUGO_EDIT_BRANCH=$(pwd)
-        make lint
+        COMMIT_SHA="${GITHUB_SHA}"
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        elif [[ $GITHUB_REF == refs/pull/* ]]; then
+          VERSION=pr-${{ github.event.pull_request.number }}-merge
+          COMMIT_SHA=${{ github.event.pull_request.head.sha }}
+        fi
+        TAGS=${{ github.repository }}:sha-${COMMIT_SHA:0:7}
+        SLIM_TAGS=${{ github.repository }}:slim-sha-${COMMIT_SHA:0:7}
+        if [[ -n $VERSION ]]; then
+          TAGS="$TAGS,${{ github.repository }}:${VERSION}"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-${VERSION}"
+        fi
+        if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+          TAGS="$TAGS,${{ github.repository }}:latest"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-latest"
+        fi
+        echo ::set-output name=tags::${TAGS}
+        echo ::set-output name=slim-tags::${SLIM_TAGS}
+        # generate an individual tag as an output
+        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Login to DockerHub"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: "Build docker image"
+      id: docker_full_build
+      uses: docker/build-push-action@v2
+      with:
+        tags: ${{ steps.prepare.outputs.tags }}
+        outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
+    - name: "Fill In Image Name"
+      env:
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      run: |
+        envsubst < "./.github/lint/Dockerfile-template" > "./.github/lint/Dockerfile"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/lint
+        cat ./.github/lint/action.yml
+    - name: "Linting"
+      run: ./.github/lint
 
   cache:
     name: "Build Cache"
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Hydrate Cache"
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "Prepare tags for Docker image"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      id: prepare
       run: |
-        export HUGO_EDIT_BRANCH=$(pwd)
-        make real-clean smoketest || true
+        COMMIT_SHA="${GITHUB_SHA}"
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        elif [[ $GITHUB_REF == refs/pull/* ]]; then
+          VERSION=pr-${{ github.event.pull_request.number }}-merge
+          COMMIT_SHA=${{ github.event.pull_request.head.sha }}
+        fi
+        TAGS=${{ github.repository }}:sha-${COMMIT_SHA:0:7}
+        SLIM_TAGS=${{ github.repository }}:slim-sha-${COMMIT_SHA:0:7}
+        if [[ -n $VERSION ]]; then
+          TAGS="$TAGS,${{ github.repository }}:${VERSION}"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-${VERSION}"
+        fi
+        if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+          TAGS="$TAGS,${{ github.repository }}:latest"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-latest"
+        fi
+        echo ::set-output name=tags::${TAGS}
+        echo ::set-output name=slim-tags::${SLIM_TAGS}
+        # generate an individual tag as an output
+        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Login to DockerHub"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: "Build docker image"
+      id: docker_full_build
+      uses: docker/build-push-action@v2
+      with:
+        tags: ${{ steps.prepare.outputs.tags }}
+        outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
+    - name: "Fill In Image Name"
+      env:
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      run: |
+        envsubst < "./.github/cache/Dockerfile-template" > "./.github/cache/Dockerfile"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/cache
+        cat ./.github/cache/action.yml
+    - name: "Hydrate Cache"
+      run: ./.github/cache
 
   # Testing HTML for validity
   smoketest:
@@ -174,10 +283,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Smoketest"
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "Prepare tags for Docker image"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      id: prepare
       run: |
-        export HUGO_EDIT_BRANCH=$(pwd)
-        make smoketest || true
+        COMMIT_SHA="${GITHUB_SHA}"
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        elif [[ $GITHUB_REF == refs/pull/* ]]; then
+          VERSION=pr-${{ github.event.pull_request.number }}-merge
+          COMMIT_SHA=${{ github.event.pull_request.head.sha }}
+        fi
+        TAGS=${{ github.repository }}:sha-${COMMIT_SHA:0:7}
+        SLIM_TAGS=${{ github.repository }}:slim-sha-${COMMIT_SHA:0:7}
+        if [[ -n $VERSION ]]; then
+          TAGS="$TAGS,${{ github.repository }}:${VERSION}"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-${VERSION}"
+        fi
+        if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+          TAGS="$TAGS,${{ github.repository }}:latest"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-latest"
+        fi
+        echo ::set-output name=tags::${TAGS}
+        echo ::set-output name=slim-tags::${SLIM_TAGS}
+        # generate an individual tag as an output
+        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Login to DockerHub"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: "Build docker image"
+      id: docker_full_build
+      uses: docker/build-push-action@v2
+      with:
+        tags: ${{ steps.prepare.outputs.tags }}
+        outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
+    - name: "Fill In Image Name"
+      env:
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      run: |
+        envsubst < "./.github/smoketest/Dockerfile-template" > "./.github/smoketest/Dockerfile"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/smoketest
+        cat ./.github/smoketest/action.yml
+    - name: "Smoketest"
+      run: ./.github/smoketest
 
   # Only deploy on tagged releases
   # Pushing all artifacts to S3 bucket...
@@ -186,16 +350,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Deploy"
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "Prepare tags for Docker image"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      id: prepare
       run: |
-        set +e -x
-        make git/show
-        make git/export | tee -a $(pwd)/env_vars_to_export
-        make semver/show
-        make semver/export | tee -a $(pwd)/env_vars_to_export
-        if "${SEMVERSION_TAG}" != ''; do
-          make deploy
+        COMMIT_SHA="${GITHUB_SHA}"
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        elif [[ $GITHUB_REF == refs/pull/* ]]; then
+          VERSION=pr-${{ github.event.pull_request.number }}-merge
+          COMMIT_SHA=${{ github.event.pull_request.head.sha }}
         fi
+        TAGS=${{ github.repository }}:sha-${COMMIT_SHA:0:7}
+        SLIM_TAGS=${{ github.repository }}:slim-sha-${COMMIT_SHA:0:7}
+        if [[ -n $VERSION ]]; then
+          TAGS="$TAGS,${{ github.repository }}:${VERSION}"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-${VERSION}"
+        fi
+        if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+          TAGS="$TAGS,${{ github.repository }}:latest"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-latest"
+        fi
+        echo ::set-output name=tags::${TAGS}
+        echo ::set-output name=slim-tags::${SLIM_TAGS}
+        # generate an individual tag as an output
+        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Login to DockerHub"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: "Build docker image"
+      id: docker_full_build
+      uses: docker/build-push-action@v2
+      with:
+        tags: ${{ steps.prepare.outputs.tags }}
+        outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
+    - name: "Fill In Image Name"
+      env:
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      run: |
+        envsubst < "./.github/deploy/Dockerfile-template" > "./.github/deploy/Dockerfile"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/deploy
+        cat ./.github/deploy/action.yml
+    - name: "Deploy"
+      run: ./.github/deploy
 
   # Only reindex on tagged releases
   # Updating algolia search index...
@@ -204,13 +417,62 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Reindex Algolia"
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "Prepare tags for Docker image"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      id: prepare
       run: |
-        set +e -x
-        make git/show
-        make git/export | tee -a $(pwd)/env_vars_to_export
-        make semver/show
-        make semver/export | tee -a $(pwd)/env_vars_to_export
-        if "${SEMVERSION_TAG}" != ''; do
-          make reindex
+        COMMIT_SHA="${GITHUB_SHA}"
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        elif [[ $GITHUB_REF == refs/pull/* ]]; then
+          VERSION=pr-${{ github.event.pull_request.number }}-merge
+          COMMIT_SHA=${{ github.event.pull_request.head.sha }}
         fi
+        TAGS=${{ github.repository }}:sha-${COMMIT_SHA:0:7}
+        SLIM_TAGS=${{ github.repository }}:slim-sha-${COMMIT_SHA:0:7}
+        if [[ -n $VERSION ]]; then
+          TAGS="$TAGS,${{ github.repository }}:${VERSION}"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-${VERSION}"
+        fi
+        if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+          TAGS="$TAGS,${{ github.repository }}:latest"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-latest"
+        fi
+        echo ::set-output name=tags::${TAGS}
+        echo ::set-output name=slim-tags::${SLIM_TAGS}
+        # generate an individual tag as an output
+        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Login to DockerHub"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: "Build docker image"
+      id: docker_full_build
+      uses: docker/build-push-action@v2
+      with:
+        tags: ${{ steps.prepare.outputs.tags }}
+        outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
+    - name: "Fill In Image Name"
+      env:
+        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+      run: |
+        envsubst < "./.github/reindex-algolia/Dockerfile-template" > "./.github/reindex-algolia/Dockerfile"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/reindex-algolia
+        cat ./.github/reindex-algolia/action.yml
+    - name: "Reindex Algolia"
+      run: ./.github/reindex-algolia

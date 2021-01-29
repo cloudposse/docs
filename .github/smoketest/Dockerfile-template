@@ -1,0 +1,5 @@
+FROM ${INPUT_CONTAINER_NAME}
+
+COPY entrypoint.sh /
+
+ENTRYPOINT ["/bin/bash"]
