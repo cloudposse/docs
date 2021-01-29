@@ -72,7 +72,8 @@ jobs:
 #        #echo ${{ steps.prepare.outputs.second_tag }}
     - name: "Fill In Image Name"
       env:
-        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
+        INPUT_CONTAINER_NAME: cloudposse/docs
+        #INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
       #with:
       #  container_name: ${{ steps.prepare.outputs.first_tag }}
       run: |
