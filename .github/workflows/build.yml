@@ -64,85 +64,50 @@ jobs:
       with:
         push: ${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
         tags: ${{ steps.prepare.outputs.tags }}
+        outputs: type=docker,dest=/tmp/image.tar
 #    - name: "Docker push debug"
 #      run: |
 #        echo ${{ steps.prepare.outputs.tags }}
 #        echo ${{ github.repository }}:sha-${GITHUB_SHA:0:7}
 #        echo ${{ steps.prepare.outputs.first_tag }}
 #        #echo ${{ steps.prepare.outputs.second_tag }}
-    - name: "Fill In Image Name"
-      env:
-        #INPUT_CONTAINER_NAME: cloudposse/geodesic
-        INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
-      #with:
-      #  container_name: ${{ steps.prepare.outputs.first_tag }}
-      run: |
-        envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
-        printenv
-        pwd
-        ls -ahltr .
-        ls -ahltr .github/build-hugo
-        cat ./.github/build-hugo/action.yml
+#    - name: "Create Repo Name Artifact"
+#      run: |
+#        echo "${{ steps.prepare.outputs.first_tag }}" > repo_name.txt
+#    - name: "Upload Repo Name Artifact"
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: repo-name-artifact
+#        path: repo_name.txt
+    - name: "Upload Image Artifact"
+      uses: actions/upload-artifact@v2
+      with:
+        name: image
+        path: /tmp/image.tar
 
   build-hugo:
     name: 'Build Hugo'
     runs-on: ubuntu-latest
     needs: [ "build-and-push" ]
 
-    container:
-      image: ${{ steps.prepare.outputs.first_tag }}
-      credentials:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+#    container:
+#      image: ${{ steps.prepare.outputs.first_tag }}
+#      credentials:
+#        username: ${{ secrets.DOCKERHUB_USERNAME }}
+#        password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     steps:
+    - name: "Download Image Artifact"
+      uses: actions/download-artifact@v2
+      with:
+        name: image
+        path: /tmp/image.tar
+    - name: "Import Image"
+      run: |
+        docker load --input /tmp/image.tar
+        docker image ls -a
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
-    - name: "Prepare Docker image tags"
-      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
-      id: prepare
-      run: |
-        COMMIT_SHA="${GITHUB_SHA}"
-        if [[ $GITHUB_REF == refs/tags/* ]]; then
-          VERSION=${GITHUB_REF#refs/tags/}
-        elif [[ $GITHUB_REF == refs/pull/* ]]; then
-          VERSION=pr-${{ github.event.pull_request.number }}-merge
-          COMMIT_SHA=${{ github.event.pull_request.head.sha }}
-        fi
-        TAGS=${{ github.repository }}:sha-${COMMIT_SHA:0:7}
-        SLIM_TAGS=${{ github.repository }}:slim-sha-${COMMIT_SHA:0:7}
-        if [[ -n $VERSION ]]; then
-          TAGS="$TAGS,${{ github.repository }}:${VERSION}"
-          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-${VERSION}"
-        fi
-        if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-          TAGS="$TAGS,${{ github.repository }}:latest"
-          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-latest"
-        fi
-        echo ::set-output name=tags::${TAGS}
-        # generate individual tags as outputs
-        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
-        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
-        #echo ::set-output name=second_tag::${TAG_ARRAY[1]}
-    - name: "Login to DockerHub"
-      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-    - name: "Fill In Image Name"
-      env:
-        INPUT_CONTAINER_NAME: cloudposse/geodesic
-        #INPUT_CONTAINER_NAME: ${{ steps.prepare.outputs.first_tag }}
-      #with:
-      #  container_name: ${{ steps.prepare.outputs.first_tag }}
-      run: |
-        envsubst < "./.github/build-hugo/action-template.yml" > "./.github/build-hugo/action.yml"
-        printenv
-        pwd
-        ls -ahltr .
-        ls -ahltr .github/build-hugo
-        cat ./.github/build-hugo/action.yml
     - name: "Build Hugo"
       run: ./.github/build-hugo/entrypoint.sh
 #    - name: "Build Hugo"
