@@ -66,6 +66,11 @@ jobs:
         #tags: ${{ steps.prepare.outputs.tags }}
         outputs: type=docker,dest=/tmp/image.tar
             #type=image,push=${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
+    - name: "List Images"
+      run: |
+        ls -lraht /tmp
+        #docker load --input /tmp/image.tar
+        docker image ls -a
     - name: "Create Repo Name Artifact"
       run: |
         echo "${{ steps.prepare.outputs.first_tag }}" > image_name.txt
