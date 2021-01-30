@@ -17,6 +17,105 @@ env:
   COMPONENTS_BUILD: true
 
 jobs:
+  build-and-push-artifacts:
+    name: "Build Hugo"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "Prepare tags for Docker image"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      id: prepare
+      run: |
+        COMMIT_SHA="${GITHUB_SHA}"
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        elif [[ $GITHUB_REF == refs/pull/* ]]; then
+          VERSION=pr-${{ github.event.pull_request.number }}-merge
+          COMMIT_SHA=${{ github.event.pull_request.head.sha }}
+        fi
+        TAGS=${{ github.repository }}:sha-${COMMIT_SHA:0:7}
+        SLIM_TAGS=${{ github.repository }}:slim-sha-${COMMIT_SHA:0:7}
+        if [[ -n $VERSION ]]; then
+          TAGS="$TAGS,${{ github.repository }}:${VERSION}"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-${VERSION}"
+        fi
+        if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+          TAGS="$TAGS,${{ github.repository }}:latest"
+          SLIM_TAGS="$SLIM_TAGS,${{ github.repository }}:slim-latest"
+        fi
+        echo ::set-output name=tags::${TAGS}
+        echo ::set-output name=slim-tags::${SLIM_TAGS}
+        # generate an individual tag as an output
+        IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+        echo ::set-output name=first_tag::${TAG_ARRAY[0]}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Login to DockerHub"
+      if: (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: "Build and push full docker image to DockerHub"
+      id: docker_full_build
+      uses: docker/build-push-action@v2
+      with:
+        tags: ${{ steps.prepare.outputs.tags }}
+        outputs: type=docker,dest=/tmp/image.tar
+            #type=image,push=${{ (github.event_name == 'release' && github.event.action == 'created') || github.event.pull_request.head.repo.full_name == github.repository }}
+    - name: "Create Repo Name Artifact"
+      run: |
+        echo "${{ steps.prepare.outputs.first_tag }}" > image_name.txt
+    - name: "Upload Image Name Artifact"
+      uses: actions/upload-artifact@v2
+      with:
+        name: image-name
+        path: image_name.txt
+    - name: "Upload Image Artifact"
+      uses: actions/upload-artifact@v2
+      with:
+        name: image
+        path: /tmp/image.tar
+
+  build-hugo-with-artifacts:
+    name: "Build Hugo With Artifacts"
+    runs-on: ubuntu-latest
+    needs: ["build-and-push-artifacts"]
+
+    steps:
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "Download Image Name Artifact"
+      uses: actions/download-artifact@v2
+      with:
+        name: image-name
+        path: image_name.txt
+    - name: "Download Image Artifact"
+      uses: actions/download-artifact@v2
+      with:
+        name: image
+        path: /tmp/image.tar
+    - name: "Import Image"
+      run: |
+        ls -lraht /tmp
+        docker load --input /tmp/image.tar
+        docker image ls -a
+    - name: "Fill In Image Name"
+      run: |
+        export INPUT_CONTAINER_NAME=`cat image_name.txt`
+        envsubst < "./.github/build-hugo-with-artifacts/Dockerfile-template" > "./.github/build-hugo-with-artifacts/Dockerfile"
+        printenv
+        pwd
+        ls -ahltr .
+        ls -ahltr .github/build-hugo-with-artifacts
+        cat ./.github/build-hugo-with-artifacts/action.yml
+    - name: "Build Hugo"
+      uses: ./.github/build-hugo-with-artifacts
+
+
+
   build-hugo:
     name: "Build Hugo"
     runs-on: ubuntu-latest

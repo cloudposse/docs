@@ -1,0 +1,16 @@
+name: "Build Hugo"
+author: "Cloud Posse"
+description: "Build Hugo"
+#outputs:
+#  has_updated_sources:
+#    description: "0 if no source file has been updated, 1 if source files has been updated"
+runs:
+  using: "docker"
+  #image: "docker://cloudposse/build-harness:0.5.5"
+  #image: "${steps.prepare.outputs.first_tag}"
+  #image: "${INPUT_CONTAINER_NAME}"
+  image: "Dockerfile"
+  entrypoint: "/entrypoint.sh"
+branding:
+  icon: "check"
+  color: "green"
