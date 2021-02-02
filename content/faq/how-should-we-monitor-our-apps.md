@@ -24,10 +24,4 @@ In the past, we've used Sumologic, CloudWatch Logs and Datadog Logs to aggregate
 
 We do not recommend using a log aggregation framework in place of a metrics framework. While some systems try to do this (e.g. Sumologic), we prefer purpose-built tools. So we recommend running both a metrics-based platform in addition to a text/log based platform.
 
-For metrics, we suggest using Prometheus Exporters API combined with Grafana for visualization.
-
-We document our Prometheus/Grafana approach here:
-
-- [Prometheus]({{< relref "kubernetes-backing-services/monitoring/kube-prometheus.md" >}})
-- [Prometheus Operator]({{< relref "kubernetes-backing-services/monitoring/prometheus-operator.md" >}})
-- [Grafana]({{< relref "monitoring-and-alerting/grafana.md" >}})
+For metrics, we suggest using [Prometheus](https://prometheus.io/) combined with [Grafana](https://grafana.com/) for visualization.
