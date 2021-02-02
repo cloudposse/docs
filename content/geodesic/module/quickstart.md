@@ -46,7 +46,7 @@ cd $CLUSTER_NAME
 
 ### Build & Install
 
-Initialize the [Build Harness]({{< relref "release-engineering/build-harness.md" >}})
+Initialize the [Build Harness]({{< relref "tools/build-harness.md" >}})
 
 ```
 make init
