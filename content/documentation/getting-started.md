@@ -57,7 +57,7 @@ Study up on our [Best Practices]({{< relref "terraform/best-practices.md" >}}) f
 
 [We provide a staggering number of Terraform modules in our GitHub](https://github.com/cloudposse?q=&type=&language=hcl). This number is growing every week and we're also [accepting module contributions]({{< relref "documentation/our-github.md#contributing" >}}).
 
-Before writing your own modules, review our [Best Practices]({{< relref "terraform-modules/best-practices.md" >}}) for working with Terraform modules.
+Before writing your own modules, review our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with Terraform modules.
 
 ## Contributing Back
 

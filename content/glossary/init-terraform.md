@@ -9,5 +9,5 @@ tags:
 
 {{% dialog type="info" icon="fa fa-book" title="Read More" %}}
 - This [`init-terraform`](https://github.com/cloudposse/geodesic/blob/master/rootfs/usr/local/bin/init-terraform) script is provided as part of geodesic.
-- The [terraform-aws-tfstate-backend]({{< relref "terraform-modules/supported/terraform-aws-tfstate-backend.md" >}}) module provides an encrypted S3 bucket for persisting state and a DynamoDB table for state locking.
+- The [terraform-aws-tfstate-backend](https://github.com/cloudposse/terraform-aws-tfstate-backend) module provides an encrypted S3 bucket for persisting state and a DynamoDB table for state locking.
 {{% /dialog %}}
