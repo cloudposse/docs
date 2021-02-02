@@ -7,3 +7,5 @@ tags:
 aliases:
 - /tools/kubectl/
 ---
+
+`kubectl` is a command line tool (cli) for running commands against Kubernetes clusters
