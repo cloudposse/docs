@@ -1,4 +1,0 @@
----
-title: "Supported Charts"
-description: ""
----

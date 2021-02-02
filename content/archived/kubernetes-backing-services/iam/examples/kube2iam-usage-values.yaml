@@ -1,3 +1,0 @@
-replica:
-  annotations:
-    iam.amazonaws.com/role: s3-access-role
