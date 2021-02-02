@@ -37,7 +37,7 @@ If using kubernetes, then also review these tools:
 
 ## Kubernetes
 
-Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/Cloudposse?q=terraform-aws-eks) and [`helmfile`]({{< relref "tools/helmfile.md" >}}).
+Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/cloudposse?q=terraform-aws-eks) and [`helmfile`]({{< relref "tools/helmfile.md" >}}).
 
 ### Helm
 
@@ -46,7 +46,6 @@ Helm is central to how we deploy all services on kubernetes.
 * [helm]({{< relref "tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
 * [helm charts](https://helm.sh/docs/topics/charts/) are how kubernetes resources are templatized using Go templates
 * [helmfiles]({{< relref "tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
-* [chamber]({{< relref "tools/chamber.md">}}) is used to manage secrets and provide them when provisioning with `helmfile`. It's also a big part of our overall process around secrets management.
 * [rollbacks]({{< relref "faq/how-to-perform-rollbacks.md" >}})
 
 ## Terraform
