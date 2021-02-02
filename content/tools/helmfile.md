@@ -36,15 +36,15 @@ Another way to think about it is like this:
 Helmfile depends on the following `cli` tools.
 
 - [`helm`]({{< relref "tools/helm.md" >}}) - for managing helm packages
-- [`kubectl`]({{< relref "kubernetes/kubectl.md" >}}) - for interfacing with the Kubernetes API
+- [`kubectl`]({{< relref "tools/kubectl.md" >}}) - for interfacing with the Kubernetes API
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 [`geodesic`](/geodesic/) shell ships with all dependencies.
 {{% /dialog %}}
 
-Prior to using `helmfile`, you'll need a valid [`kubectl` context]({{< relref "geodesic/module/with-kops.md#export-kubecfg" >}}).
+Prior to using `helmfile`, you'll need a valid `kubectl` context.
 
-Alternatively, set the [`KUBE_CONTEXT`]({{< relref "release-engineering/codefresh/kubernetes-integration.md#usage" >}}) when using `helmfile` with a Codefresh pipeline.
+Alternatively, set the `KUBE_CONTEXT` when using `helmfile` with a Codefresh pipeline.
 
 # Configuration File
 
