@@ -2,7 +2,6 @@
 title: Password Management
 description: ''
 ---
-{{< wip >}}
 
 We strongly advise all companies to use "1Password for Teams" as their password management solution.
 

@@ -1,6 +1,8 @@
 ---
 title: Workstation Best Practices
 description: ''
+hidden: true
+archived: true
 ---
 {{< wip >}}
 

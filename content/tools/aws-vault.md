@@ -21,7 +21,7 @@ Features:
 - Automatic logins to AWS Web Console
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-This has been incorporated into our latest release of [geodesic]({{< relref "announcements/new-major-release-of-geodesic.md" >}}).
+This has been incorporated into [geodesic]({{< relref "geodesic/_index.md" >}}).
 {{% /dialog %}}
 
 # Installation
@@ -116,7 +116,7 @@ Most problems stem from misconfiguration.
 
 If using `--server` mode, ensure the following credentials are not exported:
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
-Since running `aws-vault` using `--server` binds to the `169.254.169.254` local ip address to mock the AWS metadata server, you can run only one process per host machine. More info can be found [here]({{< relref "/troubleshooting/aws-vault-error-failed-to-start-credential-server" >}}).
+Since running `aws-vault` using `--server` binds to the `169.254.169.254` local ip address to mock the AWS metadata server, you can run only one process per host machine.
 {{% /dialog %}}
 
 - `AWS_ACCESS_KEY_ID`

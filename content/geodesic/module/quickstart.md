@@ -3,14 +3,6 @@ title: "Quick start"
 description: "Get up and running quickly with geodesic"
 weight: 1
 ---
-## Prerequisites
-
-* Follow the "Quick Start" for [Local Development Environments]({{< relref "local-dev-environments/quickstart.md" >}})
-
-{{% dialog type="info" icon="fa fa-info-circle" title="Examples" %}}
-All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
-{{% /dialog %}}
-
 ## Creating a New Module
 
 ### Name New Module
@@ -38,15 +30,13 @@ docker run -e KOPS_CLUSTER_NAME=${CLUSTER_NAME} \
 
 Customize module files as necessary. Edit the `Dockerfile` to reflect your settings. The files are installed to the `$CLUSTER_NAME/` folder.
 
-We recommend creating a [GitHub repo for each organization](/geodesic/module/#reference-architectures) to store this configuration.
-
 ```
 cd $CLUSTER_NAME
 ```
 
 ### Build & Install
 
-Initialize the [Build Harness]({{< relref "release-engineering/build-harness.md" >}})
+Initialize the [Build Harness]({{< relref "tools/build-harness.md" >}})
 
 ```
 make init
@@ -81,7 +71,7 @@ The shell can now be easily started any time by simply running the `$CLUSTER_NAM
 
 ## Authorize on AWS
 
-Config AWS credentials and roles following [Authorization]({{< relref "aws/iam/authorization.md" >}})
+Config AWS credentials and roles using [aws-vault]({{< relref "tools/aws-vault.md#local-configuration" >}})
 
 {{% dialog type="warning" icon="fa fa-exclamation-circle" title="Note" %}}
 By default, Geodesic uses [AWS Vault]({{< relref "tools/aws-vault.md" >}}) to authorize on AWS so ensure you add source profile name to [AWS Vault]({{< relref "tools/aws-vault.md" >}})

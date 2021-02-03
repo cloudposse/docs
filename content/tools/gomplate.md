@@ -11,7 +11,7 @@ The Go progamming language supports [native templating](https://golang.org/pkg/t
 Gomplate is a CLI tool that addresses this need. That is, it can be used as an alternative to [`envsubst`](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html), but also supports
 additional template data-sources such as: JSON, YAML, and even AWS EC2 metadata.
 
-We love `envsubst` for its super-minimalist template processing, but sometimes more advanced templating with conditions is necessary. In geodesic, we use `gomplate` to parameterize the {{< relref "geodesic/kops/manifest.md" >}}. Gomplate is an alternative to `envsubst` that provides some useful built-in functions to make templates even more expressive.
+We love `envsubst` for its super-minimalist template processing, but sometimes more advanced templating with conditions is necessary. We use `gomplate` to parameterize a number of critical files across our architectures. Gomplate is an alternative to `envsubst` that provides some useful built-in functions to make templates even more expressive.
 
 # References
 - [Official Documentation](https://docs.gomplate.ca/)

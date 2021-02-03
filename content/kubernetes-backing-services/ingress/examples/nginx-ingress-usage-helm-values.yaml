@@ -1,5 +1,0 @@
-ingress:
-  enabled: true
-  hosts:
-    example.com:
-        - /

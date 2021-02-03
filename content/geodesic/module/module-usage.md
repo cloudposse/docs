@@ -3,13 +3,6 @@ title: "Geodesic Module Usage"
 description: ""
 weight: 2
 ---
-## Prerequisites
-
-* Follow the "Quick Start" for [Quick start]({{< relref "geodesic/module/quickstart.md" >}})
-
-{{% dialog type="info" icon="fa fa-info-circle" title="Examples" %}}
-All examples are based on use cases provided in [Agenda]({{< relref "learn-by-example/agenda.md" >}})
-{{% /dialog %}}
 
 ## Start the Geodesic Shell
 
@@ -22,7 +15,7 @@ The name is a shell script in `/usr/local/bin`. Make sure this path is in your `
 
 After you [create a Geodesic Module]({{< relref "geodesic/module/quickstart.md" >}}), there will be `/conf` directory in the image.
 
-The '/conf' dir used to store definitions of all [Backing Services]({{< relref "learn-by-example/kubernetes-cluster/add-platform-backing-services.md" >}}).
+The '/conf' dir used to store definitions of all backing services for that module.
 
 During development, it would be very painful to have to rebuild the container everytime you make or test a change. Therefore, we recommend that you use `/localhost` path in the Geodesic Shell so that you can work on your local copy. Your native `$HOME` directory is mounted to `/localhost` in the container.
 
