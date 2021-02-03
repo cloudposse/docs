@@ -21,7 +21,7 @@ Features:
 - Automatic logins to AWS Web Console
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
-This has been incorporated into [geodesic]({{< relref "geodesic/_index.md" >}}).
+This has been incorporated into [geodesic]({{< relref "tools/geodesic.md" >}}).
 {{% /dialog %}}
 
 # Installation

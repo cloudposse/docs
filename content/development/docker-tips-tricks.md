@@ -66,4 +66,4 @@ By default, you are prompted to continue which can be bypassed by adding the `-f
 
 # Simulate Multiple Inheritance
 
-Docker doesn't technically support multiple-inheritance, whereby an image can automatically merge multiple images using `FROM`. It does, however, support [multi-stage builds]({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}}) that can be used to effectiely achive the same result.
+Docker doesn't technically support multiple-inheritance, whereby an image can automatically merge multiple images using `FROM`. It does, however, support [multi-stage builds]({{< relref "development/docker-best-practices.md#multi-stage-builds" >}}) that can be used to effectiely achive the same result.

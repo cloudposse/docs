@@ -7,11 +7,9 @@ description: >-
 
 ## Geodesic
 
-Start with getting familiar with the [geodesic design]({{< relref "geodesic/design.md" >}}).
+Start with getting familiar with the [geodesic]({{< relref "tools/geodesic.md" >}}).
 
-Create [geodesic modules](/geodesic/module/) anywhere you want to logically organize infrastructure as code.
-
-Get intimately familiar with docker inheritance and [multi-stage docker builds]({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}}). We use this pattern extensively.
+Get intimately familiar with docker inheritance and [multi-stage docker builds]({{< relref "development/docker-best-practices.md#multi-stage-builds" >}}). We use this pattern extensively.
 
 Check out our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) for reference architectures to easily provision infrastructure
 
@@ -46,7 +44,6 @@ Helm is central to how we deploy all services on kubernetes.
 * [helm]({{< relref "tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
 * [helm charts](https://helm.sh/docs/topics/charts/) are how kubernetes resources are templatized using Go templates
 * [helmfiles]({{< relref "tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
-* [rollbacks]({{< relref "faq/how-to-perform-rollbacks.md" >}})
 
 ## Terraform
 
