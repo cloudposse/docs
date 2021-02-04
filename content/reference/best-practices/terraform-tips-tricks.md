@@ -11,7 +11,7 @@ tags:
 
 # S3 Bucket Lifecycle Rules
 
-{{% include-code-block title="Example: S3 Bucket Lifecycle Rules" file="terraform/examples/s3-bucket-lifecycle-rules.tf" language="hcl" %}}
+{{% include-code-block title="Example: S3 Bucket Lifecycle Rules" file="reference/examples/s3-bucket-lifecycle-rules.tf" language="hcl" %}}
 
 For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](https://github.com/cloudposse/terraform-aws-s3-log-storage) module.
 
@@ -23,7 +23,7 @@ For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](
 
 # Encrypted S3 Buckets
 
-{{% include-code-block title="Example: Encrypted S3 Bucket" file="terraform/examples/encrypted-s3-bucket.tf" language="hcl" %}}
+{{% include-code-block title="Example: Encrypted S3 Bucket" file="reference/examples/encrypted-s3-bucket.tf" language="hcl" %}}
 
 For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](https://github.com/cloudposse/terraform-aws-s3-log-storage) module.
 
@@ -43,14 +43,14 @@ Then run `pre-commit install` in a given terraform repo to configure the hooks.
 ##### .pre-commit-config.yaml
 ```yaml
 - repo: git://github.com/antonbabenko/pre-commit-terraform
-  sha: v1.5.0
+  sha: v1.45.0
   hooks:
     - id: terraform_fmt
-    - id: terraform_validate_no_variables
+    - id: terraform_validate
 ```
 
 After setting this up, every time you commit, the `terraform fmt` command will be run to canonicalize your files and a basic smoke test to validate all configurations without requiring required variables to be set.
 
 Any time your commit affects any `*.tf` files, the validator will ensure well-formed terraform code.
 
-![Example of Pre Commit Hook Output](/assets/terraform-git-precommit-hook.png)
+![Example of Pre Commit Hook Output](/reference/assets/terraform-git-precommit-hook.png)
