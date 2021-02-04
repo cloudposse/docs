@@ -7,9 +7,9 @@ description: >-
 
 ## Geodesic
 
-Start with getting familiar with the [geodesic]({{< relref "tools/geodesic.md" >}}).
+Start with getting familiar with the [geodesic]({{< relref "reference/tools/geodesic.md" >}}).
 
-Get intimately familiar with docker inheritance and [multi-stage docker builds]({{< relref "development/docker-best-practices.md#multi-stage-builds" >}}). We use this pattern extensively.
+Get intimately familiar with docker inheritance and [multi-stage docker builds]({{< relref "reference/best-practices/docker-best-practices.md#multi-stage-builds" >}}). We use this pattern extensively.
 
 Check out our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) for reference architectures to easily provision infrastructure
 
@@ -18,42 +18,42 @@ Check out our [terraform-aws-components](https://github.com/cloudposse/terraform
 Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
 
 * Geodesic bundles most of these tools as part of the geodesic base image
-* Our [packages repo]({{< relref "tools/packages.md" >}}) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`]({{< relref "tools/build-harness.md" >}})). This can also be used for local ("native") development contexts.
+* Our [packages repo]({{< relref "reference/tools/packages.md" >}}) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`]({{< relref "reference/tools/build-harness.md" >}})). This can also be used for local ("native") development contexts.
 
 Here are some of the most important tools to be aware of:
 
-- [`make`](/tools/make/)
-- [`chamber`]({{< relref "tools/chamber.md" >}})
-- [`terraform`]({{< relref "terraform/_index.md" >}})
-- [`gomplate`]({{< relref "tools/gomplate.md" >}})
-- [`aws-vault`]({{< relref "tools/aws-vault.md" >}})
+- [`make`]({{< relref "reference/tools/make.md" >}})
+- [`chamber`]({{< relref "reference/tools/chamber.md" >}})
+- [`terraform`]({{< relref "reference/tools/terraform.md" >}})
+- [`gomplate`]({{< relref "reference/tools/gomplate.md" >}})
+- [`aws-vault`]({{< relref "reference/tools/aws-vault.md" >}})
 
 If using kubernetes, then also review these tools:
 
-- [`helm`]({{< relref "tools/helm.md" >}})
-- [`helmfile`]({{< relref "tools/helmfile.md" >}})
+- [`helm`]({{< relref "reference/tools/helm.md" >}})
+- [`helmfile`]({{< relref "reference/tools/helmfile.md" >}})
 
 ## Kubernetes
 
-Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/cloudposse?q=terraform-aws-eks) and [`helmfile`]({{< relref "tools/helmfile.md" >}}).
+Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/cloudposse?q=terraform-aws-eks) and [`helmfile`]({{< relref "reference/tools/helmfile.md" >}}).
 
 ### Helm
 
 Helm is central to how we deploy all services on kubernetes.
 
-* [helm]({{< relref "tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
+* [helm]({{< relref "reference/tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
 * [helm charts](https://helm.sh/docs/topics/charts/) are how kubernetes resources are templatized using Go templates
-* [helmfiles]({{< relref "tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
+* [helmfiles]({{< relref "reference/tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
 
 ## Terraform
 
-Study up on our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with terraform. Get started quickly provisioning infrastructure by referencing our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components).
+Study up on our [Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}}) for working with terraform. Get started quickly provisioning infrastructure by referencing our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components).
 
 ### Terraform Modules
 
 [We provide a staggering number of Terraform modules in our GitHub](https://github.com/cloudposse?q=&type=&language=hcl). This number is growing every week and we're also [accepting module contributions]({{< relref "documentation/our-github.md#contributing" >}}).
 
-Before writing your own modules, review our [Best Practices]({{< relref "terraform/best-practices.md" >}}) for working with Terraform modules.
+Before writing your own modules, review our [Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}}) for working with Terraform modules.
 
 ## Contributing Back
 

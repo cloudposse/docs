@@ -15,7 +15,7 @@ categories:
 These are the *opinionated* best-practices we follow at Cloud Posse. They are inspired by years of experience writing terraform
 and borrow on the many other helpful resources like those by [HashiCorp](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html).
 
-See our general [Development Best Practices]({{< relref "development/best-practices.md" >}}) which also apply to Terraform.
+See our general [Development Best Practices]({{< relref "reference/best-practices/best-practices.md" >}}) which also apply to Terraform.
 
 # Language
 
@@ -53,7 +53,7 @@ Use instead the [`template_file`](https://www.terraform.io/docs/providers/templa
 
 Linting helps to ensure a consistent code formatting, improves code quality and catches common errors with syntax.
 
-Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks]({{< relref "terraform/tips-tricks.md" >}})
+Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks]({{< relref "reference/best-practices/terraform-tips-tricks.md" >}})
 
 ## Use proper datatype
 
@@ -63,7 +63,7 @@ Using proper datatypes in terraform makes it easier to validate inputs and docum
 * Use `bool` instead of strings or integers for binary true/false
 * Use `string` for freeform text
 * Use `object` sparingly as it makes it harder to document and validate
-* 
+*
 
 Note, in *HCLv1*, it was recommended to use strings for all booleans. This is no longer a best practice with HCLv2.
 Read more:  https://www.terraform.io/docs/configuration-0-11/variables.html#booleans
@@ -81,7 +81,7 @@ Read more: https://www.terraform.io/docs/configuration/interpolation.html#cidrsu
 
 ## Use `.editorconfig` in all repos for consistent whitespace
 
-Every mainstream IDE supports plugins for the `.editorconfig` standard to make it easier to enforce whitespace consistency. 
+Every mainstream IDE supports plugins for the `.editorconfig` standard to make it easier to enforce whitespace consistency.
 
 We recommend adopting the whitespace convention of a particular language or project.
 
@@ -141,7 +141,7 @@ All modules should incorporate feature flags to enable or disable functionality.
 
 ## Use description field for all inputs
 
-All `variable` inputs need a `description` field. When the field is provided by an upstream provider (e.g. `terraform-aws-provider`), use same wording as the upstream docs. 
+All `variable` inputs need a `description` field. When the field is provided by an upstream provider (e.g. `terraform-aws-provider`), use same wording as the upstream docs.
 
 ## Use sane defaults where applicable
 
@@ -156,13 +156,13 @@ The exception to this is if the secret is optional and will be generated for the
 
 ## Use description field for all outputs
 
-All outputs must have a `description` set. The `description` should be based on (or adapted from) the upstream terraform provider where applicable. 
+All outputs must have a `description` set. The `description` should be based on (or adapted from) the upstream terraform provider where applicable.
 Avoid simply repeating the variable name as the output `description`.
 
 ## Use well-formatted snake case output names
 
 Avoid introducing any other syntaxes commonly found in other languages such as CamelCase or pascalCase. For consistency we want all variables
-to look uniform. It also makes code more consistent when using outputs together with terraform [`remote_state`](https://www.terraform.io/docs/providers/terraform/d/remote_state.html) to access those settings from across modules. 
+to look uniform. It also makes code more consistent when using outputs together with terraform [`remote_state`](https://www.terraform.io/docs/providers/terraform/d/remote_state.html) to access those settings from across modules.
 
 ## Never output secrets
 
@@ -175,7 +175,7 @@ Rather than outputting a secret, you may output plain text indicating where the 
 
 ## Use symmetrical names
 
-We prefer to keep terraform outputs symmetrical as much as possible with the upstream resource or module, with exception of prefixes. This reduces the amount of entropy in the code or possible ambiguity, while increasing consistency. Below is an example of what **not* to do. The expected output name is `user_secret_access_key`. This is because the other IAM user outputs in the upstream module are prefixed with `user_`, and then we should borrow the upstream's output name of `secret_access_key` to become `user_secret_access_key` for consistency. 
+We prefer to keep terraform outputs symmetrical as much as possible with the upstream resource or module, with exception of prefixes. This reduces the amount of entropy in the code or possible ambiguity, while increasing consistency. Below is an example of what **not* to do. The expected output name is `user_secret_access_key`. This is because the other IAM user outputs in the upstream module are prefixed with `user_`, and then we should borrow the upstream's output name of `secret_access_key` to become `user_secret_access_key` for consistency.
 
 {{< img src="../assets/terraform-outputs-should-be-symmetrical.png" title="Terraform outputs should be symmetrical" >}}
 
@@ -256,11 +256,11 @@ Example:
 
 ## Use a programmatically consistent naming convention
 
-All resource names (E.g. things provisioned on AWS) must follow a consistent convention. The reason this is so important is 
-that modules are frequently composed inside of other modules. Enforcing consistency increases the likelihood that modules can 
+All resource names (E.g. things provisioned on AWS) must follow a consistent convention. The reason this is so important is
+that modules are frequently composed inside of other modules. Enforcing consistency increases the likelihood that modules can
 invoke other modules without colliding on resource names.
 
-To enforce consistency, we require that all modules use the [`terraform-null-label`](https://github.com/cloudposse/terraform-null-label) module. 
+To enforce consistency, we require that all modules use the [`terraform-null-label`](https://github.com/cloudposse/terraform-null-label) module.
 With this module, users have the ability to change the way resource names are generated such as by changing the order of parameters or the delimiter.
 While the module is opinionated on the parameters, it's proved invaluable as a mechanism for generating consistent resource names.
 
@@ -272,24 +272,24 @@ Never mingle DNS from different stages or environments in the same zone.
 
 ## Delegate DNS zones across account boundaries
 
-Delegate each AWS account a DNS zone for which it is authoritative. 
+Delegate each AWS account a DNS zone for which it is authoritative.
 
 ## Distinguish between branded domains and service discovery domains
 
-Service discovery domains are what services use to discover each other. These are seldom if ever used by end-users. There should only 
+Service discovery domains are what services use to discover each other. These are seldom if ever used by end-users. There should only
 be one service discovery domain, but there may be many zones delegated from that domain.
 
-Branded domains are the domains that users use to access the services. These are determined by products, marketing, and business use-cases. 
-There may be many branded domains pointing to a single service discovery domain. The architecture of the branded domains won't mirror the 
+Branded domains are the domains that users use to access the services. These are determined by products, marketing, and business use-cases.
+There may be many branded domains pointing to a single service discovery domain. The architecture of the branded domains won't mirror the
 service discovery domains.
 
 # Module Design
 
 ## Small Opinionated Modules
 
-We believe that modules should do one thing very well. But in order to do that, it requires being opinionated on the design. 
+We believe that modules should do one thing very well. But in order to do that, it requires being opinionated on the design.
 Simply wrapping terraform resources for the purposes of modularizing code is not that helpful. Implementing a specific use-case
-of those resource is more helpful. 
+of those resource is more helpful.
 
 ## Composable Modules
 
@@ -310,7 +310,7 @@ There are many ways to express a module's source. Our convention is to use Terra
 
 ```
   source  = "cloudposse/label/null"
-  version = "0.22.0" 
+  version = "0.22.0"
 ```
 
 The reason to pin to an explicit version rather than a range like `>= 0.22.0` is that any update is capable of breaking something. Any changes to your infrastructure should be implemented and reviewed under your control, not blindly automatic based on when you deployed it.

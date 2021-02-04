@@ -61,4 +61,4 @@ Now, go to town hacking away. When you're ready, push the changes up to the orig
 git push origin newfeature
 ```
 
-Now check out how to create [Pull Requests]({{< relref "development/github/pull-requests.md" >}})!
+Now check out how to create [Pull Requests]({{< relref "reference/best-practices/github-pull-requests.md" >}})!

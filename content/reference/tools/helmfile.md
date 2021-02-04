@@ -21,8 +21,8 @@ Another way to think about it is like this:
 
 - **12-Factor Style Configurations** - Parameterize all charts using Environment Variables
 - **Inline `values.yaml`** - Maintain changes to chart configurations in version control
-- **Chamber Compatibility** - Use [`chamber`]({{< relref "tools/chamber.md" >}}) to deploy helm charts with secrets pulled from SSM
-- **CI/CD Integration** - Easily integrate `helmfile` with CI/CD pipelines using our [`build-harness`]({{< relref "tools/build-harness.md" >}})
+- **Chamber Compatibility** - Use [`chamber`]({{< relref "reference/tools/chamber.md" >}}) to deploy helm charts with secrets pulled from SSM
+- **CI/CD Integration** - Easily integrate `helmfile` with CI/CD pipelines using our [`build-harness`]({{< relref "reference/tools/build-harness.md" >}})
 - **Synchronize Environments**  - Rapidly deploy or update all services for a cluster
 - **Go Templating** - Configuration is templatized using [Go template](https://godoc.org/text/template) and supports all the [Sprig](https://godoc.org/github.com/Masterminds/sprig) intepolation functions.
 
@@ -35,8 +35,8 @@ Another way to think about it is like this:
 
 Helmfile depends on the following `cli` tools.
 
-- [`helm`]({{< relref "tools/helm.md" >}}) - for managing helm packages
-- [`kubectl`]({{< relref "tools/kubectl.md" >}}) - for interfacing with the Kubernetes API
+- [`helm`]({{< relref "reference/tools/helm.md" >}}) - for managing helm packages
+- [`kubectl`]({{< relref "reference/tools/kubectl.md" >}}) - for interfacing with the Kubernetes API
 
 {{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
 [`geodesic`](/geodesic/) shell ships with all dependencies.
@@ -56,7 +56,7 @@ For complete examples, review our comprehensive distribution of [helmfiles](http
 
 Here's an example `helmfile.yaml`. Note that it's possible to use conditionals (e.g. `if` / `else`).
 
-{{% include-code-block title="Helmfile Example" file="tools/examples/helmfile.yaml" language="yaml" %}}
+{{% include-code-block title="Helmfile Example" file="reference/tools/examples/helmfile.yaml" language="yaml" %}}
 
 ## Environment Variables
 
@@ -103,7 +103,7 @@ By default, `helmfile` will look for a configuration file called `helmfile.yaml`
 
 ## Arguments
 
-{{% include-code-block title="Helmfile Usage" file="tools/examples/helmfile-usage.txt" %}}
+{{% include-code-block title="Helmfile Usage" file="reference/tools/examples/helmfile-usage.txt" %}}
 
 
 
