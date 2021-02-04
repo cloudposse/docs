@@ -1,5 +1,5 @@
 ---
-title: "Development"
+title: "Best Practices"
 description: ""
 icon: "fa fa-code"
 ---
