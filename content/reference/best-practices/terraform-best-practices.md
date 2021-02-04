@@ -15,7 +15,7 @@ categories:
 These are the *opinionated* best-practices we follow at Cloud Posse. They are inspired by years of experience writing terraform
 and borrow on the many other helpful resources like those by [HashiCorp](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html).
 
-See our general [Development Best Practices]({{< relref "reference/best-practices/best-practices.md" >}}) which also apply to Terraform.
+See our general [Best Practices]({{< relref "reference/best-practices/_index.md" >}}) which also apply to Terraform.
 
 # Language
 

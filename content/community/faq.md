@@ -15,7 +15,7 @@ why something happened than blame or chastise our volunteers.
 
 ## What are your best-practices we should follow?
 
- See our  [Terraform Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}}) and [Development Best Practices]({{< relref "reference/best-practices/best-practices.md" >}}). These are just some guidelines to follow and we're open to your feedback!
+ See our  [Terraform Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}}) and [Best Practices]({{< relref "reference/best-practices/_index.md" >}}). These are just some guidelines to follow and we're open to your feedback!
 
 ## What benefits do I receive as a contributor?
 

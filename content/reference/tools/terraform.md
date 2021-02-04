@@ -7,7 +7,7 @@ tags:
 - IaC
 ---
 
-We use `terraform` as one of our most central tools for automating infrastructure. It's the predominate cloud agnostic [Infrastructure as Code (IaC)](https://en.wikipedia.org/wiki/Infrastructure_as_code) tools. We leverage `terraform` wherever possible to create composable, automated infrastructures.
+We use `terraform` as one of our most central tools for automating infrastructure. It's the predominate, cloud agnostic [Infrastructure as Code (IaC)](https://en.wikipedia.org/wiki/Infrastructure_as_code) tool. We leverage `terraform` wherever possible to create composable, automated infrastructure architectures.
 
 Learn more:
 
