@@ -1,3 +1,4 @@
+name: hugo
 on:
   push:
     branches:
