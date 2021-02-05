@@ -52,7 +52,7 @@ jobs:
       env:
         S3_BUCKET_NAME: docs.prod.cloudposse.org
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets. AWS_SECRET_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: make deploy
     - name: "Push New Index to Algolia"
       if: github.event_name == 'release' && github.event.action == 'published'
