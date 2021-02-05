@@ -23,6 +23,7 @@ env:
   S3_BUCKET_NAME: docs.prod.cloudposse.org
   ALGOLIA_INDEX_NAME: prod
   HUGO_URL: https://docs.cloudposse.com/
+  CF_API_EMAIL: ops@cloudposse.com
 
 jobs:
   hugo-build:
