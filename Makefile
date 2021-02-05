@@ -27,7 +27,8 @@ export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 export DOCKER_BUILD_FLAGS =
 
 ifeq ($(wildcard /.dockerenv),)
-export DOCKER_RUN := docker run -it --rm -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN_FLAGS ?= -it --rm
+export DOCKER_RUN := docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_IMAGE_NAME)
 else
 export DOCKER_RUN :=
 endif
@@ -87,7 +88,7 @@ validate: lint test
 .PHONY : test
 ## Run tests
 test:
-	$(DOCKER_RUN) htmltest -c $(HTMLTEST_CONFIG) --log-level $(HTMLTEST_LOG_LEVEL)
+	$(DOCKER_RUN) /bin/bash -c "htmltest -c $(HTMLTEST_CONFIG) --log-level $(HTMLTEST_LOG_LEVEL)"
 
 ## Run smoketest
 smoketest:
@@ -104,9 +105,9 @@ release:
 		> $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
 	cat .htmltest.yml | \
-		sed 's,^OutputDir:.*,OutputDir: "$(TMPDIR)/.htmltest",' \
+		sed 's,^OutputDir:.*,OutputDir: "/src/.htmltest",' \
 		> $(HTMLTEST_CONFIG)
-	@echo "Wrote $(HTMLTEST_CONFIG) for codefresh..."
+	@echo "Wrote $(HTMLTEST_CONFIG) for github actions..."
 
 ## Deploy static site to S3
 deploy:
