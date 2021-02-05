@@ -15,6 +15,6 @@ lint/check-for-empty-links:
 
 ## Lint check all hugo code
 lint: lint/check-for-empty-links lint/formatting
-	$(HUGO) --renderToMemory
+	$(DOCKER_RUN) $(HUGO) --renderToMemory
 
 

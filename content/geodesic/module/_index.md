@@ -14,8 +14,6 @@ Geodesic modules are used to logically organize infrastructure as code by levera
 
 - [Docker inheritance]({{< relref "tools/docker/best-practices.md#inheritance" >}})
 - [Multi-stage Docker Builds]({{< relref "tools/docker/best-practices.md#multi-stage-builds" >}})
-- [Terraform Root modules]({{< relref "terraform-modules/root/_index.md" >}})
-- [Terraform Modules](/terraform-modules/)
 - [Polyrepos]({{< relref "glossary/polyrepo.md" >}}) to logically organize infrastructure. Use modules to capture/import business logic.
 
 We prefer the polyrepo approach to the monorepo approach when it comes in infrastructure. Git repositories allow us to surgically tag/version infrastructure code that represents some kind of business logic.

@@ -63,7 +63,7 @@ IgnoreDirs:
 # Two-weeks = 336 Hours
 CacheExpires: "336h"
 
-# Directory to store cache and log files in. Relative to executing directory.
+# Directory to store cache and log files in. NOT relative to executing directory. Absolute path.
 OutputDir: tmp/.htmltest
 
 # Maximum number of open HTTP connections (keep this low to avoid GitHub rate limits)

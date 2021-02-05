@@ -13,5 +13,4 @@ What we like about it is that it's written in Go, speaks "markdown" and uses Go-
 
 Want to host your own static site? Here's how we do it.
 
-1. Our [`terraform-root-module/aws/docs`](https://github.com/cloudposse/terraform-root-modules/tree/master/aws/docs) reference architecture describes how we provision the S3 bucket along with CloudFront CDN.
-2. Our [`codefresh.yml`](https://github.com/cloudposse/docs/blob/master/codefresh.yml) shows how we CI/CD our documentation and deploy it to S3 for all tagged releases.
+1. Our [`GitHub Actions workflow`](https://github.com/cloudposse/docs/tree/master/.github) shows how we CI/CD our documentation and deploy it to S3 for all tagged releases.

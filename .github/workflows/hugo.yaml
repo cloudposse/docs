@@ -1,0 +1,61 @@
+name: hugo
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    types:
+    - published
+
+defaults:
+  run:
+    shell: bash +e -x -o pipefail {0}
+
+env:
+  HUGO_CONFIG: deploy.toml
+  HTMLTEST_CONFIG: .htmltest.github_actions.yml
+  YARN_BUILD_DISABLED: false
+  COMPONENTS_BUILD: true
+  CACHE_LOCATION: ./.htmltest/refcache.json
+  DOCKER_RUN_FLAGS: "--rm"
+  S3_BUCKET_NAME: docs.prod.cloudposse.org
+  ALGOLIA_INDEX_NAME: prod
+  HUGO_URL: https://docs.cloudposse.com/
+  CF_API_EMAIL: ops@cloudposse.com
+
+jobs:
+  hugo-build:
+    name: "Build Hugo Site"
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "View github event data"
+      run: cat ${GITHUB_EVENT_PATH}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Build docker image"
+      uses: docker/build-push-action@v2
+      with:
+        tags: cloudposse/docs
+        outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: docker load --input /tmp/image.tar
+    - name: "Build Hugo"
+      run: |
+        make lint
+        make release
+        make real-clean hugo/build
+    - name: "Hugo Site Smoketest"
+      run: make real-clean smoketest
+    - name: "Push Site to S3"
+      if: github.event_name == 'release' && github.event.action == 'published'
+      run: make deploy
+    - name: "Push New Index to Algolia"
+      if: github.event_name == 'release' && github.event.action == 'published'
+      run: make reindex
+    - name: "Update Cloudflare Cache"
+      if: github.event_name == 'release' && github.event.action == 'published'
+      run: make invalidate-cache
