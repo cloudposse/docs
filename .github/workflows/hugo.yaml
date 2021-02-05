@@ -20,10 +20,7 @@ env:
   COMPONENTS_BUILD: true
   CACHE_LOCATION: ./.htmltest/refcache.json
   DOCKER_RUN_FLAGS: "--rm"
-  S3_BUCKET_NAME: docs.prod.cloudposse.org
-  ALGOLIA_INDEX_NAME: prod
   HUGO_URL: https://docs.cloudposse.com/
-  CF_API_EMAIL: ops@cloudposse.com
 
 jobs:
   hugo-build:
@@ -52,10 +49,21 @@ jobs:
       run: make real-clean smoketest
     - name: "Push Site to S3"
       if: github.event_name == 'release' && github.event.action == 'published'
+      env:
+        S3_BUCKET_NAME: docs.prod.cloudposse.org
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
       run: make deploy
     - name: "Push New Index to Algolia"
       if: github.event_name == 'release' && github.event.action == 'published'
+      env:
+        ALGOLIA_INDEX_NAME: prod
+        ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+        ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
       run: make reindex
     - name: "Update Cloudflare Cache"
       if: github.event_name == 'release' && github.event.action == 'published'
+      env:
+        CF_API_EMAIL: ops@cloudposse.com
+        CF_API_KEY: ${{ secrets.CF_API_KEY }}
       run: make invalidate-cache
