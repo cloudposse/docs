@@ -44,6 +44,7 @@ jobs:
       run: |
         make lint
         make release
+        sudo chown -r $(whoami):$(whoami) ./themes/cloudposse/node_modules/
         make real-clean hugo/build
     - name: "Hugo Site Smoketest"
       run: make real-clean smoketest
