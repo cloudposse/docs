@@ -63,7 +63,7 @@ jobs:
       run: |
         make lint
         make release
-        sudo chown -r $(whoami):$(whoami) ./themes/cloudposse/node_modules/
+        sudo chown -R $(whoami):$(whoami) ./themes/cloudposse/node_modules/
         make real-clean hugo/build
     - name: "Push Site to S3"
       if: github.event_name == 'release' && github.event.action == 'published'
