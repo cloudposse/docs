@@ -80,6 +80,7 @@ jobs:
     - name: "Push New Index to Algolia"
       #if: github.event_name == 'release' && github.event.action == 'published'
       env:
+        HUGO_PUBLISH_DIR: public/release/${{ steps.version.outputs.tags }}
         ALGOLIA_INDEX_NAME: prod
         ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
         ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
