@@ -53,6 +53,8 @@ jobs:
       run: |
         if [[ $GITHUB_REF == refs/tags/* ]]; then
           TAGS=${GITHUB_REF#refs/tags/}
+        else
+          TAGS="none"
         fi
         echo ::set-output name=tags::${TAGS}
     - name: "Build Versioned Hugo Release"
