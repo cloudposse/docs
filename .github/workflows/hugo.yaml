@@ -52,7 +52,6 @@ jobs:
       if: github.event_name == 'release' && github.event.action == 'published'
       id: version
       run: |
-        COMMIT_SHA="${GITHUB_SHA}"
         if [[ $GITHUB_REF == refs/tags/* ]]; then
           TAGS=${GITHUB_REF#refs/tags/}
         fi
