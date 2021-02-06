@@ -62,6 +62,7 @@ jobs:
       env:
         HUGO_URL: ${{ env.HUGO_URL }}release/${{ steps.version.outputs.tags }}
         HUGO_PUBLISH_DIR: public/release/${{ steps.version.outputs.tags }}
+        SEMVERSION_TAG: ${{ steps.version.outputs.tags }}
       run: |
         make lint
         make release
@@ -73,6 +74,9 @@ jobs:
         S3_BUCKET_NAME: docs.prod.cloudposse.org
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        HUGO_URL: ${{ env.HUGO_URL }}release/${{ steps.version.outputs.tags }}
+        HUGO_PUBLISH_DIR: public/release/${{ steps.version.outputs.tags }}
+        SEMVERSION_TAG: ${{ steps.version.outputs.tags }}
       run: make deploy
     - name: "Push New Index to Algolia"
       #if: github.event_name == 'release' && github.event.action == 'published'
