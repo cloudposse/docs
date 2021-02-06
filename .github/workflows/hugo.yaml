@@ -47,6 +47,24 @@ jobs:
         make real-clean hugo/build
     - name: "Hugo Site Smoketest"
       run: make real-clean smoketest
+    - name: "Get Version"
+      if: github.event_name == 'release' && github.event.action == 'published'
+      id: version
+      run: |
+        COMMIT_SHA="${GITHUB_SHA}"
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          TAGS=${GITHUB_REF#refs/tags/}
+        fi
+        echo ::set-output name=tags::${TAGS}
+    - name: "Build Versioned Hugo Release"
+      if: github.event_name == 'release' && github.event.action == 'published'
+      env:
+        HUGO_URL: ${HUGO_URL}release/${{ steps.version.outputs.tags }}
+        HUGO_PUBLISH_DIR: public/release/${{ steps.version.outputs.tags }}
+      run: |
+        make lint
+        make release
+        make real-clean hugo/build
     - name: "Push Site to S3"
       if: github.event_name == 'release' && github.event.action == 'published'
       env:
