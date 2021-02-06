@@ -59,7 +59,7 @@ jobs:
     - name: "Build Versioned Hugo Release"
       if: github.event_name == 'release' && github.event.action == 'published'
       env:
-        HUGO_URL: ${HUGO_URL}release/${{ steps.version.outputs.tags }}
+        HUGO_URL: ${{ env.HUGO_URL }}release/${{ steps.version.outputs.tags }}
         HUGO_PUBLISH_DIR: public/release/${{ steps.version.outputs.tags }}
       run: |
         make lint
