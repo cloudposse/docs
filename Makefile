@@ -29,6 +29,8 @@ export DOCKER_BUILD_FLAGS =
 ifeq ($(wildcard /.dockerenv),)
 export DOCKER_RUN_FLAGS ?= -it --rm
 export DOCKER_RUN := docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_IMAGE_NAME)
+export DOCKER_ALGOLIA_ENVS ?= -e ALGOLIA_INDEX_NAME -e ALGOLIA_APP_ID -e ALGOLIA_ADMIN_KEY
+export ALGOLIA_DOCKER_RUN := docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_ALGOLIA_ENVS) $(DOCKER_IMAGE_NAME)
 else
 export DOCKER_RUN :=
 endif
@@ -116,7 +118,7 @@ deploy:
 
 ## Update algolia search index
 reindex:
-	$(DOCKER_RUN) atomic-algolia
+	$(ALGOLIA_DOCKER_RUN) atomic-algolia
 
 ## Invalidate CloudFlare cache (all files)
 invalidate-cache:
