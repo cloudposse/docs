@@ -48,7 +48,7 @@ jobs:
     - name: "Hugo Site Smoketest"
       run: make real-clean smoketest
     - name: "Get Version"
-      if: github.event_name == 'release' && github.event.action == 'published'
+      #if: github.event_name == 'release' && github.event.action == 'published'
       id: version
       run: |
         if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -58,7 +58,7 @@ jobs:
         fi
         echo ::set-output name=tags::${TAGS}
     - name: "Build Versioned Hugo Release"
-      if: github.event_name == 'release' && github.event.action == 'published'
+      #if: github.event_name == 'release' && github.event.action == 'published'
       env:
         HUGO_URL: ${{ env.HUGO_URL }}release/${{ steps.version.outputs.tags }}
         HUGO_PUBLISH_DIR: public/release/${{ steps.version.outputs.tags }}
@@ -69,7 +69,7 @@ jobs:
         sudo chown -R $(whoami):$(whoami) ./themes/cloudposse/node_modules/
         make real-clean hugo/build
     - name: "Push Site to S3"
-      if: github.event_name == 'release' && github.event.action == 'published'
+      #if: github.event_name == 'release' && github.event.action == 'published'
       env:
         S3_BUCKET_NAME: docs.prod.cloudposse.org
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -78,14 +78,14 @@ jobs:
         SEMVERSION_TAG: ${{ steps.version.outputs.tags }}
       run: make deploy
     - name: "Push New Index to Algolia"
-      if: github.event_name == 'release' && github.event.action == 'published'
+      #if: github.event_name == 'release' && github.event.action == 'published'
       env:
         ALGOLIA_INDEX_NAME: prod
         ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
         ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
       run: make reindex
     - name: "Update Cloudflare Cache"
-      if: github.event_name == 'release' && github.event.action == 'published'
+      #if: github.event_name == 'release' && github.event.action == 'published'
       env:
         CF_API_EMAIL: ops@cloudposse.com
         CF_API_DOMAIN: cloudposse.com
