@@ -1,5 +1,5 @@
 ---
-title: "How-Tos"
+title: "How-To"
 description: ""
 icon: "fa fa-code"
 ---
