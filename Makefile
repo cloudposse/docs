@@ -28,7 +28,7 @@ export DOCKER_BUILD_FLAGS =
 
 ifeq ($(wildcard /.dockerenv),)
 export DOCKER_RUN_FLAGS ?= -it --rm
-export DOCKER_RUN ?= docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_ENVS) $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN ?= docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_IMAGE_NAME)
 else
 export DOCKER_RUN ?=
 endif
