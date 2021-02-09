@@ -7,7 +7,7 @@ description: >-
 
 ## Geodesic
 
-Start with getting familiar with the [geodesic]({{< relref "reference/tools/geodesic.md" >}}).
+Start with getting familiar with the [geodesic]({{< relref "reference/tools.md#geodesic" >}}).
 
 Get intimately familiar with docker inheritance and [multi-stage docker builds]({{< relref "reference/best-practices/docker-best-practices.md#multi-stage-builds" >}}). We use this pattern extensively.
 
@@ -18,32 +18,32 @@ Check out our [terraform-aws-components](https://github.com/cloudposse/terraform
 Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
 
 * Geodesic bundles most of these tools as part of the geodesic base image
-* Our [packages repo]({{< relref "reference/tools/packages.md" >}}) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`]({{< relref "reference/tools/build-harness.md" >}})). This can also be used for local ("native") development contexts.
+* Our [packages repo]({{< relref "reference/tools.md#packages.md" >}}) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`]({{< relref "reference/tools.md#build-harness" >}})). This can also be used for local ("native") development contexts.
 
 Here are some of the most important tools to be aware of:
 
-- [`make`]({{< relref "reference/tools/make.md" >}})
-- [`chamber`]({{< relref "reference/tools/chamber.md" >}})
-- [`terraform`]({{< relref "reference/tools/terraform.md" >}})
-- [`gomplate`]({{< relref "reference/tools/gomplate.md" >}})
-- [`aws-vault`]({{< relref "reference/tools/aws-vault.md" >}})
+- [`make`]({{< relref "reference/tools.md#make" >}})
+- [`chamber`]({{< relref "reference/tools.md#chamber" >}})
+- [`terraform`]({{< relref "reference/tools.md#terraform" >}})
+- [`gomplate`]({{< relref "reference/tools.md#gomplate" >}})
+- [`aws-vault`]({{< relref "reference/tools.md#aws-vault" >}})
 
 If using kubernetes, then also review these tools:
 
-- [`helm`]({{< relref "reference/tools/helm.md" >}})
-- [`helmfile`]({{< relref "reference/tools/helmfile.md" >}})
+- [`helm`]({{< relref "reference/tools.md#helm" >}})
+- [`helmfile`]({{< relref "reference/tools.md#helmfile" >}})
 
 ## Kubernetes
 
-Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/cloudposse?q=terraform-aws-eks) and [`helmfile`]({{< relref "reference/tools/helmfile.md" >}}).
+Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/cloudposse?q=terraform-aws-eks) and [`helmfile`]({{< relref "reference/tools.md#helmfile" >}}).
 
 ### Helm
 
 Helm is central to how we deploy all services on kubernetes.
 
-* [helm]({{< relref "reference/tools/helm.md" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
+* [helm]({{< relref "reference/tools.md#helm" >}}) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
 * [helm charts](https://helm.sh/docs/topics/charts/) are how kubernetes resources are templatized using Go templates
-* [helmfiles]({{< relref "reference/tools/helmfile.md">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
+* [helmfiles]({{< relref "reference/tools.md#helmfile">}}) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
 
 ## Terraform
 

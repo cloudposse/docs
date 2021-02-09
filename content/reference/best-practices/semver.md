@@ -31,4 +31,4 @@ As soon as our code reaches `1.X.Y`, the interface should be relatively stable -
 
 ## Implementation
 
-Managing semantic versions should be automated just like everything else in our infrastructure. The [`build-harness`]({{< relref "reference/tools/build-harness.md" >}}) is used by our CI/CD process to automatically generate versions based on git history.
+Managing semantic versions should be automated just like everything else in our infrastructure. The [`build-harness`]({{< relref "reference/tools.md#build-harness" >}}) is used by our CI/CD process to automatically generate versions based on git history.

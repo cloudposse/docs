@@ -9,4 +9,4 @@ terms:
 tags:
 - Goofys
 ---
-The geodesic implements an s3fs using [`goofys`]({{< relref "reference/tools/goofys.md" >}}).
+The geodesic implements an s3fs using [`goofys`]({{< relref "reference/tools.md#goofys" >}}).
