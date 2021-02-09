@@ -117,7 +117,7 @@ deploy:
 	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/release/$(SEMVERSION_TAG) s3://$(S3_BUCKET_NAME)/release/$(SEMVERSION_TAG)
 
 ## Update algolia search index
-reindex: DOCKER_ENVS += -e ALGOLIA_INDEX_NAME -e ALGOLIA_APP_ID -e ALGOLIA_ADMIN_KEY -e ALGOLIA_INDEX_FILE
+reindex: DOCKER_RUN_FLAGS += -e ALGOLIA_INDEX_NAME -e ALGOLIA_APP_ID -e ALGOLIA_ADMIN_KEY -e ALGOLIA_INDEX_FILE
 reindex:
 	$(DOCKER_RUN) atomic-algolia
 
