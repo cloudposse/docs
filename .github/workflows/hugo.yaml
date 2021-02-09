@@ -85,7 +85,7 @@ jobs:
         ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
       run: make reindex
     - name: "Update Cloudflare Cache"
-      if: github.event_name == 'release' && github.event.action == 'published'
+      #if: github.event_name == 'release' && github.event.action == 'published'
       env:
         CF_API_EMAIL: ops@cloudposse.com
         CF_API_DOMAIN: docs.cloudposse.com
