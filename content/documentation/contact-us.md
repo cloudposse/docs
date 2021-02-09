@@ -9,7 +9,7 @@ questions: false
 
 We're developers and ops practitioners who are gung-ho about doing things the "right way" (tm).
 
-We help companies achieve success in the cloud by automating systems for maximum efficiency and 24x7 uptime. Our solutions deliver world-class infrastructure by leveraging [Open Source technologies](/tools/) coupled with proprietary integrations to reduce total cost of ownership. Following our [proven methodology]({{< relref "documentation/getting-started.md" >}}) empowers companies to adopt the most current "best practices" including end-to-end CI/CD Pipelines, GitOps and Automated Deployments. The results are human-centric systems that are easier to maintain and thus reduce technical debt. By prioritization of automation, the Cloud Posse approach improves developer productivity and increases overall platform stability.
+We help companies achieve success in the cloud by automating systems for maximum efficiency and 24x7 uptime. Our solutions deliver world-class infrastructure by leveraging [Open Source technologies]({{< relref "reference/tools.md">}}) coupled with proprietary integrations to reduce total cost of ownership. Following our [proven methodology]({{< relref "documentation/getting-started.md" >}}) empowers companies to adopt the most current "best practices" including end-to-end CI/CD Pipelines, GitOps and Automated Deployments. The results are human-centric systems that are easier to maintain and thus reduce technical debt. By prioritization of automation, the Cloud Posse approach improves developer productivity and increases overall platform stability.
 
 ## Get in Touch
 
@@ -24,7 +24,7 @@ We help companies achieve success in the cloud by automating systems for maximum
 ## Contact Information
 
 |                 |                                                                                            |
-|:--------------- |:------------------------------------------------------------------------------------------ |
+|:----------------|:-------------------------------------------------------------------------------------------|
 | Email           | [hello@cloudposse.com](mailto:hello@cloudposse.com)                                        |
 | Website         | <https://cloudposse.com>                                                                   |
 | GitHub          | <https://github.com/cloudposse>                                                            |
