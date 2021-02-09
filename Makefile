@@ -124,7 +124,8 @@ reindex:
 
 ## Invalidate CloudFlare cache (all files)
 invalidate-cache:
-	$(DOCKER_RUN) cfcli purge
+	printenv
+	$(DOCKER_RUN) cfcli --email $(CF_API_EMAIL) purge
 
 ## Update terraform-modules pages
 terraform-modules/update:
