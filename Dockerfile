@@ -22,7 +22,7 @@ RUN apt-get update && \
     apt-get install -y ${APT_PACKAGES} && \
     rm -rf /var/lib/apt/lists/* && \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
-    npm install -g atomic-algolia@0.3.15 cloudflare-cli@3.0.0 && \
+    npm install -g atomic-algolia@0.3.15 cloudflare-cli@3.1.2 && \
 	pip3 install asciinema
 
 COPY Makefile ./
