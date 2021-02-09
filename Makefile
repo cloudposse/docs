@@ -122,7 +122,7 @@ reindex:
 	$(DOCKER_RUN) atomic-algolia
 
 ## Invalidate CloudFlare cache (all files)
-invalidate-cache: DOCKER_ENVS += -e CF_API_EMAIL -e CF_API_KEY -e CF_API_DOMAIN
+invalidate-cache: DOCKER_RUN_FLAGS += -e CF_API_EMAIL -e CF_API_KEY -e CF_API_DOMAIN
 invalidate-cache:
 	$(DOCKER_RUN) cfcli purge
 
