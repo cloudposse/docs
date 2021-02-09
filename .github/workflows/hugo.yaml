@@ -88,6 +88,6 @@ jobs:
       #if: github.event_name == 'release' && github.event.action == 'published'
       env:
         CF_API_EMAIL: ops@cloudposse.com
-        CF_API_DOMAIN: docs.cloudposse.com
+        CF_API_DOMAIN: cloudposse.com
         CF_API_KEY: ${{ secrets.CF_API_KEY }}
       run: make invalidate-cache
