@@ -5,8 +5,6 @@ description: "Using Markdown is essential for clear communication on mediums suc
 
 ![Markdown Logo](/assets/13f56b6-markdown.png)
 
-{{% dialog type="info" icon="fa fa-info-circle" title="Markdown Cheatsheet" %}} If you're new to Markdown or need a refresher, check out our [Markdown cheatsheet](/reference/best-practices/markdown). {{% /dialog %}}
-
 ## Code Blocks
 
 Use code blocks for anything more than 1 line. Use `code` for inline code, filenames, commands, etc.

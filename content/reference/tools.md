@@ -103,7 +103,7 @@ The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [
 - Automatic logins to AWS Web Console
 
 ## Local Configuration
-We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](/geodesic) sessions.
+We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](#geodesic) sessions.
 
 Add the following to your `~/.bashrc`:
 
@@ -189,7 +189,7 @@ Use `unset` to delete each of the above variables from your environment and ensu
 
 # Build Harness
 
-The `build-harness` is a collection of [Makefiles](/tools/make) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
+The `build-harness` is a collection of [Makefiles]({{< relref "reference/tools.md#make" >}}) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
 
 |              |                                                                                                                                        |
 |:-------------|:---------------------------------------------------------------------------------------------------------------------------------------|
@@ -887,9 +887,9 @@ We use `terraform` as one of our most central tools for automating infrastructur
 
 Learn more:
 
-1. [Our Terraform Best Practices]({{ relref "reference/best-practices/terraform-best-practices.md }})
+1. [Our Terraform Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}})
 1. [Our Terraform Modules](https://github.com/cloudposse?q=terraform-)
-1. [Our Terraform Tips & Tricks]({{ relref "reference/best-practices/terraform-tips-tricks.md }})
+1. [Our Terraform Tips & Tricks]({{< relref "reference/best-practices/terraform-tips-tricks.md" >}})
 
 <br>
 <br>

@@ -177,7 +177,7 @@ Rather than outputting a secret, you may output plain text indicating where the 
 
 We prefer to keep terraform outputs symmetrical as much as possible with the upstream resource or module, with exception of prefixes. This reduces the amount of entropy in the code or possible ambiguity, while increasing consistency. Below is an example of what **not* to do. The expected output name is `user_secret_access_key`. This is because the other IAM user outputs in the upstream module are prefixed with `user_`, and then we should borrow the upstream's output name of `secret_access_key` to become `user_secret_access_key` for consistency.
 
-{{< img src="../assets/terraform-outputs-should-be-symmetrical.png" title="Terraform outputs should be symmetrical" >}}
+{{< img src="/reference/assets/terraform-outputs-should-be-symmetrical.png" title="Terraform outputs should be symmetrical" >}}
 
 # State
 

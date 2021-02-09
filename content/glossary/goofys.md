@@ -9,4 +9,4 @@ tags:
 - s3fs
 - fuse
 ---
-[`goofys`]({{< relref "reference/tools.md#geodesic.md" >}}) is a a high-performance, POSIX-ish Amazon S3 file system written in Go. We use `goofys` in [Geodesic]({{< relref "reference/tools.md#geodesic" >}})
+[`goofys`]({{< relref "reference/tools.md#geodesic" >}}) is a a high-performance, POSIX-ish Amazon S3 file system written in Go. We use `goofys` in [Geodesic]({{< relref "reference/tools.md#geodesic" >}})

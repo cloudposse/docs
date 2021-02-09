@@ -52,5 +52,3 @@ Then run `pre-commit install` in a given terraform repo to configure the hooks.
 After setting this up, every time you commit, the `terraform fmt` command will be run to canonicalize your files and a basic smoke test to validate all configurations without requiring required variables to be set.
 
 Any time your commit affects any `*.tf` files, the validator will ensure well-formed terraform code.
-
-![Example of Pre Commit Hook Output](/reference/assets/terraform-git-precommit-hook.png)
