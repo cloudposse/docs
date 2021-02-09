@@ -28,10 +28,12 @@ export DOCKER_BUILD_FLAGS =
 
 ifeq ($(wildcard /.dockerenv),)
 export DOCKER_RUN_FLAGS ?= -it --rm
-export DOCKER_RUN := docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_IMAGE_NAME)
+export DOCKER_RUN ?= docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_IMAGE_NAME)
 else
-export DOCKER_RUN :=
+export DOCKER_RUN ?=
 endif
+
+export SEMVERSION_TAG ?= none
 
 export README_DEPS ?= docs/targets.md
 
@@ -115,10 +117,12 @@ deploy:
 	aws s3 sync --delete --acl public-read --exact-timestamps $(HUGO_PUBLISH_DIR)/release/$(SEMVERSION_TAG) s3://$(S3_BUCKET_NAME)/release/$(SEMVERSION_TAG)
 
 ## Update algolia search index
+reindex: DOCKER_RUN_FLAGS += -e ALGOLIA_INDEX_NAME -e ALGOLIA_APP_ID -e ALGOLIA_ADMIN_KEY -e ALGOLIA_INDEX_FILE
 reindex:
 	$(DOCKER_RUN) atomic-algolia
 
 ## Invalidate CloudFlare cache (all files)
+invalidate-cache: DOCKER_RUN_FLAGS += -e CF_API_EMAIL -e CF_API_KEY -e CF_API_DOMAIN
 invalidate-cache:
 	$(DOCKER_RUN) cfcli purge
 
