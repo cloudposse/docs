@@ -31,6 +31,8 @@ export DOCKER_RUN_FLAGS ?= -it --rm
 export DOCKER_RUN := docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_IMAGE_NAME)
 export DOCKER_ALGOLIA_ENVS ?= -e ALGOLIA_INDEX_NAME -e ALGOLIA_APP_ID -e ALGOLIA_ADMIN_KEY -e ALGOLIA_INDEX_FILE
 export ALGOLIA_DOCKER_RUN := docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_ALGOLIA_ENVS) $(DOCKER_IMAGE_NAME)
+export DOCKER_CLOUDFLARE_ENVS ?= -e CF_API_EMAIL -e CF_API_KEY -e CF_API_DOMAIN
+export CLOUDFLARE_DOCKER_RUN := docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(HUGO_PORT):$(HUGO_PORT) -e YARN_BUILD_DISABLED -e GITHUB_BASIC_AUTH $(DOCKER_CLOUDFLARE_ENVS) $(DOCKER_IMAGE_NAME)
 else
 export DOCKER_RUN :=
 endif
@@ -124,8 +126,7 @@ reindex:
 
 ## Invalidate CloudFlare cache (all files)
 invalidate-cache:
-	printenv
-	$(DOCKER_RUN) cfcli --email $(CF_API_EMAIL) --token $(CF_API_KEY) --domain $(CF_API_DOMAIN) purge
+	$(CLOUDFLARE_DOCKER_RUN) cfcli purge
 
 ## Update terraform-modules pages
 terraform-modules/update:
