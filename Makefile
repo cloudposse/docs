@@ -35,6 +35,8 @@ else
 export DOCKER_RUN :=
 endif
 
+export SEMVERSION_TAG ?= none
+
 export README_DEPS ?= docs/targets.md
 
 export YARN_BUILD_DISABLED ?= false
