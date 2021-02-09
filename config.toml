@@ -30,7 +30,7 @@ enableEmoji = true
 [taxonomies]
   category = "categories"
   tag = "tags"
-  
+
 [params]
 showVisitedLinks = true # default is false
 themeStyle = "flex"
@@ -88,13 +88,6 @@ name = "<i class='fab fa-github'></i> <label>Our GitHub</label>"
 identifier = "nav-github"
 url = "https://github.com/cloudposse/"
 weight = 30
-
-[[menu.shortcuts]]
-pre = "<h3>More</h3>"
-name = "<i class='fa fa-question'></i> <label>FAQ</label>"
-identifier = "nav-faq"
-url = "/faq/"
-weight = 45
 
 [[menu.shortcuts]]
 pre = "<h3>More</h3>"

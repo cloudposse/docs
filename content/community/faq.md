@@ -9,13 +9,13 @@ You can find all open Pull Requests by going to [GitHub and searching for open P
 
 ## What if we approve and merge a Pull Request with a problem?
 
-We encourage everyone who uses our modules to practice version pinning. So while we try to ensure `master` is always stable, 
+We encourage everyone who uses our modules to practice version pinning. So while we try to ensure `master` is always stable,
 we're not concerned if we occasionally break things. Also, we believe in a blameless culture. We rather figure out and fix
 why something happened than blame or chastise our volunteers.
 
 ## What are your best-practices we should follow?
 
- See our  [Terraform Best Practices]({{< relref "terraform/best-practices.md" >}}) and [Development Best Practices]({{< relref "development/best-practices.md" >}}). These are just some guidelines to follow and we're open to your feedback!
+ See our  [Terraform Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}}) and [Best Practices]({{< relref "reference/best-practices/_index.md" >}}). These are just some guidelines to follow and we're open to your feedback!
 
 ## What benefits do I receive as a contributor?
 
@@ -32,7 +32,7 @@ Contributors participate in a private Slack channel on the [SweetOps Slack team]
 
 ## When do we cut new releases?
 
-We cut a release every single merge to `master`. 
+We cut a release every single merge to `master`.
 
 ## What is our versioning strategy?
 
@@ -46,10 +46,10 @@ Following this strategy allows us to move quickly, release often while enabling 
    - While we always try to ensure the interfaces won't change radically, we cannot promise that will remain the case, especially when the tool itself (e.g. `terraform` is not yet `1.0`).
    - Once the interface is more or less guaranteed to be stable we will release a 1.0.
 3. **Major Releases** The major version is milestone-driven (e.g. `> 1.x`). The first milestone is always stability. A major release will correspond to the previous minor release that closes out that milestone.
-    - The 1.0 milestone doesn’t happen until we have had a very long burn-in period where it is stable and the interface works. For comparison, the `terraform` language is still `0.x` since July 28, 2014. 
+    - The 1.0 milestone doesn’t happen until we have had a very long burn-in period where it is stable and the interface works. For comparison, the `terraform` language is still `0.x` since July 28, 2014.
    -  **After 1.0** all major releases are driven by achieving a particular feature set
 
-A common strategy practiced by other organizations is to bump the major release when there's a “known breaking change” and usually includes many changes all at once. This is typically practiced post-1.0 and it's still somewhat arbitrary and difficult to verify. Philosophically speaking, every change is breaking for somebody. 
+A common strategy practiced by other organizations is to bump the major release when there's a “known breaking change” and usually includes many changes all at once. This is typically practiced post-1.0 and it's still somewhat arbitrary and difficult to verify. Philosophically speaking, every change is breaking for somebody.
 For example, if a project has a bug, chances are that someone has implemented a workaround for that bug. If we release a bug fix as a patch release, that could very well be a breaking change for anyone who had a workaround. By releasing frequently on every commit to `master`,
 we allow the greatest number of users to benefit from the work we do. If we break something, no big deal. Users should always practice strict version pinning - never using `master` directly. That way, users can just pin to the previous release of of a module. As a small organization managing *hundreds* of projects, attempting a formal release schedule for each project is not feasible.
 
@@ -59,13 +59,13 @@ As a member of the `@cloudposse/contributors` team, create a new release, use th
 
 
 {{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
-Versions must follow the [`semver`](https://semver.org) convention. Do not prefix releases with a version specifier (e.g. a *good* version is `0.1.0` and a *bad* version is `v0.1.0`). 
+Versions must follow the [`semver`](https://semver.org) convention. Do not prefix releases with a version specifier (e.g. a *good* version is `0.1.0` and a *bad* version is `v0.1.0`).
 {{% /dialog %}}
 
 
 ## Why are releases not always in sequential order?
 
-Some of our `terraform` modules support backwards compatibility with HCLv1 (pre terraform 0.12). You'll notice these projects usually have a branch named `0.11/master`. When we accept a bugfix for one of these projects and merge to `master`, we will cut a patch release against the last minor release version for terraform 0.11. 
+Some of our `terraform` modules support backwards compatibility with HCLv1 (pre terraform 0.12). You'll notice these projects usually have a branch named `0.11/master`. When we accept a bugfix for one of these projects and merge to `master`, we will cut a patch release against the last minor release version for terraform 0.11.
 
 {{% dialog type="info" icon="fa-info-circle" title="Note" %}}
 We're not accepting new features for pre-terraform-0.12 modules.
@@ -100,4 +100,4 @@ All of our GitHub repositories implement the following convention with branch pr
 
 1. At least (1) approver determined by the [`CODEOWNER`](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners) file
 2. Required tests passing
-   
+

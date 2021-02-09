@@ -17,7 +17,7 @@ Then join us in our Slack [`#community`](https://cloudposse.com/slack/) channel 
 
 ## Contributing
 
-Cloud Posse accepts contributions from the community. In the interest of fostering an open and welcoming environment, we have a strict [code of conduct]({{< relref "development/code-of-conduct.md">}}) to ensure participation in our projects and our community is a harassment-free experience for everyone.
+Cloud Posse accepts contributions from the community. In the interest of fostering an open and welcoming environment, we have a strict [code of conduct]({{< relref "community/code-of-conduct.md" >}}) to ensure participation in our projects and our community is a harassment-free experience for everyone.
 
 If you want to make some big changes or don't know where to begin, it's best to first get in touch. You can discuss the change you wish to make via GitHub issues, [email](mailto:hello@cloudposse.com), or join our [`#community`](https://cloudposse.com/slack/) channel.
 
