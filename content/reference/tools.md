@@ -340,7 +340,7 @@ The reason why `goofys` is faster is that it implements a subset of the POSIX fi
 
 # Helm
 
-{{< img src="/assets/helm-d7685fec.png" title="Helm Logo" class="logo" >}}
+{{< img src="/assets/helm-d7685fec.png" title="Helm Logo" class="logo tool-logo" >}}
 
 Helm makes it easy to install `charts` (an application) on kubernetes clusters. Just like `npm` or `apt` make it easy to install NodeJS modules and Debian packages, `helm` makes it easy to deploy a full-fledged application with all of its dependencies on kubernetes.
 
@@ -500,7 +500,7 @@ chamber exec $service -- helmfile sync
 
 # Hugo
 
-{{< img src="/assets/hugo-7303d89d.png" title="Hugo Static Site Generator" class="logo"  >}}
+{{< img src="/assets/hugo-7303d89d.png" title="Hugo Static Site Generator" class="logo tool-logo"  >}}
 
 [Hugo](https://gohugo.io/) is one of the most popular open-source static site generators. It also happens to be a rediculously fast framework for building static websites. We use it to build [our documentation](https://github.com/cloudposse/docs/).
 
