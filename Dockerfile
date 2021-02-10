@@ -1,10 +1,7 @@
 FROM node:11.2-stretch
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | bash
 
-# Forcing install from cloudposse-specific repo.
-RUN sed -i 's/^/#/' /etc/apt/sources.list && \
-    apt-get install hugo htmltest && \
-    sed -i 's/^#//' /etc/apt/sources.list
+RUN apt-get install hugo htmltest
 
 WORKDIR /src
 
