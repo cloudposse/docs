@@ -1,6 +1,6 @@
 FROM node:11.2-stretch
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | bash
 
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | bash
 RUN apt-get install hugo htmltest
 
 WORKDIR /src
