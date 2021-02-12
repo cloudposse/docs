@@ -53,7 +53,7 @@ notAlternative = true
 
 [mediaTypes]
   [mediaTypes."application/algolia"]
-    suffix = "algolia.json"
+    suffixes = ["algolia.json"]
 
 [outputFormats.algolia]
 isPlainText = true

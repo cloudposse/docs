@@ -1,13 +1,7 @@
-FROM cloudposse/packages:0.93.0 as packages
-
-ENV INSTALL_PATH=/dist
-RUN mkdir -p ${INSTALL_PATH}
-RUN make -C /packages/install hugo HUGO_VERSION=0.42.1
-RUN make -C /packages/install htmltest HTMLTEST_VERSION=0.9.1
-
 FROM node:11.2-stretch
 
-COPY --from=packages /dist/ /usr/local/bin/
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | bash
+RUN apt-get install hugo htmltest
 
 WORKDIR /src
 
