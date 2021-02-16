@@ -17,7 +17,7 @@ An important idea from the beginning has been to ensure that all pieces of the p
 
 The SweetOps infrastructure as code library, purpose built tools, and reusable catalogs are all crafted to follow the [UNIX Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy); they're intended to be small, simple, readable, and modular in nature which encourages composition.
 
-SweetOps never intends to provide one tool that does it all. It is the polar opposite of platforms like OpenShift and Rancher which attempt to do everything. Instead, SweetOps provides small tools that do one thing well and then stitch them together to achieve the best results. This enables SweetOps users to swap in & out tools as better ones come along.
+SweetOps never intends to provide one tool that does it all. It is the polar opposite of platforms like OpenShift and Rancher which attempt to do everything. Instead, SweetOps provides small tools that do one thing well and then stitch them together to achieve the best results. This enables SweetOps to swap in & out tools as better ones come along.
 
 ## YAML Configuration Drives As Much As Possible
 
