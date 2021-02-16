@@ -1,6 +1,6 @@
 ---
 title: "YAML"
-description: 'YAML (or YAML Ain't Markup Language) is a human-readable data-serialization language.'
+description: "YAML (or YAML Ain't Markup Language) is a human-readable data-serialization language."
 terms:
 - YAML
 tags:

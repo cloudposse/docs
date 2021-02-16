@@ -6,6 +6,7 @@ terms:
 - Wiki Operations
 tags:
 - wiki
+- clickops
 - docs
 - documentation
 - bad practice
