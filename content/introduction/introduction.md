@@ -6,7 +6,9 @@ icon: "fa fa-brain"
 
 # What is SweetOps?
 
-SweetOps is a methodology for building modern, secure infrastructure on top of Amazon Web Services (AWS). It provides a toolset, library of reusable Infrastructure as Code (IaC), and opinionated patterns to help you bootstrap robust cloud native architectures. Built in an Open Source first fashion by [Cloud Posse](https://cloudposse.com/), it is utilized by many high performing startups to ensure their cloud infrastructure is an advantage instead of a liability. In short, SweetOps makes working in the DevOps world **Sweet**!
+SweetOps is a methodology for building modern, secure infrastructure on top of Amazon Web Services (AWS). It provides a toolset, library of reusable Infrastructure as Code (IaC), and opinionated patterns to help you bootstrap robust cloud native architectures. Built in an Open Source first fashion, it is utilized by many high performing software teams to ensure their cloud infrastructure is a competitive advantage instead of a liability.
+
+In short, SweetOps makes working in the DevOps world **Sweet**!
 
 # Who is this for?
 
@@ -34,6 +36,12 @@ How does it differentiate from these solutions?
 1. It's 100% Open Source: SweetOps [is on GitHub](https://github.com/cloudposse) and is free to use with no strings attached under Apache 2.0.
 1. It's comprehensive: SweetOps is not only about Terraform. It provides patterns and conventions for building cloud native platforms that are security focused, Kubernetes-based, and driven by continuous delivery.
 1. It's community focused: SweetOps has [over 3400 users in Slack](https://sweetops.com/slack/), well-attended weekly office hours, and a [budding community forum](https://ask.sweetops.com/).
+
+# Who is behind SweetOps?
+<br></br>
+
+1. [Cloud Posse](https://cloudposse.com), a DevOps Accelerator that works predominantly with venture backed startups to help them own their infrastructure in record time by building it together with their teams while showing them the ropes.
+1. A large, strong community that helps each other out! We congregate [on Slack](https://sweetops.com/slack/) and hold [weekly office hours every Wednesday at 11:30 PT](https://cloudposse.com/office-hours/).
 
 
 # How is this documentation structured?
