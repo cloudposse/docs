@@ -13,9 +13,11 @@ All of the primary technology that enables SweetOps is Open Sourced by [Cloud Po
 
 An important idea from the beginning has been to ensure that all pieces of the process are automated. This includes everything from AWS account creation to configuring incident response management tooling. Ensuring that all aspects of SweetOps are automated makes processes repeatable, transparent, and reliable without having to depend on quickly outdated documentation (aka WikiOps).
 
-## Code should be Small and Composable
+## Embrace the UNIX Philosophy for the Cloud Era
 
-The SweetOps infrastructure as code library, purpose built tools, and reusable catalogs are all crafted to be small, composable, and do only one thing well. This allows SweetOps to **share nothing** and supports mixing and matching reusable code to help build your unique architecture.
+The SweetOps infrastructure as code library, purpose built tools, and reusable catalogs are all crafted to follow the [UNIX Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy); they're intended to be small, simple, readable, and modular in nature which encourages composition.
+
+SweetOps never intends to provide one tool that does it all. It is the polar opposite of platforms like OpenShift and Rancher which attempt to do everything. Instead, SweetOps provides small tools that do one thing well and then stitch them together to achieve the best results. This enables SweetOps users to swap in & out tools as better ones come along.
 
 ## YAML Configuration Drives As Much As Possible
 
