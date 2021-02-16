@@ -14,7 +14,7 @@ SweetOps is for DevOps or platform engineering teams that want an opinionated wa
 
 1. You're on AWS
 1. You're using Terraform as your IaC tool
-1. Your platform needs to be secure and potentially requires passing compliance audits (PCI, SOC2, HIPPA, etc.)
+1. Your platform needs to be secure and potentially requires passing compliance audits (PCI, SOC2, HIPAA, HITRUST, FedRAMP, etc.)
 1. You don't want to reinvent the wheel
 
 With SweetOps you can implement the following complex architectural patterns with ease:
@@ -23,6 +23,7 @@ With SweetOps you can implement the following complex architectural patterns wit
 1. Multi-region, globally available application environments with disaster recovery capabilities.
 1. Foundational AWS-focused security practices that make complex compliance audits a breeze.
 1. Microservice architectures that are ready for massive scale running on Docker and Kubernetes.
+1. Reusable service catalogs and components to promote reuse across an organization and accelerate adoption
 
 # What are the alternatives?
 
@@ -39,9 +40,8 @@ How does it differentiate from these solutions?
 
 This documentation site breaks down SweetOps into the following sections to help you get up and running:
 
-- [Introduction]({{< relref "introduction" >}}): Explains what SweetOps is, what it can do, and what comprises the methodology.
-- [Tutorials]({{< relref "tutorials" >}}): Lessons on how to utilize SweetOps to implement a project.
-- [How-To]({{< relref "howto" >}}): Guides on how to solve specific problems with SweetOps via a series of easy to follow steps.
-- [Reference]({{< relref "reference" >}}): Informative materials on specific tools and patterns within SweetOps.
-
+- *[Introduction]({{< relref "introduction" >}})*: Explains what SweetOps is, what it can do, and what comprises the methodology.
+- *[Tutorials]({{< relref "tutorials" >}})*: Lessons on how to utilize SweetOps to implement a project.
+- *[How-To]({{< relref "howto" >}})*: Guides on how to solve specific problems with SweetOps via a series of easy to follow steps.
+- *[Reference]({{< relref "reference" >}})*: Informative materials on specific tools and patterns within SweetOps.
 

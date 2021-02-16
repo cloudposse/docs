@@ -1,6 +1,6 @@
 ---
 title: "How-To"
-description: ""
+description: "Guides on how to solve specific problems with SweetOps via a series of easy to follow steps."
 icon: "fa fa-code"
 weight: 3
 ---
