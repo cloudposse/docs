@@ -10,4 +10,4 @@ terms:
 - Module
 - Root Module
 ---
-Terraform overloads the word "module", but it comes down to "root" and "child" modules. Root modules are the most opinionated, top-level terraform modules (typically found in the current working directory). They describe the architecture you want to deploy. It's these "root" modules that we actually run `terraform plan` and `terraform apply` apply on, while child modules are the reusable modules that we invoke in root modules. [You can read more about this in Terraform documentation](https://www.terraform.io/docs/language/modules/index.html).
+Terraform overloads the word "module", but it comes down to "root" and "child" modules. Root modules are the most opinionated, top-level terraform modules (typically found in the current working directory). They describe the architecture you want to deploy. It's these "root" modules that we actually run `terraform plan` and `terraform apply` on, while child modules are the reusable modules that we invoke in root modules. [You can read more about this in Terraform documentation](https://www.terraform.io/docs/language/modules/index.html).
