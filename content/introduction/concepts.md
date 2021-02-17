@@ -8,7 +8,8 @@ SweetOps is built on top of a number of high-level concepts and terminology that
 
 ## Layers
 ![4 Layers of Infrastructure](https://lucid.app/publicSegments/view/dc705e05-cf3e-4e03-9029-acd8c4b4812f/image.png)
-As discussed in [Philosophy](TODO), SweetOps breaks down cloud infrastructure into 4 discrete layers:
+
+SweetOps breaks down cloud infrastructure into 4 discrete layers:
 
 1. **Foundational**: Your AWS Accounts, VPCs, IAM, and DNS architecture.
 1. **Platform**: Your EKS / ECS Clusters, Load Balancers, IAM Service Accounts, and Certificates.
