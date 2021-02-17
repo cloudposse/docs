@@ -12,6 +12,10 @@ ENV HUGO_PORT=1313 \
 EXPOSE $HUGO_PORT
 
 ARG APT_PACKAGES="python3 python3-pip locales jq"
+RUN apt update && \
+    apt install snapd && \
+    snap install core && \
+    snap install yq
 RUN apt-get update && \
     apt-get install -y ${APT_PACKAGES} && \
     rm -rf /var/lib/apt/lists/* && \
