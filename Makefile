@@ -7,7 +7,7 @@ export HUGO_URL ?= http://localhost.cloudposse.com:$(HUGO_PORT)/
 export HUGO_EDIT_BRANCH ?= $(GIT_BRANCH)
 export HUGO_EDIT_URL ?= https://github.com/cloudposse/docs/blob/$(HUGO_EDIT_BRANCH)
 export HUGO_ARGS ?= --bind 0.0.0.0 --port $(HUGO_PORT) --watch --buildDrafts
-export HUGO_CONFIG ?= config.toml
+export HUGO_CONFIG ?= config.yaml
 export HUGO_PUBLISH_DIR ?= public
 export PACKAGES_VERSION ?= 0.93.0
 export HTMLTEST_LOG_LEVEL ?= 2
@@ -94,13 +94,13 @@ test:
 
 ## Run smoketest
 smoketest:
-	$(DOCKER_RUN) make release hugo/build test HUGO_URL=/ HUGO_CONFIG=test.toml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
+	$(DOCKER_RUN) make release hugo/build test HUGO_URL=/ HUGO_CONFIG=test.yaml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
 
 ## Generate a release config
 release:
-	@[ "$(HUGO_CONFIG)" != "config.toml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
+	@[ "$(HUGO_CONFIG)" != "config.yaml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	@[ "$(HTMLTEST_CONFIG)" != ".htmltest.yml" ] || (echo "Cannot release with $(HTMLTEST_CONFIG)"; exit 1)
-	cat config.toml | \
+	cat config.yaml | \
 		sed 's,^baseURL.*,baseURL = "$(HUGO_URL)",' | \
 		sed 's,^publishDir.*,publishDir = "$(HUGO_PUBLISH_DIR)",' | \
 		sed 's,^editURL.*,editURL = "$(HUGO_EDIT_URL)",' \

@@ -14,7 +14,7 @@ defaults:
     shell: bash +e -x -o pipefail {0}
 
 env:
-  HUGO_CONFIG: deploy.toml
+  HUGO_CONFIG: deploy.yaml
   HTMLTEST_CONFIG: .htmltest.github_actions.yml
   YARN_BUILD_DISABLED: false
   COMPONENTS_BUILD: true
