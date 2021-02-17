@@ -13,7 +13,7 @@ EXPOSE $HUGO_PORT
 
 ARG APT_PACKAGES="python3 python3-pip locales jq"
 RUN apt update && \
-    apt install snapd && \
+    apt install -y snapd && \
     snap install core && \
     snap install yq
 RUN apt-get update && \
