@@ -16,14 +16,14 @@ SweetOps breaks down cloud infrastructure into 4 discrete layers:
 1. **Shared Services**: Your CI/CD pipelines, BeyondCorp solution, and Monitoring and Logging tooling.
 1. **Application**: Your Backend and Frontend Applications.
 
-We delineate between these layers as they have different lifecylces and tools that are responsible for managing them (e.g. Terraform is great for building your Foundational layer, but is not a good solution to manage your Application layer). It's also important to note that as you proceed down the layers, each layer is more likely to change over time: You won't frequently change your AWS VPCs in your Foundational layer or rebuild EKS clusters in your Platform layer, but you might add HashiCorp Vault to your Shared Services to increase your security posture or add a new API microservice to your Application layer.
+We delineate between these layers as they have different Software Development Life Cycles (SDLC) and tools that are responsible for managing them. For example, Terraform is great for building your Foundational layer, but other tools might be better for managing the continuous delivery of the Application layer (e.g. ArgoCD). It's also important to note that each layer builds on the previous. The lower layers are less likely to change over time. At the bottom, you won't frequently change your AWS accounts and VPCs in your Foundational layer, just like when operating a platform you won't be rebuilding EKS clusters in your Platform layer without disrupting all tenants of the platform. You might, however, add HashiCorp Vault to your Shared Services layer to increase your security posture or add a new API microservice to your Application layer. The Application Layer is ultimately the most important layer of them all: it's what drives your business. It's where your applications live, which is why it will change continuously.
 
 ## Components
 
-Components are opinionated, self-contained units of infrastructure as code that solve one, specific problem. SweetOps has two flavors of components:
+Components are opinionated, self-contained units of infrastructure as code that solve one, specific problem or use-case. SweetOps has two flavors of components:
 
 1. **Terraform:** Stand-alone root modules that implement some piece of your infrastructure. For example, typical components might be an EKS cluster, RDS cluster, EFS filesystem, S3 bucket, DynamoDB table, etc. You can find the [full library of SweetOps Terraform components on GitHub](https://github.com/cloudposse/terraform-aws-components).
-1. **Helmfiles**: Stand-alone, applications deployed using `helmfile` and deployed to Kubernetes. For example, typical helmfiles might deploy the DataDog agent, cert-manager controller, nginx-ingress controller, etc. Similarly, the [full library of SweetOps Helmfile components is on GitHub](https://github.com/cloudposse/helmfiles).
+1. **Helmfiles**: Stand-alone, applications deployed using `helmfile` to Kubernetes. For example, typical helmfiles might deploy the DataDog agent, cert-manager controller, nginx-ingress controller, etc. Similarly, the [full library of SweetOps Helmfile components is on GitHub](https://github.com/cloudposse/helmfiles).
 
 One important distinction about components that is worth noting: components are opinionated "root" modules that typically call other child modules. Components are the building-blocks of your infrastructure. This is where you define all the business logic for how to provision some common piece of infrastructure like ECR repos or EKS clusters. Our convention is only stick components in the `components/terraform` directory and to use `modules/` when referring to child modules intended to be called by other components. We do not recommend consuming one terraform component inside of another as that would defeat the purpose; each component is intended to be a loosely coupled unit of IaC with its own lifecycle.
 
@@ -65,7 +65,7 @@ components:
     eks:
       vars:
         cluster_kubernetes_version: "1.19"
-        region_availability_zones: ["us-east-1b", "us-east-1c", "us-east-1d"]
+        region_availability_zones: ["us-west-2b", "us-west-2c", "us-west-1d"]
         public_access_cidrs: ["72.107.0.0/24"]
 
     aurora-postgres:
@@ -98,8 +98,8 @@ components:
 Great, so what can you do with a stack? Stacks are meant to be a language and tool agnostic way to describe infrastructure, but how to use the stack configuration is up to you. SweetOps provides the following ways to utilize stacks today:
 
 1. [atmos](https://github.com/cloudposse/atmos): atmos is a command-line tool that enables CLI-driven stack utilization and supports workflows around `terraform`, `helmfile`, and many other commands.
-1. [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html): By using the [terraform-tfe-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-tfe-cloud-infrastructure-automation) you can provision Terraform Cloud workspaces for each component in your stack.
-1. [Spacelift](https://spacelift.io/): By using the [terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) you can provision Spacelift stacks (our industry loves this word, huh?) for each component in your stack.
+1. [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html): By using the [terraform-tfe-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-tfe-cloud-infrastructure-automation) you can provision Terraform Cloud workspaces for each component in your stack using Continuous Delivery and GitOps.
+1. [Spacelift](https://spacelift.io/): By using the [terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) you can provision Spacelift stacks (our industry loves this word, huh?) for each component in your stack using Continuous Delivery and GitOps.
 
 ## Catalogs
 
@@ -126,4 +126,3 @@ In the landscape of developing infrastructure, there are dozens of tools that we
 Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize atmos, terraform, kubectl, helmfile, AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen `install` commands to get started. It's intended to be used as an interactive cloud automation shell, a base image, or in CI / CD scripting to ensure that all systems are running the same set of versioned, easily accessible tools.
 
 <!-- TODO: Link to How-to on "Using Geodesic" once created. -->
-
