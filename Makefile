@@ -100,15 +100,14 @@ smoketest:
 release:
 	@[ "$(HUGO_CONFIG)" != "config.yaml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	@[ "$(HTMLTEST_CONFIG)" != ".htmltest.yml" ] || (echo "Cannot release with $(HTMLTEST_CONFIG)"; exit 1)
-	cat config.yaml | \
-		sed 's,^baseURL.*,baseURL = "$(HUGO_URL)",' | \
-		sed 's,^publishDir.*,publishDir = "$(HUGO_PUBLISH_DIR)",' | \
-		sed 's,^editURL.*,editURL = "$(HUGO_EDIT_URL)",' \
-		> $(HUGO_CONFIG)
+	if [ "$(yq eval 'select(.editURL)' config.yaml)" ]; then \
+		yq eval '.baseURL = env(HUGO_URL) | .publishDir = env(HUGO_PUBLISH_DIR) | .editURL = env(HUGO_EDIT_URL)' config.yaml \
+			> $(HUGO_CONFIG) \
+	else \
+		yq eval '.baseURL = env(HUGO_URL) | .publishDir = env(HUGO_PUBLISH_DIR)' config.yaml > $(HUGO_CONFIG) \
+	fi
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
-	cat .htmltest.yml | \
-		sed 's,^OutputDir:.*,OutputDir: "/src/.htmltest",' \
-		> $(HTMLTEST_CONFIG)
+	yq eval '.OutputDir = "/src/.htmltest"' .htmltest.yml > $(HTMLTEST_CONFIG)
 	@echo "Wrote $(HTMLTEST_CONFIG) for github actions..."
 
 ## Deploy static site to S3
