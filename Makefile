@@ -97,6 +97,7 @@ smoketest:
 	$(DOCKER_RUN) make release hugo/build test HUGO_URL=/ HUGO_CONFIG=test.yaml HUGO_PUBLISH_DIR=test HTMLTEST_CONFIG=.htmltest.smoketest.yaml
 
 ## Generate a release config
+release: DOCKER_RUN_FLAGS += -e HUGO_CONFIG -e HTLMTEST_CONFIG -e HUGO_URL -e HUGO_PUBLISH_DIR -e HUGO_EDIT_URL
 release:
 	@[ "$(HUGO_CONFIG)" != "config.yaml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	@[ "$(HTMLTEST_CONFIG)" != ".htmltest.yml" ] || (echo "Cannot release with $(HTMLTEST_CONFIG)"; exit 1)
