@@ -1,10 +1,10 @@
 ---
-title: "Core Principles"
-description: "Learn more about the core principles that make up the SweetOps methodology."
+title: "Philosophy"
+description: "Learn more about the core philosophy and principles that make up the SweetOps methodology."
 weight: 2
 ---
 
-SweetOps is built on a foundational set of core principles that ensure the methodology is comprehensive and reusable across organizations. To fully understand what SweetOps is and how to utilize it effectively, it's critical to understand these backing principles.
+SweetOps is built on a foundational philosophy that ensures the methodology is comprehensive and reusable across organizations. To fully understand what SweetOps is and how to utilize it effectively, it's critical to understand the backing principles that define it.
 
 ## 100% Open Source
 
