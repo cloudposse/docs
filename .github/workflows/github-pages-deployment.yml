@@ -1,0 +1,69 @@
+name: github-pages-deployment
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    types:
+    - published
+
+defaults:
+  run:
+    shell: bash +e -x -o pipefail {0}
+
+jobs:
+  github-pages-deploy:
+    name: "Build Hugo Site to GitHub Pages"
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
+    - name: "View github event data"
+      run: cat ${GITHUB_EVENT_PATH}
+    - name: "Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "Build docker image"
+      uses: docker/build-push-action@v2
+      with:
+        tags: cloudposse/docs
+        outputs: type=docker,dest=/tmp/image.tar
+    - name: "Import Image"
+      run: docker load --input /tmp/image.tar
+    - name: "Build Hugo"
+      run: |
+        make lint
+        make release
+        make real-clean hugo/build
+    - name: "Hugo Site Smoketest"
+      run: make real-clean smoketest
+    - name: "Get Version"
+      if: github.event_name == 'release' && github.event.action == 'published'
+      id: version
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          TAGS=${GITHUB_REF#refs/tags/}
+        else
+          TAGS="none"
+        fi
+        echo ::set-output name=tags::${TAGS}
+    - name: "Build Versioned Hugo Release"
+      if: github.event_name == 'release' && github.event.action == 'published'
+      env:
+        HUGO_URL: ${{ env.HUGO_URL }}release/${{ steps.version.outputs.tags }}
+        HUGO_PUBLISH_DIR: public/release/${{ steps.version.outputs.tags }}
+        SEMVERSION_TAG: ${{ steps.version.outputs.tags }}
+      run: |
+        make lint
+        make release
+        sudo chown -R $(whoami):$(whoami) ./themes/cloudposse/node_modules/
+        make real-clean hugo/build
+    - name: "Deploy to GitHub Pages"
+      uses: cloudposse/docs/actions/publish-github-pages@...
+        with:
+          github_pages_branch: docs
+          hugo_config: .github/docs.yaml # should be default
+          content:
+          - docs/
+          - modules/
