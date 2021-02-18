@@ -126,3 +126,17 @@ In the landscape of developing infrastructure, there are dozens of tools that we
 Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize atmos, terraform, kubectl, helmfile, AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen `install` commands to get started. It's intended to be used as an interactive cloud automation shell, a base image, or in CI / CD scripting to ensure that all systems are running the same set of versioned, easily accessible tools.
 
 <!-- TODO: Link to How-to on "Using Geodesic" once created. -->
+
+## Vendoring
+
+Vendoring is a strategy of importing external dependencies into a local source tree or VCS. Many languages (e.g. NodeJS) support the concept. However, there are many other tools which do not address how to do vendoring.
+
+There are a few reasons to do vendoring. Sometimes the tools we use do not support importing external sources. Other times, we need to make sure to have full-control over the the lifecycle or versioning of some code in case the external dependencies go away.
+
+Our current approach to vendoring of thirdparty software dependencies is to use [vendir](https://github.com/vmware-tanzu/carvel-vendir) when needed.
+
+Example use-cases for Vendoring:
+
+1. Terraform is one situation where it’s needed. While terraform supports child modules pulled from remote sources, components (aka root modules) cannot be pulled from remotes.
+1. GitHub Actions do not currently support importing remote workflows. Using `vendir` we can easily import remote workflows.
+
