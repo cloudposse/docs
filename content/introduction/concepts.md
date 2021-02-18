@@ -4,7 +4,7 @@ description: "Learn more about the core concepts and domain model that make up t
 weight: 3
 ---
 
-SweetOps is built on top of a number of high-level concepts and terminology that are critical to understand prior to getting started. In this document, we break down these concepts to help you get a leg up prior to going through your first tutorial.
+SweetOps is built on top of a number of high-level concepts and terminology that are critical to understanding prior to getting started. In this document, we break down these concepts to help you get a leg up prior to going through your first tutorial.
 
 ## Layers
 ![4 Layers of Infrastructure](https://lucid.app/publicSegments/view/dc705e05-cf3e-4e03-9029-acd8c4b4812f/image.png)
