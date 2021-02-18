@@ -100,9 +100,9 @@ smoketest:
 release:
 	@[ "$(HUGO_CONFIG)" != "config.yaml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	@[ "$(HTMLTEST_CONFIG)" != ".htmltest.yml" ] || (echo "Cannot release with $(HTMLTEST_CONFIG)"; exit 1)
-	yq -y '.baseURL = env.HUGO_URL | .publishDir = env.HUGO_PUBLISH_DIR | select(.editURL) .editURL = env.HUGO_EDIT_URL' config.yaml > $(HUGO_CONFIG)
+	$(DOCKER_RUN) yq -y '.baseURL = env.HUGO_URL | .publishDir = env.HUGO_PUBLISH_DIR | select(.editURL) .editURL = env.HUGO_EDIT_URL' config.yaml > $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
-	yq -y '.OutputDir = "/src/.htmltest"' .htmltest.yml > $(HTMLTEST_CONFIG)
+	$(DOCKER_RUN) yq -y '.OutputDir = "/src/.htmltest"' .htmltest.yml > $(HTMLTEST_CONFIG)
 	@echo "Wrote $(HTMLTEST_CONFIG) for github actions..."
 
 ## Deploy static site to S3
