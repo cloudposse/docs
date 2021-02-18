@@ -140,3 +140,10 @@ Example use-cases for Vendoring:
 1. Terraform is one situation where it’s needed. While terraform supports child modules pulled from remote sources, components (aka root modules) cannot be pulled from remotes.
 1. GitHub Actions do not currently support importing remote workflows. Using `vendir` we can easily import remote workflows.
 
+## Generators
+
+Generators in SweetOps are the pattern of producing code or configuration when existing tools have shortcomings that cannot be addressed through standard IaC. This is best explained through our use-cases for generators today:
+
+1. In order to deploy AWS Config rules to every region enabled in an AWS Account, we need to specify a provider block and consume a compliance child module for each region. Unfortunately, [Terraform does not currently support the ability loop over providers](https://github.com/hashicorp/terraform/issues/19932), which results in needing to manually create these provider blocks for each region that we're targeting. On top of that, not every organization uses the same types of accounts so a hardcoded solution is not easily shared. Therefore, to avoid tedious manual work we use the generator pattern to create the `.tf` files which specify a provider block for each module and the corresponding AWS Config child module.
+1. Many tools for AWS work best when profiles have been configured in the AWS Configuration file (`~/.aws/config`). If we’re working with dozens of accounts, keeping this file current on each developer's machine is error prone and tedious. Therefore we use a generator to build this configuration based on the accounts enabled.
+1. Terraform backends do not support interpolation. Therefore, we define the backend configuration in our YAML stack configuration and use `atmos` as our generator to build the backend configuration files for all components.
