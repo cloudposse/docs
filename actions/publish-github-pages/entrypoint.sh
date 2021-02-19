@@ -1,13 +1,13 @@
 # this is the gist of the cloudposse/docs/actions/publish-github-pages
 
-echo $GITHUB_PAGES_BRANCH
-echo $HUGO_CONFIG
-echo $CONTENT
+echo "GH_PAGES: $GITHUB_PAGES_BRANCH"
+echo "HUGO_CONFIG: $HUGO_CONFIG"
+echo "CONTENT: $CONTENT"
 
-GITHUB_PAGES_REPO=github.com/cloudposse/docs.git # or for customer github.com/customer/infrastructure.git
+GITHUB_PAGES_REPO=https://github.com/cloudposse/docs # or for customer github.com/customer/infrastructure.git
 GITHUB_PAGES_BRANCH=production # or for customer, it will be docs
 GITHUB_PAGES_PATH=/tmp/$GITHUB_PAGES_BRANCH/
-HUGO_REPO=github.com/cloudposse/docs.git
+HUGO_REPO=https://github.com/cloudposse/docs
 
 # Checkout the cloudposse/docs as the "Reference docs"
 git clone --branch master $HUGO_REPO hugo/

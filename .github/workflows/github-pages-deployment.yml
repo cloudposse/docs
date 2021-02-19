@@ -61,7 +61,7 @@ jobs:
 #        make real-clean hugo/build
     - name: "Deploy to GitHub Pages"
       uses: ./actions/publish-github-pages
-#      env:
-#        GITHUB_PAGES_BRANCH: production
-#        HUGO_CONFIG: .github/docs.yaml # should be default
-#        CONTENT: docs/,modules/
+      env:
+        GITHUB_PAGES_BRANCH: production
+        HUGO_CONFIG: .github/docs.yaml # should be default
+        CONTENT: docs/,modules/
