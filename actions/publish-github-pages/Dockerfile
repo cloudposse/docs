@@ -1,4 +1,5 @@
-FROM alpine:3.13
+#FROM alpine:3.13
+FROM debian:stretch
 #
 #LABEL maintainer="Cloud Posse <hello@cloudposse.com>"
 #
