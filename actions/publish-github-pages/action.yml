@@ -3,5 +3,5 @@ description: 'Publish the Hugo-based CloudPosse docs website to GitHub Pages.'
 runs:
   using: 'composite'
   steps:
-    - run: entrypoint.sh
+    - run: ./actions/publish-github-pages/entrypoint.sh
       shell: bash
