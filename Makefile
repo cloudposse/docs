@@ -101,12 +101,7 @@ release: DOCKER_RUN_FLAGS += -e HUGO_CONFIG -e HTLMTEST_CONFIG -e HUGO_URL -e HU
 release:
 	@[ "$(HUGO_CONFIG)" != "config.yaml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	@[ "$(HTMLTEST_CONFIG)" != ".htmltest.yml" ] || (echo "Cannot release with $(HTMLTEST_CONFIG)"; exit 1)
-	if [ "$(yq eval 'select(.editURL)' config.yaml)" ]; then \
-		$(DOCKER_RUN) yq eval '.baseURL = env(HUGO_URL) | .publishDir = env(HUGO_PUBLISH_DIR) | .editURL = env(HUGO_EDIT_URL)' config.yaml \
-			> $(HUGO_CONFIG); \
-	else \
-		$(DOCKER_RUN) yq eval '.baseURL = env(HUGO_URL) | .publishDir = env(HUGO_PUBLISH_DIR)' config.yaml > $(HUGO_CONFIG); \
-	fi
+	$(DOCKER_RUN) yq eval '.baseURL = env(HUGO_URL) | .publishDir = env(HUGO_PUBLISH_DIR) | .params.editURL = env(HUGO_EDIT_URL)' config.yaml > $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
 	$(DOCKER_RUN) yq eval '.OutputDir = "/src/.htmltest"' .htmltest.yml > $(HTMLTEST_CONFIG)
 	@echo "Wrote $(HTMLTEST_CONFIG) for github actions..."
