@@ -1,5 +1,7 @@
 name: 'Publish GitHub Pages'
 description: 'Publish the Hugo-based CloudPosse docs website to GitHub Pages.'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - run: entrypoint.sh
+      shell: bash
