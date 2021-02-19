@@ -64,6 +64,4 @@ jobs:
       env:
         GITHUB_PAGES_BRANCH: production
         HUGO_CONFIG: .github/docs.yaml # should be default
-        CONTENT:
-          - docs/
-          - modules/
+        CONTENT: docs/,modules/
