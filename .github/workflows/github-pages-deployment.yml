@@ -60,10 +60,10 @@ jobs:
         sudo chown -R $(whoami):$(whoami) ./themes/cloudposse/node_modules/
         make real-clean hugo/build
     - name: "Deploy to GitHub Pages"
-      uses: cloudposse/docs/actions/publish-github-pages@...
-        with:
-          github_pages_branch: docs
-          hugo_config: .github/docs.yaml # should be default
-          content:
+      uses: cloudposse/docs/actions/publish-github-pages
+      env:
+        GITHUB_PAGES_BRANCH: production
+        HUGO_CONFIG: .github/docs.yaml # should be default
+        CONTENT:
           - docs/
           - modules/

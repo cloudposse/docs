@@ -1,0 +1,7 @@
+name: 'Publish GitHub Pages'
+description: 'Publish the Hugo-based CloudPosse docs website to GitHub Pages.'
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/entrypoint.sh
+      shell: bash
