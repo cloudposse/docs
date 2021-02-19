@@ -6,18 +6,6 @@ weight: 3
 
 SweetOps is built on top of a number of high-level concepts and terminology that are critical to understanding prior to getting started. In this document, we break down these concepts to help you get a leg up prior to going through your first tutorial.
 
-## Layers
-![4 Layers of Infrastructure](https://lucid.app/publicSegments/view/dc705e05-cf3e-4e03-9029-acd8c4b4812f/image.png)
-
-SweetOps breaks down cloud infrastructure into 4 discrete layers:
-
-1. **Foundational**: Your AWS Accounts, VPCs, IAM, and DNS architecture.
-1. **Platform**: Your EKS / ECS Clusters, Load Balancers, IAM Service Accounts, and Certificates.
-1. **Shared Services**: Your CI/CD pipelines, BeyondCorp solution, and Monitoring and Logging tooling.
-1. **Application**: Your Backend and Frontend Applications.
-
-We delineate between these layers as they have different Software Development Life Cycles (SDLC) and tools that are responsible for managing them. For example, Terraform is great for building your Foundational layer, but other tools might be better for managing the continuous delivery of the Application layer (e.g. ArgoCD). It's also important to note that each layer builds on the previous. The lower layers are less likely to change over time. At the bottom, you won't frequently change your AWS accounts and VPCs in your Foundational layer, just like when operating a platform you won't be rebuilding EKS clusters in your Platform layer without disrupting all tenants of the platform. You might, however, add HashiCorp Vault to your Shared Services layer to increase your security posture or add a new API microservice to your Application layer. The Application Layer is ultimately the most important layer of them all: it's what drives your business. It's where your applications live, which is why it will change continuously.
-
 ## Components
 
 Components are opinionated, self-contained units of infrastructure as code that solve one, specific problem or use-case. SweetOps has two flavors of components:
@@ -126,3 +114,24 @@ In the landscape of developing infrastructure, there are dozens of tools that we
 Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize atmos, terraform, kubectl, helmfile, AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen `install` commands to get started. It's intended to be used as an interactive cloud automation shell, a base image, or in CI / CD scripting to ensure that all systems are running the same set of versioned, easily accessible tools.
 
 <!-- TODO: Link to How-to on "Using Geodesic" once created. -->
+
+## Vendoring
+
+Vendoring is a strategy of importing external dependencies into a local source tree or VCS. Many languages (e.g. NodeJS) support the concept. However, there are many other tools which do not address how to do vendoring.
+
+There are a few reasons to do vendoring. Sometimes the tools we use do not support importing external sources. Other times, we need to make sure to have full-control over the the lifecycle or versioning of some code in case the external dependencies go away.
+
+Our current approach to vendoring of thirdparty software dependencies is to use [vendir](https://github.com/vmware-tanzu/carvel-vendir) when needed.
+
+Example use-cases for Vendoring:
+
+1. Terraform is one situation where it’s needed. While terraform supports child modules pulled from remote sources, components (aka root modules) cannot be pulled from remotes.
+1. GitHub Actions do not currently support importing remote workflows. Using `vendir` we can easily import remote workflows.
+
+## Generators
+
+Generators in SweetOps are the pattern of producing code or configuration when existing tools have shortcomings that cannot be addressed through standard IaC. This is best explained through our use-cases for generators today:
+
+1. In order to deploy AWS Config rules to every region enabled in an AWS Account, we need to specify a provider block and consume a compliance child module for each region. Unfortunately, [Terraform does not currently support the ability loop over providers](https://github.com/hashicorp/terraform/issues/19932), which results in needing to manually create these provider blocks for each region that we're targeting. On top of that, not every organization uses the same types of accounts so a hardcoded solution is not easily shared. Therefore, to avoid tedious manual work we use the generator pattern to create the `.tf` files which specify a provider block for each module and the corresponding AWS Config child module.
+1. Many tools for AWS work best when profiles have been configured in the AWS Configuration file (`~/.aws/config`). If we’re working with dozens of accounts, keeping this file current on each developer's machine is error prone and tedious. Therefore we use a generator to build this configuration based on the accounts enabled.
+1. Terraform backends do not support interpolation. Therefore, we define the backend configuration in our YAML stack configuration and use `atmos` as our generator to build the backend configuration files for all components.
