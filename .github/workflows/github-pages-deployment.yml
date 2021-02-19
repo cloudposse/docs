@@ -18,8 +18,8 @@ jobs:
     name: "Build Hugo Site to GitHub Pages"
     runs-on: ubuntu-latest
     steps:
-    - name: "Checkout source code at current commit"
-      uses: actions/checkout@v2
+#    - name: "Checkout source code at current commit"
+#      uses: actions/checkout@v2
 #    - name: "View github event data"
 #      run: cat ${GITHUB_EVENT_PATH}
 #    - name: "Set up Docker Buildx"
