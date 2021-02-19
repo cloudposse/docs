@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 description: "Learn what SweetOps is and who it is for."
-icon: "fa fa-brain"
+weight: 1
 ---
 
 # What is SweetOps?
