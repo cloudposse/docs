@@ -2,8 +2,10 @@
 .envrc
 .env
 deploy.toml
+deploy.yaml
 test
 test.toml
+test.yaml
 .htmltest.*.yaml
 node_modules
 .build-harness
