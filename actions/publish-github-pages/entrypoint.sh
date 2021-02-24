@@ -85,7 +85,7 @@ main() {
     git config --global user.name "github-actions-runner"
     git -C $GITHUB_PAGES_PATH add -A
     git -C $GITHUB_PAGES_PATH commit -a --message 'Updating content to $GIT_REF'
-    #git -C $GITHUB_PAGES_PATH push
+    git -C $GITHUB_PAGES_PATH push
 }
 
 main
