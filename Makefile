@@ -101,9 +101,9 @@ release: DOCKER_RUN_FLAGS += -e HUGO_CONFIG -e HTLMTEST_CONFIG -e HUGO_URL -e HU
 release:
 	@[ "$(HUGO_CONFIG)" != "config.yaml" ] || (echo "Cannot release with $(HUGO_CONFIG)"; exit 1)
 	@[ "$(HTMLTEST_CONFIG)" != ".htmltest.yml" ] || (echo "Cannot release with $(HTMLTEST_CONFIG)"; exit 1)
-	$(DOCKER_RUN) yq eval '.baseURL = env(HUGO_URL) | .publishDir = env(HUGO_PUBLISH_DIR) | .params.editURL = env(HUGO_EDIT_URL)' config.yaml > $(HUGO_CONFIG)
+	$(DOCKER_RUN) yq -M eval '.baseURL = env(HUGO_URL) | .publishDir = env(HUGO_PUBLISH_DIR) | .params.editURL = env(HUGO_EDIT_URL)' config.yaml > $(HUGO_CONFIG)
 	@echo "Wrote $(HUGO_CONFIG) for $(HUGO_URL)..."
-	$(DOCKER_RUN) yq eval '.OutputDir = "/src/.htmltest"' .htmltest.yml > $(HTMLTEST_CONFIG)
+	$(DOCKER_RUN) yq -M eval '.OutputDir = "/src/.htmltest"' .htmltest.yml > $(HTMLTEST_CONFIG)
 	@echo "Wrote $(HTMLTEST_CONFIG) for github actions..."
 
 ## Deploy static site to S3
