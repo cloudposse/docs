@@ -25,7 +25,6 @@ GITHUB_PAGES_PATH=/tmp/$GITHUB_PAGES_BRANCH/
 HUGO_REPO=https://github.com/cloudposse/docs
 
 # Overwritten parameter
-HUGO_PUBLISH_DIR=${GITHUB_PAGES_PATH}${HUGO_PUBLISH_DIR}
 
 #### PROGRAM LOGIC ####
 main() {
@@ -77,6 +76,9 @@ main() {
     # publish the Hugo-generated HTML to $GITHUB_PAGES_PATH
     make release
     make real-clean hugo/build
+    cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PATH}
+    pwd
+    ls -ltha
     
     # commit the newly-generated customer docs website to the customer docs repo
     git config --global user.email "github-actions-runner@cloudposse.com"
