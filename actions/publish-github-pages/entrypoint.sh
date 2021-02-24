@@ -70,8 +70,11 @@ main() {
         done
     done
     
-    # publish the Hugo-generated HTML to $GITHUB_PAGES_PATH
+    # Build Docker image needed to build the Hugo site
     cd ./customer-docs
+    docker build -t cloudposse/docs .
+
+    # publish the Hugo-generated HTML to $GITHUB_PAGES_PATH
     make release
     make real-clean hugo/build
     
