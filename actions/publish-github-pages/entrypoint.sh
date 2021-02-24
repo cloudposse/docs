@@ -47,7 +47,8 @@ main() {
     cp ./hugo/.htmltest.yml ./customer-docs/
     cp ./hugo/Makefile ./customer-docs/
     sed -i 's/yq eval/yq -M eval/' ./customer-docs/Makefile # this can be removed once this branch is merged into master
-    sed -i 's/^export DOCKER_RUN_FLAGS \?= -it --rm$/^export DOCKER_RUN_FLAGS \?= --rm$/' ./customer-docs/Makefile # this can be removed once this branch is merged into master
+    sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ./customer-docs/Makefile # this can be removed once this branch is merged into master
+    cat ./customer-docs/Makefile
     
     # copy all customer documentation into the build folder
     IFS="," read -r -a CONTENT_ARRAY <<< "$CONTENT"
