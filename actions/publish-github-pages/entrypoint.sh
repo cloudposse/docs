@@ -85,7 +85,8 @@ main() {
     git config --global user.name "github-actions-runner"
     git -C $GITHUB_PAGES_PATH add -A
     git -C $GITHUB_PAGES_PATH commit -a --message 'Updating content to $GIT_REF'
-    git -C $GITHUB_PAGES_PATH push
+    echo "$(sed "s/https?:\/\///" <<< ${GITHUB_PAGES_REPO})"
+    git -C $GITHUB_PAGES_PATH push https://${GITHUB_TOKEN}:@$(sed "s/https?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
 }
 
 main
