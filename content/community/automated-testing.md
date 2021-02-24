@@ -5,10 +5,10 @@ description: 'Our automated testing strategy and resources'
 
 ## Terraform Testing
 
-Nearly all of our Terraform modules are updated with automated tests. We have 2 general strategies. First is by running some [`bats`](https://github.com/bats-core/bats-core) tests that do some basic sanity checks. 
-These tests are defined in our [`test-harness`](https://github.com/cloudposse/test-harness) and generally don't require any credentials to run. Since that's the case, they can really only do basic linting and static analysis. 
+Nearly all of our Terraform modules are updated with automated tests. We have 2 general strategies. First is by running some [`bats`](https://github.com/bats-core/bats-core) tests that do some basic sanity checks.
+These tests are defined in our [`test-harness`](https://github.com/cloudposse/test-harness) and generally don't require any credentials to run. Since that's the case, they can really only do basic linting and static analysis.
 
-Then we have some tests which are based on the [`terratest`](https://github.com/gruntwork-io/terratest) library for infrastructure testing that do more in-depth integration tests of module functionality. 
+Then we have some tests which are based on the [`terratest`](https://github.com/gruntwork-io/terratest) library for infrastructure testing that do more in-depth integration tests of module functionality.
 
 ## Philosophy of Testing
 
@@ -24,27 +24,29 @@ Our tests run against some [testing infrastructure](https://github.com/cloudposs
 Our ChatOps is powered by [GitHub Actions](https://github.com/features/actions) and the [slash-dispatch-command](https://github.com/peter-evans/slash-command-dispatch).
 
 The workflow is defined in the [`cloudposse/actions`](https://github.com/cloudposse/actions/blob/master/.github/workflows/test-command.yml) repository. The benefit with this is we have one place to control the testing
-workflow for all of our hundreds of terraform modules. The downside, however, with dispatched workflows is that the _workflows_ always run from the `master` branch. 
+workflow for all of our hundreds of terraform modules. The downside, however, with dispatched workflows is that the _workflows_ always run from the `master` branch.
 
 
 ## ChatOps Usage
 
-To run the tests, you'll need to issue some commands by posting GitHub comments on the PR. Note, only users that have been added to our [`cloudposse`](https://github.com/cloudposse) organization as a contributor are able to run these commands. If you're not a contributor,
-the commands will have no effect and there will be no error messages or warnings.
+To run the tests, you'll need to issue some commands by posting GitHub comments on the PR. You can use any of the following to perform tests or run certain actions:
 
 
-| Command           | Description                                                      |
-| ----------------- | ---------------------------------------------------------------- |
-| `/test bats`      | Run bats automated tests                                         |
-| `/test readme`    | Verify the `README.md` is current and updated from `README.yaml` |
-| `/test terratest` | Run the `terratest` integration tests in `test/src`              |
-| `/test all`       | Run `readme`, `bats`, and `terratest` tests                      |
+| Command                                             | Description                                                                        |
+|-----------------------------------------------------|------------------------------------------------------------------------------------|
+| `/test bats`                                        | Run bats automated tests                                                           |
+| `/test readme`                                      | Verify the `README.md` is current and updated from `README.yaml`                   |
+| `/test terratest`                                   | Run the `terratest` integration tests in `test/src`                                |
+| `/test all`                                         | Run `readme`, `bats`, and `terratest` tests                                        |
+| `/test bats readme`, `/test readme terratest`, etc. | Run any combination of `/test` commands from one comment.                          |
+| `/rebuild-readme`                                   | Run `make init && make readme` on the current code and commit it back to the repo. |
+| `/terraform-fmt`                                    | Run `terraform fmt` on the current code and commit it back to the repo.            |
 
 
 All tests run from the [`cloudposse/actions`](https://github.com/cloudposse/actions/actions) repository.
 
 
-## ChatOps Configuration 
+## ChatOps Configuration
 
 If you're a contributor who wants to intialize one of our terraform modules, this is the process. Note, if a repo has already been configured for chatops, there's no need to proceed with these steps.
 

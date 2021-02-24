@@ -27,34 +27,34 @@ tags:
 - yaml
 ---
 
-# 1Password
+## 1Password
 
 The [1Password for Teams](https://1password.com/teams/) product by AgileBits is argubably the most popular SaaS-based password management tool. In our opinion, it offers a better user experience over apps like LastPass as well as provides integration with [Duo](https://duo.com/docs/1password) and [Slack](https://support.1password.com/slack/) for real-time activity notifications.
 
 <details>
 <summary>More Info</summary>
 
-## Best Practices
+### Best Practices
 
 Here are some of our recommended practices for working with 1Password. If your organization choses an alternative password management solution, we recommend implementing compensating controls.
 
-### Enable Real-time Slack Notifications
+#### Enable Real-time Slack Notifications
 
 With real-time slack notifications, you'll be able to monitor logins for anomalies.
 
 ![Real-time Slack Notifications](/assets/1password-e3bc9e9c.png)
 
-### Duo Integration for MFA
+#### Duo Integration for MFA
 
 Leverage Duo push notifications for MFA. With Duo, you can do full-on geofencing to ensure logins do not come from untrusted locations.
 
 ![Duo Push Notifications](/assets/1password-57e89599.png)
 
-### Create Role-based Teams
+#### Create Role-based Teams
 
 Define teams in terms of roles (E.g. `production-admin`, `staging-admin`, `dns`, `finance`, etc).
 
-### AWS Master Credentials
+#### AWS Master Credentials
 
 We use 1Password to store the AWS Master Account "root" credentials. Share OTP (MFA) codes with trusted admins.
 
@@ -62,14 +62,14 @@ We use 1Password to store the AWS Master Account "root" credentials. Share OTP (
 
 </details>
 
-# AWS CLI
+## AWS CLI
 
 The AWS Command Line Interface (CLI) is a command line tool to manage multiple AWS services and is useful for shell automation using scripts.
 
 <details>
 <summary>Tips & Tricks</summary>
 
-## Delete all versions of objects in an S3 bucket
+### Delete all versions of objects in an S3 bucket
 
 ```
 export BUCKET=foobar
@@ -82,7 +82,7 @@ via: [stackoverflow](https://stackoverflow.com/a/36604650/1237191)
 
 </details>
 
-# AWS Vault
+## AWS Vault
 
 The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
 
@@ -93,7 +93,7 @@ The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [
 `aws-vault` has no relationship to the HashiCorp Vault.
 {{% /dialog %}}
 
-## Features
+### Features
 
 - Encrypted vault for IAM credentials (OSX KeyChain or file)
 - IAM Metadata server (mocks the [EC2 API](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)) to simulate instance profiles for local development
@@ -102,7 +102,7 @@ The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [
 - Compatible with `~/.aws/config`
 - Automatic logins to AWS Web Console
 
-## Local Configuration
+### Local Configuration
 We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](#geodesic) sessions.
 
 Add the following to your `~/.bashrc`:
@@ -149,7 +149,7 @@ $ aws-vault login example-staging-admin
 
 This should open a browser and log you into the AWS console as the assumed role `example-staging-admin`.
 
-## Using with Geodesic
+### Using with Geodesic
 
 `aws-vault` is available in the geodesic shell. To start the shell, run:
 
@@ -157,7 +157,7 @@ This should open a browser and log you into the AWS console as the assumed role 
 $CLUSTER_NAME
 ```
 
-### Add your profile to AWS Vault
+#### Add your profile to AWS Vault
 
 Now we are ready to configure your AWS credentials. To add your AWS credentials to the encrypted vault run the following command. Remember to replace `example` with your source profile name.
 
@@ -165,7 +165,7 @@ Now we are ready to configure your AWS credentials. To add your AWS credentials 
 aws-vault add example
 ```
 
-### Troubleshooting
+#### Troubleshooting
 
 Most problems stem from misconfiguration.
 
@@ -187,7 +187,7 @@ Use `unset` to delete each of the above variables from your environment and ensu
 
 </details>
 
-# Build Harness
+## Build Harness
 
 The `build-harness` is a collection of [Makefiles]({{< relref "reference/tools.md#make" >}}) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
 
@@ -204,7 +204,7 @@ It's 100% Open Source and licensed under [APACHE2]({{< relref "LICENSE.md" >}}).
 <details>
 <summary>More Info</summary>
 
-## Usage
+### Usage
 
 At the top of your `Makefile` add, the following...
 
@@ -222,7 +222,7 @@ Run `make help` for a list of available targets.
 The `/` in target names is interchangeable with the `:` in target names
 {{% /dialog %}}
 
-## Real World Examples
+### Real World Examples
 
 We leverage the `build-harness` in nearly every project on our [GitHub]({{< relref "documentation/our-github.md" >}}).
 
@@ -233,7 +233,7 @@ We leverage the `build-harness` in nearly every project on our [GitHub]({{< relr
 
 </details>
 
-# Chamber
+## Chamber
 
 
 Chamber is a CLI for managing secrets stored
@@ -244,36 +244,36 @@ In the article [The Right Way to Store Secrets using Parameter Store](https://aw
 <details>
 <summary>More Info</summary>
 
-## Usage
+### Usage
 
 Using chamber you can perform all standard CRUD operations on secrets stored in [AWS SSM]({{< relref "glossary/ssm.md" >}}) and execute commands with environment variables populated from the secrets.
 For a complete description, check out the [official documentation](https://github.com/segmentio/chamber#usage).
 
 </details>
 
-# Geodesic
+## Geodesic
 
 ![Geodesic Logo](/assets/638d917-geodesic-small.png)
 
-|              |                                                                                                                                   |
-|:-------------|:----------------------------------------------------------------------------------------------------------------------------------|
-| GitHub Repo  | <https://github.com/cloudposse/geodesic>                                                                                          |
-| Release      | [![Release](https://img.shields.io/github/release/cloudposse/geodesic.svg)](https://github.com/cloudposse/geodesic/releases)      |
-| Build Status | [![Build Status](https://github.com/cloudposse/geodesic/actions?query=workflow%3Adocker)](https://github.com/cloudposse/geodesic) |
+|              |                                                                                                                                                              |
+|:-------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Repo  | <https://github.com/cloudposse/geodesic>                                                                                                                     |
+| Release      | [![Release](https://img.shields.io/github/release/cloudposse/geodesic.svg)](https://github.com/cloudposse/geodesic/releases)                                 |
+| Build Status | [![Build Status](https://github.com/cloudposse/geodesic/workflows/docker/badge.svg)](https://github.com/cloudposse/geodesic/actions?query=workflow%3Adocker) |
 
-## Introduction
+### Introduction
 
-Geodesic is a DevOps Linux Distro that provides a fully customizable framework for defining and building world-class cloud infrastructures backed by [AWS](https://aws.amazon.com/) and powered by [kubernetes](https://kubernetes.io/). It couples best-of-breed technologies with engineering best-practices to equip organizations with the tooling that enables infrastructure to be spun up in record time without compromises.
+Geodesic is our **Docker Based Toolbox**. It's a DevOps Linux Distro distributed as a docker image that has all the essential tools for automation of [AWS](https://aws.amazon.com/), [kubernetes](https://kubernetes.io/), etc. The toolbox can be used as a docker base image in order to ship consistent tooling and we provide packages for all [popular devops tools](https://github.com/cloudposse/packages).
 
 <details>
 <summary>More Info</summary>
-## Demo
+### Demo
 
 {{% asciinema src="/assets/geodesic-demo.cast" autoplay="true" title="Geodesic Demo" %}}
 
 At its core, Geodesic is a DevOps toolkit Linux Distro distributed via Docker for provisioning cloud infrastructure and the applications that sit on top of it. We leverage as many existing tools as possible to facilitate cloud fabrication and administration. Geodesic is like the connective tissue that sits between all of the components of a modern cloud.
 
-## Technologies
+### Technologies
 
 | Tool                                                                 | Purpose                                                                                                                     |
 |:---------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------|
@@ -289,7 +289,7 @@ At its core, Geodesic is a DevOps toolkit Linux Distro distributed via Docker fo
 | [`turf`](https://github.com/cloudposse/turf)                         | for orchestrating automation tasks that are difficult to automate via IaC                                                   |
 
 
-## Our Logo
+### Our Logo
 
 In mathematics, a geodesic line is the shortest distance between two points on a sphere. It's also a solid structure composed of geometric shapes such as hexagons.
 
@@ -299,7 +299,7 @@ But look a little closer and you'll notice there's much more to it. It's also an
 
 </details>
 
-# Gomplate
+## Gomplate
 
 {{< img src="/assets/gomplate-5869374e.png" title="Gomplate Logo" class="logo" >}}
 
@@ -308,7 +308,7 @@ A flexible commandline tool for template rendering. Supports lots of local and r
 <details>
 <summary>More Info</summary>
 
-## Why Gomplate?
+### Why Gomplate?
 
 The Go progamming language supports [native templating](https://golang.org/pkg/text/template/). The problem is that there aren't very many functions supported out-of-the-box and it cannot be called from the command line.
 
@@ -317,20 +317,20 @@ additional template data-sources such as: JSON, YAML, and even AWS EC2 metadata.
 
 We love `envsubst` for its super-minimalist template processing, but sometimes more advanced templating with conditions is necessary. We use `gomplate` to parameterize a number of critical files across our architectures. Gomplate is an alternative to `envsubst` that provides some useful built-in functions to make templates even more expressive.
 
-## References
+### References
 
 - [Official Documentation](https://docs.gomplate.ca/)
 
 </details>
 
-# Goofys
+## Goofys
 
 [Goofys](https://github.com/kahing/goofys) a high-performance, POSIX-ish Amazon S3 file system written in Go. We use `goofys` as part of [Geodesic](#geodesic) to provide our own S3 filesystem interface for mounting buckets securely inside a container for the purpose of storing master SSH keys needed by EC2 instances.
 
 <details>
 <summary>More Info</summary>
 
-## Why Goofys?
+### Why Goofys?
 
 Goofys is similar to the original [`s3fs`](https://github.com/s3fs-fuse/s3fs-fuse) FUSE filesystem, but written in Golang and much, much faster. Also, it works seamlessly with EC2 instance profiles for assumed-roles, which `s3fs-fuse` does not support as of `v1.82`.
 
@@ -338,7 +338,7 @@ The reason why `goofys` is faster is that it implements a subset of the POSIX fi
 
 </details>
 
-# Helm
+## Helm
 
 {{< img src="/assets/helm-d7685fec.png" title="Helm Logo" class="logo tool-logo" >}}
 
@@ -347,7 +347,7 @@ Helm makes it easy to install `charts` (an application) on kubernetes clusters. 
 <details>
 <summary>Tips and Tricks</summary>
 
-## Delete All Releases in Namespace
+### Delete All Releases in Namespace
 
 To delete all helm releases in `NAMESPACE`, run the following command:
 ```
@@ -366,7 +366,7 @@ kubectl delete namespace $NAMESPACE
 
 </details>
 
-# Helmfile
+## Helmfile
 
 We use `helmfile` to deploy collections of charts. The `helmfile.yaml` is a declarative configuration file that makes it easier to deploy and manage a large number of helm charts.
 
@@ -377,7 +377,7 @@ Another way to think about it is like this:
 <details>
 <summary>More Info</summary>
 
-## Features
+### Features
 
 - **12-Factor Style Configurations** - Parameterize all charts using Environment Variables
 - **Inline `values.yaml`** - Maintain changes to chart configurations in version control
@@ -386,12 +386,12 @@ Another way to think about it is like this:
 - **Synchronize Environments**  - Rapidly deploy or update all services for a cluster
 - **Go Templating** - Configuration is templatized using [Go template](https://godoc.org/text/template) and supports all the [Sprig](https://godoc.org/github.com/Masterminds/sprig) intepolation functions.
 
-## Use-cases
+### Use-cases
 
 - We recommend using a `helmfile` anywhere you need to deploy a helm chart. This is because `helm` does not support environment variables out-of-the-box.
 - The `helmfile` reduces the need for complex umbrella charts that are more difficult to manage.
 
-## Dependencies
+### Dependencies
 
 Helmfile depends on the following `cli` tools.
 
@@ -406,19 +406,19 @@ Prior to using `helmfile`, you'll need a valid `kubectl` context.
 
 Alternatively, set the `KUBE_CONTEXT` when using `helmfile` with a Codefresh pipeline.
 
-## Configuration File
+### Configuration File
 
 The `helmfile.yaml` is a [go-template](https://golang.org/pkg/text/template/) formatted "YAML" file. Note, this means that it is first evaluated as a plain-text go-template before getting processed as YAML. It essential that the go-template result in well-formed YAML with properly escaped values.
 
 For complete examples, review our comprehensive distribution of [helmfiles](https://github.com/cloudposse/helmfiles/tree/master/releases).
 
-## Example `helmfile.yaml`
+### Example `helmfile.yaml`
 
 Here's an example `helmfile.yaml`. Note that it's possible to use conditionals (e.g. `if` / `else`).
 
 {{% include-code-block title="Helmfile Example" file="reference/examples/helmfile.yaml" language="yaml" %}}
 
-## Environment Variables
+### Environment Variables
 
 There are two options for retrieving environment variables.
 
@@ -437,7 +437,7 @@ The other option is to call `requiredEnv`. This method is not recommended.
 This will throw an exception if the environment variable (`POSTGRES_USER`) is not set. While this sounds like a great feature, it's actually problematic because sometimes we only want to `sync` a particular chart using the `--selector` argument. In this case, we shouldn't need to set all environment variables - only the ones relevant to the chart we're installing. If the `helmfile.yaml` is using `requiredEnv`, all those environment variables will need to be defined. For this reason, we do not recommend using `requiredEnv.
 
 
-## Default Values
+### Default Values
 
 ```
 {{ env "POSTGRES_USER" | default "postgres" }}
@@ -449,17 +449,17 @@ An alternative way to express this is with the `coalesce` function (Sprig functi
 {{ coalesce (env "POSTGRES_USER") "postgres" }}
 ```
 
-## Arguments
+### Arguments
 
 {{% include-code-block title="Helmfile Usage" file="reference/examples/helmfile-usage.txt" %}}
 
 
 
-## Example: Sync All Charts
+### Example: Sync All Charts
 
 To deploy all charts defined in the `helmfile.yaml`, simply run `helmfile sync`. Typically, we do not run this, however, because a `helmfile.yaml` will define many more charts than installed on the cluster.
 
-## Example: Sync Specific Charts
+### Example: Sync Specific Charts
 
 A `helmfile.yaml` may contain dozens of charts. To target specific charts, just pass the `--selector` argument to `helmfile`. Multiple label constraints can be specified by concatenating them with a `,` (comma). This works like a logical "and".
 
@@ -482,7 +482,7 @@ To sync all default charts *or* `chartmuseum`, we would run:
 helmfile --selector 'default=true' --selector 'chart=chartmuseum' sync
 ```
 
-## Example: Helmfile with Chamber
+### Example: Helmfile with Chamber
 
 We prefer to use SSM as the system of record for all secrets. To export those secrets as environment variables for usage with helm, run the following command:
 
@@ -490,7 +490,7 @@ We prefer to use SSM as the system of record for all secrets. To export those se
 chamber exec $service -- helmfile sync
 ```
 
-## References
+### References
 
 - [Official Helmfile documentation](https://github.com/roboll/helmfile)
 - [Sprig functions documentation](http://masterminds.github.io/sprig/)
@@ -498,7 +498,7 @@ chamber exec $service -- helmfile sync
 
 </details>
 
-# Hugo
+## Hugo
 
 {{< img src="/assets/hugo-7303d89d.png" title="Hugo Static Site Generator" class="logo tool-logo"  >}}
 
@@ -506,11 +506,11 @@ chamber exec $service -- helmfile sync
 
 What we like about it is that it's written in Go, speaks "markdown" and uses Go-templates for rendering all pages.
 
-# Kubectl
+## Kubectl
 
 `kubectl` is the command line tool (cli) for running commands against Kubernetes clusters. Think of it like the AWS CLI to Kubernetes clusters.
 
-# Make
+## Make
 
 The `make` command has been around for decades. Predominantly, it was used to build complex projects in C & C++, but it's seen a resurgence in the ops world for automating routine tasks and orchestration of infrastructure-as-code. In the 12-factor pattern, these are your “admin tasks”.
 
@@ -519,7 +519,7 @@ The `make` command has been around for decades. Predominantly, it was used to bu
 <details>
 <summary>More Info</summary>
 
-## Understanding Makefiles
+### Understanding Makefiles
 
 Because `make` is a very simple language, there's not very much you need to learn to get started. Some things, however, might seem unintuitive when approaching it from the perspective of other languages. Namely, `make` is really a template engine that renders “stubs” and then executes those stubs in a shell. Environment variables can be considered as the arguments to those targets.
 
@@ -528,7 +528,7 @@ The reason for using `make` is that it's supposed to be less magical. It's such 
 On the other hand, something like `bash` is more full-featured, but suffers from some of the early criticisms of PHP. Most shell-scripts suck. They don't check exit codes. They don't accept arguments in consistent fashion. They don't use environment variables. They hardcode settings. They end up looking like spaghetti.
 
 
-## Variables
+### Variables
 
 Part of the confusion around make is that make variables (e.g. `$(FOO)`) resemble shell-like variables (e.g. `$FOO` or `${FOO}`).  Note, that in bash using  `$(....)` is synonymous using ``...`` (which will run the command).
 
@@ -548,7 +548,7 @@ FOO=bar
 
 It's important to note that everything after the = is treated literally. Thus quotes (“) are not necessary, unlike in bash.
 
-## Built-in Functions
+### Built-in Functions
 
 There are many built-in functions. A few of the most common uses are explained below.
 
@@ -562,23 +562,23 @@ This will run the command “/bin/ls” and output the results. Results always h
 
 This will evaluate the “`FOO=bar`” as “`make`” language formatted code. In this case, since “`FOO=bar`” is how a variable is defined, the result is that a variable named `FOO` gets set to bar in the global make namespace.
 
-## Macros
+### Macros
 
 TBD
 
 
-## Targets
+### Targets
 
 Targets are like “functions”. They can run any shell command. Those shell commands can be other scripts or apps like terraform or system commands. The `make` command is basically a “`bash`” template engine: every line of a make target is a one-line shell script. Think of the contents of a target as “stubs” or “scriptlets”.
 
 
-### Make Evaluation
+#### Make Evaluation
 
 1. Treat entire target contents as a template
 2. Render all variables, functions and macros
 3. Then execute each line as a standalone shell script, which is executed in a sub-shell (`/bin/bash`` -c “......”`)
 
-### Defintion
+#### Defintion
 
 
 There are 3 ways target names can be defined.
@@ -592,7 +592,7 @@ install-%:
     brew install $(subst,install-,)
 ```
 
-### Dependencies
+#### Dependencies
 
 Targets require other targets. Just add those targets after the colon (`:`)
 
@@ -632,12 +632,12 @@ example\:broken:
     @make example:text
 ```
 
-## Examples
+### Examples
 
 Below are some annotated examples with explanations of what's going on.
 
 
-### **Example 1**
+#### **Example 1**
 
 
 The basisc syntax is like this:
@@ -685,7 +685,7 @@ Make then executes the following
 Note, by default, make will output each command run. This can be turned off by adding an @ at the beginning of the lines.
 This is a make-ism and nothing to do with shell. Remember, make is really just a template language.
 
-### **Example 2**
+#### **Example 2**
 
 
 Now that we've explained how commands are executed, let's introduce a more complicated example that uses `$(eval ...)`
@@ -729,7 +729,7 @@ Here's what our template looks like:
 9. And finally, we see something on our terminal:
     `Today is: ''`
 
-### **Example 3**
+#### **Example 3**
 
 
 Here's another example that demonstrates how literally these templates are interpretted.
@@ -749,10 +749,10 @@ Thus, to avoid this unnecessary execution, it's recommend to place all comments 
 
 ```
 foobar:
-#    @echo "Hello"
+##    @echo "Hello"
 ```
 
-### **Example 4**
+#### **Example 4**
 
 
 Here's an example of a multi-line bash script
@@ -770,7 +770,7 @@ foobar:
 
 Here we execute in a single bash execution, the inline script above. Note that all the line endings use a combination of `;` and `\` depending on context.
 
-### **Example 5**
+#### **Example 5**
 
 ```
 foobar:
@@ -794,14 +794,14 @@ foobar:
 
 </details>
 
-# Packages
+## Packages
 
 ["Packages"](https://github.com/cloudposse/packages) is the Cloud Posse distribution of native apps. Use this repo to easily install binary releases of popular apps such as all of our standard tools mentioned in this doc. This is useful for inclusion into a Dockerfile to install dependencies.
 
 <details>
 <summary>More Info</summary>
 
-## Usage
+### Usage
 
 Clone the repo.
 ```
@@ -842,7 +842,7 @@ Uninstall a specific package
 make -C uninstall yq
 ```
 
-## Makefile Inclusion
+### Makefile Inclusion
 
 Sometimes it's necessary to install some binary dependencies when building projects. For example, we frequently
 rely on `gomplate` or `helm` to build chart packages.
@@ -877,11 +877,11 @@ Here's a [real example](https://github.com/cloudposse/build-harness/blob/0.5.5/m
 </details>
 
 
-# Teleport
+## Teleport
 
 [Teleport](https://goteleport.com/) is a BeyondCorp solution to provide the unified access plane for infrastructure.
 
-# Terraform
+## Terraform
 
 We use `terraform` as one of our most central tools for automating infrastructure. It's the predominate, cloud agnostic [Infrastructure as Code (IaC)](https://en.wikipedia.org/wiki/Infrastructure_as_code) tool. We leverage `terraform` wherever possible to create composable, automated infrastructure architectures.
 

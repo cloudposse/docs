@@ -27,6 +27,11 @@ enableEmoji = true
 # weight = 2
 # languageName = "Français"
 
+# This is needed to support using raw HTML in our Markdown.
+# See https://discourse.gohugo.io/t/raw-html-getting-omitted-in-0-60-0/22032
+[markup.goldmark.renderer]
+unsafe = true
+
 [taxonomies]
   category = "categories"
   tag = "tags"
