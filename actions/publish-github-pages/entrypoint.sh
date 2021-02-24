@@ -75,8 +75,8 @@ main() {
     make real-clean hugo/build
     
     # commit the newly-generated customer docs website to the customer docs repo
-    git config user.email "github-actions-runner@cloudposse.com"
-    git config user.name "github-actions-runner"
+    git config --global user.email "github-actions-runner@cloudposse.com"
+    git config --global user.name "github-actions-runner"
     git -C $GITHUB_PAGES_PATH add -A
     git -C $GITHUB_PAGES_PATH commit -a --message 'Updating content to $GIT_REF'
     #git -C $GITHUB_PAGES_PATH push
