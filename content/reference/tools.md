@@ -263,7 +263,7 @@ For a complete description, check out the [official documentation](https://githu
 
 ### Introduction
 
-Geodesic is our **Docker Based Toolbox**. It's aDevOps Linux Distro that provides a fully customizable framework for defining and building world-class cloud infrastructures backed by [AWS](https://aws.amazon.com/) and powered by [kubernetes](https://kubernetes.io/). It couples best-of-breed technologies with engineering best-practices to equip organizations with the tooling that enables infrastructure to be spun up in record time without compromises.
+Geodesic is our **Docker Based Toolbox**. It's a DevOps Linux Distro distributed as a docker image that has all the essential tools for automation of [AWS](https://aws.amazon.com/), [kubernetes](https://kubernetes.io/), etc. The toolbox can be used as a docker base image in order to ship consistent tooling and we provide packages for all [popular devops tools](https://github.com/cloudposse/packages).
 
 <details>
 <summary>More Info</summary>
