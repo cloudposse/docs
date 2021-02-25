@@ -68,3 +68,4 @@ jobs:
         CONTENT: docs/,modules/
         HTMLTEST_CONFIG: .htmltest.new.yml # this variable is the output location, not the input template location
         HUGO_PUBLISH_DIR: docs
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

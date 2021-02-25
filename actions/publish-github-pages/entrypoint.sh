@@ -88,6 +88,8 @@ main() {
     echo "$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO})"
     #git -C $GITHUB_PAGES_PATH push https://${GITHUB_TOKEN}:@$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
     git -C $GITHUB_PAGES_PATH push <<< ${GITHUB_TOKEN}
+    #remote_repo="https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
+    #git push "${remote_repo}" HEAD:${INPUT_BRANCH} --follow-tags $_FORCE_OPTION $_TAGS;
 }
 
 main
