@@ -22,7 +22,7 @@
 # HTMLTEST_CONFIG=.htmltest.config.new
 
 # Hardcoded parameters:
-GITHUB_PAGES_PULL_PATH=/tmp/$GITHUB_PAGES_BRANCH/ # This will contain the master branch of GITHUB_PAGES_REPO.
+GITHUB_PAGES_PULL_PATH=/tmp/master/ # This will contain the master branch of GITHUB_PAGES_REPO.
 GITHUB_PAGES_PUSH_PATH=/tmp/$GITHUB_PAGES_BRANCH/ # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
 HUGO_REPO=https://github.com/cloudposse/docs
 
