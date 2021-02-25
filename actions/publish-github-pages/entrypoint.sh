@@ -4,10 +4,11 @@
 #
 # #### PARAMETERS ####
 # Input parameters:
-# GITHUB_PAGES_REPO - customer's repo containing documentation and setup to deploy to GitHub Pages
+# GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
 # GITHUB_PAGES_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
-# HUGO_PUBLISH_DIR - directory in the customer's repo that GitHub Pages will deploy from
 # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
+# HUGO_URL - URL of the Hugo site after deployment
+# HUGO_PUBLISH_DIR - directory in the customer's repo that GitHub Pages will deploy from
 # HUGO_REPO - CloudPosse repository containing Hugo infrastructure
 # HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
 # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
@@ -15,8 +16,9 @@
 # Example parameter values:
 # GITHUB_PAGES_REPO=https://github.com/cloudposse/docs # or for customer github.com/customer/infrastructure.git
 # GITHUB_PAGES_BRANCH=production # or for customer, it will be docs
-# HUGO_PUBLISH_DIR=public
 # CONTENT=docs,content
+# HUGO_URL=cloudposse.github.io/docs
+# HUGO_PUBLISH_DIR=public
 # HUGO_REPO=https://github.com/cloudposse/docs
 # HUGO_CONFIG=hugo.config.new
 # HTMLTEST_CONFIG=.htmltest.config.new
