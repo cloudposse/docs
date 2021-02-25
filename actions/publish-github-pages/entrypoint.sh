@@ -1,7 +1,8 @@
+#!/bin/bash
 #
 # entrypoint.sh
 #
-#### PARAMETERS ####
+# #### PARAMETERS ####
 # Input parameters:
 # GITHUB_PAGES_REPO - customer's repo containing documentation and setup to deploy to GitHub Pages
 # GITHUB_PAGES_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
@@ -21,19 +22,19 @@
 # HTMLTEST_CONFIG=.htmltest.config.new
 
 # Hardcoded parameters:
-GITHUB_PAGES_PATH=/tmp/$GITHUB_PAGES_BRANCH/
+GITHUB_PAGES_PULL_PATH=/tmp/$GITHUB_PAGES_BRANCH/ # This will contain the master branch of GITHUB_PAGES_REPO.
+GITHUB_PAGES_PUSH_PATH=/tmp/$GITHUB_PAGES_BRANCH/ # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
 HUGO_REPO=https://github.com/cloudposse/docs
 
-# Overwritten parameter
-
-#### PROGRAM LOGIC ####
+# #### PROGRAM LOGIC ####
 main() {
     # Checkout the cloudposse/docs as the "Reference docs"
     git clone $HUGO_REPO hugo/
-    git clone --branch $GITHUB_PAGES_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PATH
+    git clone $GITHUB_PAGES_REPO $GITHUB_PAGES_PULL_PATH
+    git clone --branch $GITHUB_PAGES_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PUSH_PATH
     
-    # create a separate build folder like cloudposse/docs
-    # The rest of the program basically assumes HUGO_REPO=https://github.com/cloudposse/docs.
+    # create a separate build folder, customer-docs, and populate it with the essential files from HUGO_REPO
+    # (The rest of the program basically assumes HUGO_REPO=https://github.com/cloudposse/docs.)
     mkdir customer-docs
     cp -r ./hugo/tasks/ ./customer-docs/
     cp -r ./hugo/themes/ ./customer-docs/
@@ -45,9 +46,9 @@ main() {
     cp ./hugo/config.yaml ./customer-docs/
     cp ./hugo/.htmltest.yml ./customer-docs/
     cp ./hugo/Makefile ./customer-docs/
+    # The following two lines can be removed once this branch is merged into master
     sed -i 's/yq eval/yq -M eval/' ./customer-docs/Makefile # this can be removed once this branch is merged into master
-    sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ./customer-docs/Makefile # this can be removed once this branch is merged into master
-    cat ./customer-docs/Makefile
+    sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ./customer-docs/Makefile
     
     # copy all customer documentation into the build folder
     IFS="," read -r -a CONTENT_ARRAY <<< "$CONTENT"
@@ -55,12 +56,12 @@ main() {
         # clear files needed for storing intermediate variables
         rm file_origins.txt file_destinations.txt
         # rename all `README.md` to `_index.md`
-        find ${GITHUB_PAGES_PATH}${content} -type f -name README.md -print0 | xargs --null -I{} bash -c 'mv {} $(dirname {})/_index.md'
+        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name README.md -print0 | xargs --null -I{} bash -c 'mv {} $(dirname {})/_index.md'
         # categories with no subfolders, and only a single `_index.md`: `mv foobar/_index.md foobar.md`
-        find ${GITHUB_PAGES_PATH}${content} -type f -name _index.md -print0 | xargs --null -I{} bash -c 'if [ "$(ls -1q $(dirname {}) | wc -l)" == "1" ]; then echo "$(dirname {})"; mv {} $(dirname $(dirname {}))/$(basename $(dirname {})).md; rm -r $(dirname {}); ls $(dirname $(dirname {})); fi'
+        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name _index.md -print0 | xargs --null -I{} bash -c 'if [ "$(ls -1q $(dirname {}) | wc -l)" == "1" ]; then echo "$(dirname {})"; mv {} $(dirname $(dirname {}))/$(basename $(dirname {})).md; rm -r $(dirname {}); ls $(dirname $(dirname {})); fi'
         # install the customer docs (.md pages) to the content folder
-        find ${GITHUB_PAGES_PATH}${content} -type f -name "*.md" >> file_origins.txt
-        find ${GITHUB_PAGES_PATH}${content} -type f -name "*.md" -print0 | xargs --null -I{} bash -c 'echo "./customer-docs/content/{}"' | sed -e "s|$GITHUB_PAGES_PATH||" >> file_destinations.txt
+        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" >> file_origins.txt
+        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" -print0 | xargs --null -I{} bash -c 'echo "./customer-docs/content/{}"' | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
         readarray -t FILE_ORIGINS < file_origins.txt
         readarray -t FILE_DESTINATIONS < file_destinations.txt
         for i in "${!FILE_ORIGINS[@]}"; do
@@ -76,20 +77,14 @@ main() {
     # publish the Hugo-generated HTML to $GITHUB_PAGES_PATH
     make release
     make real-clean hugo/build
-    cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PATH}
-    pwd
-    ls -ltha
+    cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
     
     # commit the newly-generated customer docs website to the customer docs repo
     git config --global user.email "github-actions-runner@cloudposse.com"
     git config --global user.name "github-actions-runner"
-    git -C $GITHUB_PAGES_PATH add -A
-    git -C $GITHUB_PAGES_PATH commit -a --message 'Updating content to $GIT_REF'
-    echo "$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO})"
-    git -C $GITHUB_PAGES_PATH push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
-    #git -C $GITHUB_PAGES_PATH push <<< ${GITHUB_TOKEN}
-    #remote_repo="https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
-    #git push "${remote_repo}" HEAD:${INPUT_BRANCH} --follow-tags $_FORCE_OPTION $_TAGS;
+    git -C $GITHUB_PAGES_PUSH_PATH add -A
+    git -C $GITHUB_PAGES_PUSH_PATH commit -a --message 'Updating content to $GIT_REF'
+    git -C $GITHUB_PAGES_PUSH_PATH push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
 }
 
 main
