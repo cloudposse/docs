@@ -26,7 +26,7 @@ jobs:
         GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
         GITHUB_PAGES_BRANCH: production
         CONTENT:
-        HUGO_URL: https://cloudposse.github.io
+        HUGO_URL: https://cloudposse.github.io/docs
         HUGO_PUBLISH_DIR: docs
         HUGO_CONFIG: hugo.config.new.yml # this variable is the output location, not the input template location
         HTMLTEST_CONFIG: .htmltest.new.yml # this variable is the output location, not the input template location
