@@ -2,43 +2,43 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>docker on Cloud Posse Developer Hub</title>
-    <link>http://localhost.cloudposse.com:1313/tags/docker/</link>
+    <link>cloudposse.github.io/docs/tags/docker/</link>
     <description>Recent content in docker on Cloud Posse Developer Hub</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost.cloudposse.com:1313/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="cloudposse.github.io/docs/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker Compose</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/docker-compose/</link>
+      <link>cloudposse.github.io/docs/glossary/docker-compose/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/docker-compose/</guid>
+      <guid>cloudposse.github.io/docs/glossary/docker-compose/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker Image</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/docker-image/</link>
+      <link>cloudposse.github.io/docs/glossary/docker-image/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/docker-image/</guid>
+      <guid>cloudposse.github.io/docs/glossary/docker-image/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker Registry</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/docker-registry/</link>
+      <link>cloudposse.github.io/docs/glossary/docker-registry/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/docker-registry/</guid>
+      <guid>cloudposse.github.io/docs/glossary/docker-registry/</guid>
       <description>It works together with the docker push and docker pull commands for standard CRUD operations.</description>
     </item>
     
     <item>
       <title>Docker Tips &amp; Tricks</title>
-      <link>http://localhost.cloudposse.com:1313/reference/best-practices/docker-tips-tricks/</link>
+      <link>cloudposse.github.io/docs/reference/best-practices/docker-tips-tricks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/reference/best-practices/docker-tips-tricks/</guid>
+      <guid>cloudposse.github.io/docs/reference/best-practices/docker-tips-tricks/</guid>
       <description>Here&amp;rsquo;s a collection of some nice little hacks for docker. A lot of them are related to house keeping.
 Docker Stats Produce console stats for all running containers (e.g. like top):
 docker stats $(docker ps --format=&#39;{{.Names}}&#39; Remove all stopped containers docker rm $(docker ps -a -q) Remove all untagged images docker images -q --filter &amp;quot;dangling=true&amp;quot; | xargs docker rmi Prune everything The docker system prune command is a shortcut that prunes images, containers, and networks.</description>
@@ -46,37 +46,37 @@ docker stats $(docker ps --format=&#39;{{.Names}}&#39; Remove all stopped contai
     
     <item>
       <title>Dockerfile</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/dockerfile/</link>
+      <link>cloudposse.github.io/docs/glossary/dockerfile/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/dockerfile/</guid>
+      <guid>cloudposse.github.io/docs/glossary/dockerfile/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Elastic Container Registry (ECR)</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/ecr/</link>
+      <link>cloudposse.github.io/docs/glossary/ecr/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/ecr/</guid>
+      <guid>cloudposse.github.io/docs/glossary/ecr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kubernetes</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/kubernetes/</link>
+      <link>cloudposse.github.io/docs/glossary/kubernetes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/kubernetes/</guid>
+      <guid>cloudposse.github.io/docs/glossary/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sidekick Containers</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/sidekick-containers/</link>
+      <link>cloudposse.github.io/docs/glossary/sidekick-containers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/sidekick-containers/</guid>
+      <guid>cloudposse.github.io/docs/glossary/sidekick-containers/</guid>
       <description>Examples of common sidekick containers are for service discovery or loading fixtures into a development database.</description>
     </item>
     

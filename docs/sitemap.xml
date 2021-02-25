@@ -2,618 +2,618 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost.cloudposse.com:1313/fundamentals/</loc>
+    <loc>cloudposse.github.io/docs/fundamentals/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/fundamentals/introduction/</loc>
+    <loc>cloudposse.github.io/docs/fundamentals/introduction/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/fundamentals/philosophy/</loc>
+    <loc>cloudposse.github.io/docs/fundamentals/philosophy/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tutorials/</loc>
+    <loc>cloudposse.github.io/docs/tutorials/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/fundamentals/concepts/</loc>
+    <loc>cloudposse.github.io/docs/fundamentals/concepts/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/howto/</loc>
+    <loc>cloudposse.github.io/docs/howto/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/</loc>
+    <loc>cloudposse.github.io/docs/reference/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/community/</loc>
+    <loc>cloudposse.github.io/docs/community/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/documentation/standards/</loc>
+    <loc>cloudposse.github.io/docs/documentation/standards/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/.editorconfig/</loc>
+    <loc>cloudposse.github.io/docs/tags/.editorconfig/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/.env/</loc>
+    <loc>cloudposse.github.io/docs/tags/.env/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/12-factor/</loc>
+    <loc>cloudposse.github.io/docs/glossary/12-factor/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/12-factor/</loc>
+    <loc>cloudposse.github.io/docs/tags/12-factor/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/acl/</loc>
+    <loc>cloudposse.github.io/docs/tags/acl/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/agreement/</loc>
+    <loc>cloudposse.github.io/docs/tags/agreement/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/alert-escalations/</loc>
+    <loc>cloudposse.github.io/docs/tags/alert-escalations/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/acm/</loc>
+    <loc>cloudposse.github.io/docs/glossary/acm/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ami/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ami/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ssm/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ssm/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/anti-pattern/</loc>
+    <loc>cloudposse.github.io/docs/glossary/anti-pattern/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/documentation/question/</loc>
+    <loc>cloudposse.github.io/docs/documentation/question/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/audit-logs/</loc>
+    <loc>cloudposse.github.io/docs/tags/audit-logs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/automated-deployments/</loc>
+    <loc>cloudposse.github.io/docs/tags/automated-deployments/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/community/automated-testing/</loc>
+    <loc>cloudposse.github.io/docs/community/automated-testing/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/availability-zone/</loc>
+    <loc>cloudposse.github.io/docs/glossary/availability-zone/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/aws/</loc>
+    <loc>cloudposse.github.io/docs/glossary/aws/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/aws/</loc>
+    <loc>cloudposse.github.io/docs/tags/aws/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/aws-cli/</loc>
+    <loc>cloudposse.github.io/docs/tags/aws-cli/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/aws-vault/</loc>
+    <loc>cloudposse.github.io/docs/glossary/aws-vault/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/bad-practice/</loc>
+    <loc>cloudposse.github.io/docs/tags/bad-practice/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/bastion/</loc>
+    <loc>cloudposse.github.io/docs/glossary/bastion/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/bastion/</loc>
+    <loc>cloudposse.github.io/docs/tags/bastion/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/best-practices/</loc>
+    <loc>cloudposse.github.io/docs/tags/best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/best-practices/</loc>
+    <loc>cloudposse.github.io/docs/glossary/best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/best-practice/</loc>
+    <loc>cloudposse.github.io/docs/tags/best-practice/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/beyondcorp/</loc>
+    <loc>cloudposse.github.io/docs/glossary/beyondcorp/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/build-harness/</loc>
+    <loc>cloudposse.github.io/docs/glossary/build-harness/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/business-logic/</loc>
+    <loc>cloudposse.github.io/docs/glossary/business-logic/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/categories/</loc>
+    <loc>cloudposse.github.io/docs/categories/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/cattle/</loc>
+    <loc>cloudposse.github.io/docs/tags/cattle/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/cdn/</loc>
+    <loc>cloudposse.github.io/docs/tags/cdn/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/chamber/</loc>
+    <loc>cloudposse.github.io/docs/glossary/chamber/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/chamber/</loc>
+    <loc>cloudposse.github.io/docs/tags/chamber/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/change-control/</loc>
+    <loc>cloudposse.github.io/docs/tags/change-control/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/change-control/</loc>
+    <loc>cloudposse.github.io/docs/glossary/change-control/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/change-management/</loc>
+    <loc>cloudposse.github.io/docs/tags/change-management/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/chart-registry/</loc>
+    <loc>cloudposse.github.io/docs/glossary/chart-registry/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/chartmuseum/</loc>
+    <loc>cloudposse.github.io/docs/tags/chartmuseum/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/ci/cd/</loc>
+    <loc>cloudposse.github.io/docs/tags/ci/cd/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/ci/code/</loc>
+    <loc>cloudposse.github.io/docs/tags/ci/code/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/circleci/</loc>
+    <loc>cloudposse.github.io/docs/tags/circleci/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cli/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cli/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/cli/</loc>
+    <loc>cloudposse.github.io/docs/tags/cli/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/clickops/</loc>
+    <loc>cloudposse.github.io/docs/glossary/clickops/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/clickops/</loc>
+    <loc>cloudposse.github.io/docs/tags/clickops/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/cloud-native/</loc>
+    <loc>cloudposse.github.io/docs/tags/cloud-native/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cloudposse/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cloudposse/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cloudfront/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cloudfront/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/cloudposse/</loc>
+    <loc>cloudposse.github.io/docs/tags/cloudposse/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cloudtrail/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cloudtrail/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cloudwatch/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cloudwatch/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/cloudwatch/</loc>
+    <loc>cloudposse.github.io/docs/tags/cloudwatch/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cloudwatch-logs/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cloudwatch-logs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/cmp/</loc>
+    <loc>cloudposse.github.io/docs/tags/cmp/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/community/code-of-conduct/</loc>
+    <loc>cloudposse.github.io/docs/community/code-of-conduct/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/code-review/</loc>
+    <loc>cloudposse.github.io/docs/glossary/code-review/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/community/code-reviews/</loc>
+    <loc>cloudposse.github.io/docs/community/code-reviews/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/code-style/</loc>
+    <loc>cloudposse.github.io/docs/tags/code-style/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/code-build/</loc>
+    <loc>cloudposse.github.io/docs/glossary/code-build/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/codebuild/</loc>
+    <loc>cloudposse.github.io/docs/tags/codebuild/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/code-deploy/</loc>
+    <loc>cloudposse.github.io/docs/glossary/code-deploy/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/codefresh/</loc>
+    <loc>cloudposse.github.io/docs/glossary/codefresh/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/codefresh/</loc>
+    <loc>cloudposse.github.io/docs/tags/codefresh/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/code-pipeline/</loc>
+    <loc>cloudposse.github.io/docs/glossary/code-pipeline/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/codepipeline/</loc>
+    <loc>cloudposse.github.io/docs/tags/codepipeline/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/categories/community-resources/</loc>
+    <loc>cloudposse.github.io/docs/categories/community-resources/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/component/</loc>
+    <loc>cloudposse.github.io/docs/tags/component/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/config/</loc>
+    <loc>cloudposse.github.io/docs/tags/config/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/configuration/</loc>
+    <loc>cloudposse.github.io/docs/tags/configuration/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/configuration-management/</loc>
+    <loc>cloudposse.github.io/docs/tags/configuration-management/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/documentation/contact-us/</loc>
+    <loc>cloudposse.github.io/docs/documentation/contact-us/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/container-management-platform/</loc>
+    <loc>cloudposse.github.io/docs/tags/container-management-platform/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cmp/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cmp/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/continuous-delivery/</loc>
+    <loc>cloudposse.github.io/docs/glossary/continuous-delivery/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/continuous-integration/</loc>
+    <loc>cloudposse.github.io/docs/glossary/continuous-integration/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/cicd/</loc>
+    <loc>cloudposse.github.io/docs/glossary/cicd/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/community/contributor-tips/</loc>
+    <loc>cloudposse.github.io/docs/community/contributor-tips/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/crud/</loc>
+    <loc>cloudposse.github.io/docs/glossary/crud/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/license/</loc>
+    <loc>cloudposse.github.io/docs/license/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/database/</loc>
+    <loc>cloudposse.github.io/docs/tags/database/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/declarative/</loc>
+    <loc>cloudposse.github.io/docs/glossary/declarative/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/dev/</loc>
+    <loc>cloudposse.github.io/docs/tags/dev/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/development/</loc>
+    <loc>cloudposse.github.io/docs/tags/development/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/devops/</loc>
+    <loc>cloudposse.github.io/docs/tags/devops/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/docker/</loc>
+    <loc>cloudposse.github.io/docs/tags/docker/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/docker-best-practices/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/docker-best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/docker-compose/</loc>
+    <loc>cloudposse.github.io/docs/glossary/docker-compose/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/docker-hub/</loc>
+    <loc>cloudposse.github.io/docs/tags/docker-hub/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/docker-image/</loc>
+    <loc>cloudposse.github.io/docs/glossary/docker-image/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/docker-image/</loc>
+    <loc>cloudposse.github.io/docs/tags/docker-image/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/docker-registry/</loc>
+    <loc>cloudposse.github.io/docs/glossary/docker-registry/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/docker-tips-tricks/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/docker-tips-tricks/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/dockerfile/</loc>
+    <loc>cloudposse.github.io/docs/tags/dockerfile/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/dockerfile/</loc>
+    <loc>cloudposse.github.io/docs/glossary/dockerfile/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/docs/</loc>
+    <loc>cloudposse.github.io/docs/tags/docs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/documentation/</loc>
+    <loc>cloudposse.github.io/docs/documentation/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/documentation/</loc>
+    <loc>cloudposse.github.io/docs/tags/documentation/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/dry/</loc>
+    <loc>cloudposse.github.io/docs/glossary/dry/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/dotenv/</loc>
+    <loc>cloudposse.github.io/docs/tags/dotenv/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/duo/</loc>
+    <loc>cloudposse.github.io/docs/tags/duo/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/ec2/</loc>
+    <loc>cloudposse.github.io/docs/tags/ec2/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/ecr/</loc>
+    <loc>cloudposse.github.io/docs/tags/ecr/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ecs/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ecs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/ecs/</loc>
+    <loc>cloudposse.github.io/docs/tags/ecs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ecs-agent/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ecs-agent/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ecs-service/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ecs-service/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ecs-task/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ecs-task/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/editor-config/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/editor-config/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ecr/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ecr/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/eb/</loc>
+    <loc>cloudposse.github.io/docs/glossary/eb/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/e2e/</loc>
+    <loc>cloudposse.github.io/docs/glossary/e2e/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/environment/</loc>
+    <loc>cloudposse.github.io/docs/tags/environment/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/environment-variable/</loc>
+    <loc>cloudposse.github.io/docs/glossary/environment-variable/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/environment-variables/</loc>
+    <loc>cloudposse.github.io/docs/tags/environment-variables/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/executable-documentation/</loc>
+    <loc>cloudposse.github.io/docs/glossary/executable-documentation/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/github-feature-branches/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/github-feature-branches/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/fluentd/</loc>
+    <loc>cloudposse.github.io/docs/tags/fluentd/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/formatting/</loc>
+    <loc>cloudposse.github.io/docs/tags/formatting/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/fuse/</loc>
+    <loc>cloudposse.github.io/docs/glossary/fuse/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/fuse/</loc>
+    <loc>cloudposse.github.io/docs/tags/fuse/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/geodesic/</loc>
+    <loc>cloudposse.github.io/docs/tags/geodesic/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/geodesic/</loc>
+    <loc>cloudposse.github.io/docs/glossary/geodesic/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/geodesic-module/</loc>
+    <loc>cloudposse.github.io/docs/glossary/geodesic-module/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/geodesic-shell/</loc>
+    <loc>cloudposse.github.io/docs/glossary/geodesic-shell/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/documentation/getting-started/</loc>
+    <loc>cloudposse.github.io/docs/documentation/getting-started/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/git/</loc>
+    <loc>cloudposse.github.io/docs/tags/git/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/git-workflow/</loc>
+    <loc>cloudposse.github.io/docs/glossary/git-workflow/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/github-best-practices/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/github-best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/community/contributors/</loc>
+    <loc>cloudposse.github.io/docs/community/contributors/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/community/faq/</loc>
+    <loc>cloudposse.github.io/docs/community/faq/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/</loc>
+    <loc>cloudposse.github.io/docs/glossary/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/gnumakefile/</loc>
+    <loc>cloudposse.github.io/docs/tags/gnumakefile/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/goofys/</loc>
+    <loc>cloudposse.github.io/docs/glossary/goofys/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/goofys/</loc>
+    <loc>cloudposse.github.io/docs/tags/goofys/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/google/</loc>
+    <loc>cloudposse.github.io/docs/tags/google/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/gost-framework/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/gost-framework/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/hashicorp/</loc>
+    <loc>cloudposse.github.io/docs/tags/hashicorp/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/hcl/</loc>
+    <loc>cloudposse.github.io/docs/glossary/hcl/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/terraform/</loc>
+    <loc>cloudposse.github.io/docs/glossary/terraform/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/hcl/</loc>
+    <loc>cloudposse.github.io/docs/tags/hcl/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/helm/</loc>
+    <loc>cloudposse.github.io/docs/glossary/helm/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/helm/</loc>
+    <loc>cloudposse.github.io/docs/tags/helm/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/helm-chart/</loc>
+    <loc>cloudposse.github.io/docs/glossary/helm-chart/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/helm-chart/</loc>
+    <loc>cloudposse.github.io/docs/tags/helm-chart/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/helm-charts/</loc>
+    <loc>cloudposse.github.io/docs/tags/helm-charts/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/helm-manifest/</loc>
+    <loc>cloudposse.github.io/docs/tags/helm-manifest/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/helm-tiller/</loc>
+    <loc>cloudposse.github.io/docs/glossary/helm-tiller/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/helmfile/</loc>
+    <loc>cloudposse.github.io/docs/tags/helmfile/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/helmfile.yaml/</loc>
+    <loc>cloudposse.github.io/docs/tags/helmfile.yaml/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/heroku/</loc>
+    <loc>cloudposse.github.io/docs/tags/heroku/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/</loc>
+    <loc>cloudposse.github.io/docs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/iaac/</loc>
+    <loc>cloudposse.github.io/docs/tags/iaac/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/iaas/</loc>
+    <loc>cloudposse.github.io/docs/tags/iaas/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/iac/</loc>
+    <loc>cloudposse.github.io/docs/tags/iac/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/iam/</loc>
+    <loc>cloudposse.github.io/docs/tags/iam/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/iap/</loc>
+    <loc>cloudposse.github.io/docs/tags/iap/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/iap/</loc>
+    <loc>cloudposse.github.io/docs/glossary/iap/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/iam/</loc>
+    <loc>cloudposse.github.io/docs/glossary/iam/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/identity-aware-proxy/</loc>
+    <loc>cloudposse.github.io/docs/tags/identity-aware-proxy/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/imperative/</loc>
+    <loc>cloudposse.github.io/docs/glossary/imperative/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/infrastructure/</loc>
+    <loc>cloudposse.github.io/docs/glossary/infrastructure/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/infrastructure-as-code/</loc>
+    <loc>cloudposse.github.io/docs/glossary/infrastructure-as-code/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/ingress-controller/</loc>
+    <loc>cloudposse.github.io/docs/glossary/ingress-controller/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/init-terraform/</loc>
+    <loc>cloudposse.github.io/docs/glossary/init-terraform/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/installer/</loc>
+    <loc>cloudposse.github.io/docs/tags/installer/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/jenkins/</loc>
+    <loc>cloudposse.github.io/docs/tags/jenkins/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/jq/</loc>
+    <loc>cloudposse.github.io/docs/tags/jq/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/jq/</loc>
+    <loc>cloudposse.github.io/docs/glossary/jq/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/jumpcloud/</loc>
+    <loc>cloudposse.github.io/docs/tags/jumpcloud/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/jumphost/</loc>
+    <loc>cloudposse.github.io/docs/tags/jumphost/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/k8s/</loc>
+    <loc>cloudposse.github.io/docs/tags/k8s/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/kanban/</loc>
+    <loc>cloudposse.github.io/docs/glossary/kanban/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/kms/</loc>
+    <loc>cloudposse.github.io/docs/glossary/kms/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/kpi/</loc>
+    <loc>cloudposse.github.io/docs/glossary/kpi/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/kms/</loc>
+    <loc>cloudposse.github.io/docs/tags/kms/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/kops/</loc>
+    <loc>cloudposse.github.io/docs/tags/kops/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/kops-manifest/</loc>
+    <loc>cloudposse.github.io/docs/tags/kops-manifest/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/kubectl/</loc>
+    <loc>cloudposse.github.io/docs/tags/kubectl/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/kubectl/</loc>
+    <loc>cloudposse.github.io/docs/glossary/kubectl/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/kubernetes/</loc>
+    <loc>cloudposse.github.io/docs/glossary/kubernetes/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/kubernetes/</loc>
+    <loc>cloudposse.github.io/docs/tags/kubernetes/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/kubernetes-jobs/</loc>
+    <loc>cloudposse.github.io/docs/tags/kubernetes-jobs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/kubernetes-manifest/</loc>
+    <loc>cloudposse.github.io/docs/tags/kubernetes-manifest/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/kops/</loc>
+    <loc>cloudposse.github.io/docs/glossary/kops/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/lambda/</loc>
+    <loc>cloudposse.github.io/docs/glossary/lambda/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/layer-1/</loc>
+    <loc>cloudposse.github.io/docs/tags/layer-1/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/layer-2/</loc>
+    <loc>cloudposse.github.io/docs/tags/layer-2/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/layer-3/</loc>
+    <loc>cloudposse.github.io/docs/tags/layer-3/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/layer-4/</loc>
+    <loc>cloudposse.github.io/docs/tags/layer-4/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/layer-5/</loc>
+    <loc>cloudposse.github.io/docs/tags/layer-5/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/layer-6/</loc>
+    <loc>cloudposse.github.io/docs/tags/layer-6/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/layer-7/</loc>
+    <loc>cloudposse.github.io/docs/tags/layer-7/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/layer-7/</loc>
+    <loc>cloudposse.github.io/docs/glossary/layer-7/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/license/</loc>
+    <loc>cloudposse.github.io/docs/tags/license/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/load-balancer/</loc>
+    <loc>cloudposse.github.io/docs/tags/load-balancer/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/logmein/</loc>
+    <loc>cloudposse.github.io/docs/tags/logmein/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/make/</loc>
+    <loc>cloudposse.github.io/docs/tags/make/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/makefile/</loc>
+    <loc>cloudposse.github.io/docs/tags/makefile/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/make-best-practices/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/make-best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/project-management-managers-vs-makers/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/project-management-managers-vs-makers/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/manifest/</loc>
+    <loc>cloudposse.github.io/docs/tags/manifest/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/markdown-best-practices/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/markdown-best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/mesos/</loc>
+    <loc>cloudposse.github.io/docs/tags/mesos/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/module/</loc>
+    <loc>cloudposse.github.io/docs/tags/module/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/monitoring/</loc>
+    <loc>cloudposse.github.io/docs/tags/monitoring/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/monorepo/</loc>
+    <loc>cloudposse.github.io/docs/glossary/monorepo/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/monorepo/</loc>
+    <loc>cloudposse.github.io/docs/tags/monorepo/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/mfa/</loc>
+    <loc>cloudposse.github.io/docs/glossary/mfa/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/okta/</loc>
+    <loc>cloudposse.github.io/docs/tags/okta/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/on-call/</loc>
+    <loc>cloudposse.github.io/docs/tags/on-call/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/oce/</loc>
+    <loc>cloudposse.github.io/docs/glossary/oce/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/open-publication-license/</loc>
+    <loc>cloudposse.github.io/docs/tags/open-publication-license/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/open-source/</loc>
+    <loc>cloudposse.github.io/docs/tags/open-source/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/opl/</loc>
+    <loc>cloudposse.github.io/docs/tags/opl/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/osi/</loc>
+    <loc>cloudposse.github.io/docs/tags/osi/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/osi/</loc>
+    <loc>cloudposse.github.io/docs/glossary/osi/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/documentation/our-github/</loc>
+    <loc>cloudposse.github.io/docs/documentation/our-github/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/paas/</loc>
+    <loc>cloudposse.github.io/docs/tags/paas/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/pagerduty/</loc>
+    <loc>cloudposse.github.io/docs/glossary/pagerduty/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/parameter-store/</loc>
+    <loc>cloudposse.github.io/docs/glossary/parameter-store/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/password-management/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/password-management/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/password-management/</loc>
+    <loc>cloudposse.github.io/docs/tags/password-management/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/pingdom/</loc>
+    <loc>cloudposse.github.io/docs/glossary/pingdom/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/pki/</loc>
+    <loc>cloudposse.github.io/docs/tags/pki/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/paas/</loc>
+    <loc>cloudposse.github.io/docs/glossary/paas/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/pods/</loc>
+    <loc>cloudposse.github.io/docs/tags/pods/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/polyrepo/</loc>
+    <loc>cloudposse.github.io/docs/glossary/polyrepo/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/polyrepo/</loc>
+    <loc>cloudposse.github.io/docs/tags/polyrepo/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/prod/</loc>
+    <loc>cloudposse.github.io/docs/tags/prod/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/pull-request/</loc>
+    <loc>cloudposse.github.io/docs/tags/pull-request/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/github-pull-requests/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/github-pull-requests/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/qa/</loc>
+    <loc>cloudposse.github.io/docs/tags/qa/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/project-management-raci-matrix/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/project-management-raci-matrix/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/rds/</loc>
+    <loc>cloudposse.github.io/docs/glossary/rds/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/release-engineering/</loc>
+    <loc>cloudposse.github.io/docs/glossary/release-engineering/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/s3/</loc>
+    <loc>cloudposse.github.io/docs/glossary/s3/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/s3/</loc>
+    <loc>cloudposse.github.io/docs/tags/s3/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/s3-bucket/</loc>
+    <loc>cloudposse.github.io/docs/glossary/s3-bucket/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/s3fs/</loc>
+    <loc>cloudposse.github.io/docs/tags/s3fs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/s3fs/</loc>
+    <loc>cloudposse.github.io/docs/glossary/s3fs/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/saas/</loc>
+    <loc>cloudposse.github.io/docs/tags/saas/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/sandbox/</loc>
+    <loc>cloudposse.github.io/docs/glossary/sandbox/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/sdlc/</loc>
+    <loc>cloudposse.github.io/docs/tags/sdlc/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/search/</loc>
+    <loc>cloudposse.github.io/docs/search/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/secrets/</loc>
+    <loc>cloudposse.github.io/docs/tags/secrets/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/security/</loc>
+    <loc>cloudposse.github.io/docs/tags/security/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/selenium/</loc>
+    <loc>cloudposse.github.io/docs/tags/selenium/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/semver/</loc>
+    <loc>cloudposse.github.io/docs/glossary/semver/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/semver/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/semver/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/semver/</loc>
+    <loc>cloudposse.github.io/docs/tags/semver/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/sla/</loc>
+    <loc>cloudposse.github.io/docs/glossary/sla/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/dev-shm/</loc>
+    <loc>cloudposse.github.io/docs/glossary/dev-shm/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/sidekick-containers/</loc>
+    <loc>cloudposse.github.io/docs/glossary/sidekick-containers/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/sns/</loc>
+    <loc>cloudposse.github.io/docs/glossary/sns/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/sso/</loc>
+    <loc>cloudposse.github.io/docs/glossary/sso/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/slack/</loc>
+    <loc>cloudposse.github.io/docs/glossary/slack/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/software-development/</loc>
+    <loc>cloudposse.github.io/docs/tags/software-development/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/sdlc/</loc>
+    <loc>cloudposse.github.io/docs/glossary/sdlc/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/saas/</loc>
+    <loc>cloudposse.github.io/docs/glossary/saas/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/ssh/</loc>
+    <loc>cloudposse.github.io/docs/tags/ssh/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/ssm/</loc>
+    <loc>cloudposse.github.io/docs/tags/ssm/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/sso/</loc>
+    <loc>cloudposse.github.io/docs/tags/sso/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/stage/</loc>
+    <loc>cloudposse.github.io/docs/glossary/stage/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/staging/</loc>
+    <loc>cloudposse.github.io/docs/tags/staging/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/interpolation/</loc>
+    <loc>cloudposse.github.io/docs/glossary/interpolation/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/sme/</loc>
+    <loc>cloudposse.github.io/docs/glossary/sme/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/synthetic-monitoring/</loc>
+    <loc>cloudposse.github.io/docs/glossary/synthetic-monitoring/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/</loc>
+    <loc>cloudposse.github.io/docs/tags/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/task-runner/</loc>
+    <loc>cloudposse.github.io/docs/tags/task-runner/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/technical-debt/</loc>
+    <loc>cloudposse.github.io/docs/glossary/technical-debt/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/categories/terraform/</loc>
+    <loc>cloudposse.github.io/docs/categories/terraform/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/terraform/</loc>
+    <loc>cloudposse.github.io/docs/tags/terraform/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/terraform-best-practices/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/terraform-best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/root-module/</loc>
+    <loc>cloudposse.github.io/docs/glossary/root-module/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/terraform-tips-tricks/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/terraform-tips-tricks/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/tfstate/</loc>
+    <loc>cloudposse.github.io/docs/tags/tfstate/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/tips-tricks/</loc>
+    <loc>cloudposse.github.io/docs/tags/tips-tricks/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/tips-and-tricks/</loc>
+    <loc>cloudposse.github.io/docs/tags/tips-and-tricks/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/tls/</loc>
+    <loc>cloudposse.github.io/docs/tags/tls/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/tool/</loc>
+    <loc>cloudposse.github.io/docs/tags/tool/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/tools/</loc>
+    <loc>cloudposse.github.io/docs/reference/tools/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/tools/</loc>
+    <loc>cloudposse.github.io/docs/tags/tools/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/topology/</loc>
+    <loc>cloudposse.github.io/docs/glossary/topology/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/travisci/</loc>
+    <loc>cloudposse.github.io/docs/tags/travisci/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/unlimited-staging-environments/</loc>
+    <loc>cloudposse.github.io/docs/glossary/unlimited-staging-environments/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/howto/updating-modules-for-terraform-14/</loc>
+    <loc>cloudposse.github.io/docs/howto/updating-modules-for-terraform-14/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/virtual-machine-image/</loc>
+    <loc>cloudposse.github.io/docs/tags/virtual-machine-image/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/vpc/</loc>
+    <loc>cloudposse.github.io/docs/glossary/vpc/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/vpn/</loc>
+    <loc>cloudposse.github.io/docs/tags/vpn/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/wiki/</loc>
+    <loc>cloudposse.github.io/docs/tags/wiki/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/wikiops/</loc>
+    <loc>cloudposse.github.io/docs/glossary/wikiops/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/reference/best-practices/workstation-best-practices/</loc>
+    <loc>cloudposse.github.io/docs/reference/best-practices/workstation-best-practices/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/yaml/</loc>
+    <loc>cloudposse.github.io/docs/glossary/yaml/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/yaml/</loc>
+    <loc>cloudposse.github.io/docs/tags/yaml/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/tags/yq/</loc>
+    <loc>cloudposse.github.io/docs/tags/yq/</loc>
   </url><url>
-    <loc>http://localhost.cloudposse.com:1313/glossary/yq/</loc>
+    <loc>cloudposse.github.io/docs/glossary/yq/</loc>
   </url>
 </urlset>

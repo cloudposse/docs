@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CMP on Cloud Posse Developer Hub</title>
-    <link>http://localhost.cloudposse.com:1313/tags/cmp/</link>
+    <link>cloudposse.github.io/docs/tags/cmp/</link>
     <description>Recent content in CMP on Cloud Posse Developer Hub</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost.cloudposse.com:1313/tags/cmp/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="cloudposse.github.io/docs/tags/cmp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ECS</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/ecs/</link>
+      <link>cloudposse.github.io/docs/glossary/ecs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/ecs/</guid>
+      <guid>cloudposse.github.io/docs/glossary/ecs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kubernetes</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/kubernetes/</link>
+      <link>cloudposse.github.io/docs/glossary/kubernetes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/kubernetes/</guid>
+      <guid>cloudposse.github.io/docs/glossary/kubernetes/</guid>
       <description></description>
     </item>
     

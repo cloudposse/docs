@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>alert escalations on Cloud Posse Developer Hub</title>
-    <link>http://localhost.cloudposse.com:1313/tags/alert-escalations/</link>
+    <link>cloudposse.github.io/docs/tags/alert-escalations/</link>
     <description>Recent content in alert escalations on Cloud Posse Developer Hub</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost.cloudposse.com:1313/tags/alert-escalations/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="cloudposse.github.io/docs/tags/alert-escalations/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PagerDuty</title>
-      <link>http://localhost.cloudposse.com:1313/glossary/pagerduty/</link>
+      <link>cloudposse.github.io/docs/glossary/pagerduty/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost.cloudposse.com:1313/glossary/pagerduty/</guid>
+      <guid>cloudposse.github.io/docs/glossary/pagerduty/</guid>
       <description></description>
     </item>
     
