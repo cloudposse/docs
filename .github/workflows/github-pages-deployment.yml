@@ -15,15 +15,16 @@ defaults:
 
 jobs:
   github-pages-deploy:
-    name: "Build Hugo Site to GitHub Pages"
+    name: "Build Hugo Site and Deploy to GitHub Pages"
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
     steps:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
     - name: "Build Hugo Static Site"
       uses: ./actions/publish-github-pages
       env:
-        GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
         GITHUB_PAGES_BRANCH: production
         CONTENT:
         HUGO_URL: https://cloudposse.github.io/docs
@@ -32,3 +33,10 @@ jobs:
         HTMLTEST_CONFIG: .htmltest.new.yml # this variable is the output location, not the input template location
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+    - name: "Deploy Hugo Static Site to GitHub Pages"
+      uses: cloudposse/actions/github/git-push@0.28.1
+      working-directory: /tmp/${GITHUB_PAGES_BRANCH}/
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+        GITHUB_REPOSITORY: env.GITHUB_PAGES_REPO
