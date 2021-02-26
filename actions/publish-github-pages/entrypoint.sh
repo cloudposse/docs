@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 #
 # entrypoint.sh
 #
@@ -23,10 +24,15 @@
 # HUGO_CONFIG=hugo.config.new
 # HTMLTEST_CONFIG=.htmltest.config.new
 
+# Parameter with default:
+HUGO_REPO=${HUGO_REPO:-https://github.com/cloudposse/docs}
+
 # Hardcoded parameters:
 GITHUB_PAGES_PULL_PATH=/tmp/master/ # This will contain the master branch of GITHUB_PAGES_REPO.
 GITHUB_PAGES_PUSH_PATH=/tmp/$GITHUB_PAGES_BRANCH/ # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
-HUGO_REPO=${HUGO_REPO:-https://github.com/cloudposse/docs}
+GIT_USER_EMAIL=github-actions-runner@cloudposse.com
+GIT_USER_NAME=github-actions-runner
+STAGING_DIR=./staging/ # Staging directory used for preparing files before hugo generation
 
 # #### PROGRAM LOGIC ####
 main() {
@@ -35,22 +41,22 @@ main() {
     git clone $GITHUB_PAGES_REPO $GITHUB_PAGES_PULL_PATH
     git clone --branch $GITHUB_PAGES_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PUSH_PATH
     
-    # create a separate build folder, customer-docs, and populate it with the essential files from HUGO_REPO
-    # (The rest of the program basically assumes HUGO_REPO=https://github.com/cloudposse/docs.)
+    # create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
+    # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
     mkdir customer-docs
-    cp -r ./hugo/tasks/ ./customer-docs/
-    cp -r ./hugo/themes/ ./customer-docs/
-    cp -r ./hugo/static/ ./customer-docs/
-    cp -r ./hugo/layouts/ ./customer-docs/
-    cp -r ./hugo/content/ ./customer-docs/
-    cp -r ./hugo/Dockerfile ./customer-docs/
-    cp -r ./hugo/.gitignore ./customer-docs/
-    cp ./hugo/config.yaml ./customer-docs/
-    cp ./hugo/.htmltest.yml ./customer-docs/
-    cp ./hugo/Makefile ./customer-docs/
+    cp -r ./hugo/tasks/ ${STAGING_DIR}
+    cp -r ./hugo/themes/ ${STAGING_DIR}
+    cp -r ./hugo/static/ ${STAGING_DIR}
+    cp -r ./hugo/layouts/ ${STAGING_DIR}
+    cp -r ./hugo/content/ ${STAGING_DIR}
+    cp -r ./hugo/Dockerfile ${STAGING_DIR}
+    cp -r ./hugo/.gitignore ${STAGING_DIR}
+    cp ./hugo/config.yaml ${STAGING_DIR}
+    cp ./hugo/.htmltest.yml ${STAGING_DIR}
+    cp ./hugo/Makefile ${STAGING_DIR}
     # The following two lines can be removed once this branch is merged into master
-    sed -i 's/yq eval/yq -M eval/' ${STAGING_DIR}/Makefile # this can be removed once this branch is merged into master
-    sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ${STAGING_DIR}/Makefile
+    sed -i 's/yq eval/yq -M eval/' ${STAGING_DIR}Makefile # this can be removed once this branch is merged into master
+    sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ${STAGING_DIR}Makefile
     
     # copy all customer documentation into the build folder
     IFS="," read -r -a CONTENT_ARRAY <<< "$CONTENT"
@@ -63,7 +69,7 @@ main() {
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name _index.md -print0 | xargs --null -I{} bash -c 'if [ "$(ls -1q $(dirname {}) | wc -l)" == "1" ]; then echo "$(dirname {})"; mv {} $(dirname $(dirname {}))/$(basename $(dirname {})).md; rm -r $(dirname {}); ls $(dirname $(dirname {})); fi'
         # install the customer docs (.md pages) to the content folder
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" >> file_origins.txt
-        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" -print0 | xargs --null -I{} bash -c 'echo "${STAGING_DIR}/content/{}"' | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
+        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" -print0 | xargs --null -I{} bash -c 'echo "${STAGING_DIR}content/{}"' | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
         readarray -t FILE_ORIGINS < file_origins.txt
         readarray -t FILE_DESTINATIONS < file_destinations.txt
         for i in "${!FILE_ORIGINS[@]}"; do
@@ -82,8 +88,8 @@ main() {
     cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
     
     # commit the newly-generated customer docs website to the customer docs repo
-    git config --global user.email "github-actions-runner@cloudposse.com"
-    git config --global user.name "github-actions-runner"
+    git config --global user.email "${GIT_USER_EMAIL}"
+    git config --global user.name "${GIT_USER_NAME}"
     git -C $GITHUB_PAGES_PUSH_PATH add -A
     git -C $GITHUB_PAGES_PUSH_PATH commit -a --message 'Updating content to $GIT_REF'
     git -C $GITHUB_PAGES_PUSH_PATH push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
