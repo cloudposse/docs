@@ -43,7 +43,7 @@ main() {
     
     # create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
     # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
-    mkdir customer-docs
+    mkdir ${STAGING_DIR}
     cp -r ./hugo/tasks/ ${STAGING_DIR}
     cp -r ./hugo/themes/ ${STAGING_DIR}
     cp -r ./hugo/static/ ${STAGING_DIR}
