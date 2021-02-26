@@ -73,7 +73,7 @@ main() {
     done
     
     # Build Docker image needed to build the Hugo site
-    cd ./customer-docs
+    cd ${STAGING_DIR}
     docker build -t cloudposse/docs .
 
     # publish the Hugo-generated HTML to $GITHUB_PAGES_PATH
