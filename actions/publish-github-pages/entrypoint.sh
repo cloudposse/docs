@@ -63,7 +63,7 @@ main() {
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name _index.md -print0 | xargs --null -I{} bash -c 'if [ "$(ls -1q $(dirname {}) | wc -l)" == "1" ]; then echo "$(dirname {})"; mv {} $(dirname $(dirname {}))/$(basename $(dirname {})).md; rm -r $(dirname {}); ls $(dirname $(dirname {})); fi'
         # install the customer docs (.md pages) to the content folder
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" >> file_origins.txt
-        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" -print0 | xargs --null -I{} bash -c 'echo "./customer-docs/content/{}"' | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
+        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" -print0 | xargs --null -I{} bash -c 'echo "${STAGING_DIR}/content/{}"' | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
         readarray -t FILE_ORIGINS < file_origins.txt
         readarray -t FILE_DESTINATIONS < file_destinations.txt
         for i in "${!FILE_ORIGINS[@]}"; do
