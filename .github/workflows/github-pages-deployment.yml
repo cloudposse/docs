@@ -20,7 +20,7 @@ jobs:
     steps:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
-    - name: "Deploy to GitHub Pages"
+    - name: "Build Hugo Static Site"
       uses: ./actions/publish-github-pages
       env:
         GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
