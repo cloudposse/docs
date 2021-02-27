@@ -4,6 +4,8 @@ description: "Learn what Geodesic is and how you can start using it to simplify 
 weight: 1
 ---
 
+## Intro
+
 In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.
 
 In this tutorial, we'll walk you through how to use Geodesic to execute an authenticated AWS CLI command and talk about what is going on under the hood.
@@ -34,7 +36,9 @@ Let's talk about a few of the ways that one can run Geodesic. Our toolbox has be
 
 In this tutorial, we'll be running Geodesic standalone using `docker run` to allow us to get up and running quickly.
 
-## Steps to run an authenticated AWS CLI command
+## Tutorial
+
+### 1. Start the Geodesic Shell
 
 First, at your terminal, let's start up the Geodesic shell!
 
@@ -52,6 +56,8 @@ There are a few things going on there, so let's break that down a bit:
 The result of running this command should look like this:
 
 ![Geodesic Login Shell](/assets/geodesic-login-shell.png)
+
+### 2. Authenticate with AWS + aws-vault
 
 Great -- we've started up Geodesic so now we need to authenticate with AWS. To accomplish this, Geodesic relies on [`aws-vault`]({{< relref "reference/tools.md#aws-vault" >}}) to manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
 
@@ -73,6 +79,8 @@ aws-vault exec luke.skywalker -- aws s3 ls
 aws-vault exec luke.skywalker -- aws sts get-caller-identity
 ```
 
+### 3. Start a AWS Profile Session
+
 That's cool... but what about if you want to start a full blown session as our `luke.skywalker` profile? Well, Geodesic comes bundled with a handy `assume-role` utility that you can use to do that:
 
 ```bash
@@ -83,7 +91,7 @@ crudini --set --inplace $AWS_CONFIG_FILE "profile luke.skywalker" "credential_pr
 assume-role luke.skywalker
 
 # Finally, we can run our AWS CLI commands without having to manually invoke `aws-vault exec` each time
-aws s3 ls
+   aws s3 ls
 aws sts get-caller-identity
 ```
 
