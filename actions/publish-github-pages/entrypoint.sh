@@ -48,16 +48,16 @@ main() {
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
     # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
     mkdir ${STAGING_DIR}
-    cp -r ./hugo/tasks/ ${STAGING_DIR}
-    cp -r ./hugo/themes/ ${STAGING_DIR}
-    cp -r ./hugo/static/ ${STAGING_DIR}
-    cp -r ./hugo/layouts/ ${STAGING_DIR}
-    cp -r ./hugo/content/ ${STAGING_DIR}
-    cp -r ./hugo/Dockerfile ${STAGING_DIR}
-    cp -r ./hugo/.gitignore ${STAGING_DIR}
-    cp ./hugo/config.yaml ${STAGING_DIR}
-    cp ./hugo/.htmltest.yml ${STAGING_DIR}
-    cp ./hugo/Makefile ${STAGING_DIR}
+    cp -r ${GITHUB_PAGES_HUGO_PATH}/tasks/ ${STAGING_DIR}
+    cp -r ${GITHUB_PAGES_HUGO_PATH}/themes/ ${STAGING_DIR}
+    cp -r ${GITHUB_PAGES_HUGO_PATH}/static/ ${STAGING_DIR}
+    cp -r ${GITHUB_PAGES_HUGO_PATH}/layouts/ ${STAGING_DIR}
+    cp -r ${GITHUB_PAGES_HUGO_PATH}/content/ ${STAGING_DIR}
+    cp -r ${GITHUB_PAGES_HUGO_PATH}/Dockerfile ${STAGING_DIR}
+    cp -r ${GITHUB_PAGES_HUGO_PATH}/.gitignore ${STAGING_DIR}
+    cp ${GITHUB_PAGES_HUGO_PATH}/config.yaml ${STAGING_DIR}
+    cp ${GITHUB_PAGES_HUGO_PATH}/.htmltest.yml ${STAGING_DIR}
+    cp ${GITHUB_PAGES_HUGO_PATH}/Makefile ${STAGING_DIR}
     # The following two lines can be removed once this branch is merged into master
     sed -i 's/yq eval/yq -M eval/' ${STAGING_DIR}Makefile # this can be removed once this branch is merged into master
     sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ${STAGING_DIR}Makefile
