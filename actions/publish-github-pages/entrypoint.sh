@@ -29,15 +29,16 @@ HUGO_REPO=${HUGO_REPO:-https://github.com/cloudposse/docs}
 
 # Hardcoded parameters:
 GITHUB_PAGES_PULL_PATH=/tmp/master/ # This will contain the master branch of GITHUB_PAGES_REPO.
-GITHUB_PAGES_PUSH_PATH=/tmp/$GITHUB_PAGES_BRANCH/ # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
+GITHUB_PAGES_HUGO_PATH=/tmp/hugo/ # This will contain the generic infrastructure needed to build the GitHub Pages site. 
+GITHUB_PAGES_PUSH_PATH=. # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
 GIT_USER_EMAIL=github-actions-runner@cloudposse.com
 GIT_USER_NAME=github-actions-runner
-STAGING_DIR=./staging/ # Staging directory used for preparing files before hugo generation
+STAGING_DIR=/tmp/staging/ # Staging directory used for preparing files before hugo generation
 
 # #### PROGRAM LOGIC ####
 main() {
     # Checkout the cloudposse/docs as the "Reference docs"
-    git clone $HUGO_REPO hugo/
+    git clone $HUGO_REPO $GITHUB_PAGES_HUGO_REPO
     git clone $GITHUB_PAGES_REPO $GITHUB_PAGES_PULL_PATH
     git clone --branch $GITHUB_PAGES_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PUSH_PATH
     
@@ -82,7 +83,7 @@ main() {
     cd ${STAGING_DIR}
     docker build -t cloudposse/docs .
 
-    # publish the Hugo-generated HTML to $GITHUB_PAGES_PATH
+    # publish the Hugo-generated HTML to $GITHUB_PAGES_PUSH_PATH
     make release
     make real-clean hugo/build
     cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}

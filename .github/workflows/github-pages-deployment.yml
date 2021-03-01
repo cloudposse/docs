@@ -21,12 +21,11 @@ jobs:
       GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
       GITHUB_PAGES_BRANCH: production
     steps:
-    - name: "Checkout source code at current commit"
-      uses: actions/checkout@v2
+#    - name: "Checkout source code at current commit"
+#      uses: actions/checkout@v2
     - name: "Build Hugo Static Site"
       uses: ./actions/publish-github-pages
       env:
-        GITHUB_PAGES_BRANCH: production
         CONTENT:
         HUGO_URL: https://cloudposse.github.io/docs
         HUGO_PUBLISH_DIR: docs
@@ -40,4 +39,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
         GITHUB_REPOSITORY: env.GITHUB_PAGES_REPO
-        GIT_DIRECTORY: /tmp/${{ env.GITHUB_PAGES_BRANCH }}/
+        #GIT_DIRECTORY: /tmp/${{ env.GITHUB_PAGES_BRANCH }}/
