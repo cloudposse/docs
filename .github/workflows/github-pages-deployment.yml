@@ -21,8 +21,8 @@ jobs:
       GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
       GITHUB_PAGES_BRANCH: production
     steps:
-#    - name: "Checkout source code at current commit"
-#      uses: actions/checkout@v2
+    - name: "Checkout source code at current commit"
+      uses: actions/checkout@v2
     - name: "Build Hugo Static Site"
       uses: cloudposse/docs/actions/publish-github-pages@4dace27d7248b42d1e94ce7454f32b81655335f2 # arbitrary SHA
       env:
