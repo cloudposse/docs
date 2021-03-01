@@ -30,7 +30,7 @@ HUGO_REPO=${HUGO_REPO:-https://github.com/cloudposse/docs}
 # Hardcoded parameters:
 GITHUB_PAGES_PULL_PATH=/tmp/master/ # This will contain the master branch of GITHUB_PAGES_REPO.
 GITHUB_PAGES_HUGO_PATH=/tmp/hugo/ # This will contain the generic infrastructure needed to build the GitHub Pages site. 
-GITHUB_PAGES_PUSH_PATH=. # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
+GITHUB_PAGES_PUSH_PATH=./github_pages/ # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
 GIT_USER_EMAIL=github-actions-runner@cloudposse.com
 GIT_USER_NAME=github-actions-runner
 STAGING_DIR=/tmp/staging/ # Staging directory used for preparing files before hugo generation
