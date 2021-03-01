@@ -24,7 +24,7 @@ jobs:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
     - name: "Build Hugo Static Site"
-      uses: cloudposse/docs/actions/publish-github-pages # arbitrary SHA
+      uses: ./actions/publish-github-pages # arbitrary SHA
       env:
         CONTENT:
         HUGO_URL: https://cloudposse.github.io/docs
