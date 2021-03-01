@@ -39,7 +39,7 @@ STAGING_DIR=/tmp/staging/ # Staging directory used for preparing files before hu
 main() {
     # Check out
     # 1) Essential Hugo build tools
-    git clone $HUGO_REPO $GITHUB_PAGES_HUGO_REPO
+    git clone $HUGO_REPO $GITHUB_PAGES_HUGO_PATH
     # 2) Site-specific documentation
     git clone $GITHUB_PAGES_REPO $GITHUB_PAGES_PULL_PATH
     # 3) The GitHub Pages deployment branch for this site
