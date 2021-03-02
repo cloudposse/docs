@@ -92,11 +92,11 @@ main() {
     cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
     
     # commit the newly-generated customer docs website to the customer docs repo
-    git config --global user.email "${GIT_USER_EMAIL}"
-    git config --global user.name "${GIT_USER_NAME}"
-    git -C $GITHUB_PAGES_PUSH_PATH add -A
-    git -C $GITHUB_PAGES_PUSH_PATH commit -a --message 'Updating content to $GIT_REF'
-    git -C $GITHUB_PAGES_PUSH_PATH push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
+    #git config --global user.email "${GIT_USER_EMAIL}"
+    #git config --global user.name "${GIT_USER_NAME}"
+    #git -C $GITHUB_PAGES_PUSH_PATH add -A
+    #git -C $GITHUB_PAGES_PUSH_PATH commit -a --message 'Updating content to $GIT_REF'
+    #git -C $GITHUB_PAGES_PUSH_PATH push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
 }
 
 main
