@@ -27,12 +27,12 @@ Before we jump in, it's important to note that Geodesic is built around some adv
 
 Let's talk about a few of the ways that one can run Geodesic. Our toolbox has been built to satisfy many use-cases, and each result in a different pattern of invocation:
 
-1. You can **run standalone** Geodesic as a standard docker container using `docker run`. This enables you to get started quickly, avoid fiddling with configuration, or run a one off commands using some of the built in tools.
+1. You can **run standalone** Geodesic as a standard docker container using `docker run`. This enables you to get started quickly, avoid fiddling with configuration or run one-off commands using some of the built-in tools.
    1. Example: `docker run -it --rm --volume $HOME:/localhost cloudposse/geodesic:latest-debian --login` opens a bash login shell (`--login` is our Docker `CMD` here) in our Geodesic container.
    1. Example: `docker run -it --rm --volume $HOME:/localhost cloudposse/geodesic:latest-debian -c "terraform version"` executes the `terraform version` command as a one off and outputs the result.
-1. You can **install** Geodesic onto your local machine using what we call the docker-pipe-bash pattern. Similar to above, this enables a quickstart process but supports longer lived usage as it creates a callable script on your machine that enables reuse.
-   1. Example: `docker run --rm cloudposse/geodesic:latest-debian | bash -s latest-debian` installs `/usr/local/bin/geodesic` on your local machine which you can execute repeatedly via simply typing `geodesic`
-1. Lastly, you can **build your own toolbox** on top of Geodesic. Want to provide additional packages to your team on top of what geodesic provides or want to customize the name of Geodesic to the name of your organization? This is simple to do by using Geodesic as your base image in your own Dockerfile, adding your own Docker `RUN` commands or overriding environment variables, and then building a new image which you distribute to your team. This is more advanced usage and we'll cover how to do this in a future how-to article.
+1. You can **install** Geodesic onto your local machine using what we call the docker-pipe-bash pattern (e.g. `docker run ... | bash`). Similar to above, this enables a quickstart process but supports longer lived usage as it creates a callable script on your machine that enables reuse any time you want to start a shell.
+   1. Example: `docker run --rm cloudposse/geodesic:latest-debian | bash -s latest-debian` installs `/usr/local/bin/geodesic` on your local machine which you can execute repeatedly via simply typing `geodesic`. In this example, we're pinning the script to use the `cloudposse/geodesic:latest-debian` docker image, but we could also pin to our own image or to a specific version.
+1. Lastly, you can **build your own toolbox** on top of Geodesic. This is what SweetOps generally recommends to practitioners. We do this when we want to provide additional packages or customization to our team while building on the foundation that geodesic provides. This is simple to do by using Geodesic as your base image in your own `Dockerfile`, adding your own Docker `RUN` commands or overriding environment variables, and then building a new image that you distribute to your team. This is more advanced usage and we'll cover how to do this in a future how-to article.
 
 In this tutorial, we'll be running Geodesic standalone using `docker run` to allow us to get up and running quickly.
 
@@ -59,7 +59,7 @@ The result of running this command should look like this:
 
 ### 2. Authenticate with AWS + aws-vault
 
-Great -- we've started up Geodesic so now we need to authenticate with AWS. To accomplish this, Geodesic relies on [`aws-vault`]({{< relref "reference/tools.md#aws-vault" >}}) to manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
+Great -- we've started up Geodesic so now we need to authenticate with AWS. To accomplish this, Geodesic ships with [`aws-vault`]({{< relref "reference/tools.md#aws-vault" >}}) to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
 
 ```bash
 # Since our Geodesic on linux, let's set the default backend to an encrypted file instead of our keyring
@@ -91,8 +91,7 @@ crudini --set --inplace $AWS_CONFIG_FILE "profile luke.skywalker" "credential_pr
 assume-role luke.skywalker
 
 # Finally, we can run our AWS CLI commands without having to manually invoke `aws-vault exec` each time
-   aws s3 ls
+aws s3 ls
 aws sts get-caller-identity
-```
 
 The beautiful thing about all of this is that we didn't need to install anything except Docker on our local machine to make this happen. Both the AWS CLI and `aws-vault` tools involve specific installation instructions to get up and running, but by using Geodesic we're able to quickly skip over all of that and use a container that includes them out of the box alongside dozens of other tools as well. That is why we call it our toolbox as it enables consistent usage of CLI tools across your entire organization!

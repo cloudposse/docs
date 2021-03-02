@@ -23,7 +23,7 @@ RUN apt-get install -y your-needed-package
 ```
 
 ```bash
-# Build the toolbox for your Organization (Acme corp)
+# Build the toolbox for your Organization (Acme Corp)
 docker build . -t acme:latest
 
 # Install on your machine as your own executable toolbox
@@ -32,4 +32,3 @@ docker run --rm acme:latest | APP_NAME=acme bash -s latest-debian
 # Start a new shell in your toolbox
 acme
 ```
-
