@@ -42,7 +42,7 @@ We delineate between these layers as they have different Software Development Li
 
 ## Optimize for Day 2+ Operations
 
-One important part we emphasize within SweetOps is that we optimize the methodology for day 2+ and not the coldstart. The process to create the bottom layers of your platform is day 1 or your coldstart process. You will only ever do this process once so it's not logical or economical to focus on agility in this phase of building the platform. Instead, SweetOps focuses on optimizing the processes that come after your coldstart: release engineering, monitoring, and continuing to build your application's needs on top of the base platform.
+One important part we emphasize within SweetOps is that we optimize the methodology for [day 2+ operations](https://dzone.com/articles/defining-day-2-operations) and not the cold-start. The process to create the bottom layers of your platform is day 1 or your cold-start process. You will generally only perform a cold-start once so it's not logical or economical to focus on agility in this phase of building the platform. Instead, SweetOps focuses on optimizing the processes that come after your cold-start: GitOps, release engineering, monitoring/SRE, and ensuring your applications run efficiently on top of the base platform.
 
 ## Share Nothing
 
