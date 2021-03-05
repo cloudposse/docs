@@ -42,10 +42,16 @@ main() {
     # Check out
     # 1) Essential Hugo build tools
     git clone $HUGO_REPO $GITHUB_PAGES_HUGO_PATH
+    echo "${GITHUB_PAGES_HUGO_PATH}" # debug
+    ls -lhat ${GITHUB_PAGES_HUGO_PATH} # debug
     # 2) Site-specific documentation
     git clone $GITHUB_PAGES_REPO $GITHUB_PAGES_PULL_PATH
+    echo "${GITHUB_PAGES_PULL_PATH}" # debug
+    ls -lhat ${GITHUB_PAGES_PULL_PATH} # debug
     # 3) The GitHub Pages deployment branch for this site
     git clone --branch $GITHUB_PAGES_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PUSH_PATH
+    echo "${GITHUB_PAGES_PUSH_PATH}" # debug
+    ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
     
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
     # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
