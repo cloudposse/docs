@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"fundamentals\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn more about the core concepts and domain model that make up the SweetOps methodology.\",\"headline\":\"Concepts\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Concepts\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/fundamentals/concepts/\",\"wordCount\":1330}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"fundamentals\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn more about the core concepts and domain model that make up the SweetOps methodology.\",\"headline\":\"Concepts\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Concepts\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/fundamentals/concepts/\",\"wordCount\":1339}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsfundamentals\",\"name\":\"Fundamentals\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsfundamentals/concepts\",\"name\":\"Concepts\"},\"position\":4}]}"</script>
 
@@ -186,11 +186,20 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/tutorials/" class="left-sidebar-menu__item
+    <li data-nav-id="/tutorials/" class="left-sidebar-menu__item haschildren
         ">
       <div class="left-sidebar-menu__item-title">
-      <a href="https://cloudposse.github.io/docs/tutorials/" class="left-sidebar-menu__link">Tutorials</a><i class="fa fa-circle-thin read-icon"></i>
+      <a href="https://cloudposse.github.io/docs/tutorials/" class="left-sidebar-menu__link">Tutorials</a><i class="fa fa-angle-right fa-lg category-icon left-sidebar-menu__icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
+        <ul class="left-sidebar-menu__submenu">
+      <li data-nav-id="/tutorials/geodesic-getting-started/" class="left-sidebar-menu__item">
+        <div class="left-sidebar-menu__item-title">
+          <a href="https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/">
+            Getting started with Geodesic
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
     </li>
     <li data-nav-id="/howto/" class="left-sidebar-menu__item haschildren
         ">
@@ -511,9 +520,9 @@
 <h2 id="primary-vs-delegated">Primary vs Delegated</h2>
 <p>Primary vs Delegated is a common implementation pattern in SweetOps. This is most easily described when looking at the example of domain and DNS usage in a mutli-account AWS organization: SweetOps takes the approach that the root domain (e.g. <code>example.com</code>) is owned by a <strong>primary</strong> AWS account where the apex zone resides. Subdomains on that domain (e.g. <code>dev.example.com</code>) are then <strong>delegated</strong> to the other AWS accounts via an <code>NS</code> record on the primary hosted zone which points to the delegated hosted zone&rsquo;s name servers.</p>
 <p>You can see examples of this pattern in the <a href="https://github.com/cloudposse/terraform-aws-components/tree/master/modules/dns-primary">dns-primary</a> / <a href="https://github.com/cloudposse/terraform-aws-components/tree/master/modules/dns-delegated">dns-delegated</a> and <a href="https://github.com/cloudposse/terraform-aws-components/tree/master/modules/iam-primary-roles">iam-primary-roles</a> / <a href="https://github.com/cloudposse/terraform-aws-components/tree/master/modules/iam-delegated-roles">iam-delegated-roles</a> components.</p>
-<h2 id="docker-based-infrastructure-development">Docker Based Infrastructure Development</h2>
-<p>In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one image that you can use as your infrastructure automation toolbox: <a href="https://cloudposse.github.io/docs/reference/tools/">Geodesic</a>. We use <code>geodesic</code> as the base Docker image of our <code>Dockerfile</code> for all our DevOps tooling.</p>
-<p>Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize atmos, terraform, kubectl, helmfile, AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen <code>install</code> commands to get started. It&rsquo;s intended to be used as an interactive cloud automation shell, a base image, or in CI / CD scripting to ensure that all systems are running the same set of versioned, easily accessible tools.</p>
+<h2 id="docker-based-toolbox-aka-geodesic">Docker Based Toolbox (aka Geodesic)</h2>
+<p>In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it <a href="https://cloudposse.github.io/docs/reference/tools/">Geodesic</a> and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps tooling.</p>
+<p>Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize <code>atmos</code>, <code>terraform</code>, <code>kubectl</code>, <code>helmfile</code>, the AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen <code>install</code> commands to get started. It&rsquo;s intended to be used as an interactive cloud automation shell, a base image, or in CI/CD workflows to ensure that all systems are running the same set of versioned, easily accessible tools.</p>
 <!-- raw HTML omitted -->
 <h2 id="vendoring">Vendoring</h2>
 <p>Vendoring is a strategy of importing external dependencies into a local source tree or VCS. Many languages (e.g. NodeJS) support the concept. However, there are many other tools which do not address how to do vendoring.</p>
@@ -588,7 +597,7 @@
     <li><a href="#stacks">Stacks</a></li>
     <li><a href="#catalogs">Catalogs</a></li>
     <li><a href="#primary-vs-delegated">Primary vs Delegated</a></li>
-    <li><a href="#docker-based-infrastructure-development">Docker Based Infrastructure Development</a></li>
+    <li><a href="#docker-based-toolbox-aka-geodesic">Docker Based Toolbox (aka Geodesic)</a></li>
     <li><a href="#vendoring">Vendoring</a></li>
     <li><a href="#generators">Generators</a></li>
   </ul>

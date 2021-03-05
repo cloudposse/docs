@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"fundamentals\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn more about the core philosophy and principles that make up the SweetOps methodology.\",\"headline\":\"Philosophy\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Philosophy\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/fundamentals/philosophy/\",\"wordCount\":1007}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"fundamentals\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn more about the core philosophy and principles that make up the SweetOps methodology.\",\"headline\":\"Philosophy\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Philosophy\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/fundamentals/philosophy/\",\"wordCount\":1008}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsfundamentals\",\"name\":\"Fundamentals\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsfundamentals/philosophy\",\"name\":\"Philosophy\"},\"position\":4}]}"</script>
 
@@ -186,11 +186,20 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/tutorials/" class="left-sidebar-menu__item
+    <li data-nav-id="/tutorials/" class="left-sidebar-menu__item haschildren
         ">
       <div class="left-sidebar-menu__item-title">
-      <a href="https://cloudposse.github.io/docs/tutorials/" class="left-sidebar-menu__link">Tutorials</a><i class="fa fa-circle-thin read-icon"></i>
+      <a href="https://cloudposse.github.io/docs/tutorials/" class="left-sidebar-menu__link">Tutorials</a><i class="fa fa-angle-right fa-lg category-icon left-sidebar-menu__icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
+        <ul class="left-sidebar-menu__submenu">
+      <li data-nav-id="/tutorials/geodesic-getting-started/" class="left-sidebar-menu__item">
+        <div class="left-sidebar-menu__item-title">
+          <a href="https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/">
+            Getting started with Geodesic
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
     </li>
     <li data-nav-id="/howto/" class="left-sidebar-menu__item haschildren
         ">
@@ -446,7 +455,7 @@
 </ol>
 <p>We delineate between these layers as they have different Software Development Life Cycles (SDLC) and tools that are responsible for managing them. For example, Terraform is great for building your Foundation layer, but other tools might be better for managing the continuous delivery of the Application layer (e.g. ArgoCD). It&rsquo;s also important to note that each layer builds on the previous and the lower layers are less likely to change over time. At the bottom, you won&rsquo;t frequently change your AWS accounts and VPCs in your Foundation layer, just like when operating a platform you won&rsquo;t be rebuilding EKS clusters in your Platform layer without disrupting all tenants of the platform. You might, however, add HashiCorp Vault to your Shared Services layer to increase your security posture or add a new API microservice to your Application layer. The Application Layer is ultimately the most important layer of them all: it&rsquo;s what drives your business. It&rsquo;s where your applications live, which is why it will change continuously.</p>
 <h2 id="optimize-for-day-2-operations">Optimize for Day 2+ Operations</h2>
-<p>One important part we emphasize within SweetOps is that we optimize the methodology for day 2+ and not the coldstart. The process to create the bottom layers of your platform is day 1 or your coldstart process. You will only ever do this process once so it&rsquo;s not logical or economical to focus on agility in this phase of building the platform. Instead, SweetOps focuses on optimizing the processes that come after your coldstart: release engineering, monitoring, and continuing to build your application&rsquo;s needs on top of the base platform.</p>
+<p>One important part we emphasize within SweetOps is that we optimize the methodology for <a href="https://dzone.com/articles/defining-day-2-operations">day 2+ operations</a> and not the cold-start. The process to create the bottom layers of your platform is day 1 or your cold-start process. You will generally only perform a cold-start once so it&rsquo;s not logical or economical to focus on agility in this phase of building the platform. Instead, SweetOps focuses on optimizing the processes that come after your cold-start: GitOps, release engineering, monitoring/SRE, and ensuring your applications run efficiently on top of the base platform.</p>
 <h2 id="share-nothing">Share Nothing</h2>
 <p>SweetOps takes the principle of <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">Separation of Concerns</a> to heart when it comes to infrastructure. We believe strongly in fine grained separations of AWS Accounts, AWS Organizational Units, environments, and access credentials. We utilize a separate AWS account to manage DNS, logs, auditing, and identity in practice of this principle. These practices ensure optimal security and agility if any part of the system is compromised or needs to
 change in some way.</p>

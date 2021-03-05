@@ -4,6 +4,8 @@
   <url>
     <loc>https://cloudposse.github.io/docs/fundamentals/</loc>
   </url><url>
+    <loc>https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/</loc>
+  </url><url>
     <loc>https://cloudposse.github.io/docs/fundamentals/introduction/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/fundamentals/philosophy/</loc>
@@ -61,6 +63,8 @@
     <loc>https://cloudposse.github.io/docs/glossary/aws-vault/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/bad-practice/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/tags/bash/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/glossary/bastion/</loc>
   </url><url>
@@ -182,6 +186,10 @@
   </url><url>
     <loc>https://cloudposse.github.io/docs/license/</loc>
   </url><url>
+    <loc>https://cloudposse.github.io/docs/tags/curl/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/tags/curl-bash/</loc>
+  </url><url>
     <loc>https://cloudposse.github.io/docs/tags/database/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/glossary/declarative/</loc>
@@ -207,6 +215,8 @@
     <loc>https://cloudposse.github.io/docs/glossary/docker-registry/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/reference/best-practices/docker-tips-tricks/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/tags/docker-bash/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/dockerfile/</loc>
   </url><url>
@@ -468,6 +478,8 @@
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/password-management/</loc>
   </url><url>
+    <loc>https://cloudposse.github.io/docs/tags/pattern/</loc>
+  </url><url>
     <loc>https://cloudposse.github.io/docs/glossary/pingdom/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/pki/</loc>
@@ -575,6 +587,10 @@
     <loc>https://cloudposse.github.io/docs/reference/best-practices/terraform-tips-tricks/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/tfstate/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/glossary/curl-bash/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/glossary/docker-bash/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/tips-tricks/</loc>
   </url><url>

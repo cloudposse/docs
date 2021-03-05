@@ -80,5 +80,14 @@ docker stats $(docker ps --format=&#39;{{.Names}}&#39; Remove all stopped contai
       <description>Examples of common sidekick containers are for service discovery or loading fixtures into a development database.</description>
     </item>
     
+    <item>
+      <title>The docker-bash pattern</title>
+      <link>https://cloudposse.github.io/docs/glossary/docker-bash/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cloudposse.github.io/docs/glossary/docker-bash/</guid>
+      <description>The docker-bash pattern is an approach to installing software on your local machine via your terminal and docker. It utilizes docker run to output a script which is then piped (i.e. | ) into bash. This enables the script to execute code on your machine which then does whatever setup or installation steps it needs to do to install the target software. Geodesic utilizes this pattern via the init script which is expected to be piped into bash:</description>
+    </item>
+    
   </channel>
 </rss>
