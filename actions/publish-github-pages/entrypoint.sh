@@ -42,14 +42,20 @@ main() {
     # Check out
     # 1) Essential Hugo build tools
     git clone $HUGO_REPO $GITHUB_PAGES_HUGO_PATH
+    echo "Repo: ${HUGO_REPO}" # debug
+    echo "Branch: master" # debug
     echo "${GITHUB_PAGES_HUGO_PATH}" # debug
     ls -lhat ${GITHUB_PAGES_HUGO_PATH} # debug
     # 2) Site-specific documentation
     git clone $GITHUB_PAGES_REPO $GITHUB_PAGES_PULL_PATH
+    echo "Repo: ${GITHUB_PAGES_REPO}" # debug
+    echo "Branch: master" # debug
     echo "${GITHUB_PAGES_PULL_PATH}" # debug
     ls -lhat ${GITHUB_PAGES_PULL_PATH} # debug
     # 3) The GitHub Pages deployment branch for this site
     git clone --branch $GITHUB_PAGES_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PUSH_PATH
+    echo "Repo: ${GITHUB_PAGES_REPO}" # debug
+    echo "Branch: ${GITHUB_PAGES_BRANCH}" # debug
     echo "${GITHUB_PAGES_PUSH_PATH}" # debug
     ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
     
@@ -99,6 +105,19 @@ main() {
     make real-clean hugo/build
     cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
     
+    echo "Repo: ${HUGO_REPO}" # debug
+    echo "Branch: master" # debug
+    echo "${GITHUB_PAGES_HUGO_PATH}" # debug
+    ls -lhat ${GITHUB_PAGES_HUGO_PATH} # debug
+    echo "Repo: ${GITHUB_PAGES_REPO}" # debug
+    echo "Branch: master" # debug
+    echo "${GITHUB_PAGES_PULL_PATH}" # debug
+    ls -lhat ${GITHUB_PAGES_PULL_PATH} # debug
+    echo "Repo: ${GITHUB_PAGES_REPO}" # debug
+    echo "Branch: ${GITHUB_PAGES_BRANCH}" # debug
+    echo "${GITHUB_PAGES_PUSH_PATH}" # debug
+    ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
+
     # commit the newly-generated customer docs website to the customer docs repo
     #git config --global user.email "${GIT_USER_EMAIL}"
     #git config --global user.name "${GIT_USER_NAME}"
