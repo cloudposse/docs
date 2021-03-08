@@ -80,7 +80,7 @@ main() {
     IFS="," read -r -a CONTENT_ARRAY <<< "$CONTENT"
     for content in "${CONTENT_ARRAY[@]}"; do
         # clear files needed for storing intermediate variables
-        rm file_origins.txt file_destinations.txt
+        rm -f file_origins.txt file_destinations.txt
         # rename all `README.md` to `_index.md`
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name README.md -print0 | xargs --null -I{} bash -c 'mv {} $(dirname {})/_index.md'
         # categories with no subfolders, and only a single `_index.md`: `mv foobar/_index.md foobar.md`
