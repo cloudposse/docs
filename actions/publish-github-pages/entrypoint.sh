@@ -58,6 +58,8 @@ main() {
     echo "Branch: ${GITHUB_PAGES_BRANCH}" # debug
     echo "${GITHUB_PAGES_PUSH_PATH}" # debug
     ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
+    echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}" # debug
+    ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR} # debug
     
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
     # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
@@ -117,6 +119,8 @@ main() {
     echo "Branch: ${GITHUB_PAGES_BRANCH}" # debug
     echo "${GITHUB_PAGES_PUSH_PATH}" # debug
     ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
+    echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}" # debug
+    ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR} # debug
 
     # commit the newly-generated customer docs website to the customer docs repo
     #git config --global user.email "${GIT_USER_EMAIL}"
