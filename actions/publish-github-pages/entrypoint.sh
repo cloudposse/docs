@@ -111,10 +111,6 @@ main() {
     ls -laht ${STAGING_DIR} # debug
     echo "${STAGING_DIR}/content" # debug
     ls -laht ${STAGING_DIR}/content # debug
-    echo "${STAGING_DIR}/content/docs" # debug
-    ls -laht ${STAGING_DIR}/content/docs # debug
-    echo "${STAGING_DIR}/content/modules" # debug
-    ls -laht ${STAGING_DIR}/content/modules # debug
     echo "${STAGING_DIR}/content/reference" # debug
     ls -laht ${STAGING_DIR}/content/reference # debug
     
@@ -143,10 +139,6 @@ main() {
     ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR} # debug
     echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference" # debug
     ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference # debug
-    echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/docs" # debug
-    ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/docs # debug
-    echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/modules" # debug
-    ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/modules # debug
 
     # commit the newly-generated customer docs website to the customer docs repo
     #git config --global user.email "${GIT_USER_EMAIL}"
