@@ -97,7 +97,7 @@ main() {
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" >> file_origins.txt
         readarray -t FILE_ORIGINS < file_origins.txt
         for i in "${!FILE_ORIGINS[@]}"; do
-            echo "${STAGING_DIR}content/reference/${FILE_ORIGINS[i]}" | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
+            echo "${STAGING_DIR}content/${FILE_ORIGINS[i]}" | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
             #echo "${STAGING_DIR}content/reference/${FILE_ORIGINS[i]#$GITHUB_PAGES_PULL_PATH}" >> file_destinations.txt
         done
         #find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" -print0 | xargs --null -I{} bash -c 'echo "${STAGING_DIR}content/reference/${content}/{}"' | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
@@ -111,6 +111,10 @@ main() {
     ls -laht ${STAGING_DIR} # debug
     echo "${STAGING_DIR}/content" # debug
     ls -laht ${STAGING_DIR}/content # debug
+    echo "${STAGING_DIR}/content/docs" # debug
+    ls -laht ${STAGING_DIR}/content/docs # debug
+    echo "${STAGING_DIR}/content/modules" # debug
+    ls -laht ${STAGING_DIR}/content/modules # debug
     echo "${STAGING_DIR}/content/reference" # debug
     ls -laht ${STAGING_DIR}/content/reference # debug
     
@@ -137,6 +141,12 @@ main() {
     ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
     echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}" # debug
     ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR} # debug
+    echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference" # debug
+    ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference # debug
+    echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/docs" # debug
+    ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/docs # debug
+    echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/modules" # debug
+    ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/modules # debug
 
     # commit the newly-generated customer docs website to the customer docs repo
     #git config --global user.email "${GIT_USER_EMAIL}"
