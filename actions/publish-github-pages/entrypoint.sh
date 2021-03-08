@@ -79,8 +79,12 @@ main() {
     sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ${STAGING_DIR}Makefile
     
     # copy all customer documentation into the build folder
-    ls -laht ${GITHUB_PAGES_HUGO_PATH}/content/ # debug
+    echo "${STAGING_DIR}" # debug
     ls -laht ${STAGING_DIR} # debug
+    echo "${STAGING_DIR}/content" # debug
+    ls -laht ${STAGING_DIR}/content # debug
+    echo "${STAGING_DIR}/content/reference" # debug
+    ls -laht ${STAGING_DIR}/content/reference # debug
     IFS="," read -r -a CONTENT_ARRAY <<< "$CONTENT"
     for content in "${CONTENT_ARRAY[@]}"; do
         # clear files needed for storing intermediate variables
@@ -99,7 +103,12 @@ main() {
             mkdir -p ${FILE_DESTINATIONS[i]} && cp ${FILE_ORIGINS[i]} ${FILE_DESTINATIONS[i]}
         done
     done
+    echo "${STAGING_DIR}" # debug
     ls -laht ${STAGING_DIR} # debug
+    echo "${STAGING_DIR}/content" # debug
+    ls -laht ${STAGING_DIR}/content # debug
+    echo "${STAGING_DIR}/content/reference" # debug
+    ls -laht ${STAGING_DIR}/content/reference # debug
     
     # Build Docker image needed to build the Hugo site
     cd ${STAGING_DIR}
