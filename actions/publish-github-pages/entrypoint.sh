@@ -116,10 +116,18 @@ main() {
         # install the customer docs (.md pages) to the content folder
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" >> file_origins.txt
         readarray -t FILE_ORIGINS < file_origins.txt
-        for i in "${!FILE_ORIGINS[@]}"; do
-            echo "${STAGING_DIR}content/${FILE_ORIGINS[i]}" | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
-            #echo "${STAGING_DIR}content/reference/${FILE_ORIGINS[i]#$GITHUB_PAGES_PULL_PATH}" >> file_destinations.txt
-        done
+        presence_of_subdirs=$(find ${GITHUB_PAGES_PULL_PATH}${content} -type d | wc -l)
+        if [[ "${presence_of_subdirs}" == "1" ]]; then
+            # there are no subdirs, so every .md file in this folder becomes a top-level object
+            for i in "${!FILE_ORIGINS[@]}"; do
+                echo "${STAGING_DIR}content/$(basename ${FILE_ORIGINS[i]})" | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
+            done
+        else
+            # there are subdirs, so we're gonna preserve the file heirarchy
+            for i in "${!FILE_ORIGINS[@]}"; do
+                echo "${STAGING_DIR}content/${FILE_ORIGINS[i]}" | sed -e "s|$GITHUB_PAGES_PULL_PATH||" >> file_destinations.txt
+            done
+        fi
         readarray -t FILE_DESTINATIONS < file_destinations.txt
         for i in "${!FILE_ORIGINS[@]}"; do
             echo "Copying ${FILE_ORIGINS[i]} to ${FILE_DESTINATIONS[i]}."
