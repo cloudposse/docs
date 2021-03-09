@@ -33,6 +33,7 @@
     text-decoration: none; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
     border-radius: 2px;
     padding-left: 10px;
+    max-width: 325px;
 
     a {
       padding-left: 10px;
@@ -47,7 +48,7 @@
 
       &.active {
         color: white;
-        background-color: #364548;
+        background-color: $color_black_pearl_approx;
         border-radius: 3px;
       }
     }
