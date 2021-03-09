@@ -96,7 +96,7 @@ main() {
         if [[ -n $DEBUG ]]; then
             ls -R ${GITHUB_PAGES_PULL_PATH}${content}
         fi
-        find ./modules -type f -name README.md > files.txt
+        find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name _index.md > files.txt
         readarray -t FILES < files.txt
         for i in "${!FILES[@]}"; do
             dirname_result=$(dirname ${FILES[i]})
