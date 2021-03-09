@@ -117,6 +117,8 @@ main() {
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" >> file_origins.txt
         readarray -t FILE_ORIGINS < file_origins.txt
         presence_of_subdirs=$(find ${GITHUB_PAGES_PULL_PATH}${content} -type d | wc -l)
+        echo "dir: $content"
+        echo "presence_of_subdirs: $presence_of_subdirs"
         if [[ "${presence_of_subdirs}" == "1" ]]; then
             # there are no subdirs, so every .md file in this folder becomes a top-level object
             for i in "${!FILE_ORIGINS[@]}"; do
