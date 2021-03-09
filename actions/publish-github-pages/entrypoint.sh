@@ -93,7 +93,13 @@ main() {
         # rename all `README.md` to `_index.md`
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name README.md -print0 | xargs --null -I{} bash -c 'mv {} $(dirname {})/_index.md'
         # categories with no subfolders, and only a single `_index.md`: `mv foobar/_index.md foobar.md`
+    if [[ -n $DEBUG ]]; then
+        ls -R ${GITHUB_PAGES_PULL_PATH}${content}
+    fi
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name _index.md -print0 | xargs --null -I{} bash -c 'if [ "$(ls -1q $(dirname {}) | wc -l)" == "1" ]; then echo "$(dirname {})"; mv {} $(dirname $(dirname {}))/$(basename $(dirname {})).md; rm -r $(dirname {}); ls $(dirname $(dirname {})); fi'
+    if [[ -n $DEBUG ]]; then
+        ls -R ${GITHUB_PAGES_PULL_PATH}${content}
+    fi
         # install the customer docs (.md pages) to the content folder
         find ${GITHUB_PAGES_PULL_PATH}${content} -type f -name "*.md" >> file_origins.txt
         readarray -t FILE_ORIGINS < file_origins.txt
