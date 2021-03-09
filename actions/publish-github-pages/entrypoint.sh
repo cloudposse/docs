@@ -46,20 +46,20 @@ main() {
     git clone --branch $GITHUB_PAGES_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PUSH_PATH
 
     if [[ -n $DEBUG ]]; then
-        echo "Repo: ${HUGO_REPO}" # debug
-        echo "Branch: master" # debug
-        echo "${GITHUB_PAGES_HUGO_PATH}" # debug
-        ls -lhat ${GITHUB_PAGES_HUGO_PATH} # debug
-        echo "Repo: ${GITHUB_PAGES_REPO}" # debug
-        echo "Branch: master" # debug
-        echo "${GITHUB_PAGES_PULL_PATH}" # debug
-        ls -lhat ${GITHUB_PAGES_PULL_PATH} # debug
-        echo "Repo: ${GITHUB_PAGES_REPO}" # debug
-        echo "Branch: ${GITHUB_PAGES_BRANCH}" # debug
-        echo "${GITHUB_PAGES_PUSH_PATH}" # debug
-        ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
-        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}" # debug
-        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR} # debug
+        echo "Repo: ${HUGO_REPO}"
+        echo "Branch: master"
+        echo "${GITHUB_PAGES_HUGO_PATH}"
+        ls -lhat ${GITHUB_PAGES_HUGO_PATH}
+        echo "Repo: ${GITHUB_PAGES_REPO}"
+        echo "Branch: master"
+        echo "${GITHUB_PAGES_PULL_PATH}"
+        ls -lhat ${GITHUB_PAGES_PULL_PATH}
+        echo "Repo: ${GITHUB_PAGES_REPO}"
+        echo "Branch: ${GITHUB_PAGES_BRANCH}"
+        echo "${GITHUB_PAGES_PUSH_PATH}"
+        ls -lhat ${GITHUB_PAGES_PUSH_PATH}
+        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}"
+        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}
     fi
     
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
@@ -80,12 +80,14 @@ main() {
     sed -i 's/^export DOCKER_RUN_FLAGS ?= -it --rm$/export DOCKER_RUN_FLAGS ?= --rm/' ${STAGING_DIR}Makefile
     
     # copy all customer documentation into the build folder
-    echo "${STAGING_DIR}" # debug
-    ls -laht ${STAGING_DIR} # debug
-    echo "${STAGING_DIR}/content" # debug
-    ls -laht ${STAGING_DIR}/content # debug
-    echo "${STAGING_DIR}/content/reference" # debug
-    ls -laht ${STAGING_DIR}/content/reference # debug
+    if [[ -n $DEBUG ]]; then
+        echo "${STAGING_DIR}"
+        ls -laht ${STAGING_DIR}
+        echo "${STAGING_DIR}/content"
+        ls -laht ${STAGING_DIR}/content
+        echo "${STAGING_DIR}/content/reference"
+        ls -laht ${STAGING_DIR}/content/reference
+    fi
     IFS="," read -r -a CONTENT_ARRAY <<< "$CONTENT"
     for content in "${CONTENT_ARRAY[@]}"; do
         # clear files needed for storing intermediate variables
@@ -138,12 +140,12 @@ main() {
     done
 
     if [[ -n $DEBUG ]]; then
-        echo "${STAGING_DIR}" # debug
-        ls -laht ${STAGING_DIR} # debug
-        echo "${STAGING_DIR}/content" # debug
-        ls -laht ${STAGING_DIR}/content # debug
-        echo "${STAGING_DIR}/content/reference" # debug
-        ls -laht ${STAGING_DIR}/content/reference # debug
+        echo "${STAGING_DIR}"
+        ls -laht ${STAGING_DIR}
+        echo "${STAGING_DIR}/content"
+        ls -laht ${STAGING_DIR}/content
+        echo "${STAGING_DIR}/content/reference"
+        ls -laht ${STAGING_DIR}/content/reference
     fi
 
     # Build Docker image needed to build the Hugo site
@@ -156,30 +158,23 @@ main() {
     cp -r ${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
     
     if [[ -n $DEBUG ]]; then
-        echo "Repo: ${HUGO_REPO}" # debug
-        echo "Branch: master" # debug
-        echo "${GITHUB_PAGES_HUGO_PATH}" # debug
-        ls -lhat ${GITHUB_PAGES_HUGO_PATH} # debug
-        echo "Repo: ${GITHUB_PAGES_REPO}" # debug
-        echo "Branch: master" # debug
-        echo "${GITHUB_PAGES_PULL_PATH}" # debug
-        ls -lhat ${GITHUB_PAGES_PULL_PATH} # debug
-        echo "Repo: ${GITHUB_PAGES_REPO}" # debug
-        echo "Branch: ${GITHUB_PAGES_BRANCH}" # debug
-        echo "${GITHUB_PAGES_PUSH_PATH}" # debug
-        ls -lhat ${GITHUB_PAGES_PUSH_PATH} # debug
-        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}" # debug
-        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR} # debug
-        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference" # debug
-        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference # debug
+        echo "Repo: ${HUGO_REPO}"
+        echo "Branch: master"
+        echo "${GITHUB_PAGES_HUGO_PATH}"
+        ls -lhat ${GITHUB_PAGES_HUGO_PATH}
+        echo "Repo: ${GITHUB_PAGES_REPO}"
+        echo "Branch: master"
+        echo "${GITHUB_PAGES_PULL_PATH}"
+        ls -lhat ${GITHUB_PAGES_PULL_PATH}
+        echo "Repo: ${GITHUB_PAGES_REPO}"
+        echo "Branch: ${GITHUB_PAGES_BRANCH}"
+        echo "${GITHUB_PAGES_PUSH_PATH}"
+        ls -lhat ${GITHUB_PAGES_PUSH_PATH}
+        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}"
+        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}
+        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference"
+        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference
     fi
-
-    # commit the newly-generated customer docs website to the customer docs repo
-    #git config --global user.email "${GIT_USER_EMAIL}"
-    #git config --global user.name "${GIT_USER_NAME}"
-    #git -C $GITHUB_PAGES_PUSH_PATH add -A
-    #git -C $GITHUB_PAGES_PUSH_PATH commit -a --message 'Updating content to $GIT_REF'
-    #git -C $GITHUB_PAGES_PUSH_PATH push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@$(sed "s/https\?:\/\///" <<< ${GITHUB_PAGES_REPO}).git
 }
 
 main
