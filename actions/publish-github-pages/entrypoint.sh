@@ -1,5 +1,3 @@
-# !!!! This file is left only for reference purposes.
-
 #!/bin/bash
 set -e
 #
