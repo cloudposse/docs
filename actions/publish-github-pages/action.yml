@@ -5,10 +5,11 @@ runs:
 #  image: 'Dockerfile'
   using: 'composite'
   steps:
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+#    - uses: actions/setup-python@v2
+#      with:
+#        python-version: '3.x'
     - run: python ${{ github.action_path }}/entrypoint.py
+      shell: bash
 #    - run: ${{ github.action_path }}/entrypoint.sh
 #      shell: bash
 #    - run: ./actions/publish-github-pages/entrypoint.sh
