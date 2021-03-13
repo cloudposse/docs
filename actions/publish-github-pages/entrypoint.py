@@ -109,7 +109,7 @@ def main():
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
     # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
     os.mkdir(STAGING_DIR)
-    copytree( os.path.join(GITHUB_PAGES_HUGO_PATH + "tasks"), os.path.join(STAGING_DIR + "tasks") )
+    copytree( os.path.join(GITHUB_PAGES_HUGO_PATH, "tasks"), STAGING_DIR )
     copytree( os.path.join(GITHUB_PAGES_HUGO_PATH + "/themes/"), STAGING_DIR )
     copytree( os.path.join(GITHUB_PAGES_HUGO_PATH + "/static/"), STAGING_DIR )
     copytree( os.path.join(GITHUB_PAGES_HUGO_PATH + "/layouts/"), STAGING_DIR )
