@@ -136,12 +136,14 @@ def main():
     print(f'content_folders: {content_folders}')
     for content_folder in content_folders:
         print(f"content_folder: {content_folder}")
-        # Rename and rearrange content files as needed.
         for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
+            # Rename and rearrange content files as needed:
             # rename all `README.md` to `_index.md`
             for local_file in files:
                 if local_file=="README.md":
                     os.rename( os.path.join(root, local_file), os.path.join(root, "_index.md") )
+        for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
+            # Rename and rearrange content files as needed:
             # categories with no subfolders, and only a single `_index.md`: `mv foobar/_index.md foobar.md`
             if not len(dirs):
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
