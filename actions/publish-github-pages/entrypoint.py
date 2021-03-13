@@ -3,6 +3,7 @@
 #
 # #### PARAMETERS ####
 # Input parameters:
+# GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
 # GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
 # GITHUB_PAGES_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
 # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
@@ -13,6 +14,7 @@
 # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
 
 # Example parameter values:
+# GITHUB_PAGES_DIRECTORY=github_pages
 # GITHUB_PAGES_REPO=https://github.com/cloudposse/docs # or for customer github.com/customer/infrastructure.git
 # GITHUB_PAGES_BRANCH=production # or for customer, it will be docs
 # CONTENT=docs,content
@@ -27,6 +29,10 @@ from git import Repo
 from shutil import copy2, copytree
 
 def read_in_env_vars():
+    # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
+    global GITHUB_PAGES_DIRECTORY
+    GITHUB_PAGES_DIRECTORY = os.environ["GITHUB_PAGES_DIRECTORY"]
+    GITHUB_PAGES_DIRECTORY = GITHUB_PAGES_DIRECTORY.rstrip("/")
     # GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
     global GITHUB_PAGES_REPO
     GITHUB_PAGES_REPO = os.environ["GITHUB_PAGES_REPO"]
