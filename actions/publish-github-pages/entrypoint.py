@@ -181,10 +181,10 @@ def main():
     make_command = f'cd {STAGING_DIR}; make release; make real-clean hugo/build'
     print(make_command)
     subprocess.run(make_command, shell=True, check=True)
-    directory_cleaning_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true'
-    print(directory_cleaning_command)
-    subprocess.run(directory_cleaning_command, shell=True, check=True)
-    copytree( HUGO_PUBLISH_DIR, GITHUB_PAGES_PUSH_PATH )
+    #directory_c_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true'
+    #print(directory_cleaning_command)
+    #subprocess.run(directory_cleaning_command, shell=True, check=True)
+    copytree( HUGO_PUBLISH_DIR, GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
     
     if DEBUG:
         pass
