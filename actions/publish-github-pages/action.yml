@@ -6,5 +6,7 @@ runs:
 #    - uses: actions/setup-python@v2
 #      with:
 #        python-version: '3.x'
-    - run: python ${{ github.action_path }}/entrypoint.py
+    - run: |
+        pip install GitPython
+        python ${{ github.action_path }}/entrypoint.py
       shell: bash
