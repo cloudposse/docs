@@ -130,6 +130,7 @@ def main():
     # copy all customer documentation into the build folder
     content_folders = CONTENT.split(",")
     for content_folder in content_folders:
+        # Rename and rearrange content files as needed.
         for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
             # rename all `README.md` to `_index.md`
             for local_file in files:
@@ -140,8 +141,9 @@ def main():
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 if len(markdown_files) == 1:
                     os.rename( os.path.join(root, markdown_files[0]), root + ".md")
-            # Now that all .md files have been renamed and rearranged appropriately,
-            # collate the customer docs (.md pages) inside the STAGING_DIR:
+        # Now that all .md files have been renamed and rearranged appropriately,
+        # collate the customer docs (.md pages) inside the STAGING_DIR.
+        for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
             # If this is a top-level dir (i.e., it is listed directly in CONTENT) and it has no subdirs,
             # every .md file in this folder becomes a top-level object.
             if root == os.path.join(GITHUB_PAGES_PULL_PATH, content_folder) and not len(dirs):
@@ -154,7 +156,7 @@ def main():
                 staging_root = root.replace(GITHUB_PAGES_PULL_PATH, STAGING_DIR)
                 for markdown_file in markdown_files:
                     os.rename( os.path.join(root, markdown_file), os.path.join(staging_root, markdown_file) )
-                
+
     if DEBUG:
         pass
 #        echo "${STAGING_DIR}"
