@@ -68,7 +68,7 @@ def read_in_env_vars():
     GITHUB_PAGES_HUGO_PATH = GITHUB_PAGES_HUGO_PATH.rstrip("/")
     # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
     global GITHUB_PAGES_PUSH_PATH
-    GITHUB_PAGES_PUSH_PATH = os.getcwd() + "/" + GITHUB_PAGES_DIRECTORY + "/"
+    GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY)
     GITHUB_PAGES_PUSH_PATH = GITHUB_PAGES_PUSH_PATH.rstrip("/")
     # Staging directory used for preparing files before hugo generation
     global STAGING_DIR
@@ -87,6 +87,9 @@ def main():
     # 2) Site-specific documentation
     docs_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PULL_PATH)
     # 3) The GitHub Pages deployment branch for this site
+    directory_cleaning_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true'
+    print(directory_cleaning_command)
+    subprocess.run(directory_cleaning_command, shell=True, check=True)
     gh_pages_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH)
     gh_pages_repo.git.checkout(GITHUB_PAGES_BRANCH)
 
@@ -129,6 +132,7 @@ def main():
 #        ls -laht ${STAGING_DIR}/content/reference
 
     # copy all customer documentation into the build folder
+    print(f"CONTENT: {CONTENT}")
     content_folders = CONTENT.split(",")
     print(f'content_folders: {content_folders}')
     for content_folder in content_folders:
@@ -175,7 +179,11 @@ def main():
 
     # publish the Hugo-generated HTML to $GITHUB_PAGES_PUSH_PATH
     make_command = f'cd {STAGING_DIR}; make release; make real-clean hugo/build'
+    print(make_command)
     subprocess.run(make_command, shell=True, check=True)
+    #directory_cleaning_command = 'rm -r {GITHUB_PAGES_PUSH_PATH}'
+    #print(directory_cleaning_command)
+    #subprocess.run(directory_cleaning_command, shell=True, check=True)
     copytree( HUGO_PUBLISH_DIR, GITHUB_PAGES_PUSH_PATH )
     
     if DEBUG:
