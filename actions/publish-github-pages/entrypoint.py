@@ -138,7 +138,7 @@ def main():
             # categories with no subfolders, and only a single `_index.md`: `mv foobar/_index.md foobar.md`
             if not len(dirs):
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
-                if len(markdown_file_count) == 1:
+                if len(markdown_files) == 1:
                     os.rename( os.path.join(root, markdown_files[0]), root + ".md")
             # Now that all .md files have been renamed and rearranged appropriately,
             # collate the customer docs (.md pages) inside the STAGING_DIR:
