@@ -90,8 +90,7 @@ def main():
     directory_cleaning_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true'
     print(directory_cleaning_command)
     subprocess.run(directory_cleaning_command, shell=True, check=True)
-    gh_pages_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH)
-    gh_pages_repo.git.checkout(GITHUB_PAGES_BRANCH)
+    gh_pages_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_BRANCH)
 
     if DEBUG:
         pass
