@@ -157,13 +157,19 @@ def main():
             if root == os.path.join(GITHUB_PAGES_PULL_PATH, content_folder) and not len(dirs):
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 for markdown_file in markdown_files:
-                    os.rename( os.path.join(root, markdown_file), os.path.join(STAGING_DIR, "content", markdown_file) )
+                    origin_path = os.path.join(root, markdown_file)
+                    destination_path = os.path.join(STAGING_DIR, "content", markdown_file)
+                    print(f'origin: {origin_path}, destination: {destination_path}')
+                    os.rename( origin_path, destination_path )
             # Otherwise, we're gonna preserve the existing file heirarchy.
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 staging_root = root.replace(GITHUB_PAGES_PULL_PATH, STAGING_DIR)
                 for markdown_file in markdown_files:
-                    os.rename( os.path.join(root, markdown_file), os.path.join(staging_root, markdown_file) )
+                    origin_path = os.path.join(root, markdown_file)
+                    destination_path = os.path.join(staging_root, markdown_file)
+                    print(f'origin: {origin_path}, destination: {destination_path}')
+                    os.rename( origin_path, destination_path )
 
     if DEBUG:
         pass
