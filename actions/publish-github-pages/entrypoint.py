@@ -189,7 +189,7 @@ def insert_frontmatter(file_path):
         with open(file_path, "w") as markdown_file:
             if not title:
                 title="default_title"
-            markdown_file.write("---\ntitle: " + title + "\n---\n" + input_file)
+            markdown_file.write("---\ntitle: \"" + title + "\"\n---\n" + input_file)
 
 if __name__=="__main__":
     main()
