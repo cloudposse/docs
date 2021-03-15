@@ -25,6 +25,7 @@
 # HTMLTEST_CONFIG=.htmltest.config.new
 
 import os
+import re
 import subprocess
 from git import Repo
 from shutil import copy2, copytree
