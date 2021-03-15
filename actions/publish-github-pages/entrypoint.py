@@ -167,7 +167,7 @@ def main():
                 staging_root = root.replace(GITHUB_PAGES_PULL_PATH, STAGING_DIR)
                 for markdown_file in markdown_files:
                     origin_path = os.path.join(root, markdown_file)
-                    destination_path = os.path.join(staging_root, markdown_file)
+                    destination_path = os.path.join(staging_root, "content", markdown_file)
                     print(f'origin: {origin_path}, destination: {destination_path}')
                     os.rename( origin_path, destination_path )
 
