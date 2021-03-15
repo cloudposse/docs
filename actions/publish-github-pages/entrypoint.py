@@ -161,7 +161,7 @@ def main():
                     destination_path = os.path.join(STAGING_DIR, "content", markdown_file)
                     print(f'origin: {origin_path}, destination: {destination_path}')
                     print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
-                    os.rename( origin_path, destination_path )
+                    os.renames( origin_path, destination_path )
             # Otherwise, we're gonna preserve the existing file heirarchy.
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
@@ -171,7 +171,7 @@ def main():
                     destination_path = os.path.join(staging_root, "content", markdown_file)
                     print(f'origin: {origin_path}, destination: {destination_path}')
                     print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
-                    os.rename( origin_path, destination_path )
+                    os.renames( origin_path, destination_path )
 
     if DEBUG:
         pass
