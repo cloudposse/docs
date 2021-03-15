@@ -139,6 +139,7 @@ def main():
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
                         print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
+                    insert_frontmatter(origin_path)
                     os.renames( origin_path, destination_path )
             # Otherwise, we're gonna preserve the existing file heirarchy.
             else:
@@ -150,6 +151,7 @@ def main():
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
                         print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
+                    insert_frontmatter(origin_path)
                     os.renames( origin_path, destination_path )
 
     # Build Docker image needed to build the Hugo site
@@ -162,6 +164,30 @@ def main():
         print(make_command)
     subprocess.run(make_command, shell=True, check=True)
     copytree( HUGO_PUBLISH_DIR, GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
-    
+
+def insert_frontmatter(file_path):
+    # check for frontmatter
+    frontmatter_flag = True
+    with open(file_path, "r") as markdown_file:
+        line = markdown_file.readline()
+        if not re.match("^---", line):
+            frontmatter_flag = False
+    # if it's not found, create it by finding the first commented line and formatting it as frontmatter
+    if not frontmatter_flag:
+        title = ""
+        with open(file_path, "r") as markdown_file:
+            for line in markdown_file:
+                match_results = re.match("^\s*#+(.*)$", line)
+                if match_results:
+                    title = match_results.group(0)
+                    break
+        # write out file with frontmatter
+        with open(file_path, "r") as markdown_file:
+            input_file = markdown_file.read()
+        with open(file_path, "w") as markdown_file:
+            if not title:
+                title="default_title"
+            markdown_file.write("---\ntitle: " + title + "\n---\n" + input_file)
+
 if __name__=="__main__":
     main()
