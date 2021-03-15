@@ -164,7 +164,8 @@ def main():
     if DEBUG:
         print(make_command)
     subprocess.run(make_command, shell=True, check=True)
-    copytree( HUGO_PUBLISH_DIR, GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
+    print(f"HUGO_PUBLISH_DIR: {HUGO_PUBLISH_DIR}, GITHUB_PAGES_PUSH_PATH: {GITHUB_PAGES_PUSH_PATH}")
+    copytree( os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR), GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
 
 def insert_frontmatter(file_path):
     # check for frontmatter
