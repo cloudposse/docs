@@ -179,9 +179,9 @@ def insert_frontmatter(file_path):
         title = ""
         with open(file_path, "r") as markdown_file:
             for line in markdown_file:
-                match_results = re.match("^\s*#+(.*)$", line)
+                match_results = re.match("^\s*#+\s*(.*)$", line)
                 if match_results:
-                    title = match_results.group(0)
+                    title = match_results.group(1)
                     break
         # write out file with frontmatter
         with open(file_path, "r") as markdown_file:
