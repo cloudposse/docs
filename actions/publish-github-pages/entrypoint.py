@@ -88,27 +88,11 @@ def main():
     docs_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PULL_PATH)
     # 3) The GitHub Pages deployment branch for this site
     directory_cleaning_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true'
-    print(directory_cleaning_command)
+    if DEBUG:
+        print(directory_cleaning_command)
     subprocess.run(directory_cleaning_command, shell=True, check=True)
     gh_pages_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_BRANCH)
 
-    if DEBUG:
-        pass
-#        echo "Repo: ${HUGO_REPO}"
-#        echo "Branch: master"
-#        echo "${GITHUB_PAGES_HUGO_PATH}"
-#        ls -lhat ${GITHUB_PAGES_HUGO_PATH}
-#        echo "Repo: ${GITHUB_PAGES_REPO}"
-#        echo "Branch: master"
-#        echo "${GITHUB_PAGES_PULL_PATH}"
-#        ls -lhat ${GITHUB_PAGES_PULL_PATH}
-#        echo "Repo: ${GITHUB_PAGES_REPO}"
-#        echo "Branch: ${GITHUB_PAGES_BRANCH}"
-#        echo "${GITHUB_PAGES_PUSH_PATH}"
-#        ls -lhat ${GITHUB_PAGES_PUSH_PATH}
-#        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}"
-#        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}
-    
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
     # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
     os.mkdir(STAGING_DIR)
@@ -121,21 +105,14 @@ def main():
     copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/.htmltest.yml"), STAGING_DIR )
     copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/Makefile"), STAGING_DIR )
     
-    if DEBUG:
-        pass
-#        echo "${STAGING_DIR}"
-#        ls -laht ${STAGING_DIR}
-#        echo "${STAGING_DIR}/content"
-#        ls -laht ${STAGING_DIR}/content
-#        echo "${STAGING_DIR}/content/reference"
-#        ls -laht ${STAGING_DIR}/content/reference
-
     # copy all customer documentation into the build folder
-    print(f"CONTENT: {CONTENT}")
     content_folders = CONTENT.split(",")
-    print(f'content_folders: {content_folders}')
+    if DEBUG:
+        print(f"CONTENT: {CONTENT}")
+        print(f'content_folders: {content_folders}')
     for content_folder in content_folders:
-        print(f"content_folder: {content_folder}")
+        if DEBUG:
+            print(f"content_folder: {content_folder}")
         for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
             # Rename and rearrange content files as needed:
             # rename all `README.md` to `_index.md`
@@ -159,8 +136,9 @@ def main():
                 for markdown_file in markdown_files:
                     origin_path = os.path.join(root, markdown_file)
                     destination_path = os.path.join(STAGING_DIR, "content", markdown_file)
-                    print(f'origin: {origin_path}, destination: {destination_path}')
-                    print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
+                    if DEBUG:
+                        print(f'origin: {origin_path}, destination: {destination_path}')
+                        print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
                     os.renames( origin_path, destination_path )
             # Otherwise, we're gonna preserve the existing file heirarchy.
             else:
@@ -169,18 +147,10 @@ def main():
                 for markdown_file in markdown_files:
                     origin_path = os.path.join(root, markdown_file)
                     destination_path = os.path.join(staging_root, "content", markdown_file)
-                    print(f'origin: {origin_path}, destination: {destination_path}')
-                    print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
+                    if DEBUG:
+                        print(f'origin: {origin_path}, destination: {destination_path}')
+                        print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
                     os.renames( origin_path, destination_path )
-
-    if DEBUG:
-        pass
-#        echo "${STAGING_DIR}"
-#        ls -laht ${STAGING_DIR}
-#        echo "${STAGING_DIR}/content"
-#        ls -laht ${STAGING_DIR}/content
-#        echo "${STAGING_DIR}/content/reference"
-#        ls -laht ${STAGING_DIR}/content/reference
 
     # Build Docker image needed to build the Hugo site
     docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
@@ -188,31 +158,10 @@ def main():
 
     # publish the Hugo-generated HTML to $GITHUB_PAGES_PUSH_PATH
     make_command = f'cd {STAGING_DIR}; make release; make real-clean hugo/build'
-    print(make_command)
+    if DEBUG:
+        print(make_command)
     subprocess.run(make_command, shell=True, check=True)
-    #directory_c_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true'
-    #print(directory_cleaning_command)
-    #subprocess.run(directory_cleaning_command, shell=True, check=True)
     copytree( HUGO_PUBLISH_DIR, GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
     
-    if DEBUG:
-        pass
-#        echo "Repo: ${HUGO_REPO}"
-#        echo "Branch: master"
-#        echo "${GITHUB_PAGES_HUGO_PATH}"
-#        ls -lhat ${GITHUB_PAGES_HUGO_PATH}
-#        echo "Repo: ${GITHUB_PAGES_REPO}"
-#        echo "Branch: master"
-#        echo "${GITHUB_PAGES_PULL_PATH}"
-#        ls -lhat ${GITHUB_PAGES_PULL_PATH}
-#        echo "Repo: ${GITHUB_PAGES_REPO}"
-#        echo "Branch: ${GITHUB_PAGES_BRANCH}"
-#        echo "${GITHUB_PAGES_PUSH_PATH}"
-#        ls -lhat ${GITHUB_PAGES_PUSH_PATH}
-#        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}"
-#        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}
-#        echo "${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference"
-#        ls -lhat ${GITHUB_PAGES_PUSH_PATH}/${HUGO_PUBLISH_DIR}/reference
-
 if __name__=="__main__":
     main()
