@@ -131,29 +131,41 @@ def main():
         # collate the customer docs (.md pages) inside the STAGING_DIR.
         for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
             # If this is a top-level dir (i.e., it is listed directly in CONTENT) and it has no subdirs,
-            # every .md file in this folder becomes a top-level object.
+            # every .md file in this folder becomes the basis for a top-level object.
             if root == os.path.join(GITHUB_PAGES_PULL_PATH, content_folder) and not len(dirs):
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 for markdown_file in markdown_files:
+                    # create a folder for the markdown file
+                    markdown_basename = os.path.splitext(markdown_file)[0]
+                    os.mkdir( os.path.join(STAGING_DIR, "content", markdown_basename) )
+                    # move the markdown file into the folder
                     origin_path = os.path.join(root, markdown_file)
-                    destination_path = os.path.join(STAGING_DIR, "content", markdown_file)
+                    destination_path = os.path.join(STAGING_DIR, "content", markdown_basename, markdown_file)
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
                         print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
                     insert_frontmatter(origin_path)
                     os.renames( origin_path, destination_path )
+                    # create _index.md file for the folder
+                    index_string = f"---\ntitle: \"{markdown_basename.capitalize()}\"\ndescription: \"\"\nicon: \"fa fa-brain\"\nweight: 1\n---"
+                    index_path = os.path.join(STAGING_DIR, "content", markdown_basename, "_index.md")
+                    with open(index_path, "w")as index_file:
+                        index_file.write(index_string)
+
             # Otherwise, we're gonna preserve the existing file heirarchy.
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 staging_root = root.replace(GITHUB_PAGES_PULL_PATH, STAGING_DIR)
+                weight = 1
                 for markdown_file in markdown_files:
                     origin_path = os.path.join(root, markdown_file)
                     destination_path = os.path.join(staging_root, "content", markdown_file)
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
                         print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
-                    insert_frontmatter(origin_path)
+                    insert_frontmatter(origin_path, weight=weight)
                     os.renames( origin_path, destination_path )
+                    weight = weight + 1
 
     # Build Docker image needed to build the Hugo site
     docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
@@ -167,7 +179,7 @@ def main():
     print(f"HUGO_PUBLISH_DIR: {HUGO_PUBLISH_DIR}, GITHUB_PAGES_PUSH_PATH: {GITHUB_PAGES_PUSH_PATH}")
     copytree( os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR), GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
 
-def insert_frontmatter(file_path):
+def insert_frontmatter(file_path, weight=1):
     # check for frontmatter
     frontmatter_flag = True
     with open(file_path, "r") as markdown_file:
@@ -189,7 +201,9 @@ def insert_frontmatter(file_path):
         with open(file_path, "w") as markdown_file:
             if not title:
                 title="default_title"
-            markdown_file.write("---\ntitle: \"" + title + "\"\n---\n" + input_file)
+            front_matter_string = f"---\ntitle: \"{title}\"\ndescription: \"No description available.\"\nweight: {weight}\n---\n\n"
+            markdown_file.write(front_matter_string)
+            markdown_file.write(input_file)
 
 if __name__=="__main__":
     main()
