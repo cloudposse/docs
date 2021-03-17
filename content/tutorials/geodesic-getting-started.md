@@ -95,5 +95,6 @@ assume-role luke.skywalker
 # Finally, we can run our AWS CLI commands without having to manually invoke `aws-vault exec` each time
 aws s3 ls
 aws sts get-caller-identity
+```
 
 The beautiful thing about all of this is that we didn't need to install anything except Docker on our local machine to make this happen. Both the AWS CLI and `aws-vault` tools involve specific installation instructions to get up and running, but by using Geodesic we're able to quickly skip over all of that and use a container that includes them out of the box alongside dozens of other tools as well. That is why we call it our toolbox as it enables consistent usage of CLI tools across your entire organization!
