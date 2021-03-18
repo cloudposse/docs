@@ -24,7 +24,7 @@ Prior to starting this tutorial, you should be sure you understand [our various 
 
 ### 1. Clone the tutorials repository
 
-As part of this tutorial (and others in our tutorial series), we'll be utilizing the [our tutorials repository](https://github.com/cloudposse/tutorials). This repository includes code and relevant materials for you to use alongside this tutorial walk through.
+As part of this tutorial (and others in our tutorial series), we'll be utilizing [our tutorials repository](https://github.com/cloudposse/tutorials). This repository includes code and relevant materials for you to use alongside this tutorial walk through.
 
 Let's clone it to your local machine:
 
@@ -87,13 +87,14 @@ Few important pieces to point out here:
 
 1. We're using [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) as our base image. This enables us to provide a consistent, reproducible toolbox to invoke `atmos` from.
 1. We're installing the Terraform 0.14 and using that as our default `terraform` executable.
-1. We're installing `atmos` as just a simple binary via `apk`. This is because `atmos` is built and distributed as a [Cloud Posse linux package](https://github.com/cloudposse/packages).
+1. We're installing `atmos` as a simple binary via `apk`. This is because `atmos` is built and distributed as a [Cloud Posse linux package](https://github.com/cloudposse/packages).
 1. We're copying our `components/` and `stacks/` folder into the image.
 
-Overall, a fairly simple and small set of additions on top of standard Geodesic. To get started using this image, first we have to build it. To do so, we could invoke `docker build` manually, but speed things up we've provided a simple `make` target to simplify that process:
+Overall, a fairly simple and small set of additions on top of standard Geodesic. To get started using this image, first we have to build it. To do so, we could invoke `docker build` manually, but speed things up we've provided a `make` target to simplify that process:
 
 ```bash
-# Pull the Cloud Posse build-harness, which provides some additional utilities that our `build` target uses.
+# Pull the Cloud Posse build-harness, which provides some additional utilities
+# that our `build` target uses.
 make init
 
 # Build our local Dockerfile onto out local machines as `cloudposse/atmos:latest`
@@ -128,12 +129,12 @@ Awesome, we've successfully set up `atmos` and we're ready to start using it!
 
 ### 4. Terraform plan and apply a component
 
-Now that we've got access to `atmos`, let's do something simple like execute `terraform plan` and `terraform apply` on some terraform code! To do that, we need two things:
+Now that we've got access to `atmos`, let's do something simple like execute `plan` and `apply` on some terraform code! To do that, we need two things:
 
 1. Components -- We've provided 3 small example components in our `components/terraform/` directory, which is mounted to `/` inside your running container.
 1. A Stack configuration -- We've provided a simple example stack located at `stacks/example.yaml`. This is similarly mounted to `/` inside your running container.
 
-For our simple example in this step, we'll use `components/terraform/fetch-location` component. To plan that component, let's execute the following:
+For our example in this step, we'll use `components/terraform/fetch-location` component. To plan that component, let's execute the following:
 
 ```bash
 atmos terraform plan fetch-location --stack=example
@@ -149,11 +150,11 @@ atmos terraform deploy fetch-location --stack=example
 
 Even though this component didn't have any resources, your deploy’s `apply` step will utilize the [`external`](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/data_source) data source to invoke the component's `fetch_location.sh` script and output your city, region, and country (found by your IP address).
 
-Awesome, we've got a component applied, but that would've been pretty trivial to do without `atmos`, right? We consolidated down 3 commands into one which is great, but we can do a lot better and now show you where `atmos` really provides value: Workflows.
+Awesome, we've got a component applied, but that would've been pretty trivial to do without `atmos`, right? We consolidated down 3 commands into one which is great, but we can do a lot better... Let's show you where `atmos` really provides value: Workflows.
 
 ### 5. Invoke an Atmos Workflow
 
-The SweetOps methodology is built on small, composable components because through experience practitioners have found large root modules to become cumbersome: They require long `plan` times, create large change blast radiuses, and don't foster reuse. The tradeoff with smaller root modules (components) however is that you then need to orchestrate them in an order that makes sense for what you're building. That is where `atmos` workflows come in. Workflows enable you to describe the ordering of how you want to orchestrate your terraform or helmfile components so that you can quickly invoke multiple components via one command. Let's look at an example in our `/stacks/example.yaml` file:
+The SweetOps methodology is built on small, composable components because through experience practitioners have found large root modules to become cumbersome: They require long `plan` times, create large blast radiuses, and don't foster reuse. The tradeoff with smaller root modules (components) however is that you then need to orchestrate them in an order that makes sense for what you're building. That is where `atmos` workflows come in. Workflows enable you to describe the ordering of how you want to orchestrate your terraform or helmfile components so that you can quickly invoke multiple components via one command. Let's look at an example in our `/stacks/example.yaml` file:
 
 ```yaml
 import: []
@@ -204,13 +205,13 @@ Now that we know what is in our `example.yaml` stack configuration, let's invoke
 atmos workflow deploy-all -s example
 ```
 
-This will run our various steps through `atmos` and you should see the sequential `init`, `plan`, and `apply` of each component in the workflow to output the current weather for your area 😁  We hope it's sunny wherever you're at.
+This will run our various steps through `atmos` and you should see the sequential `init`, `plan`, and `apply` of each component in the workflow to output the current weather for your area. We hope it's sunny wherever you're at 😁 🌤
 
 Let's move on to updating our code and getting a feel for working a bit more hands on with `atmos` and stacks.
 
 ### 6. Update our Stack
 
-One of the critical philosophies that SweetOps embodies is a focus on [improving Day 2+ operations]({{< relref "fundamentals/philosophy.md#optimize-for-day-2-operations" >}}) and with that in mind, it's important to know how you would update this stack and utilize `atmos` to make those changes. Luckily, that's as simple as you might think. Let's try it out and update the `stacks/example.yaml` on our local machines to the following:
+One of the critical philosophies that SweetOps embodies is a focus on [improving Day 2+ operations]({{< relref "fundamentals/philosophy.md#optimize-for-day-2-operations" >}}) and with that in mind, it's important to know how you would update this stack and utilize `atmos` to make those changes. Luckily, that's as simple as you might think. Let's try it out and update the `stacks/example.yaml` file on our local machines to the following:
 
 ```yaml
 import: []
@@ -253,7 +254,7 @@ Above we updated a couple variables to change the behavior of our terraform code
 atmos workflow deploy-all -s example
 ```
 
-This should run through our workflow similar to the way we did it before, but this time we'll see our temperature come back from the weather API in celsius instead of Fahrenheit and we'll skip over our terraform `local-exec`'s `printf` command for pretty printing our weather data. Instead we'll just get our updated temperature as one of our `Outputs`.
+This should run through our workflow similar to the way we did it before, but this time we'll see our temperature come back from the weather API in celsius instead of fahrenheit and we'll skip over our terraform `local-exec`'s `printf` command for pretty printing our weather data. Instead we'll just get our updated temperature as one of our `Outputs`.
 
 ## Conclusion
 
@@ -264,4 +265,6 @@ Wrapping up, we've seen some critical aspects of SweetOps in action as part of t
 1. Example components that require a specific workflow in order to execute correctly.
 1. Usage of `atmos` in executing against some terraform code and orchestrating a workflow from our stack.
 
-With these tools, you can skip documenting the various steps of building an environment (aka WikiOps) and instead focus on just describing and automating those steps!
+With these tools, you can skip documenting the various steps of building an environment (aka WikiOps) and instead focus on just describing and automating those steps! And there is a lot more `atmos` and stack files can do beyond this brief intro, so keep looking around the docs for more usage patterns!
+
+<!-- TODO: Update the above to point at how-tos for Atmos / Stacks -->
