@@ -6,7 +6,7 @@ weight: 2
 
 ## Intro
 
-`atmos` is a SweetOps built tool to make DevOps and Cloud automation easy. It has direct support for automating Terraform, Helm, Helmfile, and Istio. By natively utilizing [stacks]({{< relref "fundamentals/concepts.md#stacks" >}}), `atmos` enables you to effortlessly manage your Terraform and Helmfile [components]({{< relref "fundamentals/concepts.md#components" >}}) from your local machine or in your CI / CD pipelines.
+`atmos` is part of the SweetOps toolchain and was built to make DevOps and Cloud automation easier across multiple tools. It has direct support for automating Terraform, Helm, Helmfile, and Istio. By natively utilizing [stacks]({{< relref "fundamentals/concepts.md#stacks" >}}), `atmos` enables you to effortlessly manage your Terraform and Helmfile [components]({{< relref "fundamentals/concepts.md#components" >}}) from your local machine or in your CI/CD pipelines.
 
 In this tutorial we'll be looking at a simple (albeit contrived) example of automating multiple Terraform components together into a workflow. This will give you some understanding of what `atmos` can do while also giving you some experience with using it at the command line.
 
@@ -18,7 +18,7 @@ To accomplish this tutorial, you'll need to have [Git](https://git-scm.com/book/
 
 ### Understanding
 
-Prior to starting this tutorial, you should be sure you understand [our various concepts and terminology]({{< relref "fundamentals/concepts.md" >}}) and have gone through [Getting started with Geodesic]({{< relref "tutorials/geodesic-getting-started.md" >}}) as we'll be using Geodesic as our means to run `atmos`.
+Prior to starting this tutorial, you should be sure you understand [our various concepts and terminology]({{< relref "fundamentals/concepts.md" >}}) and have gone through our [Getting started with Geodesic]({{< relref "tutorials/geodesic-getting-started.md" >}}) tutorial because we'll be using Geodesic as our means to run `atmos`.
 
 ## Tutorial
 
@@ -32,7 +32,7 @@ Let's clone it to your local machine:
 git clone git@github.com:cloudposse/tutorials.git
 ```
 
-Now that is on your local machine, let's get into the code that walks us through using `atmos`:
+Now that it's on your local machine, let's get into the code that walks us through using `atmos`:
 
 ```bash
 cd tutorials/02-atmos
@@ -85,12 +85,12 @@ WORKDIR /
 
 Few important pieces to point out here:
 
-1. We're using [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) as our base image. This enables us to provide a consistent, reproducible toolbox to invoke `atmos` from.
-1. We're installing the Terraform 0.14 and using that as our default `terraform` executable.
+1. We're using [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) as our base image. This enables us to provide a consistent, reproducible toolbox to invoke `atmos` from the command line.
+1. We're installing Terraform 0.14 and using that as our default `terraform` executable. Geodesic supports installing multiple concurrent versions of `terraform` using the [`update-alternatives` system](https://manpages.debian.org/stretch/dpkg/update-alternatives.1.en.html). 
 1. We're installing `atmos` as a simple binary via `apk`. This is because `atmos` is built and distributed as a [Cloud Posse linux package](https://github.com/cloudposse/packages).
 1. We're copying our `components/` and `stacks/` folder into the image.
 
-Overall, a fairly simple and small set of additions on top of standard Geodesic. To get started using this image, first we have to build it. To do so, we could invoke `docker build` manually, but speed things up we've provided a `make` target to simplify that process:
+Overall, a fairly simple and small set of additions on top of standard Geodesic base image. To get started using this image, first we have to build it. To do so, we could invoke `docker build` manually, but to speed things up we've provided a `make` target to simplify that process:
 
 ```bash
 # Pull the Cloud Posse build-harness, which provides some additional utilities
@@ -113,8 +113,7 @@ docker run -it \
            --volume $HOME:/localhost \
            --volume $PWD/stacks:/stacks \
            --volume $PWD/components:/components \
-           cloudposse/atmos:latest \
-           --login
+           cloudposse/atmos:latest
 ```
 
 Now we should have an interactive bash login shell open into our `cloudposse/atmos` image with our home folder, `stacks/`, and `components/` directories all mounted into it. To check that all is working correctly, let's invoke a couple commands to make sure all is looking good:
