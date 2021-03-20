@@ -5,18 +5,20 @@
 # Input parameters:
 # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
 # GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
-# GITHUB_PAGES_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
+# GITHUB_PAGES_PULL_BRANCH - the branch of the customer's repo which contains the customer's documentation
+# GITHUB_PAGES_PUSH_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
 # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
 # HUGO_URL - URL of the Hugo site after deployment
 # HUGO_PUBLISH_DIR - directory in the customer's repo that GitHub Pages will deploy from
 # HUGO_REPO - CloudPosse repository containing Hugo infrastructure
 # HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
 # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
-
+#
 # Example parameter values:
 # GITHUB_PAGES_DIRECTORY=github_pages
 # GITHUB_PAGES_REPO=https://github.com/cloudposse/docs # or for customer github.com/customer/infrastructure.git
-# GITHUB_PAGES_BRANCH=production # or for customer, it will be docs
+# GITHUB_PAGES_PULL_BRANCH=master # or current-docs-feature-branch
+# GITHUB_PAGES_PUSH_BRANCH=production # or for customer, it will be docs
 # CONTENT=docs,content
 # HUGO_URL=cloudposse.github.io/docs
 # HUGO_PUBLISH_DIR=public
@@ -38,9 +40,12 @@ def read_in_env_vars():
     # GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
     global GITHUB_PAGES_REPO
     GITHUB_PAGES_REPO = os.environ["GITHUB_PAGES_REPO"]
-    # GITHUB_PAGES_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
-    global GITHUB_PAGES_BRANCH
-    GITHUB_PAGES_BRANCH = os.environ["GITHUB_PAGES_BRANCH"]
+    # GITHUB_PAGES_PULL_BRANCH - the branch of the customer's repo which contains the customer's documentation
+    global GITHUB_PAGES_PULL_BRANCH
+    GITHUB_PAGES_PULL_BRANCH = os.environ["GITHUB_PAGES_PULL_BRANCH"]
+    # GITHUB_PAGES_PUSH_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
+    global GITHUB_PAGES_PUSH_BRANCH
+    GITHUB_PAGES_PUSH_BRANCH = os.environ["GITHUB_PAGES_PUSH_BRANCH"]
     # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
     global CONTENT
     CONTENT = os.environ["CONTENT"]
@@ -61,7 +66,7 @@ def read_in_env_vars():
     HTMLTEST_CONFIG = os.environ["HTMLTEST_CONFIG"]
     # This will contain the master branch of GITHUB_PAGES_REPO.
     global GITHUB_PAGES_PULL_PATH
-    GITHUB_PAGES_PULL_PATH = "/tmp/master/"
+    GITHUB_PAGES_PULL_PATH = "/tmp/pull/"
     GITHUB_PAGES_PULL_PATH = GITHUB_PAGES_PULL_PATH.rstrip("/")
     # This will contain the generic infrastructure needed to build the GitHub Pages site. 
     global GITHUB_PAGES_HUGO_PATH 
@@ -86,13 +91,13 @@ def main():
     # 1) Essential Hugo build tools
     hugo_repo = Repo.clone_from(HUGO_REPO, GITHUB_PAGES_HUGO_PATH)
     # 2) Site-specific documentation
-    docs_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PULL_PATH)
+    docs_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PULL_PATH, branch=GITHUB_PAGES_PULL_BRANCH)
     # 3) The GitHub Pages deployment branch for this site
-    directory_cleaning_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true'
+    directory_cleaning_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true' # in case it somehow already exists
     if DEBUG:
         print(directory_cleaning_command)
     subprocess.run(directory_cleaning_command, shell=True, check=True)
-    gh_pages_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_BRANCH)
+    gh_pages_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_PUSH_BRANCH)
 
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
     # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
@@ -212,10 +217,11 @@ def insert_frontmatter(file_path, weight=1):
 def print_file_tree(rootDir):
     list_dirs = os.walk(rootDir)
     for root, dirs, files in list_dirs:
+        print(f"root: {root}")
         for d in dirs:
-            print os.path.join(root, d)
+            print(os.path.join(root, d))
         for f in files:
-            print os.path.join(root, f)
+            print(os.path.join(root, f))
 
 if __name__=="__main__":
     main()
