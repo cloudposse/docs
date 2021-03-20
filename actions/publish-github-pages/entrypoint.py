@@ -112,6 +112,7 @@ def main():
         print(f"CONTENT: {CONTENT}")
         print(f'content_folders: {content_folders}')
     for content_folder in content_folders:
+        print_file_tree(content_folder)
         if DEBUG:
             print(f"content_folder: {content_folder}")
         for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
@@ -207,6 +208,14 @@ def insert_frontmatter(file_path, weight=1):
             front_matter_string = f"---\ntitle: \"{title}\"\ndescription: \"No description available.\"\nweight: {weight}\n---\n\n"
             markdown_file.write(front_matter_string)
             markdown_file.write(input_file)
+
+def print_file_tree(rootDir):
+    list_dirs = os.walk(rootDir)
+    for root, dirs, files in list_dirs:
+        for d in dirs:
+            print os.path.join(root, d)
+        for f in files:
+            print os.path.join(root, f)
 
 if __name__=="__main__":
     main()
