@@ -178,6 +178,9 @@ def main():
     subprocess.run(make_command, shell=True, check=True)
     print(f"HUGO_PUBLISH_DIR: {HUGO_PUBLISH_DIR}, GITHUB_PAGES_PUSH_PATH: {GITHUB_PAGES_PUSH_PATH}")
     copytree( os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR), GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
+    print(f"Copied files from {os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR)} to {GITHUB_PAGES_PUSH_PATH}")
+    print(f"Contents of {os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR)}: {os.listdir(os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR))}")
+    print(f"Contents of {GITHUB_PAGES_PUSH_PATH}: {os.listdir(GITHUB_PAGES_PUSH_PATH)}")
 
 def insert_frontmatter(file_path, weight=1):
     # check for frontmatter
