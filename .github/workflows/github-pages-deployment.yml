@@ -19,7 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
-      GITHUB_PAGES_BRANCH: production
+      GITHUB_PAGES_PULL_BRANCH: master
+      GITHUB_PAGES_PUSH_BRANCH: production
       GITHUB_PAGES_DIRECTORY: github_pages
     steps:
     - name: "Checkout source code at current commit"
