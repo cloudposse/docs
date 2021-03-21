@@ -82,7 +82,7 @@ def read_in_env_vars():
     STAGING_DIR = STAGING_DIR.rstrip("/")
     # Debug mode flag
     global DEBUG
-    DEBUG = False
+    DEBUG = os.environ["DEBUG"]
 
 def main():
     read_in_env_vars()
