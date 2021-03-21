@@ -157,7 +157,6 @@ def main():
                     index_path = os.path.join(STAGING_DIR, "content", markdown_basename, "_index.md")
                     with open(index_path, "w")as index_file:
                         index_file.write(index_string)
-
             # Otherwise, we're gonna preserve the existing file heirarchy.
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
