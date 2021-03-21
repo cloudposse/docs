@@ -117,9 +117,9 @@ def main():
         print(f"CONTENT: {CONTENT}")
         print(f'content_folders: {content_folders}')
     for content_folder in content_folders:
-        print_file_tree(content_folder)
         if DEBUG:
             print(f"content_folder: {content_folder}")
+            #print_file_tree(content_folder)
         for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
             # Rename and rearrange content files as needed:
             # rename all `README.md` to `_index.md`
