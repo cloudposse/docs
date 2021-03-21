@@ -160,15 +160,10 @@ def main():
             # Otherwise, we're gonna preserve the existing file heirarchy.
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
-                staging_root = root.replace(GITHUB_PAGES_PULL_PATH, "")
+                staging_root = root.replace(GITHUB_PAGES_PULL_PATH, "").lstrip('/')
                 weight = 1
                 for markdown_file in markdown_files:
                     origin_path = os.path.join(root, markdown_file)
-                    print(f'os.path.join("content", staging_root): {os.path.join("content", staging_root)}')
-                    print(f'os.path.join(STAGING_DIR, "content"): {os.path.join(STAGING_DIR, "content")}')
-                    print(f'os.path.join(staging_root, markdown_file): {os.path.join(staging_root, markdown_file)}')
-                    print(f'os.path.join("content", staging_root, markdown_file): {os.path.join("content", staging_root, markdown_file)}')
-                    print(f'os.path.join(STAGING_DIR, "content", staging_root, markdown_file): {os.path.join(STAGING_DIR, "content", staging_root, markdown_file)}')
                     destination_path = os.path.join(STAGING_DIR, "content", staging_root, markdown_file)
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
