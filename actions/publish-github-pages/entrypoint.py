@@ -168,7 +168,7 @@ def main():
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
                         #print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
-                        with open(origin_path, "r") as md_file:
+                        with open(destination_path, "r") as md_file:
                             md_file_contents = md_file.read()
                             print(md_file_contents)
                     insert_frontmatter(origin_path, weight=weight)
