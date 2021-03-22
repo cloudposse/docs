@@ -173,7 +173,7 @@ def main():
                         with open(destination_path, "r") as md_file:
                             md_file_contents = md_file.read()
                             print(md_file_contents)
-                    weight = weight + 1
+                    #weight = weight + 1
 
     # Build Docker image needed to build the Hugo site
     docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
