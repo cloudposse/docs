@@ -161,7 +161,7 @@ def main():
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 staging_root = root.replace(GITHUB_PAGES_PULL_PATH, "").lstrip('/')
-                weight = 0
+                weight = 1
                 for markdown_file in markdown_files:
                     origin_path = os.path.join(root, markdown_file)
                     destination_path = os.path.join(STAGING_DIR, "content", staging_root, markdown_file)
@@ -173,7 +173,7 @@ def main():
                         with open(destination_path, "r") as md_file:
                             md_file_contents = md_file.read()
                             print(md_file_contents)
-                    #weight = weight + 1
+                    weight = weight + 1
 
     # Build Docker image needed to build the Hugo site
     docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
