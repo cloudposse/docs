@@ -161,7 +161,7 @@ def main():
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 staging_root = root.replace(GITHUB_PAGES_PULL_PATH, "").lstrip('/')
-                weight = 3
+                weight = 0
                 for markdown_file in markdown_files:
                     origin_path = os.path.join(root, markdown_file)
                     destination_path = os.path.join(STAGING_DIR, "content", staging_root, markdown_file)
