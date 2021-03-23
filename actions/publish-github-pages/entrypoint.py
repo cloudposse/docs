@@ -117,28 +117,35 @@ def main():
         print(f"CONTENT: {CONTENT}")
         print(f'content_folders: {content_folders}')
     for content_folder in content_folders:
+        # Rename and rearrange content files as needed.
         if DEBUG:
             print(f"content_folder: {content_folder}")
             #print_file_tree(content_folder)
-        for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
-            # Rename and rearrange content files as needed:
-            # rename all `README.md` to `_index.md`
+        content_base_path = os.path.join(GITHUB_PAGES_PULL_PATH, content_folder)
+        # rename all `README.md` to `_index.md`
+        for root, dirs, files in os.walk(content_base_path):
             for local_file in files:
                 if local_file=="README.md":
                     os.rename( os.path.join(root, local_file), os.path.join(root, "_index.md") )
-        for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
-            # Rename and rearrange content files as needed:
-            # categories with no subfolders, and only a single `_index.md`: `mv foobar/_index.md foobar.md`
-            if not len(dirs):
-                markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
-                if len(markdown_files) == 1:
-                    os.rename( os.path.join(root, markdown_files[0]), root + ".md")
+        # folders with no subfolders, and only a single md file (usually `_index.md`): `mv foobar/_index.md foobar.md`
+        min_md_files = 1
+        while min_md_files:
+            min_md_files = 0
+            for root, dirs, files in os.walk(content_base_path):
+                if root != content_base_path:
+                    if not len(dirs):
+                        markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
+                        if len(markdown_files) == 1:
+                            os.rename( os.path.join(root, markdown_files[0]), \
+                                       os.path.join(root.rsplit('/',1)[0], root.rsplit('/',1)[1] + ".md") )
+                            shutil.rmtree(root)
+                            min_md_files = 1
         # Now that all .md files have been renamed and rearranged appropriately,
         # collate the customer docs (.md pages) inside the STAGING_DIR.
-        for root, dirs, files in os.walk( os.path.join(GITHUB_PAGES_PULL_PATH, content_folder), topdown=False ):
+        for root, dirs, files in os.walk( content_base_path, topdown=False ):
             # If this is a top-level dir (i.e., it is listed directly in CONTENT) and it has no subdirs,
             # every .md file in this folder becomes the basis for a top-level object.
-            if root == os.path.join(GITHUB_PAGES_PULL_PATH, content_folder) and not len(dirs):
+            if root == content_base_path and not len(dirs):
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 for markdown_file in markdown_files:
                     # create a folder for the markdown file
@@ -173,7 +180,7 @@ def main():
                         with open(destination_path, "r") as md_file:
                             md_file_contents = md_file.read()
                             print(md_file_contents)
-                    weight = weight + 1
+                    #weight = weight + 1
 
     # Build Docker image needed to build the Hugo site
     docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
