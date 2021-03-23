@@ -28,6 +28,7 @@
 
 import os
 import re
+import shutil
 import subprocess
 from git import Repo
 from shutil import copy2, copytree
