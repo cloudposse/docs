@@ -28,10 +28,9 @@
 
 import os
 import re
-import shutil
 import subprocess
 from git import Repo
-from shutil import copy2, copytree
+from shutil import copy2, copytree, rmtree
 
 def read_in_env_vars():
     # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
@@ -139,7 +138,7 @@ def main():
                         if len(markdown_files) == 1:
                             os.rename( os.path.join(root, markdown_files[0]), \
                                        os.path.join(root.rsplit('/',1)[0], root.rsplit('/',1)[1] + ".md") )
-                            shutil.rmtree(root)
+                            rmtree(root)
                             min_md_files = 1
         # Now that all .md files have been renamed and rearranged appropriately,
         # collate the customer docs (.md pages) inside the STAGING_DIR.
