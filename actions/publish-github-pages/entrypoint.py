@@ -128,10 +128,15 @@ def main():
                 if local_file=="README.md":
                     os.rename( os.path.join(root, local_file), os.path.join(root, "_index.md") )
         # folders with no subfolders, and only a single md file (usually `_index.md`): `mv foobar/_index.md foobar.md`
-        min_md_files = 1
-        while min_md_files:
-            min_md_files = 0
+        hierarchy_modified = True # init value
+        while hierarchy_modified:
+            hierarchy_modified = False
+            if DEBUG:
+                print("New heirarchy flattening loop")
             for root, dirs, files in os.walk(content_base_path):
+                if DEBUG:
+                    print(f"root: {root}, dirs: {dirs}, files: {files}")
+                #if root != content_base_path and root.rsplit('/',1)[0] != content_base_path:
                 if root != content_base_path:
                     if not len(dirs):
                         markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
@@ -139,7 +144,12 @@ def main():
                             os.rename( os.path.join(root, markdown_files[0]), \
                                        os.path.join(root.rsplit('/',1)[0], root.rsplit('/',1)[1] + ".md") )
                             rmtree(root)
-                            min_md_files = 1
+                            hierarchy_modified = True
+                        elif len(markdown_files) == 0:
+                            rmtree(root)
+                            hierarchy_modified = True
+                if DEBUG:
+                    print(f"hierarchy_modified: {hierarchy_modified}")
         # Now that all .md files have been renamed and rearranged appropriately,
         # collate the customer docs (.md pages) inside the STAGING_DIR.
         for root, dirs, files in os.walk( content_base_path, topdown=False ):
@@ -177,9 +187,9 @@ def main():
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
                         #print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
-                        with open(destination_path, "r") as md_file:
-                            md_file_contents = md_file.read()
-                            print(md_file_contents)
+                        #with open(destination_path, "r") as md_file:
+                        #    md_file_contents = md_file.read()
+                        #    print(md_file_contents)
                     #weight = weight + 1
 
     # Build Docker image needed to build the Hugo site
