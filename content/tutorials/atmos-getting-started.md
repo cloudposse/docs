@@ -191,7 +191,7 @@ workflows:
 
 Here we can see our first stack, so let's break this file down to help understand what it is doing:
 
-1. We've got a couple empty elements at the top: `import` and `vars`. We'll address these in an upcoming tutorial.
+1. We've got a couple of empty elements at the top: `import` and `vars`. We'll address these in an upcoming tutorial.
 1. We've got `terraform` and `helmfile` elements that have empty `vars` elements. These provide any shared configuration variables across components when dealing with more complicated stacks. We'll address these in an upcoming tutorial as well.
 1. We've got our `components` element which has `terraform` and `helmfile` elements. This is where we describe our various components that make up our stack and the input configurations that we want to invoke them with (via their `vars` elements). You can see here we have our 3 terraform components from within our `components/terraform/` folder specified here and some configuration to go along with them.
 1. Finally, we've got our `workflows` element. This is a `map` type element that accepts a workflow name as the key and then the description and steps as values. In the example `deploy-all` workflow, our steps are `job` items which describe to `atmos` that we want to run `atmos terraform deploy` on each component in our stack.
