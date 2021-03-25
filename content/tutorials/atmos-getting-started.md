@@ -86,7 +86,7 @@ WORKDIR /
 Few important pieces to point out here:
 
 1. We're using [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) as our base image. This enables us to provide a consistent, reproducible toolbox to invoke `atmos` from the command line.
-1. We're installing Terraform 0.14 and using that as our default `terraform` executable. Geodesic supports installing multiple concurrent versions of `terraform` using the [`update-alternatives` system](https://manpages.debian.org/stretch/dpkg/update-alternatives.1.en.html). 
+1. We're installing Terraform 0.14 and using that as our default `terraform` executable. Geodesic supports installing multiple concurrent versions of `terraform` using the [`update-alternatives` system](https://manpages.debian.org/stretch/dpkg/update-alternatives.1.en.html).
 1. We're installing `atmos` as a simple binary via `apk`. This is because `atmos` is built and distributed as a [Cloud Posse linux package](https://github.com/cloudposse/packages).
 1. We're copying our `components/` and `stacks/` folder into the image.
 
@@ -229,12 +229,13 @@ components:
 
     fetch-weather:
       vars:
-        api_key: 2a820d40d573758aa714641fc331e897
-        unit_of_measurement: metric # Guess you're from across the pond?
+        # Let's get the weather for a particular day.
+        # Feel free to update to a date more relevant to you!
+        date: 2021/03/28
 
     output-results:
       vars:
-        print_users_weather_enabled: false # We disable outputting via Terraform.
+        print_users_weather_enabled: false # We disable outputting via our Terraform local-exec.
 
   helmfile: {}
 
@@ -253,7 +254,7 @@ Above we updated a couple variables to change the behavior of our terraform code
 atmos workflow deploy-all -s example
 ```
 
-This should run through our workflow similar to the way we did it before, but this time we'll see our temperature come back from the weather API in celsius instead of fahrenheit and we'll skip over our terraform `local-exec`'s `printf` command for pretty printing our weather data. Instead we'll just get our updated temperature as one of our `Outputs`.
+This should run through our workflow similar to the way we did it before, but this time we'll see our temperature come back from the weather API for the date you specified instead of today's date and we'll skip over our terraform `local-exec`'s `echo` command for pretty printing our weather data. Instead we'll just get our updated weather information as one of our `Outputs`.
 
 ## Conclusion
 
