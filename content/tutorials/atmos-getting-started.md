@@ -171,8 +171,7 @@ components:
       vars: {}
 
     fetch-weather:
-      vars:
-        api_key: 2a820d40d573758aa714641fc331e897
+      vars: {}
 
     output-results:
       vars:
