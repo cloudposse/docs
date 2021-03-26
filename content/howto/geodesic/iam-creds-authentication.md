@@ -17,7 +17,7 @@ You'll need to have an AWS Account with the ability to create credentials and ha
 
 ### SweetOps Know-how
 
-We expect you've gone through the tutorial on ["Getting started with Geodesic"]({{< "tutorials/geodesic-getting-started.md" >}}) prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it's doing.
+We expect you've gone through the tutorial on ["Getting started with Geodesic"]({{< relref "tutorials/geodesic-getting-started.md" >}}) prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it's doing.
 
 ## How-To
 
