@@ -12,7 +12,7 @@ In this tutorial we'll be looking at a simple (albeit contrived) example of auto
 
 ## Prerequisites
 
-### Requirements
+### System Requirements
 
 To accomplish this tutorial, you'll need to have [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker](https://docs.docker.com/get-docker/) installed on your local machine. **That's all**.
 

@@ -12,7 +12,7 @@ In this tutorial, we'll walk you through how to use Geodesic to execute Terrafor
 
 ## Prerequisites
 
-### Requirements
+### System Requirements
 
 To accomplish this tutorial, you'll need to have [Docker installed](https://docs.docker.com/get-docker/) on your local machine. **That's all**.
 
