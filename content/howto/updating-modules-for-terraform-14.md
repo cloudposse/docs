@@ -6,7 +6,7 @@ description: 'How to update our Terraform modules for Terraform 0.14'
 ## Updating Cloud Posse Terraform modules for Terraform 0.14
 
 
-We have some tools you can use for updating our Terraform modules to support Terraform 0.14. This should work for any Terraform modules we have published that currently support Terraform 0.12 or later and contain a `context.tf` file. 
+We have some tools you can use for updating our Terraform modules to support Terraform 0.14. This should work for any Terraform modules we have published that currently support Terraform 0.12 or later and contain a `context.tf` file.
 
 - Check out/fork the current version of the Terraform module
 
@@ -14,7 +14,7 @@ We have some tools you can use for updating our Terraform modules to support Ter
 
 - Run the update: `make tf14-upgrade`
 
-- **Important**: Manually verify the changes to the Terraform code. The scripts are not foolproof. 
+- **Important**: Manually verify the changes to the Terraform code. The scripts are not foolproof.
 
 - *Optional:* Update any internal label modules to refer to version `0.22.0` of `cloudposse/label/null`
 
@@ -32,7 +32,7 @@ We have some tools you can use for updating our Terraform modules to support Ter
 
 - *Optional:* If the core Terraform provider version did not change, label the PR with "patch"
 
-  - Not all of our repositories have a "patch" label configured. If you need to create the label, here is the the configuration:
+  - Not all of our repositories have a "patch" label configured. If you need to create the label, here is the configuration:
     - name: "patch"
     - description: "A minor, backward compatible change"
     - color: "#0e8a16"
