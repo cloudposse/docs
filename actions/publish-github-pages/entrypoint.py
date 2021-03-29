@@ -107,7 +107,7 @@ def read_in_env_vars():
     global HUGO_PUBLISH_DIR
     HUGO_PUBLISH_DIR = os.environ["HUGO_PUBLISH_DIR"]
     
-    # HUGO_REPO - CloudPosse repository containing Hugo infrastructure
+    # HUGO_REPO - Cloud Posse repository containing Hugo infrastructure
     global HUGO_REPO
     HUGO_REPO = os.getenv("HUGO_REPO", "https://github.com/cloudposse/docs")
     
