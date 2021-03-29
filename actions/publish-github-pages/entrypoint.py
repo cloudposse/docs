@@ -124,7 +124,7 @@ def main():
             print(f"content_folder: {content_folder}")
             #print_file_tree(content_folder)
         content_base_path = os.path.join(GITHUB_PAGES_PULL_PATH, content_folder)
-        # rename all `README.md` to `_index.md`
+        # rename all `README.md` to `_index.md` (hugo convention)
         for root, dirs, files in os.walk(content_base_path):
             for local_file in files:
                 if local_file=="README.md":
