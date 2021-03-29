@@ -59,7 +59,7 @@ def main():
             if root == content_base_path and not len(dirs):
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
                 for markdown_file in markdown_files:
-                    promote_markdown_file(markdown_file)
+                    promote_markdown_file(markdown_file, root)
             # Otherwise, we're gonna copy everything over and preserve the existing file heirarchy.
             else:
                 markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
