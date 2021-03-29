@@ -90,10 +90,12 @@ def main():
     # Check out:
     # 1) Essential Hugo build tools
     hugo_repo = Repo.clone_from(HUGO_REPO, GITHUB_PAGES_HUGO_PATH)
+
     # 2) Site-specific documentation
     docs_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PULL_PATH, branch=GITHUB_PAGES_PULL_BRANCH)
+
     # 3) The GitHub Pages deployment branch for this site
-    directory_cleaning_command = f'rm -r {GITHUB_PAGES_PUSH_PATH} || true' # in case it somehow already exists
+    directory_cleaning_command = f'rm -rf {GITHUB_PAGES_PUSH_PATH}' 
     if DEBUG:
         print(directory_cleaning_command)
     subprocess.run(directory_cleaning_command, shell=True, check=True)
