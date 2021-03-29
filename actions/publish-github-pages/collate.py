@@ -29,52 +29,22 @@
 import os
 import re
 import subprocess
+import yaml
 from git import Repo
 from shutil import copy2, copytree, rmtree
 
 def main():
+    # Read in necessary globals from env vars.
     read_in_env_vars()
+
+    # Checkout out all repos needed for this action.
     checkout_repos()
 
-    # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
-    # (The rest of this script assumes HUGO_REPO=https://github.com/cloudposse/docs.)
-    os.mkdir(STAGING_DIR)
-    copy_dirs = ["tasks", "themes", "static", "layouts", "content"]
-    for copy_dir in copy_dirs:
-        copytree( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_dir), os.path.join(STAGING_DIR, copy_dir) )
-    for copy_file in [".gitignore", ".htmltest.yml", "config.yaml", "Dockerfile", "Makefile"]:
-        copy2( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_file), STAGING_DIR )
+    # Create a separate build folder, STAGING_DIR, and populate it with the essential Hugo build files.
+    stage_hugo_build_files()
 
-    # Collate all local documentation inside the build folder
-    content_folders = CONTENT.split(",")
-    for content_folder in content_folders:
-        content_base_path = os.path.join(GITHUB_PAGES_PULL_PATH, content_folder)
-
-        # Rename and rearrange content files as needed.
-        rearrange_files(content_base_path)
-
-        # Now that all .md files have been renamed and rearranged appropriately,
-        # collate the docs (.md pages) inside the STAGING_DIR.
-        for root, dirs, files in os.walk( content_base_path, topdown=False ):
-
-            # If this is a top-level dir (i.e., it is listed directly in CONTENT) and it has no subdirs,
-            # every .md file in this folder becomes the basis for a top-level object.
-            if root == content_base_path and not len(dirs):
-                markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
-                for markdown_file in markdown_files:
-                    promote_markdown_file(markdown_file, root)
-
-            # Otherwise, we're gonna copy everything over and preserve the existing file heirarchy.
-            else:
-                markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
-                staging_root = root.replace(GITHUB_PAGES_PULL_PATH, "").lstrip('/')
-                weight = 1
-                for markdown_file in markdown_files:
-                    origin_path = os.path.join(root, markdown_file)
-                    destination_path = os.path.join(STAGING_DIR, "content", staging_root, markdown_file)
-                    insert_frontmatter(origin_path, weight=weight)
-                    os.renames( origin_path, destination_path )
-                    weight = weight + 1
+    # Collate all local documentation inside the build folder, renaming and rearranging as needed.
+    collate_docs_files()
 
 def read_in_env_vars():
 
@@ -151,6 +121,49 @@ def checkout_repos():
     # 3) The GitHub Pages deployment branch for this site
     Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_PUSH_BRANCH)
 
+def stage_hugo_build_files():
+    # This function assumes that the repo pointed to by HUGO_REPO has a structure that is similar
+    # to https://github.com/cloudposse/docs. If that is not the case, some of the below copy
+    # commands may fail.
+    os.mkdir(STAGING_DIR)
+    copy_dirs = ["tasks", "themes", "static", "layouts", "content"]
+    for copy_dir in copy_dirs:
+        copytree( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_dir), os.path.join(STAGING_DIR, copy_dir) )
+    copy_files = [".gitignore", ".htmltest.yml", "config.yaml", "Dockerfile", "Makefile"]:
+    for copy_file in copy_files:
+        copy2( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_file), STAGING_DIR )
+
+def collate_docs_files():
+    content_folders = CONTENT.split(",")
+    for content_folder in content_folders:
+        content_base_path = os.path.join(GITHUB_PAGES_PULL_PATH, content_folder)
+
+        # Rename and rearrange content files as needed.
+        rearrange_files(content_base_path)
+
+        # Now that all .md files have been renamed and rearranged appropriately,
+        # collate the docs (.md pages) inside the STAGING_DIR.
+        for root, dirs, files in os.walk( content_base_path, topdown=False ):
+
+            # If this is a top-level dir (i.e., it is listed directly in CONTENT) and it has no subdirs,
+            # every .md file in this folder becomes the basis for a top-level object.
+            if root == content_base_path and not len(dirs):
+                markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
+                for markdown_file in markdown_files:
+                    promote_markdown_file(markdown_file, root)
+
+            # Otherwise, we're gonna copy everything over and preserve the existing file heirarchy.
+            else:
+                markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
+                staging_root = root.replace(GITHUB_PAGES_PULL_PATH, "").lstrip('/')
+                weight = 1
+                for markdown_file in markdown_files:
+                    origin_path = os.path.join(root, markdown_file)
+                    destination_path = os.path.join(STAGING_DIR, "content", staging_root, markdown_file)
+                    inject_frontmatter(origin_path, weight=weight)
+                    os.renames( origin_path, destination_path )
+                    weight = weight + 1
+
 def rearrange_files(content_base_path):
 
     # rename all `README.md` to `_index.md` (hugo convention)
@@ -159,24 +172,43 @@ def rearrange_files(content_base_path):
             if local_file=="README.md":
                 os.rename( os.path.join(root, local_file), os.path.join(root, "_index.md") )
 
-    # folders with no subfolders, and only a single md file (usually `_index.md`): `mv foobar/_index.md foobar.md`
+    # Now, loop over all subfolders of the current top-level folder ("content_base_path")
+    # and, if a given folder 1) contains no subfolders, and 2) has only a single md file
+    # (which should be `_index.md` by this point), then promote that .md file one level and rename
+    # it after its containing folder. E.g., `mv foobar/_index.md foobar.md`.
+    #
+    # After promoting the .md file, delete its original folder.
+    #
+    # Since, in some cases, we will need to flatten multiple nested layers of a file hierarchy this
+    # way, this loop will continue running until it can traverse the entire remaining directory
+    # structure one time without needing to make any more changes.
     hierarchy_modified = True # init value
     while hierarchy_modified:
         hierarchy_modified = False
         for root, dirs, files in os.walk(content_base_path):
+            # os.walk loops over all folders in a directory tree, include the base directory.
+            # In our case, we want to ignore the base directory (we don't want to delete the base
+            # directory, even if it only has 1 .md file and no subfolders), so we're adding this if
+            # check.
             if root != content_base_path:
+                # If there are no subfolders of this folder
                 if not len(dirs):
                     markdown_files = [potential_md_file for potential_md_file in files if ".md" in potential_md_file]
+                    # And if there is only 1 markdown file in this folder
                     if len(markdown_files) == 1:
-                        os.rename( os.path.join(root, markdown_files[0]), \
-                                   os.path.join(root.rsplit('/',1)[0], root.rsplit('/',1)[1] + ".md") )
+                        # Move the only markdown file in this folder (markdown_files[0]) from its
+                        # from its current folder (root). Take it up one level
+                        # (root.rsplit('/',1)[0]) and name it after its erstwhile parent directory
+                        # (root.rsplit('/',1)[1] ".md").
+                        os.rename(os.path.join(root, markdown_files[0]),
+                                  os.path.join(root.rsplit('/',1)[0], root.rsplit('/',1)[1] + ".md") )
                         rmtree(root)
                         hierarchy_modified = True
                     elif len(markdown_files) == 0:
                         rmtree(root)
                         hierarchy_modified = True
 
-def insert_frontmatter(file_path, weight=1):
+def inject_frontmatter(file_path, weight=1):
 
     # check for frontmatter in this file
     frontmatter_flag = True
@@ -202,11 +234,13 @@ def insert_frontmatter(file_path, weight=1):
         with open(file_path, "w") as markdown_file:
             if not title:
                 title="default_title"
-            front_matter_string = "---\n" + \
-                                  f"title: \"{title}\"\n" + \
-                                  "description: \"No description available.\"\n" + \
-                                  f"weight: {weight}\n" + \
-                                  "---\n\n"
+            yaml_dict = {
+                            "title": title,
+                            "description": "",
+                            "weight": weight
+                        }
+            yaml_string = yaml.dump(yaml_dict)
+            front_matter_string = "---\n" + yaml_string + "---\n\n"
             markdown_file.write(front_matter_string)
             markdown_file.write(input_file)
 
@@ -219,16 +253,18 @@ def promote_markdown_file(markdown_file, root):
     # move the markdown file into the folder
     origin_path = os.path.join(root, markdown_file)
     destination_path = os.path.join(STAGING_DIR, "content", markdown_basename, markdown_file)
-    insert_frontmatter(origin_path)
+    inject_frontmatter(origin_path)
     os.renames( origin_path, destination_path )
 
     # create _index.md file for the folder
-    index_string = "---\n" + \
-                   f"title: \"{markdown_basename.capitalize()}\"\n" + \
-                   "description: \"\"\n" + \
-                   "icon: \"fa fa-brain\"\n" + \
-                   "weight: 1\n" + \
-                   "---"
+    yaml_dict = {
+                    "title": markdown_basename.capitalize(),
+                    "description": "",
+                    "icon": "fa fa-brain",
+                    "weight": 1
+                }
+    yaml_string = yaml.dump(yaml_dict)
+    index_string = "---\n" + yaml_string + "---\n\n"
     index_path = os.path.join(STAGING_DIR, "content", markdown_basename, "_index.md")
     with open(index_path, "w")as index_file:
         index_file.write(index_string)
