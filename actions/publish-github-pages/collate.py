@@ -34,9 +34,6 @@ from git import Repo
 from shutil import copy2, copytree, rmtree
 
 def main():
-    # DEBUG
-    print("Entered Python script.")
-
     # Read in necessary globals from env vars.
     read_in_env_vars()
 
@@ -76,10 +73,6 @@ def read_in_env_vars():
     # This one has to be declared ad hoc, due to its dependence on another global.
     global GITHUB_PAGES_PUSH_PATH
     GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY.lstrip('/')).rstrip('/')
-
-    # DEBUG
-    print("Printing env vars.")
-    print(globals())
 
 def create_global(global_name, default=None, rstrip_slash=False):
     # Define a global variable and optionally declare a default value for it and trim slashes off

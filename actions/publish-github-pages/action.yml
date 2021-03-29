@@ -28,10 +28,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: |
-           printenv
-           echo "Entering entrypoint.sh."
-           PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
+    - run: PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
       shell: bash
       env:
         CONTENT: ${{ inputs.CONTENT }}
