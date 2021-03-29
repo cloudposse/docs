@@ -122,10 +122,10 @@ def main():
     copy_dirs = ["tasks", "themes", "static", "layouts", "content"]
     for copy_dir in copy_dirs:
         copytree( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_dir), os.path.join(STAGING_DIR, copy_dir) )
-    copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/Dockerfile"), STAGING_DIR )
     copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/.gitignore"), STAGING_DIR )
-    copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/config.yaml"), STAGING_DIR )
     copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/.htmltest.yml"), STAGING_DIR )
+    copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/config.yaml"), STAGING_DIR )
+    copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/Dockerfile"), STAGING_DIR )
     copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/Makefile"), STAGING_DIR )
     
     # copy all customer documentation into the build folder
@@ -231,7 +231,7 @@ def insert_frontmatter(file_path, weight=1):
         line = markdown_file.readline()
         if not re.match("^---", line):
             frontmatter_flag = False
-    # if it's not found, create it by finding the first commented line and formatting it as frontmatter
+    # if it's not found, create it by finding the markdown header as frontmatter
     if not frontmatter_flag:
         title = ""
         with open(file_path, "r") as markdown_file:
