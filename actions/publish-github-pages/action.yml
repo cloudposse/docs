@@ -1,14 +1,30 @@
 name: 'Publish GitHub Pages'
 description: 'Publish the Hugo-based Cloud Posse docs website to GitHub Pages.'
 inputs:
-  CONTENT: 'None'
-  DEBUG: 'False'
-  HUGO_URL: 'None'
-  HUGO_PUBLISH_DIR: 'None'
-  HUGO_CONFIG: 'None'
-  HTMLTEST_CONFIG: 'None'
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+  CONTENT:
+    description: 'comma-separated list of directories in the top level of the repo that contains documentation'
+    required: false
+  DEBUG:
+    description: 'whether to turn on debug printouts/functionality'
+    required: false
+  HUGO_URL:
+    description: 'URL of the Hugo site after deployment'
+    required: false
+  HUGO_PUBLISH_DIR:
+    description: 'directory in the repo that GitHub Pages will deploy to'
+    required: false
+  HUGO_CONFIG:
+    description: 'location of to-be-written Hugo config file (actual location not important)'
+    required: false
+  HTMLTEST_CONFIG:
+    description: 'location of to-be-written htmltest config file (actual location not important)'
+    required: false
+  GITHUB_TOKEN:
+    description: 'github token'
+    required: false
+  GITHUB_ACTOR:
+    description: 'github actor'
+    required: false
 runs:
   using: 'composite'
   steps:
