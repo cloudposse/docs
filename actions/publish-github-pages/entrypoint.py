@@ -4,7 +4,7 @@
 # #### PARAMETERS ####
 # Input parameters:
 # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
-# GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
+# GITHUB_PAGES_REPO - repo containing documentation to be deployed to GitHub Pages
 # GITHUB_PAGES_PULL_BRANCH - the branch of the customer's repo which contains the customer's documentation
 # GITHUB_PAGES_PUSH_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
 # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
