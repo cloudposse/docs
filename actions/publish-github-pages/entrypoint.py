@@ -33,53 +33,68 @@ from git import Repo
 from shutil import copy2, copytree, rmtree
 
 def read_in_env_vars():
+
     # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
     global GITHUB_PAGES_DIRECTORY
     GITHUB_PAGES_DIRECTORY = os.environ["GITHUB_PAGES_DIRECTORY"]
     GITHUB_PAGES_DIRECTORY = GITHUB_PAGES_DIRECTORY.rstrip("/")
+    
     # GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
     global GITHUB_PAGES_REPO
     GITHUB_PAGES_REPO = os.environ["GITHUB_PAGES_REPO"]
+    
     # GITHUB_PAGES_PULL_BRANCH - the branch of the customer's repo which contains the customer's documentation
     global GITHUB_PAGES_PULL_BRANCH
     GITHUB_PAGES_PULL_BRANCH = os.environ["GITHUB_PAGES_PULL_BRANCH"]
+    
     # GITHUB_PAGES_PUSH_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
     global GITHUB_PAGES_PUSH_BRANCH
     GITHUB_PAGES_PUSH_BRANCH = os.environ["GITHUB_PAGES_PUSH_BRANCH"]
+    
     # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
     global CONTENT
     CONTENT = os.environ["CONTENT"]
+    
     # HUGO_URL - URL of the Hugo site after deployment
     global HUGO_URL
     HUGO_URL = os.environ["HUGO_URL"]
+    
     # HUGO_PUBLISH_DIR - directory in the customer's repo that GitHub Pages will deploy from
     global HUGO_PUBLISH_DIR
     HUGO_PUBLISH_DIR = os.environ["HUGO_PUBLISH_DIR"]
+    
     # HUGO_REPO - CloudPosse repository containing Hugo infrastructure
     global HUGO_REPO
     HUGO_REPO = os.getenv("HUGO_REPO", "https://github.com/cloudposse/docs")
+    
     # HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
     global HUGO_CONFIG
     HUGO_CONFIG = os.environ["HUGO_CONFIG"]
+    
     # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
     global HTMLTEST_CONFIG
     HTMLTEST_CONFIG = os.environ["HTMLTEST_CONFIG"]
+    
     # This will contain the master branch of GITHUB_PAGES_REPO.
     global GITHUB_PAGES_PULL_PATH
     GITHUB_PAGES_PULL_PATH = "/tmp/pull/"
     GITHUB_PAGES_PULL_PATH = GITHUB_PAGES_PULL_PATH.rstrip("/")
+    
     # This will contain the generic infrastructure needed to build the GitHub Pages site. 
     global GITHUB_PAGES_HUGO_PATH 
     GITHUB_PAGES_HUGO_PATH = "/tmp/hugo/" 
     GITHUB_PAGES_HUGO_PATH = GITHUB_PAGES_HUGO_PATH.rstrip("/")
+    
     # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
     global GITHUB_PAGES_PUSH_PATH
     GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY)
     GITHUB_PAGES_PUSH_PATH = GITHUB_PAGES_PUSH_PATH.rstrip("/")
+    
     # Staging directory used for preparing files before hugo generation
     global STAGING_DIR
     STAGING_DIR = "/tmp/staging/"
     STAGING_DIR = STAGING_DIR.rstrip("/")
+    
     # Debug mode flag
     global DEBUG
     DEBUG = os.environ["DEBUG"]
