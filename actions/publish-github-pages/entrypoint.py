@@ -10,7 +10,7 @@
 # CONTENT - comma-separated list of directories in the top level of the repo that contains documentation
 # HUGO_URL - URL of the Hugo site after deployment
 # HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy to
-# HUGO_REPO - CloudPosse repository containing Hugo infrastructure
+# HUGO_REPO - Cloud Posse repository containing Hugo scaffolding
 # HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
 # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
 #
