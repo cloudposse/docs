@@ -3,7 +3,7 @@
 #
 # #### PARAMETERS ####
 # Input parameters:
-# GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
+# GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to (should not be an absolute path)
 # GITHUB_PAGES_REPO - repo containing documentation to be deployed to GitHub Pages
 # GITHUB_PAGES_PULL_BRANCH - the branch of the repo which contains the documentation
 # GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy to
@@ -47,47 +47,72 @@ def main():
     collate_docs_files()
 
 def read_in_env_vars():
+    # All globals will can be defined by passing in an env var with that name and with an optional
+    # "INPUT_" prefix. The "INPUT_" prefix is supported for compatibility with the GitHub Actions
+    # `with:` syntax.
 
-    # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to
+    # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to (should not be an absolute path)
     global GITHUB_PAGES_DIRECTORY
-    GITHUB_PAGES_DIRECTORY = os.environ["GITHUB_PAGES_DIRECTORY"]
+    GITHUB_PAGES_DIRECTORY = os.environ.get("GITHUB_PAGES_DIRECTORY")
+    if not GITHUB_PAGES_DIRECTORY:
+        GITHUB_PAGES_DIRECTORY = os.environ["INPUT_GITHUB_PAGES_DIRECTORY"]
     GITHUB_PAGES_DIRECTORY = GITHUB_PAGES_DIRECTORY.rstrip("/")
     
     # GITHUB_PAGES_REPO - repo containing documentation to be deployed to GitHub Pages
     global GITHUB_PAGES_REPO
-    GITHUB_PAGES_REPO = os.environ["GITHUB_PAGES_REPO"]
+    GITHUB_PAGES_REPO = os.environ.get("GITHUB_PAGES_REPO")
+    if not GITHUB_PAGES_REPO:
+        GITHUB_PAGES_REPO = os.environ["INPUT_GITHUB_PAGES_REPO"]
     
     # GITHUB_PAGES_PULL_BRANCH - the branch of the repo which contains the documentation
     global GITHUB_PAGES_PULL_BRANCH
-    GITHUB_PAGES_PULL_BRANCH = os.environ["GITHUB_PAGES_PULL_BRANCH"]
+    GITHUB_PAGES_PULL_BRANCH = os.environ.get("GITHUB_PAGES_PULL_BRANCH")
+    if not GITHUB_PAGES_PULL_BRANCH:
+        GITHUB_PAGES_PULL_BRANCH = os.environ["INPUT_GITHUB_PAGES_PULL_BRANCH"]
     
     # GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy from
     global GITHUB_PAGES_PUSH_BRANCH
-    GITHUB_PAGES_PUSH_BRANCH = os.environ["GITHUB_PAGES_PUSH_BRANCH"]
+    GITHUB_PAGES_PUSH_BRANCH = os.environ.get("GITHUB_PAGES_PUSH_BRANCH")
+    if not GITHUB_PAGES_PUSH_BRANCH:
+        GITHUB_PAGES_PUSH_BRANCH = os.environ["INPUT_GITHUB_PAGES_PUSH_BRANCH"]
     
     # CONTENT - comma-separated list of directories in the top level of the repo that contain documentation
     global CONTENT
-    CONTENT = os.environ["CONTENT"]
+    CONTENT = os.environ.get("CONTENT")
+    if not CONTENT:
+        CONTENT = os.environ["INPUT_CONTENT"]
     
     # HUGO_URL - URL of the Hugo site after deployment
     global HUGO_URL
-    HUGO_URL = os.environ["HUGO_URL"]
+    HUGO_URL = os.environ.get("HUGO_URL")
+    if not HUGO_URL:
+        HUGO_URL = os.environ["INPUT_HUGO_URL"]
     
     # HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy from
     global HUGO_PUBLISH_DIR
-    HUGO_PUBLISH_DIR = os.environ["HUGO_PUBLISH_DIR"]
+    HUGO_PUBLISH_DIR = os.environ.get("HUGO_PUBLISH_DIR")
+    if not HUGO_PUBLISH_DIR:
+        HUGO_PUBLISH_DIR = os.environ["INPUT_HUGO_PUBLISH_DIR"]
     
     # HUGO_REPO - Cloud Posse repository containing Hugo infrastructure
     global HUGO_REPO
-    HUGO_REPO = os.getenv("HUGO_REPO", "https://github.com/cloudposse/docs")
+    HUGO_REPO = os.environ.get("HUGO_REPO")
+    if not HUGO_REPO:
+        HUGO_REPO = os.environ.get("INPUT_HUGO_REPO")
+    if not HUGO_REPO:
+        HUGO_REPO = "https://github.com/cloudposse/docs"
     
     # HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
     global HUGO_CONFIG
-    HUGO_CONFIG = os.environ["HUGO_CONFIG"]
+    HUGO_CONFIG = os.environ.get("HUGO_CONFIG")
+    if not HUGO_CONFIG:
+        HUGO_CONFIG = os.environ["INPUT_HUGO_CONFIG"]
     
     # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
     global HTMLTEST_CONFIG
-    HTMLTEST_CONFIG = os.environ["HTMLTEST_CONFIG"]
+    HTMLTEST_CONFIG = os.environ.get("HTMLTEST_CONFIG")
+    if not HTMLTEST_CONFIG:
+        HTMLTEST_CONFIG = os.environ["INPUT_HTMLTEST_CONFIG"]
     
     # This will contain the master branch of GITHUB_PAGES_REPO.
     global GITHUB_PAGES_PULL_PATH
@@ -100,13 +125,16 @@ def read_in_env_vars():
     GITHUB_PAGES_HUGO_PATH = GITHUB_PAGES_HUGO_PATH.rstrip("/")
     
     # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
+    # !This will fail silently if GITHUB_PAGES_REPO begins with a /.
     global GITHUB_PAGES_PUSH_PATH
     GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY)
     GITHUB_PAGES_PUSH_PATH = GITHUB_PAGES_PUSH_PATH.rstrip("/")
     
     # Staging directory used for preparing files before hugo generation
     global STAGING_DIR
-    STAGING_DIR = os.environ["STAGING_DIR"]
+    STAGING_DIR = os.environ.get("STAGING_DIR")
+    if not STAGING_DIR:
+        STAGING_DIR = os.environ["INPUT_STAGING_DIR"]
     STAGING_DIR = STAGING_DIR.rstrip("/")
 
 def checkout_repos():
