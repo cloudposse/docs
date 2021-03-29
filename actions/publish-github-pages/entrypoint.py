@@ -9,7 +9,7 @@
 # GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy to
 # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
 # HUGO_URL - URL of the Hugo site after deployment
-# HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy to```
+# HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy to
 # HUGO_REPO - CloudPosse repository containing Hugo infrastructure
 # HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
 # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
