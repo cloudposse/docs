@@ -40,102 +40,45 @@ def main():
     # Checkout out all repos needed for this action.
     checkout_repos()
 
-    # Create a separate build folder, STAGING_DIR, and populate it with the essential Hugo build files.
+    # Create a separate build folder, STAGING_DIR, and populate it with the essential Hugo build
+    # files.
     stage_hugo_build_files()
 
     # Collate all local documentation inside the build folder, renaming and rearranging as needed.
     collate_docs_files()
 
 def read_in_env_vars():
-    # All globals will can be defined by passing in an env var with that name and with an optional
+    # Read env vars into Python globals.
+    # (All globals can be defined by passing in an env var with that name and with an optional
     # "INPUT_" prefix. The "INPUT_" prefix is supported for compatibility with the GitHub Actions
-    # `with:` syntax.
+    # `with:` syntax.)
 
-    # GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to (should not be an absolute path)
-    global GITHUB_PAGES_DIRECTORY
-    GITHUB_PAGES_DIRECTORY = os.environ.get("GITHUB_PAGES_DIRECTORY")
-    if not GITHUB_PAGES_DIRECTORY:
-        GITHUB_PAGES_DIRECTORY = os.environ["INPUT_GITHUB_PAGES_DIRECTORY"]
-    GITHUB_PAGES_DIRECTORY = GITHUB_PAGES_DIRECTORY.rstrip("/")
-    
-    # GITHUB_PAGES_REPO - repo containing documentation to be deployed to GitHub Pages
-    global GITHUB_PAGES_REPO
-    GITHUB_PAGES_REPO = os.environ.get("GITHUB_PAGES_REPO")
-    if not GITHUB_PAGES_REPO:
-        GITHUB_PAGES_REPO = os.environ["INPUT_GITHUB_PAGES_REPO"]
-    
-    # GITHUB_PAGES_PULL_BRANCH - the branch of the repo which contains the documentation
-    global GITHUB_PAGES_PULL_BRANCH
-    GITHUB_PAGES_PULL_BRANCH = os.environ.get("GITHUB_PAGES_PULL_BRANCH")
-    if not GITHUB_PAGES_PULL_BRANCH:
-        GITHUB_PAGES_PULL_BRANCH = os.environ["INPUT_GITHUB_PAGES_PULL_BRANCH"]
-    
-    # GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy from
-    global GITHUB_PAGES_PUSH_BRANCH
-    GITHUB_PAGES_PUSH_BRANCH = os.environ.get("GITHUB_PAGES_PUSH_BRANCH")
-    if not GITHUB_PAGES_PUSH_BRANCH:
-        GITHUB_PAGES_PUSH_BRANCH = os.environ["INPUT_GITHUB_PAGES_PUSH_BRANCH"]
-    
-    # CONTENT - comma-separated list of directories in the top level of the repo that contain documentation
-    global CONTENT
-    CONTENT = os.environ.get("CONTENT")
-    if not CONTENT:
-        CONTENT = os.environ["INPUT_CONTENT"]
-    
-    # HUGO_URL - URL of the Hugo site after deployment
-    global HUGO_URL
-    HUGO_URL = os.environ.get("HUGO_URL")
-    if not HUGO_URL:
-        HUGO_URL = os.environ["INPUT_HUGO_URL"]
-    
-    # HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy from
-    global HUGO_PUBLISH_DIR
-    HUGO_PUBLISH_DIR = os.environ.get("HUGO_PUBLISH_DIR")
-    if not HUGO_PUBLISH_DIR:
-        HUGO_PUBLISH_DIR = os.environ["INPUT_HUGO_PUBLISH_DIR"]
-    
-    # HUGO_REPO - Cloud Posse repository containing Hugo infrastructure
-    global HUGO_REPO
-    HUGO_REPO = os.environ.get("HUGO_REPO")
-    if not HUGO_REPO:
-        HUGO_REPO = os.environ.get("INPUT_HUGO_REPO")
-    if not HUGO_REPO:
-        HUGO_REPO = "https://github.com/cloudposse/docs"
-    
-    # HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
-    global HUGO_CONFIG
-    HUGO_CONFIG = os.environ.get("HUGO_CONFIG")
-    if not HUGO_CONFIG:
-        HUGO_CONFIG = os.environ["INPUT_HUGO_CONFIG"]
-    
-    # HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
-    global HTMLTEST_CONFIG
-    HTMLTEST_CONFIG = os.environ.get("HTMLTEST_CONFIG")
-    if not HTMLTEST_CONFIG:
-        HTMLTEST_CONFIG = os.environ["INPUT_HTMLTEST_CONFIG"]
-    
-    # This will contain the master branch of GITHUB_PAGES_REPO.
-    global GITHUB_PAGES_PULL_PATH
-    GITHUB_PAGES_PULL_PATH = "/tmp/pull/"
-    GITHUB_PAGES_PULL_PATH = GITHUB_PAGES_PULL_PATH.rstrip("/")
-    
-    # This will contain the generic scaffolding needed to build the Hugo GitHub Pages site. 
-    global GITHUB_PAGES_HUGO_PATH 
-    GITHUB_PAGES_HUGO_PATH = "/tmp/hugo/" 
-    GITHUB_PAGES_HUGO_PATH = GITHUB_PAGES_HUGO_PATH.rstrip("/")
-    
-    # This will contain the GitHub Pages deployment branch of GITHUB_PAGES_REPO.
-    # !This will fail silently if GITHUB_PAGES_REPO begins with a /.
-    global GITHUB_PAGES_PUSH_PATH
-    GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY)
-    GITHUB_PAGES_PUSH_PATH = GITHUB_PAGES_PUSH_PATH.rstrip("/")
-    
-    # Staging directory used for preparing files before hugo generation
-    global STAGING_DIR
-    STAGING_DIR = os.environ.get("STAGING_DIR")
-    if not STAGING_DIR:
-        STAGING_DIR = os.environ["INPUT_STAGING_DIR"]
-    STAGING_DIR = STAGING_DIR.rstrip("/")
+    # Syntax: (varaible_name, default value [if any], whether to strip parentheses from the end of the variable)
+    global_vars = [("GITHUB_PAGES_DIRECTORY", None, True),
+                   ("GITHUB_PAGES_REPO", None, False),
+                   ("GITHUB_PAGES_PULL_BRANCH", None, False),
+                   ("GITHUB_PAGES_PUSH_BRANCH", None, False),
+                   ("CONTENT", None, False),
+                   ("HUGO_URL", None, False),
+                   ("HUGO_PUBLISH_DIR", None, False),
+                   ("HUGO_REPO", "https://github.com/cloudposse/docs", False),
+                   ("HUGO_CONFIG", None, False),
+                   ("HTMLTEST_CONFIG", None, False),
+                   ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
+                   ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
+                   ("GITHUB_PAGES_PUSH_PATH", os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY.lstrip('/')), True),
+                   ("STAGING_DIR", None, True)]
+    for global_var in global_vars:
+        create_global(*global_var)
+
+def create_global(global_name, default=None, rstrip_slash=False):
+    # Define a global variable and optionally declare a default value for it and trim slashes off
+    # the right end of it.
+    globals()[global_name] = os.environ.get(global_name) \
+                             or os.environ.get("INPUT_" + global_name) \
+                             or default
+    if rstrip_slash:
+        eval(global_name + ".rstrip('/')")
 
 def checkout_repos():
 
