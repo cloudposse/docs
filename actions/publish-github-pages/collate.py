@@ -74,10 +74,6 @@ def read_in_env_vars():
     global GITHUB_PAGES_PUSH_PATH
     GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY.lstrip('/')).rstrip('/')
 
-    # DEBUG
-    print("Python globals")
-    print(globals())
-
 def create_global(global_name, default=None, rstrip_slash=False):
     # Define a global variable and optionally declare a default value for it and trim slashes off
     # the right end of it.
