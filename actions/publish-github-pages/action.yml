@@ -9,4 +9,8 @@ runs:
     - run: |
         pip install GitPython
         python ${{ github.action_path }}/entrypoint.py
+        cd $STAGING_DIR
+        make release
+        make real-clean hugo/build
+        cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} $GITHUB_PAGES_PUSH_PATH
       shell: bash
