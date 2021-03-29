@@ -30,6 +30,7 @@ runs:
   steps:
     - run: |
            printenv
+           echo "Entering entrypoint.sh."
            PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
       shell: bash
       env:
