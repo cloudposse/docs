@@ -199,7 +199,7 @@ def insert_frontmatter(file_path, weight=1):
             markdown_file.write(front_matter_string)
             markdown_file.write(input_file)
 
-def promote_markdown_file(markdown_file):
+def promote_markdown_file(markdown_file, root):
     # create a folder for the markdown file
     markdown_basename = os.path.splitext(markdown_file)[0]
     os.mkdir( os.path.join(STAGING_DIR, "content", markdown_basename) )
