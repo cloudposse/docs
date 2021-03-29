@@ -128,7 +128,7 @@ def main():
     copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/Dockerfile"), STAGING_DIR )
     copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + "/Makefile"), STAGING_DIR )
     
-    # copy all customer documentation into the build folder
+    # copy all local documentation into the build folder
     content_folders = CONTENT.split(",")
     if DEBUG:
         print(f"CONTENT: {CONTENT}")
