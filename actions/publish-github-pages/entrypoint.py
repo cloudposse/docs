@@ -45,11 +45,12 @@ def main():
     for copy_file in [".gitignore", ".htmltest.yml", "config.yaml", "Dockerfile", "Makefile"]:
         copy2( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_file), STAGING_DIR )
 
-    # copy all local documentation into the build folder
-    # Rename and rearrange content files as needed.
+    # Collate all local documentation inside the build folder
     content_folders = CONTENT.split(",")
     for content_folder in content_folders:
-        rearrange_files(content_folder)
+        content_base_path = os.path.join(GITHUB_PAGES_PULL_PATH, content_folder)
+        # Rename and rearrange content files as needed.
+        rearrange_files(content_base_path)
         # Now that all .md files have been renamed and rearranged appropriately,
         # collate the docs (.md pages) inside the STAGING_DIR.
         for root, dirs, files in os.walk( content_base_path, topdown=False ):
@@ -145,8 +146,7 @@ def checkout_repos():
     # 3) The GitHub Pages deployment branch for this site
     Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_PUSH_BRANCH)
 
-def rearrange_files(content_folder):
-    content_base_path = os.path.join(GITHUB_PAGES_PULL_PATH, content_folder)
+def rearrange_files(content_base_path):
     # rename all `README.md` to `_index.md` (hugo convention)
     for root, dirs, files in os.walk(content_base_path):
         for local_file in files:
