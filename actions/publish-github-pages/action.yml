@@ -33,11 +33,11 @@ runs:
            PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
       shell: bash
       env:
-        INPUT_CONTENT: ${{ inputs.content }}
-        INPUT_DEBUG: ${{ inputs.debug }}
-        INPUT_HUGO_URL: ${{ inputs.hugo_url }}
-        INPUT_HUGO_PUBLISH_DIR: ${{ inputs.hugo_publish_dir }}
-        INPUT_HUGO_CONFIG: ${{ inputs.hugo_config }}
-        INPUT_HTMLTEST_CONFIG: ${{ inputs.htmltest_config }}
-        INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
-        INPUT_GITHUB_ACTOR: ${{ inputs.github_actor }}
+        INPUT_CONTENT: ${{ inputs.CONTENT }}
+        INPUT_DEBUG: ${{ inputs.DEBUG }}
+        INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
+        INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
+        INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
+        INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
+        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
