@@ -4,66 +4,54 @@ inputs:
   CONTENT:
     description: 'comma-separated list of directories in the top level of the repo that contains documentation'
     required: false
-    default: ${{ env.CONTENT }}
   DEBUG:
     description: 'whether to turn on debug printouts/functionality'
     required: false
-    default: ${{ env.DEBUG }}
   HUGO_URL:
     description: 'URL of the Hugo site after deployment'
     required: false
-    default: ${{ env.HUGO_URL }}
   HUGO_PUBLISH_DIR:
     description: 'directory in the repo that GitHub Pages will deploy to'
     required: false
-    default: ${{ env.HUGO_PUBLISH_DIR }}
   HUGO_CONFIG:
     description: 'location of to-be-written Hugo config file (actual location not important)'
     required: false
-    default: ${{ env.HUGO_CONFIG }}
   HTMLTEST_CONFIG:
     description: 'location of to-be-written htmltest config file (actual location not important)'
     required: false
-    default: ${{ env.HTMLTEST_CONFIG }}
   GITHUB_TOKEN:
     description: 'github token'
     required: false
-    default: ${{ env.GITHUB_TOKEN }}
   GITHUB_ACTOR:
     description: 'github actor'
     required: false
-    default: ${{ env.GITHUB_ACTOR }}
   GITHUB_PAGES_REPO:
     description: 'repo containing documentation to be deployed to GitHub Pages'
     required: false
-    default: ${{ env.GITHUB_PAGES_REPO }}
   GITHUB_PAGES_PULL_BRANCH:
     description: 'the branch of the repo which contains the documentation'
     required: false
-    default: ${{ env.GITHUB_PAGES_PULL_BRANCH }}
   GITHUB_PAGES_PUSH_BRANCH:
     description: 'the branch of the repo which GitHub Pages will deploy to'
     required: false
-    default: ${{ env.GITHUB_PAGES_PUSH_BRANCH }}
   GITHUB_PAGES_DIRECTORY:
     description: 'the directory to write the rendered website files to (should not be an absolute path)'
     required: false
-    default: ${{ env.GITHUB_PAGES_DIRECTORY }}
 runs:
   using: 'composite'
   steps:
     - run: PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
       shell: bash
       env:
-        CONTENT: ${{ inputs.CONTENT }}
-        DEBUG: ${{ inputs.DEBUG }}
-        HUGO_URL: ${{ inputs.HUGO_URL }}
-        HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
-        HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
-        HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
-        GITHUB_PAGES_REPO: ${{ inputs.GITHUB_PAGES_REPO }}
-        GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
-        GITHUB_PAGES_PUSH_BRANCH: ${{ inputs.GITHUB_PAGES_PUSH_BRANCH }}
-        GITHUB_PAGES_DIRECTORY: ${{ inputs.GITHUB_PAGES_DIRECTORY }}
+        INPUT_CONTENT: ${{ inputs.CONTENT }}
+        INPUT_DEBUG: ${{ inputs.DEBUG }}
+        INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
+        INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
+        INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
+        INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
+        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
+        INPUT_GITHUB_PAGES_REPO: ${{ inputs.GITHUB_PAGES_REPO }}
+        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+        INPUT_GITHUB_PAGES_PUSH_BRANCH: ${{ inputs.GITHUB_PAGES_PUSH_BRANCH }}
+        INPUT_GITHUB_PAGES_DIRECTORY: ${{ inputs.GITHUB_PAGES_DIRECTORY }}
