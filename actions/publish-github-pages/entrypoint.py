@@ -7,7 +7,7 @@
 # GITHUB_PAGES_REPO - repo containing documentation to be deployed to GitHub Pages
 # GITHUB_PAGES_PULL_BRANCH - the branch of the repo which contains the documentation
 # GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy to
-# CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
+# CONTENT - comma-separated list of directories in the top level of the repo that contains documentation
 # HUGO_URL - URL of the Hugo site after deployment
 # HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy to
 # HUGO_REPO - CloudPosse repository containing Hugo infrastructure
@@ -16,9 +16,9 @@
 #
 # Example parameter values:
 # GITHUB_PAGES_DIRECTORY=github_pages
-# GITHUB_PAGES_REPO=https://github.com/cloudposse/docs # or for customer github.com/customer/infrastructure.git
+# GITHUB_PAGES_REPO=https://github.com/cloudposse/docs # or, e.g., github.com/project/infrastructure.git
 # GITHUB_PAGES_PULL_BRANCH=master # or current-docs-feature-branch
-# GITHUB_PAGES_PUSH_BRANCH=production # or for customer, it will be docs
+# GITHUB_PAGES_PUSH_BRANCH=production # or, e.g., docs
 # CONTENT=docs,content
 # HUGO_URL=cloudposse.github.io/docs
 # HUGO_PUBLISH_DIR=public
@@ -39,19 +39,19 @@ def read_in_env_vars():
     GITHUB_PAGES_DIRECTORY = os.environ["GITHUB_PAGES_DIRECTORY"]
     GITHUB_PAGES_DIRECTORY = GITHUB_PAGES_DIRECTORY.rstrip("/")
     
-    # GITHUB_PAGES_REPO - customer's repo containing documentation to be deployed to GitHub Pages
+    # GITHUB_PAGES_REPO - repo containing documentation to be deployed to GitHub Pages
     global GITHUB_PAGES_REPO
     GITHUB_PAGES_REPO = os.environ["GITHUB_PAGES_REPO"]
     
-    # GITHUB_PAGES_PULL_BRANCH - the branch of the customer's repo which contains the customer's documentation
+    # GITHUB_PAGES_PULL_BRANCH - the branch of the repo which contains the documentation
     global GITHUB_PAGES_PULL_BRANCH
     GITHUB_PAGES_PULL_BRANCH = os.environ["GITHUB_PAGES_PULL_BRANCH"]
     
-    # GITHUB_PAGES_PUSH_BRANCH - the branch of the customer's repo which GitHub Pages will deploy from
+    # GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy from
     global GITHUB_PAGES_PUSH_BRANCH
     GITHUB_PAGES_PUSH_BRANCH = os.environ["GITHUB_PAGES_PUSH_BRANCH"]
     
-    # CONTENT - comma-separated list of directories in the top level of the customer's repo that contain documentation
+    # CONTENT - comma-separated list of directories in the top level of the repo that contain documentation
     global CONTENT
     CONTENT = os.environ["CONTENT"]
     
@@ -59,7 +59,7 @@ def read_in_env_vars():
     global HUGO_URL
     HUGO_URL = os.environ["HUGO_URL"]
     
-    # HUGO_PUBLISH_DIR - directory in the customer's repo that GitHub Pages will deploy from
+    # HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy from
     global HUGO_PUBLISH_DIR
     HUGO_PUBLISH_DIR = os.environ["HUGO_PUBLISH_DIR"]
     
@@ -168,7 +168,7 @@ def main():
                 if DEBUG:
                     print(f"hierarchy_modified: {hierarchy_modified}")
         # Now that all .md files have been renamed and rearranged appropriately,
-        # collate the customer docs (.md pages) inside the STAGING_DIR.
+        # collate the docs (.md pages) inside the STAGING_DIR.
         for root, dirs, files in os.walk( content_base_path, topdown=False ):
             # If this is a top-level dir (i.e., it is listed directly in CONTENT) and it has no subdirs,
             # every .md file in this folder becomes the basis for a top-level object.
@@ -210,8 +210,8 @@ def main():
                     #weight = weight + 1
 
     # Build Docker image needed to build the Hugo site
-    docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
-    subprocess.run(docker_build_command, shell=True, check=True)
+    #docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
+    #subprocess.run(docker_build_command, shell=True, check=True)
 
     # publish the Hugo-generated HTML to $GITHUB_PAGES_PUSH_PATH
     #make_command = f'cd {STAGING_DIR}; make release; make real-clean hugo/build'
