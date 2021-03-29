@@ -6,7 +6,7 @@ set -e
 export STAGING_DIR=${STAGING_DIR:-/tmp/staging}
 export GITHUB_PAGES_PUSH_PATH=$(pwd)/${GITHUB_PAGES_DIRECTORY}
 pip install GitPython pyyaml
-python collate.py
+python ${{ github.action_path }}/collate.py
 cd $STAGING_DIR
 docker build -t cloudposse/docs .
 make release
