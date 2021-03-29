@@ -4,29 +4,39 @@ inputs:
   CONTENT:
     description: 'comma-separated list of directories in the top level of the repo that contains documentation'
     required: false
+    default: None
   DEBUG:
     description: 'whether to turn on debug printouts/functionality'
     required: false
+    default: None
   HUGO_URL:
     description: 'URL of the Hugo site after deployment'
     required: false
+    default: None
   HUGO_PUBLISH_DIR:
     description: 'directory in the repo that GitHub Pages will deploy to'
     required: false
+    default: None
   HUGO_CONFIG:
     description: 'location of to-be-written Hugo config file (actual location not important)'
     required: false
+    default: None
   HTMLTEST_CONFIG:
     description: 'location of to-be-written htmltest config file (actual location not important)'
     required: false
+    default: None
   GITHUB_TOKEN:
     description: 'github token'
     required: false
+    defaut: None
   GITHUB_ACTOR:
     description: 'github actor'
     required: false
+    default: None
 runs:
   using: 'composite'
   steps:
-    - run: PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
+    - run: |
+           printenv
+           PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
       shell: bash
