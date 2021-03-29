@@ -1,5 +1,5 @@
 name: 'Publish GitHub Pages'
-description: 'Publish the Hugo-based CloudPosse docs website to GitHub Pages.'
+description: 'Publish the Hugo-based Cloud Posse docs website to GitHub Pages.'
 runs:
   using: 'composite'
   steps:
