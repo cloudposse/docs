@@ -92,7 +92,7 @@ def read_in_env_vars():
     
     # Staging directory used for preparing files before hugo generation
     global STAGING_DIR
-    STAGING_DIR = "/tmp/staging/"
+    STAGING_DIR = os.environ["STAGING_DIR"]
     STAGING_DIR = STAGING_DIR.rstrip("/")
     
     # Debug mode flag
