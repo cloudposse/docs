@@ -66,10 +66,12 @@ def read_in_env_vars():
                    ("HTMLTEST_CONFIG", None, False),
                    ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
                    ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
-                   ("GITHUB_PAGES_PUSH_PATH", os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY.lstrip('/')), True),
                    ("STAGING_DIR", None, True)]
     for global_var in global_vars:
         create_global(*global_var)
+
+    # This one has to be declared ad hoc, due to its dependence on another global.
+    global GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY.lstrip('/')).rstrip('/')
 
 def create_global(global_name, default=None, rstrip_slash=False):
     # Define a global variable and optionally declare a default value for it and trim slashes off
