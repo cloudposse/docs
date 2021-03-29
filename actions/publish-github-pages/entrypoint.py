@@ -124,7 +124,7 @@ def read_in_env_vars():
     GITHUB_PAGES_PULL_PATH = "/tmp/pull/"
     GITHUB_PAGES_PULL_PATH = GITHUB_PAGES_PULL_PATH.rstrip("/")
     
-    # This will contain the generic infrastructure needed to build the GitHub Pages site. 
+    # This will contain the generic scaffolding needed to build the Hugo GitHub Pages site. 
     global GITHUB_PAGES_HUGO_PATH 
     GITHUB_PAGES_HUGO_PATH = "/tmp/hugo/" 
     GITHUB_PAGES_HUGO_PATH = GITHUB_PAGES_HUGO_PATH.rstrip("/")
