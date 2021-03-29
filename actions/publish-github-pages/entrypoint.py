@@ -203,26 +203,7 @@ def main():
                     os.renames( origin_path, destination_path )
                     if DEBUG:
                         print(f'origin: {origin_path}, destination: {destination_path}')
-                        #print(f'origin dir contents: {os.listdir(origin_path.rsplit("/",1)[0])}')
-                        #with open(destination_path, "r") as md_file:
-                        #    md_file_contents = md_file.read()
-                        #    print(md_file_contents)
-                    #weight = weight + 1
-
-    # Build Docker image needed to build the Hugo site
-    #docker_build_command = f'cd {STAGING_DIR}; docker build -t cloudposse/docs .'
-    #subprocess.run(docker_build_command, shell=True, check=True)
-
-    # publish the Hugo-generated HTML to $GITHUB_PAGES_PUSH_PATH
-    #make_command = f'cd {STAGING_DIR}; make release; make real-clean hugo/build'
-    #if DEBUG:
-    #    print(make_command)
-    #subprocess.run(make_command, shell=True, check=True)
-    #print(f"HUGO_PUBLISH_DIR: {HUGO_PUBLISH_DIR}, GITHUB_PAGES_PUSH_PATH: {GITHUB_PAGES_PUSH_PATH}")
-    #copytree( os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR), GITHUB_PAGES_PUSH_PATH, dirs_exist_ok=True )
-    #print(f"Copied files from {os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR)} to {GITHUB_PAGES_PUSH_PATH}")
-    #print(f"Contents of {os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR)}: {os.listdir(os.path.join(STAGING_DIR, HUGO_PUBLISH_DIR))}")
-    #print(f"Contents of {GITHUB_PAGES_PUSH_PATH}: {os.listdir(GITHUB_PAGES_PUSH_PATH)}")
+                    weight = weight + 1
 
 def insert_frontmatter(file_path, weight=1):
     # check for frontmatter
