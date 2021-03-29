@@ -79,7 +79,7 @@ def read_in_env_vars():
 
     # DEBUG
     print("Printing env vars.")
-    globals()
+    print(globals())
 
 def create_global(global_name, default=None, rstrip_slash=False):
     # Define a global variable and optionally declare a default value for it and trim slashes off
