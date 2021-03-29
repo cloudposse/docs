@@ -1,12 +1,12 @@
 name: 'Publish GitHub Pages'
 description: 'Publish the Hugo-based Cloud Posse docs website to GitHub Pages.'
 inputs:
-  CONTENT: None
-  DEBUG: False
-  HUGO_URL: None
-  HUGO_PUBLISH_DIR: None
-  HUGO_CONFIG: None
-  HTMLTEST_CONFIG: None
+  CONTENT: 'None'
+  DEBUG: 'False'
+  HUGO_URL: 'None'
+  HUGO_PUBLISH_DIR: 'None'
+  HUGO_CONFIG: 'None'
+  HTMLTEST_CONFIG: 'None'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
 runs:
