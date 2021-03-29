@@ -3,6 +3,10 @@ set -e
 #
 # entrypoint.sh
 #
+
+# DEBUG
+printenv
+
 export STAGING_DIR=${STAGING_DIR:-/tmp/staging}
 export GITHUB_PAGES_PUSH_PATH=$(pwd)/${GITHUB_PAGES_DIRECTORY}
 pip install GitPython pyyaml
