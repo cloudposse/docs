@@ -25,22 +25,13 @@ inputs:
   GITHUB_ACTOR:
     description: 'github actor'
     required: false
-  GITHUB_PAGES_REPO:
-    description: 'repo containing documentation to be deployed to GitHub Pages'
-    required: false
   GITHUB_PAGES_PULL_BRANCH:
     description: 'the branch of the repo which contains the documentation'
-    required: false
-  GITHUB_PAGES_PUSH_BRANCH:
-    description: 'the branch of the repo which GitHub Pages will deploy to'
-    required: false
-  GITHUB_PAGES_DIRECTORY:
-    description: 'the directory to write the rendered website files to (should not be an absolute path)'
     required: false
 runs:
   using: 'composite'
   steps:
-    - run: PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path}}/entrypoint.sh
+    - run: PYTHON_SCRIPT_LOCATION=${{ github.action_path }} ${{ github.action_path }}/entrypoint.sh
       shell: bash
       env:
         INPUT_CONTENT: ${{ inputs.CONTENT }}
@@ -51,7 +42,4 @@ runs:
         INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
         INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
-        INPUT_GITHUB_PAGES_REPO: ${{ inputs.GITHUB_PAGES_REPO }}
         INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
-        INPUT_GITHUB_PAGES_PUSH_BRANCH: ${{ inputs.GITHUB_PAGES_PUSH_BRANCH }}
-        INPUT_GITHUB_PAGES_DIRECTORY: ${{ inputs.GITHUB_PAGES_DIRECTORY }}
