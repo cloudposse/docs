@@ -43,7 +43,7 @@ def main():
     for copy_dir in copy_dirs:
         copytree( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_dir), os.path.join(STAGING_DIR, copy_dir) )
     for copy_file in [".gitignore", ".htmltest.yml", "config.yaml", "Dockerfile", "Makefile"]:
-        copy2( os.path.join(GITHUB_PAGES_HUGO_PATH + copy_file), STAGING_DIR )
+        copy2( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_file), STAGING_DIR )
 
     # copy all local documentation into the build folder
     # Rename and rearrange content files as needed.
