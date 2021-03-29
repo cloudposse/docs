@@ -129,7 +129,7 @@ def stage_hugo_build_files():
     copy_dirs = ["tasks", "themes", "static", "layouts", "content"]
     for copy_dir in copy_dirs:
         copytree( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_dir), os.path.join(STAGING_DIR, copy_dir) )
-    copy_files = [".gitignore", ".htmltest.yml", "config.yaml", "Dockerfile", "Makefile"]:
+    copy_files = [".gitignore", ".htmltest.yml", "config.yaml", "Dockerfile", "Makefile"]
     for copy_file in copy_files:
         copy2( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_file), STAGING_DIR )
 
