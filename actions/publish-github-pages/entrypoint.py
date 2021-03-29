@@ -110,10 +110,6 @@ def main():
     docs_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PULL_PATH, branch=GITHUB_PAGES_PULL_BRANCH)
 
     # 3) The GitHub Pages deployment branch for this site
-    directory_cleaning_command = f'rm -rf {GITHUB_PAGES_PUSH_PATH}' 
-    if DEBUG:
-        print(directory_cleaning_command)
-    subprocess.run(directory_cleaning_command, shell=True, check=True)
     gh_pages_repo = Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_PUSH_BRANCH)
 
     # Create a separate build folder, ${STAGING_DIR}, and populate it with the essential files from HUGO_REPO
