@@ -28,81 +28,62 @@ inputs:
   GITHUB_PAGES_PULL_BRANCH:
     description: 'the branch of the repo which contains the documentation'
     required: false
+  STAGING_DIR:
+    description: 'directory to collate all docs and Hugo files in'
+    required: false
 runs:
   using: 'composite'
   steps:
     - id: checkout-repos
       run: |
            pip install GitPython pyyaml
-           python -c 'from collate import *; checkout_repos()'
+           python -c 'from checkout_and_collate import *; checkout_repos()'
       shell: bash
       env:
         PYTHONPATH: ${{ github.action_path }}
-        STAGING_DIR: /tmp/staging
-        INPUT_CONTENT: ${{ inputs.CONTENT }}
-        INPUT_DEBUG: ${{ inputs.DEBUG }}
-        INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
-        INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
-        INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
-        INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
-        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
-        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
         GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
+        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+        INPUT_DEBUG: ${{ inputs.DEBUG }}
+        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
     - id: collate-files
       run: |
            pip install GitPython pyyaml
-           python -c 'from collate import *; collation_steps()'
+           python -c 'from checkout_and_collate import *; collate_files()'
       shell: bash
       env:
         PYTHONPATH: ${{ github.action_path }}
-        STAGING_DIR: /tmp/staging
-        INPUT_CONTENT: ${{ inputs.CONTENT }}
-        INPUT_DEBUG: ${{ inputs.DEBUG }}
-        INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
-        INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
-        INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
-        INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
-        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
-        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
         GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
+        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+        INPUT_DEBUG: ${{ inputs.DEBUG }}
+        INPUT_CONTENT: ${{ inputs.CONTENT }}
+        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
     - id: build-hugo
       run: |
            # These variables need to be defined manually when GitHub Actions variables are passed in using
            # with: instead of env: in order for the next steps to work.
+           export HUGO_URL=${HUGO_URL:-$INPUT_HUGO_URL}
            export HUGO_CONFIG=${HUGO_CONFIG:-$INPUT_HUGO_CONFIG}
            export HTMLTEST_CONFIG=${HTMLTEST_CONFIG:-$INPUT_HTMLTEST_CONFIG}
            export HUGO_PUBLISH_DIR=${HUGO_PUBLISH_DIR:-$INPUT_HUGO_PUBLISH_DIR}
+           export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
            cd $STAGING_DIR
            docker build -t cloudposse/docs .
            make release
            make real-clean hugo/build
       shell: bash
       env:
-        STAGING_DIR: /tmp/staging
-        INPUT_CONTENT: ${{ inputs.CONTENT }}
-        INPUT_DEBUG: ${{ inputs.DEBUG }}
+        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
         INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
         INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
         INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
         INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
-        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
-        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
-        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
     - id: publish-site
-      run: cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
+      run: |
+           export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
+           export HUGO_PUBLISH_DIR=${HUGO_PUBLISH_DIR:-$INPUT_HUGO_PUBLISH_DIR}
+           cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
       shell: bash
       env:
-        STAGING_DIR: /tmp/staging
-        INPUT_CONTENT: ${{ inputs.CONTENT }}
-        INPUT_DEBUG: ${{ inputs.DEBUG }}
-        INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
+        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
         INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
-        INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
-        INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
-        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
-        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
         GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}

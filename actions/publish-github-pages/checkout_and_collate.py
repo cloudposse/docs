@@ -8,11 +8,8 @@
 # GITHUB_PAGES_PULL_BRANCH - the branch of the repo which contains the documentation
 # GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy to
 # CONTENT - comma-separated list of directories in the top level of the repo that contains documentation
-# HUGO_URL - URL of the Hugo site after deployment
-# HUGO_PUBLISH_DIR - directory in the repo that GitHub Pages will deploy to
 # HUGO_REPO - Cloud Posse repository containing Hugo scaffolding
-# HUGO_CONFIG - location of to-be-written Hugo config file (actual location not important)
-# HTMLTEST_CONFIG - location of to-be-written htmltest config file (actual location not important)
+# STAGING_DIR - directory to collate all docs and Hugo files in
 #
 # Example parameter values:
 # GITHUB_PAGES_DIRECTORY=github_pages
@@ -20,11 +17,8 @@
 # GITHUB_PAGES_PULL_BRANCH=master # or current-docs-feature-branch
 # GITHUB_PAGES_PUSH_BRANCH=production # or, e.g., docs
 # CONTENT=docs,content
-# HUGO_URL=cloudposse.github.io/docs
-# HUGO_PUBLISH_DIR=public
 # HUGO_REPO=https://github.com/cloudposse/docs
-# HUGO_CONFIG=hugo.config.new
-# HTMLTEST_CONFIG=.htmltest.config.new
+# STAGING_DIR=/tmp/staging
 
 import os
 import re
@@ -38,41 +32,38 @@ def main():
     checkout_repos()
 
     # Create a staging directory, put all necesary Hugo files in there, and add custom docs files.
-    collation_steps()
+    collate_files()
 
-def read_in_env_vars():
+def read_in_env_vars(calling_func):
     # Read env vars into Python globals.
     # (All globals can be defined by passing in an env var with that name and with an optional
     # "INPUT_" prefix. The "INPUT_" prefix is supported for compatibility with the GitHub Actions
     # `with:` syntax.)
 
-    # Set globals if they haven't been set already.
-    global GLOBALS_SET_FLAG
-    if not globals().get("GLOBALS_SET_FLAG"):
-        # Syntax: (varaible_name, default value [if any], whether to strip parentheses from the end
-        #          of the variable)
+    # Syntax: (varaible_name, default value [if any], whether to strip parentheses from the end
+    #          of the variable)
+    if calling_func == "checkout_repos":
+        global_vars = [("GITHUB_PAGES_DIRECTORY", None, True),
+                       ("GITHUB_PAGES_REPO", None, False),
+                       ("GITHUB_PAGES_PULL_BRANCH", None, False),
+                       ("GITHUB_PAGES_PUSH_BRANCH", None, False),
+                       ("HUGO_REPO", "https://github.com/cloudposse/docs", False),
+                       ("GITHUB_PAGES_PUSH_PATH", None, True),
+                       ("DEBUG", None, False)]
+    elif calling_func == "collate_files":
         global_vars = [("GITHUB_PAGES_DIRECTORY", None, True),
                        ("GITHUB_PAGES_REPO", None, False),
                        ("GITHUB_PAGES_PULL_BRANCH", None, False),
                        ("GITHUB_PAGES_PUSH_BRANCH", None, False),
                        ("CONTENT", None, False),
-                       ("HUGO_URL", None, False),
-                       ("HUGO_PUBLISH_DIR", None, False),
                        ("HUGO_REPO", "https://github.com/cloudposse/docs", False),
-                       ("HUGO_CONFIG", None, False),
-                       ("HTMLTEST_CONFIG", None, False),
                        ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
                        ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
-                       ("STAGING_DIR", None, True)]
-        for global_var in global_vars:
-            create_global(*global_var)
-
-        # This one has to be declared ad hoc, due to its dependence on another global.
-        global GITHUB_PAGES_PUSH_PATH
-        GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY.lstrip('/')).rstrip('/')
-
-        # Set a flag so that globals don't get redeclared in any conceivable workflow.
-        GLOBALS_SET_FLAG = True
+                       ("STAGING_DIR", "/tmp/staging", True),
+                       ("GITHUB_PAGES_PUSH_PATH", None, True),
+                       ("DEBUG", None, False)]
+    for global_var in global_vars:
+        create_global(*global_var)
 
 def create_global(global_name, default=None, rstrip_slash=False):
     # Define a global variable and optionally declare a default value for it and trim slashes off
@@ -85,7 +76,7 @@ def create_global(global_name, default=None, rstrip_slash=False):
 
 def checkout_repos():
     # Read in necessary globals from env vars.
-    read_in_env_vars()
+    read_in_env_vars("checkout_repos")
 
     # Check out:
     ## 1) Essential Hugo build tools
@@ -97,9 +88,9 @@ def checkout_repos():
     ## 3) The GitHub Pages deployment branch for this site
     Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_PUSH_BRANCH)
 
-def collation_steps():
+def collate_files():
     # Read in necessary globals from env vars.
-    read_in_env_vars()
+    read_in_env_vars("collate_files")
 
     # Create a separate build folder, STAGING_DIR, and populate it with the essential Hugo build
     # files.
