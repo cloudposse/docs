@@ -48,7 +48,7 @@ def read_in_env_vars():
 
     # Set globals if they haven't been set already.
     global GLOBALS_SET_FLAG
-    if not (GLOBALS_SET_FLAG in globals()):
+    if not globals().get("GLOBALS_SET_FLAG")):
         # Syntax: (varaible_name, default value [if any], whether to strip parentheses from the end
         #          of the variable)
         global_vars = [("GITHUB_PAGES_DIRECTORY", None, True),
