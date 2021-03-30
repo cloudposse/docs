@@ -34,10 +34,11 @@ runs:
     - id: checkout-repos
       run: |
            pip install GitPython pyyaml
-           python -c 'from collate import *; checkout_repos()'
+           cd $RUNNER_DIR && python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
+        RUNNER_DIR: ${{ github.action_path }}
         STAGING_DIR: /tmp/staging
         INPUT_CONTENT: ${{ inputs.CONTENT }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
@@ -51,7 +52,6 @@ runs:
         GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
     - id: collate-files
       run: |
-           export GITHUB_PAGES_PUSH_PATH=$(pwd)/${GITHUB_PAGES_DIRECTORY}
            pip install GitPython pyyaml
            python -c 'from collate import *; collate_files()'
            #python ${{ github.action_path }}/collate.py
@@ -67,6 +67,7 @@ runs:
         INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
         INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
     - id: build-hugo
       run: |
            # These variables need to be defined manually when GitHub Actions variables are passed in using
@@ -90,6 +91,7 @@ runs:
         INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
         INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
     - id: publish-site
       run: cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
       shell: bash
@@ -104,3 +106,4 @@ runs:
         INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
         INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
