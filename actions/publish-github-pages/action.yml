@@ -36,18 +36,11 @@ runs:
            pip install GitPython pyyaml
            echo "RUNNER_DIR: ${RUNNER_DIR}" && echo "pwd: $(pwd)"
            echo "whoami: $(whoami)" && echo "groups: $(groups)"
-           cd $RUNNER_DIR
-           pwd && ls -lhatr
-           python --version
-           python -c "import os; print(f'current directory: {os.getcwd()}')"
            python -c "import sys; print(f'search path: {sys.path}'); import os; print(f'folder: {sys.path[1]}, contents: {os.listdir(sys.path[1])}'); from collate import *; checkout_repos()"
-           #python collate.py
            #python -c 'from collate import *; checkout_repos()'
-           #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
         PYTHONPATH: ${{ github.action_path }}
-        RUNNER_DIR: ${{ github.action_path }}
         STAGING_DIR: /tmp/staging
         INPUT_CONTENT: ${{ inputs.CONTENT }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
@@ -67,7 +60,7 @@ runs:
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
-        RUNNER_DIR: ${{ github.action_path }}
+        PYTHONPATH: ${{ github.action_path }}
         STAGING_DIR: /tmp/staging
         INPUT_CONTENT: ${{ inputs.CONTENT }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
