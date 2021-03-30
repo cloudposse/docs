@@ -34,7 +34,8 @@ runs:
     - id: checkout-repos
       run: |
            pip install GitPython pyyaml
-           cd $RUNNER_DIR && python -c 'from collate import *; checkout_repos()'
+           cd $RUNNER_DIR && pwd && ls -lahrt
+           python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
