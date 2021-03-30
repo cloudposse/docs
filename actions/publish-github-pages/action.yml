@@ -40,6 +40,7 @@ runs:
            pwd && ls -lhatr
            python --version
            python -c "import os; print(f'current directory: {os.getcwd()}')"
+           python collate.py
            python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
