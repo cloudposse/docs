@@ -39,10 +39,9 @@ runs:
            cd $RUNNER_DIR
            pwd && ls -lhatr
            python --version
-           echo "PYTHONPATH: ${PYTHONPATH}"
            python -c "import os; print(f'current directory: {os.getcwd()}')"
-           python collate.py
-           python -c 'from collate import *; checkout_repos()'
+           #python collate.py
+           PYTHONPATH=${RUNNER_DIR} python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
