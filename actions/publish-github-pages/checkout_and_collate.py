@@ -59,6 +59,7 @@ def read_in_env_vars(calling_func):
                        ("GITHUB_PAGES_PUSH_BRANCH", None, False),
                        ("CONTENT", None, False),
                        ("HUGO_REPO", "https://github.com/cloudposse/docs", False),
+                       ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
                        ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
                        ("STAGING_DIR", "/tmp/staging", True),
                        ("GITHUB_PAGES_PUSH_PATH", None, True),
