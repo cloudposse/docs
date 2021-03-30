@@ -36,7 +36,9 @@ runs:
            pip install GitPython pyyaml
            echo "RUNNER_DIR: ${RUNNER_DIR}" && echo "pwd: $(pwd)"
            echo "whoami: $(whoami)" && echo "groups: $(groups)"
-           cd $RUNNER_DIR && pwd && ls -lhatr && python -c 'from collate import *; checkout_repos()'
+           cd $RUNNER_DIR
+           pwd && ls -lhatr
+           python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
