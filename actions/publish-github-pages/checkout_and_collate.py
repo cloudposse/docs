@@ -10,6 +10,7 @@
 # CONTENT - comma-separated list of directories in the top level of the repo that contains documentation
 # HUGO_REPO - Cloud Posse repository containing Hugo scaffolding
 # STAGING_DIR - directory to collate all docs and Hugo files in
+# GITHUB_PAGES_HUGO_PATH - location where the repo containing the Hugo files will be checked out to
 #
 # Example parameter values:
 # GITHUB_PAGES_DIRECTORY=github_pages
@@ -19,6 +20,7 @@
 # CONTENT=docs,content
 # HUGO_REPO=https://github.com/cloudposse/docs
 # STAGING_DIR=/tmp/staging
+# GITHUB_PAGES_HUGO_PATH=/tmp/hugo
 
 import os
 import re

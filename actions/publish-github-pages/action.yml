@@ -4,6 +4,9 @@ inputs:
   CONTENT:
     description: 'comma-separated list of directories in the top level of the repo that contains documentation'
     required: false
+  CSS:
+    description: 'custom CSS to insert into custom.scss'
+    required: false
   DEBUG:
     description: 'whether to turn on debug printouts/functionality'
     required: false
@@ -25,6 +28,9 @@ inputs:
   GITHUB_ACTOR:
     description: 'github actor'
     required: false
+  GITHUB_PAGES_HUGO_PATH:
+    description: 'location where the repo containing the Hugo files will be checked out to'
+    required: false
   GITHUB_PAGES_PULL_BRANCH:
     description: 'the branch of the repo which contains the documentation'
     required: false
@@ -43,8 +49,18 @@ runs:
         PYTHONPATH: ${{ github.action_path }}
         GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
         INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+        INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
+    - id: insert-custom-css
+      run: |
+           export CSS=${CSS:-$INPUT_CSS}
+           export GITHUB_PAGES_HUGO_PATH=${GITHUB_PAGES_HUGO_PATH:-$INPUT_GITHUB_PAGES_HUGO_PATH}
+           echo -e "\n$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
+      shell: bash
+      env:
+        INPUT_CSS: ${{ inputs.CSS }}
+        INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
     - id: collate-files
       run: |
            pip install GitPython pyyaml
@@ -53,6 +69,7 @@ runs:
       env:
         PYTHONPATH: ${{ github.action_path }}
         GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
+        INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
         INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_CONTENT: ${{ inputs.CONTENT }}
