@@ -66,6 +66,7 @@ runs:
            export HTMLTEST_CONFIG=${HTMLTEST_CONFIG:-$INPUT_HTMLTEST_CONFIG}
            export HUGO_PUBLISH_DIR=${HUGO_PUBLISH_DIR:-$INPUT_HUGO_PUBLISH_DIR}
            export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
+           echo "staging_dir: $STAGING_DIR"
            cd $STAGING_DIR
            docker build -t cloudposse/docs .
            make release
