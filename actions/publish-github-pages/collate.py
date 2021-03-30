@@ -47,6 +47,7 @@ def read_in_env_vars():
     # `with:` syntax.)
 
     # Set globals if they haven't been set already.
+    global GLOBALS_SET_FLAG
     if not (GLOBALS_SET_FLAG in globals()):
         # Syntax: (varaible_name, default value [if any], whether to strip parentheses from the end
         #          of the variable)
@@ -71,7 +72,6 @@ def read_in_env_vars():
         GITHUB_PAGES_PUSH_PATH = os.path.join( os.getcwd(), GITHUB_PAGES_DIRECTORY.lstrip('/')).rstrip('/')
 
         # Set a flag so that globals don't get redeclared in any conceivable workflow.
-        global GLOBALS_SET_FLAG
         GLOBALS_SET_FLAG = True
 
 def create_global(global_name, default=None, rstrip_slash=False):
