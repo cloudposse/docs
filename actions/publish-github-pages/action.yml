@@ -41,16 +41,17 @@ runs:
     INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
     INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
     INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
-    GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
   steps:
     - id: checkout-repos
       run: |
+           export GITHUB_PAGES_PUSH_PATH=$(pwd)/${GITHUB_PAGES_DIRECTORY}
            pip install GitPython pyyaml
            python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
     - id: collate-files
       run: |
+           export GITHUB_PAGES_PUSH_PATH=$(pwd)/${GITHUB_PAGES_DIRECTORY}
            pip install GitPython pyyaml
            python -c 'from collate import *; collate_files()'
            #python ${{ github.action_path }}/collate.py
