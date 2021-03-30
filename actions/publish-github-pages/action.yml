@@ -42,7 +42,7 @@ runs:
            python -c "import os; print(f'current directory: {os.getcwd()}')"
            python -c "import sys; print(f'search path: {sys.path}'); import os; print(f'folder: {sys.path[1]}, contents: {os.listdir(sys.path[1])}'); from collate import *; checkout_repos()"
            #python collate.py
-           python -c 'from collate import *; checkout_repos()'
+           #python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
