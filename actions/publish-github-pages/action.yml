@@ -67,6 +67,7 @@ runs:
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
+        RUNNER_DIR: ${{ github.action_path }}
         STAGING_DIR: /tmp/staging
         INPUT_CONTENT: ${{ inputs.CONTENT }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
