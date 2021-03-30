@@ -32,7 +32,6 @@ runs:
   using: 'composite'
   env:
     STAGING_DIR: /tmp/staging
-    GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
     INPUT_CONTENT: ${{ inputs.CONTENT }}
     INPUT_DEBUG: ${{ inputs.DEBUG }}
     INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
@@ -42,6 +41,7 @@ runs:
     INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
     INPUT_GITHUB_ACTOR: ${{ inputs.GITHUB_ACTOR }}
     INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
+    GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
   steps:
     - id: checkout-repos
       run: |
