@@ -41,10 +41,11 @@ runs:
            python --version
            python -c "import os; print(f'current directory: {os.getcwd()}')"
            #python collate.py
-           PYTHONPATH=${RUNNER_DIR} python -c 'from collate import *; checkout_repos()'
+           python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
       env:
+        PYTHONPATH: ${{ github.action_path }}
         RUNNER_DIR: ${{ github.action_path }}
         STAGING_DIR: /tmp/staging
         INPUT_CONTENT: ${{ inputs.CONTENT }}
