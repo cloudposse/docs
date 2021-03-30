@@ -38,6 +38,7 @@ runs:
            echo "whoami: $(whoami)" && echo "groups: $(groups)"
            cd $RUNNER_DIR
            pwd && ls -lhatr
+           python --version
            python -c 'from collate import *; checkout_repos()'
            #python ${{ github.action_path }}/collate.py
       shell: bash
