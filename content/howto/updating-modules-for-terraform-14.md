@@ -16,7 +16,7 @@ We have some tools you can use for updating our Terraform modules to support Ter
 
 - **Important**: Manually verify the changes to the Terraform code. The scripts are not foolproof.
 
-- *Optional:* Update any internal label modules to refer to version `0.22.0` of `cloudposse/label/null`
+- *Optional:* Update any internal label modules to refer to version `0.24.1` of `cloudposse/label/null`
 
 - If you have made any changes, run `make pr/auto-format` to rebuild the README
 
@@ -44,4 +44,3 @@ We have some tools you can use for updating our Terraform modules to support Ter
   - If `validate-codeowners` fails, you will not be able to fix it. Request a review from `cloudposse/admins`
 
 - Post a link to the PR in the #pr-reviews channel of the [SweetOps Slack](https://slack.cloudposse.com/)
-

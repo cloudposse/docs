@@ -174,7 +174,7 @@ components:
       vars: {}
 
     output-results:
-      vars:
+      vars: {}
         print_users_weather_enabled: true
 
   helmfile: {}

@@ -43,7 +43,8 @@ This small script is just a wrapper around running Geodesic via `docker` with a 
 Geodesic ships with [`aws-vault`]({{< relref "reference/tools.md#aws-vault" >}}) to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
 
 ```bash
-# Since our Geodesic shell is on linux, let's use the file backend which linux supports.
+# Since our Geodesic shell is on Linux, let's use the file backend which Linux supports.
+# NOTE: It's not possible to use the OSX Keychain with `aws-vault` running inside of a Docker container.
 export AWS_VAULT_BACKEND=file
 
 # Add our new credentials to aws-vault under whatever profile name you would like. i.e. replace $YOUR_PROFILE_NAME
@@ -67,7 +68,6 @@ That's cool... but what about if you want to start a full blown session as the p
 
 ```properties
 # ... your existing AWS Config file contents ...
-
 
 [profile $YOUR_PROFILE_NAME]
 credential_process = aws-vault exec $YOUR_PROFILE_NAME --json
