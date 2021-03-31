@@ -23,7 +23,7 @@ inputs:
     description: 'Location to write the htmltest config file (actual location not important)'
     required: false
   github_token:
-    description: 'github token'
+    description: 'GitHub token'
     required: false
   github_actor:
     description: 'github actor'
