@@ -3,40 +3,43 @@ description: 'Publish the Hugo-based Cloud Posse docs website to GitHub Pages.'
 inputs:
   content:
     description: 'Comma-separated list of directories in the top level of the repo that contains documentation'
-    required: false
+    required: true
   css:
     description: 'Custom CSS to customize the look and feel'
-    required: false
+    required: true
   debug:
     description: 'Toggle to turn on debug functionality'
-    required: false
+    required: true
   hugo_url:
     description: 'URL of the Hugo site after deployment'
-    required: false
+    required: true
   hugo_publish_dir:
     description: 'Directory in the repo that GitHub Pages will deploy to'
-    required: false
+    required: true
   hugo_config:
     description: 'Location of to-be-written Hugo config file (actual location not important)'
-    required: false
+    required: true
   htmltest_config:
     description: 'Location to write the htmltest config file (actual location not important)'
-    required: false
-  github_token:
-    description: 'GitHub token'
-    required: false
-  github_actor:
-    description: 'GitHub Actor'
-    required: false
+    required: true
   github_pages_hugo_path:
     description: 'Location where the repo containing the Hugo files will be cloned'
-    required: false
+    required: true
   github_pages_pull_branch:
     description: 'The branch of the repo which contains the documentation'
-    required: false
+    required: true
   staging_dir:
     description: 'Directory to collate all docs and Hugo configuration files'
-    required: false
+    required: true
+  github_pages_repo:
+    description: 'Repo containing documentation to be deployed to GitHub Pages'
+    required: true
+  github_pages_push_branch:
+    description: 'The branch of the repo which GitHub Pages will deploy to'
+    required: true
+  github_pages_directory:
+    description: 'The directory to write the rendered website files to (should not be an absolute path)'
+    required: true
 runs:
   using: 'composite'
   steps:
