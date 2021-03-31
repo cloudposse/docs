@@ -80,7 +80,7 @@ def prune_hugo_content_files():
     print(f"content_subfolders: {content_subfolders}")
     for content_subfolder in content_subfolders:
         if content_subfolder not in hugo_content_folders:
-            shutil.rmtree( os.path.join(content_path, content_subfolder) )
+            rmtree( os.path.join(content_path, content_subfolder) )
 
 def collate_docs_files():
     content_folders = CONTENT.split(",")
