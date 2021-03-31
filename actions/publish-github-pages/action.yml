@@ -85,7 +85,6 @@ runs:
            export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
            cd $STAGING_DIR
            docker build -t cloudposse/docs .
-           make lint
            make release
            make real-clean hugo/build
       shell: bash
