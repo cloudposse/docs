@@ -50,11 +50,11 @@ runs:
       shell: bash
       env:
         PYTHONPATH: ${{ github.action_path }}
-        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
-        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
-        INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
-        INPUT_DEBUG: ${{ inputs.DEBUG }}
-        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
+        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ inputs.github_pages_directory }}
+        GITHUB_PAGES_PULL_BRANCH: ${{ inputs.github_pages_pull_branch }}
+        GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
+        DEBUG: ${{ inputs.debug }}
+        STAGING_DIR: ${{ inputs.staging_dir }}
     - name: "Append Custom CSS"
       run: |
            export CSS=${CSS:-$INPUT_CSS}
@@ -62,8 +62,8 @@ runs:
            echo -e "$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
       shell: bash
       env:
-        INPUT_CSS: ${{ inputs.CSS }}
-        INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
+        CSS: ${{ inputs.css }}
+        GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
     - name: "Collate Documentation Files"
       run: |
            pip install GitPython pyyaml
@@ -71,12 +71,12 @@ runs:
       shell: bash
       env:
         PYTHONPATH: ${{ github.action_path }}
-        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
-        INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
-        INPUT_GITHUB_PAGES_PULL_BRANCH: ${{ inputs.GITHUB_PAGES_PULL_BRANCH }}
-        INPUT_DEBUG: ${{ inputs.DEBUG }}
-        INPUT_CONTENT: ${{ inputs.CONTENT }}
-        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
+        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ inputs.github_pages_directory }}
+        GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
+        GITHUB_PAGES_PULL_BRANCH: ${{ inputs.github_pages_pull_branch }}
+        DEBUG: ${{ inputs.debug }}
+        CONTENT: ${{ inputs.content }}
+        STAGING_DIR: ${{ inputs.staging_dir }}
     - name: "Build Hugo Site Locally"
       run: |
            # These variables need to be defined manually when GitHub Actions variables are passed in using
@@ -92,11 +92,11 @@ runs:
            make real-clean hugo/build
       shell: bash
       env:
-        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
-        INPUT_HUGO_URL: ${{ inputs.HUGO_URL }}
-        INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
-        INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
-        INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
+        STAGING_DIR: ${{ inputs.staging_dir }}
+        HUGO_URL: ${{ inputs.hugo_url }}
+        HUGO_PUBLISH_DIR: ${{ inputs.hugo_publish_dir }}
+        HUGO_CONFIG: ${{ inputs.hugo_config }}
+        HTMLTEST_CONFIG: ${{ inputs.htmltest_config }}
     - name: "Move Hugo Site Files to Publishing Directory"
       run: |
            export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
@@ -104,6 +104,6 @@ runs:
            cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
       shell: bash
       env:
-        INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
-        INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
-        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ env.GITHUB_PAGES_DIRECTORY }}
+        STAGING_DIR: ${{ inputs.staging_dir }}
+        HUGO_PUBLISH_DIR: ${{ inputs.hugo_publish_dir }}
+        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ inputs.github_pages_directory }}
