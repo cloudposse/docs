@@ -27,7 +27,7 @@ def main():
 
     # Create a separate build folder, STAGING_DIR, and populate it with the essential Hugo build
     # files.
-    stage_hugo_build_files()
+    stage_hugo_files()
 
     # Remove any generic content that comes with the Hugo repo, unless it's explicitly marked for
     # keeping.
