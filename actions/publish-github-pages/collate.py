@@ -77,7 +77,7 @@ def prune_hugo_content_files():
     # Put the directory names we want to keep into a list.
     hugo_content_folders = HUGO_CONTENT.split(",")
 
-    # If we're keeping and documentation at all, there are two utility subdirectories that we'll
+    # If we're keeping and documentation at all, there are three utility subdirectories that we'll
     # need to keep, too.
     if hugo_content_folders:
         hugo_content_folders.append("documentation")
