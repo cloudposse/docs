@@ -17,7 +17,7 @@ inputs:
     description: 'Directory in the repo that GitHub Pages will deploy to'
     required: false
   hugo_config:
-    description: 'location of to-be-written Hugo config file (actual location not important)'
+    description: 'Location of to-be-written Hugo config file (actual location not important)'
     required: false
   htmltest_config:
     description: 'location of to-be-written htmltest config file (actual location not important)'
