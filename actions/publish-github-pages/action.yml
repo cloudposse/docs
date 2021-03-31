@@ -22,11 +22,14 @@ inputs:
   css:
     description: 'Custom CSS to customize the look and feel'
     required: false
+  config:
+    description: 'Hugo YAML configuration overrides'
+    required: false
   debug:
     description: 'Toggle to turn on debug functionality'
     required: false
   hugo_content:
-    description: "Folders of generic documentation to build into the final docs website"
+    description: 'Folders of generic documentation to build into the final docs website'
     required: false
     default: "tutorials,howto,fundamentals,reference"
   hugo_publish_dir:
@@ -86,12 +89,6 @@ runs:
         GITHUB_PAGES_PULL_BRANCH: ${{ inputs.github_pages_pull_branch }}
         GITHUB_PAGES_PUSH_PATH: ${{ inputs.github_pages_push_path }}
         GITHUB_PAGES_PUSH_BRANCH: ${{ inputs.github_pages_push_branch }}
-    - name: "Append Custom CSS"
-      run: echo -e "$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
-      shell: bash
-      env:
-        CSS: ${{ inputs.css }}
-        GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
     - name: "Collate Documentation Files"
       run: pip install GitPython pyyaml && python collate.py
       shell: bash
@@ -102,6 +99,18 @@ runs:
         DEBUG: ${{ inputs.debug }}
         CONTENT: ${{ inputs.content }}
         HUGO_CONTENT: ${{ inputs.hugo_content }}
+    - name: "Append Custom CSS"
+      run: echo -e "$CSS" >> ./themes/cloudposse/src/scss/custom.scss
+      shell: bash
+      working-directory: ${{ inputs.staging_dir }}
+      env:
+        CSS: ${{ inputs.css }}
+    - name: "Customize Hugo YAML Config"
+      run: yq $CONFIG config.yaml
+      shell: bash
+      working-directory: ${{ inputs.staging_dir }}
+      env:
+        CONFIG: ${{ inputs.config }}
     - name: "Build Hugo Site Locally"
       run: |
         docker build -t cloudposse/docs .
