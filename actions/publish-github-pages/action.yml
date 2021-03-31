@@ -8,7 +8,7 @@ inputs:
     description: 'Custom CSS to customize the look and feel'
     required: false
   debug:
-    description: 'whether to turn on debug printouts/functionality'
+    description: 'Toggle to turn on debug functionality'
     required: false
   hugo_url:
     description: 'URL of the Hugo site after deployment'
