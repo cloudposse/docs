@@ -29,7 +29,7 @@ jobs:
       with:
         content: docs,modules
         hugo_url: https://cloudposse.github.io/docs
-        github_pages_pull_branch: github-pages-docs
+        github_pages_pull_branch: master
         github_pages_repo: ${{ env.GITHUB_PAGES_REPO }}
         github_pages_push_branch: ${{ env.GITHUB_PAGES_PUSH_BRANCH }}
         github_pages_push_path: ${{ env.GITHUB_PAGES_PUSH_PATH }}
