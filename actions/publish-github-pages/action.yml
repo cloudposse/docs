@@ -5,7 +5,7 @@ inputs:
     description: 'comma-separated list of directories in the top level of the repo that contains documentation'
     required: false
   css:
-    description: 'custom CSS to insert into custom.scss'
+    description: 'Custom CSS to customize the look and feel'
     required: false
   debug:
     description: 'whether to turn on debug printouts/functionality'
