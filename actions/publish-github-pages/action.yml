@@ -56,8 +56,7 @@ runs:
       run: |
            export CSS=${CSS:-$INPUT_CSS}
            export GITHUB_PAGES_HUGO_PATH=${GITHUB_PAGES_HUGO_PATH:-$INPUT_GITHUB_PAGES_HUGO_PATH}
-           echo -e "\n$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
-           cat ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
+           echo -e "$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
       shell: bash
       env:
         INPUT_CSS: ${{ inputs.CSS }}
