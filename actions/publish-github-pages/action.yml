@@ -52,7 +52,7 @@ runs:
         INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
-    - id: insert-custom-css
+    - id: append-custom-css
       run: |
            export CSS=${CSS:-$INPUT_CSS}
            export GITHUB_PAGES_HUGO_PATH=${GITHUB_PAGES_HUGO_PATH:-$INPUT_GITHUB_PAGES_HUGO_PATH}
