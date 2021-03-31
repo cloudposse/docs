@@ -32,7 +32,7 @@ inputs:
     description: 'Location where the repo containing the Hugo files will be cloned'
     required: false
   github_pages_pull_branch:
-    description: 'the branch of the repo which contains the documentation'
+    description: 'The branch of the repo which contains the documentation'
     required: false
   staging_dir:
     description: 'directory to collate all docs and Hugo files in'
