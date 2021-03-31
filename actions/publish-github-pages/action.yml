@@ -40,7 +40,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - id: checkout-repos
+    - name: "Checkout All Repos"
       run: |
            pip install GitPython pyyaml
            python -c 'from checkout_and_collate import *; checkout_repos()'
@@ -52,7 +52,7 @@ runs:
         INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
-    - id: append-custom-css
+    - name: "Append Custom CSS"
       run: |
            export CSS=${CSS:-$INPUT_CSS}
            export GITHUB_PAGES_HUGO_PATH=${GITHUB_PAGES_HUGO_PATH:-$INPUT_GITHUB_PAGES_HUGO_PATH}
@@ -61,7 +61,7 @@ runs:
       env:
         INPUT_CSS: ${{ inputs.CSS }}
         INPUT_GITHUB_PAGES_HUGO_PATH: ${{ inputs.GITHUB_PAGES_HUGO_PATH }}
-    - id: collate-files
+    - name: "Collate Documentation Files"
       run: |
            pip install GitPython pyyaml
            python -c 'from checkout_and_collate import *; collate_files()'
@@ -74,7 +74,7 @@ runs:
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_CONTENT: ${{ inputs.CONTENT }}
         INPUT_STAGING_DIR: ${{ inputs.STAGING_DIR }}
-    - id: build-hugo
+    - name: "Build Hugo Site Locally"
       run: |
            # These variables need to be defined manually when GitHub Actions variables are passed in using
            # with: instead of env: in order for the next steps to work.
@@ -94,7 +94,7 @@ runs:
         INPUT_HUGO_PUBLISH_DIR: ${{ inputs.HUGO_PUBLISH_DIR }}
         INPUT_HUGO_CONFIG: ${{ inputs.HUGO_CONFIG }}
         INPUT_HTMLTEST_CONFIG: ${{ inputs.HTMLTEST_CONFIG }}
-    - id: publish-site
+    - name: "Move Hugo Site Files to Publishing Directory"
       run: |
            export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
            export HUGO_PUBLISH_DIR=${HUGO_PUBLISH_DIR:-$INPUT_HUGO_PUBLISH_DIR}
