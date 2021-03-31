@@ -2,7 +2,7 @@ name: 'Publish GitHub Pages'
 description: 'Publish the Hugo-based Cloud Posse docs website to GitHub Pages.'
 inputs:
   content:
-    description: 'comma-separated list of directories in the top level of the repo that contains documentation'
+    description: 'Comma-separated list of directories in the top level of the repo that contains documentation'
     required: false
   css:
     description: 'Custom CSS to customize the look and feel'
