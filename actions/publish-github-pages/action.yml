@@ -20,7 +20,7 @@ inputs:
     description: 'Location of to-be-written Hugo config file (actual location not important)'
     required: false
   htmltest_config:
-    description: 'location of to-be-written htmltest config file (actual location not important)'
+    description: 'Location to write the htmltest config file (actual location not important)'
     required: false
   github_token:
     description: 'github token'
