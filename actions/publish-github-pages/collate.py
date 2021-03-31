@@ -82,6 +82,7 @@ def prune_hugo_content_files():
     if hugo_content_folders:
         hugo_content_folders.append("documentation")
         hugo_content_folders.append("glossary")
+        hugo_content_folders.append("community")
 
     # Compare the list of subdirectories we have against the list we want to keep and remove any
     # any that aren't in the list.
