@@ -27,17 +27,17 @@ jobs:
     - name: "Build Documentation Website Locally"
       uses: cloudposse/docs/actions/publish-github-pages@publish-gh-pages-python
       with:
-        CONTENT: docs,modules
-        HUGO_URL: https://cloudposse.github.io/docs
-        HUGO_PUBLISH_DIR: docs
-        HUGO_CONFIG: hugo.config.new.yml # this variable is the output location, not the input template location
-        HTMLTEST_CONFIG: .htmltest.new.yml # this variable is the output location, not the input template location
-        STAGING_DIR: /tmp/staging
-        GITHUB_PAGES_PULL_BRANCH: github-pages-docs
-        GITHUB_PAGES_HUGO_PATH: /tmp/hugo
-        GITHUB_PAGES_REPO: ${{ env.GITHUB_PAGES_REPO }}
-        GITHUB_PAGES_PUSH_BRANCH: ${{ env.GITHUB_PAGES_PUSH_BRANCH }}
-        GITHUB_PAGES_DIRECTORY: ${{ env.GITHUB_PAGES_DIRECTORY }}
+        content: docs,modules
+        hugo_url: https://cloudposse.github.io/docs
+        hugo_publish_dir: docs
+        hugo_config: hugo.config.new.yml # this variable is the output location, not the input template location
+        htmltest_config: .htmltest.new.yml # this variable is the output location, not the input template location
+        staging_dir: /tmp/staging
+        github_pages_pull_branch: github-pages-docs
+        github_pages_hugo_path: /tmp/hugo
+        github_pages_repo: ${{ env.GITHUB_PAGES_REPO }}
+        github_pages_push_branch: ${{ env.GITHUB_PAGES_PUSH_BRANCH }}
+        github_pages_directory: ${{ env.GITHUB_PAGES_DIRECTORY }}
     - name: "Deploy Documentation Website to GitHub Pages"
       uses: cloudposse/actions/github/git-push@0.30.0
       env:
