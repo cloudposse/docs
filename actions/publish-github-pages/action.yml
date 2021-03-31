@@ -89,7 +89,7 @@ runs:
         CSS: ${{ inputs.css }}
         GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
     - name: "Collate Documentation Files"
-      run: pip install GitPython pyyaml && python -c collate.py
+      run: pip install GitPython pyyaml && python collate.py
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
