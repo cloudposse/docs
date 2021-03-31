@@ -1,40 +1,40 @@
 name: 'Publish GitHub Pages'
 description: 'Publish the Hugo-based Cloud Posse docs website to GitHub Pages.'
 inputs:
-  CONTENT:
+  content:
     description: 'comma-separated list of directories in the top level of the repo that contains documentation'
     required: false
-  CSS:
+  css:
     description: 'custom CSS to insert into custom.scss'
     required: false
-  DEBUG:
+  debug:
     description: 'whether to turn on debug printouts/functionality'
     required: false
-  HUGO_URL:
+  hugo_url:
     description: 'URL of the Hugo site after deployment'
     required: false
-  HUGO_PUBLISH_DIR:
+  hugo_publish_dir:
     description: 'directory in the repo that GitHub Pages will deploy to'
     required: false
-  HUGO_CONFIG:
+  hugo_config:
     description: 'location of to-be-written Hugo config file (actual location not important)'
     required: false
-  HTMLTEST_CONFIG:
+  htmltest_config:
     description: 'location of to-be-written htmltest config file (actual location not important)'
     required: false
-  GITHUB_TOKEN:
+  github_token:
     description: 'github token'
     required: false
-  GITHUB_ACTOR:
+  github_actor:
     description: 'github actor'
     required: false
-  GITHUB_PAGES_HUGO_PATH:
+  github_pages_hugo_path:
     description: 'location where the repo containing the Hugo files will be checked out to'
     required: false
-  GITHUB_PAGES_PULL_BRANCH:
+  github_pages_pull_branch:
     description: 'the branch of the repo which contains the documentation'
     required: false
-  STAGING_DIR:
+  staging_dir:
     description: 'directory to collate all docs and Hugo files in'
     required: false
 runs:
@@ -57,6 +57,7 @@ runs:
            export CSS=${CSS:-$INPUT_CSS}
            export GITHUB_PAGES_HUGO_PATH=${GITHUB_PAGES_HUGO_PATH:-$INPUT_GITHUB_PAGES_HUGO_PATH}
            echo -e "\n$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
+           cat ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
       shell: bash
       env:
         INPUT_CSS: ${{ inputs.CSS }}
