@@ -25,7 +25,7 @@ jobs:
     steps:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
-    - name: "Build Hugo Static Site"
+    - name: "Collate documentation"
       uses: cloudposse/docs/actions/publish-github-pages@publish-gh-pages-python
       env:
         CONTENT: docs,modules
