@@ -108,7 +108,7 @@ runs:
     - name: "Customize Hugo YAML Config"
       run: |
         curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | sudo bash
-        apt-get install yq
+        sudo apt-get install yq
         yq $CONFIG config.yaml
         rm setup.deb.sh
       shell: bash
