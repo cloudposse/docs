@@ -24,9 +24,9 @@ jobs:
     steps:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
-    - name: "Collate documentation"
+    - name: "Build Documentation Website Locally"
       uses: cloudposse/docs/actions/publish-github-pages@publish-gh-pages-python
-      env:
+      with:
         CONTENT: docs,modules
         HUGO_URL: https://cloudposse.github.io/docs
         HUGO_PUBLISH_DIR: docs
@@ -35,7 +35,10 @@ jobs:
         STAGING_DIR: /tmp/staging
         GITHUB_PAGES_PULL_BRANCH: github-pages-docs
         GITHUB_PAGES_HUGO_PATH: /tmp/hugo
-    - name: "Deploy Hugo Static Site to GitHub Pages"
+        GITHUB_PAGES_REPO: ${{ env.GITHUB_PAGES_REPO }}
+        GITHUB_PAGES_PUSH_BRANCH: ${{ env.GITHUB_PAGES_PUSH_BRANCH }}
+        GITHUB_PAGES_DIRECTORY: ${{ env.GITHUB_PAGES_DIRECTORY }}
+    - name: "Deploy Documentation Website to GitHub Pages"
       uses: cloudposse/actions/github/git-push@0.30.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
