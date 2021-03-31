@@ -7,6 +7,18 @@ inputs:
   hugo_url:
     description: 'URL of the Hugo site after deployment'
     required: true
+  github_pages_push_path:
+    description: 'Location where the repo/branch that deploys to GitHub Pages will be cloned'
+    required: true
+  github_pages_pull_branch:
+    description: 'The branch of the repo which contains the documentation'
+    required: true
+  github_pages_repo:
+    description: 'Repo containing documentation to be deployed to GitHub Pages'
+    required: true
+  github_pages_push_branch:
+    description: 'The branch of the repo which GitHub Pages will deploy from'
+    required: true
   css:
     description: 'Custom CSS to customize the look and feel'
     required: false
@@ -17,7 +29,7 @@ inputs:
     description: >
       Directory within the staging directory that the built Hugo website files will be written to
     required: false
-    deafult: "docs"
+    default: "docs"
   hugo_config:
     description: 'Location of to-be-written Hugo config file (actual location not important)'
     required: false
@@ -42,24 +54,12 @@ inputs:
     description: 'Location where the repo/branch containing the raw documentation will be cloned'
     required: false
     default: "/tmp/pull"
-  github_pages_push_path:
-    description: 'Location where the repo/branch that deploys to GitHub Pages will be cloned'
-    required: true
-  github_pages_pull_branch:
-    description: 'The branch of the repo which contains the documentation'
-    required: true
   staging_dir:
     description: >
       Directory where all documentation files will be combined with Hugo configuration files, and
       the Hugo site will be built
     required: false
     default: "/tmp/staging"
-  github_pages_repo:
-    description: 'Repo containing documentation to be deployed to GitHub Pages'
-    required: true
-  github_pages_push_branch:
-    description: 'The branch of the repo which GitHub Pages will deploy from'
-    required: true
 runs:
   using: 'composite'
   steps:
