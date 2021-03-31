@@ -104,9 +104,8 @@ def collate_files():
     collate_docs_files()
 
 def stage_hugo_build_files():
-    # This function assumes that the repo pointed to by HUGO_REPO has a structure that is similar
-    # to https://github.com/cloudposse/docs. If that is not the case, some of the below copy
-    # commands may fail.
+    # This function assumes that the repo (HUGO_REPO) has a structure that is similar
+    # to https://github.com/cloudposse/docs. If that is not the case, some of the commands below may fail.
     os.mkdir(STAGING_DIR)
     copy_dirs = ["tasks", "themes", "static", "layouts", "content"]
     for copy_dir in copy_dirs:
