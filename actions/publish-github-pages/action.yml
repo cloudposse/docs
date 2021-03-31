@@ -29,7 +29,7 @@ inputs:
     description: 'GitHub Actor'
     required: false
   github_pages_hugo_path:
-    description: 'location where the repo containing the Hugo files will be checked out to'
+    description: 'Location where the repo containing the Hugo files will be cloned'
     required: false
   github_pages_pull_branch:
     description: 'the branch of the repo which contains the documentation'
