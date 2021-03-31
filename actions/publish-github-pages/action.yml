@@ -35,7 +35,7 @@ inputs:
     description: 'The branch of the repo which contains the documentation'
     required: false
   staging_dir:
-    description: 'directory to collate all docs and Hugo files in'
+    description: 'Directory to collate all docs and Hugo configuration files'
     required: false
 runs:
   using: 'composite'
