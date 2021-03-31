@@ -29,6 +29,10 @@ def main():
     # files.
     stage_hugo_build_files()
 
+    # Remove any generic content that comes with the Hugo repo, unless it's explicitly marked for
+    # keeping.
+    prune_hugo_content_files()
+
     # Collate all local documentation inside the build folder, STAGING_DIR, renaming and rearranging
     # as needed.
     collate_docs_files()
@@ -41,6 +45,7 @@ def read_in_env_vars():
     #          of the variable)
     global_vars = [
                    ("CONTENT", None, False),
+                   ("HUGO_CONTENT", None, False),
                    ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
                    ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
                    ("STAGING_DIR", "/tmp/staging", True),
@@ -56,7 +61,7 @@ def create_global(global_name, default=None, rstrip_slash=False):
     if rstrip_slash:
         eval(global_name + ".rstrip('/')")
 
-def stage_hugo_build_files():
+def stage_hugo_files():
     # This function assumes that the repo located at GITHUB_PAGES_HUGO_PATH has a structure that is
     # similar to https://github.com/cloudposse/docs. If that is not the case, some of the commands
     # below may fail.
@@ -67,6 +72,15 @@ def stage_hugo_build_files():
     copy_files = [".gitignore", ".htmltest.yml", "config.yaml", "Dockerfile", "Makefile"]
     for copy_file in copy_files:
         copy2( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_file), STAGING_DIR )
+
+def prune_hugo_content_files():
+    hugo_content_folders = HUGO_CONTENT.split(",")
+    content_path = os.path.join(STAGING_DIR, "content")
+    content_subfolders = [f.path.replace(content_path + "/", "") for f in os.scandir(content_path) if f.is_dir()]
+    print(f"content_subfolders: {content_subfolders}")
+    for content_subfolder in content_subfolders:
+        if content_subfolder not in hugo_content_folders:
+            shutil.rmtree( os.path.join(content_path, content_subfolder) )
 
 def collate_docs_files():
     content_folders = CONTENT.split(",")

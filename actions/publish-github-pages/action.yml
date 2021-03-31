@@ -25,6 +25,10 @@ inputs:
   debug:
     description: 'Toggle to turn on debug functionality'
     required: false
+  hugo_content:
+    description: "Folders of generic documentation to build into the final docs website"
+    required: false
+    default: "tutorials,howto,fundamentals,reference"
   hugo_publish_dir:
     description: >
       Directory within the staging directory that the built Hugo website files will be written to
@@ -97,6 +101,7 @@ runs:
         STAGING_DIR: ${{ inputs.staging_dir }}
         DEBUG: ${{ inputs.debug }}
         CONTENT: ${{ inputs.content }}
+        HUGO_CONTENT: ${{ inputs.hugo_content }}
     - name: "Build Hugo Site Locally"
       run: |
         docker build -t cloudposse/docs .
