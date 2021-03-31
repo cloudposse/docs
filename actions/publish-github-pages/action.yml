@@ -45,8 +45,8 @@ runs:
   steps:
     - name: "Checkout All Repos"
       run: |
-           pip install GitPython pyyaml
-           python -c 'from checkout_and_collate import *; checkout_repos()'
+        pip install GitPython pyyaml
+        python -c 'from checkout_and_collate import *; checkout_repos()'
       shell: bash
       env:
         PYTHONPATH: ${{ github.action_path }}
@@ -56,18 +56,15 @@ runs:
         DEBUG: ${{ inputs.debug }}
         STAGING_DIR: ${{ inputs.staging_dir }}
     - name: "Append Custom CSS"
-      run: |
-           export CSS=${CSS:-$INPUT_CSS}
-           export GITHUB_PAGES_HUGO_PATH=${GITHUB_PAGES_HUGO_PATH:-$INPUT_GITHUB_PAGES_HUGO_PATH}
-           echo -e "$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
+      run: echo -e "$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
       shell: bash
       env:
         CSS: ${{ inputs.css }}
         GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
     - name: "Collate Documentation Files"
       run: |
-           pip install GitPython pyyaml
-           python -c 'from checkout_and_collate import *; collate_files()'
+        pip install GitPython pyyaml
+        python -c 'from checkout_and_collate import *; collate_files()'
       shell: bash
       env:
         PYTHONPATH: ${{ github.action_path }}
@@ -79,29 +76,18 @@ runs:
         STAGING_DIR: ${{ inputs.staging_dir }}
     - name: "Build Hugo Site Locally"
       run: |
-           # These variables need to be defined manually when GitHub Actions variables are passed in using
-           # with: instead of env: in order for the next steps to work.
-           export HUGO_URL=${HUGO_URL:-$INPUT_HUGO_URL}
-           export HUGO_CONFIG=${HUGO_CONFIG:-$INPUT_HUGO_CONFIG}
-           export HTMLTEST_CONFIG=${HTMLTEST_CONFIG:-$INPUT_HTMLTEST_CONFIG}
-           export HUGO_PUBLISH_DIR=${HUGO_PUBLISH_DIR:-$INPUT_HUGO_PUBLISH_DIR}
-           export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
-           cd $STAGING_DIR
-           docker build -t cloudposse/docs .
-           make release
-           make real-clean hugo/build
+        docker build -t cloudposse/docs .
+        make release
+        make real-clean hugo/build
       shell: bash
+      working-directory: ${{ inputs.staging_dir }}
       env:
-        STAGING_DIR: ${{ inputs.staging_dir }}
         HUGO_URL: ${{ inputs.hugo_url }}
         HUGO_PUBLISH_DIR: ${{ inputs.hugo_publish_dir }}
         HUGO_CONFIG: ${{ inputs.hugo_config }}
         HTMLTEST_CONFIG: ${{ inputs.htmltest_config }}
     - name: "Move Hugo Site Files to Publishing Directory"
-      run: |
-           export STAGING_DIR=${STAGING_DIR:-$INPUT_STAGING_DIR}
-           export HUGO_PUBLISH_DIR=${HUGO_PUBLISH_DIR:-$INPUT_HUGO_PUBLISH_DIR}
-           cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
+      run: cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
       shell: bash
       env:
         STAGING_DIR: ${{ inputs.staging_dir }}
