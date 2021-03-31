@@ -3,23 +3,15 @@
 #
 # #### PARAMETERS ####
 # Input parameters:
-# GITHUB_PAGES_DIRECTORY - the directory to write the rendered website files to (should not be an absolute path)
-# GITHUB_PAGES_REPO - repo containing documentation to be deployed to GitHub Pages
-# GITHUB_PAGES_PULL_BRANCH - the branch of the repo which contains the documentation
-# GITHUB_PAGES_PUSH_BRANCH - the branch of the repo which GitHub Pages will deploy to
 # CONTENT - comma-separated list of directories in the top level of the repo that contains documentation
-# HUGO_REPO - Cloud Posse repository containing Hugo scaffolding
 # STAGING_DIR - directory to collate all docs and Hugo files in
+# GITHUB_PAGES_PULL_PATH - location where the repo containing the raw documentation will be checked out to
 # GITHUB_PAGES_HUGO_PATH - location where the repo containing the Hugo files will be checked out to
 #
 # Example parameter values:
-# GITHUB_PAGES_DIRECTORY=github_pages
-# GITHUB_PAGES_REPO=https://github.com/cloudposse/docs # or, e.g., github.com/project/infrastructure.git
-# GITHUB_PAGES_PULL_BRANCH=master # or current-docs-feature-branch
-# GITHUB_PAGES_PUSH_BRANCH=production # or, e.g., docs
 # CONTENT=docs,content
-# HUGO_REPO=https://github.com/cloudposse/docs
 # STAGING_DIR=/tmp/staging
+# GITHUB_PAGES_PULL_PATH=/tmp/pull
 # GITHUB_PAGES_HUGO_PATH=/tmp/hugo
 
 import os
@@ -30,42 +22,29 @@ from git import Repo
 from shutil import copy2, copytree, rmtree
 
 def main():
-    # Checkout out all repos needed for this action.
-    checkout_repos()
+    # Read in necessary globals from env vars.
+    read_in_env_vars()
 
-    # Create a staging directory, put all necesary Hugo files in there, and add custom docs files.
-    collate_files()
+    # Create a separate build folder, STAGING_DIR, and populate it with the essential Hugo build
+    # files.
+    stage_hugo_build_files()
 
-def read_in_env_vars(calling_func):
+    # Collate all local documentation inside the build folder, STAGING_DIR, renaming and rearranging
+    # as needed.
+    collate_docs_files()
+
+
+def read_in_env_vars():
     # Read env vars into Python globals.
-    # (All globals can be defined by passing in an env var with that name and with an optional
-    # "INPUT_" prefix. The "INPUT_" prefix is supported for compatibility with the GitHub Actions
-    # `with:` syntax.)
 
     # Syntax: (varaible_name, default value [if any], whether to strip parentheses from the end
     #          of the variable)
-    if calling_func == "checkout_repos":
-        global_vars = [("GITHUB_PAGES_DIRECTORY", None, True),
-                       ("GITHUB_PAGES_REPO", None, False),
-                       ("GITHUB_PAGES_PULL_BRANCH", None, False),
-                       ("GITHUB_PAGES_PUSH_BRANCH", None, False),
-                       ("HUGO_REPO", "https://github.com/cloudposse/docs", False),
-                       ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
-                       ("GITHUB_PAGES_PUSH_PATH", None, True),
-                       ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
-                       ("DEBUG", None, False)]
-    elif calling_func == "collate_files":
-        global_vars = [("GITHUB_PAGES_DIRECTORY", None, True),
-                       ("GITHUB_PAGES_REPO", None, False),
-                       ("GITHUB_PAGES_PULL_BRANCH", None, False),
-                       ("GITHUB_PAGES_PUSH_BRANCH", None, False),
-                       ("CONTENT", None, False),
-                       ("HUGO_REPO", "https://github.com/cloudposse/docs", False),
-                       ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
-                       ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
-                       ("STAGING_DIR", "/tmp/staging", True),
-                       ("GITHUB_PAGES_PUSH_PATH", None, True),
-                       ("DEBUG", None, False)]
+    global_vars = [
+                   ("CONTENT", None, False),
+                   ("GITHUB_PAGES_PULL_PATH", "/tmp/pull/", True),
+                   ("GITHUB_PAGES_HUGO_PATH", "/tmp/hugo/", True),
+                   ("STAGING_DIR", "/tmp/staging", True),
+                   ("DEBUG", False, False)]
     for global_var in global_vars:
         create_global(*global_var)
 
@@ -73,39 +52,14 @@ def create_global(global_name, default=None, rstrip_slash=False):
     # Define a global variable and optionally declare a default value for it and trim slashes off
     # the right end of it.
     globals()[global_name] = os.environ.get(global_name) \
-                             or os.environ.get("INPUT_" + global_name) \
                              or default
     if rstrip_slash:
         eval(global_name + ".rstrip('/')")
 
-def checkout_repos():
-    # Read in necessary globals from env vars.
-    read_in_env_vars("checkout_repos")
-
-    # Check out:
-    ## 1) Essential Hugo build tools
-    Repo.clone_from(HUGO_REPO, GITHUB_PAGES_HUGO_PATH)
-
-    ## 2) Site-specific documentation
-    Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PULL_PATH, branch=GITHUB_PAGES_PULL_BRANCH)
-
-    ## 3) The GitHub Pages deployment branch for this site
-    Repo.clone_from(GITHUB_PAGES_REPO, GITHUB_PAGES_PUSH_PATH, branch=GITHUB_PAGES_PUSH_BRANCH)
-
-def collate_files():
-    # Read in necessary globals from env vars.
-    read_in_env_vars("collate_files")
-
-    # Create a separate build folder, STAGING_DIR, and populate it with the essential Hugo build
-    # files.
-    stage_hugo_build_files()
-
-    # Collate all local documentation inside the build folder, renaming and rearranging as needed.
-    collate_docs_files()
-
 def stage_hugo_build_files():
-    # This function assumes that the repo (HUGO_REPO) has a structure that is similar
-    # to https://github.com/cloudposse/docs. If that is not the case, some of the commands below may fail.
+    # This function assumes that the repo located at GITHUB_PAGES_HUGO_PATH has a structure that is
+    # similar to https://github.com/cloudposse/docs. If that is not the case, some of the commands
+    # below may fail.
     os.mkdir(STAGING_DIR)
     copy_dirs = ["tasks", "themes", "static", "layouts", "content"]
     for copy_dir in copy_dirs:

@@ -4,57 +4,84 @@ inputs:
   content:
     description: 'Comma-separated list of directories in the top level of the repo that contains documentation'
     required: true
-  css:
-    description: 'Custom CSS to customize the look and feel'
-    required: true
-  debug:
-    description: 'Toggle to turn on debug functionality'
-    required: true
   hugo_url:
     description: 'URL of the Hugo site after deployment'
     required: true
+  css:
+    description: 'Custom CSS to customize the look and feel'
+    required: false
+  debug:
+    description: 'Toggle to turn on debug functionality'
+    required: false
   hugo_publish_dir:
-    description: 'Directory in the repo that GitHub Pages will deploy to'
-    required: true
+    description: >
+      Directory within the staging directory that the built Hugo website files will be written to
+    required: false
+    deafult: "docs"
   hugo_config:
     description: 'Location of to-be-written Hugo config file (actual location not important)'
-    required: true
+    required: false
+    default: "hugo.config.new.yml"
   htmltest_config:
     description: 'Location to write the htmltest config file (actual location not important)'
-    required: true
+    required: false
+    default: ".htmltest.new.yml"
+  hugo_repo:
+    description: 'Repo containing Hugo build files'
+    required: false
+    default: "https://github.com/cloudposse/docs"
+  hugo_branch:
+    description: 'Branch of hugo_repo containing Hugo build files'
+    required: false
+    default: "master"
   github_pages_hugo_path:
     description: 'Location where the repo containing the Hugo files will be cloned'
+    required: false
+    default: "/tmp/hugo"
+  github_pages_pull_path:
+    description: 'Location where the repo/branch containing the raw documentation will be cloned'
+    required: false
+    default: "/tmp/pull"
+  github_pages_push_path:
+    description: 'Location where the repo/branch that deploys to GitHub Pages will be cloned'
     required: true
   github_pages_pull_branch:
     description: 'The branch of the repo which contains the documentation'
     required: true
   staging_dir:
-    description: 'Directory to collate all docs and Hugo configuration files'
-    required: true
+    description: >
+      Directory where all documentation files will be combined with Hugo configuration files, and
+      the Hugo site will be built
+    required: false
+    default: "/tmp/staging"
   github_pages_repo:
     description: 'Repo containing documentation to be deployed to GitHub Pages'
     required: true
   github_pages_push_branch:
-    description: 'The branch of the repo which GitHub Pages will deploy to'
-    required: true
-  github_pages_directory:
-    description: 'The directory to write the rendered website files to (should not be an absolute path)'
+    description: 'The branch of the repo which GitHub Pages will deploy from'
     required: true
 runs:
   using: 'composite'
   steps:
     - name: "Checkout All Repos"
       run: |
-        pip install GitPython pyyaml
-        python -c 'from checkout_and_collate import *; checkout_repos()'
+        # Check out
+        # 1) Essential Hugo build tools
+        git clone --branch ${HUGO_BRANCH} $HUGO_REPO $GITHUB_PAGES_HUGO_PATH
+        # 2) Site-specific documentation
+        git clone --branch $GITHUB_PAGES_PULL_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PULL_PATH
+        # 3) The GitHub Pages deployment branch for this site
+        git clone --branch $GITHUB_PAGES_PUSH_BRANCH $GITHUB_PAGES_REPO $GITHUB_PAGES_PUSH_PATH
       shell: bash
       env:
-        PYTHONPATH: ${{ github.action_path }}
-        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ inputs.github_pages_directory }}
-        GITHUB_PAGES_PULL_BRANCH: ${{ inputs.github_pages_pull_branch }}
+        HUGO_REPO: ${{ inputs.hugo_repo }}
+        HUGO_BRANCH: ${{ inputs.hugo_branch }}
         GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
-        DEBUG: ${{ inputs.debug }}
-        STAGING_DIR: ${{ inputs.staging_dir }}
+        GITHUB_PAGES_REPO: ${{ inputs.github_pages_repo }}
+        GITHUB_PAGES_PULL_PATH: ${{ inputs:github_pages_pull_path }}
+        GITHUB_PAGES_PULL_BRANCH: ${{ inputs.github_pages_pull_branch }}
+        GITHUB_PAGES_PUSH_PATH: ${{ inputs.github_pages_push_path }}
+        GITHUB_PAGES_PUSH_BRANCH: ${{ inputs.github_pages_push_branch }}
     - name: "Append Custom CSS"
       run: echo -e "$CSS" >> ${GITHUB_PAGES_HUGO_PATH}/themes/cloudposse/src/scss/custom.scss
       shell: bash
@@ -62,18 +89,14 @@ runs:
         CSS: ${{ inputs.css }}
         GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
     - name: "Collate Documentation Files"
-      run: |
-        pip install GitPython pyyaml
-        python -c 'from checkout_and_collate import *; collate_files()'
+      run: pip install GitPython pyyaml && python -c collate.py
       shell: bash
+      working-directory: ${{ github.action_path }}
       env:
-        PYTHONPATH: ${{ github.action_path }}
-        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ inputs.github_pages_directory }}
         GITHUB_PAGES_HUGO_PATH: ${{ inputs.github_pages_hugo_path }}
-        GITHUB_PAGES_PULL_BRANCH: ${{ inputs.github_pages_pull_branch }}
+        STAGING_DIR: ${{ inputs.staging_dir }}
         DEBUG: ${{ inputs.debug }}
         CONTENT: ${{ inputs.content }}
-        STAGING_DIR: ${{ inputs.staging_dir }}
     - name: "Build Hugo Site Locally"
       run: |
         docker build -t cloudposse/docs .
@@ -87,9 +110,9 @@ runs:
         HUGO_CONFIG: ${{ inputs.hugo_config }}
         HTMLTEST_CONFIG: ${{ inputs.htmltest_config }}
     - name: "Move Hugo Site Files to Publishing Directory"
-      run: cp -r ${STAGING_DIR}/${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
+      run: cp -r ./${HUGO_PUBLISH_DIR} ${GITHUB_PAGES_PUSH_PATH}
       shell: bash
+      working-directory: ${{ inputs.staging_dir }}
       env:
-        STAGING_DIR: ${{ inputs.staging_dir }}
         HUGO_PUBLISH_DIR: ${{ inputs.hugo_publish_dir }}
-        GITHUB_PAGES_PUSH_PATH: ${{ github.action_path }}/${{ inputs.github_pages_directory }}
+        GITHUB_PAGES_PUSH_PATH: ${{ inputs.github_pages_push_path }}

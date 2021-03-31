@@ -20,7 +20,7 @@ jobs:
     env:
       GITHUB_PAGES_REPO: https://github.com/cloudposse/docs
       GITHUB_PAGES_PUSH_BRANCH: production
-      GITHUB_PAGES_DIRECTORY: github_pages
+      GITHUB_PAGES_PUSH_PATH: github_pages
     steps:
     - name: "Checkout source code at current commit"
       uses: actions/checkout@v2
@@ -29,20 +29,15 @@ jobs:
       with:
         content: docs,modules
         hugo_url: https://cloudposse.github.io/docs
-        hugo_publish_dir: docs
-        hugo_config: hugo.config.new.yml # this variable is the output location, not the input template location
-        htmltest_config: .htmltest.new.yml # this variable is the output location, not the input template location
-        staging_dir: /tmp/staging
         github_pages_pull_branch: github-pages-docs
-        github_pages_hugo_path: /tmp/hugo
         github_pages_repo: ${{ env.GITHUB_PAGES_REPO }}
         github_pages_push_branch: ${{ env.GITHUB_PAGES_PUSH_BRANCH }}
-        github_pages_directory: ${{ env.GITHUB_PAGES_DIRECTORY }}
+        github_pages_push_path: ${{ env.GITHUB_PAGES_PUSH_PATH }}
     - name: "Deploy Documentation Website to GitHub Pages"
       uses: cloudposse/actions/github/git-push@0.30.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
-        GITHUB_REPOSITORY: env.GITHUB_PAGES_REPO
-        GIT_DIRECTORY: ./${{ env.GITHUB_PAGES_DIRECTORY }}/
+        GITHUB_REPOSITORY: ${{ env.GITHUB_PAGES_REPO }}
+        GIT_DIRECTORY: ${{ env.GITHUB_PAGES_PUSH_PATH }}
         GIT_BRANCH: ${{ env.GITHUB_PAGES_PUSH_BRANCH }}
