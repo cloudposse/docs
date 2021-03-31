@@ -74,15 +74,22 @@ def stage_hugo_files():
         copy2( os.path.join(GITHUB_PAGES_HUGO_PATH, copy_file), STAGING_DIR )
 
 def prune_hugo_content_files():
+    # Put the directory names we want to keep into a list.
     hugo_content_folders = HUGO_CONTENT.split(",")
+
+    # If we're keeping and documentation at all, there are two utility subdirectories that we'll
+    # need to keep, too.
+    if hugo_content_folders:
+        hugo_content_folders.append("documentation")
+        hugo_content_folders.append("glossary")
+
+    # Compare the list of subdirectories we have against the list we want to keep and remove any
+    # any that aren't in the list.
     content_path = os.path.join(STAGING_DIR, "content")
     content_subfolders = [f.path.replace(content_path + "/", "") for f in os.scandir(content_path) if f.is_dir()]
-    print(f"content_subfolders: {content_subfolders}")
     for content_subfolder in content_subfolders:
         if content_subfolder not in hugo_content_folders:
             rmtree( os.path.join(content_path, content_subfolder) )
-    content_subfolders = [f.path.replace(content_path + "/", "") for f in os.scandir(content_path) if f.is_dir()]
-    print(f"content_subfolders: {content_subfolders}")
 
 def collate_docs_files():
     content_folders = CONTENT.split(",")
