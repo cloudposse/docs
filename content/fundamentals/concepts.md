@@ -119,7 +119,7 @@ Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides
 
 Vendoring is a strategy of importing external dependencies into a local source tree or VCS. Many languages (e.g. NodeJS) support the concept. However, there are many other tools which do not address how to do vendoring.
 
-There are a few reasons to do vendoring. Sometimes the tools we use do not support importing external sources. Other times, we need to make sure to have full-control over the the lifecycle or versioning of some code in case the external dependencies go away.
+There are a few reasons to do vendoring. Sometimes the tools we use do not support importing external sources. Other times, we need to make sure to have full-control over the lifecycle or versioning of some code in case the external dependencies go away.
 
 Our current approach to vendoring of thirdparty software dependencies is to use [vendir](https://github.com/vmware-tanzu/carvel-vendir) when needed.
 
