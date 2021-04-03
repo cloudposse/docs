@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn what Atmos is and how you can start using it with stacks to simplify your DevOps Automation tasks.\",\"headline\":\"Getting started with Atmos\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Getting started with Atmos\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/atmos-getting-started/\",\"wordCount\":1827}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn what Atmos is and how you can start using it with stacks to simplify your DevOps Automation tasks.\",\"headline\":\"Getting started with Atmos\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Getting started with Atmos\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/atmos-getting-started/\",\"wordCount\":1828}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials\",\"name\":\"Tutorials\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials/atmos-getting-started\",\"name\":\"Atmos getting started\"},\"position\":4}]}"</script>
 
@@ -443,7 +443,7 @@
 <p><code>atmos</code> is part of the SweetOps toolchain and was built to make DevOps and Cloud automation easier across multiple tools. It has direct support for automating Terraform, Helm, Helmfile, and Istio. By natively utilizing <a href="https://cloudposse.github.io/docs/fundamentals/concepts/">stacks</a>, <code>atmos</code> enables you to effortlessly manage your Terraform and Helmfile <a href="https://cloudposse.github.io/docs/fundamentals/concepts/">components</a> from your local machine or in your CI/CD pipelines.</p>
 <p>In this tutorial we&rsquo;ll be looking at a simple (albeit contrived) example of automating multiple Terraform components together into a workflow. This will give you some understanding of what <code>atmos</code> can do while also giving you some experience with using it at the command line.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<h3 id="requirements">Requirements</h3>
+<h3 id="system-requirements">System Requirements</h3>
 <p>To accomplish this tutorial, you&rsquo;ll need to have <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git</a> and <a href="https://docs.docker.com/get-docker/">Docker</a> installed on your local machine. <strong>That&rsquo;s all</strong>.</p>
 <h3 id="understanding">Understanding</h3>
 <p>Prior to starting this tutorial, you should be sure you understand <a href="https://cloudposse.github.io/docs/fundamentals/concepts/">our various concepts and terminology</a> and have gone through our <a href="https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/">Getting started with Geodesic</a> tutorial because we&rsquo;ll be using Geodesic as our means to run <code>atmos</code>.</p>
@@ -548,11 +548,10 @@ atmos version <span style="color:#75715e"># Should return a simple Semver number
       <span style="color:#f92672">vars</span><span style="color:#111">:</span> {}
 
     <span style="color:#f92672">fetch-weather</span><span style="color:#111">:</span>
-      <span style="color:#f92672">vars</span><span style="color:#111">:</span>
-        <span style="color:#f92672">api_key</span><span style="color:#111">:</span> <span style="color:#ae81ff">2a820d40d573758aa714641fc331e897</span>
+      <span style="color:#f92672">vars</span><span style="color:#111">:</span> {}
 
     <span style="color:#f92672">output-results</span><span style="color:#111">:</span>
-      <span style="color:#f92672">vars</span><span style="color:#111">:</span>
+      <span style="color:#f92672">vars</span><span style="color:#111">:</span> {}
         <span style="color:#f92672">print_users_weather_enabled</span><span style="color:#111">:</span> <span style="color:#00a8c8">true</span>
 
   <span style="color:#f92672">helmfile</span><span style="color:#111">:</span> {}
@@ -680,7 +679,7 @@ atmos version <span style="color:#75715e"># Should return a simple Semver number
     <li><a href="#intro">Intro</a></li>
     <li><a href="#prerequisites">Prerequisites</a>
       <ul>
-        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#system-requirements">System Requirements</a></li>
         <li><a href="#understanding">Understanding</a></li>
       </ul>
     </li>

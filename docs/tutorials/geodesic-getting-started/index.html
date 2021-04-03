@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn what Geodesic is and how you can start using it to simplify your local infrastructure development.\",\"headline\":\"Getting started with Geodesic\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Getting started with Geodesic\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/\",\"wordCount\":1318}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn what Geodesic is and how you can start using it to simplify your local infrastructure development.\",\"headline\":\"Getting started with Geodesic\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Getting started with Geodesic\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/\",\"wordCount\":1377}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials\",\"name\":\"Tutorials\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials/geodesic-getting-started\",\"name\":\"Geodesic getting started\"},\"position\":4}]}"</script>
 
@@ -441,10 +441,10 @@
     
     <h2 id="intro">Intro</h2>
 <p>In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it <a href="https://cloudposse.github.io/docs/reference/tools/">Geodesic</a> and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.</p>
-<p>In this tutorial, we&rsquo;ll walk you through how to use Geodesic to execute an authenticated AWS CLI command and talk about what is going on under the hood.</p>
+<p>In this tutorial, we&rsquo;ll walk you through how to use Geodesic to execute Terraform and other tooling. We&rsquo;ll be sure to talk about what is going on under the hood to ensure you&rsquo;re fully getting the picture.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<h3 id="requirements">Requirements</h3>
-<p>To accomplish this tutorial, you&rsquo;ll need to have an AWS Account handy and have <a href="https://docs.docker.com/get-docker/">Docker installed</a> on your local machine. <strong>That&rsquo;s all</strong>.</p>
+<h3 id="system-requirements">System Requirements</h3>
+<p>To accomplish this tutorial, you&rsquo;ll need to have <a href="https://docs.docker.com/get-docker/">Docker installed</a> on your local machine. <strong>That&rsquo;s all</strong>.</p>
 <h3 id="docker-primer">Docker Primer</h3>
 <p>Before we jump in, it&rsquo;s important to note that Geodesic is built around some advanced features of Docker and the Docker CLI that are worth understanding. If you know the docker CLI well then feel free to skip over this section.</p>
 <ol>
@@ -454,7 +454,7 @@
 <h3 id="geodesic-usage-patterns">Geodesic Usage Patterns</h3>
 <p>Let&rsquo;s talk about a few of the ways that one can run Geodesic. Our toolbox has been built to satisfy many use-cases, and each result in a different pattern of invocation:</p>
 <ol>
-<li>You can <strong>run standalone</strong> Geodesic as a standard docker container using <code>docker run</code>. This enables you to get started quickly, avoid fiddling with configuration or run one-off commands using some of the built-in tools.
+<li>You can <strong>run standalone</strong> Geodesic as a standard docker container using <code>docker run</code>. This enables you to get started quickly, to avoid fiddling with configuration or run one-off commands using some of the built-in tools.
 <ol>
 <li>Example: <code>docker run -it --rm --volume $HOME:/localhost cloudposse/geodesic:latest-debian --login</code> opens a bash login shell (<code>--login</code> is our Docker <code>CMD</code> here; it&rsquo;s actually just <a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">the arguments passed to the <code>bash</code> shell</a> which is our <code>ENTRYPOINT</code>) in our Geodesic container.</li>
 <li>Example: <code>docker run -it --rm --volume $HOME:/localhost cloudposse/geodesic:latest-debian -c &quot;terraform version&quot;</code> executes the <code>terraform version</code> command as a one off and outputs the result.</li>
@@ -465,7 +465,7 @@
 <li>Example: <code>docker run --rm cloudposse/geodesic:latest-debian | bash -s latest-debian</code> installs <code>/usr/local/bin/geodesic</code> on your local machine which you can execute repeatedly via simply typing <code>geodesic</code>. In this example, we&rsquo;re pinning the script to use the <code>cloudposse/geodesic:latest-debian</code> docker image, but we could also pin to our own image or to a specific version.</li>
 </ol>
 </li>
-<li>Lastly, you can <strong>build your own toolbox</strong> on top of Geodesic. This is what SweetOps generally recommends to practitioners. We do this when we want to provide additional packages or customization to our team while building on the foundation that geodesic provides. This is simple to do by using Geodesic as your base image (e.g. <code>FROM cloudposse/geodesic:latest-debian</code>) in your own <code>Dockerfile</code>, adding your own Docker <code>RUN</code> commands or overriding environment variables, and then building a new image that you distribute to your team. This is more advanced usage and we&rsquo;ll cover how to do this in a future how-to article.</li>
+<li>Lastly, you can <strong>build your own toolbox</strong> on top of Geodesic. This is what SweetOps generally recommends to practitioners. We do this when we want to provide additional packages or customization to our team while building on the foundation that geodesic provides. This is simple to do by using Geodesic as your base image (e.g. <code>FROM cloudposse/geodesic:latest-debian</code>) in your own <code>Dockerfile</code>, adding your own Docker <code>RUN</code> commands or overriding environment variables, and then using <code>docker build</code> to create a new image that you distribute to your team. This is more advanced usage and we&rsquo;ll cover how to do this in a future how-to article.</li>
 </ol>
 <p>In this tutorial, we&rsquo;ll be running Geodesic standalone using <code>docker run</code> to allow us to get up and running quickly.</p>
 <h2 id="tutorial">Tutorial</h2>
@@ -482,35 +482,43 @@
 <li><strong>NOTE</strong>: If you&rsquo;re running on Linux and using Geodesic, any files written to the <code>--volume</code> mounts will be owned by the user inside the container, which is <code>root</code>. <a href="https://github.com/moby/moby/issues/3124#issuecomment-104936573">See here for potential workarounds</a>.</li>
 </ol>
 </li>
-<li>Finally, after the image name, we&rsquo;re passing <code>--login</code>. This is the Docker <code>CMD</code> that we&rsquo;re passing to our image. Since we override the Docker <code>ENTRYPOINT</code> with a small bash script, our <code>--login</code> <code>CMD</code> results in calling <code>/bin/bash --login</code> which creates a new <a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">bash login shell</a>.</li>
+<li>Finally, after the image name, we&rsquo;re passing <code>--login</code>. This is the Docker <code>CMD</code> that we&rsquo;re passing to our image. Since we override the Docker <code>ENTRYPOINT</code> with a small bash script, our <code>--login</code> <code>CMD</code> results in calling <code>/bin/bash --login</code> which creates a new <a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">bash login shell</a>.
+<ol>
+<li>It&rsquo;s worth noting that since Geodesic <code>v0.143.2</code> (<a href="https://github.com/cloudposse/geodesic/pull/693">PR #693</a>), you can now drop <code>--login</code> as default <code>CMD</code> will provide the same functionality.</li>
+</ol>
+</li>
 </ol>
 <p>The result of running this command should look like this:</p>
 <p><img src="https://cloudposse.github.io/docs/assets/geodesic-login-shell.png" alt="Geodesic Login Shell"></p>
-<h3 id="2-authenticate-with-aws--aws-vault">2. Authenticate with AWS + aws-vault</h3>
-<p>Great &ndash; we&rsquo;ve started up Geodesic so now we need to authenticate with AWS. To accomplish this, Geodesic ships with <a href="https://cloudposse.github.io/docs/reference/tools/"><code>aws-vault</code></a> to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console">create a new IAM user and programmatic Access Key ID and Secret Key</a> and be sure to copy those values down somewhere. Now, in your Geodesic shell, let&rsquo;s do the following:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Since our Geodesic on linux, let&#39;s set the default backend to an encrypted file instead of our keyring</span>
-<span style="color:#111">export</span> <span style="color:#111">AWS_VAULT_BACKEND</span><span style="color:#f92672">=</span>file
+<h3 id="2-download-our-tutorial-project">2. Download our Tutorial Project</h3>
+<p>Great &ndash; we&rsquo;ve started up Geodesic so now let&rsquo;s do something with it. How about we pull a terraform project and apply it? To accomplish this, let&rsquo;s do the following:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Change to our /localhost directory so that we can pull our project&#39;s code to our</span>
+<span style="color:#75715e"># local machine as well as our docker container</span>
+<span style="color:#111">cd</span> /localhost
 
-<span style="color:#75715e"># Add our new credentials to aws-vault. This will prompt you for the Access Key ID and Secret Key that you copied down earlier, which you should input.</span>
-aws-vault add luke.skywalker
-</code></pre></div><p>Now we&rsquo;ve added our credentials to <code>aws-vault</code> and we can easily use <code>aws-vault exec</code> to execute an authenticated command on the AWS CLI like so:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># List all the buckets in your account:</span>
-aws-vault <span style="color:#111">exec</span> luke.skywalker -- aws s3 ls
+<span style="color:#75715e"># Clone our tutorials repository</span>
+git clone https://github.com/cloudposse/tutorials
 
-<span style="color:#75715e"># Or get some information on your user:</span>
-aws-vault <span style="color:#111">exec</span> luke.skywalker -- aws sts get-caller-identity
-</code></pre></div><h3 id="3-start-a-aws-profile-session">3. Start a AWS Profile Session</h3>
-<p>That&rsquo;s cool&hellip; but what about if you want to start a full blown session as our <code>luke.skywalker</code> profile? Well, Geodesic comes bundled with a handy <code>assume-role</code> utility that you can use to do that:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># This sets up your AWS configuration file so that `assume-role` will work properly. This is a one time setup process for new aws-vault enabled profiles.</span>
-crudini --set --inplace <span style="color:#111">$AWS_CONFIG_FILE</span> <span style="color:#d88200">&#34;profile luke.skywalker&#34;</span> <span style="color:#d88200">&#34;credential_process&#34;</span> <span style="color:#d88200">&#34;aws-vault exec luke.skywalker --json&#34;</span>
+<span style="color:#75715e"># Change to our tutorial code</span>
+<span style="color:#111">cd</span> tutorials/01-geodesic
+</code></pre></div><p>Easy! And since we changed into our <code>/localhost</code> directory inside Geodesic, the <code>tutorials</code> project that we git cloned is available both in the container that we&rsquo;re running our shell in <strong>and</strong> on our local machine in our <code>$HOME</code> directory. This enables us to share files between our local machine and our container, which should start to give you an idea of the value of mounting <code>$HOME</code> into Geodesic.</p>
+<h3 id="3-apply-our-terraform-project">3. Apply our Terraform Project</h3>
+<p>Now that we&rsquo;ve got some code to work with, let&rsquo;s apply it&hellip;</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Setup our terraform project</span>
+terraform init
 
-<span style="color:#75715e"># Now we run `assume-role` with our newly created profile and this will start a new shell session which is authenticated as that profile for us.</span>
-assume-role luke.skywalker
-
-<span style="color:#75715e"># Finally, we can run our AWS CLI commands without having to manually invoke `aws-vault exec` each time</span>
-aws s3 ls
-aws sts get-caller-identity
-</code></pre></div><p>The beautiful thing about all of this is that we didn&rsquo;t need to install anything except Docker on our local machine to make this happen. Both the AWS CLI and <code>aws-vault</code> tools involve specific installation instructions to get up and running, but by using Geodesic we&rsquo;re able to quickly skip over all of that and use a container that includes them out of the box alongside dozens of other tools as well. That is why we call it our toolbox as it enables consistent usage of CLI tools across your entire organization!</p>
+<span style="color:#75715e"># Apply our terraform project</span>
+terraform init -auto-approve
+</code></pre></div><p>Sweet, you should see a successful <code>terraform apply</code> with some detailed <code>output</code> info on the original star wars hero! 😎</p>
+<p>Just to show some simple usage of another tool in the toolbox, how about we pull apart that info and get that hero&rsquo;s name?</p>
+<h3 id="4-read-some-data-from-our-outputs">4. Read some data from our Outputs</h3>
+<p>Let&rsquo;s utilize <a href="https://github.com/stedolan/jq"><code>jq</code></a> to grab some info from that terraform project&rsquo;s output:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Pipe our terraform project&#39;s output into jq so we can pull out our hero&#39;s name</span>
+terraform output -json <span style="color:#111">|</span> jq .star_wars_data.value.name
+</code></pre></div><p>Again, without having to install anything, we&rsquo;ve grabbed a tool from our toolbox and were able to use it without a second thought.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The beautiful thing about all of this is that we didn&rsquo;t need to install anything except Docker on our local machine to make this happen. Tools like <code>git</code>, <code>terraform</code>(all versions), and <code>jq</code> all involve specific installation instructions to get up and running using the correct versions across various machines/teams, but by using Geodesic we&rsquo;re able to quickly skip over all of that and use a container that includes them out of the box alongside <a href="https://github.com/cloudposse/packages/tree/master/vendor">dozens of other tools as well</a>. And with the mounting of our <code>$HOME</code> directory to <code>/localhost</code> of the container, our Geodesic shell just ends up being an extension of our local machine. That is why we call it a toolbox as it enables consistent usage of CLI tools across your entire organization!</p>
+<p>If you want to see another usage of Geodesic, <a href="https://cloudposse.github.io/docs/tutorials/atmos-getting-started/">read our next tutorial in the SweetOps series about one of our most important tools: <code>atmos</code>.</a></p>
 
 
     
@@ -567,7 +575,7 @@ aws sts get-caller-identity
     <li><a href="#intro">Intro</a></li>
     <li><a href="#prerequisites">Prerequisites</a>
       <ul>
-        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#system-requirements">System Requirements</a></li>
         <li><a href="#docker-primer">Docker Primer</a></li>
         <li><a href="#geodesic-usage-patterns">Geodesic Usage Patterns</a></li>
       </ul>
@@ -575,10 +583,12 @@ aws sts get-caller-identity
     <li><a href="#tutorial">Tutorial</a>
       <ul>
         <li><a href="#1-start-the-geodesic-shell">1. Start the Geodesic Shell</a></li>
-        <li><a href="#2-authenticate-with-aws--aws-vault">2. Authenticate with AWS + aws-vault</a></li>
-        <li><a href="#3-start-a-aws-profile-session">3. Start a AWS Profile Session</a></li>
+        <li><a href="#2-download-our-tutorial-project">2. Download our Tutorial Project</a></li>
+        <li><a href="#3-apply-our-terraform-project">3. Apply our Terraform Project</a></li>
+        <li><a href="#4-read-some-data-from-our-outputs">4. Read some data from our Outputs</a></li>
       </ul>
     </li>
+    <li><a href="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
 </aside>
