@@ -28,6 +28,9 @@ jobs:
       uses: cloudposse/docs/actions/publish-github-pages@publish-gh-pages-python
       with:
         content: docs,modules
+        config: |
+          baseURL="test.url"
+          enableEmoij="absolutely"
         hugo_url: https://cloudposse.github.io/docs
         github_pages_pull_branch: master
         github_pages_repo: ${{ env.GITHUB_PAGES_REPO }}
