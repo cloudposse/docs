@@ -110,7 +110,7 @@ runs:
         curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | sudo bash
         sudo apt-get install yq
         echo "config: $CONFIG"
-        yq e -i "$CONFIG" config.yaml
+        yq e -i $CONFIG config.yaml
         echo "catting config.yaml:"
         cat config.yaml
         rm setup.deb.sh
