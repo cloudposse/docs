@@ -29,7 +29,7 @@ jobs:
       with:
         content: docs,modules
         config: |
-          .baseURL=test.url
+          .baseURL="test.url"
           .enableEmoji="absolutely"
         hugo_url: https://cloudposse.github.io/docs
         github_pages_pull_branch: master
