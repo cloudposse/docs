@@ -109,14 +109,11 @@ runs:
       run: |
         curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | sudo bash
         sudo apt-get install yq
-        echo "config: $CONFIG"
         for SUBSTITUTION in $CONFIG
         do
           echo $SUBSTITUTION
           yq e -i $SUBSTITUTION config.yaml
         done
-        echo "catting config.yaml:"
-        cat config.yaml
       shell: bash
       working-directory: ${{ inputs.staging_dir }}
       env:
