@@ -117,7 +117,6 @@ runs:
         done
         echo "catting config.yaml:"
         cat config.yaml
-        rm setup.deb.sh
       shell: bash
       working-directory: ${{ inputs.staging_dir }}
       env:
