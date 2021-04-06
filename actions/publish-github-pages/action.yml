@@ -20,13 +20,17 @@ inputs:
     description: 'The branch of the repo which GitHub Pages will deploy from'
     required: true
   css:
-    description: 'Custom CSS to customize the look and feel'
+    description: 'Custom CSS to customize the look and feel of the docs website'
     required: false
   config:
-    description: 'Hugo YAML configuration overrides'
+    description: >
+      Hugo YAML configuration overrides. The overrides should be either space- or
+      newline-separated and must follow the following conventions. They must provide a YAML path
+      in dot notation, have an equals sign, and have the override value be quoted, all with no
+      interior spaces. E.g., .baseURL="test.url.com" enableEmoji="true"
     required: false
   debug:
-    description: 'Toggle to turn on debug functionality'
+    description: 'Toggle to turn on any available debug functionality'
     required: false
   hugo_content:
     description: 'Folders of generic documentation to build into the final docs website'
