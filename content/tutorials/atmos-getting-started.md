@@ -139,7 +139,7 @@ For our example in this step, we'll use `components/terraform/fetch-location` co
 atmos terraform plan fetch-location --stack=example
 ```
 
-If you properly entered your command, you should see a successful plan which resulted in "No changes. Infrastructure is up-to-date." You'll notice this first executes a `terraform init` before doing the plan. This is intentional to ensure `atmos` can be invoked without prior project setup. Note, we'll discuss the currently unknown `--stack` parameter shortly.
+If you properly entered your command, you should see a successful plan which resulted in "Terraform will perform the following actions" followed by "Changes to Outputs." You'll notice this first executes a `terraform init` before doing the plan. This is intentional to ensure `atmos` can be invoked without prior project setup. Note, we'll discuss the currently unknown `--stack` parameter shortly.
 
 So now that we've done a plan... let's get this project applied. We could invoke `atmos terraform apply ...`, but our best option at this point would be to invoke `deploy` which will execute a terraform `init`, `plan`, and `apply` in sequential order:
 
