@@ -87,7 +87,7 @@ Now that we've got some code to work with, let's apply it...
 terraform init
 
 # Apply our terraform project
-terraform init -auto-approve
+terraform apply -auto-approve
 ```
 
 Sweet, you should see a successful `terraform apply` with some detailed `output` info on the original star wars hero! 😎
