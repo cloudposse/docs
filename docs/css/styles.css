@@ -14945,7 +14945,8 @@ code {
   border: 1px solid #e5e5e5;
   border-radius: 3px;
   background-color: #ffffff7a;
-  font-family: Consolas,andale mono wt,andale mono,lucida console,lucida sans typewriter,dejavu sans mono,bitstream vera sans mono,liberation mono,nimbus mono l,Monaco,courier new,Courier,monospace; }
+  font-family: Consolas,andale mono wt,andale mono,lucida console,lucida sans typewriter,dejavu sans mono,bitstream vera sans mono,liberation mono,nimbus mono l,Monaco,courier new,Courier,monospace;
+  vertical-align: inherit; }
 
 pre code {
   background-color: inherit;
