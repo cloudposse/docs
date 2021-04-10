@@ -2,6 +2,7 @@
 title: "Tools"
 icon: "fa fa-wrench"
 description: "The many tools that make up the SweetOps approach"
+weight: 2
 tags:
 - tools
 - aws
