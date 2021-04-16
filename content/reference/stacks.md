@@ -25,12 +25,12 @@ We have a number of important conventions around stacks that are worth noting.
 Stack files can be very numerous in large cloud environments (think many dozens to hundreds of stack files). To enable proper organization of stack files, SweetOps recommends the following:
 
 * All stacks should be stored in a `stacks/` folder at the root of your infrastructure repository.
-* Global values you that you want to share across all stacks should go into a `stacks/globals.yaml` file
+* Global values that you want to share across all stacks should go into a `stacks/catalog/globals.yaml` file
   * This file name is special in that it will not be treated as a stack by any SweetOps automation tooling.
 * Name individual environment stacks as `$env-$stage.yaml`
   * For example, `$env` could be `ue2` (for `us-east-2`) and `$stage` might be `prod` which would result in `stacks/ue2-prod.yaml`
 * When you have configuration that should be shared across `env`'s, you should use `gbl` as your `env` and then share that configuration using `import`.
-  * For example, you have values you want to share across `ue2-stage.yaml` and `uw2-stage.yaml` so you create a `glb-stage.yaml` stack file and utilize `import` in both `ue2` and `uw2` stacks to pull in that configuration.
+  * For example, you have values you want to share across `ue2-stage.yaml` and `uw2-stage.yaml` so you create a `catalog/glb-stage.yaml` stack file and utilize `import` in both `ue2` and `uw2` stacks to pull in that configuration.
 
 ## Terraform Workspace Names
 
@@ -58,9 +58,9 @@ TODO: Do we have a defined JSON schema document to share here for Stack validati
 # The referenced files are deep merged into this stack to support granular configuration capabilities
 imports:
   # Merge the below `stacks/*.yaml` files into this stack to provide any shared `vars` or `components.*` configuration
-  - globals
-  - ue2-globals.yaml
-  - gbl-dev.yaml
+  - catalog/globals
+  - catalog/ue2-globals.yaml
+  - catalog/gbl-dev.yaml
 
 # `vars` provides shared configuration for all components -- both terraform + helmfile
 vars:
