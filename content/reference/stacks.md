@@ -36,7 +36,8 @@ When you have configuration that you want to share across various stacks, use ca
 
 By convention, all shared configuration for stacks is put in the `stacks/catalogs/` folder, which can then be used in the root `stacks/` stack files via `import`.
 
-There are a few types of common types of shared configuration which are worth noting:
+There are a few types of shared configuration which are worth noting:
+
 * **Global Catalogs**: For any configuration to share across **all** stacks.
   * For example, you create a `stacks/catalogs/globals.yaml` file and utilize `import` wherever you need that catalog.
 * **Environment Catalogs**: For any configuration you want to share across `environment` boundaries.
