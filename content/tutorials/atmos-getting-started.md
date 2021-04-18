@@ -266,4 +266,4 @@ Wrapping up, we've seen some critical aspects of SweetOps in action as part of t
 
 With these tools, you can skip documenting the various steps of building an environment (aka WikiOps) and instead focus on just describing and automating those steps! And there is a lot more `atmos` and stack files can do beyond this brief intro, so keep looking around the docs for more usage patterns!
 
-<!-- TODO: Update the above to point at how-tos for Atmos / Stacks -->
+Want to keep learning but with a more real world use-case? [Check out our next tutorial on deploying your first AWS environment with SweetOps]({{< relref "tutorials/first-aws-environment.md" >}}).
