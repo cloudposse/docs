@@ -34,18 +34,18 @@ Stack files can be very numerous in large cloud environments (think many dozens 
 
 When you have configuration that you want to share across various stacks, use catalogs. Catalogs are the SweetOps term for shared, reusable configuration.
 
-By convention, all shared configuration for stacks is put in the `stacks/catalog/` folder, which can then be used in the root `stacks/` stack files via `import`. These files use the same stack schema. 
+By convention, all shared configuration for stacks is put in the `stacks/catalog/` folder, which can then be used in the root `stacks/` stack files via `import`. These files use the same stack schema.
 
 There are a few suggested shared catalog configurations that we recommend adopting:
 
 * **Global Catalogs**: For any configuration to share across **all** stacks.
-  * For example, you create a `stacks/catalogs/globals.yaml` file and utilize `import` wherever you need that catalog.
+  * For example, you create a `stacks/catalog/globals.yaml` file and utilize `import` wherever you need that catalog.
 * **Environment Catalogs**: For any configuration you want to share across `environment` boundaries.
-  * For example, to share configuration across `ue2-stage.yaml` and `uw2-stage.yaml` stacks, you create a `stacks/catalogs/stage-globals.yaml` file and utilize `import` in both the `ue2-stage.yaml` and `uw2-stage.yaml` stacks to pull in that catalog.
+  * For example, to share configuration across `ue2-stage.yaml` and `uw2-stage.yaml` stacks, you create a `stacks/catalog/stage/globals.yaml` file and utilize `import` in both the `ue2-stage.yaml` and `uw2-stage.yaml` stacks to pull in that catalog.
 * **Stage Catalogs**: For any configuration that you want to share across `stage` boundaries.
-  * For example, to share configuration across `ue2-dev.yaml`, `ue2-stage.yaml`, and `ue2-prod.yaml` stacks, you create a `stacks/catalogs/ue2-globals.yaml` file and `import` that catalog in the respective `dev`, `stage`, and `prod` stacks.
+  * For example, to share configuration across `ue2-dev.yaml`, `ue2-stage.yaml`, and `ue2-prod.yaml` stacks, you create a `stacks/catalog/ue2/globals.yaml` file and `import` that catalog in the respective `dev`, `stage`, and `prod` stacks.
 * **Base Components**: For any configuration that you want to share across all instances of a component.
-  * For example, you're using the `eks` component and you want to ensure all of you EKS clusters are using the same Kubernetes version, you create a `stacks/catalogs/eks-globals.yaml` file which specifies the `eks` component's `vars.kubernetes_version`. You can then `import` that base component configuration in any stack file that uses the `eks` component.
+  * For example, you're using the `eks` component and you want to ensure all of you EKS clusters are using the same Kubernetes version, you create a `stacks/catalog/component/eks.yaml` file which specifies the `eks` component's `vars.kubernetes_version`. You can then `import` that base component configuration in any stack file that uses the `eks` component.
   * More information in the below section.
 
 ## Component Inheritance
@@ -68,9 +68,9 @@ components:
 ```yaml
 # stacks/uw2-dev.yaml
 import:
-  - catalogs/s3-globals
-  - catalogs/dev-globals
-  - catalogs/uw2-globals
+  - catalog/component/s3-bucket
+  - catalog/dev/globals
+  - catalog/uw2/globals
 
 components:
   terraform:
@@ -98,50 +98,18 @@ In the above example, we're able to utilize the default settings provided via th
 
 # Stack Schema
 
-<!--
-TODO: Is the vault backend supported as of today?
-TODO: Should we mention the `remote` backend considering the current state of the TFC automation module?
--->
-
 [The official JSON Schema document for Stacks can be found here](https://github.com/cloudposse/atmos/blob/master/docs/schema/stack-config-schema.json). The below is a walk through of a complete example utilizing all capabilities.
 
 ```yaml
 # stacks/ue2-dev.yaml
-s3-bucket:
-      vars:
-        enabled: false
-        user_enabled: false
-        acl: "private"
-        grants: null
-        policy: ""
-        force_destroy: false
-        versioning_enabled: true
-        allow_encrypted_uploads_only: false
-        lifecycle_rule_enabled: false
-        noncurrent_version_glacier_transition_days: 30
-        noncurrent_version_deeparchive_transition_days: 60
-        noncurrent_version_expiration_days: 90
-        standard_transition_days: 30
-        glacier_transition_days: 60
-        deeparchive_transition_days: 90
-        enable_glacier_transition: false
-        enable_deeparchive_transition: false
-        enable_standard_ia_transition: false
-        enable_current_object_expiration: false
-        expiration_days: 90
-        lifecycle_tags: {}
-        block_public_acls: true
-        block_public_policy: true
-        ignore_public_acls: true
-        restrict_public_buckets: true
 
-# Imports enables shared configuration / settings across different stacks
+# `import` enables shared configuration / settings across different stacks
 # The referenced files are deep merged into this stack to support granular configuration capabilities
 import:
   # Merge the below `stacks/catalog/*.yaml` files into this stack to provide any shared `vars` or `components.*` configuration
   - catalog/globals
-  - catalog/ue2-globals
-  - catalog/dev-globals
+  - catalog/ue2/globals
+  - catalog/dev/globals
 
 # `vars` provides shared configuration for all components -- both terraform + helmfile
 vars:
@@ -157,6 +125,8 @@ terraform:
 
   # `backend_type` + `backend` provide configuration for the terraform backend you
   # would like to use for all components. This is typically defined in `globals.yaml`
+  # atmos + our modules support all options that can be configured for a particular backend.
+  # `backend_type` defines which `backend` configuration is enabled
   backend_type: s3 # s3, remote, vault
   backend:
     s3:
