@@ -34,9 +34,9 @@ Stack files can be very numerous in large cloud environments (think many dozens 
 
 When you have configuration that you want to share across various stacks, use catalogs. Catalogs are the SweetOps term for shared, reusable configuration.
 
-By convention, all shared configuration for stacks is put in the `stacks/catalogs/` folder, which can then be used in the root `stacks/` stack files via `import`.
+By convention, all shared configuration for stacks is put in the `stacks/catalog/` folder, which can then be used in the root `stacks/` stack files via `import`. These files use the same stack schema. 
 
-There are a few types of shared configuration which are worth noting:
+There are a few suggested shared catalog configurations that we recommend adopting:
 
 * **Global Catalogs**: For any configuration to share across **all** stacks.
   * For example, you create a `stacks/catalogs/globals.yaml` file and utilize `import` wherever you need that catalog.
@@ -50,10 +50,10 @@ There are a few types of shared configuration which are worth noting:
 
 ## Component Inheritance
 
-Using component catalogs, you can define default values for all instances of a component across your stacks. But it is also important to note that you can provide default values for multiple instances of a component in a single stack using the component inheritance pattern via the `component` key / value:
+Using a component catalog, you can define the default values for all instances of a component across your stacks. But it is also important to note that you can provide default values for multiple instances of a component in a single stack using the component inheritance pattern via the `component` key / value:
 
 ```yaml
-# stacks/catalogs/s3-globals.yaml
+# stacks/catalog/component/s3-bucket.yaml
 components:
   terraform:
     s3-bucket:
@@ -67,7 +67,7 @@ components:
 
 ```yaml
 # stacks/uw2-dev.yaml
-imports:
+import:
   - catalogs/s3-globals
   - catalogs/dev-globals
   - catalogs/uw2-globals
@@ -90,7 +90,7 @@ components:
     # ...
 ```
 
-In the above, we're able to utilize the default settings provided via the `s3-bucket` base component catalog, while also creating multiple instances of the same component and providing our own overrides. This enables maximum reuse of global component configuration.
+In the above example, we're able to utilize the default settings provided via the `s3-bucket` base component catalog, while also creating multiple instances of the same component and providing our own overrides. This enables maximum reuse of global component configuration.
 
 ## Terraform Workspace Names
 
@@ -137,7 +137,7 @@ s3-bucket:
 
 # Imports enables shared configuration / settings across different stacks
 # The referenced files are deep merged into this stack to support granular configuration capabilities
-imports:
+import:
   # Merge the below `stacks/catalog/*.yaml` files into this stack to provide any shared `vars` or `components.*` configuration
   - catalog/globals
   - catalog/ue2-globals
