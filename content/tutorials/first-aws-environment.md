@@ -58,9 +58,13 @@ This will build the `tutorials` image locally on your machine and then runs it w
 
 ![Tutorial Shell](/assets/tutorials-3-tutorials-shell.png)
 
-Now that we're running inside of our container, let's get into our specific tutorial:
+Now that we're running inside of our container, let's start a new shell as your AWS profile and get into our specific tutorial directory:
 
 ```bash
+# First let's enter a new shell with credentials from your AWS profile
+# This will enable our interactions with AWS through Terraform in the rest of the tutorial to be properly authenticated
+aws-vault exec $YOUR_PROFILE -- bash
+
 cd /tutorials/03-first-aws-environment
 ```
 
@@ -90,10 +94,10 @@ This should update most of our stack and catalog files to now include uniquely g
 2. Next, we need to get our `tfstate-backend` component deployed using local state before we can actually utilize any backend. This is a good example of [the chicken or the egg problem](https://en.wikipedia.org/wiki/Chicken_or_the_egg), so it's a bit funky but luckily we only need to do this initial set of steps once for all components. To get started let's plan and apply our `tfstate-backend` component:
 
 ```bash
-aws-vault exec $YOUR_PROFILE -- atmos terraform plan tfstate-backend --stack ue2-root
+atmos terraform plan tfstate-backend --stack ue2-root
 
 # Check the plan looks good and doesn't have 'TODO' anywhere if so, be sure to run `bin/uniquify.sh`)
-aws-vault exec $YOUR_PROFILE -- atmos terraform apply tfstate-backend --stack ue2-root
+atmos terraform apply tfstate-backend --stack ue2-root
 ```
 
 This will provision our S3 bucket + Dynamo DB table for usage as our backend.
@@ -109,7 +113,7 @@ This will look at our stack, find the imported `terraform.backend.s3` configurat
 4. Now that we have our `backend.tf.json` file, we can change over our `tfstate-backend` component from using local state to its S3 backend:
 
 ```bash
-aws-vault exec $YOUR_PROFILE -- atmos terraform plan tfstate-backend --stack ue2-root
+atmos terraform plan tfstate-backend --stack ue2-root
 ```
 
 This will prompt you with the following:
@@ -146,7 +150,7 @@ Exactly the same as for our `tfstate-backend` component, our `atmos` `backend ge
 Next, let's move onto applying our `static-site` component to actually build something real on AWS. Well that's pretty simple actually:
 
 ```bash
-aws-vault exec $YOUR_PROFILE -- atmos terraform deploy static-site --stack uw2-dev
+atmos terraform deploy static-site --stack uw2-dev
 ```
 
 This command will plan and apply our `static-site` component with our configuration specified in our `stacks/uw2-dev.yaml` stack. This should output something similar to the following at the end:
