@@ -27,7 +27,7 @@ Stack files can be very numerous in large cloud environments (think many dozens 
 * All stacks should be stored in a `stacks/` folder at the root of your infrastructure repository.
 * Name individual environment stacks following the pattern of `$environment-$stage.yaml`
   * For example, `$environment` might be `ue2` (for `us-east-2`) and `$stage` might be `prod` which would result in `stacks/ue2-prod.yaml`
-* For any **global** resources, such as Account Settings, IAM roles and policies, DNS records, or similar, the `environment` for the stack should be `gbl`.
+* For any **global** resources (as opposed to _regional_ resources), such as Account Settings, IAM roles and policies, DNS zones, or similar, the `environment` for the stack should be `gbl` to connote that it's not tied to any region.
   * For example, to deploy the `iam-delegated-roles` component (where all resources are global and not associated with an AWS region) to your production account, you should utilize a `stacks/gbl-prod.yaml` stack file.
 
 ## Shared Stack Configuration
@@ -94,7 +94,7 @@ In the above example, we're able to utilize the default settings provided via th
 
 ## Terraform Workspace Names
 
-`atmos` and accompanying terraform automation modules like [terraform-spacelift-cloud-infrastructure-automation](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) will automatically create terraform [workspaces](https://www.terraform.io/docs/language/state/workspaces.html) when managing components. These workspaces derive their names from the stack name and the component name in question following this pattern: `$env-$stage-$component`. The result is workspace names like `ue2-dev-eks` or `uw2-prod-mq-broker`.
+In `atmos` and the accompanying terraform automation modules like [terraform-spacelift-cloud-infrastructure-automation](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) the terraform [workspaces](https://www.terraform.io/docs/language/state/workspaces.html) will be automatically created when managing components. These workspaces derive their names from the stack name and the component name in question following this pattern: `$env-$stage-$component`. The result is workspace names like `ue2-dev-eks` or `uw2-prod-mq-broker`.
 
 # Stack Schema
 
@@ -220,7 +220,7 @@ components:
         chart_values:
           enableCertManager: true
 
-# `workflows` enable the ability to define an ordered operation for `atmos` to accomplish
+# `workflows` enable the ability to define an ordered list of operations that `atmos` will execute. These operations can be any type of component such as terraform or helmfile.
 # See "Getting started with Atmos" documentation for full details: https://docs.cloudposse.com/tutorials/atmos-getting-started/
 workflows:
 
