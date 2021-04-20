@@ -2,7 +2,6 @@
 title: "Authenticate with AWS inside Geodesic using `aws-vault`"
 description: "Learn how to authenticate within Geodesic using AWS IAM Credentials and `aws-vault`."
 weight: 1
-draft: true
 ---
 
 ## Intro
