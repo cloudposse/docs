@@ -96,6 +96,15 @@ In the above example, we're able to utilize the default settings provided via th
 
 `atmos` and accompanying terraform automation modules like [terraform-spacelift-cloud-infrastructure-automation](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) will automatically create terraform [workspaces](https://www.terraform.io/docs/language/state/workspaces.html) when managing components. These workspaces derive their names from the stack name and the component name in question following this pattern: `$env-$stage-$component`. The result is workspace names like `ue2-dev-eks` or `uw2-prod-mq-broker`.
 
+# Pro Tips
+
+Here are some tips to help you write great stacks:
+
+1. Use `{}` for empty maps, but not just a key with an empty value.
+1. Use consistent datatypes for deep merging to work appropriately with imports (e.g. don't mix maps with lists or scalars).
+1. Use [YAML anchors](https://blog.daemonl.com/2016/02/yaml.html) to DRY up a config within a single file.
+   1. **IMPORTANT**: Anchors work only within the scope of a single file boundary and not across multiple imports.
+
 # Stack Schema
 
 [The official JSON Schema document for Stacks can be found here](https://github.com/cloudposse/atmos/blob/master/docs/schema/stack-config-schema.json). The below is a walk through of a complete example utilizing all capabilities.
