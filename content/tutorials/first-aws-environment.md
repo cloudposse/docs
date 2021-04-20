@@ -17,13 +17,13 @@ To accomplish this tutorial, you'll need the following:
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [Docker](https://docs.docker.com/get-docker/)
 - An AWS test account and credentials for that account added to `aws-vault` so they're ready to be used in Geodesic.
-  - We recommend Administrator privileges to make everything easy, but you can likely get away with credentials that only allow S3, ClodFront, and DynamoDB access.
+  - We recommend Administrator privileges to make everything easy, but you can likely get away with credentials that only allow S3, CloudFront, and DynamoDB access.
   - If you haven't set this up before, check out [the Geodesic how-to on authenticating with aws-vault]({{< relref "howto/geodesic/authenticate-with-aws-vault.md" >}}).
   - We'll refer to your `aws-vault` profile through out this tutorial as `$YOUR_PROFILE`. When you see that, be sure to replace with whatever name you added to `aws-vault`.
 
 ### Understanding
 
-Prior to starting this tutorial, you should be sure you understand [our various concepts and terminology]({{< relref "fundamentals/concepts.md" >}}) and have gone through our [Getting started with Geodesic]({{< relref "tutorials/geodesic-getting-started.md" >}}) and [Getting started with Atmos tutorial]({{< relref "tutorials/atmos-getting-started.md" >}}) because we'll be building upon the knowledge in both of those tutorials.
+Prior to starting this tutorial, you should be sure that you understand [our various concepts and terminology]({{< relref "fundamentals/concepts.md" >}}) and have gone through our [Getting started with Geodesic]({{< relref "tutorials/geodesic-getting-started.md" >}}) and [Getting started with Atmos tutorial]({{< relref "tutorials/atmos-getting-started.md" >}}) because we'll be building upon the knowledge in both of those tutorials.
 
 ## Tutorial
 
@@ -39,7 +39,7 @@ git clone git@github.com:cloudposse/tutorials.git
 cd tutorials
 ```
 
-Now that we've got our code, we're going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we're going to so via a Docker image built on top of Geodesic. This entire `tutorials` repository is actually Dockerized to make that part easy, so let's build and run our `cloudposse/tutorials` image:
+Now that we've got our code, we're going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we're going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire `tutorials` repository is actually Dockerized to make that part easy, so let's build and run our `cloudposse/tutorials` image:
 
 ```bash
 # Geodesic is the base image for our tutorials image and it isn't tiny by any means
@@ -53,7 +53,7 @@ This will build the `tutorials` image locally on your machine and then runs it w
 
 ![Tutorial Shell](/assets/tutorials-3-tutorials-shell.png)
 
-Now that we're running in our container, let's get into our specific tutorial:
+Now that we're running inside of our container, let's get into our specific tutorial:
 
 ```bash
 cd /tutorials/03-first-aws-environment
@@ -134,7 +134,7 @@ Enter "yes" and this will migrate our local state to our S3 backend. Success!
 atmos terraform backend generate component static-site --stack uw2-dev
 ```
 
-Exactly the same as for our `tfstate-backend` component, our `atmos` `backend generate` command will put a `backend.tf.json` file in our `components/terraform/static-site/` directory so that component will always utilize the correct backend. If this were a real project that we were working on then we'd actually check those files into git so that our backend configuration would persist going forward, but since this is a tutorial we'll skip that step.
+Exactly the same as for our `tfstate-backend` component, our `atmos` `backend generate` command will put a `backend.tf.json` file in our `components/terraform/static-site/` directory so that component will always utilize the correct backend. If this were a real project that we were working on and practicing proper GitOps, then we'd actually check those files into git so that our backend configuration would persist going forward, but since this is a tutorial we'll skip that step.
 
 ### 3. Apply our Static Site
 
@@ -167,10 +167,9 @@ In this tutorial, we've given you a bit more of taste of what it looks like to w
 
 1. We've seen real world components: `tfstate-backend` and `static-site`. These are sharable root modules that you didn't need to configure or touch to get up and running, you just need to supply the configuration. We have a whole library of components (which `tfstate-backend` is one of) over at [`cloudposse/terraform-aws-components`](https://github.com/cloudposse/terraform-aws-components).
 1. We utilized `atmos` to deploy our terraform state backend for our various components and then also generate the `backend.tf.json` files to ensure our components are properly configured from a central configuration in our `stacks/` directory.
-1. You now have an example of what it looks like to organize stack configurations **for different environments and regions**. This is immensely important and is why SweetOps is so powerful: Our stacks centrally define our environments, where they're deployed, and how they're configured. In a normal engineering ecosystem that information is typically only ever in a few senior engineers heads, but with stacks we get it for free as we declare it as code.
+1. You now have an example of what it looks like to organize stack configurations **for different environments and regions**. This is immensely important and is why SweetOps is so powerful: Our stacks centrally define our environments, where they're deployed, and how they're configured; the components are completely agnostic to their environment and only responsible for business logic. This separation is critical to building reusable, composable infrastructure. Not to mention, we ensure that critical configurations are declared as code and not just committed to the memory of a few senior engineers.
 
 With this knowledge, you're now ready to actually build projects on AWS using the SweetOps methodology!
-
 
 
 
