@@ -42,10 +42,15 @@ cd tutorials
 Now that we've got our code, we're going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we're going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire `tutorials` repository is actually Dockerized to make that part easy, so let's build and run our `cloudposse/tutorials` image:
 
 ```bash
+# Pull our build-harness
+make init
+
+# Build our docker image
 # Geodesic is the base image for our tutorials image and it isn't tiny by any means
 # Go grab a coffee while you wait ☕️
 make build
 
+# Run our docker image
 make run
 ```
 
@@ -66,7 +71,7 @@ This `03-first-aws-environment/` directory that you're now in should be looking 
   * `uw2-dev.yaml`: Our dev environment hosted in us-west-2.
   * `uw2-prod.yaml`: Our prod environment hosted in the same region.
   * `ue2-root.yaml`: Our global resources hosted in us-east-2.
-* We've also got a `bin/unquify.sh` file that we'll discuss shortly.
+* We've also got a `bin/uniquify.sh` file that we'll discuss shortly.
 
 Cool, let's jump into our next step and actually do something with this small project.
 
@@ -170,40 +175,3 @@ In this tutorial, we've given you a bit more of taste of what it looks like to w
 1. You now have an example of what it looks like to organize stack configurations **for different environments and regions**. This is immensely important and is why SweetOps is so powerful: Our stacks centrally define our environments, where they're deployed, and how they're configured; the components are completely agnostic to their environment and only responsible for business logic. This separation is critical to building reusable, composable infrastructure. Not to mention, we ensure that critical configurations are declared as code and not just committed to the memory of a few senior engineers.
 
 With this knowledge, you're now ready to actually build projects on AWS using the SweetOps methodology!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
