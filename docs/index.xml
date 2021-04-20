@@ -25,6 +25,16 @@
     </item>
     
     <item>
+      <title>Stacks</title>
+      <link>https://cloudposse.github.io/docs/reference/stacks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cloudposse.github.io/docs/reference/stacks/</guid>
+      <description>Background Stacks are a central SweetOps abstraction layer that are used to instantiate components. They&amp;rsquo;re a set of YAML files that follow a standard schema to enable a fully declarative description of your various environments. This empowers you with the ability to separate your infrastructure&amp;rsquo;s environment configuration settings from the business logic behind it (provided via components).
+SweetOps utilizes YAML configuration for stacks because it&amp;rsquo;s an easy to work with format that is nicely portable across multiple tools.</description>
+    </item>
+    
+    <item>
       <title>Getting started with Atmos</title>
       <link>https://cloudposse.github.io/docs/tutorials/atmos-getting-started/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -42,6 +52,16 @@ In this tutorial we&amp;rsquo;ll be looking at a simple (albeit contrived) examp
       <guid>https://cloudposse.github.io/docs/fundamentals/philosophy/</guid>
       <description>SweetOps is built on a foundational philosophy that ensures the methodology is comprehensive and reusable across organizations. To fully understand what SweetOps is and how to utilize it effectively, it&amp;rsquo;s critical to understand the backing principles that define it.
 100% Open Source All of the primary technology that enables SweetOps is Open Sourced by Cloud Posse and the community under Apache 2.0 Open Source Software License. Using open source licensing is a practical, deliberate strategy.</description>
+    </item>
+    
+    <item>
+      <title>Tools</title>
+      <link>https://cloudposse.github.io/docs/reference/tools/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cloudposse.github.io/docs/reference/tools/</guid>
+      <description>1Password The 1Password for Teams product by AgileBits is argubably the most popular SaaS-based password management tool. In our opinion, it offers a better user experience over apps like LastPass as well as provides integration with Duo and Slack for real-time activity notifications.
+Best Practices Here are some of our recommended practices for working with 1Password. If your organization choses an alternative password management solution, we recommend implementing compensating controls.</description>
     </item>
     
     <item>
@@ -1330,16 +1350,6 @@ curl -sSL https://get.rvm.io | bash </description>
       
       <guid>https://cloudposse.github.io/docs/glossary/docker-bash/</guid>
       <description>The docker-bash pattern is an approach to installing software on your local machine via your terminal and docker. It utilizes docker run to output a script which is then piped (i.e. | ) into bash. This enables the script to execute code on your machine which then does whatever setup or installation steps it needs to do to install the target software. Geodesic utilizes this pattern via the init script which is expected to be piped into bash:</description>
-    </item>
-    
-    <item>
-      <title>Tools</title>
-      <link>https://cloudposse.github.io/docs/reference/tools/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://cloudposse.github.io/docs/reference/tools/</guid>
-      <description>1Password The 1Password for Teams product by AgileBits is argubably the most popular SaaS-based password management tool. In our opinion, it offers a better user experience over apps like LastPass as well as provides integration with Duo and Slack for real-time activity notifications.
-Best Practices Here are some of our recommended practices for working with 1Password. If your organization choses an alternative password management solution, we recommend implementing compensating controls.</description>
     </item>
     
     <item>

@@ -8,11 +8,17 @@
   </url><url>
     <loc>https://cloudposse.github.io/docs/fundamentals/introduction/</loc>
   </url><url>
+    <loc>https://cloudposse.github.io/docs/reference/stacks/</loc>
+  </url><url>
     <loc>https://cloudposse.github.io/docs/tutorials/atmos-getting-started/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/fundamentals/philosophy/</loc>
   </url><url>
+    <loc>https://cloudposse.github.io/docs/reference/tools/</loc>
+  </url><url>
     <loc>https://cloudposse.github.io/docs/tutorials/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/reference/best-practices/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/fundamentals/concepts/</loc>
   </url><url>
@@ -48,6 +54,8 @@
   </url><url>
     <loc>https://cloudposse.github.io/docs/documentation/question/</loc>
   </url><url>
+    <loc>https://cloudposse.github.io/docs/tags/atmos/</loc>
+  </url><url>
     <loc>https://cloudposse.github.io/docs/tags/audit-logs/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/automated-deployments/</loc>
@@ -75,8 +83,6 @@
     <loc>https://cloudposse.github.io/docs/tags/best-practices/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/glossary/best-practices/</loc>
-  </url><url>
-    <loc>https://cloudposse.github.io/docs/reference/best-practices/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/best-practice/</loc>
   </url><url>
@@ -163,6 +169,8 @@
     <loc>https://cloudposse.github.io/docs/categories/community-resources/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/component/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/tags/concept/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/config/</loc>
   </url><url>
@@ -601,8 +609,6 @@
     <loc>https://cloudposse.github.io/docs/tags/tls/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/tool/</loc>
-  </url><url>
-    <loc>https://cloudposse.github.io/docs/reference/tools/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tags/tools/</loc>
   </url><url>
