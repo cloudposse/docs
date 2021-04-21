@@ -63,7 +63,7 @@ Now that we're running inside of our container, let's start a new shell as your 
 ```bash
 # First let's enter a new shell with credentials from your AWS profile
 # This will enable our interactions with AWS through Terraform in the rest of the tutorial to be properly authenticated
-aws-vault exec $YOUR_PROFILE -- bash
+aws-vault exec $YOUR_PROFILE -- sh
 
 cd /tutorials/03-first-aws-environment
 ```
@@ -75,7 +75,7 @@ This `03-first-aws-environment/` directory that you're now in should be looking 
   * `uw2-dev.yaml`: Our dev environment hosted in us-west-2.
   * `uw2-prod.yaml`: Our prod environment hosted in the same region.
   * `ue2-root.yaml`: Our global resources hosted in us-east-2.
-* We've also got a `bin/uniquify.sh` file that we'll discuss shortly.
+* We've also got a `bin/random-pet.sh` file that we'll discuss shortly.
 
 Cool, let's jump into our next step and actually do something with this small project.
 
@@ -83,10 +83,10 @@ Cool, let's jump into our next step and actually do something with this small pr
 
 In our last tutorial, we showed `atmos` being used to apply some fairly simple terraform projects that didn't actually create any resources in the cloud. For this tutorial however, we're going to be creating a simple static site in AWS and as part of that we should be sure to follow one of the most important best practices in terraform: **Use remote state**. Luckily, `atmos` and stacks make that easy on us by providing a simple abstraction layer to configure all our terraform components with a single backend config. In this example we'll be using the S3 backend and [the tfstate-backend component](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/tfstate-backend) to automate the resources we need for that backend, so let's dive into that:
 
-1. To start off, we need to do something funky that you wouldn't need to do in a normal project setting: We need to create unique names for our project since we're dealing with S3 buckets and their names are global across all AWS accounts. To make that easy on you, we've included `bin/uniquify.sh` which was mentioned previously. This small script generates some random strings and utilizes [`yq`](https://mikefarah.gitbook.io/yq/commands/evaluate) to update some of our stack files to include random names. Let's run that now:
+1. To start off, we need to do something funky that you wouldn't need to do in a normal project setting: We need to create unique names for our project since we're dealing with S3 buckets and their names are global across all AWS accounts. To make that easy on you, we've included `bin/random-pet.sh` which was mentioned previously. This small script generates some random strings and utilizes [`yq`](https://mikefarah.gitbook.io/yq/commands/evaluate) to update some of our stack files to include random names. Let's run that now:
 
 ```bash
-bin/uniquify.sh
+bin/random-pet.sh
 ```
 
 This should update most of our stack and catalog files to now include uniquely generated names.
@@ -96,7 +96,7 @@ This should update most of our stack and catalog files to now include uniquely g
 ```bash
 atmos terraform plan tfstate-backend --stack ue2-root
 
-# Check the plan looks good and doesn't have 'TODO' anywhere if so, be sure to run `bin/uniquify.sh`)
+# Check the plan looks good and doesn't have 'TODO' anywhere if so, be sure to run `bin/random-pet.sh`)
 atmos terraform apply tfstate-backend --stack ue2-root
 ```
 
@@ -161,7 +161,7 @@ Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
 Outputs:
 
 domain_name = "CLOUDFRONT_ID.cloudfront.net"
-s3_bucket_name = "acme-uw2-dev-static-site-RANDOM_ID-origin"
+s3_bucket_name = "acme-uw2-dev-static-site-RANDOM_PET-origin"
 ```
 
 If you copy the `domain_name` value and paste it into your browser then you should see our simple static site!
@@ -174,8 +174,8 @@ As you can see, this deploys our static site for our `dev` environment, but not 
 
 In this tutorial, we've given you a bit more of taste of what it looks like to work on a real project while following the SweetOps methodology:
 
-1. We've seen real world components: `tfstate-backend` and `static-site`. These are sharable root modules that you didn't need to configure or touch to get up and running, you just need to supply the configuration. We have a whole library of components (which `tfstate-backend` is one of) over at [`cloudposse/terraform-aws-components`](https://github.com/cloudposse/terraform-aws-components).
-1. We utilized `atmos` to deploy our terraform state backend for our various components and then also generate the `backend.tf.json` files to ensure our components are properly configured from a central configuration in our `stacks/` directory.
+1. We've seen real world components: `tfstate-backend` and `static-site`. These are sharable root modules that you didn't need write yourself or touch to get up and running, you just need to supply the configuration. We have a whole library of components (which `tfstate-backend` is one of) over at [`cloudposse/terraform-aws-components`](https://github.com/cloudposse/terraform-aws-components).
+1. We utilized `atmos` to deploy our terraform state backend for our various components and then also generate the `backend.tf.json` files to ensure our components are properly being built from a central configuration in our `stacks/` directory.
 1. You now have an example of what it looks like to organize stack configurations **for different environments and regions**. This is immensely important and is why SweetOps is so powerful: Our stacks centrally define our environments, where they're deployed, and how they're configured; the components are completely agnostic to their environment and only responsible for business logic. This separation is critical to building reusable, composable infrastructure. Not to mention, we ensure that critical configurations are declared as code and not just committed to the memory of a few senior engineers.
 
 With this knowledge, you're now ready to actually build projects on AWS using the SweetOps methodology!
