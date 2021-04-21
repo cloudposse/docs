@@ -63,7 +63,7 @@ Now that we're running inside of our container, let's start a new shell as your 
 ```bash
 # First let's enter a new shell with credentials from your AWS profile
 # This will enable our interactions with AWS through Terraform in the rest of the tutorial to be properly authenticated
-aws-vault exec $YOUR_PROFILE -- sh
+aws-vault exec $YOUR_PROFILE -- bash --login
 
 cd /tutorials/03-first-aws-environment
 ```
