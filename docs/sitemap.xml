@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/</loc>
+  </url><url>
     <loc>https://cloudposse.github.io/docs/fundamentals/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/howto/geodesic/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/</loc>
   </url><url>
@@ -23,6 +27,8 @@
     <loc>https://cloudposse.github.io/docs/fundamentals/concepts/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/howto/</loc>
+  </url><url>
+    <loc>https://cloudposse.github.io/docs/tutorials/first-aws-environment/</loc>
   </url><url>
     <loc>https://cloudposse.github.io/docs/reference/</loc>
   </url><url>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Geodesic How-Tos on Cloud Posse Developer Hub</title>
+    <link>https://cloudposse.github.io/docs/howto/geodesic/</link>
+    <description>Recent content in Geodesic How-Tos on Cloud Posse Developer Hub</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://cloudposse.github.io/docs/howto/geodesic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Authenticate with AWS inside Geodesic using `aws-vault`</title>
+      <link>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/</guid>
+      <description>Intro In this how-to, we&amp;rsquo;ll provide a quick step-by-step guide on authenticating with AWS inside Geodesic.
+Prerequisites System Requirements You&amp;rsquo;ll need to have an AWS Account with the ability to create credentials and have Docker installed on your local machine. That&amp;rsquo;s all.
+SweetOps Know-how We expect you&amp;rsquo;ve gone through the tutorial on &amp;ldquo;Getting started with Geodesic&amp;rdquo; prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it&amp;rsquo;s doing.</description>
+    </item>
+    
+  </channel>
+</rss>
