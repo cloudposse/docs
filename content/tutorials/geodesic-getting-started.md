@@ -8,7 +8,7 @@ weight: 1
 
 In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.
 
-In this tutorial, we'll walk you through how to use Geodesic to execute Terraform and other tooling. We'll be sure to talk about what is going on under the hood to ensure you're fully getting the picture.
+In this tutorial, we'll walk you through how to use Geodesic to execute Terraform and other tooling. We'll be sure to talk about what is going on under the hood to ensure you're getting the full picture.
 
 ## Prerequisites
 
@@ -54,7 +54,7 @@ There are a few things going on there, so let's break that down a bit:
 1. We're using the `--volume` flag to mount our `$HOME` directory to `/localhost` in our new container. This is a Geodesic standard practice which enables the container and your corresponding shell session to have access to your dotfiles, configurations, and the projects that you'll work on.
    1. **NOTE**: If you're running on Linux and using Geodesic, any files written to the `--volume` mounts will be owned by the user inside the container, which is `root`. [See here for potential workarounds](https://github.com/moby/moby/issues/3124#issuecomment-104936573).
 1. Finally, after the image name, we're passing `--login`. This is the Docker `CMD` that we're passing to our image. Since we override the Docker `ENTRYPOINT` with a small bash script, our `--login` `CMD` results in calling `/bin/bash --login` which creates a new [bash login shell](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html).
-   1. It's worth noting that since Geodesic `v0.143.2` ([PR #693](https://github.com/cloudposse/geodesic/pull/693)), you can now drop `--login` as default `CMD` will provide the same functionality.
+   1. It's worth noting that since Geodesic `v0.143.2` ([PR #693](https://github.com/cloudposse/geodesic/pull/693)), you can now drop `--login` as the default `CMD` will provide the same functionality.
 
 The result of running this command should look like this:
 

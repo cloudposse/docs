@@ -22,101 +22,52 @@ Prior to starting this tutorial, you should be sure you understand [our various 
 
 ## Tutorial
 
-### 1. Clone the tutorials repository
+### 1. Clone the tutorials repository + Run the `tutorials` image
 
-As part of this tutorial (and others in our tutorial series), we'll be utilizing [our tutorials repository](https://github.com/cloudposse/tutorials). This repository includes code and relevant materials for you to use alongside this tutorial walk through.
+As part of this tutorial (and others following in our tutorial series), we'll be utilizing [our tutorials repository](https://github.com/cloudposse/tutorials). The repository includes code and relevant materials for you to use alongside this tutorial walk through.
 
-Let's clone it to your local machine:
+Let's clone it to your local machine and `cd` into it:
 
 ```bash
 git clone git@github.com:cloudposse/tutorials.git
+
+cd tutorials
 ```
 
-Now that it's on your local machine, let's get into the code that walks us through using `atmos`:
+Now that we've got our code, we're going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we're going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire `tutorials` repository is actually Dockerized to make that part easy, so let's run our `cloudposse/tutorials` image:
 
 ```bash
-cd tutorials/02-atmos
+# Run our docker image
+docker run -it \
+          --rm \
+          --volume "$HOME":/localhost \
+          --volume "$PWD":/tutorials \
+          --name sweetops-tutorials \
+          cloudposse/tutorials:latest;
 ```
 
-### 2. Build the image for our tutorial
+This will pull the `tutorials` image to your local machine, run a new container from that image, and mount the various tutorial folders so you can edit them on your host machine or in the container and the changes will propogate either direction.
 
-Now that we've got our code located on your local machine, let's look at our tutorial's example directory:
+![Tutorial Shell](/assets/tutorials-3-tutorials-shell.png)
+
+Now that we're running inside of our container, let's get into our specific tutorial directory:
+
+```bash
+cd /tutorials/02-atmos
+```
+
+This `02-atmos/` directory should look like the following:
 
 ```
 .
-├── Dockerfile
-├── Makefile
 ├── README.md
 ├── components/
 └── stacks/
 ```
 
-Here we've got a `Dockerfile` and a few other things going on. Let's pop open that `Dockerfile` and look at it quickly:
+### 2. Confirm our tools are working
 
-```Dockerfile
-ARG VERSION=0.141.6
-ARG OS=alpine
-ARG CLI_NAME=atmos
-
-FROM cloudposse/geodesic:$VERSION-$OS
-
-# Geodesic message of the Day
-ENV MOTD_URL="https://geodesic.sh/motd"
-
-ENV DOCKER_IMAGE="cloudposse/atmos"
-ENV DOCKER_TAG="latest"
-
-# Geodesic banner
-ENV BANNER="Atmos Tutorial"
-
-# Install terraform.
-RUN apk add -u terraform-0.14@cloudposse
-# Set Terraform 0.14.x as the default `terraform`.
-RUN update-alternatives --set terraform /usr/share/terraform/0.14/bin/terraform
-
-# Install Atmos
-RUN apk add atmos@cloudposse
-
-COPY components/ /components/
-COPY stacks/ /stacks/
-
-WORKDIR /
-```
-
-Few important pieces to point out here:
-
-1. We're using [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) as our base image. This enables us to provide a consistent, reproducible toolbox to invoke `atmos` from the command line.
-1. We're installing Terraform 0.14 and using that as our default `terraform` executable. Geodesic supports installing multiple concurrent versions of `terraform` using the [`update-alternatives` system](https://manpages.debian.org/stretch/dpkg/update-alternatives.1.en.html).
-1. We're installing `atmos` as a simple binary via `apk`. This is because `atmos` is built and distributed as a [Cloud Posse linux package](https://github.com/cloudposse/packages).
-1. We're copying our `components/` and `stacks/` folder into the image.
-
-Overall, a fairly simple and small set of additions on top of standard Geodesic base image. To get started using this image, first we have to build it. To do so, we could invoke `docker build` manually, but to speed things up we've provided a `make` target to simplify that process:
-
-```bash
-# Pull the Cloud Posse build-harness, which provides some additional utilities
-# that our `build` target uses.
-make init
-
-# Build our local Dockerfile onto out local machines as `cloudposse/atmos:latest`
-make build
-```
-
-Once our image is built, we're ready to run it!
-
-### 3. Run the `atmos` image
-
-Now that we've built our image, we want to run it as a new geodesic shell so we can work on our example. Let's run the following command to do that:
-
-```bash
-docker run -it \
-           --rm \
-           --volume $HOME:/localhost \
-           --volume $PWD/stacks:/stacks \
-           --volume $PWD/components:/components \
-           cloudposse/atmos:latest
-```
-
-Now we should have an interactive bash login shell open into our `cloudposse/atmos` image with our home folder, `stacks/`, and `components/` directories all mounted into it. To check that all is working correctly, let's invoke a couple commands to make sure all is looking good:
+Now that we have an interactive bash login shell open into our `cloudposse/tutorials` image with our home folder, `stacks/`, and `components/` directories all mounted into it, let's check that all is working correctly by invoking a couple commands to make sure things are install correctly:
 
 ```bash
 terraform -v # Should return: Terraform v0.14.XX
@@ -124,16 +75,16 @@ terraform -v # Should return: Terraform v0.14.XX
 atmos version # Should return a simple Semver number.
 ```
 
-Awesome, we've successfully set up `atmos` and we're ready to start using it!
+Awesome, we've successfully seen our first `atmos` command and we're ready to start using it!
 
-### 4. Terraform plan and apply a component
+### 3. Terraform plan and apply a component
 
 Now that we've got access to `atmos`, let's do something simple like execute `plan` and `apply` on some terraform code! To do that, we need two things:
 
-1. Components -- We've provided 3 small example components in our `components/terraform/` directory, which is mounted to `/` inside your running container.
-1. A Stack configuration -- We've provided a simple example stack located at `stacks/example.yaml`. This is similarly mounted to `/` inside your running container.
+1. Components -- We've provided 3 small example components in our `components/terraform/` directory, which is mounted to `/tutorials/02-atmos/` inside your running container.
+1. A Stack configuration -- We've provided a simple example stack located at `stacks/example.yaml`. This is similarly mounted to `/tutorials/02-atmos/` inside your running container.
 
-For our example in this step, we'll use `components/terraform/fetch-location` component. To plan that component, let's execute the following:
+For our example in this step, we'll check out the `components/terraform/fetch-location` component. To plan that component, let's execute the following:
 
 ```bash
 atmos terraform plan fetch-location --stack=example
@@ -147,7 +98,7 @@ So now that we've done a plan... let's get this project applied. We could invoke
 atmos terraform deploy fetch-location --stack=example
 ```
 
-Even though this component didn't have any resources, your deploy’s `apply` step will utilize the [`external`](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/data_source) data source to invoke the component's `fetch_location.sh` script and output your city, region, and country (found by your IP address).
+Even though this component didn't have any resources, your deploy’s `apply` step will utilize the [`http`](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) data source to invoke a request to `https://ipwhois.app/json/` and output your city, region, country, and latitude + longitude (found by your IP address).
 
 Awesome, we've got a component applied, but that would've been pretty trivial to do without `atmos`, right? We consolidated down 3 commands into one which is great, but we can do a lot better... Let's show you where `atmos` really provides value: Workflows.
 
@@ -259,7 +210,7 @@ This should run through our workflow similar to the way we did it before, but th
 
 Wrapping up, we've seen some critical aspects of SweetOps in action as part of this tutorial:
 
-1. Another usage of Geodesic to easily provide a consistent environment where we can invoke `atmos`.
+1. Another usage of Geodesic to easily provide a consistent environment where we have easy access to tools (like `atmos` and `terraform`).
 1. An example stack along with the breakdown of what goes into a stack and why it is a powerful way to describe an environment.
 1. Example components that require a specific workflow in order to execute correctly.
 1. Usage of `atmos` in executing against some terraform code and orchestrating a workflow from our stack.
