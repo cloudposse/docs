@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Get your first AWS environment deployed using Atmos, Stacks, and Vendir\",\"headline\":\"Your first environment on AWS\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Your first environment on AWS\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/first-aws-environment/\",\"wordCount\":1626}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Get your first AWS environment deployed using Atmos, Stacks, and Vendir\",\"headline\":\"Your first environment on AWS\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Your first environment on AWS\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/first-aws-environment/\",\"wordCount\":1602}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials\",\"name\":\"Tutorials\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials/first-aws-environment\",\"name\":\"First aws environment\"},\"position\":4}]}"</script>
 
@@ -488,23 +488,20 @@
 <p>Prior to starting this tutorial, you should be sure that you understand <a href="https://cloudposse.github.io/docs/fundamentals/concepts/">our various concepts and terminology</a> and have gone through our <a href="https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/">Getting started with Geodesic</a> and <a href="https://cloudposse.github.io/docs/tutorials/atmos-getting-started/">Getting started with Atmos tutorial</a> because we&rsquo;ll be building upon the knowledge in both of those tutorials.</p>
 <h2 id="tutorial">Tutorial</h2>
 <h3 id="1-clone-the-tutorials-repository--run-the-tutorials-image">1. Clone the tutorials repository + Run the <code>tutorials</code> image</h3>
-<p>As part of this tutorial (and others in our tutorial series), we&rsquo;ll be utilizing <a href="https://github.com/cloudposse/tutorials">our tutorials repository</a>. This repository includes code and relevant materials for you to use alongside this tutorial walk through.</p>
+<p>As part of this tutorial (and others following in our tutorial series), we&rsquo;ll be utilizing <a href="https://github.com/cloudposse/tutorials">our tutorials repository</a>. This repository includes code and relevant materials for you to use alongside this tutorial walk through.</p>
 <p>Let&rsquo;s clone it to your local machine and <code>cd</code> into it:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone git@github.com:cloudposse/tutorials.git
 
 <span style="color:#111">cd</span> tutorials
-</code></pre></div><p>Now that we&rsquo;ve got our code, we&rsquo;re going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we&rsquo;re going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire <code>tutorials</code> repository is actually Dockerized to make that part easy, so let&rsquo;s build and run our <code>cloudposse/tutorials</code> image:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Pull our build-harness</span>
-make init
-
-<span style="color:#75715e"># Build our docker image</span>
-<span style="color:#75715e"># Geodesic is the base image for our tutorials image and it isn&#39;t tiny by any means</span>
-<span style="color:#75715e"># Go grab a coffee while you wait ☕️</span>
-make build
-
-<span style="color:#75715e"># Run our docker image</span>
-make run
-</code></pre></div><p>This will build the <code>tutorials</code> image locally on your machine and then runs it while also mounting the various tutorial folders so you can edit them on your host machine or in the container and the changes will propogate either direction.</p>
+</code></pre></div><p>Now that we&rsquo;ve got our code, we&rsquo;re going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we&rsquo;re going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire <code>tutorials</code> repository is actually Dockerized to make that part easy, so let&rsquo;s run our <code>cloudposse/tutorials</code> image:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Run our docker image</span>
+docker run -it <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --rm <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --volume <span style="color:#d88200">&#34;</span><span style="color:#111">$HOME</span><span style="color:#d88200">&#34;</span>:/localhost <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --volume <span style="color:#d88200">&#34;</span><span style="color:#111">$PWD</span><span style="color:#d88200">&#34;</span>:/tutorials <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --name sweetops-tutorials <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          cloudposse/tutorials:latest<span style="color:#111">;</span>
+</code></pre></div><p>This will pull the <code>tutorials</code> image to your local machine, run a new container from that image, and mount the various tutorial folders so you can edit them on your host machine or in the container and the changes will propogate either direction.</p>
 <p><img src="https://cloudposse.github.io/docs/assets/tutorials-3-tutorials-shell.png" alt="Tutorial Shell"></p>
 <p>Now that we&rsquo;re running inside of our container, let&rsquo;s start a new shell as your AWS profile and get into our specific tutorial directory:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># First let&#39;s enter a new shell with credentials from your AWS profile</span>
@@ -512,7 +509,7 @@ make run
 aws-vault <span style="color:#111">exec</span> <span style="color:#111">$YOUR_PROFILE</span> -- bash --login
 
 <span style="color:#111">cd</span> /tutorials/03-first-aws-environment
-</code></pre></div><p>This <code>03-first-aws-environment/</code> directory that you&rsquo;re now in should be looking a little bit familiar from our first tutorial:</p>
+</code></pre></div><p>This <code>03-first-aws-environment/</code> directory that you&rsquo;re now in should be looking a little bit familiar from our <code>atmos</code> tutorial:</p>
 <ul>
 <li>We&rsquo;ve got a <code>components/</code> directory which holds terraform components that we&rsquo;re looking to <code>apply</code> to our AWS Account.</li>
 <li>We&rsquo;ve got a <code>stacks/</code> directory which holds the declarative descriptions of 3 environments:

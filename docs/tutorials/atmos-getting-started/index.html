@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn what Atmos is and how you can start using it with stacks to simplify your DevOps Automation tasks.\",\"headline\":\"Getting started with Atmos\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Getting started with Atmos\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/atmos-getting-started/\",\"wordCount\":1858}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"tutorials\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn what Atmos is and how you can start using it with stacks to simplify your DevOps Automation tasks.\",\"headline\":\"Getting started with Atmos\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Getting started with Atmos\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/tutorials/atmos-getting-started/\",\"wordCount\":1693}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials\",\"name\":\"Tutorials\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docstutorials/atmos-getting-started\",\"name\":\"Atmos getting started\"},\"position\":4}]}"</script>
 
@@ -477,88 +477,47 @@
 <h3 id="understanding">Understanding</h3>
 <p>Prior to starting this tutorial, you should be sure you understand <a href="https://cloudposse.github.io/docs/fundamentals/concepts/">our various concepts and terminology</a> and have gone through our <a href="https://cloudposse.github.io/docs/tutorials/geodesic-getting-started/">Getting started with Geodesic</a> tutorial because we&rsquo;ll be using Geodesic as our means to run <code>atmos</code>.</p>
 <h2 id="tutorial">Tutorial</h2>
-<h3 id="1-clone-the-tutorials-repository">1. Clone the tutorials repository</h3>
-<p>As part of this tutorial (and others in our tutorial series), we&rsquo;ll be utilizing <a href="https://github.com/cloudposse/tutorials">our tutorials repository</a>. This repository includes code and relevant materials for you to use alongside this tutorial walk through.</p>
-<p>Let&rsquo;s clone it to your local machine:</p>
+<h3 id="1-clone-the-tutorials-repository--run-the-tutorials-image">1. Clone the tutorials repository + Run the <code>tutorials</code> image</h3>
+<p>As part of this tutorial (and others following in our tutorial series), we&rsquo;ll be utilizing <a href="https://github.com/cloudposse/tutorials">our tutorials repository</a>. The repository includes code and relevant materials for you to use alongside this tutorial walk through.</p>
+<p>Let&rsquo;s clone it to your local machine and <code>cd</code> into it:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone git@github.com:cloudposse/tutorials.git
-</code></pre></div><p>Now that it&rsquo;s on your local machine, let&rsquo;s get into the code that walks us through using <code>atmos</code>:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> tutorials/02-atmos
-</code></pre></div><h3 id="2-build-the-image-for-our-tutorial">2. Build the image for our tutorial</h3>
-<p>Now that we&rsquo;ve got our code located on your local machine, let&rsquo;s look at our tutorial&rsquo;s example directory:</p>
+
+<span style="color:#111">cd</span> tutorials
+</code></pre></div><p>Now that we&rsquo;ve got our code, we&rsquo;re going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we&rsquo;re going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire <code>tutorials</code> repository is actually Dockerized to make that part easy, so let&rsquo;s run our <code>cloudposse/tutorials</code> image:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Run our docker image</span>
+docker run -it <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --rm <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --volume <span style="color:#d88200">&#34;</span><span style="color:#111">$HOME</span><span style="color:#d88200">&#34;</span>:/localhost <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --volume <span style="color:#d88200">&#34;</span><span style="color:#111">$PWD</span><span style="color:#d88200">&#34;</span>:/tutorials <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          --name sweetops-tutorials <span style="color:#8045ff">\
+</span><span style="color:#8045ff"></span>          cloudposse/tutorials:latest<span style="color:#111">;</span>
+</code></pre></div><p>This will pull the <code>tutorials</code> image to your local machine, run a new container from that image, and mount the various tutorial folders so you can edit them on your host machine or in the container and the changes will propogate either direction.</p>
+<p><img src="https://cloudposse.github.io/docs/assets/tutorials-3-tutorials-shell.png" alt="Tutorial Shell"></p>
+<p>Now that we&rsquo;re running inside of our container, let&rsquo;s get into our specific tutorial directory:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> /tutorials/02-atmos
+</code></pre></div><p>This <code>02-atmos/</code> directory should look like the following:</p>
 <pre><code>.
-├── Dockerfile
-├── Makefile
 ├── README.md
 ├── components/
 └── stacks/
-</code></pre><p>Here we&rsquo;ve got a <code>Dockerfile</code> and a few other things going on. Let&rsquo;s pop open that <code>Dockerfile</code> and look at it quickly:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="color:#00a8c8">ARG</span> <span style="color:#111">VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.141.6<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">ARG</span> <span style="color:#111">OS</span><span style="color:#f92672">=</span>alpine
-<span style="color:#00a8c8">ARG</span> <span style="color:#111">CLI_NAME</span><span style="color:#f92672">=</span>atmos
-
-<span style="color:#00a8c8">FROM</span><span style="color:#d88200"> cloudposse/geodesic:$VERSION-$OS</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Geodesic message of the Day</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">ENV</span> <span style="color:#111">MOTD_URL</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;https://geodesic.sh/motd&#34;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">ENV</span> <span style="color:#111">DOCKER_IMAGE</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;cloudposse/atmos&#34;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">ENV</span> <span style="color:#111">DOCKER_TAG</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;latest&#34;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Geodesic banner</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">ENV</span> <span style="color:#111">BANNER</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;Atmos Tutorial&#34;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install terraform.</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">RUN</span> apk add -u terraform-0.14@cloudposse<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Set Terraform 0.14.x as the default `terraform`.</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">RUN</span> update-alternatives --set terraform /usr/share/terraform/0.14/bin/terraform<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install Atmos</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">RUN</span> apk add atmos@cloudposse<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">COPY</span> components/ /components/<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">COPY</span> stacks/ /stacks/<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#00a8c8">WORKDIR</span><span style="color:#d88200"> /</span><span style="color:#960050;background-color:#1e0010">
-</span></code></pre></div><p>Few important pieces to point out here:</p>
-<ol>
-<li>We&rsquo;re using <a href="https://cloudposse.github.io/docs/reference/tools/">Geodesic</a> as our base image. This enables us to provide a consistent, reproducible toolbox to invoke <code>atmos</code> from the command line.</li>
-<li>We&rsquo;re installing Terraform 0.14 and using that as our default <code>terraform</code> executable. Geodesic supports installing multiple concurrent versions of <code>terraform</code> using the <a href="https://manpages.debian.org/stretch/dpkg/update-alternatives.1.en.html"><code>update-alternatives</code> system</a>.</li>
-<li>We&rsquo;re installing <code>atmos</code> as a simple binary via <code>apk</code>. This is because <code>atmos</code> is built and distributed as a <a href="https://github.com/cloudposse/packages">Cloud Posse linux package</a>.</li>
-<li>We&rsquo;re copying our <code>components/</code> and <code>stacks/</code> folder into the image.</li>
-</ol>
-<p>Overall, a fairly simple and small set of additions on top of standard Geodesic base image. To get started using this image, first we have to build it. To do so, we could invoke <code>docker build</code> manually, but to speed things up we&rsquo;ve provided a <code>make</code> target to simplify that process:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Pull the Cloud Posse build-harness, which provides some additional utilities</span>
-<span style="color:#75715e"># that our `build` target uses.</span>
-make init
-
-<span style="color:#75715e"># Build our local Dockerfile onto out local machines as `cloudposse/atmos:latest`</span>
-make build
-</code></pre></div><p>Once our image is built, we&rsquo;re ready to run it!</p>
-<h3 id="3-run-the-atmos-image">3. Run the <code>atmos</code> image</h3>
-<p>Now that we&rsquo;ve built our image, we want to run it as a new geodesic shell so we can work on our example. Let&rsquo;s run the following command to do that:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -it <span style="color:#8045ff">\
-</span><span style="color:#8045ff"></span>           --rm <span style="color:#8045ff">\
-</span><span style="color:#8045ff"></span>           --volume <span style="color:#111">$HOME</span>:/localhost <span style="color:#8045ff">\
-</span><span style="color:#8045ff"></span>           --volume <span style="color:#111">$PWD</span>/stacks:/stacks <span style="color:#8045ff">\
-</span><span style="color:#8045ff"></span>           --volume <span style="color:#111">$PWD</span>/components:/components <span style="color:#8045ff">\
-</span><span style="color:#8045ff"></span>           cloudposse/atmos:latest
-</code></pre></div><p>Now we should have an interactive bash login shell open into our <code>cloudposse/atmos</code> image with our home folder, <code>stacks/</code>, and <code>components/</code> directories all mounted into it. To check that all is working correctly, let&rsquo;s invoke a couple commands to make sure all is looking good:</p>
+</code></pre><h3 id="2-confirm-our-tools-are-working">2. Confirm our tools are working</h3>
+<p>Now that we have an interactive bash login shell open into our <code>cloudposse/tutorials</code> image with our home folder, <code>stacks/</code>, and <code>components/</code> directories all mounted into it, let&rsquo;s check that all is working correctly by invoking a couple commands to make sure things are install correctly:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">terraform -v <span style="color:#75715e"># Should return: Terraform v0.14.XX</span>
 
 atmos version <span style="color:#75715e"># Should return a simple Semver number.</span>
-</code></pre></div><p>Awesome, we&rsquo;ve successfully set up <code>atmos</code> and we&rsquo;re ready to start using it!</p>
-<h3 id="4-terraform-plan-and-apply-a-component">4. Terraform plan and apply a component</h3>
+</code></pre></div><p>Awesome, we&rsquo;ve successfully seen our first <code>atmos</code> command and we&rsquo;re ready to start using it!</p>
+<h3 id="3-terraform-plan-and-apply-a-component">3. Terraform plan and apply a component</h3>
 <p>Now that we&rsquo;ve got access to <code>atmos</code>, let&rsquo;s do something simple like execute <code>plan</code> and <code>apply</code> on some terraform code! To do that, we need two things:</p>
 <ol>
-<li>Components &ndash; We&rsquo;ve provided 3 small example components in our <code>components/terraform/</code> directory, which is mounted to <code>/</code> inside your running container.</li>
-<li>A Stack configuration &ndash; We&rsquo;ve provided a simple example stack located at <code>stacks/example.yaml</code>. This is similarly mounted to <code>/</code> inside your running container.</li>
+<li>Components &ndash; We&rsquo;ve provided 3 small example components in our <code>components/terraform/</code> directory, which is mounted to <code>/tutorials/02-atmos/</code> inside your running container.</li>
+<li>A Stack configuration &ndash; We&rsquo;ve provided a simple example stack located at <code>stacks/example.yaml</code>. This is similarly mounted to <code>/tutorials/02-atmos/</code> inside your running container.</li>
 </ol>
-<p>For our example in this step, we&rsquo;ll use <code>components/terraform/fetch-location</code> component. To plan that component, let&rsquo;s execute the following:</p>
+<p>For our example in this step, we&rsquo;ll check out the <code>components/terraform/fetch-location</code> component. To plan that component, let&rsquo;s execute the following:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform plan fetch-location --stack<span style="color:#f92672">=</span>example
 </code></pre></div><p>If you properly entered your command, you should see a successful plan which resulted in &ldquo;Terraform will perform the following actions&rdquo; followed by &ldquo;Changes to Outputs.&rdquo; You&rsquo;ll notice this first executes a <code>terraform init</code> before doing the plan. This is intentional to ensure <code>atmos</code> can be invoked without prior project setup. Note, we&rsquo;ll discuss the currently unknown <code>--stack</code> parameter shortly.</p>
 <p>So now that we&rsquo;ve done a plan&hellip; let&rsquo;s get this project applied. We could invoke <code>atmos terraform apply ...</code>, but our best option at this point would be to invoke <code>deploy</code> which will execute a terraform <code>init</code>, <code>plan</code>, and <code>apply</code> in sequential order:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform deploy fetch-location --stack<span style="color:#f92672">=</span>example
-</code></pre></div><p>Even though this component didn&rsquo;t have any resources, your deploy’s <code>apply</code> step will utilize the <a href="https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/data_source"><code>external</code></a> data source to invoke the component&rsquo;s <code>fetch_location.sh</code> script and output your city, region, and country (found by your IP address).</p>
+</code></pre></div><p>Even though this component didn&rsquo;t have any resources, your deploy’s <code>apply</code> step will utilize the <a href="https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http"><code>http</code></a> data source to invoke a request to <code>https://ipwhois.app/json/</code> and output your city, region, country, and latitude + longitude (found by your IP address).</p>
 <p>Awesome, we&rsquo;ve got a component applied, but that would&rsquo;ve been pretty trivial to do without <code>atmos</code>, right? We consolidated down 3 commands into one which is great, but we can do a lot better&hellip; Let&rsquo;s show you where <code>atmos</code> really provides value: Workflows.</p>
 <h3 id="5-invoke-an-atmos-workflow">5. Invoke an Atmos Workflow</h3>
 <p>The SweetOps methodology is built on small, composable components because through experience practitioners have found large root modules to become cumbersome: They require long <code>plan</code> times, create large blast radiuses, and don&rsquo;t foster reuse. The tradeoff with smaller root modules (components) however is that you then need to orchestrate them in an order that makes sense for what you&rsquo;re building. That is where <code>atmos</code> workflows come in. Workflows enable you to describe the ordering of how you want to orchestrate your terraform or helmfile components so that you can quickly invoke multiple components via one command. Let&rsquo;s look at an example in our <code>/stacks/example.yaml</code> file:</p>
@@ -645,7 +604,7 @@ atmos version <span style="color:#75715e"># Should return a simple Semver number
 <h2 id="conclusion">Conclusion</h2>
 <p>Wrapping up, we&rsquo;ve seen some critical aspects of SweetOps in action as part of this tutorial:</p>
 <ol>
-<li>Another usage of Geodesic to easily provide a consistent environment where we can invoke <code>atmos</code>.</li>
+<li>Another usage of Geodesic to easily provide a consistent environment where we have easy access to tools (like <code>atmos</code> and <code>terraform</code>).</li>
 <li>An example stack along with the breakdown of what goes into a stack and why it is a powerful way to describe an environment.</li>
 <li>Example components that require a specific workflow in order to execute correctly.</li>
 <li>Usage of <code>atmos</code> in executing against some terraform code and orchestrating a workflow from our stack.</li>
@@ -714,10 +673,9 @@ atmos version <span style="color:#75715e"># Should return a simple Semver number
     </li>
     <li><a href="#tutorial">Tutorial</a>
       <ul>
-        <li><a href="#1-clone-the-tutorials-repository">1. Clone the tutorials repository</a></li>
-        <li><a href="#2-build-the-image-for-our-tutorial">2. Build the image for our tutorial</a></li>
-        <li><a href="#3-run-the-atmos-image">3. Run the <code>atmos</code> image</a></li>
-        <li><a href="#4-terraform-plan-and-apply-a-component">4. Terraform plan and apply a component</a></li>
+        <li><a href="#1-clone-the-tutorials-repository--run-the-tutorials-image">1. Clone the tutorials repository + Run the <code>tutorials</code> image</a></li>
+        <li><a href="#2-confirm-our-tools-are-working">2. Confirm our tools are working</a></li>
+        <li><a href="#3-terraform-plan-and-apply-a-component">3. Terraform plan and apply a component</a></li>
         <li><a href="#5-invoke-an-atmos-workflow">5. Invoke an Atmos Workflow</a></li>
         <li><a href="#6-update-our-stack">6. Update our Stack</a></li>
       </ul>
