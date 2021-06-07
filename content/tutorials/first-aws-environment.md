@@ -29,7 +29,7 @@ Prior to starting this tutorial, you should be sure that you understand [our var
 
 ### 1. Clone the tutorials repository + Run the `tutorials` image
 
-As part of this tutorial (and others in our tutorial series), we'll be utilizing [our tutorials repository](https://github.com/cloudposse/tutorials). This repository includes code and relevant materials for you to use alongside this tutorial walk through.
+As part of this tutorial (and others following in our tutorial series), we'll be utilizing [our tutorials repository](https://github.com/cloudposse/tutorials). This repository includes code and relevant materials for you to use alongside this tutorial walk through.
 
 Let's clone it to your local machine and `cd` into it:
 
@@ -39,22 +39,19 @@ git clone git@github.com:cloudposse/tutorials.git
 cd tutorials
 ```
 
-Now that we've got our code, we're going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we're going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire `tutorials` repository is actually Dockerized to make that part easy, so let's build and run our `cloudposse/tutorials` image:
+Now that we've got our code, we're going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we're going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire `tutorials` repository is actually Dockerized to make that part easy, so let's run our `cloudposse/tutorials` image:
 
 ```bash
-# Pull our build-harness
-make init
-
-# Build our docker image
-# Geodesic is the base image for our tutorials image and it isn't tiny by any means
-# Go grab a coffee while you wait ☕️
-make build
-
 # Run our docker image
-make run
+docker run -it \
+          --rm \
+          --volume "$HOME":/localhost \
+          --volume "$PWD":/tutorials \
+          --name sweetops-tutorials \
+          cloudposse/tutorials:latest;
 ```
 
-This will build the `tutorials` image locally on your machine and then runs it while also mounting the various tutorial folders so you can edit them on your host machine or in the container and the changes will propogate either direction.
+This will pull the `tutorials` image to your local machine, run a new container from that image, and mount the various tutorial folders so you can edit them on your host machine or in the container and the changes will propogate either direction.
 
 ![Tutorial Shell](/assets/tutorials-3-tutorials-shell.png)
 
@@ -68,7 +65,7 @@ aws-vault exec $YOUR_PROFILE -- bash --login
 cd /tutorials/03-first-aws-environment
 ```
 
-This `03-first-aws-environment/` directory that you're now in should be looking a little bit familiar from our first tutorial:
+This `03-first-aws-environment/` directory that you're now in should be looking a little bit familiar from our `atmos` tutorial:
 
 * We've got a `components/` directory which holds terraform components that we're looking to `apply` to our AWS Account.
 * We've got a `stacks/` directory which holds the declarative descriptions of 3 environments:
