@@ -27,7 +27,7 @@ RUN apt-get install -y your-needed-package
 docker build . -t acme:latest
 
 # Install on your machine as your own executable toolbox
-docker run --rm acme:latest | APP_NAME=acme bash -s latest-debian
+docker run --rm acme:latest init | APP_NAME=acme bash -s latest-debian
 
 # Start a new shell in your toolbox
 acme
