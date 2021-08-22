@@ -1,5 +1,4 @@
-#FROM node:11.2-stretch
-FROM node:latest
+FROM node:11.2-stretch
 
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/setup.deb.sh' | bash
 RUN apt-get install hugo htmltest yq
