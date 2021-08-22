@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Stacks&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -529,7 +529,7 @@
 </ul>
 <h2 id="component-inheritance">Component Inheritance</h2>
 <p>Using a component catalog, you can define the default values for all instances of a component across your stacks. But it is also important to note that you can provide default values for multiple instances of a component in a single stack using the component inheritance pattern via the <code>component</code> key / value:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># stacks/catalog/component/s3-bucket.yaml</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># stacks/catalog/component/s3-bucket.yaml</span>
 <span style="color:#f92672">components</span><span style="color:#111">:</span>
   <span style="color:#f92672">terraform</span><span style="color:#111">:</span>
     <span style="color:#f92672">s3-bucket</span><span style="color:#111">:</span>
@@ -539,7 +539,7 @@
         <span style="color:#f92672">acl</span><span style="color:#111">:</span> <span style="color:#ae81ff">private</span>
         <span style="color:#f92672">grants</span><span style="color:#111">:</span> <span style="color:#00a8c8">null</span>
         <span style="color:#f92672">versioning_enabled</span><span style="color:#111">:</span> <span style="color:#00a8c8">true</span>
-</code></pre></div><div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># stacks/uw2-dev.yaml</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># stacks/uw2-dev.yaml</span>
 <span style="color:#f92672">import</span><span style="color:#111">:</span>
   - <span style="color:#ae81ff">catalog/component/s3-bucket</span>
   - <span style="color:#ae81ff">catalog/dev/globals</span>
@@ -577,7 +577,7 @@
 </ol>
 <h1 id="stack-schema">Stack Schema</h1>
 <p><a href="https://github.com/cloudposse/atmos/blob/master/docs/schema/stack-config-schema.json">The official JSON Schema document for Stacks can be found here</a>. The below is a walk through of a complete example utilizing all capabilities.</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># stacks/ue2-dev.yaml</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># stacks/ue2-dev.yaml</span>
 
 <span style="color:#75715e"># `import` enables shared configuration / settings across different stacks</span>
 <span style="color:#75715e"># The referenced files are deep merged into this stack to support granular configuration capabilities</span>

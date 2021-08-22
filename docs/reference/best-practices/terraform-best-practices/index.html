@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Terraform Best Practices&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -530,7 +530,7 @@ of terraform modules as well to aide in the subnet calculations since there are 
 <p>Every mainstream IDE supports plugins for the <code>.editorconfig</code> standard to make it easier to enforce whitespace consistency.</p>
 <p>We recommend adopting the whitespace convention of a particular language or project.</p>
 <p>This is the standard <code>.editorconfig</code> that we use.</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#75715e"># Override for Makefile</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#75715e"># Override for Makefile</span>
 <span style="color:#00a8c8">[{Makefile, makefile, GNUmakefile, Makefile.*}]</span>
 <span style="color:#75af00">indent_style</span> <span style="color:#f92672">=</span> <span style="color:#d88200">tab</span>
 <span style="color:#75af00">indent_size</span> <span style="color:#f92672">=</span> <span style="color:#d88200">4</span>
@@ -613,7 +613,7 @@ retrieved by other terraform modules, or even on the command-line using tools li
 <p><strong>Pro Tip:</strong>  Use <a href="https://github.com/cloudposse/geodesic"><code>geodesic</code></a> to manage all <code>terraform</code> interactions</p>
 <h2 id="use-terraform-cli-to-set-backend-parameters">Use <code>terraform</code> CLI to set backend parameters</h2>
 <p>Promote the reusability of a root module across accounts by avoiding hardcoded backend requirements. Instead, use the Terraform CLI to set the current context.</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-hcl" data-lang="hcl"><span style="color:#00a8c8">terraform</span> {
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-hcl" data-lang="hcl"><span style="color:#00a8c8">terraform</span> {
 <span style="color:#111">  required_version</span> <span style="color:#f92672">=</span><span style="color:#111"> &#34;&gt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#111">.</span><span style="color:#ae81ff">12</span><span style="color:#111">.</span><span style="color:#ae81ff">26</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
 
   <span style="color:#00a8c8">backend</span> <span style="color:#d88200">&#34;s3&#34;</span> {}

@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Concepts&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -479,7 +479,7 @@
 <h2 id="stacks">Stacks</h2>
 <p>Stacks are a way to express the complete infrastructure needed for an environment using a standard YAML configuration format that has been developed by SweetOps. Stacks consist of components and the variables inputs into those components. For example, you configure a stack for each AWS account and then reference the components which comprise that stack. The more modular the components, the easier it is to quickly define a stack without writing any new code.</p>
 <p>Here is an example stack defined for a Dev environment in the us-west-2 region:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># Filename: stacks/uw2-dev.yaml</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># Filename: stacks/uw2-dev.yaml</span>
 <span style="color:#f92672">import</span><span style="color:#111">:</span>
   - <span style="color:#ae81ff">eks/eks-defaults</span>
 

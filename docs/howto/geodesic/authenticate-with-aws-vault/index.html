@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Authenticate with AWS inside Geodesic using `aws-vault`&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -484,13 +484,13 @@
 <h2 id="how-to">How-To</h2>
 <h3 id="1-install-and-start-geodesic">1. Install and start Geodesic</h3>
 <p>First, at your terminal, let&rsquo;s install Geodesic!</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run cloudposse/geodesic:latest-debian <span style="color:#111">|</span> bash
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run cloudposse/geodesic:latest-debian <span style="color:#111">|</span> bash
 </code></pre></div><p>This will install Geodesic as a script at <code>/usr/local/bin/geodesic</code>, which you can then invoke like so:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">geodesic
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">geodesic
 </code></pre></div><p>This small script is just a wrapper around running Geodesic via <code>docker</code> with a couple extra options (like mounting <code>$HOME</code> to <code>/localhost</code>). It should drop you into the Geodesic shell like you would expect.</p>
 <h3 id="2-authenticate-with-aws--aws-vault">2. Authenticate with AWS + aws-vault</h3>
 <p>Geodesic ships with <a href="https://cloudposse.github.io/docs/reference/tools/"><code>aws-vault</code></a> to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console">create a new IAM user and programmatic Access Key ID and Secret Key</a> and be sure to copy those values down somewhere. Now, in your Geodesic shell, let&rsquo;s do the following:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Since our Geodesic shell is on Linux, let&#39;s use the file backend which Linux supports.</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Since our Geodesic shell is on Linux, let&#39;s use the file backend which Linux supports.</span>
 <span style="color:#75715e"># NOTE: It&#39;s not possible to use the OSX Keychain with `aws-vault` running inside of a Docker container.</span>
 <span style="color:#111">export</span> <span style="color:#111">AWS_VAULT_BACKEND</span><span style="color:#f92672">=</span>file
 
@@ -498,7 +498,7 @@
 <span style="color:#75715e"># This will prompt you for the Access Key ID and Secret Key that you copied down earlier, which you should input.</span>
 aws-vault add <span style="color:#111">$YOUR_PROFILE_NAME</span>
 </code></pre></div><p>Now we&rsquo;ve added our credentials to <code>aws-vault</code> and we can easily use <code>aws-vault exec</code> to execute an authenticated command on the AWS CLI like so:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># List all the buckets in your account:</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># List all the buckets in your account:</span>
 aws-vault <span style="color:#111">exec</span> <span style="color:#111">$YOUR_PROFILE_NAME</span> -- aws s3 ls
 
 <span style="color:#75715e"># Or get some information on your user:</span>
@@ -510,7 +510,7 @@ aws-vault <span style="color:#111">exec</span> luke.skywalker -- aws sts get-cal
 [profile $YOUR_PROFILE_NAME]
 credential_process = aws-vault exec $YOUR_PROFILE_NAME --json
 </code></pre><p>Great, now that we&rsquo;ve set that up, our profile is ready to use with our <code>assume-role</code> utility:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Now we run `assume-role` with our newly created profile and this will start a new shell session which is authenticated as that profile for us.</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Now we run `assume-role` with our newly created profile and this will start a new shell session which is authenticated as that profile for us.</span>
 assume-role <span style="color:#111">$YOUR_PROFILE_NAME</span>
 
 <span style="color:#75715e"># We should now see our profile name in our command line prompt and we can now run our AWS CLI</span>

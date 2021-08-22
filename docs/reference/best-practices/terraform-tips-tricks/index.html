@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Terraform Tips &amp; Tricks&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -550,10 +550,10 @@
 <p>We strongly urge that all code be linted prior to checking into Git. Running <code>terraform fmt</code> on the codebase before committing will accomplish this.</p>
 <p>To set this up so that it happens automatically prior to any commit, configure <code>git</code> pre-commit hooks using the <code>pre-commit</code> utility.</p>
 <h5 id="osx-installation">OSX Installation</h5>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install pre-commit
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install pre-commit
 </code></pre></div><p>Then run <code>pre-commit install</code> in a given terraform repo to configure the hooks.</p>
 <h5 id="pre-commit-configyaml">.pre-commit-config.yaml</h5>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#f92672">repo</span><span style="color:#111">:</span> <span style="color:#ae81ff">git://github.com/antonbabenko/pre-commit-terraform</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#f92672">repo</span><span style="color:#111">:</span> <span style="color:#ae81ff">git://github.com/antonbabenko/pre-commit-terraform</span>
   <span style="color:#f92672">sha</span><span style="color:#111">:</span> <span style="color:#ae81ff">v1.45.0</span>
   <span style="color:#f92672">hooks</span><span style="color:#111">:</span>
     - <span style="color:#f92672">id</span><span style="color:#111">:</span> <span style="color:#ae81ff">terraform_fmt</span>

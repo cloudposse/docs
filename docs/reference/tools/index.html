@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Tools&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -568,7 +568,7 @@ aws s3api delete-objects --bucket $BUCKET \
 <ol start="2">
 <li>Using the IAM Access Key ID/Secret generated in Step 1, add the <code>source_profile</code>:</li>
 </ol>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ aws-vault add example
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ aws-vault add example
 </code></pre></div><ol start="3">
 <li>Add the <code>source_profile</code> created in Step 2 to your <code>~/.aws/config</code>.</li>
 </ol>
@@ -590,7 +590,7 @@ source_profile=example
 </code></pre><p>This should open a browser and log you into the AWS console as the assumed role <code>example-staging-admin</code>.</p>
 <h3 id="using-with-geodesic">Using with Geodesic</h3>
 <p><code>aws-vault</code> is available in the geodesic shell. To start the shell, run:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">$CLUSTER_NAME</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">$CLUSTER_NAME</span>
 </code></pre></div><h4 id="add-your-profile-to-aws-vault">Add your profile to AWS Vault</h4>
 <p>Now we are ready to configure your AWS credentials. To add your AWS credentials to the encrypted vault run the following command. Remember to replace <code>example</code> with your source profile name.</p>
 <pre><code>aws-vault add example
@@ -640,7 +640,7 @@ source_profile=example
 <!-- raw HTML omitted -->
 <h3 id="usage">Usage</h3>
 <p>At the top of your <code>Makefile</code> add, the following&hellip;</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-include <span style="color:#00a8c8">$(</span>shell curl -sSL -o .build-harness <span style="color:#d88200">&#34;https://git.io/build-harness&#34;</span><span style="color:#111">;</span> <span style="color:#111">echo</span> .build-harness<span style="color:#00a8c8">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-include <span style="color:#00a8c8">$(</span>shell curl -sSL -o .build-harness <span style="color:#d88200">&#34;https://git.io/build-harness&#34;</span><span style="color:#111">;</span> <span style="color:#111">echo</span> .build-harness<span style="color:#00a8c8">)</span>
 </code></pre></div><p>This will download a <code>Makefile</code> called <code>.build-harness</code> and include it at run-time. We recommend adding the <code>.build-harness</code> file to your <code>.gitignore</code>.</p>
 <p>This automatically exposes many new targets that you can leverage throughout your build &amp; CI/CD process.</p>
 <p>Run <code>make help</code> for a list of available targets.</p>

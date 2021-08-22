@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Your first environment on AWS&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -490,11 +490,11 @@
 <h3 id="1-clone-the-tutorials-repository--run-the-tutorials-image">1. Clone the tutorials repository + Run the <code>tutorials</code> image</h3>
 <p>As part of this tutorial (and others following in our tutorial series), we&rsquo;ll be utilizing <a href="https://github.com/cloudposse/tutorials">our tutorials repository</a>. This repository includes code and relevant materials for you to use alongside this tutorial walk through.</p>
 <p>Let&rsquo;s clone it to your local machine and <code>cd</code> into it:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone git@github.com:cloudposse/tutorials.git
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone git@github.com:cloudposse/tutorials.git
 
 <span style="color:#111">cd</span> tutorials
 </code></pre></div><p>Now that we&rsquo;ve got our code, we&rsquo;re going to want to interact with it using our standard set of tools. Following the SweetOps methodology, we&rsquo;re going to do so using a docker toolbox, which is a Docker image built on top of Geodesic. This entire <code>tutorials</code> repository is actually Dockerized to make that part easy, so let&rsquo;s run our <code>cloudposse/tutorials</code> image:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Run our docker image</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Run our docker image</span>
 docker run -it <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>          --rm <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>          --volume <span style="color:#d88200">&#34;</span><span style="color:#111">$HOME</span><span style="color:#d88200">&#34;</span>:/localhost <span style="color:#8045ff">\
@@ -504,7 +504,7 @@ docker run -it <span style="color:#8045ff">\
 </code></pre></div><p>This will pull the <code>tutorials</code> image to your local machine, run a new container from that image, and mount the various tutorial folders so you can edit them on your host machine or in the container and the changes will propogate either direction.</p>
 <p><img src="https://cloudposse.github.io/docs/assets/tutorials-3-tutorials-shell.png" alt="Tutorial Shell"></p>
 <p>Now that we&rsquo;re running inside of our container, let&rsquo;s start a new shell as your AWS profile and get into our specific tutorial directory:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># First let&#39;s enter a new shell with credentials from your AWS profile</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># First let&#39;s enter a new shell with credentials from your AWS profile</span>
 <span style="color:#75715e"># This will enable our interactions with AWS through Terraform in the rest of the tutorial to be properly authenticated</span>
 aws-vault <span style="color:#111">exec</span> <span style="color:#111">$YOUR_PROFILE</span> -- bash --login
 
@@ -527,12 +527,12 @@ aws-vault <span style="color:#111">exec</span> <span style="color:#111">$YOUR_PR
 <ol>
 <li>To start off, we need to do something funky to generate unique resource names. This is due to this tutorial being used by many people, so it&rsquo;s not something a normal project setting would need. The reasoning is that this tutorial is creating S3 buckets and their names need to be globally unique across all AWS accounts. To make that easy on you, we&rsquo;ve included a little helper script (<code>bin/random-pet.sh</code>) which was mentioned previously. This small script generates some random pet names and utilizes <a href="https://mikefarah.gitbook.io/yq/commands/evaluate"><code>yq</code></a> to update some of our stack files to include those random names. Let&rsquo;s run that now:</li>
 </ol>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bin/random-pet.sh
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bin/random-pet.sh
 </code></pre></div><p>This should update most of our stack and catalog files to now include uniquely generated names.</p>
 <ol start="2">
 <li>Next, we need to get our <code>tfstate-backend</code> component deployed using local state before we can actually utilize any backend. This is a good example of <a href="https://en.wikipedia.org/wiki/Chicken_or_the_egg">the chicken or the egg problem</a>, so it&rsquo;s a bit funky but luckily we only need to do this initial set of steps once for all components. To get started let&rsquo;s plan and apply our <code>tfstate-backend</code> component:</li>
 </ol>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform plan tfstate-backend --stack ue2-root
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform plan tfstate-backend --stack ue2-root
 
 <span style="color:#75715e"># Check the plan looks good and doesn&#39;t have &#39;TODO&#39; anywhere if so, be sure to run `bin/random-pet.sh`)</span>
 atmos terraform apply tfstate-backend --stack ue2-root
@@ -540,14 +540,14 @@ atmos terraform apply tfstate-backend --stack ue2-root
 <ol start="3">
 <li>Next, let&rsquo;s generate the configuration for that backend:</li>
 </ol>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform backend generate component tfstate-backend --stack ue2-root
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform backend generate component tfstate-backend --stack ue2-root
 </code></pre></div><p>This will look at our stack, find the imported <code>terraform.backend.s3</code> configuration and build a valid <code>backend.tf.json</code> file and put it in our component directory. Then going forward, whenver we <code>plan</code> or <code>apply</code> against that component it will be properly configured to use that S3 backend.</p>
 <ol start="4">
 <li>Now that we have our <code>backend.tf.json</code> file, we can change over our <code>tfstate-backend</code> component from using local state to its S3 backend:</li>
 </ol>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform plan tfstate-backend --stack ue2-root
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform plan tfstate-backend --stack ue2-root
 </code></pre></div><p>This will prompt you with the following:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Do you want to migrate all workspaces to &#34;s3&#34;?
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Do you want to migrate all workspaces to &#34;s3&#34;?
 Both the existing &#34;local&#34; backend and the newly configured &#34;s3&#34; backend
 support workspaces. When migrating between backends, Terraform will copy
 all workspaces (with the same names). THIS WILL OVERWRITE any conflicting
@@ -565,13 +565,13 @@ Enter a value:
 <ol start="5">
 <li>Now that we&rsquo;ve migrated our single &ldquo;chicken or the egg&rdquo; component, we&rsquo;ll want to generate the <code>backend.tf.json</code> file for our other components as well considering we&rsquo;ll want them to use the S3 backend too. Luckily for us, there is only one, simple component as part of this tutorial: <code>components/terraform/static-site</code>. Let&rsquo;s go ahead and generate the backend config for that component:</li>
 </ol>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform backend generate component static-site --stack uw2-dev
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform backend generate component static-site --stack uw2-dev
 </code></pre></div><p>Exactly the same as for our <code>tfstate-backend</code> component, our <code>atmos</code> <code>backend generate</code> command will put a <code>backend.tf.json</code> file in our <code>components/terraform/static-site/</code> directory so that component will always utilize the correct backend. If this were a real project that we were working on and practicing proper GitOps, then we&rsquo;d actually check those files into git so that our backend configuration would persist going forward, but since this is a tutorial we&rsquo;ll skip that step.</p>
 <h3 id="3-apply-our-static-site">3. Apply our Static Site</h3>
 <p>Next, let&rsquo;s move onto applying our <code>static-site</code> component to actually build something real on AWS. Well that&rsquo;s pretty simple actually:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform deploy static-site --stack uw2-dev
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">atmos terraform deploy static-site --stack uw2-dev
 </code></pre></div><p>This command will plan and apply our <code>static-site</code> component with our configuration specified in our <code>stacks/uw2-dev.yaml</code> stack. This should output something similar to the following at the end:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
 
 Outputs:
 

@@ -4,7 +4,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.84.0" />
+<meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
 <title>Getting started with Geodesic&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
@@ -500,7 +500,7 @@
 <h2 id="tutorial">Tutorial</h2>
 <h3 id="1-start-the-geodesic-shell">1. Start the Geodesic Shell</h3>
 <p>First, at your terminal, let&rsquo;s start up the Geodesic shell!</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -it --rm --volume <span style="color:#111">$HOME</span>:/localhost cloudposse/geodesic:latest-debian --login
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -it --rm --volume <span style="color:#111">$HOME</span>:/localhost cloudposse/geodesic:latest-debian --login
 </code></pre></div><p>There are a few things going on there, so let&rsquo;s break that down a bit:</p>
 <ol>
 <li>We&rsquo;re using <code>docker run</code> to start a new container using the image <code>cloudposse/geodesic:latest-debian</code> which is <a href="https://hub.docker.com/r/cloudposse/geodesic">hosted on Docker Hub</a></li>
@@ -521,7 +521,7 @@
 <p><img src="https://cloudposse.github.io/docs/assets/geodesic-login-shell.png" alt="Geodesic Login Shell"></p>
 <h3 id="2-download-our-tutorial-project">2. Download our Tutorial Project</h3>
 <p>Great &ndash; we&rsquo;ve started up Geodesic so now let&rsquo;s do something with it. How about we pull a terraform project and apply it? To accomplish this, let&rsquo;s do the following:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Change to our /localhost directory so that we can pull our project&#39;s code to our</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Change to our /localhost directory so that we can pull our project&#39;s code to our</span>
 <span style="color:#75715e"># local machine as well as our docker container</span>
 <span style="color:#111">cd</span> /localhost
 
@@ -533,7 +533,7 @@ git clone https://github.com/cloudposse/tutorials
 </code></pre></div><p>Easy! And since we changed into our <code>/localhost</code> directory inside Geodesic, the <code>tutorials</code> project that we git cloned is available both in the container that we&rsquo;re running our shell in <strong>and</strong> on our local machine in our <code>$HOME</code> directory. This enables us to share files between our local machine and our container, which should start to give you an idea of the value of mounting <code>$HOME</code> into Geodesic.</p>
 <h3 id="3-apply-our-terraform-project">3. Apply our Terraform Project</h3>
 <p>Now that we&rsquo;ve got some code to work with, let&rsquo;s apply it&hellip;</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Setup our terraform project</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Setup our terraform project</span>
 terraform init
 
 <span style="color:#75715e"># Apply our terraform project</span>
@@ -542,7 +542,7 @@ terraform apply -auto-approve
 <p>Just to show some simple usage of another tool in the toolbox, how about we pull apart that info and get that hero&rsquo;s name?</p>
 <h3 id="4-read-some-data-from-our-outputs">4. Read some data from our Outputs</h3>
 <p>Let&rsquo;s utilize <a href="https://github.com/stedolan/jq"><code>jq</code></a> to grab some info from that terraform project&rsquo;s output:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Pipe our terraform project&#39;s output into jq so we can pull out our hero&#39;s name</span>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Pipe our terraform project&#39;s output into jq so we can pull out our hero&#39;s name</span>
 terraform output -json <span style="color:#111">|</span> jq .star_wars_data.value.name
 </code></pre></div><p>Again, without having to install anything, we&rsquo;ve grabbed a tool from our toolbox and were able to use it without a second thought.</p>
 <h2 id="conclusion">Conclusion</h2>
