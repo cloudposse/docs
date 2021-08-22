@@ -1,5 +1,5 @@
 ---
-title: "Authenticate with AWS inside Geodesic using `aws-vault` _(Deprecated)_"
+title: "Authenticate with AWS inside of Geodesic using `aws-vault` _(Deprecated)_"
 description: "Learn how to authenticate within Geodesic using AWS IAM Credentials and `aws-vault`."
 weight: 99
 ---
@@ -7,7 +7,7 @@ weight: 99
 ## Intro
 
 In this how-to, we'll provide a step-by-step guide on 
-how we used to recommend authenticating with AWS inside Geodesic, using `aws-vault`.
+how we used to recommend authenticating with AWS inside of Geodesic, using `aws-vault`.
 This remains for historical reference and for companies who have been using
 `aws-vault` for a while and want to train new users. **Cloud Posse no longer
 recommends this workflow. See** [Authenticate with AWS using Leapp]({{< relref "howto/geodesic/authenticate-with-leapp.md" >}}) **for the currently recommended procedure.**

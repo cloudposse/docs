@@ -182,7 +182,7 @@ aws-vault add example
 #### Troubleshooting
 
 Most problems stem from misconfiguration. _**Note:** `aws-vault` configuration conflicts
-with the currently recommend Leapp workflow and configuration._
+with the currently recommended Leapp workflow and configuration._
 
 - **Do not** define a `[default]` profile in `~/.aws/credentials` or `[profile default]` in `~/aws/config`
 - **Do not** set `AWS_SDK_LOAD_CONFIG`

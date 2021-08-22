@@ -6,7 +6,7 @@ weight: 1
 ## Intro
 
 In this how-to, we will help you get started using Geodesic to work with AWS
-resources by helping you set up and use Leapp.
+resources by helping you set up and use [Leapp](https://leapp.cloud).
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ resources by helping you set up and use Leapp.
 
 We expect you've gone through the tutorial on ["Getting started with Geodesic"]({{< relref "tutorials/geodesic-getting-started.md" >}}) prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it's doing.
 
-### AWS Region and  Credentials
+### AWS Region and Credentials
 
 #### Region
 
@@ -24,11 +24,11 @@ company. If you are doing this on your own, choose the region closest to
 you geographically. If you are still in doubt, pick
 - `ca-central-1` if in Canada,
 - `us-east-2` if in the United States east of the Mississippi,
-- `us-west-2` anywhere else in the North America or anywhere in Central America,
+- `us-west-2` if anywhere else in the North America or anywhere in Central America,
 - `sa-east-1` if in South America,
 - `eu-north-1` if in Europe,
 - `af-south-1` if in Africa,
-- `ap-south-1` in Asia, or
+- `ap-south-1` if in Asia, or
 - `ap-southeast-2` if in Australia or Antarctica.
 
 #### Credentials
@@ -128,7 +128,7 @@ hopefully will still be of help in guiding you through the Leapp site.
 - The "AWS Profile" setting in Leapp must match _exactly_ the value of
 `$AWS_PROFILE` you found in Geodesic in the earlier step.
 - The "AWS Region" you set in Leapp should be the AWS Region you most often
-use, as discussed [above](#aws-credentials-and-region).
+use, as discussed [above](#aws-region-and-credentials).
 - The "Session Alias" is completely up to you: it is the name for this
 set of credentials that you will see in the UI.
 
