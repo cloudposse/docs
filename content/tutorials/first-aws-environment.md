@@ -16,10 +16,9 @@ To accomplish this tutorial, you'll need the following:
 
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [Docker](https://docs.docker.com/get-docker/)
-- An AWS test account and credentials for that account added to `aws-vault` so they're ready to be used in Geodesic.
+- An AWS test account and credentials for that account added to [Leapp]({{< relref "/reference/tools#leapp" >}}) using the "default" profile so they're ready to be used in Geodesic.
   - We recommend Administrator privileges to make everything easy, but you can likely get away with credentials that only allow S3, CloudFront, and DynamoDB access.
-  - If you haven't set this up before, check out [the Geodesic how-to on authenticating with aws-vault]({{< relref "howto/geodesic/authenticate-with-aws-vault.md" >}}).
-  - We'll refer to your `aws-vault` profile through out this tutorial as `$YOUR_PROFILE`. When you see that, be sure to replace with whatever name you added to `aws-vault`.
+  - If you haven't set this up before, check out [the Geodesic how-to on authenticating with Leapp]({{< relref "howto/geodesic/authenticate-with-leapp.md" >}}).
 
 ### Understanding
 
@@ -58,12 +57,15 @@ This will pull the `tutorials` image to your local machine, run a new container 
 Now that we're running inside of our container, let's start a new shell as your AWS profile and get into our specific tutorial directory:
 
 ```bash
-# First let's enter a new shell with credentials from your AWS profile
-# This will enable our interactions with AWS through Terraform in the rest of the tutorial to be properly authenticated
-aws-vault exec $YOUR_PROFILE -- bash --login
-
 cd /tutorials/03-first-aws-environment
 ```
+
+> _**Troubleshooting tip**:_ If you are logged in with Leapp using profile "default", you should already
+be authenticated in Geodesic and see a green "√" at the begining of the command line prompt.
+> If you are logged in with a different profile name, configure Geodesic to use it by
+> running `export AWS_PROFILE=profile-name` where "profile-name" is the Named Profile in your
+> Leapp session. If you have the profile names in sync but you see a red "✗" instead of the green "√",
+> review the How-To on [authenticating with Leapp]({{< relref "/howto/geodesic/authenticate-with-leapp.md" >}}) and get that working before proceeding further.
 
 This `03-first-aws-environment/` directory that you're now in should be looking a little bit familiar from our `atmos` tutorial:
 

@@ -11,6 +11,7 @@ Copy "Dockerfile.custom" from Geodesic repo and edit to taste (and of course,
 rename it to "Dockerfile")
 
 ```Dockerfile
+
 ARG VERSION=0.142.0
 ARG OS=debian
 
@@ -24,11 +25,14 @@ RUN apt-get update && apt-get install -y your-needed-package
 Copy "Makefile.custom" from Geodesic repo and edit to taste (and of course,
 rename it to "Makefile")
 
-```makefile
+```Dockerfile
+
 export APP_NAME = acme
 export DOCKER_ORG ?= acmecorp
 export DOCKER_IMAGE ?= $(DOCKER_ORG)/toolbox
 ```
+
+Then run `make` to build and install your toolbox.
 
 ```bash
 # Build the toolbox for your Organization (Acme Corp)

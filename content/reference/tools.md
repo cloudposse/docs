@@ -844,12 +844,12 @@ make -C packages/install all
 
 Install specific packages:
 ```
-make -C packages/install aws-vault chamber
+make -C packages/install atmos chamber
 ```
 
 Install to a specific folder:
 ```
-make -C packages/install aws-vault INSTALL_PATH=/usr/bin
+make -C packages/install atmos INSTALL_PATH=/usr/bin
 ```
 
 Add this to a `Dockerfile` to easily install packages:
