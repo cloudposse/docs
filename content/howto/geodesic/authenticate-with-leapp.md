@@ -83,6 +83,8 @@ If using AWS SSO, you will need:
 - Your AWS SSO "start URL", also known as your "portal URL". It should be 
 very close to:
   - `https://something.awsapps.com/start`
+- The region in which AWS SSO has been deployed. This may or may not be the same
+region you will be working in.
 
 ##### AWS IAM User
 
