@@ -6,7 +6,8 @@ weight: 1
 ## Intro
 
 In this how-to, we will help you get started using Geodesic to work with AWS
-resources by helping you set up and use [Leapp](https://leapp.cloud).
+resources by helping you set up and use [Leapp](https://leapp.cloud) to handle 
+credentials and authentication.
 
 ## Prerequisites
 
