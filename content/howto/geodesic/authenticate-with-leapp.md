@@ -7,7 +7,7 @@ weight: 1
 
 In this how-to, we will help you get started using Geodesic to work with AWS
 resources by helping you set up and use [Leapp](https://leapp.cloud) to handle 
-credentials and authentication.
+credentials and authentication. Leapp is an open-source tool that makes this easier.
 
 ## Prerequisites
 
@@ -47,14 +47,11 @@ Okta, or Active Directory. This is also known as a SAML IdP.
 provider. This is AWS _as_ a Single Sign-On provider, allowing you to access
 multiple _permission sets_ within AWS, not using some
 other Single Sign-On provider to sign in to AWS as a single IAM Role. 
-Sadly this is made even
-more confusing by the fact that even though your company has set up 
-AWS _as_ a Single Sign-On provider, you still may be using your company's
-primary SSO provider to authenticate to AWS SSO. 
+Please note that even if your company has set up AWS _as_ a Single Sign-On provider, you still may be using your company's primary SSO provider to authenticate to AWS SSO. 
 - **AWS IAM User**. This is the older way of authenticating to AWS, with a basic
-username (actually an email address) and password to log into the AWS console,
+username and password to log into the AWS console,
 and a long-lived "Access Key" for API access. If you are going to use this
-method, we strongly recommend you enable multi-factor authentication (MFA).
+method, we strongly recommend that you enable multi-factor authentication (MFA).
 
 Based on which kind of credentials you have, you will need to gather different
 information with which to configure Leapp. Whoever is in charge of setting up
@@ -135,7 +132,7 @@ use, as discussed [above](#aws-region-and-credentials).
 - The "Session Alias" is completely up to you: it is the name for this
 set of credentials that you will see in the UI.
 
-As of this writing, the Leapp documentation is at [https://docs.leapp.cloud/](https://docs.leapp.cloud/) and the best set of instructions to follow are the ones under a sub-menu on the left 
+The Leapp documentation is at [https://docs.leapp.cloud/](https://docs.leapp.cloud/) and the best set of instructions to follow are the ones under a sub-menu on the left 
 side of the page: **Tutorials > AWS**
 
 - If you have a **Federated Login**, pick "AWS IAM Federated Role". Most of the 
