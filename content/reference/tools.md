@@ -16,9 +16,10 @@ tags:
 - installer
 - k8s
 - kms
-- password management
+- Leapp
 - make
 - makefile
+- password management
 - s3
 - secrets
 - security
@@ -83,9 +84,16 @@ via: [stackoverflow](https://stackoverflow.com/a/36604650/1237191)
 
 </details>
 
-## AWS Vault
+## _(Deprecated)_ AWS Vault
 
-The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.
+_(Deprecated)_ The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it easy to work with IAM assumed roles across multiple AWS organizations.
+
+  Cloud Posse no longer recommends this tool or workflow now that AWS supports federated login
+  (meaning users never need long-lived AWS API keys) and the current AWS SDKs take a Role ARN
+  as a parameter and automatically assume the role. We recommend [Leapp](#leapp) for managing
+  initial credentials. With the AWS SDK enhancements, Terraform and the `aws` CLI, and by
+  extension EKS (which we now recommend over `kops`), will automatically assume the roles as
+  needed, removing the need to manually assume a role.
 
 <details>
 <summary>More Info</summary>
@@ -103,7 +111,7 @@ The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [
 - Compatible with `~/.aws/config`
 - Automatic logins to AWS Web Console
 
-### Local Configuration
+### _(Deprecated)_ Local Configuration
 We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](#geodesic) sessions.
 
 Add the following to your `~/.bashrc`:
@@ -150,9 +158,16 @@ $ aws-vault login example-staging-admin
 
 This should open a browser and log you into the AWS console as the assumed role `example-staging-admin`.
 
-### Using with Geodesic
+### _(Obsolete)_ Using with Geodesic
 
-`aws-vault` is available in the geodesic shell. To start the shell, run:
+`aws-vault` is no longer preinstalled in the Geodesic shell. It is available
+as a package named "aws-vault" in the Cloud Posse package repository, and
+you can install it at run time by running the appropriate commands
+for your Geodesic Linux distro (e.g. `apt-get install aws-vault` for Debian),
+or you can put a corresponding `RUN` command in your Dockerfile to install it 
+at build time.
+
+To start the shell, run:
 
 ```bash
 $CLUSTER_NAME
@@ -168,7 +183,8 @@ aws-vault add example
 
 #### Troubleshooting
 
-Most problems stem from misconfiguration.
+Most problems stem from misconfiguration. _**Note:** `aws-vault` configuration conflicts
+with the currently recommended Leapp workflow and configuration._
 
 - **Do not** define a `[default]` profile in `~/.aws/credentials` or `[profile default]` in `~/aws/config`
 - **Do not** set `AWS_SDK_LOAD_CONFIG`
@@ -279,7 +295,6 @@ At its core, Geodesic is a DevOps toolkit Linux Distro distributed via Docker fo
 | Tool                                                                 | Purpose                                                                                                                     |
 |:---------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------|
 | [`terraform`](https://github.com/hashicorp/terraform/)               | for provisioning miscellaneous resources on pretty much any cloud                                                           |
-| [`aws-vault`](https://github.com/99designs/aws-vault)                | for securely storing and accessing AWS credentials in an encrypted vault for the purpose of assuming IAM roles              |
 | [`aws-cli`](https://github.com/aws/aws-cli/)                         | for interacting directly with the AWS APIs (E.g. s3, ec2, rds)                                                              |
 | [`helm`](https://github.com/kubernetes/helm/)                        | for installing packages like nginx-ingress or datadog agent on the Kubernetes cluster                                       |
 | [`kubectl`](https://kubernetes.io/docs/user-guide/kubectl-overview/) | for controlling kubernetes resources like deployments, pods, configmaps, etc.                                               |
@@ -302,7 +317,7 @@ But look a little closer and you'll notice there's much more to it. It's also an
 
 ## Gomplate
 
-{{< img src="/assets/gomplate-5869374e.png" title="Gomplate Logo" class="logo" >}}
+{{< img src="/assets/gomplate-5869374e.png" title="Gomplate Template Renderer" class="logo" >}}
 
 A flexible commandline tool for template rendering. Supports lots of local and remote datasources.
 
@@ -501,7 +516,7 @@ chamber exec $service -- helmfile sync
 
 ## Hugo
 
-{{< img src="/assets/hugo-7303d89d.png" title="Hugo Static Site Generator" class="logo tool-logo"  >}}
+{{< img src="/assets/hugo-7303d89d.png" title="Hugo Static Site Generator" class="logo"  >}}
 
 [Hugo](https://gohugo.io/) is one of the most popular open-source static site generators. It also happens to be a rediculously fast framework for building static websites. We use it to build [our documentation](https://github.com/cloudposse/docs/).
 
@@ -510,6 +525,16 @@ What we like about it is that it's written in Go, speaks "markdown" and uses Go-
 ## Kubectl
 
 `kubectl` is the command line tool (cli) for running commands against Kubernetes clusters. Think of it like the AWS CLI to Kubernetes clusters.
+
+## Leapp
+
+[Leapp](https://leapp.cloud) is a GUI tool run on the host computer that manages cloud 
+credentials such as AWS keys. It integrates with Geodesic via the host file system's
+`$HOME` directory. Leapp stores _temporary_ credentials in the standard AWS shared credentials
+file `$HOME/.aws/credentials` (note that all AWS libraries cache temporary credentials 
+on the local file system), which Geodesic makes available inside the running container.
+Leapp runs a daemon process on the host to refresh the credentials as needed, allowing
+them to be as short-lived as possible without requiring human intervention to refresh them.
 
 ## Make
 
@@ -821,12 +846,12 @@ make -C packages/install all
 
 Install specific packages:
 ```
-make -C packages/install aws-vault chamber
+make -C packages/install atmos chamber
 ```
 
 Install to a specific folder:
 ```
-make -C packages/install aws-vault INSTALL_PATH=/usr/bin
+make -C packages/install atmos INSTALL_PATH=/usr/bin
 ```
 
 Add this to a `Dockerfile` to easily install packages:

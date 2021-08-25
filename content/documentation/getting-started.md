@@ -26,7 +26,7 @@ Here are some of the most important tools to be aware of:
 - [`chamber`]({{< relref "reference/tools.md#chamber" >}})
 - [`terraform`]({{< relref "reference/tools.md#terraform" >}})
 - [`gomplate`]({{< relref "reference/tools.md#gomplate" >}})
-- [`aws-vault`]({{< relref "reference/tools.md#aws-vault" >}})
+- [Leapp]({{< relref "reference/tools.md#leapp" >}})
 
 If using kubernetes, then also review these tools:
 
