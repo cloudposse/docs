@@ -160,10 +160,12 @@ This should open a browser and log you into the AWS console as the assumed role 
 
 ### _(Obsolete)_ Using with Geodesic
 
-`aws-vault` is no longer available in the Geodesic shell. It is available
-as a package named "aws-vault" in the Cloud Posse package repository and
-you can install it at build time by adding the appropriate commands 
-to your Dockerfile.
+`aws-vault` is no longer preinstalled in the Geodesic shell. It is available
+as a package named "aws-vault" in the Cloud Posse package repository, and
+you can install it at run time by running the appropriate commands
+for your Geodesic Linux distro (e.g. `apt-get install aws-vault` for Debian),
+or you can put a corresponding `RUN` command in your Dockerfile to install it 
+at build time.
 
 To start the shell, run:
 

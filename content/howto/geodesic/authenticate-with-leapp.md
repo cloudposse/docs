@@ -107,13 +107,15 @@ echo $AWS_PROFILE
 ```
 
 This is the value you will give to the profile in Leapp when you configure it.
-If the output of `echo` is blank, use "default" for the profile name.
+If the output of `echo` is blank, as would be expected if you are running
+our public tutorial image, use "default" for the profile name.
 
 ### Install and Configure Leapp
 
-We are not going to duplicate (and try to keep in sync with updates to) Leapp's
-own documentation on how to install and configure Leapp. We will just give 
-you the big picture steps.
+Please refer to the official Leapp documentation
+for the latest instructions on installing and configuring Leapp. 
+Now that you are armed with the information from
+the previous steps, it should be pretty easy.
 
 - Visit the [Leapp website](https://leapp.cloud)
 - Download and install Leapp as instructed by the website
@@ -127,12 +129,13 @@ hopefully will still be of help in guiding you through the Leapp site.
 
 - The "AWS Profile" setting in Leapp must match _exactly_ the value of
 `$AWS_PROFILE` you found in Geodesic in the earlier step.
-- The "AWS Region" you set in Leapp should be the AWS Region you most often
-use, as discussed [above](#aws-region-and-credentials).
+- The "AWS Region" you set in the Leapp session should be the AWS Region you 
+most often use, as discussed [above](#aws-region-and-credentials).
 - The "Session Alias" is completely up to you: it is the name for this
 set of credentials that you will see in the UI.
 
-The Leapp documentation is at [https://docs.leapp.cloud/](https://docs.leapp.cloud/) and the best set of instructions to follow are the ones under a sub-menu on the left 
+The Leapp documentation is at [https://docs.leapp.cloud/](https://docs.leapp.cloud/) 
+and the best set of instructions to follow are the ones under a sub-menu on the left 
 side of the page: **Tutorials > AWS**
 
 - If you have a **Federated Login**, pick "AWS IAM Federated Role". Most of the 
@@ -150,14 +153,31 @@ profile names. An icon for each session will appear either in gray if logged out
 or orange if logged in (at least those are the current defaults for the "Light" color
 scheme on macOS). Just select the menu item to toggle the state.
 
-Alternately, you an select "Show" from the menu and be shown a richer UI where
+Alternately, you can select "Show" from the menu and be shown a richer UI where
 you can do more, but still the main thing is that you click on a session name
 to change its state and the indicator shows gray for logged out and orange for logged in.
 
-When logging in, you may be shown a miniature web browser screen and asked to
-log in to your IdP (e.g. Okta, Google). You may be prompted for your MFA token.
-If you are using MFA, you should enable Leapp notifications so you can receive prompts
-when your session expires and you need to enter a new MFA token.
+If you are not using IAM user access keys then in order to access AWS you will have
+to log in to your "identity provider" (e.g. Okta, Google) like you do for access
+to other resources. Therefore, when you try to activate a session in Leapp,
+it may open a small web browser window popup or open a window or tab in your 
+default browser so you can complete the login flow, including supplying 
+a second factor if you are using MFA, and perhaps solving a CAPTCHA puzzle. This
+is normal and expected behavior, not a virus or hacking attempt. When you finish
+logging in via the web browser, Leapp uses the credentials provided by your
+identity provider to authenticate to AWS, just as if you were logging into
+the AWS web console or SSO portal. 
+
+Like your web browser, Leapp can store cookies and other information, and 
+in addition, Leapp is able to use your system keychain for secure
+storage of other things like your Secret Access Key. Because of this,
+and depending on your identity provider and their settings, simply being
+logged into your computer may be enough authentication for Leapp to grant
+you access when you enable a session without asking you for anything.
+However, AWS requires periodic refreshing of session keys and if you are 
+using MFA with AWS, you should enable Leapp notifications 
+so you can receive prompts when your AWS session expires and 
+Leapp needs a new MFA token in order to start a new session for you.
 
 ### It should just work
 
@@ -167,7 +187,7 @@ having a green √ and `[default]` or whatever your profile name is. This is
 Geodesic's way of letting you know you are authorized with AWS, and what
 profile you have active. 
 
-You can always confirm your current authentication status with
+You can always confirm your current authentication status by running:
 
 ```bash
 aws sts get-caller-identity
