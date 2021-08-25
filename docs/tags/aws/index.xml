@@ -49,7 +49,7 @@ Best Practices Here are some of our recommended practices for working with 1Pass
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://cloudposse.github.io/docs/glossary/aws-vault/</guid>
-      <description>aws-vault is a utility for securely managing secrets with AWS Systems Manager (SSM) Parameter Store and KMS</description>
+      <description>(Deprecated) aws-vault is a utility for securely managing secrets with AWS Systems Manager (SSM) Parameter Store and KMS. It used to be Cloud Posse&amp;rsquo;s recommended tool for this purpose, but for various reasons we now recommend using Leapp instead.</description>
     </item>
     
     <item>

@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"reference\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"The many tools that make up the SweetOps approach\",\"headline\":\"Tools\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Tools\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/reference/tools/\",\"wordCount\":4237}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"reference\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"The many tools that make up the SweetOps approach\",\"headline\":\"Tools\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Tools\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/reference/tools/\",\"wordCount\":4465}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsreference\",\"name\":\"Reference\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsreference/tools\",\"name\":\"Tools\"},\"position\":4}]}"</script>
 
@@ -226,10 +226,17 @@
       <a href="https://cloudposse.github.io/docs/howto/geodesic/" class="left-sidebar-menu__link">Geodesic How-Tos</a><i class="fa fa-angle-right fa-lg category-icon left-sidebar-menu__icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul class="left-sidebar-menu__submenu">
+      <li data-nav-id="/howto/geodesic/authenticate-with-leapp/" class="left-sidebar-menu__item">
+        <div class="left-sidebar-menu__item-title">
+          <a href="https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-leapp/">
+            Authenticate with AWS using Leapp
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
       <li data-nav-id="/howto/geodesic/authenticate-with-aws-vault/" class="left-sidebar-menu__item">
         <div class="left-sidebar-menu__item-title">
           <a href="https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/">
-            Authenticate with AWS inside Geodesic using <code>aws-vault</code>
+            Authenticate with AWS inside of Geodesic using <code>aws-vault</code> <em>(Deprecated)</em>
           </a><i class="fa fa-circle-thin read-icon"></i>
         </div>
     </li>
@@ -482,11 +489,13 @@
       
       <a class="tags__label label label-default" href="https://cloudposse.github.io/docstags/kms">kms</a>
       
-      <a class="tags__label label label-default" href="https://cloudposse.github.io/docstags/password-management">password management</a>
+      <a class="tags__label label label-default" href="https://cloudposse.github.io/docstags/leapp">Leapp</a>
       
       <a class="tags__label label label-default" href="https://cloudposse.github.io/docstags/make">make</a>
       
       <a class="tags__label label label-default" href="https://cloudposse.github.io/docstags/makefile">makefile</a>
+      
+      <a class="tags__label label label-default" href="https://cloudposse.github.io/docstags/password-management">password management</a>
       
       <a class="tags__label label label-default" href="https://cloudposse.github.io/docstags/s3">s3</a>
       
@@ -543,8 +552,14 @@ aws s3api delete-objects --bucket $BUCKET \
   jq -M '{Objects: [.[&quot;Versions&quot;,&quot;DeleteMarkers&quot;][]|select(.Key == &quot;key-value&quot;)| {Key:.Key, VersionId:.VersionId}], Quiet: false}')&quot;
 </code></pre><p>via: <a href="https://stackoverflow.com/a/36604650/1237191">stackoverflow</a></p>
 <!-- raw HTML omitted -->
-<h2 id="aws-vault">AWS Vault</h2>
-<p>The <a href="https://github.com/99designs/aws-vault"><code>aws-vault</code></a> command line tool by <a href="https://99designs.com/">99 Designs</a> is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it extremely easy to work with IAM assumed roles across multiple AWS organizations.</p>
+<h2 id="_deprecated_-aws-vault"><em>(Deprecated)</em> AWS Vault</h2>
+<p><em>(Deprecated)</em> The <a href="https://github.com/99designs/aws-vault"><code>aws-vault</code></a> command line tool by <a href="https://99designs.com/">99 Designs</a> is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it easy to work with IAM assumed roles across multiple AWS organizations.</p>
+<p>Cloud Posse no longer recommends this tool or workflow now that AWS supports federated login
+(meaning users never need long-lived AWS API keys) and the current AWS SDKs take a Role ARN
+as a parameter and automatically assume the role. We recommend <a href="#leapp">Leapp</a> for managing
+initial credentials. With the AWS SDK enhancements, Terraform and the <code>aws</code> CLI, and by
+extension EKS (which we now recommend over <code>kops</code>), will automatically assume the roles as
+needed, removing the need to manually assume a role.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <h3 id="features">Features</h3>
@@ -556,7 +571,7 @@ aws s3api delete-objects --bucket $BUCKET \
 <li>Compatible with <code>~/.aws/config</code></li>
 <li>Automatic logins to AWS Web Console</li>
 </ul>
-<h3 id="local-configuration">Local Configuration</h3>
+<h3 id="_deprecated_-local-configuration"><em>(Deprecated)</em> Local Configuration</h3>
 <p>We recommend using the <code>file</code> type backend for <code>aws-vault</code> because this is compatible with Linux, which is needed for <a href="#geodesic">Geodesic</a> sessions.</p>
 <p>Add the following to your <code>~/.bashrc</code>:</p>
 <pre><code>export AWS_VAULT_BACKEND=&quot;file&quot;
@@ -588,14 +603,21 @@ source_profile=example
 </ol>
 <pre><code>$ aws-vault login example-staging-admin
 </code></pre><p>This should open a browser and log you into the AWS console as the assumed role <code>example-staging-admin</code>.</p>
-<h3 id="using-with-geodesic">Using with Geodesic</h3>
-<p><code>aws-vault</code> is available in the geodesic shell. To start the shell, run:</p>
+<h3 id="_obsolete_-using-with-geodesic"><em>(Obsolete)</em> Using with Geodesic</h3>
+<p><code>aws-vault</code> is no longer preinstalled in the Geodesic shell. It is available
+as a package named &ldquo;aws-vault&rdquo; in the Cloud Posse package repository, and
+you can install it at run time by running the appropriate commands
+for your Geodesic Linux distro (e.g. <code>apt-get install aws-vault</code> for Debian),
+or you can put a corresponding <code>RUN</code> command in your Dockerfile to install it
+at build time.</p>
+<p>To start the shell, run:</p>
 <div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">$CLUSTER_NAME</span>
 </code></pre></div><h4 id="add-your-profile-to-aws-vault">Add your profile to AWS Vault</h4>
 <p>Now we are ready to configure your AWS credentials. To add your AWS credentials to the encrypted vault run the following command. Remember to replace <code>example</code> with your source profile name.</p>
 <pre><code>aws-vault add example
 </code></pre><h4 id="troubleshooting">Troubleshooting</h4>
-<p>Most problems stem from misconfiguration.</p>
+<p>Most problems stem from misconfiguration. <em><strong>Note:</strong> <code>aws-vault</code> configuration conflicts
+with the currently recommended Leapp workflow and configuration.</em></p>
 <ul>
 <li><strong>Do not</strong> define a <code>[default]</code> profile in <code>~/.aws/credentials</code> or <code>[profile default]</code> in <code>~/aws/config</code></li>
 <li><strong>Do not</strong> set <code>AWS_SDK_LOAD_CONFIG</code></li>
@@ -719,10 +741,6 @@ For a complete description, check out the <a href="https://github.com/segmentio/
 <td style="text-align:left">for provisioning miscellaneous resources on pretty much any cloud</td>
 </tr>
 <tr>
-<td style="text-align:left"><a href="https://github.com/99designs/aws-vault"><code>aws-vault</code></a></td>
-<td style="text-align:left">for securely storing and accessing AWS credentials in an encrypted vault for the purpose of assuming IAM roles</td>
-</tr>
-<tr>
 <td style="text-align:left"><a href="https://github.com/aws/aws-cli/"><code>aws-cli</code></a></td>
 <td style="text-align:left">for interacting directly with the AWS APIs (E.g. s3, ec2, rds)</td>
 </tr>
@@ -769,7 +787,7 @@ For a complete description, check out the <a href="https://github.com/segmentio/
     
     
     <figcaption>
-        <h4>Gomplate Logo</h4>
+        <h4>Gomplate Template Renderer</h4>
         
     </figcaption>
     
@@ -957,7 +975,7 @@ The name of a release can be used as a label. &ndash;selector name=myrelease
 <!-- raw HTML omitted -->
 <h2 id="hugo">Hugo</h2>
 
-<figure class="logo tool-logo">
+<figure class="logo">
     
         <img src="https://cloudposse.github.io/docs/assets/hugo-7303d89d.png"  />
     
@@ -974,6 +992,14 @@ The name of a release can be used as a label. &ndash;selector name=myrelease
 <p>What we like about it is that it&rsquo;s written in Go, speaks &ldquo;markdown&rdquo; and uses Go-templates for rendering all pages.</p>
 <h2 id="kubectl">Kubectl</h2>
 <p><code>kubectl</code> is the command line tool (cli) for running commands against Kubernetes clusters. Think of it like the AWS CLI to Kubernetes clusters.</p>
+<h2 id="leapp">Leapp</h2>
+<p><a href="https://leapp.cloud">Leapp</a> is a GUI tool run on the host computer that manages cloud
+credentials such as AWS keys. It integrates with Geodesic via the host file system&rsquo;s
+<code>$HOME</code> directory. Leapp stores <em>temporary</em> credentials in the standard AWS shared credentials
+file <code>$HOME/.aws/credentials</code> (note that all AWS libraries cache temporary credentials
+on the local file system), which Geodesic makes available inside the running container.
+Leapp runs a daemon process on the host to refresh the credentials as needed, allowing
+them to be as short-lived as possible without requiring human intervention to refresh them.</p>
 <h2 id="make">Make</h2>
 <p>The <code>make</code> command has been around for decades. Predominantly, it was used to build complex projects in C &amp; C++, but it&rsquo;s seen a resurgence in the ops world for automating routine tasks and orchestration of infrastructure-as-code. In the 12-factor pattern, these are your “admin tasks”.</p>
 <p><img src="https://cloudposse.github.io/docs/assets/4132caf-image_3.png" alt="Make is the only orchestrator you&rsquo;ll ever need."></p>
@@ -1141,9 +1167,9 @@ This is a make-ism and nothing to do with shell. Remember, make is really just a
 </code></pre><p>Install everything&hellip;</p>
 <pre><code>make -C packages/install all
 </code></pre><p>Install specific packages:</p>
-<pre><code>make -C packages/install aws-vault chamber
+<pre><code>make -C packages/install atmos chamber
 </code></pre><p>Install to a specific folder:</p>
-<pre><code>make -C packages/install aws-vault INSTALL_PATH=/usr/bin
+<pre><code>make -C packages/install atmos INSTALL_PATH=/usr/bin
 </code></pre><p>Add this to a <code>Dockerfile</code> to easily install packages:</p>
 <pre><code>RUN git clone --depth=1 -b master https://github.com/cloudposse/packages.git /packages &amp;&amp; \
     rm -rf /packages/.git &amp;&amp; \
@@ -1268,11 +1294,11 @@ packages/uninstall/%:
         <li><a href="#delete-all-versions-of-objects-in-an-s3-bucket">Delete all versions of objects in an S3 bucket</a></li>
       </ul>
     </li>
-    <li><a href="#aws-vault">AWS Vault</a>
+    <li><a href="#_deprecated_-aws-vault"><em>(Deprecated)</em> AWS Vault</a>
       <ul>
         <li><a href="#features">Features</a></li>
-        <li><a href="#local-configuration">Local Configuration</a></li>
-        <li><a href="#using-with-geodesic">Using with Geodesic</a></li>
+        <li><a href="#_deprecated_-local-configuration"><em>(Deprecated)</em> Local Configuration</a></li>
+        <li><a href="#_obsolete_-using-with-geodesic"><em>(Obsolete)</em> Using with Geodesic</a></li>
       </ul>
     </li>
     <li><a href="#build-harness">Build Harness</a>
@@ -1327,6 +1353,7 @@ packages/uninstall/%:
     </li>
     <li><a href="#hugo">Hugo</a></li>
     <li><a href="#kubectl">Kubectl</a></li>
+    <li><a href="#leapp">Leapp</a></li>
     <li><a href="#make">Make</a>
       <ul>
         <li><a href="#understanding-makefiles">Understanding Makefiles</a></li>

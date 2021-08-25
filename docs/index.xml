@@ -7,14 +7,13 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="https://cloudposse.github.io/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Authenticate with AWS inside Geodesic using `aws-vault`</title>
-      <link>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/</link>
+      <title>Authenticate with AWS using Leapp</title>
+      <link>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-leapp/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/</guid>
-      <description>Intro In this how-to, we&amp;rsquo;ll provide a quick step-by-step guide on authenticating with AWS inside Geodesic.
-Prerequisites System Requirements You&amp;rsquo;ll need to have an AWS Account with the ability to create credentials and have Docker installed on your local machine. That&amp;rsquo;s all.
-SweetOps Know-how We expect you&amp;rsquo;ve gone through the tutorial on &amp;ldquo;Getting started with Geodesic&amp;rdquo; prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it&amp;rsquo;s doing.</description>
+      <guid>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-leapp/</guid>
+      <description>Intro In this how-to, we will help you get started using Geodesic to work with AWS resources by helping you set up and use Leapp to handle credentials and authentication. Leapp is an open-source tool that makes this easier.
+Prerequisites SweetOps Know-how We expect you&amp;rsquo;ve gone through the tutorial on &amp;ldquo;Getting started with Geodesic&amp;rdquo; prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it&amp;rsquo;s doing.</description>
     </item>
     
     <item>
@@ -94,6 +93,16 @@ Components Components are opinionated, self-contained units of infrastructure as
       <guid>https://cloudposse.github.io/docs/tutorials/first-aws-environment/</guid>
       <description>Intro Up until now, our tutorial content has been been primarily using contrived examples to enable folks to get up to speed with some of the more fundamental SweetOps concepts and tools. This tutorial will be a bit different in that we&amp;rsquo;ll actually get something deployed to your AWS account so you can see how SweetOps works in a more concrete way.
 Prerequisites System Requirements To accomplish this tutorial, you&amp;rsquo;ll need the following:</description>
+    </item>
+    
+    <item>
+      <title>Authenticate with AWS inside of Geodesic using `aws-vault` _(Deprecated)_</title>
+      <link>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/</guid>
+      <description>Intro In this how-to, we&amp;rsquo;ll provide a step-by-step guide on how we used to recommend authenticating with AWS inside of Geodesic, using aws-vault. This remains for historical reference and for companies who have been using aws-vault for a while and want to train new users. Cloud Posse no longer recommends this workflow. See Authenticate with AWS using Leapp for the currently recommended procedure.
+Prerequisites System Requirements You&amp;rsquo;ll need to have an AWS Account with the ability to create credentials and have Docker installed on your local machine.</description>
     </item>
     
     <item>
@@ -196,7 +205,7 @@ Then we have some tests which are based on the terratest library for infrastruct
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://cloudposse.github.io/docs/glossary/aws-vault/</guid>
-      <description>aws-vault is a utility for securely managing secrets with AWS Systems Manager (SSM) Parameter Store and KMS</description>
+      <description>(Deprecated) aws-vault is a utility for securely managing secrets with AWS Systems Manager (SSM) Parameter Store and KMS. It used to be Cloud Posse&amp;rsquo;s recommended tool for this purpose, but for various reasons we now recommend using Leapp instead.</description>
     </item>
     
     <item>

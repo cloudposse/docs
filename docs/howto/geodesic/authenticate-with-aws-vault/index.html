@@ -5,7 +5,7 @@
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="google-site-verification" content="uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g" /><meta name="generator" content="Hugo 0.87.0" />
-<title>Authenticate with AWS inside Geodesic using `aws-vault`&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
+<title>Authenticate with AWS inside of Geodesic using `aws-vault` _(Deprecated)_&nbsp;&mdash;&nbsp;Cloud Posse Developer Hub</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,900" rel="stylesheet">
 <link rel="shortcut icon" href="https://cloudposse.github.io/docs/images/favicon.png" type="image/x-icon" />
 <script type="text/javascript">
@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"howto\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn how to authenticate within Geodesic using AWS IAM Credentials and `aws-vault`.\",\"headline\":\"Authenticate with AWS inside Geodesic using `aws-vault`\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Authenticate with AWS inside Geodesic using `aws-vault`\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/\",\"wordCount\":568}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"howto\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"Learn how to authenticate within Geodesic using AWS IAM Credentials and `aws-vault`.\",\"headline\":\"Authenticate with AWS inside of Geodesic using `aws-vault` _(Deprecated)_\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"Authenticate with AWS inside of Geodesic using `aws-vault` _(Deprecated)_\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/\",\"wordCount\":615}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docshowto\",\"name\":\"Howto\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docshowto/geodesic\",\"name\":\"Geodesic\"},\"position\":4},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docshowto/geodesic/authenticate-with-aws-vault\",\"name\":\"Authenticate with aws vault\"},\"position\":5}]}"</script>
 
@@ -123,7 +123,7 @@
 
 
 
- <a href='https://cloudposse.github.io/docs/'>Home</a> > <a href='https://cloudposse.github.io/docs/howto/'>How-To</a> > <a href='https://cloudposse.github.io/docs/howto/geodesic/'>Geodesic How-Tos</a> > <span class='breadcrumbs__title'>Authenticate with AWS inside Geodesic using <code>aws-vault</code></span>
+ <a href='https://cloudposse.github.io/docs/'>Home</a> > <a href='https://cloudposse.github.io/docs/howto/'>How-To</a> > <a href='https://cloudposse.github.io/docs/howto/geodesic/'>Geodesic How-Tos</a> > <span class='breadcrumbs__title'>Authenticate with AWS inside of Geodesic using <code>aws-vault</code> <em>(Deprecated)</em></span>
 
  
 
@@ -233,10 +233,17 @@
             <i class="fa fa-angle-down fa-lg category-icon left-sidebar-menu__icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul class="left-sidebar-menu__submenu">
+      <li data-nav-id="/howto/geodesic/authenticate-with-leapp/" class="left-sidebar-menu__item">
+        <div class="left-sidebar-menu__item-title">
+          <a href="https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-leapp/">
+            Authenticate with AWS using Leapp
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
       <li data-nav-id="/howto/geodesic/authenticate-with-aws-vault/" class="left-sidebar-menu__item active">
         <div class="left-sidebar-menu__item-title">
           <a href="https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-aws-vault/">
-            Authenticate with AWS inside Geodesic using <code>aws-vault</code>
+            Authenticate with AWS inside of Geodesic using <code>aws-vault</code> <em>(Deprecated)</em>
           </a><i class="fa fa-circle-thin read-icon"></i>
         </div>
     </li>
@@ -456,7 +463,7 @@
 </div>
 <div class="page-content__header">
   <div class="page-content__title-wrapper">
-    <h1 class="page-content__title">Authenticate with AWS inside Geodesic using <code>aws-vault</code></h1>
+    <h1 class="page-content__title">Authenticate with AWS inside of Geodesic using <code>aws-vault</code> <em>(Deprecated)</em></h1>
     
     <p class="page-content__excerpt-text">Learn how to authenticate within Geodesic using AWS IAM Credentials and <code>aws-vault</code>.</p>
     
@@ -475,7 +482,11 @@
     
     
     <h2 id="intro">Intro</h2>
-<p>In this how-to, we&rsquo;ll provide a quick step-by-step guide on authenticating with AWS inside Geodesic.</p>
+<p>In this how-to, we&rsquo;ll provide a step-by-step guide on
+how we used to recommend authenticating with AWS inside of Geodesic, using <code>aws-vault</code>.
+This remains for historical reference and for companies who have been using
+<code>aws-vault</code> for a while and want to train new users. <strong>Cloud Posse no longer
+recommends this workflow. See</strong> <a href="https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-leapp/">Authenticate with AWS using Leapp</a> <strong>for the currently recommended procedure.</strong></p>
 <h2 id="prerequisites">Prerequisites</h2>
 <h3 id="system-requirements">System Requirements</h3>
 <p>You&rsquo;ll need to have an AWS Account with the ability to create credentials and have <a href="https://docs.docker.com/get-docker/">Docker installed</a> on your local machine. <strong>That&rsquo;s all</strong>.</p>
@@ -533,7 +544,7 @@ aws sts get-caller-identity
       
       <div class="chevrons">
         <div id="navigation">
-<a class="nav nav-prev" href="https://cloudposse.github.io/docs/howto/geodesic/" title="Geodesic How-Tos"> <i class="fa fa-chevron-left"></i><label>Geodesic How-Tos</label></a>
+<a class="nav nav-prev" href="https://cloudposse.github.io/docs/howto/geodesic/authenticate-with-leapp/" title="Authenticate with AWS using Leapp"> <i class="fa fa-chevron-left"></i><label>Authenticate with AWS using Leapp</label></a>
     <a class="nav nav-next" href="https://cloudposse.github.io/docs/howto/updating-modules-for-terraform-14/" title="Updating Modules for Terraform 0.14" style="margin-right: 0px;"><label>Updating Modules for Terraform 0.14</label><i class="fa fa-chevron-right"></i></a></div>
       </div>
 
