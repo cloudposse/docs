@@ -29,7 +29,7 @@
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 
 
-<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"glossary\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"This is a SweetOps pattern used to install tooling via a terminal prompt. The primary usage is in Geodesic, which looks like: `docker run --rm cloudposse/geodesic:latest-debian | bash -s latest-debian`\",\"headline\":\"The docker-bash pattern\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"The docker-bash pattern\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/glossary/docker-bash/\",\"wordCount\":86}"</script>
+<script type="application/ld+json">"{\"@context\":\"http://schema.org\",\"@type\":\"BlogPosting\",\"accountablePerson\":\"\",\"articleSection\":\"glossary\",\"author\":\"\",\"copyrightHolder\":\"\",\"copyrightYear\":\"0001\",\"creator\":\"\",\"dateModified\":\"0001-01-01T00:00:00Z\",\"datePublished\":\"0001-01-01T00:00:00Z\",\"description\":\"This is a SweetOps pattern used to install tooling via a terminal prompt. The primary usage is in Geodesic, which looks like: `docker run --rm cloudposse/geodesic:latest-debian init | bash -s latest-debian`\",\"headline\":\"The docker-bash pattern\",\"inLanguage\":\"en-US\",\"keywords\":[\"Blog\"],\"mainEntityOfPage\":{\"@id\":\"https://cloudposse.github.io/docs\",\"@type\":\"WebPage\"},\"name\":\"The docker-bash pattern\",\"publisher\":\"\",\"url\":\"https://cloudposse.github.io/docs/glossary/docker-bash/\",\"wordCount\":87}"</script>
 
 <script type="application/ld+json">"""""""""""""""""""""{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docs\",\"name\":\"Home\"},\"position\":1},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsglossary\",\"name\":\"Glossary\"},\"position\":3},{\"@type\":\"ListItem\",\"item\":{\"@id\":\"https://cloudposse.github.io/docsglossary/docker-bash\",\"name\":\"Docker bash\"},\"position\":4}]}"</script>
 
@@ -458,7 +458,7 @@
   <div class="page-content__title-wrapper">
     <h1 class="page-content__title">The docker-bash pattern</h1>
     
-    <p class="page-content__excerpt-text">This is a SweetOps pattern used to install tooling via a terminal prompt. The primary usage is in Geodesic, which looks like: <code>docker run --rm cloudposse/geodesic:latest-debian | bash -s latest-debian</code></p>
+    <p class="page-content__excerpt-text">This is a SweetOps pattern used to install tooling via a terminal prompt. The primary usage is in Geodesic, which looks like: <code>docker run --rm cloudposse/geodesic:latest-debian init | bash -s latest-debian</code></p>
     
 
     
@@ -489,7 +489,7 @@
     
     
     <p>The docker-bash pattern is an approach to installing software on your local machine via your terminal and docker. It utilizes <code>docker run</code> to output a script which is then piped (i.e. <code>|</code> ) into <code>bash</code>. This enables the script to execute code on your machine which then does whatever setup or installation steps it needs to do to install the target software. Geodesic utilizes this pattern via the <code>init</code> script which is expected to be piped into bash:</p>
-<pre><code>docker run --rm cloudposse/geodesic:latest-debian | bash -s latest-debian
+<pre><code>docker run --rm cloudposse/geodesic:latest-debian init | bash -s latest-debian
 </code></pre>
 
     
