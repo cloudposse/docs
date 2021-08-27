@@ -5,29 +5,41 @@ weight: 1
 draft: true
 ---
 
-Note: These are just scratch notes (in "draft") for now while we're building out the tutorial. I orginally had these in the tutorial, but wanted to keep that simple and figured I'd keep the below content around for usage here.
+Note: These are just scratch notes (in "draft") for now while we're building out the tutorial. I originally had these in the tutorial, but wanted to keep that simple and figured I'd keep the below content around for usage here.
+
+Copy "Dockerfile.custom" from Geodesic repo and edit to taste (and of course,
+rename it to "Dockerfile")
 
 ```Dockerfile
+
 ARG VERSION=0.142.0
 ARG OS=debian
 
 FROM cloudposse/geodesic:$VERSION-$OS
 
-ENV AWS_VAULT_ENABLED=true
-ENV AWS_VAULT_SERVER_ENABLED=true
-ENV AWS_VAULT_BACKEND=file
-
-RUN apt-get install -y your-needed-package
+RUN apt-get update && apt-get install -y your-needed-package
 
 # ... The rest of your configuration
 ```
 
+Copy "Makefile.custom" from Geodesic repo and edit to taste (and of course,
+rename it to "Makefile")
+
+```Dockerfile
+
+export APP_NAME = acme
+export DOCKER_ORG ?= acmecorp
+export DOCKER_IMAGE ?= $(DOCKER_ORG)/toolbox
+```
+
+Then run `make` to build and install your toolbox.
+
 ```bash
 # Build the toolbox for your Organization (Acme Corp)
-docker build . -t acme:latest
+make build
 
 # Install on your machine as your own executable toolbox
-docker run --rm acme:latest init | APP_NAME=acme bash -s latest-debian
+make install
 
 # Start a new shell in your toolbox
 acme
