@@ -48,7 +48,7 @@ endif
 
 export COMPONENTS_DIR ?= static/components
 
--include $(shell curl -sSL -o .build-harness "https://git.io/build-harness"; echo .build-harness)
+-include $(shell curl -sSL -o .build-harness "https://cloudposse.tools/build-harness"; echo .build-harness)
 -include tasks/Makefile.*
 
 ## Install OSX deps
