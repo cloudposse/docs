@@ -179,9 +179,8 @@ components:
 
     fetch-weather:
       vars:
-        # Let's get the weather for a particular day.
-        # Feel free to update to a date more relevant to you!
-        date: 2021/03/28
+        # Let's get the weather for only the last hour.
+        hourly_forecast: true
 
     output-results:
       vars:
@@ -204,7 +203,7 @@ Above we updated a couple variables to change the behavior of our terraform code
 atmos workflow deploy-all -s example
 ```
 
-This should run through our workflow similar to the way we did it before, but this time we'll see our temperature come back from the weather API for the date you specified instead of today's date and we'll skip over our terraform `local-exec`'s `echo` command for pretty printing our weather data. Instead we'll just get our updated weather information as one of our `Outputs`.
+This should run through our workflow similar to the way we did it before, but this time we'll see our temperature come back from the weather API for only the last hour instead of the average for today and we'll skip over our terraform `local-exec`'s `echo` command for pretty printing our weather data. Instead we'll just get our updated weather information as one of our `Outputs`.
 
 ## Conclusion
 
