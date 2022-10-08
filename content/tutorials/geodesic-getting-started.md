@@ -100,7 +100,7 @@ Let's utilize [`jq`](https://github.com/stedolan/jq) to grab some info from that
 
 ```bash
 # Pipe our terraform project's output into jq so we can pull out our hero's name
-terraform output -json | jq .cat_facts_data.value.fact
+terraform output -json | jq .star_wars_data.value.name
 ```
 
 Again, without having to install anything, we've grabbed a tool from our toolbox and were able to use it without a second thought.
