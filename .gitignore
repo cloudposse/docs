@@ -26,3 +26,4 @@ themes/cloudposse/static/js/*
 static/webfonts/*
 static/css/*
 static/js/*
+.hugo_build.lock
