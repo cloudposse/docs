@@ -10,7 +10,7 @@ export default function HomeCallouts() {
             title: 'Get Started',
             subtitle: 'Start with getting familiar with the geodesic, atmos and other tools',
             urlText: 'Get Started',
-            url: useBaseUrl('/intro'),
+            url: useBaseUrl('/intro/'),
         },
         {
             title: 'SweetOps Fundamentals',
