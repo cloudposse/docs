@@ -5,3 +5,4 @@ terms:
 - topology
 - network topology
 ---
+A topology is the arrangement of various elements (links, nodes, etc.) in a network architecture.

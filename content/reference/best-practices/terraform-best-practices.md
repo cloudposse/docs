@@ -15,7 +15,7 @@ categories:
 These are the *opinionated* best-practices we follow at Cloud Posse. They are inspired by years of experience writing terraform
 and borrow on the many other helpful resources like those by [HashiCorp](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html).
 
-See our general [Best Practices]({{< relref "reference/best-practices/_index.md" >}}) which also apply to Terraform.
+See our general [Best Practices](/category/best-practices/) which also apply to Terraform.
 
 # Language
 
@@ -53,7 +53,7 @@ Use instead the [`template_file`](https://www.terraform.io/docs/providers/templa
 
 Linting helps to ensure a consistent code formatting, improves code quality and catches common errors with syntax.
 
-Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks]({{< relref "reference/best-practices/terraform-tips-tricks.md" >}})
+Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks](/reference/best-practices/terraform-tips-tricks.md)
 
 ## Use proper datatype
 
@@ -177,7 +177,7 @@ Rather than outputting a secret, you may output plain text indicating where the 
 
 We prefer to keep terraform outputs symmetrical as much as possible with the upstream resource or module, with exception of prefixes. This reduces the amount of entropy in the code or possible ambiguity, while increasing consistency. Below is an example of what **not* to do. The expected output name is `user_secret_access_key`. This is because the other IAM user outputs in the upstream module are prefixed with `user_`, and then we should borrow the upstream's output name of `secret_access_key` to become `user_secret_access_key` for consistency.
 
-{{< img src="/reference/assets/terraform-outputs-should-be-symmetrical.png" title="Terraform outputs should be symmetrical" >}}
+![Terraform outputs should be symmetrical](/assets/terraform-outputs-should-be-symmetrical.png)
 
 # State
 
@@ -315,7 +315,7 @@ There are many ways to express a module's source. Our convention is to use Terra
 
 The reason to pin to an explicit version rather than a range like `>= 0.22.0` is that any update is capable of breaking something. Any changes to your infrastructure should be implemented and reviewed under your control, not blindly automatic based on when you deployed it.
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+:::info
 
 Prior to Terraform v0.13, our convention was to use the pure git url:
 
@@ -325,4 +325,4 @@ source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0
 
 Note that the `ref` always points explicitly to a `tags` pinned to a specific version. Dropping the `tags/` qualifier means it could be a branch or a tag; we prefer to be explicit.
 
-{{% /dialog %}}
+:::

@@ -13,3 +13,4 @@ tags:
 - google
 - best-practice
 ---
+Single sign-on (SSO) is an authentication system that allows a user to login to multiple applications with one set of credentials.

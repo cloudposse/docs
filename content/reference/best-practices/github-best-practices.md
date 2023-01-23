@@ -1,7 +1,6 @@
 ---
 title: "GitHub Best Practices"
 ---
-{{< wip >}}
 
 ## Use `.gitignore`
 
@@ -9,4 +8,33 @@ Use a `.gitignore` file in the root of every repo to exclude files that should n
 
 Here's an example of the [`.gitignore`](https://github.com/cloudposse/docs/blob/master/.gitignore) from our documentation repository.
 
-{{% include-code-block file=".gitignore" title="Example .gitignore" language="text" %}}
+```txt title=".gitignore example"
+.DS_Store
+.envrc
+.env
+deploy.toml
+deploy.yaml
+test
+test.toml
+test.yaml
+.htmltest.*.yaml
+node_modules
+.build-harness
+build-harness/
+public/*
+algolia/*
+tmp/*
+.gitkeep
+*.swp
+.idea
+*.iml
+package-lock.json
+static/components/*
+static/styleguide/*
+
+themes/cloudposse/static/css/*
+themes/cloudposse/static/js/*
+static/webfonts/*
+static/css/*
+static/js/*
+```

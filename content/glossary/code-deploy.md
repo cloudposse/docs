@@ -6,4 +6,6 @@ terms:
 - Code Deploy
 tags:
 - AWS
+- CodeDeploy
 ---
+Amazon CodeDeploy is a service that automates software deployments to AWS cloud resources.

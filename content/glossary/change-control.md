@@ -8,3 +8,4 @@ tags:
 - change Management
 - change control
 ---
+A formal process followed in order to make changes in a document, systematic process.

@@ -6,3 +6,4 @@ terms:
 - end to end
 - end-to-end
 ---
+The term *end-to-end* encompasses an entire workflow from start to finish.

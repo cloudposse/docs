@@ -7,6 +7,7 @@ terms:
 tags:
 - helmfile
 - helmfile.yaml
+- declarative
 ---
 
 ## References

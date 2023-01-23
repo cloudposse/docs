@@ -1,6 +1,6 @@
 ---
 title: "Infrastructure as Code (IaC)"
-description: "[Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_Code) (IaC) is the process of managing/provisioning Infrastructure as a Service (IaaS) using machine-readable definition files (usually DSLs), rather than rely on humans doing physical/manual hardware configuration."
+description: "Infrastructure as Code (IaC) is the process of managing/provisioning Infrastructure as a Service (IaaS) using machine-readable definition files (usually DSLs), rather than rely on humans doing physical/manual hardware configuration."
 terms:
 - IaC
 - Infrastructure as Code
@@ -12,3 +12,4 @@ tags:
 - IaaS
 - SaaS
 ---
+[Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_Code) (IaC) is the process of managing/provisioning Infrastructure as a Service (IaaS) using machine-readable definition files (usually DSLs), rather than rely on humans doing physical/manual hardware configuration.

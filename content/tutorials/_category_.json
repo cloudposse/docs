@@ -1,0 +1,8 @@
+{
+  "label": "Tutorials",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Lessons on how to utilize SweetOps to implement a project"
+  }
+}

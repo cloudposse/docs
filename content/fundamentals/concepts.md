@@ -1,7 +1,8 @@
 ---
 title: "Concepts"
 description: "Learn more about the core concepts and domain model that make up the SweetOps methodology."
-weight: 3
+sidebar_position: 3
+sidebar_label: "Concepts"
 ---
 
 SweetOps is built on top of a number of high-level concepts and terminology that are critical to understanding prior to getting started. In this document, we break down these concepts to help you get a leg up prior to going through your first tutorial.
@@ -109,7 +110,7 @@ You can see examples of this pattern in the [dns-primary](https://github.com/clo
 
 ## Docker Based Toolbox (aka Geodesic)
 
-In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps tooling.
+In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/reference/tools.mdx#geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps tooling.
 
 Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize `atmos`, `terraform`, `kubectl`, `helmfile`, the AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen `install` commands to get started. It's intended to be used as an interactive cloud automation shell, a base image, or in CI/CD workflows to ensure that all systems are running the same set of versioned, easily accessible tools.
 

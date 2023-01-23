@@ -6,3 +6,4 @@ terms:
 tags:
 - codefresh
 ---
+The ability to run complete, disposable apps on Kubernetes for Staging and Development.

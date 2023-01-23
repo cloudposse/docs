@@ -9,4 +9,6 @@ tags:
 - kubectl
 - kops
 - helm
+- cli
 ---
+`cli` is common abbreviation for `client` and usually refers to some kind of command line tool.

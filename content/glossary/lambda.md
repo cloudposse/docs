@@ -6,3 +6,4 @@ terms:
 tags:
 - AWS
 ---
+AWS serverless (functions as a service) offering.

@@ -1,13 +1,12 @@
 ---
 title: "Code Review Guidelines"
-description: ""
-slug: "code-reviews"
+description: "Code Review Guidelines"
 tags:
   - "Best Practices"
   - "Development"
 ---
 
-Here are some of our tips for conducting *Code Reviews* the SweetOps way. If you haven't already, become familiar with our [Best Practices]({{< relref "reference/best-practices/_index.md" >}}) and [Terraform Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}}).
+Here are some of our tips for conducting *Code Reviews* the SweetOps way. If you haven't already, become familiar with our [Best Practices](/category/best-practices/) and [Terraform Best Practices](/reference/best-practices/terraform-best-practices.md).
 
 1. Use the ["Suggest"](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request) feature as much as possible. This makes it quick and easy for the contributor to accept or dismiss the recommendations.
 2. Use proper markdown in suggestions (e.g. code blocks)

@@ -1,0 +1,18 @@
+.linkRightArrow {
+    color: var(--mg-primary);
+    text-decoration: none;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    line-height: 1.5rem;
+    justify-content: flex-start;
+}
+
+.linkRightArrow:hover {
+    text-decoration: none;
+}
+
+.linkRightArrow span {
+    margin-right: 8px;
+    flex-grow: 0;
+}

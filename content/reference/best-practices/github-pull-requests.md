@@ -44,6 +44,6 @@ Use the following markdown template to describe the Pull Request.
 
 **Pro Tip:** Use a `.github/pull_request_template.md` file to automatically populate this template when creating new Pull Requests.
 
-{{% dialog type="info" icon="fa fa-book" title="Read More" %}}
+:::info
 <https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/>
-{{% /dialog %}}
+:::

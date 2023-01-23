@@ -1,5 +1,6 @@
+
 <!-- markdownlint-disable -->
-# Developer Documentation [![Build Status](https://github.com/cloudposse/docs/workflows/hugo/badge.svg)](https://github.com/cloudposse/docs/actions?query=workflow%3Ahugo) [![Latest Release](https://img.shields.io/github/release/cloudposse/docs.svg)](https://github.com/cloudposse/docs/releases) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# Developer Documentation [![Latest Release](https://img.shields.io/github/release/cloudposse/docs.svg)](https://github.com/cloudposse/docs/releases) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 <!-- markdownlint-restore -->
 
 [![README Header][readme_header_img]][readme_header_link]
@@ -32,7 +33,6 @@ Welcome to the Cloud Posse Developer Hub Documentation Portal.
 All documentation is published to [docs.cloudposse.com](https://docs.cloudposse.com). Here you'll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck.
 
 Let's jump right in! Here's how to get started with our documentation.
-
 
 ---
 
@@ -70,21 +70,15 @@ It's 100% Open Source and licensed under the [Creative Commons Attribution-NonCo
 
 
 
-1. Download [Docker](https://www.docker.com/).
-2. Install the [Atom editor](https://atom.io/)(optional).
+1. Build dependencies
+```
+make all
+```
 
-    * After installation, run `make deps/atom`.
-    * Select _Activate the Atom_ → _Install Shell Commands_ menu item.
-    * Ensure that `/usr/local/bin` is in the `PATH`.
-
-
-3. Run the following commands for faster development:
-   ```
-   export YARN_BUILD_DISABLED=true
-   ```
-4. Run `make init`.
-5. Run `make run COMPONENTS_BUILD=true/false` to start the local server.
-6. Run `make build` to generate static site in `public/`.
+2. Start local web server
+```
+make start
+```
 
 
 
@@ -96,23 +90,9 @@ It's 100% Open Source and licensed under the [Creative Commons Attribution-NonCo
 ```text
 Available targets:
 
-  build                               Generate all static content (outputs to public/) using docker environment
-  components/build                    Build front-end components
-  css                                 Generate all static content (outputs to public/) using docker environment
-  deploy                              Deploy static site to S3
-  deps                                Install package dependencies
-  deps-darwin                         Install OSX deps
   help                                Help screen
   help/all                            Display help for all targets
   help/short                          This help short screen
-  invalidate-cache                    Invalidate CloudFlare cache (all files)
-  reindex                             Update algolia search index
-  release                             Generate a release config
-  run                                 Start the hugo server for live editing using docker environment
-  smoketest                           Run smoketest
-  terraform-modules/update            Update terraform-modules pages
-  test                                Run tests
-  validate                            Validate all html is good
 
 ```
 <!-- markdownlint-restore -->
@@ -126,13 +106,12 @@ Like this project? Please give it a ★ on [our GitHub](https://github.com/cloud
 Are you using this project or any of our other projects? Consider [leaving a testimonial][testimonial]. =)
 
 
+
 ## Related Projects
 
 Check out these related projects.
 
 - [Geodesic](https://github.com/cloudposse/geodesic) - Geodesic is the fastest way to get up and running with a rock solid, production grade cloud platform
-
-
 
 ## Help
 
@@ -205,7 +184,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 ## Copyright
 
-Copyright © 2017-2021 [Cloud Posse, LLC](https://cpco.io/copyright)
+Copyright © 2017-2023 [Cloud Posse, LLC](https://cpco.io/copyright)
 
 
 
@@ -271,7 +250,7 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
-
+<!-- markdownlint-disable -->
   [logo]: https://cloudposse.com/logo-300x69.svg
   [docs]: https://cpco.io/docs?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/docs&utm_content=docs
   [website]: https://cpco.io/homepage?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/docs&utm_content=website
@@ -302,3 +281,4 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [share_googleplus]: https://plus.google.com/share?url=https://github.com/cloudposse/docs
   [share_email]: mailto:?subject=Developer+Documentation&body=https://github.com/cloudposse/docs
   [beacon]: https://ga-beacon.cloudposse.com/UA-76589703-4/cloudposse/docs?pixel&cs=github&cm=readme&an=docs
+<!-- markdownlint-restore -->

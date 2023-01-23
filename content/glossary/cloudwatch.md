@@ -7,4 +7,6 @@ terms:
   - AWS CloudWatch
 tags:
   - AWS
+  - CloudWatch
 ---
+Amazon CloudWatch is a monitoring service for AWS cloud resources and applications.

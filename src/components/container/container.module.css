@@ -1,0 +1,9 @@
+.mgContainer {
+    max-width: 1168px;
+    padding: 0 16px;
+    margin: 0 auto;
+}
+
+.mgContainer__small {
+    max-width: 796px;
+}

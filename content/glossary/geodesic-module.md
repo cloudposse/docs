@@ -7,6 +7,8 @@ tags:
 - Geodesic
 ---
 
+A geodesic module is a docker image that extends the geodesic base image and implements functions specific to that stage or account.
+
 Usually we create geodesic modules that correspond to each AWS organization.
 
 For example, the standard geodesic modules are:

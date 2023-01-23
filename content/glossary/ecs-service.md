@@ -8,3 +8,4 @@ tags:
 - ecs
 - aws
 ---
+An ECS Service is a specified number (the "desired count") of instances of an ECS Task simultaneously running in an Amazon ECS cluster.

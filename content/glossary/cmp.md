@@ -9,4 +9,5 @@ tags:
 - ecs
 - mesos
 - cattle
+- cmp
 ---

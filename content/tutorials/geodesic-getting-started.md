@@ -1,12 +1,12 @@
 ---
 title: "Getting started with Geodesic"
 description: "Learn what Geodesic is and how you can start using it to simplify your local infrastructure development."
-weight: 1
+sidebar_position: 1
 ---
 
 ## Intro
 
-In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic]({{< relref "reference/tools.md#geodesic" >}}) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.
+In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/reference/tools.mdx#geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.
 
 In this tutorial, we'll walk you through how to use Geodesic to execute Terraform and other tooling. We'll be sure to talk about what is going on under the hood to ensure you're getting the full picture.
 
@@ -109,4 +109,4 @@ Again, without having to install anything, we've grabbed a tool from our toolbox
 
 The beautiful thing about all of this is that we didn't need to install anything except Docker on our local machine to make this happen. Tools like `git`, `terraform`(all versions), and `jq` all involve specific installation instructions to get up and running using the correct versions across various machines/teams, but by using Geodesic we're able to quickly skip over all of that and use a container that includes them out of the box alongside [dozens of other tools as well](https://github.com/cloudposse/packages/tree/master/vendor). And with the mounting of our `$HOME` directory to `/localhost` of the container, our Geodesic shell just ends up being an extension of our local machine. That is why we call it a toolbox as it enables consistent usage of CLI tools across your entire organization!
 
-If you want to see another usage of Geodesic, [read our next tutorial in the SweetOps series about one of our most important tools: `atmos`.]({{< relref "tutorials/atmos-getting-started.md" >}})
+If you want to see another usage of Geodesic, [read our next tutorial in the SweetOps series about one of our most important tools: `atmos`.](/tutorials/atmos-getting-started.md)

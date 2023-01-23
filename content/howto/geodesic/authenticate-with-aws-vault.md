@@ -1,7 +1,7 @@
 ---
 title: "Authenticate with AWS inside of Geodesic using `aws-vault` _(Deprecated)_"
 description: "Learn how to authenticate within Geodesic using AWS IAM Credentials and `aws-vault`."
-weight: 99
+sidebar_position: 99
 ---
 
 ## Intro
@@ -10,7 +10,7 @@ In this how-to, we'll provide a step-by-step guide on
 how we used to recommend authenticating with AWS inside of Geodesic, using `aws-vault`.
 This remains for historical reference and for companies who have been using
 `aws-vault` for a while and want to train new users. **Cloud Posse no longer
-recommends this workflow. See** [Authenticate with AWS using Leapp]({{< relref "howto/geodesic/authenticate-with-leapp.md" >}}) **for the currently recommended procedure.**
+recommends this workflow. See** [Authenticate with AWS using Leapp](/howto/geodesic/authenticate-with-leapp.md) **for the currently recommended procedure.**
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ You'll need to have an AWS Account with the ability to create credentials and ha
 
 ### SweetOps Know-how
 
-We expect you've gone through the tutorial on ["Getting started with Geodesic"]({{< relref "tutorials/geodesic-getting-started.md" >}}) prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it's doing.
+We expect you've gone through the tutorial on ["Getting started with Geodesic"](/tutorials/geodesic-getting-started.md) prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it's doing.
 
 ## How-To
 
@@ -43,7 +43,7 @@ This small script is just a wrapper around running Geodesic via `docker` with a 
 
 ### 2. Authenticate with AWS + aws-vault
 
-Geodesic ships with [`aws-vault`]({{< relref "reference/tools.md#aws-vault" >}}) to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
+Geodesic ships with [`aws-vault`](/reference/tools.mdx#aws-vault) to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
 
 ```bash
 # Since our Geodesic shell is on Linux, let's use the file backend which Linux supports.
