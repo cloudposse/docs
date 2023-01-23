@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
 const config = {
   title: 'The Cloud Posse Developer Hub',
   tagline: 'Welcome to the Cloud Posse developer hub. You\'ll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let\'s jump right in!',
-  url: 'https://docs2.cloudposse.com',
+  url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
   onBrokenLinks: 'throw',
@@ -23,7 +23,7 @@ const config = {
         routeBasePath: '/',
         sidebarPath: require.resolve('./sidebars.js'),
         editUrl: ({versionDocsDirPath, docPath, locale}) => {
-          return `https://github.com/cloudposse/cloudposse-docs/edit/cloudposse-docs/docs/${docPath}`;
+          return `https://github.com/cloudposse/docs/edit/master/content/${docPath}`;
         }
       },
     ],
@@ -117,7 +117,7 @@ const config = {
       algolia: {
         appId: process.env.ALGOLIA_APP_ID || '32YOERUX83',
         apiKey: process.env.ALGOLIA_SEARCH_API_KEY || '557985309adf0e4df9dcf3cb29c61928', // this is SEARCH ONLY API key and is not sensitive information
-        indexName: 'docs2dev',
+        indexName: 'docs.cloudposse.com',
         contextualSearch: false
       },
       footer: {
