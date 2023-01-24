@@ -51,6 +51,6 @@ test
 test.toml
 test.yaml
 .htmltest.*.yaml
-algolia/*
+algolia.index.json
 tmp/*
 *.swp
