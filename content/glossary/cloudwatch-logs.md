@@ -8,3 +8,4 @@ tags:
   - AWS
   - fluentd
 ---
+Amazon CloudWatch Logs is a central store for managing logs from AWS cloud resources and applications.

@@ -32,10 +32,10 @@ docker images -q --filter "dangling=true" | xargs docker rmi
 
 The docker system prune command is a shortcut that prunes images, containers, and networks.
 
-{{% dialog type="info" icon="fa fa-info-circle" title="Note" %}}
+:::info
 - In Docker `17.06.0` and earlier, volumes are also pruned.
 - In Docker `17.06.1` and higher, you must specify the `--volumes` flag for docker system prune to prune volumes.
-{{% /dialog %}}
+:::
 
 ```
 $ docker system prune
@@ -66,4 +66,4 @@ By default, you are prompted to continue which can be bypassed by adding the `-f
 
 # Simulate Multiple Inheritance
 
-Docker doesn't technically support multiple-inheritance, whereby an image can automatically merge multiple images using `FROM`. It does, however, support [multi-stage builds]({{< relref "reference/best-practices/docker-best-practices.md#multi-stage-builds" >}}) that can be used to effectiely achive the same result.
+Docker doesn't technically support multiple-inheritance, whereby an image can automatically merge multiple images using `FROM`. It does, however, support [multi-stage builds](/reference/best-practices/docker-best-practices.md#multi-stage-builds) that can be used to effectiely achive the same result.

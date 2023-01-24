@@ -5,3 +5,4 @@ terms:
 - helm tiller
 - helm-tiller
 ---
+The helm tiller is the server-side component (API) for helm that manages all CRUD operations.

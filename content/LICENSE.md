@@ -1,16 +1,17 @@
 ---
-title: "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"
+title: "License"
 slug: license
 description: "This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License."
 tags:
 - license
 - opl
 - open publication license
+sidebar_position: 100
 ---
 
 ## Copyright
 
-Copyright 2017-{{< year >}} © Cloud Posse, LLC.
+Copyright 2017-2023 © Cloud Posse, LLC.
 
 ## License
 
@@ -40,9 +41,9 @@ Distribution of substantively modified versions of this document is prohibited w
 
 All other trademarks referenced herein are the property of their respective owners.
 
+:::caution
 
-{{% dialog type="info" icon="fa fa-exclamation-triangle" title="Note" %}}
 This documentation is provided (and copyrighted) by Cloud Posse, LLC and is released via the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 The copyright holder has added the further requirement that Distribution of substantively modified versions of this document is prohibited without the explicit permission of the copyright holder.
-{{% /dialog %}}
+:::

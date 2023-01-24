@@ -1,6 +1,6 @@
 ---
 title: Contributor Tips & Tricks
-description: ''
+description: 'Contributor Tips & Tricks'
 ---
 
 ## About

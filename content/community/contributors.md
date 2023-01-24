@@ -1,6 +1,6 @@
 ---
 title: GitHub Contributors
-description: ''
+description: 'GitHub Contributors'
 ---
 
 ## About

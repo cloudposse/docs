@@ -1,6 +1,6 @@
 ---
 title: GitHub Contributors FAQ
-description: ''
+description: 'GitHub Contributors FAQ'
 ---
 
 ## How do I see all open Pull Requests?
@@ -15,7 +15,7 @@ why something happened than blame or chastise our volunteers.
 
 ## What are your best-practices we should follow?
 
- See our  [Terraform Best Practices]({{< relref "reference/best-practices/terraform-best-practices.md" >}}) and [Best Practices]({{< relref "reference/best-practices/_index.md" >}}). These are just some guidelines to follow and we're open to your feedback!
+ See our  [Terraform Best Practices](/reference/best-practices/terraform-best-practices.md) and [Best Practices](/category/best-practices/). These are just some guidelines to follow and we're open to your feedback!
 
 ## What benefits do I receive as a contributor?
 
@@ -58,27 +58,27 @@ we allow the greatest number of users to benefit from the work we do. If we brea
 As a member of the `@cloudposse/contributors` team, create a new release, use the [built-in GitHub release functionality](https://help.github.com/en/enterprise/2.13/user/articles/creating-releases). Please do not create releases manually by creating tags and pushing them as this lacks all the metadata associated with a release, which can have a rich markdown description. All GitHub releases also have tags, but not all tags have a GitHub release.
 
 
-{{% dialog type="important" icon="fa fa-exclamation-triangle" title="Important" %}}
+:::caution
 Versions must follow the [`semver`](https://semver.org) convention. Do not prefix releases with a version specifier (e.g. a *good* version is `0.1.0` and a *bad* version is `v0.1.0`).
-{{% /dialog %}}
+:::
 
 
 ## Why are releases not always in sequential order?
 
 Some of our `terraform` modules support backwards compatibility with HCLv1 (pre terraform 0.12). You'll notice these projects usually have a branch named `0.11/master`. When we accept a bugfix for one of these projects and merge to `master`, we will cut a patch release against the last minor release version for terraform 0.11.
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+:::info
 We're not accepting new features for pre-terraform-0.12 modules.
-{{% /dialog %}}
+:::
 
 ## Why is my Terraform Pull Request not yet reviewed or merged?
 
 If your Pull Request is to upgrade a Terraform module from HCLv1 to HCLv2, then chances are we haven't approved it because it does not have `terratest` integration tests. As a general policy, we're only upgrading modules to HCLv2 that have `terratest` integration tests. Attemting to maintain stability
 with hundreds of modules is only possible with integration testing.
 
-{{% dialog type="info" icon="fa-info-circle" title="Note" %}}
+:::info
 All Terraform Modules updated to HCL2 **must** have `terratest` integration tests.
-{{% /dialog %}}
+:::
 
 ## Do we have to update integration tests?
 

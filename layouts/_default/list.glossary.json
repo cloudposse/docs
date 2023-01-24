@@ -1,5 +1,0 @@
-{{- $.Scratch.Add "glossary" slice -}}
-{{ range $index, $element := .Data.Pages }}
-    {{- $.Scratch.Add "glossary" (dict "term" (delimit $element.Params.terms ", ") "description" ($element.Description |markdownify | plainify )) -}}
-{{ end }}
-{{- $.Scratch.Get "glossary" | jsonify -}}

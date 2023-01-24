@@ -10,4 +10,6 @@ tags:
 - AWS
 - geodesic
 ---
+Kops ships with geodesic and is the easiest way to get a production grade Kubernetes cluster up and running on AWS.
+
 ![Kops Logo](/assets/kops-logo.png)

@@ -42,9 +42,8 @@ Here's an example:
 
 Which will render to something like this:
 
-{{< img src="/assets/8d8cdf3-image_23.png" title="Example Markdown Table Rendering" >}}
-
-{{< img src="/assets/a2761a9-image_22.png" title="Example Markdown Table Rendering" >}}
+![Example Markdown Table Rendering](/assets/8d8cdf3-image_23.png)
+![Example Markdown Table Rendering](/assets/a2761a9-image_22.png)
 
 ## Feature List Formatting
 

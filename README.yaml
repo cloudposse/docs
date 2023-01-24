@@ -2,9 +2,6 @@ name: "Developer Documentation"
 github_repo: "cloudposse/docs"
 license: "CC-BY-NC-SA-4.0"
 badges:
-  - name: "Build Status"
-    image: "https://github.com/cloudposse/docs/workflows/hugo/badge.svg"
-    url: "https://github.com/cloudposse/docs/actions?query=workflow%3Ahugo"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/docs.svg"
     url: "https://github.com/cloudposse/docs/releases"
@@ -28,22 +25,15 @@ include:
   - "docs/targets.md"
 
 usage: |-
-  1. Download [Docker](https://www.docker.com/).
-  2. Install the [Atom editor](https://atom.io/)(optional).
+  1. Build dependencies
+  ```
+  make all
+  ```
 
-      * After installation, run `make deps/atom`.
-      * Select _Activate the Atom_ → _Install Shell Commands_ menu item.
-      * Ensure that `/usr/local/bin` is in the `PATH`.
-
-
-  3. Run the following commands for faster development:
-     ```
-     export YARN_BUILD_DISABLED=true
-     ```
-  4. Run `make init`.
-  5. Run `make run COMPONENTS_BUILD=true/false` to start the local server.
-  6. Run `make build` to generate static site in `public/`.
-
+  2. Start local web server
+  ```
+  make start
+  ```
 
 # Contributors to this project
 contributors:

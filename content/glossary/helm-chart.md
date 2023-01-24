@@ -1,6 +1,6 @@
 ---
 title: "Helm Chart"
-description: "A *Helm Chart* is a package that defines all the kubernetes resources necessary for deploying an application to kubernetes."
+description: "A 'Helm Chart' is a package that defines all the kubernetes resources necessary for deploying an application to kubernetes."
 terms:
 - helm chart
 - helm charts
@@ -11,3 +11,4 @@ tags:
 - Helmfile
 - k8s
 ---
+A *Helm Chart* is a package that defines all the kubernetes resources necessary for deploying an application to kubernetes.

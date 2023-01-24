@@ -21,6 +21,7 @@ tags:
 - SSO
 - best-practice
 ---
+Multifactor authentication is a security "Best Practice" of requiring more than one method to verify access credentials during authentication
 
 There are a lot of terms that roughly mean the same thing.
 

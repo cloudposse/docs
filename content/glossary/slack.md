@@ -4,4 +4,6 @@ description: "Slack is a cloud-based service for team collaboration (chat, voice
 terms:
 - slack
 ---
+Slack is a cloud-based service for team collaboration (chat, voice, video, screensharing, etc).
+
 Visit [Slack.com](https://slack.com) for more details.

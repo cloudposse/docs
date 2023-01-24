@@ -7,4 +7,6 @@ terms:
 tags:
 - AWS
 - Docker
+- ECR
 ---
+Amazon ECR is a fully managed Docker container registry to store, manage, and deploy Docker container images on AWS.

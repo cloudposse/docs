@@ -10,3 +10,4 @@ tags:
 - dotenv
 - 12-factor
 ---
+An Environment Variable is an an interface provided by nearly every OS to pass configuration information to a process.

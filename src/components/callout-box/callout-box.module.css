@@ -1,0 +1,28 @@
+.calloutBox {
+    background-color: var(--mg-bg);
+    border-radius: 20px;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.2);
+    padding: 32px 26px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.calloutBox__title {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    line-height: 1.5rem;
+    font-family: var(--mg-font-family);
+    margin-bottom: 1rem;
+}
+
+.calloutBox__subtitle {
+    font-size: 1rem;
+    letter-spacing: 0;
+    line-height: 1.5rem;
+    color: var(--mg-font-color-light);
+    margin-bottom: 1rem;
+}
+

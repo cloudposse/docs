@@ -1,0 +1,73 @@
+name: "Website Deploy Preview"
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+env:
+  AWS_REGION: us-east-2
+  IAM_ROLE_ARN: arn:aws:iam::068007702576:role/cplive-plat-ue2-dev-cloudposse-docs-gha
+  IAM_ROLE_SESSION_NAME: cloudposse-docs-ci-deploy-pr-${{ github.event.pull_request.number }}
+  S3_BUCKET_NAME: cplive-plat-ue2-dev-cloudposse-docs-origin
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  DEPLOYMENT_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
+  ALGOLIA_INDEX_NAME: docs-preview.cloudposse.com
+  ALGOLIA_APP_ID: 32YOERUX83
+
+# These permissions are needed to interact with the GitHub's OIDC Token endpoint
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  website-deploy-preview:
+    # Do not deploy the website to the preview environment if the PR has the label 'website-no-deploy'
+    if: ${{ !contains(github.event.*.labels.*.name, 'website-no-deploy') }}
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: preview
+      url: https://${{ env.DEPLOYMENT_HOST }}
+
+    steps:
+      # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.IAM_ROLE_ARN }}
+          role-session-name: ${{ env.IAM_ROLE_SESSION_NAME }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install Dependencies and Build Website
+        run: |
+          make deps-production
+          make build
+
+      - name: Copy Website to S3 Bucket PR Folder
+        run: |
+          cd build
+          aws sts get-caller-identity
+          aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
+          aws s3 ls s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --recursive --human-readable --summarize
+
+      - name: ReIndex with Algolia
+        if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
+        run: |
+          export ALGOLIA_SCRAPER_API_KEY="${{ secrets.ALGOLIA_SCRAPER_API_KEY }}"
+          ./algolia/reindex.sh

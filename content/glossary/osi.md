@@ -1,6 +1,6 @@
 ---
 title: "OSI Model"
-description: "[OSI](https://en.wikipedia.org/wiki/OSI_model) is a conceptual model consisting of 7 abstraction layers that represent the various functions of a computing system without regard to its underlying internal structure and technology."
+description: "OSI is a conceptual model consisting of 7 abstraction layers that represent the various functions of a computing system without regard to its underlying internal structure and technology."
 terms:
 - OSI
 - OSI model
@@ -13,3 +13,4 @@ tags:
 - Layer 6
 - Layer 7
 ---
+[OSI](https://en.wikipedia.org/wiki/OSI_model) is a conceptual model consisting of 7 abstraction layers that represent the various functions of a computing system without regard to its underlying internal structure and technology.

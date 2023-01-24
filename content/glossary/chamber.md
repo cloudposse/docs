@@ -1,6 +1,6 @@
 ---
 title: "Chamber"
-description: "[Chamber](https://github.com/segmentio/chamber) is a tool by Segment IO for managing secrets with AWS SSM+KMS and exposing them as environment variables."
+description: "'Chamber' is a tool by Segment IO for managing secrets with AWS SSM+KMS and exposing them as environment variables."
 terms:
 - Chamber
 tags:
@@ -9,4 +9,6 @@ tags:
 - SSM
 - secrets
 - environment variables
+- chamber
 ---
+[Chamber](https://github.com/segmentio/chamber) is a tool by Segment IO for managing secrets with AWS SSM+KMS and exposing them as environment variables.

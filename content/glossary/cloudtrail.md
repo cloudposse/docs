@@ -8,4 +8,5 @@ tags:
 - aws
 - security
 - audit logs
+- CloudTrail
 ---

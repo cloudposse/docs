@@ -10,3 +10,4 @@ terms:
 tags:
 - semver
 ---
+Semantic versioning (e.g. `1.0.3`) is the most widely adopted scheme for assigning unique version numbers to software releases.

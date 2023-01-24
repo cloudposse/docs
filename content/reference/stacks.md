@@ -2,7 +2,7 @@
 title: "Stacks"
 icon: "fa fa-layer-group"
 description: "Stacks are a way to express the complete infrastructure needed for an environment using a standard YAML configuration"
-weight: 1
+sidebar_position: 1
 tags:
 - yaml
 - atmos

@@ -1,7 +1,7 @@
 ---
 title: "Authenticate with AWS using Leapp"
 description: "Learn how to use Leapp to supply AWS credentials to tools used within Geodesic."
-weight: 1
+sidebar_position: 1
 ---
 ## Intro
 
@@ -13,7 +13,7 @@ credentials and authentication. Leapp is an open-source tool that makes this eas
 
 ### SweetOps Know-how
 
-We expect you've gone through the tutorial on ["Getting started with Geodesic"]({{< relref "tutorials/geodesic-getting-started.md" >}}) prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it's doing.
+We expect you've gone through the tutorial on ["Getting started with Geodesic"](/tutorials/geodesic-getting-started.md) prior to this How-To since that contains some important understanding of what Geodesic is, how it works, and what it's doing.
 
 ### AWS Region and Credentials
 

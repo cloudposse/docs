@@ -1,0 +1,23 @@
+.homeCallouts {
+    margin-top: 50px;
+    margin-bottom: 100px;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: auto auto auto;
+}
+
+.homeCallouts__item {
+
+}
+
+@media (max-width: 1024px) {
+    .homeCallouts {
+        grid-template-columns: auto auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .homeCallouts {
+        grid-template-columns: auto;
+    }
+}

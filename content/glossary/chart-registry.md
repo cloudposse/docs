@@ -7,4 +7,6 @@ terms:
 - chart repo
 tags:
 - chartmuseum
+- chart registry
 ---
+A Chart Registry is responsible for storing and serving Helm chart packages (`.tar.gz`) to the helm tiller running in the kubernetes cluster.

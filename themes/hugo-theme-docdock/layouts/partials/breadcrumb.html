@@ -1,8 +1,0 @@
-{{define "breadcrumb"}}
-{{ if .page.Parent}}
-{{$value := (printf "<a class='breadcrumbs__item' href='%s'>%s</a> <i class='breadcrumbs__separator fa fa-chevron-right'></i> %s" .page.Parent.URL .page.Parent.Title .value)}}
-{{ template "breadcrumb" dict "page" .page.Parent "value" $value }}
-{{else}}
- {{.value|safeHTML}}
-{{end}}
-{{end}}

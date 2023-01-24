@@ -1,7 +1,0 @@
-yarn/build:
-	$(MAKE) -C themes/cloudposse build
-
-yarn/build-dev:
-	$(MAKE) -C themes/cloudposse build-dev
-
-

@@ -1,7 +1,8 @@
 ---
 title: "Philosophy"
 description: "Learn more about the core philosophy and principles that make up the SweetOps methodology."
-weight: 2
+sidebar_position: 2
+sidebar_label: "Philosophy"
 ---
 
 SweetOps is built on a foundational philosophy that ensures the methodology is comprehensive and reusable across organizations. To fully understand what SweetOps is and how to utilize it effectively, it's critical to understand the backing principles that define it.
@@ -57,4 +58,4 @@ One way we practice our "Secure by Default" process is by utilizing [BridgeCrew]
 
 ## Delegate Thought Leadership
 
-As much as possible, SweetOps aims to identify thought leaders and mimic them instead of reinventing the wheel with our own solutions. This is why SweetOps chooses to use best in class tools like Terraform, Helmfile, ArgoCD, etc. Instead of creating those types of tools ourselves, we aim to provide the thought leadership on how to tie and orchestrate those tools together (e.g. via [Stacks]({{< relref "fundamentals/concepts.md#stacks" >}})).
+As much as possible, SweetOps aims to identify thought leaders and mimic them instead of reinventing the wheel with our own solutions. This is why SweetOps chooses to use best in class tools like Terraform, Helmfile, ArgoCD, etc. Instead of creating those types of tools ourselves, we aim to provide the thought leadership on how to tie and orchestrate those tools together (e.g. via [Stacks](/fundamentals/concepts.md#stacks)).

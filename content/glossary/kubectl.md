@@ -1,6 +1,6 @@
 ---
 title: "kubectl"
-description: "[`kubectl`](https://kubernetes.io/docs/reference/kubectl/overview/) is a command line tool (cli) for running commands against Kubernetes clusters"
+description: "'kubectl' is a command line tool (cli) for running commands against Kubernetes clusters"
 terms:
 - kubectl
 tags:

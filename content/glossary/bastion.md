@@ -13,3 +13,4 @@ tags:
 - bastion
 - jumphost
 ---
+A bastion host is the only host permitted to be directly addressed via SSH from the internet.

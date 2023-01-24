@@ -7,3 +7,4 @@ terms:
 tags:
 - software development
 ---
+The SDLC describes the process for planning, developing, testing, and deploying an application.

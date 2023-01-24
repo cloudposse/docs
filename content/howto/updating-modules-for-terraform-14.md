@@ -1,6 +1,7 @@
 ---
 title: Updating Modules for Terraform 0.14
 description: 'How to update our Terraform modules for Terraform 0.14'
+sidebar_position: 1
 ---
 
 ## Updating Cloud Posse Terraform modules for Terraform 0.14
