@@ -16,6 +16,7 @@ env:
   S3_BUCKET_NAME: cplive-plat-ue2-dev-cloudposse-docs-origin
   PR_NUMBER: ${{ github.event.pull_request.number }}
   PREVIEW_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
+  ALGOLIA_INDEX_NAME: docs-preview.cloudposse.com
   ALGOLIA_APP_ID: 32YOERUX83
 
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
@@ -48,18 +49,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ReIndex with Algolia
-        if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
-        run: |
-          cat algolia/template.json \
-          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}/"' \
-          | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_HOST }}/sitemap.xml"' \
-          > algolia.index.json
-          cat algolia.index.json
-          
-          # API KEY below is from my personal algolia account, I'll rotate it just after test
-          docker run --env APPLICATION_ID=MUFI9AKJYR --env API_KEY=8ea645090b6c79c992a738c31a3b88c6 -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -77,3 +66,16 @@ jobs:
           aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
           aws s3 ls s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --recursive --human-readable --summarize
 
+      - name: ReIndex with Algolia
+        if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
+        run: |
+          # prepare config
+          cat algolia/template.json \
+          | jq '.index_name="${{ env.ALGOLIA_INDEX_NAME }}"' \
+          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}/"' \
+          | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_HOST }}/sitemap.xml"' \
+          > algolia.index.json
+          cat algolia.index.json
+          
+          # do actual scraping
+          docker run --env APPLICATION_ID=${{ env.ALGOLIA_APP_ID }} --env API_KEY=${{ secrets.ALGOLIA_SCRAPER_API_KEY }} -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
