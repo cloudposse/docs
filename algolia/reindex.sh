@@ -12,6 +12,7 @@ cat algolia/template.json \
 | jq '.start_urls[0]="https://'${DEPLOYMENT_HOST}'/"' \
 | jq '.sitemap_urls[0]="https://'${DEPLOYMENT_HOST}'/sitemap.xml"' \
 > algolia.index.json
+
 cat algolia.index.json
 
 # do actual scraping
