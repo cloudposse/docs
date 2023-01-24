@@ -8,16 +8,16 @@ ALGOLIA_APP_ID=${ALGOLIA_APP_ID:-'32YOERUX83'}
 
 # prepare algolia config
 cat algolia/template.json \
-| jq '.index_name="'${ALGOLIA_INDEX_NAME}'"' \
-| jq '.start_urls[0]="https://'${DEPLOYMENT_HOST}'/"' \
-| jq '.sitemap_urls[0]="https://'${DEPLOYMENT_HOST}'/sitemap.xml"' \
-> algolia.index.json
+  | jq '.index_name="'${ALGOLIA_INDEX_NAME}'"' \
+  | jq '.start_urls[0]="https://'${DEPLOYMENT_HOST}'/"' \
+  | jq '.sitemap_urls[0]="https://'${DEPLOYMENT_HOST}'/sitemap.xml"' \
+  > algolia.index.json
 
 cat algolia.index.json
 
 # do actual scraping
 docker run \
---env APPLICATION_ID="${ALGOLIA_APP_ID}" \
---env API_KEY="${ALGOLIA_SCRAPER_API_KEY}" \
---env "CONFIG=$(cat algolia.index.json | jq -r tostring)" \
-algolia/docsearch-scraper
+  --env APPLICATION_ID="${ALGOLIA_APP_ID}" \
+  --env API_KEY="${ALGOLIA_SCRAPER_API_KEY}" \
+  --env "CONFIG=$(cat algolia.index.json | jq -r tostring)" \
+  algolia/docsearch-scraper
