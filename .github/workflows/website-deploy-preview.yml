@@ -15,7 +15,8 @@ env:
   IAM_ROLE_SESSION_NAME: cloudposse-docs-ci-deploy-pr-${{ github.event.pull_request.number }}
   S3_BUCKET_NAME: cplive-plat-ue2-dev-cloudposse-docs-origin
   PR_NUMBER: ${{ github.event.pull_request.number }}
-  PREVIEW_URL: https://pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
+  PREVIEW_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
+  ALGOLIA_APP_ID: 32YOERUX83
 
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
 permissions:
@@ -31,7 +32,7 @@ jobs:
 
     environment:
       name: preview
-      url: ${{ env.PREVIEW_URL }}
+      url: https://${{ env.PREVIEW_HOST }}
 
     steps:
       # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
@@ -68,8 +69,10 @@ jobs:
         if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
         run: |
           cat algolia/template.json \
-          | jq '.start_urls[0]="https://${{ env.PREVIEW_URL }}"' \
-          | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_URL }}/sitemap.xml"' \
+          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}"/' \
+          | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_HOST }}/sitemap.xml"' \
           > algolia.index.json
-          
           cat algolia.index.json
+          
+          # API KEY below is from my personal algolia account, I'll rotate it just after test
+          docker run -it --env APPLICATION_ID=MUFI9AKJYR --env API_KEY=8ea645090b6c79c992a738c31a3b88c6 -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
