@@ -212,3 +212,7 @@ svg.landingLogo path {
     visibility: visible;
     float: right;
 }
+
+.sidebar_item_deprecated {
+  text-decoration: line-through;
+}

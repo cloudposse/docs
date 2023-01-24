@@ -1,6 +1,7 @@
 ---
-title: "Authenticate with AWS inside of Geodesic using `aws-vault` _(Deprecated)_"
+title: "Authenticate with AWS inside of Geodesic using 'aws-vault' (Deprecated)"
 description: "Learn how to authenticate within Geodesic using AWS IAM Credentials and `aws-vault`."
+sidebar_class_name: sidebar_item_deprecated
 sidebar_position: 99
 ---
 

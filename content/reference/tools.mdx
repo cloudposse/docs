@@ -74,9 +74,9 @@ aws s3api delete-objects --bucket $BUCKET \
 
 via: [stackoverflow](https://stackoverflow.com/a/36604650/1237191)
 
-## _(Deprecated)_ AWS Vault
+## *(Deprecated)* AWS Vault
 
-_(Deprecated)_ The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it easy to work with IAM assumed roles across multiple AWS organizations.
+*(Deprecated)* The [`aws-vault`](https://github.com/99designs/aws-vault) command line tool by [99 Designs](https://99designs.com/) is a utility for securely storing and accessing encrypted AWS credentials for use in development environments. This tool makes it easy to work with IAM assumed roles across multiple AWS organizations.
 
   Cloud Posse no longer recommends this tool or workflow now that AWS supports federated login
   (meaning users never need long-lived AWS API keys) and the current AWS SDKs take a Role ARN
@@ -98,7 +98,7 @@ _(Deprecated)_ The [`aws-vault`](https://github.com/99designs/aws-vault) command
 - Compatible with `~/.aws/config`
 - Automatic logins to AWS Web Console
 
-### _(Deprecated)_ Local Configuration
+### *(Deprecated)* Local Configuration
 We recommend using the `file` type backend for `aws-vault` because this is compatible with Linux, which is needed for [Geodesic](#geodesic) sessions.
 
 Add the following to your `~/.bashrc`:
@@ -145,7 +145,7 @@ $ aws-vault login example-staging-admin
 
 This should open a browser and log you into the AWS console as the assumed role `example-staging-admin`.
 
-### _(Obsolete)_ Using with Geodesic
+### *(Obsolete)* Using with Geodesic
 
 `aws-vault` is no longer preinstalled in the Geodesic shell. It is available
 as a package named "aws-vault" in the Cloud Posse package repository, and
