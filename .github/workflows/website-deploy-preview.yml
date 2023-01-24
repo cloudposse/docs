@@ -15,7 +15,7 @@ env:
   IAM_ROLE_SESSION_NAME: cloudposse-docs-ci-deploy-pr-${{ github.event.pull_request.number }}
   S3_BUCKET_NAME: cplive-plat-ue2-dev-cloudposse-docs-origin
   PR_NUMBER: ${{ github.event.pull_request.number }}
-  PREVIEW_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
+  DEPLOYMENT_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
   ALGOLIA_INDEX_NAME: docs-preview.cloudposse.com
   ALGOLIA_APP_ID: 32YOERUX83
 
@@ -33,7 +33,7 @@ jobs:
 
     environment:
       name: preview
-      url: https://${{ env.PREVIEW_HOST }}
+      url: https://${{ env.DEPLOYMENT_HOST }}
 
     steps:
       # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
@@ -69,13 +69,4 @@ jobs:
       - name: ReIndex with Algolia
         if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
         run: |
-          # prepare config
-          cat algolia/template.json \
-          | jq '.index_name="${{ env.ALGOLIA_INDEX_NAME }}"' \
-          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}/"' \
-          | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_HOST }}/sitemap.xml"' \
-          > algolia.index.json
-          cat algolia.index.json
-          
-          # do actual scraping
-          docker run --env APPLICATION_ID=${{ env.ALGOLIA_APP_ID }} --env API_KEY=${{ secrets.ALGOLIA_SCRAPER_API_KEY }} -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
+          ./algolia/reindex.sh
