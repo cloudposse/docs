@@ -52,7 +52,7 @@ jobs:
         if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
         run: |
           cat algolia/template.json \
-          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}"/' \
+          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}/"' \
           | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_HOST }}/sitemap.xml"' \
           > algolia.index.json
           cat algolia.index.json
