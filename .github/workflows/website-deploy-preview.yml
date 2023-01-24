@@ -71,3 +71,5 @@ jobs:
           | jq '.start_urls[0]="https://${{ env.PREVIEW_URL }}"' \
           | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_URL }}/sitemap.xml"' \
           > algolia.index.json
+          
+          cat algolia.index.json
