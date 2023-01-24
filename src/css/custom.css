@@ -200,3 +200,15 @@ svg.landingLogo path {
 .hero__subtitle {
   font-size: 1.2rem;
 }
+
+.theme-doc-breadcrumbs {
+    display: inline-block;
+}
+
+.slack-in-breadcrumbs {
+    border-width: 0;
+    width: 105px;
+    height: 20px;
+    visibility: visible;
+    float: right;
+}
