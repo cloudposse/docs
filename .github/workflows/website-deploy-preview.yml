@@ -58,7 +58,7 @@ jobs:
           cat algolia.index.json
           
           # API KEY below is from my personal algolia account, I'll rotate it just after test
-          docker run -it --env APPLICATION_ID=MUFI9AKJYR --env API_KEY=8ea645090b6c79c992a738c31a3b88c6 -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
+          docker run --env APPLICATION_ID=MUFI9AKJYR --env API_KEY=8ea645090b6c79c992a738c31a3b88c6 -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
 
       - name: Setup Node
         uses: actions/setup-node@v3
