@@ -48,6 +48,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: ReIndex with Algolia
+        if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
+        run: |
+          cat algolia/template.json \
+          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}"/' \
+          | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_HOST }}/sitemap.xml"' \
+          > algolia.index.json
+          cat algolia.index.json
+          
+          # API KEY below is from my personal algolia account, I'll rotate it just after test
+          docker run -it --env APPLICATION_ID=MUFI9AKJYR --env API_KEY=8ea645090b6c79c992a738c31a3b88c6 -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -65,14 +77,3 @@ jobs:
           aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
           aws s3 ls s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --recursive --human-readable --summarize
 
-      - name: ReIndex with Algolia
-        if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
-        run: |
-          cat algolia/template.json \
-          | jq '.start_urls[0]="https://${{ env.PREVIEW_HOST }}"/' \
-          | jq '.sitemap_urls[0]="https://${{ env.PREVIEW_HOST }}/sitemap.xml"' \
-          > algolia.index.json
-          cat algolia.index.json
-          
-          # API KEY below is from my personal algolia account, I'll rotate it just after test
-          docker run -it --env APPLICATION_ID=MUFI9AKJYR --env API_KEY=8ea645090b6c79c992a738c31a3b88c6 -e "CONFIG=$(cat algolia.index.json | jq -r tostring)" algolia/docsearch-scraper
