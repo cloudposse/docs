@@ -121,8 +121,59 @@ const config = {
         contextualSearch: false
       },
       footer: {
-        style: 'light',
-        links: [],
+        style: 'dark',
+        links: [{
+                title: 'Docs',
+                items: [{
+                    label: 'Getting Started',
+                    to: '/intro/',
+                }, {
+                    label: 'SweetOps Fundamentals',
+                    to: '/category/fundamentals/',
+                }, {
+                    label: 'Tutorials',
+                    to: '/category/tutorials/',
+                }, {
+                    label: 'How-To',
+                    to: '/category/how-to/',
+                }],
+            }, {
+              title: 'Community',
+              items: [
+                {
+                  label: 'Forum',
+                  href: 'https://ask.sweetops.com/',
+                },
+                {
+                  label: 'Community',
+                  href: 'https://sweetops.com/',
+                },
+                {
+                  label: 'Slack',
+                  href: 'https://slack.sweetops.com/',
+                }
+              ],
+            }, {
+                title: 'Contact Us',
+                items: [
+                {
+                  label: 'Support',
+                  href: 'https://cloudposse.com/accelerate',
+                },
+                {
+                  label: 'Our GitHub',
+                  href: 'https://github.com/cloudposse/',
+                },
+                {
+                  label: 'Contact Us',
+                  to: '/contact-us/',
+                }],
+            }],
+            logo: {
+                alt: 'Cloud Posse',
+                src: '/img/logo-light.png',
+                href: 'https://cloudposse.com/'
+            },
         copyright: `© ${new Date().getFullYear()} Cloud Posse, LLC`,
       },
       prism: {

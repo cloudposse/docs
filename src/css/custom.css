@@ -216,3 +216,24 @@ svg.landingLogo path {
 .sidebar_item_deprecated {
   text-decoration: line-through;
 }
+
+.footer__logo {
+    max-width: 150px;
+}
+.footer__links {
+    width: 75%;
+    float: right;
+}
+.footer__bottom {
+    width: 25%;
+}
+.footer__bottom > div {
+    text-align: left;
+}
+.footer--dark {
+    --ifm-footer-background-color: #20232a;
+    --ifm-footer-padding-vertical: 85px;
+}
+.footer__copyright {
+    margin-left: 0;
+}

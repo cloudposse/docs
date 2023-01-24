@@ -7,7 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 export default function HomeCallouts() {
     const callouts = [
         {
-            title: 'Get Started',
+            title: 'Getting Started',
             subtitle: 'Start with getting familiar with the geodesic, atmos and other tools',
             urlText: 'Get Started',
             url: useBaseUrl('/intro/'),
