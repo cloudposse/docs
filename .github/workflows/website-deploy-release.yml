@@ -63,4 +63,4 @@ jobs:
       - name: ReIndex with Algolia
         if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
         run: |
-          ./algolia/reindex.sh
+          ALGOLIA_SCRAPER_API_KEY=${{ secrets.ALGOLIA_SCRAPER_API_KEY }}; ./algolia/reindex.sh
