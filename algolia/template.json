@@ -1,10 +1,10 @@
 {
   "index_name": "docs.cloudposse.com",
   "start_urls": [
-    "https://pr-548.cloudposse-docs.ue2.dev.plat.cloudposse.org/"
+    "https://docs.cloudposse.com/"
   ],
   "sitemap_urls": [
-    "https://pr-548.cloudposse-docs.ue2.dev.plat.cloudposse.org/sitemap.xml"
+    "https://docs.cloudposse.com/sitemap.xml"
   ],
   "sitemap_alternate_links": true,
   "stop_urls": [],
