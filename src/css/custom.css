@@ -31,21 +31,22 @@ nav.navbar {
 }
 */
 
-.menu__link {
+/*.menu__link {
     order: 1;
-}
+}*/
 
 .menu__caret:before {
     background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem;
 }
 
 li > ul.menu__list {
-    margin-left: 1.5em;
+    margin-left: 1em;
 }
 
 /* You can override the default Infima variables here. */
 :root {
-    --ifm-code-font-size: 95%;
+    --ifm-code-font-size: 80%;
+    --ifm-font-size-base: 90%;
     --ifm-menu-color: var(--c-gray-100);
     --ifm-menu-link-padding-horizontal: 0.25rem;
 

@@ -1,7 +1,7 @@
 ---
 title: "Our GitHub"
 description: "Information on how to collaborate with Cloud Posse"
-sidebar_position: 40
+sidebar_position: 800
 ---
 
 ## Our Commitment

@@ -6,7 +6,7 @@ tags:
 - license
 - opl
 - open publication license
-sidebar_position: 100
+sidebar_position: 900
 ---
 
 ## Copyright

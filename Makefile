@@ -16,6 +16,8 @@ deps:
 deps-production:
 	npm install --only=production
 
+.PHONY: build
+
 build:
 	npm run build
 
