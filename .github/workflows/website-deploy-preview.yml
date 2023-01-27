@@ -64,6 +64,7 @@ jobs:
 
       - name: "Render docs pages for 'terraform-aws-components'"
         run: |
+          pip install -r scripts/docs-collator/requirements.txt
           ./scripts/render-docs-for-terraform-aws-components.sh
 
       - name: Install Dependencies and Build Website
