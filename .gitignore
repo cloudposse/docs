@@ -54,3 +54,4 @@ test.yaml
 tmp/*
 *.swp
 algolia.index.json
+content/components/
