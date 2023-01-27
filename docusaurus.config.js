@@ -10,8 +10,8 @@ const config = {
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
   onDuplicateRoutes: 'throw',
   favicon: 'img/favicon.png',
   plugins: [

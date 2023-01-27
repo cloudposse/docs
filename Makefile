@@ -33,7 +33,7 @@ build: deps
 	$(DOCKER_RUN) npm run build
 
 start:
-	$(DOCKER_RUN) npm start
+	npm start
 
 real-clean:
 	rm -fr .docusaurus && \
