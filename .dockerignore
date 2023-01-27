@@ -1,4 +1,5 @@
 .git
+.github
 .gitignore
 .editorconfig
 
@@ -20,3 +21,5 @@
 **/.build-harness
 **/build-harness
 **/build
+algolia.index.json
+.env
