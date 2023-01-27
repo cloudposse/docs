@@ -3,10 +3,6 @@
 set -e
 #set -x
 
-#usage() { echo "Required env var '$1' is missing"; exit 1; }
-#
-#[ -z "${SRC_DIR}" ] && usage "SRC_DIR" ;
-
 main_dir=$(pwd)
 modules_dir=${main_dir}/tmp/components/terraform-aws-components/modules
 docs_dir=${main_dir}/content/components
