@@ -1,7 +1,7 @@
 ---
 title: Contact Us
 description: 'Cloud Posse is a **DevOps Accelerator**.'
-sidebar_position: 30
+sidebar_position: 700
 ---
 
 We're developers and ops practitioners who are gung-ho about doing things the "right way" (tm).

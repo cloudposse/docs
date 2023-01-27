@@ -15,6 +15,7 @@ env:
   DEPLOYMENT_HOST: docs.cloudposse.com
   ALGOLIA_INDEX_NAME: docs.cloudposse.com
   ALGOLIA_APP_ID: 32YOERUX83
+  GOOGLE_TAG_MANAGER: ${{ env.GOOGLE_TAG_MANAGER }}
 
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
 permissions:
@@ -61,6 +62,7 @@ jobs:
           aws s3 ls s3://${{ env.S3_BUCKET_NAME }} --recursive --human-readable --summarize
 
       - name: ReIndex with Algolia
+        env:
+          ALGOLIA_SCRAPER_API_KEY: ${{ secrets.ALGOLIA_SCRAPER_API_KEY }}
         run: |
-          export ALGOLIA_SCRAPER_API_KEY="${{ secrets.ALGOLIA_SCRAPER_API_KEY }}"
           ./algolia/reindex.sh
