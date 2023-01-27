@@ -24,7 +24,7 @@ all: real-clean build
 deps: docker/build
 	$(DOCKER_RUN) npm install
 
-deps-production:
+deps-production: docker/build
 	$(DOCKER_RUN) npm install --only=production
 
 .PHONY: build
