@@ -12,7 +12,7 @@ const config = {
   trailingSlash: true,
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
-  onDuplicateRoutes: 'throw',
+  onDuplicateRoutes: 'warn',
   favicon: 'img/favicon.png',
   plugins: [
     [

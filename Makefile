@@ -1,8 +1,5 @@
 SHELL := /bin/bash
 
-# List of targets the `readme` target should call before generating the readme
-export README_DEPS ?= docs/targets.md
-
 export COMPONENTS_DIR ?= content/components
 export DOCUSAURUS_PORT ?= 3000
 

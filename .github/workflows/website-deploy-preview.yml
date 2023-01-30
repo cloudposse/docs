@@ -55,7 +55,7 @@ jobs:
           fetch-depth: 1
           repository: cloudposse/terraform-aws-components
           ref: fixed-non-html-tags
-          path: tmp/components/terraform-aws-components
+          path: tmp/modules/terraform-aws-components
 
       - name: "Setup Python"
         uses: actions/setup-python@v4

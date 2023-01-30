@@ -55,3 +55,4 @@ tmp/*
 *.swp
 algolia.index.json
 content/components/
+**/__pycache__/

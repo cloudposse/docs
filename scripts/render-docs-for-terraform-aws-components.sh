@@ -1,32 +1,21 @@
 #!/usr/bin/env bash
 
 set -e
-#set -x
 
-main_dir=$(pwd)
-modules_dir=${main_dir}/tmp/components/terraform-aws-components/modules
-docs_dir=${main_dir}/content/components
+CLONE_DIR="${CLONE_DIR:-tmp/modules/terraform-aws-components}"
+RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-content/components}"
+SKIP_CLONING=${SKIP_CLONING:-"false"}
+GITHUB_ORG=${GITHUB_ORG:-"cloudposse"}
+GITHUB_REPO=${GITHUB_REPO:-"terraform-aws-components"}
+GIT_BRANCH=${GIT_BRANCH:-"master"}
 
-function generate_doc {
-    local component_name=$1
-    local input_dir=$2
-    local output_dir=$3
+if [ "${SKIP_CLONING}" == "false" ]; then
+	echo "Cloning repo '${GITHUB_ORG}/${GITHUB_REPO}'"
+	git clone --depth 1 --branch "${GIT_BRANCH}" https://github.com/${GITHUB_ORG}/${GITHUB_REPO}.git "${CLONE_DIR}" || true
+else
+	echo "Skipping repo cloning ..."
+fi
 
-    cd ${main_dir}/scripts/docs-collator/
-
-		python3 collator.py \
-		  --input ${input_dir} \
-		  --output ${output_dir} \
-		  --component-name ${component_name} \
-		  --recursive=True
-}
-
-modules=$(ls -1 ${modules_dir})
-
-for component_name in $modules
-do
-    input_dir=${modules_dir}/${component_name}
-    output_dir=${docs_dir}/${component_name}
-
-		generate_doc ${component_name} ${input_dir} ${output_dir}
-done
+python scripts/docs-collator/collator_for_terraform_aws_components.py \
+	--input-dir "${CLONE_DIR}" \
+	--output-dir "${RENDERED_DOCS_DIR}"
