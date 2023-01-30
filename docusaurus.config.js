@@ -79,6 +79,16 @@ const config = {
         },
         items: [
           {
+              to: '/category/fundamentals',
+              position: 'left',
+              label: 'Fundamentals',
+          },
+          {
+              to: '/category/components',
+              position: 'left',
+              label: 'Components',
+          },
+          {
             type: 'dropdown',
             label: 'Community',
             position: 'right',
