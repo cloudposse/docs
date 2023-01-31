@@ -56,3 +56,4 @@ tmp/*
 algolia.index.json
 content/components/
 **/__pycache__/
+content/modules/
