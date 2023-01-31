@@ -10,7 +10,7 @@ from github import Github
 from utils import io, rendering
 
 DOWNLOAD_TMP_DIR = 'tmp/modules'
-OUTPUT_DOC_DIR = 'content/components'
+OUTPUT_DOC_DIR = 'content/modules'
 REPOS_SKIP_LIST = {'terraform-aws-components'}
 
 REPOS_FILTER_PREFIX = 'terraform-'

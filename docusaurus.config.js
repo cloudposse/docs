@@ -89,7 +89,7 @@ const config = {
               label: 'Components',
           },
           {
-              to: '/category/modules',
+              to: '/category/modules-3',
               position: 'left',
               label: 'Modules',
           },

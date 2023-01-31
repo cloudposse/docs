@@ -1,6 +1,7 @@
 {
   "label": "Modules",
   "position": 25,
+  "className": "command",
   "link": {
     "type": "generated-index",
     "description": "Modules"
