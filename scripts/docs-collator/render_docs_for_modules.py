@@ -139,7 +139,7 @@ def main(github_api_token, output_dir, download_dir, repos_to_skip):
 
 
 @click.command()
-@click.option('--github-api-token', envvar='GITHUB_API_TOKEN', required=True, help="Github API token")
+@click.option('--github-api-token', envvar='PUBLIC_REPO_ACCESS_TOKEN', required=True, help="Github API token")
 @click.option('--output-dir', default=OUTPUT_DOC_DIR, required=False, help="Rendered component output dir")
 @click.option('--download-dir', default=DOWNLOAD_TMP_DIR, required=False, help="Temporary output dir")
 @click.option('--repos-to-skip', default='terraform-aws-components', required=False, help="CSV list of repos to skip")

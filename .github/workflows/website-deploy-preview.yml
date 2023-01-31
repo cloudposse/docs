@@ -62,16 +62,25 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: "Render docs pages for 'terraform-aws-components'"
+      - name: "Install deps"
         run: |
+          make init
           pip install -r scripts/docs-collator/requirements.txt
-          ./scripts/render-docs-for-terraform-aws-components.sh
+
+      - name: "Render docs components"
+        run: |
+          ./scripts/render-docs-for-components.sh
+
+      - name: "Render docs for modules"
+        env:
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+        run: |
+          ./scripts/render-docs-for-modules.sh
 
       - name: Install Dependencies and Build Website
         env:
           GOOGLE_TAG_MANAGER: GTM-ABCD123
         run: |
-          make init
           make deps-production
           make build
 

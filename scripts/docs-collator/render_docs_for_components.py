@@ -11,7 +11,7 @@ README_FILE_GLOB_PATTERN = '**/README.md'
 CATEGORY_JSON_FILE = '_category_.json'
 README_FILE_NAME = 'README.md'
 OUTPUT_DOC_DIR = 'content/components'
-CLONED_REPO_DIR = 'tmp/modules/terraform-aws-components'
+CLONED_REPO_DIR = 'tmp/components/terraform-aws-components'
 GITHUB_ORG = 'cloudposse'
 GITHUB_REPO = 'terraform-aws-components'
 
@@ -98,7 +98,7 @@ def process_module(module, input_dir, output_dir, github_repository):
 def main(input_dir, output_dir, github_repo, modules_to_skip):
     modules_dir = os.path.join(input_dir, 'modules')
 
-    logging.info(modules_dir)
+    logging.info(f"Looking for modules in: {modules_dir}")
 
     modules = io.get_subfolders(modules_dir)
 
@@ -115,7 +115,7 @@ def main(input_dir, output_dir, github_repo, modules_to_skip):
 
 
 @click.command()
-@click.option('--input-dir', default=CLONED_REPO_DIR, required=True, help="Path to cloned repo 'modules' directory")
+@click.option('--input-dir', default=CLONED_REPO_DIR, required=True, help="Path to cloned repo")
 @click.option('--output-dir', default=OUTPUT_DOC_DIR, required=False, help="Rendered component output dir")
 @click.option('--github-org', default=GITHUB_ORG, required=True, help="Github org name")
 @click.option('--modules-to-skip', default='', required=False, help="CSV list of modules to skip")
