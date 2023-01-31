@@ -71,6 +71,9 @@ def fetch_module(repo, download_dir):
             if file_content.type == "dir":
                 contents.extend(repo.get_contents(file_content.path))
             else:
+                if file_content.path.endswith('targets.md'):  # we ignore 'targets.md'
+                    continue
+
                 final_dir = os.path.join(module_dir, os.path.dirname(file_content.path))
                 io.create_dirs(final_dir)
 
@@ -87,13 +90,16 @@ def render_module(repo, download_dir, output_dir):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     component_dir = os.path.join(output_dir, rendering.remove_prefix(repo.name, 'terraform-'))
     module_dir = os.path.join(download_dir, repo.name)
-    result_file = os.path.join(component_dir, README_MD)
+    readme_yaml_file = f"{module_dir}/{README_YAML}"
+    readme_md_file = os.path.join(component_dir, README_MD)
 
     io.create_dirs(component_dir)
 
+    pre_rendering_fixes(repo, readme_yaml_file)
+
     subprocess.run(["make", "readme",
                     f"README_TEMPLATE_FILE={script_dir}/templates/{README_MD}",
-                    f"README_FILE={result_file}",
+                    f"README_FILE={readme_md_file}",
                     f"README_YAML={module_dir}/{README_YAML}",
                     f"README_TEMPLATE_YAML={module_dir}/{README_YAML}",
                     f"README_INCLUDES={module_dir}"])
@@ -101,7 +107,13 @@ def render_module(repo, download_dir, output_dir):
     for extra_folder in EXTRA_FOLDERS:
         copy_extra_static_files(module_dir, component_dir, extra_folder)
 
-    post_rendering_fixes(repo, result_file)
+    post_rendering_fixes(repo, readme_md_file)
+
+
+def pre_rendering_fixes(repo, readme_yaml_file):
+    content = io.read_file_to_string(readme_yaml_file)
+    content = rendering.remove_targets_md(content)
+    io.save_string_to_file(readme_yaml_file, content)
 
 
 def post_rendering_fixes(repo, file):

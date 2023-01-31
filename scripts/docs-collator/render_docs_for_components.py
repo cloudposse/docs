@@ -23,8 +23,7 @@ def init_templating():
 
 def render_index_category(index_category_template, output_dir, subdirs):
     if len(subdirs) <= 1:
-        # nothing to create
-        return
+        return  # nothing to create
 
     middle_dirs = subdirs[:-1]  # need to skip last dir
 
@@ -46,6 +45,7 @@ def render_doc(doc_template, module, source_file, output_dir, subdirs, github_re
     content = io.read_file_to_string(source_file)
     content = rendering.fix_self_non_closing_br_tags(content)
     content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
+    content = rendering.remove_logo_from_the_bottom(content)
     final_dir = os.path.join(*([output_dir] + subdirs))
     result_path = os.path.join(final_dir, README_FILE_NAME)
     tags = ['terraform'] + module.split("-")

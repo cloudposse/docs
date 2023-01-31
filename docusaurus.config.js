@@ -89,6 +89,11 @@ const config = {
               label: 'Components',
           },
           {
+              to: '/category/modules',
+              position: 'left',
+              label: 'Modules',
+          },
+          {
             type: 'dropdown',
             label: 'Community',
             position: 'right',

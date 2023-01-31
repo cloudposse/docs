@@ -36,8 +36,18 @@ def fix_sidebar_label(content, repo):
 
 def fix_github_edit_url(content, repo):
     regex = re.compile('custom_edit_url: .*', re.IGNORECASE)
-    github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/edit/{repo.default_branch}/README.md"
+    github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/edit/{repo.default_branch}/README.yaml"
     return regex.sub(github_edit_url, content)
+
+
+def remove_logo_from_the_bottom(content):
+    return content.replace(
+        '[<img src="https://cloudposse.com/logo-300x69.svg" height="32" align="right"/>](https://cpco.io/component)',
+        '')
+
+
+def remove_targets_md(content):
+    return re.sub("(.*?)docs/targets.md(.*?)\n", "", content)
 
 
 def remove_prefix(string, prefix):
