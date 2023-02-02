@@ -100,6 +100,13 @@ const config = {
               to: '/intro',
               position: 'left',
               label: 'Fundamentals',
+              activeBaseRegex:
+                'fundamentals/.*|' +
+                'tutorials/.*|' +
+                'howto/.*|' +
+                'community/.*|' +
+                'glossary/.*|' +
+                'reference/.*|'
           },
           {
               to: '/components/',
