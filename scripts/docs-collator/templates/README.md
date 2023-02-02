@@ -18,7 +18,7 @@ tags:
 custom_edit_url: https://github.com/cloudposse/{{ $name }}/edit/master/README.md
 ---
 
-# Component: `{{ $componentName }}`
+# Module: `{{ $componentName }}`
 
 {{- if $deprecated }}
 ## Deprecated
