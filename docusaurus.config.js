@@ -18,10 +18,10 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'main',
-        path: 'content/main',
+        id: 'docs',
+        path: 'content/docs',
         routeBasePath: '/',
-        sidebarPath: require.resolve('./sidebars-main.js'),
+        sidebarPath: require.resolve('./sidebars-docs.js'),
         editUrl: ({versionDocsDirPath, docPath, locale}) => {
           return `https://github.com/cloudposse/docs/edit/master/content/${docPath}`;
         }

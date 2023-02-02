@@ -10,7 +10,7 @@ from utils import io, rendering
 README_FILE_GLOB_PATTERN = '**/README.md'
 CATEGORY_JSON_FILE = '_category_.json'
 README_FILE_NAME = 'README.md'
-OUTPUT_DOC_DIR = 'content/components'
+OUTPUT_DOC_DIR = 'content/components/catalog'
 CLONED_REPO_DIR = 'tmp/components/terraform-aws-components'
 GITHUB_ORG = 'cloudposse'
 GITHUB_REPO = 'terraform-aws-components'

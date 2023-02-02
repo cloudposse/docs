@@ -10,7 +10,7 @@ from github import Github
 from utils import io, rendering
 
 DOWNLOAD_TMP_DIR = 'tmp/modules'
-OUTPUT_DOC_DIR = 'content/modules'
+OUTPUT_DOC_DIR = 'content/modules/catalog'
 REPOS_SKIP_LIST = {'terraform-aws-components'}
 
 REPOS_FILTER_PREFIX = 'terraform-'
@@ -26,9 +26,6 @@ def get_repos(github, skip_repos):
     logging.info("Fetching list of available repos ...")
 
     for repo in github.get_user().get_repos():
-        # if repo.name != 'terraform-aws-ecs-cluster':
-        #     continue
-
         if not repo.name.startswith(REPOS_FILTER_PREFIX):
             continue
 
@@ -84,16 +81,28 @@ def fetch_module(repo, download_dir):
     return True
 
 
+def parse_repo_name(repo):
+    name_items = repo.name.split('-')
+    provider = name_items[1]
+    module_name = '-'.join(name_items[2:])
+    return provider, module_name
+
+
 def render_module(repo, download_dir, output_dir):
     logging.info(f"Rendering doc for {repo.full_name}")
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    component_dir = os.path.join(output_dir, rendering.remove_prefix(repo.name, 'terraform-'))
+
+    provider, module_name = parse_repo_name(repo)
+    component_dir = os.path.join(output_dir, provider, module_name)
     module_dir = os.path.join(download_dir, repo.name)
     readme_yaml_file = f"{module_dir}/{README_YAML}"
     readme_md_file = os.path.join(component_dir, README_MD)
 
     io.create_dirs(component_dir)
+
+    # TODO: IMPLEMENT THIS
+    create_index_for_provider(component_dir, provider)
 
     pre_rendering_fixes(repo, readme_yaml_file)
 
@@ -110,6 +119,11 @@ def render_module(repo, download_dir, output_dir):
     post_rendering_fixes(repo, readme_md_file)
 
 
+def create_index_for_provider(module_dir, provider):
+    # TODO: FIX ME
+    pass
+
+
 def pre_rendering_fixes(repo, readme_yaml_file):
     content = io.read_file_to_string(readme_yaml_file)
     content = rendering.remove_targets_md(content)
@@ -119,7 +133,6 @@ def pre_rendering_fixes(repo, readme_yaml_file):
 def post_rendering_fixes(repo, file):
     content = io.read_file_to_string(file)
     content = rendering.fix_self_non_closing_br_tags(content)
-    content = rendering.fix_sidebar_label(content, repo)
     content = rendering.fix_github_edit_url(content, repo)
     io.save_string_to_file(file, content)
 

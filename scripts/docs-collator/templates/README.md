@@ -1,11 +1,11 @@
 {{- defineDatasource "config" .Env.README_YAML | regexp.Replace ".*" "" -}}
 {{- defineDatasource "includes" .Env.README_INCLUDES | regexp.Replace ".*" "" -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
-{{- $name := (ds "config").name -}}
-{{- $componentName := $name | strings.TrimPrefix "terraform-" -}}
+{{- $fullModuleName := (ds "config").name -}}
+{{- $shortModuleName := (index ($fullModuleName | strings.SplitN "-" 3) 2) -}}
 ---
-title: {{ $componentName }}
-sidebar_label: {{ $componentName }}
+title: {{ $shortModuleName }}
+sidebar_label: {{ $shortModuleName }}
 sidebar_class_name: command
 {{- if has (ds "config") "description" }}
 description: |-
@@ -15,10 +15,10 @@ description: |-
 tags:
 {{ (ds "config").tags | data.ToYAML | strings.Indent 2 -}}
 {{- end }}
-custom_edit_url: https://github.com/cloudposse/{{ $name }}/edit/master/README.md
+custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master/README.md
 ---
 
-# Module: `{{ $componentName }}`
+# Module: `{{ $shortModuleName }}`
 
 {{- if $deprecated }}
 ## Deprecated
