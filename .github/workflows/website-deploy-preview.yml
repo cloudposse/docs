@@ -55,6 +55,8 @@ jobs:
           node-version-file: ".nvmrc"
 
       - name: Install Dependencies and Build Website
+        env:
+          GOOGLE_TAG_MANAGER: GTM-ABCD123
         run: |
           make deps-production
           make build

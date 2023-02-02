@@ -15,7 +15,6 @@ env:
   DEPLOYMENT_HOST: docs.cloudposse.com
   ALGOLIA_INDEX_NAME: docs.cloudposse.com
   ALGOLIA_APP_ID: 32YOERUX83
-  GOOGLE_TAG_MANAGER: ${{ env.GOOGLE_TAG_MANAGER }}
 
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
 permissions:
@@ -50,6 +49,8 @@ jobs:
           node-version-file: ".nvmrc"
 
       - name: Install Dependencies and Build Website
+        env:
+          GOOGLE_TAG_MANAGER: ${{ vars.GOOGLE_TAG_MANAGER }}
         run: |
           make deps-production
           make build
