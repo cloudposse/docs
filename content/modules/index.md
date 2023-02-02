@@ -1,6 +1,6 @@
 ---
-title: Modules
-sidebar_label: Overview
+title: Terraform Modules
+sidebar_label: Overview of Terraform Modules
 description: Modules
 sidebar_position: 0
 ---

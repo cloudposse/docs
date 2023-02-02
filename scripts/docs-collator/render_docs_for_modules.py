@@ -1,6 +1,7 @@
 import base64
 import logging
 import os
+import re
 import subprocess
 from shutil import copytree, ignore_patterns
 
@@ -13,11 +14,11 @@ DOWNLOAD_TMP_DIR = 'tmp/modules'
 OUTPUT_DOC_DIR = 'content/modules/catalog'
 REPOS_SKIP_LIST = {'terraform-aws-components'}
 
-REPOS_FILTER_PREFIX = 'terraform-'
 README_YAML = 'README.yaml'
 README_MD = 'README.md'
-EXTRA_FOLDERS = {'docs', 'images'}
+EXTRA_FOLDERS = {'docs', 'images', 'modules'}
 TMP_MODULES_DIR = 'modules'
+TERRAFORM_MODULE_NAME_PATTERN = re.compile("^terraform-[a-zA-Z0-9]+-.*")  # convention is terraform-<PROVIDER>-<NAME>
 
 
 def get_repos(github, skip_repos):
@@ -26,17 +27,33 @@ def get_repos(github, skip_repos):
     logging.info("Fetching list of available repos ...")
 
     for repo in github.get_user().get_repos():
-        if not repo.name.startswith(REPOS_FILTER_PREFIX):
+        # if repo.name != 'terraform-aws-api-gateway':
+        #     continue
+
+        if not is_valid_module_name(repo.name):
+            logging.debug("Module doesn't match terraform matching pattern. Skipping.")
             continue
 
         if repo.name in skip_repos:
-            logging.info(f"Repository '{repo.name}' in skip list")
+            logging.info(f"Repository '{repo.name}' in skip list. Skipping.")
 
         repos.append(repo)
 
     logging.info(f"Found {len(repos)} valid repositories")
 
     return repos
+
+
+def is_valid_module_name(name):
+    return TERRAFORM_MODULE_NAME_PATTERN.match(name)
+
+
+def download_file(repo, filename, output_dir):
+    io.create_dirs(os.path.join(output_dir, os.path.dirname(filename)))
+    content_encoded = repo.get_contents(filename, ref=repo.default_branch).content
+    content = base64.b64decode(content_encoded)
+    output_file = os.path.join(output_dir, filename)
+    io.save_to_file(output_file, content)
 
 
 def fetch_module(repo, download_dir):
@@ -50,33 +67,29 @@ def fetch_module(repo, download_dir):
 
     module_dir = os.path.join(download_dir, repo.name)
 
-    io.create_dirs(module_dir)
-
-    content_encoded = repo.get_contents(README_YAML, ref=repo.default_branch).content
-    content = base64.b64decode(content_encoded).decode('utf-8')
-    io.save_string_to_file(os.path.join(module_dir, README_YAML), content)
+    download_file(repo, README_YAML, module_dir)
 
     for extra_folder in EXTRA_FOLDERS:
         if extra_folder not in available_files:
             continue
 
-        contents = repo.get_contents(extra_folder)
+        extra_files = repo.get_contents(extra_folder)
 
-        while contents:
-            file_content = contents.pop(0)
+        while extra_files:
+            extra_repo_file = extra_files.pop(0)
 
-            if file_content.type == "dir":
-                contents.extend(repo.get_contents(file_content.path))
+            if extra_repo_file.type == "dir":
+                extra_files.extend(repo.get_contents(extra_repo_file.path))
             else:
-                if file_content.path.endswith('targets.md'):  # we ignore 'targets.md'
+                if extra_repo_file.path.endswith('targets.md'):  # we ignore 'targets.md'
                     continue
 
-                final_dir = os.path.join(module_dir, os.path.dirname(file_content.path))
-                io.create_dirs(final_dir)
-
-                content_encoded = file_content.content
-                content = base64.b64decode(content_encoded)
-                io.save_to_file(os.path.join(module_dir, file_content.path), content)
+                if extra_repo_file.path.startswith('modules'):
+                    if extra_repo_file.path.endswith('README.md'):
+                        download_file(repo, extra_repo_file.path, module_dir)
+                else:
+                    logging.info(f"{extra_repo_file.path} | {module_dir}")
+                    download_file(repo, extra_repo_file.path, module_dir)
 
     return True
 
@@ -145,7 +158,10 @@ def copy_extra_static_files(module_dir, component_dir, extra_folder):
 
     destination = os.path.join(component_dir, extra_folder)
 
-    copytree(source, destination, ignore=ignore_patterns('*.md'), dirs_exist_ok=True)
+    if extra_folder == 'modules':
+        copytree(source, destination, ignore=ignore_patterns('*.tf'), dirs_exist_ok=True)
+    else:
+        copytree(source, destination, ignore=ignore_patterns('*.md'), dirs_exist_ok=True)
 
 
 def init_github_client(github_api_token):
@@ -167,7 +183,8 @@ def main(github_api_token, output_dir, download_dir, repos_to_skip):
 @click.option('--github-api-token', envvar='PUBLIC_REPO_ACCESS_TOKEN', required=True, help="Github API token")
 @click.option('--output-dir', default=OUTPUT_DOC_DIR, required=False, help="Rendered component output dir")
 @click.option('--download-dir', default=DOWNLOAD_TMP_DIR, required=False, help="Temporary output dir")
-@click.option('--repos-to-skip', default='terraform-aws-components', required=False, help="CSV list of repos to skip")
+@click.option('--repos-to-skip', default='terraform-aws-components', required=False,
+              help="CSV list of repos to skip")
 @click.option('--log-level', default='INFO', required=False, help="Log level. Available options")
 def cli_main(github_api_token, output_dir, download_dir, repos_to_skip, log_level):
     logging.basicConfig(format='[%(asctime)s] %(levelname)s %(message)s',

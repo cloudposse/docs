@@ -28,6 +28,12 @@ def fix_custom_non_self_closing_tags_in_pre(content):
     return '\n'.join(fixed_lines)
 
 
+def fix_sidebar_label(content, repo):
+    regex = re.compile('sidebar_label: .*', re.IGNORECASE)
+    name = remove_prefix(repo.name, 'terraform-')
+    return regex.sub(f'sidebar_label: {name}', content)
+
+
 def fix_github_edit_url(content, repo):
     regex = re.compile('custom_edit_url: .*', re.IGNORECASE)
     github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/edit/{repo.default_branch}/README.yaml"
