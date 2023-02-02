@@ -56,7 +56,7 @@ jobs:
 
       - name: Install Dependencies and Build Website
         env:
-          GOOGLE_TAG_MANAGER: ${{ vars.GOOGLE_TAG_MANAGER }}
+          GOOGLE_TAG_MANAGER: GTM-ABCD123
         run: |
           make deps-production
           make build
