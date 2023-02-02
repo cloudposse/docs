@@ -7,10 +7,9 @@ import HomeCallouts from "../theme/sections/home-callouts/home-callouts";
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   const title = `${siteConfig.title}`
-  const tagline = `${siteConfig.description}`
+  const tagline = `${siteConfig.tagline}`
   return (
     <Layout
-      title={title}
       description={tagline}>
       <main>
         <Hero title={title} />
