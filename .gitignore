@@ -54,6 +54,4 @@ test.yaml
 tmp/*
 *.swp
 algolia.index.json
-content/components/
 **/__pycache__/
-content/modules/

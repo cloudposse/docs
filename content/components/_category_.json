@@ -1,8 +1,9 @@
 {
   "label": "Components",
-  "position": 20,
+  "position": 0,
+  "className": "command",
   "link": {
-    "type": "generated-index",
-    "description": "Components"
+    "type": "doc",
+    "id": "index"
   }
 }

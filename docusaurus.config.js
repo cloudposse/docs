@@ -18,13 +18,31 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'content',
-        path: 'content',
+        id: 'main',
+        path: 'content/main',
         routeBasePath: '/',
-        sidebarPath: require.resolve('./sidebars.js'),
+        sidebarPath: require.resolve('./sidebars-main.js'),
         editUrl: ({versionDocsDirPath, docPath, locale}) => {
           return `https://github.com/cloudposse/docs/edit/master/content/${docPath}`;
         }
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'components',
+        path: 'content/components',
+        routeBasePath: 'components/',
+        sidebarPath: require.resolve('./sidebars-components.js')
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'modules',
+        path: 'content/modules',
+        routeBasePath: 'modules/',
+        sidebarPath: require.resolve('./sidebars-modules.js')
       },
     ],
     [
@@ -79,17 +97,17 @@ const config = {
         },
         items: [
           {
-              to: '/category/fundamentals',
+              to: '/intro',
               position: 'left',
               label: 'Fundamentals',
           },
           {
-              to: '/category/components',
+              to: '/components/',
               position: 'left',
               label: 'Components',
           },
           {
-              to: '/category/modules-3',
+              to: '/modules/',
               position: 'left',
               label: 'Modules',
           },
