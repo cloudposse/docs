@@ -104,9 +104,11 @@ const config = {
                 'fundamentals/.*|' +
                 'tutorials/.*|' +
                 'howto/.*|' +
+                'how-to/.*|' +
                 'community/.*|' +
                 'glossary/.*|' +
-                'reference/.*|'
+                'reference/.*|' +
+                '/intro/',
           },
           {
               to: '/components/',

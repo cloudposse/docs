@@ -1,7 +1,6 @@
 {
   "label": "Modules",
   "position": 0,
-  "className": "command",
   "link": {
     "type": "doc",
     "id": "index"
