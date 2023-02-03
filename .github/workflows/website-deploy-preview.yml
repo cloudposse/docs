@@ -67,7 +67,7 @@ jobs:
           make init
           pip install -r scripts/docs-collator/requirements.txt
 
-      - name: "Render docs components"
+      - name: "Render docs for components"
         run: |
           ./scripts/render-docs-for-components.sh
 
