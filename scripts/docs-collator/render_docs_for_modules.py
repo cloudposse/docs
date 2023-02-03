@@ -20,6 +20,7 @@ DOCS_DIR = 'docs'
 IMAGES_DIR = 'images'
 SUBMODULES_DIR = 'modules'
 TARGETS_MD = 'targets.md'
+MODULES_README_TEMPLATE = 'module.readme.md'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -131,7 +132,7 @@ def fetch_module(repo, download_dir):
 def render_readme(module_download_dir, module_docs_dir):
     readme_yaml_file = os.path.join(module_download_dir, README_YAML)
     readme_md_file = os.path.join(module_docs_dir, README_MD)
-    readme_tmpl_file = os.path.join(SCRIPT_DIR, 'templates', README_MD)
+    readme_tmpl_file = os.path.join(SCRIPT_DIR, 'templates', MODULES_README_TEMPLATE)
 
     io.create_dirs(module_docs_dir)
 
