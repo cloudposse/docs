@@ -1,6 +1,6 @@
 # Usage for docs-collator
 
-Docs collation tools works for 2 types of projects:
+Document collation supports 2 types of projects:
 - components - `cloudposse/terraform-aws-component` - components from single repo `cloudposse/terraform-aws-component` under `modules/` dir 
 - modules - `cloudposse/terraform-*` - for all public (non archived) repos except `cloudposse/terraform-aws-component` that are prefixed with `terraform-`
 

@@ -6,4 +6,4 @@ sidebar_position: 2
 
 ## Atmos
 
-Documentation for atmos got moved to a dedicated site [atmos.tools](https://atmos.tools) 
+Documentation for Atmos has moved to [atmos.tools](https://atmos.tools)
