@@ -1,11 +1,11 @@
 {
   "label": "aws",
-  "position": 100,
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "className": "command",
   "link": {
     "type": "generated-index",
+    "title": "aws",
     "description": "aws"
   }
 }

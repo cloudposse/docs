@@ -2,23 +2,18 @@ import logging
 import os
 
 import click
-import jinja2
-from jinja2 import FileSystemLoader
 
-from utils import io, rendering
+from utils import io, rendering, templating
 
 README_FILE_GLOB_PATTERN = '**/README.md'
 CATEGORY_JSON_FILE = '_category_.json'
+INDEX_CATEGORY_TEMPLATE_FILE = 'index_category.json'
+COMPONENT_README_TEMPLATE_FILE = 'component.readme.md'
 README_FILE_NAME = 'README.md'
-OUTPUT_DOC_DIR = 'content/components/catalog'
+OUTPUT_DOC_DIR = 'content/components/catalog/aws'
 CLONED_REPO_DIR = 'tmp/components/terraform-aws-components'
 GITHUB_ORG = 'cloudposse'
 GITHUB_REPO = 'terraform-aws-components'
-
-
-def init_templating():
-    return jinja2.Environment(loader=FileSystemLoader(
-        os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')))
 
 
 def render_index_category(index_category_template, output_dir, subdirs):
@@ -35,10 +30,10 @@ def render_index_category(index_category_template, output_dir, subdirs):
         current_path = new_path
 
         if not os.path.exists(json_path):
-            with open(json_path, 'w') as f:
-                f.write(index_category_template.render(label=subdir,
-                                                       title=subdir,
-                                                       description=subdir))
+            json_content = index_category_template.render(label=subdir,
+                                                          title=subdir,
+                                                          description=subdir)
+            io.save_string_to_file(json_path, json_content)
 
 
 def render_doc(doc_template, module, source_file, output_dir, subdirs, github_repository):
@@ -50,14 +45,15 @@ def render_doc(doc_template, module, source_file, output_dir, subdirs, github_re
     result_path = os.path.join(final_dir, README_FILE_NAME)
     tags = ['terraform'] + module.split("-")
 
-    with open(result_path, 'w') as f:
-        f.write(doc_template.render(label=module,
-                                    title=module,
-                                    description=module,
-                                    content=content,
-                                    github_repository=github_repository,
-                                    module=module,
-                                    tags=tags))
+    doc_content = doc_template.render(label=module,
+                                      title=module,
+                                      description=module,
+                                      content=content,
+                                      github_repository=github_repository,
+                                      module=module,
+                                      tags=tags)
+
+    io.save_string_to_file(result_path, doc_content)
 
 
 def process_module(module, input_dir, output_dir, github_repository):
@@ -70,9 +66,9 @@ def process_module(module, input_dir, output_dir, github_repository):
 
     files = io.get_filenames_in_dir(module_dir, README_FILE_NAME, True)
 
-    jenv = init_templating()
-    index_category_template = jenv.get_template('index_category.json')
-    doc_template = jenv.get_template('doc.md')
+    jenv = templating.init_templating(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates'))
+    index_category_template = jenv.get_template(INDEX_CATEGORY_TEMPLATE_FILE)
+    doc_template = jenv.get_template(COMPONENT_README_TEMPLATE_FILE)
 
     # create subdirs
     for file in files:

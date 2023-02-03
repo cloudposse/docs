@@ -4,11 +4,9 @@ import os
 import subprocess
 
 import click
-import jinja2
 from github import Github
-from jinja2 import FileSystemLoader
 
-from utils import io, rendering, terraform
+from utils import io, rendering, terraform, templating
 
 DOWNLOAD_TMP_DIR = 'tmp/modules'
 OUTPUT_DOC_DIR = 'content/modules/catalog'
@@ -248,17 +246,12 @@ def init_github_client(github_api_token):
     return Github(github_api_token)
 
 
-def init_templating():
-    return jinja2.Environment(loader=FileSystemLoader(
-        os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')))
-
-
 def main(github_api_token, output_dir, download_dir, repos_to_skip):
     github = init_github_client(github_api_token)
     skip_repos = set([skip.strip() for skip in repos_to_skip.split(",")])
     repos = get_repos(github, skip_repos)
 
-    jenv = init_templating()
+    jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
     provider_index_category_template = jenv.get_template('provider_index_category.json')
 
     for repo in repos:
