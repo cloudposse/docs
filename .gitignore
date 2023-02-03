@@ -55,5 +55,5 @@ tmp/*
 *.swp
 algolia.index.json
 **/__pycache__/
-
+content/components/catalog/aws/**
 content/modules/catalog/**
