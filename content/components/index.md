@@ -1,7 +1,7 @@
 ---
-title: Components
-sidebar_label: Overview
-description: Components
+title: Terraform Components
+sidebar_label: Overview of Terraform Components
+description: Terraform Components
 sidebar_position: 0
 ---
 
