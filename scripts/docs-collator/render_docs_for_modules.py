@@ -244,6 +244,7 @@ def post_rendering_fixes(repo, readme_md_file):
     content = rendering.fix_self_non_closing_br_tags(content)
     content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
     content = rendering.fix_github_edit_url(content, repo)
+    content = rendering.fix_sidebar_label(content, repo)
     io.save_string_to_file(readme_md_file, content)
 
 
