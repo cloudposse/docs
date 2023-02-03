@@ -21,7 +21,11 @@ IMAGES_DIR = 'images'
 SUBMODULES_DIR = 'modules'
 TARGETS_MD = 'targets.md'
 MODULES_README_TEMPLATE = 'module.readme.md'
+
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
+PROVIDER_INDEX_CATEGORY_TEMPLATE = jenv.get_template('provider_index_category.json')
+SUBMODULE_TEMPLATE = jenv.get_template('component.readme.md')
 
 
 def get_repos(github, skip_repos):
@@ -30,7 +34,7 @@ def get_repos(github, skip_repos):
     logging.info("Fetching list of available repos ...")
 
     for repo in github.get_user().get_repos():
-        # if repo.name != 'terraform-aws-dms':
+        # if repo.name != 'terraform-aws-api-gateway':
         #     continue
 
         if not terraform.is_valid_module_name(repo.name):
@@ -200,22 +204,29 @@ def copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_d
         if not os.path.basename(file).endswith(README_MD):
             continue
 
-        dest_file = os.path.join(module_docs_dir, SUBMODULES_DIR, os.path.relpath(file, extra_resources_dir))
-        dest_file = os.path.join(os.path.dirname(dest_file), f"{os.path.basename(os.path.dirname(dest_file))}.md")
+        rel_path = os.path.relpath(file, module_download_dir)
+        dest_file = os.path.join(module_docs_dir, rel_path)
+        submodule_name = os.path.basename(os.path.dirname(dest_file))
 
-        io.copy_file(file, dest_file)
+        content = SUBMODULE_TEMPLATE.render(label=submodule_name,
+                                            title=submodule_name,
+                                            description=submodule_name,
+                                            github_edit_url=f"https://github.com/{repo.full_name}/edit/{repo.default_branch}/{rel_path}",
+                                            content=io.read_file_to_string(file))
+        io.create_dirs(os.path.dirname(dest_file))
+        io.save_string_to_file(dest_file, content)
 
         post_rendering_fixes_for_submodule(dest_file)
 
         logging.info(f"Copied extra file: {dest_file}")
 
 
-def create_index_for_provider(repo, provider_index_category_template, output_dir):
+def create_index_for_provider(repo, output_dir):
     provider, module_name = terraform.parse_repo_name(repo.name)
     json_file = os.path.join(output_dir, provider, INDEX_CATEGORY_JSON)
 
     if not os.path.exists(json_file):
-        content = provider_index_category_template.render(label=provider,
+        content = PROVIDER_INDEX_CATEGORY_TEMPLATE.render(label=provider,
                                                           title=provider,
                                                           description=provider)
         io.save_string_to_file(json_file, content)
@@ -252,14 +263,11 @@ def main(github_api_token, output_dir, download_dir, repos_to_skip):
     skip_repos = set([skip.strip() for skip in repos_to_skip.split(",")])
     repos = get_repos(github, skip_repos)
 
-    jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
-    provider_index_category_template = jenv.get_template('provider_index_category.json')
-
     for repo in repos:
         fetched = fetch_module(repo, download_dir)
         if fetched:
             render_module(repo, download_dir, output_dir)
-            create_index_for_provider(repo, provider_index_category_template, output_dir)
+            create_index_for_provider(repo, output_dir)
 
 
 @click.command()

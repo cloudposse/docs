@@ -14,9 +14,13 @@ OUTPUT_DOC_DIR = 'content/components/catalog/aws'
 CLONED_REPO_DIR = 'tmp/components/terraform-aws-components'
 GITHUB_ORG = 'cloudposse'
 GITHUB_REPO = 'terraform-aws-components'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
+DOC_TEMPLATE = jenv.get_template(COMPONENT_README_TEMPLATE_FILE)
 
 
-def render_doc(doc_template, module, file, module_download_dir, docs_dir, github_repository):
+def render_doc(module, file, module_download_dir, docs_dir, github_repository):
     content = io.read_file_to_string(file)
     content = rendering.fix_self_non_closing_br_tags(content)
     content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
@@ -29,7 +33,7 @@ def render_doc(doc_template, module, file, module_download_dir, docs_dir, github
     description = module
     github_edit_url = f"https://github.com/{github_repository}/edit/master/modules/{relative_path}"
 
-    if '/modules/' in result_file:  # this is submodule
+    if len(relative_path.split('/')) > 2:  # this is submodule
         submodule_name = os.path.basename(os.path.dirname(result_file))
 
         label = submodule_name
@@ -43,7 +47,7 @@ def render_doc(doc_template, module, file, module_download_dir, docs_dir, github
 
     tags = ['terraform', 'aws', module]
 
-    doc_content = doc_template.render(label=label,
+    doc_content = DOC_TEMPLATE.render(label=label,
                                       title=title,
                                       description=description,
                                       content=content,
@@ -54,7 +58,7 @@ def render_doc(doc_template, module, file, module_download_dir, docs_dir, github
     io.save_string_to_file(result_file, doc_content)
 
 
-def process_module(module, download_dir, docs_dir, github_repository, doc_template):
+def process_module(module, download_dir, docs_dir, github_repository):
     logging.info(f"Processing module: {module}")
 
     module_download_dir = os.path.join(download_dir, module)
@@ -62,7 +66,7 @@ def process_module(module, download_dir, docs_dir, github_repository, doc_templa
     files = io.get_filenames_in_dir(module_download_dir, README_FILE_NAME, True)
 
     for file in files:
-        render_doc(doc_template, module, file, download_dir, docs_dir, github_repository)
+        render_doc(module, file, download_dir, docs_dir, github_repository)
 
 
 def main(input_dir, output_dir, github_repo):
@@ -74,11 +78,8 @@ def main(input_dir, output_dir, github_repo):
 
     logging.info(f"Found {len(modules)} modules")
 
-    jenv = templating.init_templating(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates'))
-    doc_template = jenv.get_template(COMPONENT_README_TEMPLATE_FILE)
-
     for module in modules:
-        process_module(module, modules_dir, output_dir, github_repo, doc_template)
+        process_module(module, modules_dir, output_dir, github_repo)
 
 
 @click.command()
