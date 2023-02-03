@@ -6,21 +6,21 @@ Document collation supports 2 types of projects:
 
 Python is used for both tools so make sure to install python requirements.
 
-### Install python requirements
+### Install Python Requirements
 
 ```bash
 pip install -r scripts/docs-collator/requirements.txt
 ```
 
-### Render docs components
+### Render Documentation for Components
 
 ```bash
 ./scripts/render-docs-for-components.sh
 ```
 
-### Render docs for modules
+### Render Documentation for Modules
 
-Since this script uses Github API - access token should be set as env var.
+Since this script uses the Github API, the GitHub access token should be set as the `PUBLIC_REPO_ACCESS_TOKEN ` environment variable.
 
 ```bash
 export PUBLIC_REPO_ACCESS_TOKEN=<github-api-token>

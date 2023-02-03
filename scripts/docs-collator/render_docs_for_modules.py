@@ -34,7 +34,7 @@ def get_repos(github, skip_repos):
     logging.info("Fetching list of available repos ...")
 
     for repo in github.get_user().get_repos():
-        # if repo.name != 'terraform-aws-api-gateway':
+        # if repo.name != 'terraform-aws-ecs-cluster':
         #     continue
 
         if not terraform.is_valid_module_name(repo.name):
@@ -236,6 +236,7 @@ def pre_rendering_fixes(repo, module_download_dir):
     readme_yaml_file = os.path.join(module_download_dir, README_YAML)
     content = io.read_file_to_string(readme_yaml_file)
     content = rendering.remove_targets_md(content)
+    content = rendering.rename_name(repo, content)
     io.save_string_to_file(readme_yaml_file, content)
 
 
