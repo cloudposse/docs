@@ -1,5 +1,7 @@
 import re
 
+import io
+
 
 def fix_self_non_closing_br_tags(content):
     regex = re.compile(re.escape('<br>'), re.IGNORECASE)

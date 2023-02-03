@@ -1,24 +1,28 @@
 import base64
 import logging
 import os
-import re
 import subprocess
-from shutil import copytree, ignore_patterns
 
 import click
+import jinja2
 from github import Github
+from jinja2 import FileSystemLoader
 
-from utils import io, rendering
+from utils import io, rendering, terraform
 
 DOWNLOAD_TMP_DIR = 'tmp/modules'
 OUTPUT_DOC_DIR = 'content/modules/catalog'
 REPOS_SKIP_LIST = {'terraform-aws-components'}
+INDEX_CATEGORY_JSON = '_category_.json'
 
 README_YAML = 'README.yaml'
 README_MD = 'README.md'
-EXTRA_FOLDERS = {'docs', 'images', 'modules'}
 TMP_MODULES_DIR = 'modules'
-TERRAFORM_MODULE_NAME_PATTERN = re.compile("^terraform-[a-zA-Z0-9]+-.*")  # convention is terraform-<PROVIDER>-<NAME>
+DOCS_DIR = 'docs'
+IMAGES_DIR = 'images'
+SUBMODULES_DIR = 'modules'
+TARGETS_MD = 'targets.md'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def get_repos(github, skip_repos):
@@ -27,15 +31,16 @@ def get_repos(github, skip_repos):
     logging.info("Fetching list of available repos ...")
 
     for repo in github.get_user().get_repos():
-        # if repo.name != 'terraform-aws-api-gateway':
+        # if repo.name != 'terraform-aws-dms':
         #     continue
 
-        if not is_valid_module_name(repo.name):
+        if not terraform.is_valid_module_name(repo.name):
             logging.debug("Module doesn't match terraform matching pattern. Skipping.")
             continue
 
         if repo.name in skip_repos:
             logging.info(f"Repository '{repo.name}' in skip list. Skipping.")
+            continue
 
         repos.append(repo)
 
@@ -44,128 +49,208 @@ def get_repos(github, skip_repos):
     return repos
 
 
-def is_valid_module_name(name):
-    return TERRAFORM_MODULE_NAME_PATTERN.match(name)
-
-
-def download_file(repo, filename, output_dir):
-    io.create_dirs(os.path.join(output_dir, os.path.dirname(filename)))
-    content_encoded = repo.get_contents(filename, ref=repo.default_branch).content
+def fetch_file(repo, remote_file, output_dir):
+    io.create_dirs(os.path.join(output_dir, os.path.dirname(remote_file)))
+    content_encoded = repo.get_contents(remote_file, ref=repo.default_branch).content
     content = base64.b64decode(content_encoded)
-    output_file = os.path.join(output_dir, filename)
+    output_file = os.path.join(output_dir, remote_file)
     io.save_to_file(output_file, content)
+    logging.info(f"Fetched file: {remote_file}")
+
+
+def fetch_readme_yaml(repo, module_download_dir):
+    fetch_file(repo, README_YAML, module_download_dir)
+
+
+def list_remote_files(repo, remote_dir):
+    remote_files = repo.get_contents(remote_dir)
+
+    result = []
+
+    while remote_files:
+        remote_file = remote_files.pop(0)
+
+        if remote_file.type == "dir":
+            remote_files.extend(repo.get_contents(remote_file.path))
+        else:
+            result.append(remote_file.path)
+
+    return result
+
+
+def fetch_docs(repo, module_download_dir):
+    remote_files = list_remote_files(repo, DOCS_DIR)
+
+    for remote_file in remote_files:
+        if os.path.basename(remote_file) == TARGETS_MD:  # skip targets.md
+            continue
+
+        fetch_file(repo, remote_file, module_download_dir)
+
+
+def fetch_images(repo, module_download_dir):
+    remote_files = list_remote_files(repo, IMAGES_DIR)
+
+    for remote_file in remote_files:
+        fetch_file(repo, remote_file, module_download_dir)
+
+
+def fetch_modules(repo, module_download_dir):
+    remote_files = list_remote_files(repo, SUBMODULES_DIR)
+
+    for remote_file in remote_files:
+        if os.path.basename(remote_file) != README_MD:
+            continue
+
+        fetch_file(repo, remote_file, module_download_dir)
 
 
 def fetch_module(repo, download_dir):
-    logging.info(f"Fetching files for: '{repo.full_name}'")
+    logging.info(f"Fetching files for: {repo.full_name}")
 
-    available_files = set([item.path for item in repo.get_contents("")])
+    module_download_dir = os.path.join(download_dir, repo.name)
 
-    if README_YAML not in available_files:
-        logging.warning(f"{README_YAML} is missing. Skipping... '{repo.full_name}'")
+    remote_files = set([item.path for item in repo.get_contents("")])
+
+    if README_YAML not in remote_files:
+        logging.warning(f"{README_YAML} is missing. Skipping...")
         return False
 
-    module_dir = os.path.join(download_dir, repo.name)
+    fetch_readme_yaml(repo, module_download_dir)
 
-    download_file(repo, README_YAML, module_dir)
+    if DOCS_DIR in remote_files:
+        fetch_docs(repo, module_download_dir)
 
-    for extra_folder in EXTRA_FOLDERS:
-        if extra_folder not in available_files:
-            continue
+    if IMAGES_DIR in remote_files:
+        fetch_images(repo, module_download_dir)
 
-        extra_files = repo.get_contents(extra_folder)
-
-        while extra_files:
-            extra_repo_file = extra_files.pop(0)
-
-            if extra_repo_file.type == "dir":
-                extra_files.extend(repo.get_contents(extra_repo_file.path))
-            else:
-                if extra_repo_file.path.endswith('targets.md'):  # we ignore 'targets.md'
-                    continue
-
-                if extra_repo_file.path.startswith('modules'):
-                    if extra_repo_file.path.endswith('README.md'):
-                        download_file(repo, extra_repo_file.path, module_dir)
-                else:
-                    logging.info(f"{extra_repo_file.path} | {module_dir}")
-                    download_file(repo, extra_repo_file.path, module_dir)
+    if SUBMODULES_DIR in remote_files:
+        fetch_modules(repo, module_download_dir)
 
     return True
 
 
-def parse_repo_name(repo):
-    name_items = repo.name.split('-')
-    provider = name_items[1]
-    module_name = '-'.join(name_items[2:])
-    return provider, module_name
+def render_readme(module_download_dir, module_docs_dir):
+    readme_yaml_file = os.path.join(module_download_dir, README_YAML)
+    readme_md_file = os.path.join(module_docs_dir, README_MD)
+    readme_tmpl_file = os.path.join(SCRIPT_DIR, 'templates', README_MD)
 
-
-def render_module(repo, download_dir, output_dir):
-    logging.info(f"Rendering doc for {repo.full_name}")
-
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-
-    provider, module_name = parse_repo_name(repo)
-    component_dir = os.path.join(output_dir, provider, module_name)
-    module_dir = os.path.join(download_dir, repo.name)
-    readme_yaml_file = f"{module_dir}/{README_YAML}"
-    readme_md_file = os.path.join(component_dir, README_MD)
-
-    io.create_dirs(component_dir)
-
-    # TODO: IMPLEMENT THIS
-    create_index_for_provider(component_dir, provider)
-
-    pre_rendering_fixes(repo, readme_yaml_file)
+    io.create_dirs(module_docs_dir)
 
     subprocess.run(["make", "readme",
-                    f"README_TEMPLATE_FILE={script_dir}/templates/{README_MD}",
+                    f"README_TEMPLATE_FILE={readme_tmpl_file}",
                     f"README_FILE={readme_md_file}",
-                    f"README_YAML={module_dir}/{README_YAML}",
-                    f"README_TEMPLATE_YAML={module_dir}/{README_YAML}",
-                    f"README_INCLUDES={module_dir}"])
+                    f"README_YAML={readme_yaml_file}",
+                    f"README_TEMPLATE_YAML={readme_yaml_file}",
+                    f"README_INCLUDES={module_download_dir}"])
 
-    for extra_folder in EXTRA_FOLDERS:
-        copy_extra_static_files(module_dir, component_dir, extra_folder)
+    logging.info(f"Rendered: {readme_md_file}")
 
+
+def render_module(repo, download_dir, docs_dir):
+    logging.info(f"Rendering doc for: {repo.full_name}")
+    module_download_dir = os.path.join(download_dir, repo.name)
+
+    pre_rendering_fixes(repo, module_download_dir)
+
+    provider, module_name = terraform.parse_repo_name(repo.name)
+    module_docs_dir = os.path.join(docs_dir, provider, module_name)
+
+    render_readme(module_download_dir, module_docs_dir)
+
+    readme_md_file = os.path.join(module_docs_dir, README_MD)
     post_rendering_fixes(repo, readme_md_file)
 
+    copy_extra_resources_for_docs(module_download_dir, module_docs_dir)
+    copy_extra_resources_for_images(module_download_dir, module_docs_dir)
+    copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir)
 
-def create_index_for_provider(module_dir, provider):
-    # TODO: FIX ME
-    pass
+
+def copy_extra_resources_for_docs(module_download_dir, module_docs_dir):
+    extra_resources_dir = os.path.join(module_download_dir, DOCS_DIR)
+    files = io.get_filenames_in_dir(extra_resources_dir, '*', True)
+
+    for file in files:
+        if os.path.basename(file).lower().endswith('.md') or os.path.isdir(file):
+            continue
+
+        dest_file = os.path.join(module_docs_dir, DOCS_DIR, os.path.relpath(file, extra_resources_dir))
+        io.copy_file(file, dest_file)
+
+        logging.info(f"Copied extra file: {dest_file}")
 
 
-def pre_rendering_fixes(repo, readme_yaml_file):
+def copy_extra_resources_for_images(module_download_dir, module_docs_dir):
+    extra_resources_dir = os.path.join(module_download_dir, IMAGES_DIR)
+    files = io.get_filenames_in_dir(extra_resources_dir, '*', True)
+
+    for file in files:
+        if os.path.isdir(file):
+            continue
+
+        dest_file = os.path.join(module_docs_dir, IMAGES_DIR, os.path.relpath(file, extra_resources_dir))
+        io.copy_file(file, dest_file)
+        logging.info(f"Copied extra file: {dest_file}")
+
+
+def copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir):
+    extra_resources_dir = os.path.join(module_download_dir, SUBMODULES_DIR)
+    files = io.get_filenames_in_dir(extra_resources_dir, '*', True)
+
+    for file in files:
+        if not os.path.basename(file).endswith(README_MD):
+            continue
+
+        dest_file = os.path.join(module_docs_dir, SUBMODULES_DIR, os.path.relpath(file, extra_resources_dir))
+        dest_file = os.path.join(os.path.dirname(dest_file), f"{os.path.basename(os.path.dirname(dest_file))}.md")
+
+        io.copy_file(file, dest_file)
+
+        post_rendering_fixes_for_submodule(dest_file)
+
+        logging.info(f"Copied extra file: {dest_file}")
+
+
+def create_index_for_provider(repo, provider_index_category_template, output_dir):
+    provider, module_name = terraform.parse_repo_name(repo.name)
+    json_file = os.path.join(output_dir, provider, INDEX_CATEGORY_JSON)
+
+    if not os.path.exists(json_file):
+        content = provider_index_category_template.render(label=provider,
+                                                          title=provider,
+                                                          description=provider)
+        io.save_string_to_file(json_file, content)
+
+
+def pre_rendering_fixes(repo, module_download_dir):
+    readme_yaml_file = os.path.join(module_download_dir, README_YAML)
     content = io.read_file_to_string(readme_yaml_file)
     content = rendering.remove_targets_md(content)
     io.save_string_to_file(readme_yaml_file, content)
 
 
-def post_rendering_fixes(repo, file):
-    content = io.read_file_to_string(file)
+def post_rendering_fixes(repo, readme_md_file):
+    content = io.read_file_to_string(readme_md_file)
     content = rendering.fix_self_non_closing_br_tags(content)
+    content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
     content = rendering.fix_github_edit_url(content, repo)
-    io.save_string_to_file(file, content)
+    io.save_string_to_file(readme_md_file, content)
 
 
-def copy_extra_static_files(module_dir, component_dir, extra_folder):
-    source = os.path.join(module_dir, extra_folder)
-
-    if not os.path.exists(source):
-        return
-
-    destination = os.path.join(component_dir, extra_folder)
-
-    if extra_folder == 'modules':
-        copytree(source, destination, ignore=ignore_patterns('*.tf'), dirs_exist_ok=True)
-    else:
-        copytree(source, destination, ignore=ignore_patterns('*.md'), dirs_exist_ok=True)
+def post_rendering_fixes_for_submodule(readme_md_file):
+    content = io.read_file_to_string(readme_md_file)
+    content = rendering.fix_self_non_closing_br_tags(content)
+    content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
+    io.save_string_to_file(readme_md_file, content)
 
 
 def init_github_client(github_api_token):
     return Github(github_api_token)
+
+
+def init_templating():
+    return jinja2.Environment(loader=FileSystemLoader(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')))
 
 
 def main(github_api_token, output_dir, download_dir, repos_to_skip):
@@ -173,10 +258,14 @@ def main(github_api_token, output_dir, download_dir, repos_to_skip):
     skip_repos = set([skip.strip() for skip in repos_to_skip.split(",")])
     repos = get_repos(github, skip_repos)
 
+    jenv = init_templating()
+    provider_index_category_template = jenv.get_template('provider_index_category.json')
+
     for repo in repos:
         fetched = fetch_module(repo, download_dir)
         if fetched:
             render_module(repo, download_dir, output_dir)
+            create_index_for_provider(repo, provider_index_category_template, output_dir)
 
 
 @click.command()

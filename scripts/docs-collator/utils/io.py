@@ -43,3 +43,8 @@ def get_filenames_in_dir(dir, pattern, recursive=False):
 
 def get_subfolders(dir):
     return [d for d in os.listdir(dir) if os.path.isdir(os.path.join(dir, d))]
+
+
+def copy_file(src, dst):
+    create_dirs(os.path.dirname(dst))
+    shutil.copy(src, dst)
