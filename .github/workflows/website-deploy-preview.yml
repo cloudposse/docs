@@ -54,7 +54,7 @@ jobs:
         with:
           fetch-depth: 1
           repository: cloudposse/terraform-aws-components
-          ref: fixed-non-html-tags
+          ref: master
           path: tmp/components/terraform-aws-components
 
       - name: "Setup Python"
