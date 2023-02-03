@@ -36,6 +36,8 @@ def get_repos(github, skip_repos):
     for repo in github.get_user().get_repos():
         # if repo.name != 'terraform-aws-ecs-cluster':
         #     continue
+        if repo.private: # skip private repos
+            continue
 
         if not terraform.is_valid_module_name(repo.name):
             logging.debug("Module doesn't match terraform matching pattern. Skipping.")
