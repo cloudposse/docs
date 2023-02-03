@@ -10,21 +10,39 @@ const config = {
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
-  onDuplicateRoutes: 'throw',
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
+  onDuplicateRoutes: 'warn',
   favicon: 'img/favicon.png',
   plugins: [
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'content',
-        path: 'content',
+        id: 'docs',
+        path: 'content/docs',
         routeBasePath: '/',
-        sidebarPath: require.resolve('./sidebars.js'),
+        sidebarPath: require.resolve('./sidebars-docs.js'),
         editUrl: ({versionDocsDirPath, docPath, locale}) => {
           return `https://github.com/cloudposse/docs/edit/master/content/${docPath}`;
         }
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'components',
+        path: 'content/components',
+        routeBasePath: 'components/',
+        sidebarPath: require.resolve('./sidebars-components.js')
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'modules',
+        path: 'content/modules',
+        routeBasePath: 'modules/',
+        sidebarPath: require.resolve('./sidebars-modules.js')
       },
     ],
     [
@@ -78,6 +96,30 @@ const config = {
           srcDark: 'img/logo-light.png',
         },
         items: [
+          {
+              to: '/intro',
+              position: 'left',
+              label: 'Fundamentals',
+              activeBaseRegex:
+                'fundamentals/.*|' +
+                'tutorials/.*|' +
+                'howto/.*|' +
+                'how-to/.*|' +
+                'community/.*|' +
+                'glossary/.*|' +
+                'reference/.*|' +
+                '/intro/',
+          },
+          {
+              to: '/components/',
+              position: 'left',
+              label: 'Components',
+          },
+          {
+              to: '/modules/',
+              position: 'left',
+              label: 'Modules',
+          },
           {
             type: 'dropdown',
             label: 'Community',

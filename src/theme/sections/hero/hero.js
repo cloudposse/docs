@@ -11,7 +11,7 @@ export default function Hero() {
         <div className={styles.heroContainer}>
             <Container>
                 <div className={styles.heroInner}>
-                    <div style={{ minWidth: 400 }}>
+                    <div style={{ minWidth: 400 }} className={styles.heroLogo}>
                       <svg className="landingLogo" style={{isolation: 'isolate', width: '100%', paddingRight: 50}} viewBox="0 0 820 543">
                         <g>
                         <path d=" M 500.781 94.159 L 510.876 57.066 L 548.365 47.079 L 510.876 37.092 L 500.781 0 L 490.687 37.092 L 453.198 47.079 L 490.687 57.066 L 500.781 94.159 Z " fill="rgb(54,69,72)"></path>
@@ -22,7 +22,7 @@ export default function Hero() {
                       </svg>
                     </div>
                     <div>
-                        <div className={styles.heroImg}>
+                        <div>
                             <h1 className="hero__title">The Cloud Posse</h1>
                             <h1 className="hero__title">Developer Hub</h1>
                             <p className="hero__subtitle">{siteConfig.tagline}</p>

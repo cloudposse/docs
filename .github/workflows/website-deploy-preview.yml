@@ -49,10 +49,33 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: "Checkout 'terraform-aws-components' Repository"
+        uses: actions/checkout@v3
         with:
-          node-version-file: ".nvmrc"
+          fetch-depth: 1
+          repository: cloudposse/terraform-aws-components
+          ref: master
+          path: tmp/components/terraform-aws-components
+
+      - name: "Setup Python"
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: "Install deps"
+        run: |
+          make init
+          pip install -r scripts/docs-collator/requirements.txt
+
+      - name: "Render docs for components"
+        run: |
+          ./scripts/render-docs-for-components.sh
+
+      - name: "Render docs for modules"
+        env:
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+        run: |
+          ./scripts/render-docs-for-modules.sh
 
       - name: Install Dependencies and Build Website
         env:

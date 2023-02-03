@@ -44,10 +44,7 @@ background: linear-gradient(to right, #000000, #434343); /* W3C, IE 10+/ Edge, F
 }
 
 @media (max-width: 968px) {
-  .heroInner div:first-child {
-    max-width: inherit;
-  }
-  .heroInner div:last-child {
+  .heroLogo {
     display: none;
   }
 }

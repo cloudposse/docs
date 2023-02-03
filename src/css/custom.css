@@ -214,12 +214,32 @@ svg.landingLogo path {
     float: right;
 }
 
+.breadcrumbs-container {
+    display: block;
+}
+
+@media screen and (max-width: 968px) {
+    .slack-in-breadcrumbs {
+        float: left;
+        display: block;
+    }
+
+    .breadcrumbs-container {
+        display: block;
+        min-height: 60px;
+    }
+
+    .theme-doc-breadcrumbs {
+        display: block;
+    }
+}
+
 .sidebar_item_deprecated {
   text-decoration: line-through;
 }
 
 .footer__logo {
-    max-width: 150px;
+    max-width: 80%;
 }
 .footer__links {
     width: 75%;
