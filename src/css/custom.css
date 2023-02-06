@@ -258,3 +258,16 @@ svg.landingLogo path {
 .footer__copyright {
     margin-left: 0;
 }
+
+.github_buttons {
+  margin-top: 20px;
+}
+
+.github_buttons > ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+@media screen and (max-width: 996px) {
+    display: none;
+}
