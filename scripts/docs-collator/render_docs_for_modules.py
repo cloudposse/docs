@@ -18,6 +18,8 @@ def main(github_api_token, output_dir, download_dir, includes_csv, excludes_csv,
     fetcher = ModuleFetcher(download_dir)
     renderer = ModuleRenderer(download_dir, output_dir)
 
+    logging.info(f"Fetching repositories ...")
+
     repos = github_provider.get_repos(includes_csv, excludes_csv)
 
     logging.info(f"Found {len(repos)} repositories to process")

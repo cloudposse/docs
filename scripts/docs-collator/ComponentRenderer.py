@@ -18,7 +18,7 @@ class ComponentRenderer:
         self.docs_dir = docs_dir
 
     def render(self, component):
-        module_download_dir = os.path.join(self.download_dir, component)
+        module_download_dir = os.path.join(self.download_dir, 'modules', component)
 
         files = io.get_filenames_in_dir(module_download_dir, README_MD, True)
 
@@ -26,7 +26,7 @@ class ComponentRenderer:
             self.__render_doc(component, file)
 
     def __render_doc(self, component, file):
-        module_download_dir = os.path.join(self.download_dir, component)
+        module_download_dir = os.path.join(self.download_dir, 'modules')
         content = io.read_file_to_string(file)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
@@ -55,7 +55,6 @@ class ComponentRenderer:
 
         doc_content = DOC_TEMPLATE.render(label=label,
                                           title=title,
-                                          description=description,
                                           content=content,
                                           github_repository=GITHUB_REPO,
                                           github_edit_url=github_edit_url,
