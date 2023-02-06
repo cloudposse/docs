@@ -45,6 +45,14 @@ def get_subfolders(dir):
     return [d for d in os.listdir(dir) if os.path.isdir(os.path.join(dir, d))]
 
 
+def has_files(dir):
+    for file in os.listdir(dir):
+        if os.path.isfile(os.path.join(dir, file)):
+            return True
+
+    return False
+
+
 def copy_file(src, dst):
     create_dirs(os.path.dirname(dst))
     shutil.copy(src, dst)

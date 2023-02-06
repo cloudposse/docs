@@ -4,7 +4,6 @@
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "{{ title }}",
-    "description": "{{ description }}"
+    "title": "{{ title }}"
   }
 }

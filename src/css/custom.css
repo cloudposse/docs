@@ -31,9 +31,9 @@ nav.navbar {
 }
 */
 
-/*.menu__link {
+.menu__link {
     order: 1;
-}*/
+}
 
 .menu__caret:before {
     background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem;
