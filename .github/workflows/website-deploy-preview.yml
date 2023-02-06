@@ -3,6 +3,9 @@ name: "Website Deploy Preview"
 on:
   workflow_dispatch:
 
+  schedule:
+  - cron: "50 * * * *"
+
   pull_request:
     types:
       - opened
