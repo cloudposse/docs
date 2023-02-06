@@ -17,6 +17,7 @@ MODULES_README_TEMPLATE = 'module.readme.md'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
 PROVIDER_INDEX_CATEGORY_TEMPLATE = jenv.get_template('provider_index_category.json')
+INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
 SUBMODULE_TEMPLATE = jenv.get_template('component.readme.md')
 
 
@@ -52,7 +53,8 @@ class ModuleRenderer:
         self.__copy_extra_resources_for_images(module_download_dir, module_docs_dir)
         self.__copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir)
 
-        self.__create_index_for_provider(repo, self.docs_dir)
+        self.__create_index_for_provider(repo)
+        self.__create_indexes_for_subfolders(repo)
 
     def __render_readme(self, module_download_dir, module_docs_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
@@ -123,15 +125,33 @@ class ModuleRenderer:
 
             logging.info(f"Copied extra file: {dest_file}")
 
-    def __create_index_for_provider(self, repo, output_dir):
+    def __create_index_for_provider(self, repo):
         provider, module_name = terraform.parse_repo_name(repo.name)
-        json_file = os.path.join(output_dir, provider, INDEX_CATEGORY_JSON)
+        json_file = os.path.join(self.docs_dir, provider, INDEX_CATEGORY_JSON)
 
         if not os.path.exists(json_file):
             content = PROVIDER_INDEX_CATEGORY_TEMPLATE.render(label=provider,
                                                               title=provider,
                                                               description=provider)
             io.save_string_to_file(json_file, content)
+
+    def __create_indexes_for_subfolders(self, repo):
+        # create category index files for dirs that doesn't have files because of docusaurus sidebar rendering issues
+        provider, module_name = terraform.parse_repo_name(repo.name)
+        files = io.get_filenames_in_dir(os.path.join(self.docs_dir, provider, module_name), '*', True)
+        for file in files:
+            if os.path.isfile(file) or io.has_files(file):
+                continue
+
+            self.__render_category_index(file)
+
+    def __render_category_index(self, dir):
+        name = os.path.basename(dir)
+
+        content = INDEX_CATEGORY_TEMPLATE.render(label=name,
+                                                 title=name)
+
+        io.save_string_to_file(os.path.join(dir, INDEX_CATEGORY_JSON), content)
 
     def __pre_rendering_fixes(self, repo, module_download_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)

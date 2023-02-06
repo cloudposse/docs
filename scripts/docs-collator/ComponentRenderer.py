@@ -4,12 +4,13 @@ from utils import io, rendering, templating
 
 README_MD = 'README.md'
 GITHUB_REPO = 'cloudposse/terraform-aws-components'
-COMPONENT_README_TEMPLATE_FILE = 'component.readme.md'
+INDEX_CATEGORY_JSON = '_category_.json'
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
-DOC_TEMPLATE = jenv.get_template(COMPONENT_README_TEMPLATE_FILE)
+DOC_TEMPLATE = jenv.get_template('component.readme.md')
+INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
 
 
 class ComponentRenderer:
@@ -61,3 +62,22 @@ class ComponentRenderer:
                                           tags=tags)
 
         io.save_string_to_file(result_file, doc_content)
+
+        self.__create_indexes_for_subfolder(component)
+
+    def __create_indexes_for_subfolder(self, component):
+        # create category index files for dirs that doesn't have files because of docusaurus sidebar rendering issues
+        files = io.get_filenames_in_dir(os.path.join(self.docs_dir, component), '*', True)
+        for file in files:
+            if os.path.isfile(file) or io.has_files(file):
+                continue
+
+            self.__render_category_index(file)
+
+    def __render_category_index(self, dir):
+        name = os.path.basename(dir)
+
+        content = INDEX_CATEGORY_TEMPLATE.render(label=name,
+                                                 title=name)
+
+        io.save_string_to_file(os.path.join(dir, INDEX_CATEGORY_JSON), content)
