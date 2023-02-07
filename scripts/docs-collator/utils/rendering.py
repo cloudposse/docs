@@ -36,7 +36,7 @@ def fix_sidebar_label(content, repo):
 
 def fix_github_edit_url(content, repo):
     regex = re.compile('custom_edit_url: .*', re.IGNORECASE)
-    github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/edit/{repo.default_branch}/README.yaml"
+    github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/blob/{repo.default_branch}/README.yaml"
     return regex.sub(github_edit_url, content)
 
 

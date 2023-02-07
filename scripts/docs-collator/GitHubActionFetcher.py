@@ -1,8 +1,4 @@
-import base64
-import logging
 import os
-
-from utils import io
 
 DOCS_DIR = 'docs'
 ACTIONS_DIR = 'actions'
@@ -39,16 +35,8 @@ class GitHubActionFetcher:
         if ACTIONS_DIR in remote_files:
             self.__fetch_sub_actions(repo, repo_download_dir)
 
-    def __fetch_file(self, repo, remote_file, output_dir):
-        io.create_dirs(os.path.join(output_dir, os.path.dirname(remote_file)))
-        content_encoded = repo.get_contents(remote_file, ref=repo.default_branch).content
-        content = base64.b64decode(content_encoded)
-        output_file = os.path.join(output_dir, remote_file)
-        io.save_to_file(output_file, content)
-        logging.info(f"Fetched file: {remote_file}")
-
     def __fetch_readme_yaml(self, repo, module_download_dir):
-        self.__fetch_file(repo, README_YAML, module_download_dir)
+        self.github_provider.fetch_file(repo, README_YAML, module_download_dir)
 
     def __fetch_docs(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, DOCS_DIR)
@@ -57,7 +45,7 @@ class GitHubActionFetcher:
             if os.path.basename(remote_file) == TARGETS_MD:  # skip targets.md
                 continue
 
-            self.__fetch_file(repo, remote_file, module_download_dir)
+            self.github_provider.fetch_file(repo, remote_file, module_download_dir)
 
     def __fetch_sub_actions(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, ACTIONS_DIR)
@@ -66,4 +54,4 @@ class GitHubActionFetcher:
             if os.path.basename(remote_file) != README_MD:
                 continue
 
-            self.__fetch_file(repo, remote_file, module_download_dir)
+            self.github_provider.fetch_file(repo, remote_file, module_download_dir)

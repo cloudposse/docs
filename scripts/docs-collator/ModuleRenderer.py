@@ -100,7 +100,7 @@ class ModuleRenderer(Renderer):
             content = SUBMODULE_TEMPLATE.render(label=submodule_name,
                                                 title=submodule_name,
                                                 description=submodule_name,
-                                                github_edit_url=f"https://github.com/{repo.full_name}/edit/{repo.default_branch}/{rel_path}",
+                                                github_edit_url=f"https://github.com/{repo.full_name}/blob/{repo.default_branch}/{rel_path}",
                                                 content=io.read_file_to_string(file))
             io.create_dirs(os.path.dirname(dest_file))
             io.save_string_to_file(dest_file, content)

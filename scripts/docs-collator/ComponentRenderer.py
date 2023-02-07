@@ -39,7 +39,7 @@ class ComponentRenderer:
         label = component
         title = component
         description = component
-        github_edit_url = f"https://github.com/{GITHUB_REPO}/edit/master/modules/{relative_path}"
+        github_edit_url = f"https://github.com/{GITHUB_REPO}/blob/master/modules/{relative_path}"
 
         if len(relative_path.split('/')) > 2:  # this is submodule
             submodule_name = os.path.basename(os.path.dirname(result_file))

@@ -1,7 +1,11 @@
+import base64
 import logging
+import os
 import re
 
 from github import Github, GithubException
+
+from utils import io
 
 GITHUB_ORG = 'cloudposse'
 TERRAFORM_MODULE_NAME_PATTERN = re.compile("^terraform-[a-zA-Z0-9]+-.*")  # convention is terraform-<PROVIDER>-<NAME>
@@ -64,6 +68,14 @@ class GitHubProvider:
             logging.error(e.data)
 
         return result
+
+    def fetch_file(self, repo, remote_file, output_dir):
+        io.create_dirs(os.path.join(output_dir, os.path.dirname(remote_file)))
+        content_encoded = repo.get_contents(remote_file, ref=repo.default_branch).content
+        content = base64.b64decode(content_encoded)
+        output_file = os.path.join(output_dir, remote_file)
+        io.save_to_file(output_file, content)
+        logging.info(f"Fetched file: {remote_file}")
 
     def __csv_to_set(self, csv):
         if not csv:
