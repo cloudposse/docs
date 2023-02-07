@@ -11,6 +11,7 @@ README_YAML = 'README.yaml'
 README_MD = 'README.md'
 INDEX_CATEGORY_JSON = '_category_.json'
 README_TEMPLATE = 'readme.md'
+DOC_SUBFOLDER = 'actions'
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMPLATES_DIR = os.path.join(SCRIPT_DIR, 'templates/github-actions')
@@ -37,7 +38,7 @@ class GitHubActionRenderer:
         self.__pre_rendering_fixes(repo, repo_download_dir)
 
         action_name = rendering.parse_github_action_repo_name(repo.name)
-        module_docs_dir = os.path.join(self.docs_dir, 'actions', action_name)
+        module_docs_dir = os.path.join(self.docs_dir, DOC_SUBFOLDER, action_name)
 
         self.__render_readme(repo_download_dir, module_docs_dir)
 
@@ -81,14 +82,6 @@ class GitHubActionRenderer:
             io.copy_file(file, dest_file)
 
             logging.info(f"Copied extra file: {dest_file}")
-
-    def __render_category_index(self, dir):
-        name = os.path.basename(dir)
-
-        content = INDEX_CATEGORY_TEMPLATE.render(label=name,
-                                                 title=name)
-
-        io.save_string_to_file(os.path.join(dir, INDEX_CATEGORY_JSON), content)
 
     def __pre_rendering_fixes(self, repo, module_download_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)

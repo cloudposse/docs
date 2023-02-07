@@ -19,12 +19,14 @@ class MissingReadmeYamlException(Exception):
 
 
 class ModuleFetcher:
-    def __init__(self, download_dir):
+    def __init__(self, github_provider, download_dir):
         self.download_dir = download_dir
+        self.github_provider = github_provider
 
     def fetch(self, repo):
         module_download_dir = os.path.join(self.download_dir, repo.name)
 
+        remote_files = self.github_provider.list_repo_dir(repo, "", False)
         remote_files = set([item.path for item in repo.get_contents("")])
 
         if README_YAML not in remote_files:
@@ -53,7 +55,7 @@ class ModuleFetcher:
         self.__fetch_file(repo, README_YAML, module_download_dir)
 
     def __fetch_docs(self, repo, module_download_dir):
-        remote_files = self.__list_remote_files(repo, DOCS_DIR)
+        remote_files = self.github_provider.list_repo_dir(repo, DOCS_DIR)
 
         for remote_file in remote_files:
             if os.path.basename(remote_file) == TARGETS_MD:  # skip targets.md

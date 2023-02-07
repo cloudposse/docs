@@ -5,6 +5,7 @@ import os
 from utils import io
 
 DOCS_DIR = 'docs'
+ACTIONS_DIR = 'actions'
 TARGETS_MD = 'targets.md'
 README_YAML = 'README.yaml'
 README_MD = 'README.md'
@@ -35,6 +36,9 @@ class GitHubActionFetcher:
         if DOCS_DIR in remote_files:
             self.__fetch_docs(repo, repo_download_dir)
 
+        if ACTIONS_DIR in remote_files:
+            self.__fetch_actions(repo, repo_download_dir)
+
     def __fetch_file(self, repo, remote_file, output_dir):
         io.create_dirs(os.path.join(output_dir, os.path.dirname(remote_file)))
         content_encoded = repo.get_contents(remote_file, ref=repo.default_branch).content
@@ -51,6 +55,15 @@ class GitHubActionFetcher:
 
         for remote_file in remote_files:
             if os.path.basename(remote_file) == TARGETS_MD:  # skip targets.md
+                continue
+
+            self.__fetch_file(repo, remote_file, module_download_dir)
+
+    def __fetch_actions(self, repo, module_download_dir):
+        remote_files = self.github_provider.list_repo_dir(repo, ACTIONS_DIR)
+
+        for remote_file in remote_files:
+            if os.path.basename(remote_file) != README_MD:
                 continue
 
             self.__fetch_file(repo, remote_file, module_download_dir)

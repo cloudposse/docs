@@ -7,9 +7,10 @@ GITHUB_REPO = 'cloudposse/terraform-aws-components'
 INDEX_CATEGORY_JSON = '_category_.json'
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+TEMPLATES_DIR = os.path.join(SCRIPT_DIR, 'templates/components')
 
-jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
-DOC_TEMPLATE = jenv.get_template('component.readme.md')
+jenv = templating.init_templating(TEMPLATES_DIR)
+DOC_TEMPLATE = jenv.get_template('readme.md')
 INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
 
 
