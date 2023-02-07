@@ -1,7 +1,5 @@
 import re
 
-from utils import terraform
-
 
 def fix_self_non_closing_br_tags(content):
     regex = re.compile(re.escape('<br>'), re.IGNORECASE)
@@ -32,7 +30,7 @@ def fix_custom_non_self_closing_tags_in_pre(content):
 
 def fix_sidebar_label(content, repo):
     regex = re.compile('sidebar_label: .*', re.IGNORECASE)
-    provider, module_name = terraform.parse_repo_name(repo.name)
+    provider, module_name = parse_terraform_repo_name(repo.name)
     return regex.sub(f'sidebar_label: {module_name}', content)
 
 
@@ -60,3 +58,18 @@ def remove_prefix(string, prefix):
 def rename_name(repo, content):
     regex = re.compile('name: .*', re.IGNORECASE)
     return regex.sub(f'name: {repo.name}', content)
+
+
+def parse_terraform_repo_name(name):
+    name_items = name.split('-')
+    provider = name_items[1]
+    module_name = '-'.join(name_items[2:])
+
+    return provider, module_name
+
+
+def parse_github_action_repo_name(name):
+    name_items = name.split('-')
+    action_name = '-'.join(name_items[2:])
+
+    return action_name

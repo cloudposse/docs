@@ -1,0 +1,10 @@
+{
+  "label": "actions",
+  "collapsible": true,
+  "collapsed": false,
+  "className": "command",
+  "link": {
+    "type": "generated-index",
+    "title": "GitHub Actions"
+  }
+}

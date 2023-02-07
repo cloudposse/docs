@@ -3,7 +3,7 @@ import os
 import subprocess
 
 from utils import io
-from utils import rendering, terraform, templating
+from utils import rendering, templating
 
 DOCS_DIR = 'docs'
 IMAGES_DIR = 'images'
@@ -15,7 +15,8 @@ INDEX_CATEGORY_JSON = '_category_.json'
 MODULES_README_TEMPLATE = 'module.readme.md'
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
+TEMPLATES_DIR = os.path.join(SCRIPT_DIR, 'templates/modules')
+jenv = templating.init_templating(TEMPLATES_DIR)
 PROVIDER_INDEX_CATEGORY_TEMPLATE = jenv.get_template('provider_index_category.json')
 INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
 SUBMODULE_TEMPLATE = jenv.get_template('component.readme.md')
@@ -38,7 +39,7 @@ class ModuleRenderer:
 
         self.__pre_rendering_fixes(repo, module_download_dir)
 
-        provider, module_name = terraform.parse_repo_name(repo.name)
+        provider, module_name = rendering.parse_terraform_repo_name(repo.name)
         module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
 
         self.__render_readme(module_download_dir, module_docs_dir)
@@ -59,7 +60,7 @@ class ModuleRenderer:
     def __render_readme(self, module_download_dir, module_docs_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
         readme_md_file = os.path.join(module_download_dir, README_MD)
-        readme_tmpl_file = os.path.join(SCRIPT_DIR, 'templates', MODULES_README_TEMPLATE)
+        readme_tmpl_file = os.path.join(TEMPLATES_DIR, MODULES_README_TEMPLATE)
 
         io.create_dirs(module_docs_dir)
 
@@ -126,7 +127,7 @@ class ModuleRenderer:
             logging.info(f"Copied extra file: {dest_file}")
 
     def __create_index_for_provider(self, repo):
-        provider, module_name = terraform.parse_repo_name(repo.name)
+        provider, module_name = rendering.parse_terraform_repo_name(repo.name)
         json_file = os.path.join(self.docs_dir, provider, INDEX_CATEGORY_JSON)
 
         if not os.path.exists(json_file):
@@ -137,7 +138,7 @@ class ModuleRenderer:
 
     def __create_indexes_for_subfolders(self, repo):
         # create category index files for dirs that doesn't have files because of docusaurus sidebar rendering issues
-        provider, module_name = terraform.parse_repo_name(repo.name)
+        provider, module_name = rendering.parse_terraform_repo_name(repo.name)
         files = io.get_filenames_in_dir(os.path.join(self.docs_dir, provider, module_name), '*', True)
         for file in files:
             if os.path.isfile(file) or io.has_files(file):
