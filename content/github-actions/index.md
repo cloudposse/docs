@@ -1,12 +1,12 @@
 ---
 title: GitHub Actions
-sidebar_label: GitHub Actions
-description: Modules
+sidebar_label: Overview of GitHub Actions
+description: GitHub Actions
 sidebar_position: 0
 ---
 
-This is a collection of reusable GitHub Actions and blueprints for provisioning reference architectures.
+This is a collection of reusable GitHub Actions.
 
 ## Introduction
 
-In this catalog you'll find real-world examples of how we've implemented various common github actions that we use.
+In this catalog you'll find real-world examples of how we've implemented various common github actions.
