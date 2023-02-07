@@ -14,7 +14,7 @@ class TerraformDocsRenderingError(Exception):
         super().__init__(f"Failed to render README.md. {message}")
 
 
-class Renderer:
+class AbstractRenderer:
     def _pre_rendering_fixes(self, repo, module_download_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
         content = io.read_file_to_string(readme_yaml_file)

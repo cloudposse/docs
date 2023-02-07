@@ -2,7 +2,7 @@ import logging
 import os
 import subprocess
 
-from Renderer import Renderer, TerraformDocsRenderingError
+from AbstractRenderer import AbstractRenderer, TerraformDocsRenderingError
 from utils import io
 from utils import rendering, templating
 
@@ -24,7 +24,7 @@ INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
 SUBMODULE_TEMPLATE = jenv.get_template('submodule.readme.md')
 
 
-class ModuleRenderer(Renderer):
+class ModuleRenderer(AbstractRenderer):
     def __init__(self, download_dir, docs_dir):
         self.download_dir = download_dir
         self.docs_dir = docs_dir

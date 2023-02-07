@@ -3,10 +3,10 @@ import sys
 
 import click
 
+from AbstractRenderer import TerraformDocsRenderingError
 from GitHubActionFetcher import GitHubActionFetcher, MissingReadmeYamlException
 from GitHubActionRenderer import GitHubActionRenderer
 from GitHubProvider import GitHubProvider
-from Renderer import TerraformDocsRenderingError
 
 DOWNLOAD_TMP_DIR = 'tmp/github-actions'
 OUTPUT_DOC_DIR = 'content/github-actions/catalog'
