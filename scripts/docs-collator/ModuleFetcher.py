@@ -26,8 +26,7 @@ class ModuleFetcher:
     def fetch(self, repo):
         module_download_dir = os.path.join(self.download_dir, repo.name)
 
-        remote_files = self.github_provider.list_repo_dir(repo, "", False)
-        remote_files = set([item.path for item in repo.get_contents("")])
+        remote_files = set(self.github_provider.list_repo_dir(repo, "", False))
 
         if README_YAML not in remote_files:
             raise MissingReadmeYamlException()
@@ -64,31 +63,16 @@ class ModuleFetcher:
             self.__fetch_file(repo, remote_file, module_download_dir)
 
     def __fetch_images(self, repo, module_download_dir):
-        remote_files = self.__list_remote_files(repo, IMAGES_DIR)
+        remote_files = self.github_provider.list_repo_dir(repo, IMAGES_DIR)
 
         for remote_file in remote_files:
             self.__fetch_file(repo, remote_file, module_download_dir)
 
     def __fetch_submodules(self, repo, module_download_dir):
-        remote_files = self.__list_remote_files(repo, SUBMODULES_DIR)
+        remote_files = self.github_provider.list_repo_dir(repo, SUBMODULES_DIR)
 
         for remote_file in remote_files:
             if os.path.basename(remote_file) != README_MD:
                 continue
 
             self.__fetch_file(repo, remote_file, module_download_dir)
-
-    def __list_remote_files(self, repo, remote_dir):
-        remote_files = repo.get_contents(remote_dir)
-
-        result = []
-
-        while remote_files:
-            remote_file = remote_files.pop(0)
-
-            if remote_file.type == "dir":
-                remote_files.extend(repo.get_contents(remote_file.path))
-            else:
-                result.append(remote_file.path)
-
-        return result

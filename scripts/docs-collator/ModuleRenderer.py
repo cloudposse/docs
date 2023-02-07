@@ -16,6 +16,7 @@ MODULES_README_TEMPLATE = 'module.readme.md'
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMPLATES_DIR = os.path.join(SCRIPT_DIR, 'templates/modules')
+
 jenv = templating.init_templating(TEMPLATES_DIR)
 PROVIDER_INDEX_CATEGORY_TEMPLATE = jenv.get_template('provider_index_category.json')
 INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')

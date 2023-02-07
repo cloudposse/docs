@@ -7,7 +7,6 @@ from GitHubActionFetcher import GitHubActionFetcher, MissingReadmeYamlException
 from GitHubActionRenderer import GitHubActionRenderer, TerraformDocsRenderingError
 from GitHubProvider import GitHubProvider
 
-GITHUB_ORG = 'cloudposse'
 DOWNLOAD_TMP_DIR = 'tmp/github-actions'
 OUTPUT_DOC_DIR = 'content/github-actions/catalog'
 REPOS_SKIP_LIST = {'terraform-aws-components'}
