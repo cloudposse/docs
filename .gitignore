@@ -57,3 +57,4 @@ algolia.index.json
 **/__pycache__/
 content/components/catalog/aws/**
 content/modules/catalog/**
+content/github-actions/catalog/actions/**

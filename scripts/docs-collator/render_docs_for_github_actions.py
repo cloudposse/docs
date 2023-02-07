@@ -4,22 +4,23 @@ import sys
 import click
 
 from AbstractRenderer import TerraformDocsRenderingError
+from GitHubActionFetcher import GitHubActionFetcher, MissingReadmeYamlException
+from GitHubActionRenderer import GitHubActionRenderer
 from GitHubProvider import GitHubProvider
-from ModuleFetcher import ModuleFetcher, MissingReadmeYamlException
-from ModuleRenderer import ModuleRenderer
 
-DOWNLOAD_TMP_DIR = 'tmp/modules'
-OUTPUT_DOC_DIR = 'content/modules/catalog'
+DOWNLOAD_TMP_DIR = 'tmp/github-actions'
+OUTPUT_DOC_DIR = 'content/github-actions/catalog'
+REPOS_SKIP_LIST = {'terraform-aws-components'}
 
 
 def main(github_api_token, output_dir, download_dir, includes_csv, excludes_csv, fail_on_rendering_error):
     github_provider = GitHubProvider(github_api_token)
-    fetcher = ModuleFetcher(github_provider, download_dir)
-    renderer = ModuleRenderer(download_dir, output_dir)
+    fetcher = GitHubActionFetcher(github_provider, download_dir)
+    renderer = GitHubActionRenderer(download_dir, output_dir)
 
     logging.info(f"Fetching repositories ...")
 
-    repos = github_provider.get_terraform_repos(includes_csv, excludes_csv)
+    repos = github_provider.get_github_actions_repos(includes_csv, excludes_csv)
 
     logging.info(f"Found {len(repos)} repositories to process")
 

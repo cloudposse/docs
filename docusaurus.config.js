@@ -46,6 +46,15 @@ const config = {
       },
     ],
     [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'github_actions',
+        path: 'content/github-actions',
+        routeBasePath: 'github-actions/',
+        sidebarPath: require.resolve('./sidebars-github-actions.js')
+      },
+    ],
+    [
       "@docusaurus/plugin-google-gtag",
       {
         id: "google-tag-manager",
@@ -119,6 +128,11 @@ const config = {
               to: '/modules/',
               position: 'left',
               label: 'Modules',
+          },
+          {
+              to: '/github-actions/',
+              position: 'left',
+              label: 'GitHub Actions',
           },
           {
             type: 'dropdown',

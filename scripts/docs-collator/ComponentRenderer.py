@@ -7,9 +7,10 @@ GITHUB_REPO = 'cloudposse/terraform-aws-components'
 INDEX_CATEGORY_JSON = '_category_.json'
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+TEMPLATES_DIR = os.path.join(SCRIPT_DIR, 'templates/components')
 
-jenv = templating.init_templating(os.path.join(SCRIPT_DIR, 'templates'))
-DOC_TEMPLATE = jenv.get_template('component.readme.md')
+jenv = templating.init_templating(TEMPLATES_DIR)
+DOC_TEMPLATE = jenv.get_template('readme.md')
 INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
 
 
@@ -37,15 +38,13 @@ class ComponentRenderer:
 
         label = component
         title = component
-        description = component
-        github_edit_url = f"https://github.com/{GITHUB_REPO}/edit/master/modules/{relative_path}"
+        github_edit_url = f"https://github.com/{GITHUB_REPO}/blob/master/modules/{relative_path}"
 
         if len(relative_path.split('/')) > 2:  # this is submodule
             submodule_name = os.path.basename(os.path.dirname(result_file))
 
             label = submodule_name
             title = submodule_name
-            description = submodule_name
 
             # renaming final file <module-name>/<module-name>.md
             result_file = os.path.join(os.path.dirname(result_file), f"{submodule_name}.md")
