@@ -65,7 +65,7 @@ def cli_main(github_api_token, output_dir, download_dir, includes, excludes, fai
                         datefmt='%d-%m-%Y %H:%M:%S',
                         level=logging.getLevelName(log_level))
 
-    logging.info(f"Tmp dir: {download_dir}, doc output dir: {output_dir}")
+    logging.info(f"Download directory: {download_dir}, documentation output directory: {output_dir}")
 
     main(github_api_token, output_dir, download_dir, includes, excludes, fail_on_rendering_error)
 
