@@ -2,10 +2,10 @@ import logging
 import os
 import subprocess
 
+from Renderer import Renderer, TerraformDocsRenderingError
 from utils import io
 from utils import rendering, templating
 
-DOCS_DIR = 'docs'
 TARGETS_MD = 'targets.md'
 README_YAML = 'README.yaml'
 README_MD = 'README.md'
@@ -20,13 +20,7 @@ jenv = templating.init_templating(TEMPLATES_DIR)
 INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
 
 
-class TerraformDocsRenderingError(Exception):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(f"Failed to render README.md. {message}")
-
-
-class GitHubActionRenderer:
+class GitHubActionRenderer(Renderer):
     def __init__(self, download_dir, docs_dir):
         self.download_dir = download_dir
         self.docs_dir = docs_dir
@@ -35,7 +29,7 @@ class GitHubActionRenderer:
         logging.info(f"Rendering doc for: {repo.full_name}")
         repo_download_dir = os.path.join(self.download_dir, repo.name)
 
-        self.__pre_rendering_fixes(repo, repo_download_dir)
+        self._pre_rendering_fixes(repo, repo_download_dir)
 
         action_name = rendering.parse_github_action_repo_name(repo.name)
         module_docs_dir = os.path.join(self.docs_dir, DOC_SUBFOLDER, action_name)
@@ -46,9 +40,9 @@ class GitHubActionRenderer:
         io.copy_file(readme_md_file, os.path.join(module_docs_dir, README_MD))
 
         readme_md_file = os.path.join(module_docs_dir, README_MD)
-        self.__post_rendering_fixes(repo, readme_md_file)
+        self._post_rendering_fixes(repo, readme_md_file)
 
-        self.__copy_extra_resources_for_docs(repo_download_dir, module_docs_dir)
+        self._copy_extra_resources_for_docs(repo_download_dir, module_docs_dir)
 
     def __render_readme(self, module_download_dir, module_docs_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
@@ -69,31 +63,3 @@ class GitHubActionRenderer:
             raise TerraformDocsRenderingError(error_message)
 
         logging.info(f"Rendered: {readme_md_file}")
-
-    def __copy_extra_resources_for_docs(self, module_download_dir, module_docs_dir):
-        extra_resources_dir = os.path.join(module_download_dir, DOCS_DIR)
-        files = io.get_filenames_in_dir(extra_resources_dir, '*', True)
-
-        for file in files:
-            if os.path.basename(file).lower().endswith('.md') or os.path.isdir(file):
-                continue
-
-            dest_file = os.path.join(module_docs_dir, DOCS_DIR, os.path.relpath(file, extra_resources_dir))
-            io.copy_file(file, dest_file)
-
-            logging.info(f"Copied extra file: {dest_file}")
-
-    def __pre_rendering_fixes(self, repo, module_download_dir):
-        readme_yaml_file = os.path.join(module_download_dir, README_YAML)
-        content = io.read_file_to_string(readme_yaml_file)
-        content = rendering.remove_targets_md(content)
-        content = rendering.rename_name(repo, content)
-        io.save_string_to_file(readme_yaml_file, content)
-
-    def __post_rendering_fixes(self, repo, readme_md_file):
-        content = io.read_file_to_string(readme_md_file)
-        content = rendering.fix_self_non_closing_br_tags(content)
-        content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
-        content = rendering.fix_github_edit_url(content, repo)
-        content = rendering.fix_sidebar_label(content, repo)
-        io.save_string_to_file(readme_md_file, content)

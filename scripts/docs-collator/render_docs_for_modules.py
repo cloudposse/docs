@@ -5,7 +5,8 @@ import click
 
 from GitHubProvider import GitHubProvider
 from ModuleFetcher import ModuleFetcher, MissingReadmeYamlException
-from ModuleRenderer import ModuleRenderer, TerraformDocsRenderingError
+from ModuleRenderer import ModuleRenderer
+from Renderer import TerraformDocsRenderingError
 
 DOWNLOAD_TMP_DIR = 'tmp/modules'
 OUTPUT_DOC_DIR = 'content/modules/catalog'
