@@ -44,11 +44,11 @@ def main(github_api_token, output_dir, download_dir, includes_csv, excludes_csv,
 
 @click.command()
 @click.option('--github-api-token',
-              envvar='PUBLIC_REPO_ACCESS_TOKEN', required=True, help="Github API token")
+              envvar='PUBLIC_REPO_ACCESS_TOKEN', required=True, help="GitHub API token")
 @click.option('--output-dir',
-              default=OUTPUT_DOC_DIR, required=True, help="Rendered doc output dir")
+              default=OUTPUT_DOC_DIR, required=True, help="Rendered documentation output directory")
 @click.option('--download-dir',
-              default=DOWNLOAD_TMP_DIR, required=True, help="Temporary download dir")
+              default=DOWNLOAD_TMP_DIR, required=True, help="Temporary download directory")
 @click.option('--includes',
               required=False,
               help="Comma separated list of repos to include. Conflicts with --excludes. Example: 'terraform-aws-s3-log-storage,terraform-aws-network-firewall'")

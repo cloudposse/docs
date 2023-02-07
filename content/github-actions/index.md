@@ -9,4 +9,4 @@ This is a collection of reusable GitHub Actions.
 
 ## Introduction
 
-In this catalog you'll find real-world examples of how we've implemented various common github actions.
+In this library you'll find real-world examples of how we've implemented reusable GitHub Actions to solve common CI/CD challenges.

@@ -3,7 +3,7 @@
 set -e
 
 usage() {
-	echo "Required env var '$1' is missing"
+	echo "Required environment variable '$1' is missing"
 	exit 1
 }
 

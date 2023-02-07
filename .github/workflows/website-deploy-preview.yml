@@ -77,7 +77,7 @@ jobs:
         run: |
           ./scripts/render-docs-for-modules.sh
 
-      - name: "Render docs for github actions"
+      - name: "Render Documentation for GitHub Actions"
         env:
           PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
         run: |

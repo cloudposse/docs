@@ -64,17 +64,17 @@ jobs:
           make init
           pip install -r scripts/docs-collator/requirements.txt
 
-      - name: "Render docs for components"
+      - name: "Render Documentation for Terraform Components"
         run: |
           ./scripts/render-docs-for-components.sh
 
-      - name: "Render docs for modules"
+      - name: "Render Documentation for Terraform Modules"
         env:
           PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
         run: |
           ./scripts/render-docs-for-modules.sh
 
-      - name: "Render docs for github actions"
+      - name: "Render Documentation for GitHub Actions"
         env:
           PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
         run: |

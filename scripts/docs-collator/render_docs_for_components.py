@@ -27,8 +27,8 @@ def main(input_dir, output_dir):
 
 
 @click.command()
-@click.option('--input-dir', default=CLONED_REPO_DIR, required=True, help="Path to cloned repo")
-@click.option('--output-dir', default=OUTPUT_DOC_DIR, required=False, help="Rendered component output dir")
+@click.option('--input-dir', default=CLONED_REPO_DIR, required=True, help="Path to cloned repository")
+@click.option('--output-dir', default=OUTPUT_DOC_DIR, required=False, help="Rendered documentation output directory")
 @click.option('--log-level', default=False, required=False, help="Recursive lookup in sub folders of README.md files")
 def cli_main(input_dir, output_dir, log_level):
     logging.basicConfig(format='[%(asctime)s] %(levelname)s %(message)s',
