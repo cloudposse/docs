@@ -12,7 +12,7 @@ TARGETS_MD = 'targets.md'
 README_YAML = 'README.yaml'
 README_MD = 'README.md'
 INDEX_CATEGORY_JSON = '_category_.json'
-MODULES_README_TEMPLATE = 'module.readme.md'
+MODULES_README_TEMPLATE = 'readme.md'
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMPLATES_DIR = os.path.join(SCRIPT_DIR, 'templates/modules')
@@ -20,7 +20,7 @@ TEMPLATES_DIR = os.path.join(SCRIPT_DIR, 'templates/modules')
 jenv = templating.init_templating(TEMPLATES_DIR)
 PROVIDER_INDEX_CATEGORY_TEMPLATE = jenv.get_template('provider_index_category.json')
 INDEX_CATEGORY_TEMPLATE = jenv.get_template('index_category.json')
-SUBMODULE_TEMPLATE = jenv.get_template('component.readme.md')
+SUBMODULE_TEMPLATE = jenv.get_template('submodule.readme.md')
 
 
 class TerraformDocsRenderingError(Exception):

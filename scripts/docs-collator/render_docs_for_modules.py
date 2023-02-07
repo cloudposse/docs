@@ -13,7 +13,7 @@ OUTPUT_DOC_DIR = 'content/modules/catalog'
 
 def main(github_api_token, output_dir, download_dir, includes_csv, excludes_csv, fail_on_rendering_error):
     github_provider = GitHubProvider(github_api_token)
-    fetcher = ModuleFetcher(download_dir)
+    fetcher = ModuleFetcher(github_provider, download_dir)
     renderer = ModuleRenderer(download_dir, output_dir)
 
     logging.info(f"Fetching repositories ...")
