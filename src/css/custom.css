@@ -45,8 +45,7 @@ li > ul.menu__list {
 
 /* You can override the default Infima variables here. */
 :root {
-    --ifm-code-font-size: 80%;
-    --ifm-font-size-base: 90%;
+    --ifm-code-font-size: 95%;
     --ifm-menu-color: var(--c-gray-100);
     --ifm-menu-link-padding-horizontal: 0.25rem;
 
