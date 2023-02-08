@@ -1,14 +1,18 @@
 import re
 
+TAG_REGEX = re.compile('(<)([0-9a-zA-Z._-]+)(>)', re.IGNORECASE)
+BR_REGEX = re.compile(re.escape('<br>'), re.IGNORECASE)
+SIDEBAR_LABEL_REGEX = re.compile('sidebar_label: .*', re.IGNORECASE)
+CUSTOM_EDIT_URL_REGEX = re.compile('custom_edit_url: .*', re.IGNORECASE)
+NAME_REGEX = re.compile('name: .*', re.IGNORECASE)
+
 
 def fix_self_non_closing_br_tags(content):
-    regex = re.compile(re.escape('<br>'), re.IGNORECASE)
-    return regex.sub('<br/>', content)
+    return BR_REGEX.sub('<br/>', content)
 
 
 def fix_custom_non_self_closing_tags_in_pre(content):
     lines = content.splitlines()
-    tag_regex = re.compile('(<)([0-9a-zA-Z._-]+)(>)', re.IGNORECASE)
     fixed_lines = []
 
     for line in lines:
@@ -20,7 +24,7 @@ def fix_custom_non_self_closing_tags_in_pre(content):
 
         for group in groups:
             before = group
-            after = tag_regex.sub(r"&lt;\2&gt;", group)
+            after = TAG_REGEX.sub(r"&lt;\2&gt;", group)
             line = line.replace(f'<pre>{before}</pre>', f'<pre>{after}</pre>')
 
         fixed_lines.append(line)
@@ -29,15 +33,13 @@ def fix_custom_non_self_closing_tags_in_pre(content):
 
 
 def fix_sidebar_label(content, repo):
-    regex = re.compile('sidebar_label: .*', re.IGNORECASE)
     provider, module_name = parse_terraform_repo_name(repo.name)
-    return regex.sub(f'sidebar_label: {module_name}', content)
+    return SIDEBAR_LABEL_REGEX.sub(f'sidebar_label: {module_name}', content)
 
 
 def fix_github_edit_url(content, repo):
-    regex = re.compile('custom_edit_url: .*', re.IGNORECASE)
     github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/blob/{repo.default_branch}/README.yaml"
-    return regex.sub(github_edit_url, content)
+    return CUSTOM_EDIT_URL_REGEX.sub(github_edit_url, content)
 
 
 def remove_logo_from_the_bottom(content):
@@ -56,8 +58,12 @@ def remove_prefix(string, prefix):
 
 
 def rename_name(repo, content):
-    regex = re.compile('name: .*', re.IGNORECASE)
-    return regex.sub(f'name: {repo.name}', content)
+    return NAME_REGEX.sub(f'name: {repo.name}', content)
+
+
+def fix_links_to_examples(repo, content):
+    return re.sub(r"(\[examples/.*])\((examples/.*)\)",
+                  rf"\1(https://github.com/{repo.full_name}/tree/{repo.default_branch}/\2)", content)
 
 
 def parse_terraform_repo_name(name):
