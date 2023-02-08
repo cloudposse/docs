@@ -20,6 +20,7 @@ class AbstractRenderer:
         content = io.read_file_to_string(readme_yaml_file)
         content = rendering.remove_targets_md(content)
         content = rendering.rename_name(repo, content)
+        content = rendering.fix_links_to_examples(repo, content)
         io.save_string_to_file(readme_yaml_file, content)
 
     def _post_rendering_fixes(self, repo, readme_md_file):
