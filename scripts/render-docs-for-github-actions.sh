@@ -14,4 +14,5 @@ DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/github-actions}"
 
 python scripts/docs-collator/render_docs_for_github_actions.py \
 	--download-dir "${DOWNLOAD_TMP_DIR}" \
-	--output-dir "${RENDERED_DOCS_DIR}"
+	--output-dir "${RENDERED_DOCS_DIR}" \
+	--excludes 'github-action-ci-terraform'

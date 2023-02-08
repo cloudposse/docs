@@ -262,3 +262,19 @@ svg.landingLogo path {
 .footer__copyright {
     margin-left: 0;
 }
+
+.github_buttons > ul {
+  list-style-type: none;
+  padding-left: 0px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.github_buttons > ul > li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.markdown h1:first-child {
+  --ifm-h1-font-size: 2.5rem;
+}
