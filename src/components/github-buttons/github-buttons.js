@@ -15,7 +15,7 @@ export default function GitHubButtons({custom_edit_url}) {
         <ul>
           <li>
             <GitHubButton
-              href={'https://github.com/' + repoFullName}
+              href={custom_edit_url}
               aria-label="Open GitHub">GitHub</GitHubButton>
           </li>
 
