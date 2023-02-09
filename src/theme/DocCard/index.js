@@ -73,7 +73,7 @@ function CardCategory({item}) {
   );
 }
 function CardLink({item}) {
-  const icon = isInternalUrl(item.href) ? '/images/terraform-color-16.svg' : '🔗';
+  const icon = isInternalUrl(item.href) ? '📄️' : '🔗';
   const doc = useDocById(item.docId ?? undefined);
   return (
     <CardLayout
