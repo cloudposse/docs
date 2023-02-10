@@ -5,17 +5,21 @@ export default function GitHubButtons({custom_edit_url}) {
   if (custom_edit_url == undefined) {
     return (<div/>);
   } else {
-    const url = new URL(custom_edit_url);
-    const parts = url.pathname.split('/');
+    const url = new URL(custom_edit_url.replace('/blob/', '/tree/'));
 
-    let repoFullName = parts[1] + '/' + parts[2];
+    let parts = url.pathname.split('/');
+    parts.shift();
+    let repoFullName = parts[0] + '/' + parts[1];
+
+    parts.pop();
+    const componentFolderPath = parts.join('/');
 
     return (
       <div className="github_buttons">
         <ul>
           <li>
             <GitHubButton
-              href={custom_edit_url}
+              href={'https://github.com/' + componentFolderPath}
               aria-label="Open GitHub">GitHub</GitHubButton>
           </li>
 
