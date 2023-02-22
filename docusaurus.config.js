@@ -55,6 +55,15 @@ const config = {
       },
     ],
     [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'reference-architecture',
+        path: 'content/reference-architecture',
+        routeBasePath: 'reference-architecture/',
+        sidebarPath: require.resolve('./sidebars-refarch.js')
+      },
+    ],
+    [
       "@docusaurus/plugin-google-gtag",
       {
         id: "google-tag-manager",
@@ -133,6 +142,11 @@ const config = {
               to: '/github-actions/',
               position: 'left',
               label: 'GitHub Actions',
+          },
+          {
+              to: '/reference-architecture/reference-architecture-overview',
+              position: 'left',
+              label: 'Reference Architecture',
           },
           {
             type: 'dropdown',

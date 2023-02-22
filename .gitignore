@@ -58,3 +58,5 @@ algolia.index.json
 content/components/catalog/aws/**
 content/modules/catalog/**
 content/github-actions/catalog/actions/**
+content/reference-architecture/**
+static/assets/refarch/**
