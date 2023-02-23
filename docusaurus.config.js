@@ -23,7 +23,7 @@ const config = {
         routeBasePath: '/',
         sidebarPath: require.resolve('./sidebars-docs.js'),
         editUrl: ({versionDocsDirPath, docPath, locale}) => {
-          return `https://github.com/cloudposse/docs/edit/master/content/${docPath}`;
+          return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
         }
       },
     ],
