@@ -1,5 +1,5 @@
 // @ts-check
-
+const { redirects } = require("./redirects");
 const lightCodeTheme = require('prism-react-renderer/themes/vsDark');
 const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
 
@@ -61,6 +61,12 @@ const config = {
         path: 'content/reference-architecture',
         routeBasePath: 'reference-architecture/',
         sidebarPath: require.resolve('./sidebars-refarch.js')
+      },
+    ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects
       },
     ],
     [
