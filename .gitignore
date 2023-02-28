@@ -61,3 +61,4 @@ content/github-actions/catalog/actions/**
 content/reference-architecture/**
 static/assets/refarch/**
 !content/reference-architecture/top-secret.md
+!content/reference-architecture/refarch.json
