@@ -23,9 +23,6 @@ export default function NavbarNavLink({
   const activeBaseUrl = useBaseUrl(activeBasePath);
   const normalizedHref = useBaseUrl(href, {forcePrependBaseUrl: true});
   const isExternalLink = label && href && !isInternalUrl(href);
-  // window.location.host
-
-  console.log(props);
   // Link content is set through html XOR label
   const linkContentProps = html
     ? {dangerouslySetInnerHTML: {__html: html}}
@@ -42,7 +39,7 @@ export default function NavbarNavLink({
         ),
       };
   if (href) {
-    console.log(window.location);
+    // HACK: add host for top link so external call is made via auth lambda
     if (href.startsWith('/reference-architecture/')) {
       href = window.location.protocol + '//' + window.location.host + href;
     }
