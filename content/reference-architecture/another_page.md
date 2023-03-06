@@ -1,8 +1,8 @@
 ---
-title: "Top Secret"
+title: "Another Page"
 sidebar_position: 100
 ---
 
-# TOP SECRET
+# Another Page
 
-Paywall
+Another Page
