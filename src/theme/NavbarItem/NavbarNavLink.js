@@ -5,6 +5,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import {isRegexpStringMatch} from '@docusaurus/theme-common';
 import IconExternalLink from '@theme/Icon/ExternalLink';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
 export default function NavbarNavLink({
   activeBasePath,
@@ -41,7 +42,9 @@ export default function NavbarNavLink({
   if (href) {
     // HACK: add host for top link so external call is made via auth lambda
     if (href.startsWith('/reference-architecture/')) {
-      href = window.location.protocol + '//' + window.location.host + href;
+      if (ExecutionEnvironment.canUseDOM) {
+        href = window.location.protocol + '//' + window.location.host + href;
+      }
     }
     return (
       <Link
