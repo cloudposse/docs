@@ -61,4 +61,5 @@ content/github-actions/catalog/actions/**
 content/reference-architecture/**
 static/assets/refarch/**
 !content/reference-architecture/reference-architecture-overview.md
+!content/reference-architecture/another_page.md
 !content/reference-architecture/refarch.json

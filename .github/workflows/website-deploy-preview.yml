@@ -67,11 +67,11 @@ jobs:
           make init
           pip install -r scripts/docs-collator/requirements.txt
 
-      - name: "Render docs for components"
+      - name: "Render Documentation for components"
         run: |
           ./scripts/render-docs-for-components.sh
 
-      - name: "Render docs for modules"
+      - name: "Render Documentation for modules"
         env:
           PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
         run: |
