@@ -150,9 +150,10 @@ const config = {
               label: 'GitHub Actions',
           },
           {
-              to: '/reference-architecture/reference-architecture-overview',
+              href: '/reference-architecture/reference-architecture-overview',
               position: 'left',
               label: 'Reference Architecture',
+              prependBaseUrlToHref: true
           },
           {
             type: 'dropdown',
