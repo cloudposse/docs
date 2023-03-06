@@ -64,6 +64,14 @@ const config = {
       },
     ],
     [
+      '@docusaurus/plugin-content-pages',
+      {
+        id: 'account',
+        path: 'content/account/',
+        routeBasePath: 'account/'
+      },
+    ],
+    [
       '@docusaurus/plugin-client-redirects',
       {
         redirects
@@ -152,8 +160,8 @@ const config = {
           {
               href: '/reference-architecture/reference-architecture-overview',
               position: 'left',
-              label: 'Reference Architecture',
-              prependBaseUrlToHref: true
+              html: 'Reference Architecture',
+              target: '_self',
           },
           {
             type: 'dropdown',
