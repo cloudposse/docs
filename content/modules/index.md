@@ -9,6 +9,8 @@ This is a collection of reusable Terraform modules and blueprints for provisioni
 
 ## Introduction
 
+[another page](/reference-architecture/another_page/)
+
 In this catalog you'll find real-world examples of how we've implemented various common patterns using our [terraform modules](https://cpco.io/terraform-modules) for our customers.
 
 The modules catalog captures the business logic, opinions, best practices and non-functional requirements.
