@@ -49,6 +49,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+
       - name: "Checkout 'terraform-aws-components' Repository"
         uses: actions/checkout@v3
         with:
@@ -87,13 +92,13 @@ jobs:
         env:
           GOOGLE_TAG_MANAGER: GTM-ABCD123
         run: |
+          make init
           make deps-production
           make build
 
       - name: Copy Website to S3 Bucket PR Folder
         run: |
           cd build
-          whoami
           rm -rf assets/js/
           aws sts get-caller-identity
           aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
