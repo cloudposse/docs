@@ -67,21 +67,21 @@ jobs:
           make init
           pip install -r scripts/docs-collator/requirements.txt
 
-      - name: "Render Documentation for components"
-        run: |
-          ./scripts/render-docs-for-components.sh
-
-      - name: "Render Documentation for modules"
-        env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
-        run: |
-          ./scripts/render-docs-for-modules.sh
-
-      - name: "Render Documentation for GitHub Actions"
-        env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
-        run: |
-          ./scripts/render-docs-for-github-actions.sh
+#      - name: "Render Documentation for components"
+#        run: |
+#          ./scripts/render-docs-for-components.sh
+#
+#      - name: "Render Documentation for modules"
+#        env:
+#          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+#        run: |
+#          ./scripts/render-docs-for-modules.sh
+#
+#      - name: "Render Documentation for GitHub Actions"
+#        env:
+#          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+#        run: |
+#          ./scripts/render-docs-for-github-actions.sh
 
       - name: Install Dependencies and Build Website
         env:
@@ -93,9 +93,7 @@ jobs:
       - name: Copy Website to S3 Bucket PR Folder
         run: |
           cd build
-          ls -l
-          ls -l assets/
-          ls -l assets/js/
+          whoami
           rm -rf assets/js/
           aws sts get-caller-identity
           aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
