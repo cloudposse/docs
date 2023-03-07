@@ -27,7 +27,7 @@ deps-production: docker/build
 .PHONY: build
 
 build: deps
-	$(DOCKER_RUN) npm run build && chmod -R a+rw build
+	$(DOCKER_RUN) "npm run build && chmod -R a+rw build/assets/js"
 
 start:
 	npm start
