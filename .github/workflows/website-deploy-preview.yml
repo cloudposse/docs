@@ -93,13 +93,11 @@ jobs:
           GOOGLE_TAG_MANAGER: GTM-ABCD123
         run: |
           make init
-          make deps-production
-          make build
+          make build-production
 
       - name: Copy Website to S3 Bucket PR Folder
         run: |
           cd build
-          rm -rf assets/js/
           aws sts get-caller-identity
           aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
           aws s3 ls s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --recursive --human-readable --summarize

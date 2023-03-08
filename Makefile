@@ -7,10 +7,10 @@ SHELL := /bin/bash
 all: real-clean build
 	@exit 0
 
-deps: docker/build
+deps:
 	npm install
 
-deps-production: docker/build
+deps-production:
 	npm install --only=production
 
 .PHONY: build
@@ -18,8 +18,20 @@ deps-production: docker/build
 build: deps
 	npm run build
 
+build-production: deps-production
+	npm run build && \
+	ASSETS_DIR="build/assets/js" && \
+	ASSETS_MAIN_FILE="$$(ls -1 $${ASSETS_DIR}/main.*.js)" && \
+	ASSETS_RUNTIME_MAIN_FILE="$$(ls -1 $${ASSETS_DIR}/runtime~main.*.js)" && \
+	rm -rf $${ASSETS_DIR}/* && \
+	touch $${ASSETS_MAIN_FILE} && \
+	touch $${ASSETS_RUNTIME_MAIN_FILE}
+
 start:
 	npm start
+
+start-production:
+	npm run serve
 
 real-clean:
 	rm -fr .docusaurus && \
