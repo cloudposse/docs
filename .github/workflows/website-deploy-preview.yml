@@ -100,7 +100,6 @@ jobs:
           cd build
           aws sts get-caller-identity
           aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
-          aws s3 ls s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --recursive --human-readable --summarize
 
       - name: ReIndex with Algolia
         if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}

@@ -1,8 +1,7 @@
 ---
-title: "Top Secret"
+title: "Reference Architecture Overview"
 sidebar_position: 100
 ---
 
-# TOP SECRET
+# Reference Architecture Overview
 
-Paywall
