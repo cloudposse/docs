@@ -8,9 +8,6 @@ all: real-clean build
 	@exit 0
 
 deps:
-	npm install
-
-deps-production:
 	npm install --only=production
 
 .PHONY: build
@@ -18,8 +15,7 @@ deps-production:
 build: deps
 	npm run build
 
-build-production: deps-production
-	npm run build && \
+build-production: build
 	ASSETS_DIR="build/assets/js" && \
 	ASSETS_MAIN_FILE="$$(ls -1 $${ASSETS_DIR}/main.*.js)" && \
 	ASSETS_RUNTIME_MAIN_FILE="$$(ls -1 $${ASSETS_DIR}/runtime~main.*.js)" && \

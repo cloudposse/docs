@@ -46,6 +46,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+
       - name: "Checkout 'terraform-aws-components' Repository"
         uses: actions/checkout@v3
         with:
@@ -84,8 +89,8 @@ jobs:
         env:
           GOOGLE_TAG_MANAGER: ${{ vars.GOOGLE_TAG_MANAGER }}
         run: |
-          make deps-production
-          make build
+          make init
+          make build-production
 
       - name: Copy Website to S3 Bucket
         run: |
