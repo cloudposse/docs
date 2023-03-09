@@ -4,7 +4,8 @@
     "https://docs.cloudposse.com/"
   ],
   "sitemap_urls": [
-    "https://docs.cloudposse.com/sitemap.xml"
+    "https://docs.cloudposse.com/sitemap.xml",
+    "https://docs.cloudposse.com/reference-architecture/sitemap.xml"
   ],
   "sitemap_alternate_links": true,
   "stop_urls": [],
