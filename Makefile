@@ -15,6 +15,7 @@ deps:
 build: deps
 	npm run build
 
+# removed all files from `assets/js/*.js` and made 2 new special files `main.*.js` and `runtime~main.*.js`. This way we will not gonna get 404 by browser and page will load faster.
 build-production: build
 	ASSETS_DIR="build/assets/js" && \
 	ASSETS_MAIN_FILE="$$(ls -1 $${ASSETS_DIR}/main.*.js)" && \
