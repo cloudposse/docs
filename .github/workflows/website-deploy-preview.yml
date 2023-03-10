@@ -78,13 +78,13 @@ jobs:
 
       - name: "Render Documentation for Terraform Modules"
         env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
         run: |
           ./scripts/render-docs-for-modules.sh
 
       - name: "Render Documentation for GitHub Actions"
         env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
         run: |
           ./scripts/render-docs-for-github-actions.sh
 
