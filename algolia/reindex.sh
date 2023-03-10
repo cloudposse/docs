@@ -13,6 +13,7 @@ cat algolia/template.json \
   | jq '.index_name="'${ALGOLIA_INDEX_NAME}'"' \
   | jq '.start_urls[0]="https://'${DEPLOYMENT_HOST}'/"' \
   | jq '.sitemap_urls[0]="https://'${DEPLOYMENT_HOST}'/sitemap.xml"' \
+  | jq '.sitemap_urls[1]="https://'${DEPLOYMENT_HOST}'/reference-architecture/sitemap.xml"' \
   > algolia.index.json
 
 cat algolia.index.json
