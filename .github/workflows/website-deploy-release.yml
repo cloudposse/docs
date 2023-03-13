@@ -10,98 +10,20 @@ on:
     types:
       - published
 
-env:
-  AWS_REGION: us-east-2
-  IAM_ROLE_ARN: arn:aws:iam::557075604627:role/cplive-plat-ue2-prod-cloudposse-docs-gha
-  IAM_ROLE_SESSION_NAME: cloudposse-docs-ci-deploy-release
-  S3_BUCKET_NAME: cplive-plat-ue2-prod-cloudposse-docs-origin
-  DEPLOYMENT_HOST: docs.cloudposse.com
-  ALGOLIA_INDEX_NAME: docs.cloudposse.com
-  ALGOLIA_APP_ID: 32YOERUX83
-
-# These permissions are needed to interact with the GitHub's OIDC Token endpoint
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
-  website-deploy-release:
+  trigger_documentation_deployment:
     runs-on: ubuntu-latest
 
     environment:
       name: production
-      url: https://${{ env.DEPLOYMENT_HOST }}
+      url: https://docs.cloudposse.com
 
     steps:
-      # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: ${{ env.IAM_ROLE_ARN }}
-          role-session-name: ${{ env.IAM_ROLE_SESSION_NAME }}
-
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-
-      - name: "Checkout 'terraform-aws-components' Repository"
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          repository: cloudposse/terraform-aws-components
-          ref: master
-          path: tmp/components/terraform-aws-components
-
-      - name: "Setup Python"
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: "Install Python Dependencies"
+      - name: Trigger Documentation Deployment
         run: |
-          make init
-          pip install -r scripts/docs-collator/requirements.txt
-
-      - name: "Render Documentation for Terraform Components"
-        run: |
-          ./scripts/render-docs-for-components.sh
-
-      - name: "Render Documentation for Terraform Modules"
-        env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
-        run: |
-          ./scripts/render-docs-for-modules.sh
-
-      - name: "Render Documentation for GitHub Actions"
-        env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
-        run: |
-          ./scripts/render-docs-for-github-actions.sh
-
-      - name: Install Dependencies and Build Website
-        env:
-          GOOGLE_TAG_MANAGER: ${{ vars.GOOGLE_TAG_MANAGER }}
-        run: |
-          make init
-          make build-production
-
-      - name: Copy Website to S3 Bucket
-        run: |
-          cd build
-          aws sts get-caller-identity
-          aws s3 sync . s3://${{ env.S3_BUCKET_NAME }} \
-            --exclude '/reference-architecture/' \
-            --exclude '/assets/refarch/' \
-
-      - name: ReIndex with Algolia
-        env:
-          ALGOLIA_SCRAPER_API_KEY: ${{ secrets.ALGOLIA_SCRAPER_API_KEY }}
-        run: |
-          ./algolia/reindex.sh
+          curl \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.TRIGGER_DOCS_REDEPLOY_WORKFLOW_REFARCH }}" \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            https://api.github.com/repos/cloudposse/refarch-scaffold/dispatches \
+            -d '{"event_type": "redeploy_documentation"}'
