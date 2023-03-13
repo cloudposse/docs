@@ -3,6 +3,8 @@
 ALGOLIA_INDEX_NAME=${ALGOLIA_INDEX_NAME:-test}
 DEPLOYMENT_HOST=${DEPLOYMENT_HOST:-'docs.cloudposse.com'}
 ALGOLIA_APP_ID=${ALGOLIA_APP_ID:-'32YOERUX83'}
+ALGOLIA_CRAWLER_USER=${ALGOLIA_CRAWLER_USER:-test}
+ALGOLIA_CRAWLER_PASSWORD=${ALGOLIA_CRAWLER_PASSWORD:-test}
 
 [ -z "$ALGOLIA_SCRAPER_API_KEY" ] && echo "Need to set ALGOLIA_SCRAPER_API_KEY" && exit 1;
 
@@ -19,5 +21,7 @@ cat algolia.index.json
 docker run \
   --env APPLICATION_ID="${ALGOLIA_APP_ID}" \
   --env API_KEY="${ALGOLIA_SCRAPER_API_KEY}" \
+  --env DOCSEARCH_BASICAUTH_USERNAME="${ALGOLIA_CRAWLER_USER}" \
+  --env DOCSEARCH_BASICAUTH_PASSWORD="${ALGOLIA_CRAWLER_PASSWORD}" \
   --env "CONFIG=$(cat algolia.index.json | jq -r tostring)" \
   algolia/docsearch-scraper

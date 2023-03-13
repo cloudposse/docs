@@ -2,7 +2,7 @@ import React from "react";
 import GitHubButton from 'react-github-btn'
 
 export default function GitHubButtons({custom_edit_url}) {
-  if (custom_edit_url == undefined) {
+  if (custom_edit_url == undefined || !custom_edit_url.startsWith('https://github.com/')) {
     return (<div/>);
   } else {
     const url = new URL(custom_edit_url.replace('/blob/', '/tree/'));

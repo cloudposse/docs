@@ -1,16 +1,5 @@
 SHELL := /bin/bash
 
-export COMPONENTS_DIR ?= content/components
-export DOCUSAURUS_PORT ?= 3000
-
-export DOCKER_ORG ?= cloudposse
-export DOCKER_IMAGE ?= $(DOCKER_ORG)/docs
-export DOCKER_TAG ?= latest
-export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
-export DOCKER_BUILD_FLAGS =
-export DOCKER_RUN_FLAGS ?= --rm
-export DOCKER_RUN ?= docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(DOCUSAURUS_PORT):$(DOCUSAURUS_PORT) $(DOCKER_IMAGE_NAME)
-
 -include $(shell curl -sSL -o .build-harness "https://cloudposse.tools/build-harness"; echo .build-harness)
 
 .DEFAULT_GOAL := all
@@ -18,19 +7,28 @@ export DOCKER_RUN ?= docker run $(DOCKER_RUN_FLAGS) -v $(CURDIR):/src -p $(DOCUS
 all: real-clean build
 	@exit 0
 
-deps: docker/build
-	$(DOCKER_RUN) npm install
-
-deps-production: docker/build
-	$(DOCKER_RUN) npm install --only=production
+deps:
+	npm install --only=production
 
 .PHONY: build
 
 build: deps
-	$(DOCKER_RUN) npm run build
+	npm run build
+
+# removed all files from `assets/js/*.js` and made 2 new special files `main.*.js` and `runtime~main.*.js`. This way we will not gonna get 404 by browser and page will load faster.
+build-production: build
+	ASSETS_DIR="build/assets/js" && \
+	ASSETS_MAIN_FILE="$$(ls -1 $${ASSETS_DIR}/main.*.js)" && \
+	ASSETS_RUNTIME_MAIN_FILE="$$(ls -1 $${ASSETS_DIR}/runtime~main.*.js)" && \
+	rm -rf $${ASSETS_DIR}/* && \
+	touch $${ASSETS_MAIN_FILE} && \
+	touch $${ASSETS_RUNTIME_MAIN_FILE}
 
 start:
 	npm start
+
+start-production:
+	npm run serve
 
 real-clean:
 	rm -fr .docusaurus && \

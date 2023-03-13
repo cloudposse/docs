@@ -49,6 +49,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+
       - name: "Checkout 'terraform-aws-components' Repository"
         uses: actions/checkout@v3
         with:
@@ -62,24 +67,24 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: "Install deps"
+      - name: "Install Python Dependencies"
         run: |
           make init
           pip install -r scripts/docs-collator/requirements.txt
 
-      - name: "Render docs for components"
+      - name: "Render Documentation for Terraform Components"
         run: |
           ./scripts/render-docs-for-components.sh
 
-      - name: "Render docs for modules"
+      - name: "Render Documentation for Terraform Modules"
         env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
         run: |
           ./scripts/render-docs-for-modules.sh
 
       - name: "Render Documentation for GitHub Actions"
         env:
-          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
         run: |
           ./scripts/render-docs-for-github-actions.sh
 
@@ -87,8 +92,8 @@ jobs:
         env:
           GOOGLE_TAG_MANAGER: GTM-ABCD123
         run: |
-          make deps-production
-          make build
+          make init
+          make build-production
 
       - name: Copy Website to S3 Bucket PR Folder
         run: |

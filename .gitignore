@@ -58,3 +58,8 @@ algolia.index.json
 content/components/catalog/aws/**
 content/modules/catalog/**
 content/github-actions/catalog/actions/**
+content/reference-architecture/**
+static/assets/refarch/**
+!content/reference-architecture/reference-architecture-overview.md
+!content/reference-architecture/refarch.json
+!content/reference-architecture/sitemap.xml

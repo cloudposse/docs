@@ -1,5 +1,5 @@
 // @ts-check
-
+const { redirects } = require("./redirects");
 const lightCodeTheme = require('prism-react-renderer/themes/vsDark');
 const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
 
@@ -52,6 +52,29 @@ const config = {
         path: 'content/github-actions',
         routeBasePath: 'github-actions/',
         sidebarPath: require.resolve('./sidebars-github-actions.js')
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'reference-architecture',
+        path: 'content/reference-architecture',
+        routeBasePath: 'reference-architecture/',
+        sidebarPath: require.resolve('./sidebars-refarch.js')
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-pages',
+      {
+        id: 'account',
+        path: 'content/account/',
+        routeBasePath: 'account/'
+      },
+    ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects
       },
     ],
     [
@@ -133,6 +156,12 @@ const config = {
               to: '/github-actions/',
               position: 'left',
               label: 'GitHub Actions',
+          },
+          {
+              href: '/reference-architecture/reference-architecture-overview/',
+              position: 'left',
+              html: 'Reference Architecture',
+              target: '_self',
           },
           {
             type: 'dropdown',
