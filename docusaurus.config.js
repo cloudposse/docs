@@ -79,11 +79,9 @@ const config = {
       },
     ],
     [
-      "@docusaurus/plugin-google-gtag",
+      '@docusaurus/plugin-google-tag-manager',
       {
-        id: "google-tag-manager",
-        trackingID: process.env.GOOGLE_TAG_MANAGER || 'GTM-ABCD123', // prod: "GTM-WQWH2XV",
-        anonymizeIP: true,
+        containerId: process.env.GOOGLE_TAG_MANAGER || 'GTM-ABCD123'
       },
     ],
   ],
