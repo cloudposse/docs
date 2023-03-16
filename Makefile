@@ -15,8 +15,8 @@ deps:
 build: deps
 	npm run build
 
-build-production: deps
-	npm run build
+build-production: build
+	@exit 0
 
 start:
 	npm start
