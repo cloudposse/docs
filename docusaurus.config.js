@@ -157,7 +157,7 @@ const config = {
               label: 'GitHub Actions',
           },
           {
-              href: '/reference-architecture/reference-architecture-overview/',
+              href: '/reference-architecture/',
               position: 'left',
               html: 'Reference Architecture',
               target: '_self',
