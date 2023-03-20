@@ -1,3 +1,2 @@
 User-agent: *
 Disallow: /reference-architecture/
-Disallow: /assets/refarch/
