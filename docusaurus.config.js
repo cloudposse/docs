@@ -81,7 +81,7 @@ const config = {
     [
       '@docusaurus/plugin-google-tag-manager',
       {
-        containerId: process.env.GOOGLE_TAG_MANAGER || 'GTM-ABCD123'
+        containerId: process.env.GOOGLE_TAG_MANAGER || 'GTM-ND76MGG'
       },
     ],
   ],
