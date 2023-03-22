@@ -18,6 +18,8 @@ env:
   DEPLOYMENT_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
   ALGOLIA_INDEX_NAME: docs-preview.cloudposse.com
   ALGOLIA_APP_ID: 32YOERUX83
+  GOOGLE_TAG_MANAGER: GTM-ABCD123
+  GOOGLE_SITE_VERIFICATION_ID: preview-github
 
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
 permissions:
@@ -90,7 +92,8 @@ jobs:
 
       - name: Install Dependencies and Build Website
         env:
-          GOOGLE_TAG_MANAGER: GTM-ABCD123
+          GOOGLE_TAG_MANAGER: ${{ env.GOOGLE_TAG_MANAGER }}
+          GOOGLE_SITE_VERIFICATION_ID: ${{ env.GOOGLE_SITE_VERIFICATION_ID }}
         run: |
           make init
           make build-production
