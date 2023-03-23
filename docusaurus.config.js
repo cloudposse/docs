@@ -158,6 +158,11 @@ const config = {
               label: 'GitHub Actions',
           },
           {
+              to: 'https://atmos.tools',
+              position: 'left',
+              label: 'Atmos',
+          },
+          {
               href: '/reference-architecture/',
               position: 'left',
               html: 'Reference Architecture',
