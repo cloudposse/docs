@@ -143,19 +143,27 @@ const config = {
                 '/intro/',
           },
           {
-              to: '/components/',
-              position: 'left',
-              label: 'Components',
-          },
-          {
-              to: '/modules/',
-              position: 'left',
-              label: 'Modules',
-          },
-          {
-              to: '/github-actions/',
-              position: 'left',
-              label: 'GitHub Actions',
+            type: 'dropdown',
+            label: 'Building Blocks',
+            position: 'left',
+            items: [
+              {
+                  to: '/components/',
+                  label: 'Components',
+              },
+              {
+                  to: '/modules/',
+                  label: 'Modules',
+              },
+              {
+                  to: '/github-actions/',
+                  label: 'GitHub Actions',
+              },
+              {
+                  href: 'https://atmos.tools',
+                  label: 'Atmos',
+              },
+            ]
           },
           {
               href: '/reference-architecture/',
