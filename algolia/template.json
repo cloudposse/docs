@@ -1,11 +1,13 @@
 {
   "index_name": "docs.cloudposse.com",
   "start_urls": [
-    "https://docs.cloudposse.com/"
+    "https://docs.cloudposse.com/",
+    "https://atmos.tools"
   ],
   "sitemap_urls": [
     "https://docs.cloudposse.com/sitemap.xml",
-    "https://docs.cloudposse.com/refarch-sitemap.xml"
+    "https://docs.cloudposse.com/refarch-sitemap.xml",
+    "https://atmos.tools/sitemap.xml"
   ],
   "sitemap_alternate_links": true,
   "stop_urls": [],
