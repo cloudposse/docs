@@ -16,7 +16,7 @@ env:
   S3_BUCKET_NAME: cplive-plat-ue2-dev-cloudposse-docs-origin
   PR_NUMBER: ${{ github.event.pull_request.number }}
   DEPLOYMENT_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.dev.plat.cloudposse.org
-  ALGOLIA_INDEX_NAME: docs-preview.cloudposse.com
+  ALGOLIA_INDEX_NAME: docs.cloudposse.com
   ALGOLIA_APP_ID: 32YOERUX83
   GOOGLE_TAG_MANAGER: GTM-ABCD123
   GOOGLE_SITE_VERIFICATION_ID: preview-github
