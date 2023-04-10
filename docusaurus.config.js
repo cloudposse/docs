@@ -146,6 +146,7 @@ const config = {
             type: 'dropdown',
             label: 'Building Blocks',
             position: 'left',
+            to: '/building-blocks/',
             items: [
               {
                   to: '/components/',

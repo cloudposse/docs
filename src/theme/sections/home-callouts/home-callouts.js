@@ -13,10 +13,10 @@ export default function HomeCallouts() {
             url: useBaseUrl('/intro/'),
         },
         {
-            title: 'SweetOps Fundamentals',
-            subtitle: 'Check out our main concepts and philosophy',
-            urlText: 'Our Fundamentals',
-            url: useBaseUrl('/category/fundamentals/'),
+            title: 'Building Blocks',
+            subtitle: 'Check out our building blocks',
+            urlText: 'Our Building Blocks',
+            url: useBaseUrl('/building-blocks/'),
         },
         {
             title: 'Tutorials',
