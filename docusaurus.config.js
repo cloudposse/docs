@@ -178,7 +178,7 @@ const config = {
             position: 'right',
             items: [
               {
-                label: 'Github Discussions',
+                label: 'GitHub Discussions',
                 href: 'https://ask.sweetops.com/',
               },
               {
