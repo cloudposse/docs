@@ -228,7 +228,7 @@ const config = {
                     to: '/intro/',
                 }, {
                     label: 'Building Blocks',
-                    to: '/category/fundamentals/',
+                    to: '/building-blocks/',
                 }, {
                     label: 'Tutorials',
                     to: '/category/tutorials/',
