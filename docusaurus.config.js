@@ -250,7 +250,11 @@ const config = {
                 {
                   label: 'Slack',
                   href: 'https://slack.sweetops.com/',
-                }
+                },
+                {
+                  label: 'Slack Archives',
+                  href: 'https://archive.sweetops.com/refarch/',
+                },
               ],
             }, {
                 title: 'Contact Us',
