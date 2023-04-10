@@ -177,7 +177,7 @@ const config = {
             position: 'right',
             items: [
               {
-                label: 'Forum',
+                label: 'Github Discussions',
                 href: 'https://ask.sweetops.com/',
               },
               {
@@ -226,7 +226,7 @@ const config = {
                     label: 'Getting Started',
                     to: '/intro/',
                 }, {
-                    label: 'SweetOps Fundamentals',
+                    label: 'Building Blocks',
                     to: '/category/fundamentals/',
                 }, {
                     label: 'Tutorials',
@@ -239,7 +239,7 @@ const config = {
               title: 'Community',
               items: [
                 {
-                  label: 'Forum',
+                  label: 'Github Discussions',
                   href: 'https://ask.sweetops.com/',
                 },
                 {
