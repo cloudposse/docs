@@ -9,26 +9,31 @@ The SweetOps solution by Cloud Posse is a powerful framework in the DevOps field
 ## Geodesic
 
 **Your DevOps Toolbox**
+
 [Geodesic](/tutorials/geodesic-getting-started/) is the ultimate DevOps toolbox, encapsulated within a Docker image. It eliminates the need for individual installations of Terraform, Kubernetes, Helmfile, AWS CLI, and other core tools in the SweetOps methodology. Geodesic is versatile, serving as an interactive cloud automation shell, a base image for other containers, or a crucial element in CI/CD workflows.
 
 ## Atmos
 
 **Your Workflow Automation Conductor**
+
 [Atmos](https://atmos.tools) takes the reins as a DevOps workflow automation tool, adept at managing large-scale and intricate infrastructures. It empowers users to manage DRY configurations hierarchically, foster team collaboration, and enforce guardrails through policies as code. Atmos relies on YAML configuration and supports multiple inheritance, simplifying the process of defining and reusing logical groups of configuration. We usually run Atmos inside of Geodesic, but it's not a requirement.
 
 ## Terraform Components
 
 **Blueprints for Infrastructure Patterns**
+
 [Terraform Components](/components/) (Root Modules) act as the foundational Terraform configurations for high-level infrastructure elements, such as Kubernetes clusters or VPCs. These root modules enable reusability across different environments, and frequently leverage Terraform child modules, streamlining infrastructure management.
 
 ## Terraform Modules
 
 **Bricks of Infrastructure Business Logic**
+
 [Terraform Modules](/modules/) are smaller building blocks of infrastructure that are invoked by components to dictate the business logic associated with configuring infrastructure resources. These versatile modules can be shared among multiple Terraform configurations, allowing for the creation, updating, and deletion of infrastructure resources.
 
 ## GitHub Actions
 
 **Your Deployment Automation Platform**
+
 [GitHub Actions](/github-actions/) play a pivotal role as the CI/CD tool, automating software workflows to build, test, and deploy code changes. This powerful platform integrates seamlessly with Geodesic, Atmos and Terraform components and modules, automating deployment to infrastructure environments.
 
 ## TL;DR
