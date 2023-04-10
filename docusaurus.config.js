@@ -193,6 +193,10 @@ const config = {
                 label: 'Slack Archives',
                 href: 'https://archive.sweetops.com/refarch/',
               },
+              {
+                  label: 'Office Hours',
+                  href: 'https://cloudposse.com/office-hours/',
+              },
             ],
           },
           {
@@ -254,6 +258,10 @@ const config = {
                 {
                   label: 'Slack Archives',
                   href: 'https://archive.sweetops.com/refarch/',
+                },
+                {
+                    label: 'Office Hours',
+                    href: 'https://cloudposse.com/office-hours/',
                 },
               ],
             }, {
