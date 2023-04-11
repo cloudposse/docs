@@ -146,6 +146,7 @@ const config = {
             type: 'dropdown',
             label: 'Building Blocks',
             position: 'left',
+            to: '/fundamentals/building-blocks/',
             items: [
               {
                   to: '/components/',
@@ -177,7 +178,7 @@ const config = {
             position: 'right',
             items: [
               {
-                label: 'Forum',
+                label: 'GitHub Discussions',
                 href: 'https://ask.sweetops.com/',
               },
               {
@@ -187,7 +188,15 @@ const config = {
               {
                 label: 'Slack',
                 href: 'https://slack.sweetops.com/',
-              }
+              },
+              {
+                label: 'Slack Archives',
+                href: 'https://archive.sweetops.com/refarch/',
+              },
+              {
+                  label: 'Office Hours',
+                  href: 'https://cloudposse.com/office-hours/',
+              },
             ],
           },
           {
@@ -222,8 +231,8 @@ const config = {
                     label: 'Getting Started',
                     to: '/intro/',
                 }, {
-                    label: 'SweetOps Fundamentals',
-                    to: '/category/fundamentals/',
+                    label: 'Building Blocks',
+                    to: '/fundamentals/building-blocks/',
                 }, {
                     label: 'Tutorials',
                     to: '/category/tutorials/',
@@ -235,7 +244,7 @@ const config = {
               title: 'Community',
               items: [
                 {
-                  label: 'Forum',
+                  label: 'Github Discussions',
                   href: 'https://ask.sweetops.com/',
                 },
                 {
@@ -245,7 +254,15 @@ const config = {
                 {
                   label: 'Slack',
                   href: 'https://slack.sweetops.com/',
-                }
+                },
+                {
+                  label: 'Slack Archives',
+                  href: 'https://archive.sweetops.com/refarch/',
+                },
+                {
+                    label: 'Office Hours',
+                    href: 'https://cloudposse.com/office-hours/',
+                },
               ],
             }, {
                 title: 'Contact Us',
