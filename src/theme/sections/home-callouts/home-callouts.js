@@ -16,7 +16,7 @@ export default function HomeCallouts() {
             title: 'Building Blocks',
             subtitle: 'Check out our building blocks',
             urlText: 'Our Building Blocks',
-            url: useBaseUrl('/building-blocks/'),
+            url: useBaseUrl('/fundamentals/building-blocks/'),
         },
         {
             title: 'Tutorials',

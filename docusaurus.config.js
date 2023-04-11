@@ -146,7 +146,7 @@ const config = {
             type: 'dropdown',
             label: 'Building Blocks',
             position: 'left',
-            to: '/building-blocks/',
+            to: '/fundamentals/building-blocks/',
             items: [
               {
                   to: '/components/',
@@ -232,7 +232,7 @@ const config = {
                     to: '/intro/',
                 }, {
                     label: 'Building Blocks',
-                    to: '/building-blocks/',
+                    to: '/fundamentals/building-blocks/',
                 }, {
                     label: 'Tutorials',
                     to: '/category/tutorials/',
