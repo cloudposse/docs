@@ -4,7 +4,7 @@ description: 'Building Blocks'
 sidebar_position: 25
 ---
 
-The SweetOps solution by Cloud Posse is a powerful framework in the DevOps field, designed with multiple building blocks that offer various levels of abstraction. This modular approach allows for complete customization to meet the unique requirements of any business, ensuring a tailored solution that aligns with specific needs and objectives. To understand how it works, it's important to know how these parts work together: [Geodesic](/tutorials/geodesic-getting-started/), [Atmos](https://atmos.tools), [Terraform Components](/components/) (root modules), [Terraform Modules](/modules/), and [GitHub Actions](/github-actions/).
+The SweetOps solution by Cloud Posse is a powerful framework for DevOps, designed with multiple building blocks that offer various levels of abstraction. This modular approach allows for complete customization to meet the unique requirements of any business, ensuring a tailored solution that aligns with specific needs and objectives. To understand how it works, it's important to know how these parts work together: [Geodesic](/tutorials/geodesic-getting-started/), [Atmos](https://atmos.tools), [Terraform Components](/components/) (root modules), [Terraform Modules](/modules/), and [GitHub Actions](/github-actions/).
 
 ## Geodesic
 
