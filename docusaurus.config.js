@@ -129,7 +129,7 @@ const config = {
         logo: {
           alt: 'Cloud Posse Developer Hub',
           src: 'img/logo.svg',
-          srcDark: 'img/logo-light.png',
+          srcDark: 'img/logo-light.svg',
         },
         items: [
           {
@@ -286,7 +286,7 @@ const config = {
             }],
             logo: {
                 alt: 'Cloud Posse',
-                src: '/img/logo-light.png',
+                src: '/img/logo-light.svg',
                 href: 'https://cloudposse.com/'
             },
         copyright: `© ${new Date().getFullYear()} Cloud Posse, LLC`,
