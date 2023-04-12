@@ -43,8 +43,18 @@ li > ul.menu__list {
     margin-left: 1em;
 }
 
+.theme-admonition {
+    max-width: 1200px;
+}
+
+.pagination-nav__link {
+    max-width: 700px;
+}
+
+
 /* You can override the default Infima variables here. */
 :root {
+    --ifm-container-width-xl: 90%;
     --ifm-code-font-size: 95%;
     --ifm-menu-color: var(--c-gray-100);
     --ifm-menu-link-padding-horizontal: 0.25rem;
@@ -197,6 +207,11 @@ svg.landingLogo path {
   fill: #ebedf0
 }
 
+.heroContainer_src-theme-sections-hero-hero-module {
+  background: -webkit-linear-gradient(to right, #102445, #0a1922) !important;  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #102445, #0a1922) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 .hero__title {
   font-size: 2.5rem;
 }
@@ -255,11 +270,15 @@ svg.landingLogo path {
     text-align: left;
 }
 .footer--dark {
-    --ifm-footer-background-color: #20232a;
+    --ifm-footer-background-color: #0a1922;
     --ifm-footer-padding-vertical: 85px;
 }
 .footer__copyright {
     margin-left: 0;
+}
+
+.footer__bottom > div > a {
+    opacity: 0.9;
 }
 
 .github_buttons > ul {
@@ -277,3 +296,5 @@ svg.landingLogo path {
 .markdown h1:first-child {
   --ifm-h1-font-size: 2.5rem;
 }
+
+
