@@ -110,6 +110,10 @@ const config = {
       src: "https://kit.fontawesome.com/3a9f2eb5b9.js",
     },
   ],
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
