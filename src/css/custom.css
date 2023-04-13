@@ -207,11 +207,6 @@ svg.landingLogo path {
   fill: #ebedf0
 }
 
-.heroContainer_src-theme-sections-hero-hero-module {
-  background: -webkit-linear-gradient(to right, #102445, #0a1922) !important;  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #102445, #0a1922) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
 .hero__title {
   font-size: 2.5rem;
 }
