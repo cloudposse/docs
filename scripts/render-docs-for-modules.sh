@@ -9,7 +9,7 @@ usage() {
 
 [ -z "${PUBLIC_REPO_ACCESS_TOKEN}" ] && usage "PUBLIC_REPO_ACCESS_TOKEN"
 
-RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-content/modules/catalog}"
+RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-content/modules/library}"
 DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/modules}"
 
 python scripts/docs-collator/render_docs_for_modules.py \

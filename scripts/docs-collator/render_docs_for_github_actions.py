@@ -9,7 +9,7 @@ from GitHubActionRenderer import GitHubActionRenderer
 from GitHubProvider import GitHubProvider
 
 DOWNLOAD_TMP_DIR = 'tmp/github-actions'
-OUTPUT_DOC_DIR = 'content/github-actions/catalog'
+OUTPUT_DOC_DIR = 'content/github-actions/library'
 REPOS_SKIP_LIST = {'terraform-aws-components'}
 
 

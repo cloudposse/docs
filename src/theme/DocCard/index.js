@@ -98,9 +98,9 @@ function ImageCardLink({item, image}) {
 export default function DocCard({item}) {
   switch (item.type) {
     case 'link':
-      if(item.href.startsWith('/components/catalog/') || item.href.startsWith('/modules/catalog/')) {
+      if(item.href.startsWith('/components/library/') || item.href.startsWith('/modules/library/')) {
         return <ImageCardLink item={item} image='/images/terraform.svg' />
-      } else if(item.href.startsWith('/github-actions/catalog/')) {
+      } else if(item.href.startsWith('/github-actions/library/')) {
         return <ImageCardLink item={item} image='/images/github-actions.svg' />
       } else {
         return <CardLink item={item} />;
