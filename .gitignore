@@ -55,9 +55,9 @@ tmp/*
 *.swp
 algolia.index.json
 **/__pycache__/
-content/components/catalog/aws/**
-content/modules/catalog/**
-content/github-actions/catalog/actions/**
+content/components/library/aws/**
+content/modules/library/**
+content/github-actions/library/actions/**
 content/reference-architecture/**
 static/assets/refarch/**
 !content/reference-architecture/index.md

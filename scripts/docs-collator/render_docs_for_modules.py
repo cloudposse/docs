@@ -9,7 +9,7 @@ from ModuleFetcher import ModuleFetcher, MissingReadmeYamlException
 from ModuleRenderer import ModuleRenderer
 
 DOWNLOAD_TMP_DIR = 'tmp/modules'
-OUTPUT_DOC_DIR = 'content/modules/catalog'
+OUTPUT_DOC_DIR = 'content/modules/library'
 
 
 def main(github_api_token, output_dir, download_dir, includes_csv, excludes_csv, fail_on_rendering_error):

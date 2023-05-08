@@ -6,7 +6,7 @@ import click
 from ComponentRenderer import ComponentRenderer
 from utils import io
 
-OUTPUT_DOC_DIR = 'content/components/catalog/aws'
+OUTPUT_DOC_DIR = 'content/components/library/aws'
 CLONED_REPO_DIR = 'tmp/components/terraform-aws-components'
 
 
