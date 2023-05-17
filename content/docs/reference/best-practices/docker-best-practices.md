@@ -15,10 +15,10 @@ Try to leverage the same base image in as many of your images as possible for fa
 
 ## Multi-stage Builds
 
-There are two ways to leverage multi-stage builds.
+There are two ways to leverage multi-stage builds:
 
-1. *Build-time Environments* The most common application of multi-stage builds is for using a build-time environment for compiling apps, and then a minimal image (E.g. `alpine` or `scratch`) for distributing the resultant artifacts (e.g. statically-linked go binaries).
-2. *Multiple-Inheritance* We like to think of "multi-stage builds" as a mechanism for "multiple inheritance" as it relates to docker images. While not technically the same thing, using mult-stage images, it's possible `COPY --from=other-image` to keep things very DRY.
+1. *Build-time Environments* The most common application of multi-stage builds is for using a build-time environment for compiling apps, and then a minimal image (E.g. `alpine` or `scratch`) for distributing the resultant artifacts (e.g. statically-linked Go binaries).
+2. *Multiple-Inheritance* We like to think of "multi-stage builds" as a mechanism for "multiple inheritance" as it relates to docker images. While not technically the same thing, using multi-stage images, makes it possible `COPY --from=other-image` to keep things very DRY.
 
 :::info
 - <https://docs.docker.com/develop/develop-images/multistage-build/>

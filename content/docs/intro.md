@@ -12,13 +12,13 @@ Start with getting familiar with the [geodesic](/reference/tools.mdx#geodesic).
 
 Get intimately familiar with docker inheritance and [multi-stage docker builds](/reference/best-practices/docker-best-practices.md#multi-stage-builds). We use this pattern extensively.
 
-Check out our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) for reference architectures to easily provision infrastructure
+Check out our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) for reference architectures to easily provision infrastructure.
 
 ## Tools
 
-Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
+Tons of tools/CLIs are used as part of our solution. We distribute these tools in a couple of different ways:
 
-* Geodesic bundles most of these tools as part of the geodesic base image
+* Geodesic bundles most of these tools as part of the geodesic base image:
 * Our [packages repo](/reference/tools.mdx#packages) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`](/reference/tools.mdx#build-harness)). This can also be used for local ("native") development contexts.
 
 Here are some of the most important tools to be aware of:
@@ -27,7 +27,7 @@ Here are some of the most important tools to be aware of:
 - [`chamber`](/reference/tools.mdx#chamber)
 - [`terraform`](/reference/tools.mdx#terraform)
 - [`gomplate`](/reference/tools.mdx#gomplate)
-- [Leapp](/reference/tools.mdx#leapp)
+- [`Leapp`](/reference/tools.mdx#leapp)
 
 If using kubernetes, then also review these tools:
 
@@ -42,8 +42,8 @@ Kubernetes is a massive part of our solutions. Our Kubernetes documentation is g
 
 Helm is central to how we deploy all services on kubernetes.
 
-* [helm](/reference/tools.mdx#helm) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
-* [helm charts](https://helm.sh/docs/topics/charts/) are how kubernetes resources are templatized using Go templates
+* [helm](/reference/tools.mdx#helm) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL).
+* [helm charts](https://helm.sh/docs/topics/charts/) are how kubernetes resources are templatized using Go templates.
 * [helmfiles](/reference/tools.mdx#helmfile) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
 
 ## Terraform
@@ -70,7 +70,7 @@ Review our [glossary](/category/glossary/) if there are any terms that are confu
 
 File issues anywhere you find the documentation lacking by going to our [docs repo](https://github.com/cloudposse/docs).
 
-Join our [Slack Community](https://cloudposse.com/slack/) and speak directly with the maintainers
+Join our [Slack Community](https://cloudposse.com/slack/) and speak directly with the maintainers.
 
 We provide "white glove" DevOps support. [Get in touch](/contact-us.md) with us today!
 
