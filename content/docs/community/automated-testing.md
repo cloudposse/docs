@@ -33,7 +33,7 @@ Terraform tests run against our [testing infrastructure](https://github.com/clou
 ChatOps is powered by [GitHub Actions](https://github.com/features/actions) and the [slash-dispatch-command](https://github.com/peter-evans/slash-command-dispatch).
 
 The terratest workflow is defined in the [`cloudposse/actions`](https://github.com/cloudposse/actions/blob/master/.github/workflows/terratest-command.yml) repository. The benefit with this is that we have one place to control the testing
-workflow for all of our hundreds of terraform modules. The downside, however, with dispatched workflows is that the _workflows_ always run from the `master` branch.
+workflow for all of our hundreds of terraform modules. The downside, however, with dispatched workflows is that the _workflows_ always run from the `main` branch.
 
 ## ChatOps Configuration
 
