@@ -9,9 +9,11 @@ All of our Terraform modules have automated tests. We have two sets of checks:
 
 - First set is running github shared workflow [`feature-branch`](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml) 
 which does basic sanity checks: linting, formatting and docs. These checks are cheap to run and do not require any special permissions, so we run them automatically on every commit.
+You also can run this set of checks locally using ```make precommit/terraform``` command on your host.
 
 - Second set runs terraform integration tests based on the [`terratest`](https://github.com/gruntwork-io/terratest) library for infrastructure testing that do more in-depth integration tests of module functionality.
 These are run on request, and only by authorized contributors. We use ChatOps to trigger this workflow.
+
 
 ## Philosophy of Terraform Integration Testing
 
