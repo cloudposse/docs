@@ -9,7 +9,11 @@ All of our Terraform modules have automated tests. We have two sets of checks:
 
 - The first set of checks is executed through the feature-branch workflow, which can be found [here](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml) 
 This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they are automatically run on every commit.
-You also can and should run this set of checks locally using `make precommit/terraform` command on your host before committing your changes locally and pushing your PR. You should run them because, among other things, they update the automatically generated documentation, and if you do not do it on your host, your PR will be blocked until you accept the changes via PR suggestions.
+Before committing and pushing your changes, you can and should run this set of checks locally by executing the following command on your host
+```
+make precommit/terraform
+```
+Running these checks locally incorporates all the required changes that otherwise would block your PR.
 
 - Second set runs terraform integration tests based on the [`terratest`](https://github.com/gruntwork-io/terratest) library for infrastructure testing that do more in-depth integration tests of module functionality.
 These are run on request, and only by authorized contributors. We use ChatOps to trigger this workflow.
