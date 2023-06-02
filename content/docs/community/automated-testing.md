@@ -27,7 +27,7 @@ Ideally we would like to test that the resources are properly created, but often
 
 ## Using ChatOps To Trigger Integration Tests
 
-In order to securely run terraform tests and save on infrastructure costs we've setup some basic "ChatOps" style functionality. To use it you will need to have at least `triage` level of access to a repo. Typically, this is done by a CloudPosse team upon PR review.
+In addition to automatic triggers, tests can be run on demand via "ChatOps". (You will need to have at least `triage` level of access to a repo to use ChatOps commands.) Typically, tests are run by a CloudPosse contributor or team member as part of a PR review.
 
 Tests are initiated by posting GitHub comments on the PR. Currently supported commands are the following:
 
