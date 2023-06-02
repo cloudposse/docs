@@ -94,7 +94,7 @@ indent_style = tab
 indent_size = 4
 
 [*.yaml]
-intent_style = space
+indent_style = space
 indent_size = 2
 
 [*.sh]
