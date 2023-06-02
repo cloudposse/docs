@@ -15,8 +15,8 @@ make precommit/terraform
 ```
 Running these checks locally incorporates all the required changes that otherwise would block your PR.
 
-- Second set runs terraform integration tests based on the [`terratest`](https://github.com/gruntwork-io/terratest) library for infrastructure testing that do more in-depth integration tests of module functionality.
-These are run on request, and only by authorized contributors. We use ChatOps to trigger this workflow.
+- The second set of checks consists of Terraform integration tests that validate the functionality and integration of the module. These tests are performed using the [`terratest`](https://github.com/gruntwork-io/terratest) library, specifically designed for infrastructure testing, and do more in-depth integration tests of module functionality.
+Unlike the first set of checks, these integration tests are executed only on request, and only by authorized contributors. We use ChatOps to trigger this workflow.
 
 
 ## Philosophy of Terraform Integration Testing
