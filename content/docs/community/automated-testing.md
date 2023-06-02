@@ -21,7 +21,9 @@ Unlike the first set of checks, these integration tests are executed only on req
 
 ## Philosophy of Terraform Integration Testing
 
-At a minimum, we like to test to ensure that all of our modules cleanly `plan`, `apply` and `destroy`. This catches 80% of the problems with only 20% of the effort. We also want to test that the outputs are what we would expect. On the other hand, we don't want to retest what already is tested by HashiCorp in their providers. So for example, we have our [`terraform-aws-s3-bucket`](https://github.com/cloudposse/terraform-aws-s3-bucket) module that creates an S3 bucket. We don't need to test that a bucket is created; we assume that would be caught by the upstream terraform tests. But we do want to [test that the bucket name](https://github.com/cloudposse/terraform-aws-s3-bucket/blob/master/test/src/examples_complete_test.go#L38) is what we expect it to be, since this is an opinionated aspect of the module.
+At a minimum, we ensure that all of our modules cleanly `plan`, `apply` and `destroy`. This catches 80% of the problems with only 20% of the effort. We also test than then the `enabled` input is set to `false`, no resources are created.
+
+Ideally we would like to test that the resources are properly created, but often this is difficult to verify programmatically, in which case we settle for spot checking that the dynamic outputs match our expectations. At the same time, we do not want to waste effort retesting what has already been tested by HashiCorp and their providers. For example, we have our [`terraform-aws-s3-bucket`](https://github.com/cloudposse/terraform-aws-s3-bucket) module that creates an S3 bucket. We don't need to test that a bucket is created; we assume that would be caught by the upstream terraform tests. But we do want to [test that the bucket name](https://github.com/cloudposse/terraform-aws-s3-bucket/blob/master/test/src/examples_complete_test.go#L38) is what we expect it to be, since this is something under our control.
 
 ## Using ChatOps To Trigger Integration Tests
 
