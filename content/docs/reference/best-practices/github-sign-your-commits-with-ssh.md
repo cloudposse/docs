@@ -23,4 +23,4 @@ git config --global user.signingKey "$(head -1 $KEY_FILE)"
 
 Add your SSH public key to GitHub as a signing key, much the same way you added it as an authentication key, but choose "Signing Key" instead of "Authentication Key" under "Key type", even if you already have it uploaded as an authentication key. Detailed instructions at [GitHub docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account#adding-a-new-ssh-key-to-your-account).
 
-I suggest using the same key you use to authenticate with, so that signing is the same as pulling and pushing, but you can use a different key if you want to be prompted for a password with every commit.
+We suggest using the same key you use to authenticate with, so that signing is the same as pulling and pushing, but you can use a different key if you want to be prompted for a password with every commit.
