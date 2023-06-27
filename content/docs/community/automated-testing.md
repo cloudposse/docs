@@ -47,7 +47,7 @@ workflow for all of our hundreds of terraform modules. The downside, however, wi
 Here's a list a workflows you might want to trigger manually should things go wrong on GitHub side or with our configuration.
 - `feature-branch` can be triggered anytime by labeling/unlabeling PR with any label.
 - `release-branch` is the same to creating a GH release manually. We have created a complimentary workflow `release-published` for this case: it will fulfill the missing parts once you create a release manually. Note that you are skipping tests before release in this case.
-- `scheduled` can be triggered anytime from GitHub UI, it has the *workflow_dispatch* trigger on purpose.
+- `scheduled` can be triggered anytime from GitHub UI, it has a *workflow_dispatch* trigger for this purpose.
 
 ## ChatOps Configuration
 
