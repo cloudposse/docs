@@ -8,7 +8,7 @@ description: 'Our automated testing strategy and resources'
 All of our Terraform modules have automated tests. We have two sets of checks: 
 
 - The first set of checks is executed through the feature-branch workflow, which can be found [here](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml) 
-This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they are automatically run on every commit.
+This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they *are automatically run* on every commit.
 Before committing and pushing your changes, you can and should run this set of checks locally by executing the following command on your host
 ```
 make precommit/terraform
@@ -16,7 +16,7 @@ make precommit/terraform
 Running these checks locally incorporates all the required changes that otherwise would block your PR.
 
 - The second set of checks consists of Terraform integration tests that validate the functionality and integration of the module. These tests are performed using the [`terratest`](https://github.com/gruntwork-io/terratest) library, specifically designed for infrastructure testing, and do more in-depth integration tests of module functionality.
-Unlike the first set of checks, these integration tests are executed only on request, and only by authorized contributors. We use ChatOps to trigger this workflow.
+Unlike the first set of checks, these integration tests are *executed only on request*, and only by authorized contributors. We use ChatOps to trigger this workflow.
 
 
 ## Philosophy of Terraform Integration Testing
@@ -42,6 +42,12 @@ ChatOps is powered by [GitHub Actions](https://github.com/features/actions) and 
 
 The terratest workflow is defined in the [`cloudposse/actions`](https://github.com/cloudposse/actions/blob/master/.github/workflows/terratest-command.yml) repository. The benefit with this is that we have one place to control the testing
 workflow for all of our hundreds of terraform modules. The downside, however, with dispatched workflows is that the _workflows_ always run from the `main` branch.
+
+## Manually triggering a shared workflow
+Here's a list a workflows you might want to trigger manually should things go wrong on GitHub side or with our configuration.
+- `feature-branch` can be triggered anytime by labeling/unlabeling PR with any label.
+- `release-branch` is the same to creating a GH release manually. We have created a complimentary workflow `release-published` for this case: it will fulfill the missing parts once you create a release manually. Note that you are skipping tests before release in this case.
+- `scheduled` can be triggered anytime from GitHub UI, it has the *workflow_dispatch* trigger on purpose.
 
 ## ChatOps Configuration
 
