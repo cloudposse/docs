@@ -27,7 +27,7 @@ Before we jump in, it's important to note that Geodesic is built around some adv
 
 Let's talk about a few of the ways that one can run Geodesic. Our toolbox has been built to satisfy many use-cases, and each result in a different pattern of invocation:
 
-1. You can **run standalone** Geodesic as a standard docker container using `docker run`. This enables you to get started quickly, to avoid fiddling with configuration or run one-off commands using some of the built-in tools.
+1. You can **run standalone** Geodesic as a standard docker container using `docker run`. This enables you to get started quickly and to avoid fiddling with configuration or running one-off commands, all thanks to some of the built-in tools.
    1. Example: `docker run -it --rm --volume $HOME:/localhost cloudposse/geodesic:latest-debian --login` opens a bash login shell (`--login` is our Docker `CMD` here; it's actually just [the arguments passed to the `bash` shell](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html) which is our `ENTRYPOINT`) in our Geodesic container.
    1. Example: `docker run -it --rm --volume $HOME:/localhost cloudposse/geodesic:latest-debian -c "terraform version"` executes the `terraform version` command as a one off and outputs the result.
 1. You can **install** Geodesic onto your local machine using what we call the docker-bash pattern (e.g. `docker run ... | bash`). Similar to above, this enables a quickstart process but supports longer lived usage as it creates a callable script on your machine that enables reuse any time you want to start a shell.
@@ -90,9 +90,9 @@ terraform init
 terraform apply -auto-approve
 ```
 
-Sweet, you should see a successful `terraform apply` with some detailed `output` info on the original star wars hero! 😎
+Sweet, you should see a successful `terraform apply` with some detailed `output` data on the original star wars hero! 😎
 
-Just to show some simple usage of another tool in the toolbox, how about we pull apart that info and get that hero's name?
+Just to show some simple usage of another tool in the toolbox, how about we parse that data and get that hero's name?
 
 ### 4. Read some data from our Outputs
 
