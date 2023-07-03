@@ -5,46 +5,49 @@ description: 'Our automated testing strategy and resources'
 
 ## Terraform Testing
 
-Nearly all of our Terraform modules are updated with automated tests. We have 2 general strategies. First is by running some [`bats`](https://github.com/bats-core/bats-core) tests that do some basic sanity checks.
-These tests are defined in our [`test-harness`](https://github.com/cloudposse/test-harness) and generally don't require any credentials to run. Since that's the case, they can really only do basic linting and static analysis.
+All of our Terraform modules have automated tests. We have two sets of checks: 
 
-Then we have some tests which are based on the [`terratest`](https://github.com/gruntwork-io/terratest) library for infrastructure testing that do more in-depth integration tests of module functionality.
+- The first set of checks is executed through the feature-branch workflow, which can be found [here](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml) 
+This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they *are automatically run* on every commit.
+Before committing and pushing your changes, you can and should run this set of checks locally by executing the following command on your host
+```
+make precommit/terraform
+```
+Running these checks locally incorporates all the required changes that otherwise would block your PR.
 
-## Philosophy of Testing
-
-Here's our philosophy on infrastructure testing. At a minimum, we like to test to ensure that all of our modules cleanly `plan`, `apply` and `destroy`. This catches 80% of the problems with only 20% of the effort. We also want to test that the outputs are what we would expect. On the other hand, we don't want to retest what already is tested by HashiCorp in their providers. So for example, we have our [`terraform-aws-s3-bucket`](https://github.com/cloudposse/terraform-aws-s3-bucket) module that creates an S3 bucket. We don't need to test that a bucket is created; we assume that would be caught by the upstream terraform tests. But we do want to [test that the bucket name](https://github.com/cloudposse/terraform-aws-s3-bucket/blob/master/test/src/examples_complete_test.go#L38) is what we expect it to be, since this is an opinionated aspect of the module.
-
-## About ChatOps
-
-We've setup some basic "ChatOps" style functionality to run tests. This is required in order to securely run infrastructure integration tests without exposing integration secrets.  More than this, it's a [hard limitation
-imposed by GitHub](https://www.google.com/search?q=github.community+run+on+forks+secrets) and the only way we can run the tests from Pull Requests originating from forks.
-
-Our tests run against some [testing infrastructure](https://github.com/cloudposse/testing.cloudposse.co) that we host in an isolated account on AWS, strictly for the purposes of testing infrastructure.
-
-Our ChatOps is powered by [GitHub Actions](https://github.com/features/actions) and the [slash-dispatch-command](https://github.com/peter-evans/slash-command-dispatch).
-
-The workflow is defined in the [`cloudposse/actions`](https://github.com/cloudposse/actions/blob/master/.github/workflows/test-command.yml) repository. The benefit with this is we have one place to control the testing
-workflow for all of our hundreds of terraform modules. The downside, however, with dispatched workflows is that the _workflows_ always run from the `master` branch.
+- The second set of checks consists of Terraform integration tests that validate the functionality and integration of the module. These tests are performed using the [`terratest`](https://github.com/gruntwork-io/terratest) library, specifically designed for infrastructure testing, and do more in-depth integration tests of module functionality.
+Unlike the first set of checks, these integration tests are *executed only on request*, and only by authorized contributors. We use ChatOps to trigger this workflow.
 
 
-## ChatOps Usage
+## Philosophy of Terraform Integration Testing
 
-To run the tests, you'll need to issue some commands by posting GitHub comments on the PR. You can use any of the following to perform tests or run certain actions:
+At a minimum, we ensure that all of our modules cleanly `plan`, `apply` and `destroy`. This catches 80% of the problems with only 20% of the effort. We also test than then the `enabled` input is set to `false`, no resources are created.
 
+Ideally we would like to test that the resources are properly created, but often this is difficult to verify programmatically, in which case we settle for spot checking that the dynamic outputs match our expectations. At the same time, we do not want to waste effort retesting what has already been tested by HashiCorp and their providers. For example, we have our [`terraform-aws-s3-bucket`](https://github.com/cloudposse/terraform-aws-s3-bucket) module that creates an S3 bucket. We don't need to test that a bucket is created; we assume that would be caught by the upstream terraform tests. But we do want to [test that the bucket name](https://github.com/cloudposse/terraform-aws-s3-bucket/blob/master/test/src/examples_complete_test.go#L38) is what we expect it to be, since this is something under our control.
+
+## Using ChatOps To Trigger Integration Tests
+
+In addition to automatic triggers, tests can be run on demand via "ChatOps". (You will need to have at least `triage` level of access to a repo to use ChatOps commands.) Typically, tests are run by a CloudPosse contributor or team member as part of a PR review.
+
+Tests are initiated by posting GitHub comments on the PR. Currently supported commands are the following:
 
 | Command                                             | Description                                                                        |
 |-----------------------------------------------------|------------------------------------------------------------------------------------|
-| `/test bats`                                        | Run bats automated tests                                                           |
-| `/test readme`                                      | Verify the `README.md` is current and updated from `README.yaml`                   |
-| `/test terratest`                                   | Run the `terratest` integration tests in `test/src`                                |
-| `/test all`                                         | Run `readme`, `bats`, and `terratest` tests                                        |
-| `/test bats readme`, `/test readme terratest`, etc. | Run any combination of `/test` commands from one comment.                          |
-| `/rebuild-readme`                                   | Run `make init && make readme` on the current code and commit it back to the repo. |
-| `/terraform-fmt`                                    | Run `terraform fmt` on the current code and commit it back to the repo.            |
+| `/terratest`                                        | Run the `terratest` integration tests in `test/src`                                |
 
 
-All tests run from the [`cloudposse/actions`](https://github.com/cloudposse/actions/actions) repository.
+Terraform tests run against our [testing infrastructure](https://github.com/cloudposse/testing.cloudposse.co) that we host in an isolated account on AWS, strictly for the purposes of testing infrastructure.
 
+ChatOps is powered by [GitHub Actions](https://github.com/features/actions) and the [slash-dispatch-command](https://github.com/peter-evans/slash-command-dispatch).
+
+The terratest workflow is defined in the [`cloudposse/actions`](https://github.com/cloudposse/actions/blob/master/.github/workflows/terratest-command.yml) repository. The benefit with this is that we have one place to control the testing
+workflow for all of our hundreds of terraform modules. The downside, however, with dispatched workflows is that the _workflows_ always run from the `main` branch.
+
+## Manually triggering a shared workflow
+Here's a list a workflows you might want to trigger manually should things go wrong on GitHub side or with our configuration.
+- `feature-branch` can be triggered anytime by labeling/unlabeling PR with any label.
+- `release-branch` is the same to creating a GH release manually. We have created a complimentary workflow `release-published` for this case: it will fulfill the missing parts once you create a release manually. Note that you are skipping tests before release in this case.
+- `scheduled` can be triggered anytime from GitHub UI, it has a *workflow_dispatch* trigger for this purpose.
 
 ## ChatOps Configuration
 
@@ -53,12 +56,11 @@ If you're a contributor who wants to intialize one of our terraform modules, thi
 To initialize one of our modules with chatops, run the following commands:
 
 1. `git clone` the terraform module repository
-2. `cd $repo` to enter the repository directory
-3. `make init` to initialize the build-harness
-4. `make github/init` to write all the scaffolding
-5. `git add *` to add the changes
-6. `git rm -rf codefresh/` to remove legacy codefresh pipelines no longer needed
-7. Add the build badge to the `README.yaml` under the `badges` section. Also, remove any Codefresh badge, since that's also no longer needed
-8. `make readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
-9. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/terraform-github-repository-webhooks/pull/17).
-10. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)
+1. `cd $repo` to enter the repository directory
+1. `make init` to initialize the build-harness
+1. `make github/init` to write all the scaffolding
+1. `git add *` to add the changes
+1. Add the build badge to the `README.yaml` under the `badges` section. 
+1. `make readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
+1. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/terraform-github-repository-webhooks/pull/17).
+1. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)
