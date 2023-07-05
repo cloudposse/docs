@@ -68,9 +68,6 @@ class ComponentRenderer:
         for root, dirs, files in os.walk(os.path.join(self.docs_dir, component)):
             if not files and all(os.path.isdir(os.path.join(root, d)) for d in dirs):
                 self.__render_category_index(root)
-                # new_file_path = os.path.join(root, 'new_file.txt')
-                # with open(new_file_path, 'w') as file:
-                #     file.write('This is a new file.')
 
     def __render_category_index(self, dir):
         name = os.path.basename(dir)
