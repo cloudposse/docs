@@ -5,6 +5,7 @@ BR_REGEX = re.compile(re.escape('<br>'), re.IGNORECASE)
 SIDEBAR_LABEL_REGEX = re.compile('sidebar_label: .*', re.IGNORECASE)
 CUSTOM_EDIT_URL_REGEX = re.compile('custom_edit_url: .*', re.IGNORECASE)
 NAME_REGEX = re.compile('name: .*', re.IGNORECASE)
+RELATIVE_LINK_PATTERN = r"\]\((?!http[s]?://)([^)\s]+)\)"
 
 
 def fix_self_non_closing_br_tags(content):
@@ -61,11 +62,6 @@ def rename_name(repo, content):
     return NAME_REGEX.sub(f'name: {repo.name}', content)
 
 
-def fix_links_to_examples(repo, content):
-    return re.sub(r"(\[examples/.*])\((examples/.*)\)",
-                  rf"\1(https://github.com/{repo.full_name}/tree/{repo.default_branch}/\2)", content)
-
-
 def parse_terraform_repo_name(name):
     name_items = name.split('-')
     provider = name_items[1]
@@ -79,3 +75,24 @@ def parse_github_action_repo_name(name):
     action_name = '-'.join(name_items[2:])
 
     return action_name
+
+
+def replace_relative_links_with_github_links(repo, content):
+    links = re.findall(RELATIVE_LINK_PATTERN, content)
+
+    for link in links:
+        # ignore links to images, anchors and emails
+        if link.startswith('images/') or link.startswith('#') or link.startswith('mailto:'):
+            continue
+
+        updated_link = link
+
+        # remove leading './' or '/'
+        if link.startswith('./'):
+            updated_link = updated_link.replace('./', '', 1)
+        elif link.startswith('/'):
+            updated_link = updated_link.replace('/', '', 1)
+
+        content = content.replace(f"]({link})", f"](https://github.com/{repo.full_name}/tree/{repo.default_branch}/{updated_link})")
+
+    return content

@@ -1,0 +1,2 @@
+[pylint.messages_control]
+disable = missing-module-docstring,missing-function-docstring,missing-class-docstring,line-too-long,too-many-instance-attributes,too-few-public-methods,logging-fstring-interpolation,raise-missing-from,too-many-function-args
