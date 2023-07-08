@@ -12,8 +12,7 @@ usage() {
 RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-content/modules/library}"
 DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/modules}"
 
-python3 scripts/docs-collator/render_docs_for_modules.py \
+python scripts/docs-collator/render_docs_for_modules.py \
 	--download-dir "${DOWNLOAD_TMP_DIR}" \
 	--output-dir "${RENDERED_DOCS_DIR}" \
-	--includes "terraform-aws-backup" \
 	--excludes "terraform-aws-components"

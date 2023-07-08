@@ -20,7 +20,6 @@ class AbstractRenderer:
         content = io.read_file_to_string(readme_yaml_file)
         content = rendering.remove_targets_md(content)
         content = rendering.rename_name(repo, content)
-        content = rendering.replace_relative_links_with_github_links(repo, content)
         io.save_string_to_file(readme_yaml_file, content)
 
     def _post_rendering_fixes(self, repo, readme_md_file):
@@ -29,6 +28,7 @@ class AbstractRenderer:
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
         content = rendering.fix_github_edit_url(content, repo)
         content = rendering.fix_sidebar_label(content, repo)
+        content = rendering.replace_relative_links_with_github_links(repo, content)
         io.save_string_to_file(readme_md_file, content)
 
     def _copy_extra_resources_for_docs(self, module_download_dir, module_docs_dir):

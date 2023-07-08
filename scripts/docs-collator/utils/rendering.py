@@ -96,12 +96,6 @@ def replace_relative_links_with_github_links(repo, content, relative_path=None):
         if relative_path:
             updated_link = f"{relative_path}/{updated_link}"
 
-        updated_link = replace_special_characters(updated_link)
-
         content = content.replace(f"]({link})", f"](https://github.com/{repo.full_name}/tree/{repo.default_branch}/{updated_link})")
 
     return content
-
-
-def replace_special_characters(content):
-    return content.replace('+', '%2B')
