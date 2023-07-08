@@ -77,7 +77,7 @@ def parse_github_action_repo_name(name):
     return action_name
 
 
-def replace_relative_links_with_github_links(repo, content):
+def replace_relative_links_with_github_links(repo, content, relative_path=None):
     links = re.findall(RELATIVE_LINK_PATTERN, content)
 
     for link in links:
@@ -92,6 +92,9 @@ def replace_relative_links_with_github_links(repo, content):
             updated_link = updated_link.replace('./', '', 1)
         elif link.startswith('/'):
             updated_link = updated_link.replace('/', '', 1)
+
+        if relative_path:
+            updated_link = f"{relative_path}/{updated_link}"
 
         content = content.replace(f"]({link})", f"](https://github.com/{repo.full_name}/tree/{repo.default_branch}/{updated_link})")
 
