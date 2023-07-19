@@ -18,7 +18,7 @@ Check out our [terraform-aws-components](https://github.com/cloudposse/terraform
 
 Tons of tools/CLIs are used as part of our solution. We distribute these tools in a couple of different ways:
 
-* Geodesic bundles most of these tools as part of the geodesic base image:
+* Geodesic bundles most of these tools as part of the geodesic base image
 * Our [packages repo](/reference/tools.mdx#packages) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`](/reference/tools.mdx#build-harness)). This can also be used for local ("native") development contexts.
 
 Here are some of the most important tools to be aware of:
