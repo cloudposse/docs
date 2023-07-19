@@ -1,8 +1,6 @@
 {
   "label": "GitHub Actions",
   "position": 0,
-  "collapsible": true,
-  "collapsed": false,
   "link": {
     "type": "doc",
     "id": "index"
