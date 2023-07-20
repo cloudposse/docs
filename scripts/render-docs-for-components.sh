@@ -4,7 +4,7 @@ set -e
 
 GITHUB_ORG=${GITHUB_ORG:-"cloudposse"}
 GITHUB_REPO=${GITHUB_REPO:-"terraform-aws-components"}
-GIT_BRANCH=${GIT_BRANCH:-"master"}
+GIT_BRANCH=${GIT_BRANCH:-"main"}
 TMP_CLONE_DIR="${TMP_CLONE_DIR:-tmp/components/${GITHUB_REPO}}"
 RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-content/components/library/aws/}"
 

@@ -96,12 +96,14 @@ class ModuleRenderer(AbstractRenderer):
             rel_path = os.path.relpath(file, module_download_dir)
             dest_file = os.path.join(module_docs_dir, rel_path)
             submodule_name = os.path.basename(os.path.dirname(dest_file))
+            submodule_readme_content = io.read_file_to_string(file)
+            submodule_readme_content = rendering.replace_relative_links_with_github_links(repo, submodule_readme_content, os.path.dirname(rel_path))
 
             content = SUBMODULE_TEMPLATE.render(label=submodule_name,
                                                 title=submodule_name,
                                                 description=submodule_name,
                                                 github_edit_url=f"https://github.com/{repo.full_name}/blob/{repo.default_branch}/{rel_path}",
-                                                content=io.read_file_to_string(file))
+                                                content=submodule_readme_content)
             io.create_dirs(os.path.dirname(dest_file))
             io.save_string_to_file(dest_file, content)
 

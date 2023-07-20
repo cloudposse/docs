@@ -65,13 +65,9 @@ class ComponentRenderer:
         self.__create_indexes_for_subfolder(component)
 
     def __create_indexes_for_subfolder(self, component):
-        # create category index files for dirs that doesn't have files because of docusaurus sidebar rendering issues
-        files = io.get_filenames_in_dir(os.path.join(self.docs_dir, component), '*', True)
-        for file in files:
-            if os.path.isfile(file) or io.has_files(file):
-                continue
-
-            self.__render_category_index(file)
+        for root, dirs, files in os.walk(os.path.join(self.docs_dir, component)):
+            if not files and all(os.path.isdir(os.path.join(root, d)) for d in dirs):
+                self.__render_category_index(root)
 
     def __render_category_index(self, dir):
         name = os.path.basename(dir)
