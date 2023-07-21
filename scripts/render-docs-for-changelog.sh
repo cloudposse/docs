@@ -2,8 +2,10 @@
 
 set -e
 
-CHANGELOG_DIR="changelog"
-AGGREGATED_CHANGELOG_FILE="content/components/library/upgrade-guide.md"
+GITHUB_REPO=${GITHUB_REPO:-"terraform-aws-components"}
+TMP_CLONE_DIR="${TMP_CLONE_DIR:-tmp/components/${GITHUB_REPO}}"
+INPUT_UPGRADE_GUIDE_FILE="${INPUT_UPGRADE_GUIDE_FILE:-${TMP_CLONE_DIR}/docs/upgrade-guide.md}"
+OUTPUT_UPGRADE_GUIDE_FILE="content/components/library/upgrade-guide.md"
 FRONT_MATTER=$(cat <<EOF
 ---
 title: Upgrade Guide
@@ -14,15 +16,5 @@ sidebar_position: 10
 EOF
 )
 
-changelog_files=$(find ${CHANGELOG_DIR} -name "*.md" | sort -r)
-
 echo "${FRONT_MATTER}" > "${AGGREGATED_CHANGELOG_FILE}"
-
-for file in $changelog_files; do
-    echo "Processing $file..."
-    cat "$file" >> "${AGGREGATED_CHANGELOG_FILE}"
-    echo "" >> "${AGGREGATED_CHANGELOG_FILE}"
-    echo "" >> "${AGGREGATED_CHANGELOG_FILE}"
-done
-
-echo "Done"
+cat "${INPUT_UPGRADE_GUIDE_FILE}" >> "${OUTPUT_UPGRADE_GUIDE_FILE}"
