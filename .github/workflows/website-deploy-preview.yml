@@ -61,7 +61,7 @@ jobs:
         with:
           fetch-depth: 1
           repository: cloudposse/terraform-aws-components
-          ref: "changelog/account-map"
+          ref: main
           path: tmp/components/terraform-aws-components
 
       - name: "Setup Python"
