@@ -78,10 +78,6 @@ jobs:
         run: |
           ./scripts/render-docs-for-components.sh
 
-      - name: "Render Documentation for Terraform Components Change Log"
-        run: |
-          ./scripts/render-docs-for-changelog.sh
-
       - name: "Render Documentation for Terraform Modules"
         env:
           PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}

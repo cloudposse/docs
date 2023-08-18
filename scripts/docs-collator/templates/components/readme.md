@@ -7,3 +7,5 @@ tags: [{{ tags|join(', ') }}]
 ---
 
 {{ content }}
+
+{{ change_log_content }}
