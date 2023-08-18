@@ -38,6 +38,7 @@ class ComponentRenderer:
 
         change_log_file = os.path.join(os.path.dirname(file), CHANGELOG_MD)
         change_log_content = io.read_file_to_string(change_log_file) if os.path.exists(change_log_file) else ''
+        change_log_content = rendering.shift_headings(change_log_content)
 
         relative_path = os.path.relpath(file, module_download_dir)
         result_file = os.path.join(self.docs_dir, os.path.relpath(file, module_download_dir))  # <module-name>/README.md
