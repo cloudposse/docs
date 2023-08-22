@@ -3,6 +3,7 @@ import os
 from utils import io, rendering, templating
 
 README_MD = 'README.md'
+CHANGELOG_MD = 'CHANGELOG.md'
 GITHUB_REPO = 'cloudposse/terraform-aws-components'
 INDEX_CATEGORY_JSON = '_category_.json'
 
@@ -29,10 +30,16 @@ class ComponentRenderer:
 
     def __render_doc(self, component, file):
         module_download_dir = os.path.join(self.download_dir, 'modules')
+
         content = io.read_file_to_string(file)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
         content = rendering.remove_logo_from_the_bottom(content)
+
+        change_log_file = os.path.join(os.path.dirname(file), CHANGELOG_MD)
+        change_log_content = io.read_file_to_string(change_log_file) if os.path.exists(change_log_file) else ''
+        change_log_content = rendering.shift_headings(change_log_content)
+
         relative_path = os.path.relpath(file, module_download_dir)
         result_file = os.path.join(self.docs_dir, os.path.relpath(file, module_download_dir))  # <module-name>/README.md
 
@@ -56,6 +63,7 @@ class ComponentRenderer:
         doc_content = DOC_TEMPLATE.render(label=label,
                                           title=title,
                                           content=content,
+                                          change_log_content=change_log_content,
                                           github_repository=GITHUB_REPO,
                                           github_edit_url=github_edit_url,
                                           tags=tags)

@@ -33,6 +33,37 @@ def fix_custom_non_self_closing_tags_in_pre(content):
     return '\n'.join(fixed_lines)
 
 
+def shift_headings(content):
+    lines = content.splitlines()
+    fixed_lines = []
+    shift_by = 0
+
+    # figuring out how much to shift headings to the right so the biggest heading is H3
+    for line in lines:
+        if re.match(r'^#\s+', line):  # we have to shift all headings by 2
+            shift_by = 2
+            break
+
+        if re.match(r'^##\s+', line):  # we have to shift all headings by 1
+            shift_by = 1
+            break
+
+    if shift_by == 0:
+        return content
+
+    for line in lines:
+        if not line.startswith('#'):  # not a heading
+            fixed_lines.append(line)
+            continue
+
+        if shift_by == 1:
+            fixed_lines.append(f"#{line}")
+        elif shift_by == 2:
+            fixed_lines.append(f"##{line}")
+
+    return '\n'.join(fixed_lines)
+
+
 def fix_sidebar_label(content, repo):
     provider, module_name = parse_terraform_repo_name(repo.name)
     return SIDEBAR_LABEL_REGEX.sub(f'sidebar_label: {module_name}', content)

@@ -7,3 +7,7 @@ tags: [{{ tags|join(', ') }}]
 ---
 
 {{ content }}
+
+## CHANGELOG
+
+{{ change_log_content }}
