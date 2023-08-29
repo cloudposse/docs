@@ -41,7 +41,7 @@ const config = {
       require.resolve('./src/plugins/changelog/index.js'),
       {
         blogTitle: 'Components Changelog',
-        blogDescription: 'Keep yourself up-to-date about new features in every release',
+        blogDescription: 'Stay informed about new features and breaking changes in every release',
         blogSidebarCount: 'ALL',
         blogSidebarTitle: 'Changelog',
         routeBasePath: '/components/changelog',
@@ -51,8 +51,8 @@ const config = {
         authorsMapPath: 'authors.json',
         feedOptions: {
           type: 'all',
-          title: 'Cloud Posse components changelog',
-          description: 'Keep yourself up-to-date about new features in every release',
+          title: 'Cloud Posse Components Changelog',
+          description: 'Stay informed about new features and breaking changes in every release',
           copyright: `Copyright © ${new Date().getFullYear()} Cloud Posse, LLC.`
         },
       },
