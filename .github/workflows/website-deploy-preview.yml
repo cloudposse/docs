@@ -79,10 +79,6 @@ jobs:
         run: |
           ./scripts/render-docs-for-components.sh
 
-      - name: "Copy Upgrade Guide"
-        run: |
-          ./scripts/copy-upgrade-guide.sh
-
       - name: "Render Documentation for Terraform Modules"
         env:
           PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
