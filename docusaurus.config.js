@@ -15,7 +15,7 @@ const config = {
   onDuplicateRoutes: 'warn',
   favicon: 'img/favicon.png',
   plugins: [
-    // ['@docusaurus/plugin-debug', {'id': 'debug-docs'}],
+    //['@docusaurus/plugin-debug', {'id': 'debug-docs'}],
     [
       '@docusaurus/plugin-content-docs',
       {
