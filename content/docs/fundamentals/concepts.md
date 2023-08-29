@@ -1,8 +1,8 @@
 ---
 title: "Concepts"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1186234584/Concepts
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/tools/concepts.md
+description: "Learn more about the core concepts and domain model that make up the SweetOps methodology."
+sidebar_position: 3
+custom_edit_url: https://github.com/cloudposse/docs/tree/main/content/docs/fundamentals/concepts.md
 ---
 
 import ReactPlayer from 'react-player'
@@ -14,7 +14,7 @@ import ReactPlayer from 'react-player'
 ### Components
 [Components](/components) are opinionated, self-contained units of infrastructure as code that solve one, specific problem or use-case. SweetOps has two flavors of components:
 
-1. **Terraform:** Stand-alone root modules that implement some piece of your infrastructure. For example, typical components might be an EKS cluster, RDS cluster, EFS filesystem, S3 bucket, DynamoDB table, etc. You can find the [full library of SweetOps Terraform components on GitHub](https://github.com/cloudposse/terraform-aws-components). We keep these types of components in the `components/terraform/` directory within the infrastructure repository.
+1. **Terraform:** Stand-alone root modules that implement some piece of your infrastructure. For example, typical components might be an EKS cluster, RDS cluster, EFS filesystem, S3 bucket, DynamoDB table, etc. You can find the [full library of SweetOps Terraform components here](/components/). We keep these types of components in the `components/terraform/` directory within the infrastructure repository.
 
 2. **Helmfiles**: Stand-alone, applications deployed using `helmfile` to Kubernetes. For example, typical helmfiles might deploy the DataDog agent, cert-manager controller, nginx-ingress controller, etc. Similarly, the [full library of SweetOps Helmfile components is on GitHub](https://github.com/cloudposse/helmfiles). We keep these types of components in the `components/helmfile/` directory within the infrastructure repository.
 
@@ -30,7 +30,7 @@ Stacks are a way to express the complete infrastructure needed for an environmen
 
 Here is an example stack defined for a Dev environment in the us-west-2 region:
 
-```
+```yaml
 # Filename: stacks/uw2-dev.yaml
 import:
   - eks/eks-defaults
@@ -94,9 +94,9 @@ components:
 ```
 Great, so what can you do with a stack? Stacks are meant to be a language and tool agnostic way to describe infrastructure, but how to use the stack configuration is up to you. We provide the following ways to utilize stacks today:
 
-1. [atmos](https://github.com/cloudposse/atmos): atmos is a command-line tool that enables CLI-driven stack utilization and supports workflows around `terraform`, `helmfile`, and many other commands
+1. [Atmos](https://atmos.tools): Atmos is a command-line tool that enables CLI-driven stack utilization and supports workflows around `terraform`, `helmfile`, and many other commands
 
-2. [terraform-provider-utils](https://github.com/cloudposse/terraform-provider-utils): is our terraform provider for consuming stack configurations from within HCL/terraform.
+2. [`terraform-provider-utils`](https://github.com/cloudposse/terraform-provider-utils): is our Terraform provider for consuming stack configurations from within HCL/Terraform.
 
 3. [Spacelift](https://spacelift.io/): By using the [terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) you can configure Spacelift continuously deliver components. Read up on why we [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform) .
 
