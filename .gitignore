@@ -65,3 +65,4 @@ static/assets/refarch/**
 !content/reference-architecture/sitemap.xml
 !content/components/library/aws/_category_.json
 !content/github-actions/library/actions/_category_.json
+changelog/*

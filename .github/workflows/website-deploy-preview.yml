@@ -61,7 +61,8 @@ jobs:
         with:
           fetch-depth: 1
           repository: cloudposse/terraform-aws-components
-          ref: main
+          # ref: main
+          ref: upgrade-guide-workflow
           path: tmp/components/terraform-aws-components
 
       - name: "Setup Python"
