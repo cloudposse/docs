@@ -8,7 +8,7 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 # Leapp
 [https://github.com/Noovolari/leapp](https://github.com/Noovolari/leapp)
 
-Leapp is a Desktop DevTool that handles the management and security of your cloud credentials for you so you can log into any AWS account with the click of a button using your native OS keychain.
+Leapp is a Desktop Dev Tool that handles the management and security of your cloud credentials for you so you can log into any AWS account with the click of a button using your native OS keychain.
 
 ## How-to Guides
 
