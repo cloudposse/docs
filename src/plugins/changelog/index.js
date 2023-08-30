@@ -15,6 +15,64 @@ const {aliasedSitePath, docuHash, normalizeUrl} = require('@docusaurus/utils');
  */
 const authorsMap = {};
 
+function extractCommitters(content) {
+  const regex = /@(\w+)/g;
+
+  const matches = [];
+  let match;
+
+  while ((match = regex.exec(content)) !== null) {
+    matches.push(match[0]);
+  }
+
+  const updatedContent = content.replace(regex, '').trim();
+
+  let committers = "";
+
+  if (matches.length > 0) {
+    committers += "## Commiters: \n";
+    for (let i = 0; i < matches.length; i++) {
+      const author = matches[i].replace('@', '');
+    
+      // committers += `- [@${author} ![${author}](https://github.com/${author}.png)](https://github.com/${author})}\n`;
+      committers += `- [@${author}](https://github.com/${author})\n`;
+    }  
+  }
+
+  return {
+    committers: committers,
+    updatedContent: updatedContent
+  };
+}
+
+function extractPullRequests(content) {
+  const regex = /\(?#(\d+)\)?/g;
+
+  const matches = [];
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    matches.push(match[1]);
+  }
+
+  const updatedContent = content.replace(regex, '').trim();
+
+  let prs = "";
+
+  if (matches.length > 0) {
+    prs += "## Pull Requests: \n";
+    for (let i = 0; i < matches.length; i++) {
+      const pr = matches[i];
+    
+      prs += `- [#${pr}](https://github.com/cloudposse/terraform-aws-components/pull/${pr})\n`;
+    }
+  }
+
+  return {
+    prs: prs,
+    updatedContent: updatedContent
+  };
+}
+
 /**
  * @param {string} section
  */
@@ -28,49 +86,33 @@ function processSection(section) {
     return null;
   }
 
-  const content = section
+  let content = section
     .replace(/\n## .*/, '')
+    .replace(/<\/details>/, '</details>\n\n<!-- truncate -->')
     .trim();
+  
+  let result = extractCommitters(content);
+  content = result.updatedContent;
+  const committers = result.committers;
 
-  let authors = content.match(/## Committers: \d.*/s);
-  if (authors) {
-    authors = authors[0]
-      .match(/- .*/g)
-      .map(
-        (line) =>
-          line.match(
-            /- (?:(?<name>.*?) \()?\[@(?<alias>.*)\]\((?<url>.*?)\)\)?/,
-          ).groups,
-      )
-      .map((author) => ({
-        ...author,
-        name: author.name ?? author.alias,
-        imageURL: `https://github.com/${author.alias}.png`,
-      }))
-      .sort((a, b) => a.url.localeCompare(b.url));
-
-    authors.forEach((author) => {
-      authorsMap[author.alias] = author;
-    });
-  }
+  result = extractPullRequests(content);
+  content = result.updatedContent;
+  const prs = result.prs;
 
   const date = title.match(/ \((?<date>.*)\)/)?.groups.date;
 
   return {
     title: title.replace(/ \(.*\)/, ''),
     content: `---
-date: ${`${date}`}${
-      authors
-        ? `
-authors:
-${authors.map((author) => `  - '${author.alias}'`).join('\n')}`
-        : ''
-    }
+date: ${`${date}`}
 ---
 
 # ${title.replace(/ \(.*\)/, '')}
 
-${content.replace(/####/g, '##')}`
+${content.replace(/####/g, '##')}
+
+${committers}
+${prs}`
   };
 }
 
