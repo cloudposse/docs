@@ -12,7 +12,10 @@ export default function MDXDetails(props) {
   const children = <>{items.filter((item) => item !== summary)}</>;
 
   // ugly hack starts
-  // we want ot open <details> tag for changelog pages but not for list changeslogs page
+  // MDXComponents has been swizzled like this
+  // npm run swizzle @docusaurus/theme-classic MDXComponents -- --eject
+  // 
+  // we want ot open <details> tag for changelog pages but not for list changelogs page
   const location = useLocation();
   const endpointPattern = /components\/changelog\/\d+\.\d+\.\d+\/?$/;
   const open=endpointPattern.test(location.pathname);
