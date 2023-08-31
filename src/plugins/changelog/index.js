@@ -29,7 +29,7 @@ function extractCommitters(content) {
   let committers = "";
 
   if (matches.length > 0) {
-    committers += "## Commiters: \n";
+    committers += "## Commiters \n";
     for (let i = 0; i < matches.length; i++) {
       const author = matches[i].replace('@', '');
     
@@ -58,7 +58,7 @@ function extractPullRequests(content) {
   let prs = "";
 
   if (matches.length > 0) {
-    prs += "## Pull Requests: \n";
+    prs += "## Pull Requests \n";
     for (let i = 0; i < matches.length; i++) {
       const pr = matches[i];
     
@@ -70,6 +70,12 @@ function extractPullRequests(content) {
     prs: prs,
     updatedContent: updatedContent
   };
+}
+
+function capitalizeHeaders(str) {
+  return str.replace(/(##+)(\s[a-z])/g, function(match, p1, p2) {
+      return p1 + p2.toUpperCase();
+  });
 }
 
 /**
@@ -97,6 +103,8 @@ function processSection(section) {
   result = extractPullRequests(content);
   content = result.updatedContent;
   const prs = result.prs;
+
+  content = capitalizeHeaders(content);
 
   const date = title.match(/ \((?<date>.*)\)/)?.groups.date;
 
