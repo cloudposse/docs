@@ -8,6 +8,8 @@ tags: [{{ tags|join(', ') }}]
 
 {{ content }}
 
+{% if change_log_content|trim != "" %}
 ## CHANGELOG
 
 {{ change_log_content }}
+{% endif %}

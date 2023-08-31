@@ -51,6 +51,9 @@ export default function ChangelogListHeader({
             'Subscribe through {rssLink} to stay up-to-date with new releases!'
           }
         </Translate>
+        <br/>
+        <br/>
+        <Link href="https://github.com/cloudposse/terraform-aws-components/blob/main/CHANGELOG.md">View on GitHub</Link>
       </p>
     </header>
   );
