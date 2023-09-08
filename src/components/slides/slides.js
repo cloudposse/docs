@@ -5,8 +5,8 @@ import "react-image-gallery/styles/css/image-gallery.css"
 
 // https://github.com/xiaolin/react-image-gallery
 // https://stackoverflow.com/questions/3746725/how-to-create-an-array-containing-1-n
-const images = Array.from({length: 27}, (_, i) => {
-        let ix = i + 1;
+const images = Array.from({length: 22}, (_, i) => {
+        let ix = i; // starting at 0 intentionally
         return {
             original: "/img/slides/introduction-to-toolset-" + ix + ".svg",
             thumbnail: "/img/slides/introduction-to-toolset-" + ix + ".svg",
@@ -27,7 +27,7 @@ export default function Slides() {
                     <ImageGallery items={images}
                                   thumbnailPosition={"bottom"}
                                   showBullets={false}
-                                  showNav={false}
+                                  showNav={true}
                                   showIndex={true}
                                   slideInterval={4000}
                                   lazyLoad={true}
