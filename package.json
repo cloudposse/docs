@@ -31,6 +31,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-github-btn": "^1.4.0",
+    "react-image-gallery": "^1.2.11",
     "react-player": "^2.12.0",
     "sass": "^1.57.1"
   },
