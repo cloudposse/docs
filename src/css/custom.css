@@ -292,4 +292,22 @@ svg.landingLogo path {
   --ifm-h1-font-size: 2.5rem;
 }
 
+.margin-top--md, .margin-vert--md {
+    margin-top: 1rem!important;
+    float: right;
+    margin-right: 1em;
+    margin-left: 1em;
+    font-weight: bold;
+}
 
+.container.margin-vert--lg {
+    margin-left: 0;
+}
+
+.margin-vert--lg {
+    margin-top: 1rem!important;
+}
+
+aside.col.col--3 {
+    --ifm-col-width: calc(2.5 / 12 * 100%);
+}

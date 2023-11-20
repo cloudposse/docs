@@ -23,7 +23,7 @@ const config = {
         path: 'content/docs',
         routeBasePath: '/',
         sidebarPath: require.resolve('./sidebars-docs.js'),
-        editUrl: ({versionDocsDirPath, docPath, locale}) => {
+        editUrl: ({ versionDocsDirPath, docPath, locale }) => {
           return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
         }
       },
@@ -35,6 +35,26 @@ const config = {
         path: 'content/components',
         routeBasePath: 'components/',
         sidebarPath: require.resolve('./sidebars-components.js')
+      },
+    ],
+    [
+      require.resolve('./src/plugins/changelog/index.js'),
+      {
+        blogTitle: 'Components Changelog',
+        blogDescription: 'Stay informed about new features and breaking changes in every release',
+        blogSidebarCount: 'ALL',
+        blogSidebarTitle: 'Changelog',
+        routeBasePath: '/components/changelog',
+        showReadingTime: false,
+        postsPerPage: 20,
+        archiveBasePath: null,
+        authorsMapPath: 'authors.json',
+        feedOptions: {
+          type: 'all',
+          title: 'Cloud Posse Components Changelog',
+          description: 'Stay informed about new features and breaking changes in every release',
+          copyright: `Copyright © ${new Date().getFullYear()} Cloud Posse, LLC.`
+        },
       },
     ],
     [
@@ -117,11 +137,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      metadata: [{name: 'google-site-verification', content: process.env.GOOGLE_SITE_VERIFICATION_ID || 'preview-local'}],
+      metadata: [{ name: 'google-site-verification', content: process.env.GOOGLE_SITE_VERIFICATION_ID || 'preview-local' }],
       docs: {
         sidebar: {
-            hideable: true,
-            autoCollapseCategories: true
+          hideable: true,
+          autoCollapseCategories: true
         },
       },
       navbar: {
@@ -133,18 +153,18 @@ const config = {
         },
         items: [
           {
-              to: '/intro',
-              position: 'left',
-              label: 'Fundamentals',
-              activeBaseRegex:
-                'fundamentals/.*|' +
-                'tutorials/.*|' +
-                'howto/.*|' +
-                'how-to/.*|' +
-                'community/.*|' +
-                'glossary/.*|' +
-                'reference/.*|' +
-                '/intro/',
+            to: '/intro',
+            position: 'left',
+            label: 'Fundamentals',
+            activeBaseRegex:
+              'fundamentals/.*|' +
+              'tutorials/.*|' +
+              'howto/.*|' +
+              'how-to/.*|' +
+              'community/.*|' +
+              'glossary/.*|' +
+              'reference/.*|' +
+              '/intro/',
           },
           {
             type: 'dropdown',
@@ -153,28 +173,28 @@ const config = {
             to: '/fundamentals/building-blocks/',
             items: [
               {
-                  to: '/components/',
-                  label: 'Components',
+                to: '/components/',
+                label: 'Components',
               },
               {
-                  to: '/modules/',
-                  label: 'Modules',
+                to: '/modules/',
+                label: 'Modules',
               },
               {
-                  to: '/github-actions/',
-                  label: 'GitHub Actions',
+                to: '/github-actions/',
+                label: 'GitHub Actions',
               },
               {
-                  href: 'https://atmos.tools',
-                  label: 'Atmos',
+                href: 'https://atmos.tools',
+                label: 'Atmos',
               },
             ]
           },
           {
-              href: '/reference-architecture/',
-              position: 'left',
-              html: 'Reference Architecture',
-              target: '_self',
+            href: '/reference-architecture/',
+            position: 'left',
+            html: 'Reference Architecture',
+            target: '_self',
           },
           {
             type: 'dropdown',
@@ -198,8 +218,8 @@ const config = {
                 href: 'https://archive.sweetops.com/refarch/',
               },
               {
-                  label: 'Office Hours',
-                  href: 'https://cloudposse.com/office-hours/',
+                label: 'Office Hours',
+                href: 'https://cloudposse.com/office-hours/',
               },
             ],
           },
@@ -230,65 +250,65 @@ const config = {
       footer: {
         style: 'dark',
         links: [{
-                title: 'Docs',
-                items: [{
-                    label: 'Getting Started',
-                    to: '/intro/',
-                }, {
-                    label: 'Building Blocks',
-                    to: '/fundamentals/building-blocks/',
-                }, {
-                    label: 'Tutorials',
-                    to: '/category/tutorials/',
-                }, {
-                    label: 'How-To',
-                    to: '/category/how-to/',
-                }],
-            }, {
-              title: 'Community',
-              items: [
-                {
-                  label: 'Github Discussions',
-                  href: 'https://ask.sweetops.com/',
-                },
-                {
-                  label: 'Community',
-                  href: 'https://sweetops.com/',
-                },
-                {
-                  label: 'Slack',
-                  href: 'https://slack.sweetops.com/',
-                },
-                {
-                  label: 'Slack Archives',
-                  href: 'https://archive.sweetops.com/refarch/',
-                },
-                {
-                    label: 'Office Hours',
-                    href: 'https://cloudposse.com/office-hours/',
-                },
-              ],
-            }, {
-                title: 'Contact Us',
-                items: [
-                {
-                  label: 'Support',
-                  href: 'https://cloudposse.com/accelerate',
-                },
-                {
-                  label: 'Our GitHub',
-                  href: 'https://github.com/cloudposse/',
-                },
-                {
-                  label: 'Contact Us',
-                  to: '/contact-us/',
-                }],
-            }],
-            logo: {
-                alt: 'Cloud Posse',
-                src: '/img/logo-light.svg',
-                href: 'https://cloudposse.com/'
+          title: 'Docs',
+          items: [{
+            label: 'Getting Started',
+            to: '/intro/',
+          }, {
+            label: 'Building Blocks',
+            to: '/fundamentals/building-blocks/',
+          }, {
+            label: 'Tutorials',
+            to: '/category/tutorials/',
+          }, {
+            label: 'How-To',
+            to: '/category/how-to/',
+          }],
+        }, {
+          title: 'Community',
+          items: [
+            {
+              label: 'Github Discussions',
+              href: 'https://ask.sweetops.com/',
             },
+            {
+              label: 'Community',
+              href: 'https://sweetops.com/',
+            },
+            {
+              label: 'Slack',
+              href: 'https://slack.sweetops.com/',
+            },
+            {
+              label: 'Slack Archives',
+              href: 'https://archive.sweetops.com/refarch/',
+            },
+            {
+              label: 'Office Hours',
+              href: 'https://cloudposse.com/office-hours/',
+            },
+          ],
+        }, {
+          title: 'Contact Us',
+          items: [
+            {
+              label: 'Support',
+              href: 'https://cloudposse.com/accelerate',
+            },
+            {
+              label: 'Our GitHub',
+              href: 'https://github.com/cloudposse/',
+            },
+            {
+              label: 'Contact Us',
+              to: '/contact-us/',
+            }],
+        }],
+        logo: {
+          alt: 'Cloud Posse',
+          src: '/img/logo-light.svg',
+          href: 'https://cloudposse.com/'
+        },
         copyright: `© ${new Date().getFullYear()} Cloud Posse, LLC`,
       },
       prism: {
