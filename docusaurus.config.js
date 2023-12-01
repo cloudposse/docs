@@ -105,7 +105,7 @@ const config = {
       },
     ],
     [
-      require.resolve("docusaurus-plugin-image-zoom")
+      'docusaurus-plugin-image-zoom', {},
     ],
   ],
   organizationName: 'cloudposse',
