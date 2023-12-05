@@ -320,7 +320,7 @@ const config = {
         additionalLanguages: ['hcl', 'bash', 'rego'],
       },
       zoom: {
-        selector: '.markdown :not(em) > img',
+        selector: '.markdown > img',
         config: {
           // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
           background: {
