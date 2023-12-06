@@ -28,7 +28,8 @@ An organization may choose to leverage all of these components or just the parts
 :::info
 **Apple Silicon (M1, M2, etc. Chips) Support**
 
-Geodesic is comprised of a large collection of mostly [third-party open-source tools distributed via our packages repository](https://github.com/cloudposse/packages).
+Geodesic is comprised of a large collection of open-source tools, most of them not created or maintained by Cloud Posse.
+(Most of them and many more can be installed individually using packages from our [`packages` repository](https://github.com/cloudposse/packages).)
 As such, **support for Macs with Apple chips (M1, M2, etc.) is fully not under Cloud Posse's control**, rather it
 depends on each tool author updating each tool for the Apple chips, referred to as the `arm64` architecture. 
 **The Debian-based Geodesic is provided as a multi-architecture Docker image, supporting both Intel chips (`amd64`) and 
@@ -253,5 +254,5 @@ If a user runs the Docker daemon as `root`, files may fail to be written to the 
 The recommended solution for Linux users is to run Docker in ["rootless"](https://docs.docker.com/engine/security/rootless/)
 mode. In this mode, the Docker daemon runs as the host user (rather than as root) and files created by the root user in Geodesic
 are owned by the host user on the host. Not only does this configuration solve this issue, but it provides much better system security overall.
-[Ref](https://github.com/cloudposse/geodesic/issues/594).
+See [this issue](https://github.com/cloudposse/geodesic/issues/594) for more details.
 
