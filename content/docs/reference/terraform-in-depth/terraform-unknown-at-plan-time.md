@@ -342,7 +342,7 @@ the length of the list to become unknown.
 
 ##### Implicit Transformations of Maps
 
-For reasons detailed in [Terraform Count vs For Each](/reference/best-practices/terraform-count-vs-for-each.md),
+For reasons detailed in [Terraform Count vs For Each](/reference/terraform-in-depth/terraform-count-vs-for-each.md),
 it is usually preferable to use `for_each` rather than `count` to create
 multiple resources. However, when using `for_each`, it is required that all
 of the keys be known at plan time. If you use a list of strings to make the
