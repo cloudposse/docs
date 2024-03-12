@@ -151,6 +151,40 @@ variable "eip_delete_timeout" {
 }
 ```
 
+However, using an object with defaults versus multiple simple inputs is not
+without tradeoffs.
+
+:::caution Extra (or Misspelled) Fields in the Input Will Be Silently Ignored
+
+If you use an object with defaults as an input, Terraform will not give any
+indication if the user provides extra fields in the object. This is
+particularly a problem if they misspelled an optional field name, because
+the misspelled field will be silently ignored, and the default value the
+user intended to override will silently be used. This is
+[a limitation of Terraform](https://github.com/hashicorp/terraform/issues/29204#issuecomment-1989579801).
+Furthermore, there is no way to add any checks for this situation, because
+the input will have already been transformed (unexpected fields removed) by
+the time any validation code runs.
+
+:::
+
+There are a few ways to mitigate this problem besides using separate inputs:
+
+- If all the defaults are null or empty, you can use a `map(string)` input
+  variable and use the `keys` function to check for unexpected fields. This
+  catches errors, but has the drawback that it does not provide
+  documentation of what fields are expected.
+- You can use `type = any` for inputs, but then you have to write the extra
+  code to validate the input and supply defaults for missing fields. You
+  should also document the expected fields in the input description.
+- If all you are worried about is misspelled field names, you can make the
+  correctly spelled field names required, ensuring they are supplied.
+  Alternatively, if the misspelling is predictable, such as you have a field
+  named `minsize` but people are likely to try to supply `min_size`, you can
+  make the misspelled field name optional with a sentinel value and then
+  check for that value in the validation code.
+
+
 ### Use custom validators to enforce custom constraints
 
 Use the `validation` block to enforce custom constraints on input variables.
@@ -277,7 +311,12 @@ configuration to a separate template file.
 
 Linting helps to ensure a consistent code formatting, improves code quality and catches common errors with syntax.
 
-Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks](/reference/best-practices/terraform-tips-tricks.md)
+Run `terraform fmt` before committing all code. Use a `pre-commit` hook to
+do this automatically. See [Terraform Tips &
+Tricks](/reference/best-practices/terraform-tips-tricks.md)
+
+Consider using [`tflint`](https://github.com/terraform-linters/tflint) with
+the `aws` plugin.
 
 ### Use CIDR math interpolation functions for network calculations
 
@@ -411,25 +450,6 @@ invoke other modules without colliding on resource names.
 To enforce consistency, we require that all modules use the [`terraform-null-label`](https://github.com/cloudposse/terraform-null-label) module.
 With this module, users have the ability to change the way resource names are generated such as by changing the order of parameters or the delimiter.
 While the module is opinionated on the parameters, it's proved invaluable as a mechanism for generating consistent resource names.
-
-## DNS Infrastructure
-
-### Use lots of DNS zones
-
-Never mingle DNS from different stages or environments in the same zone.
-
-### Delegate DNS zones across account boundaries
-
-Delegate each AWS account a DNS zone for which it is authoritative.
-
-### Distinguish between branded domains and service discovery domains
-
-Service discovery domains are what services use to discover each other. These are seldom if ever used by end-users. There should only
-be one service discovery domain, but there may be many zones delegated from that domain.
-
-Branded domains are the domains that users use to access the services. These are determined by products, marketing, and business use-cases.
-There may be many branded domains pointing to a single service discovery domain. The architecture of the branded domains won't mirror the
-service discovery domains.
 
 ## Module Design
 

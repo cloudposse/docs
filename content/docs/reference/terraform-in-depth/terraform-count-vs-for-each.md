@@ -303,7 +303,7 @@ If you are unlucky (or if you run `terraform apply` 3 times), the change
 will go through, and user "Dick" will be renamed user "Tom", meaning that
 whatever access Dick had, Tom now gets. Likewise, user Dick is renamed Harry,
 getting Harry's access, and Harry get the newly created user. For example, Tom
-can now log in with user name Tom using Dick's password, while Harry will be
+can now log in with user name "Tom" using Dick's password, while Harry will be
 locked out as a new user. This nightmare scenario has a lot to do with
 peculiarities of the implementation of IAM principals, but gives you an idea
 of what can happen when you use `count` with a list of resource configurations.
@@ -321,6 +321,8 @@ added to or deleted from the list, or when the list provided in a random order
 affected. The answer to this is `for_each`, but that is not without its own
 limitations.
 :::
+
+### For Each is Stable, But Not Always Feasible to Use
 
 #### The Stability of `for_each`
 
@@ -398,6 +400,16 @@ In other cases, such as when the configurations vary, using proxy keys like
 this has all the same problems as `count`, in which case using `count` is
 better because it is simpler and all of the issues with `count` are already
 understood.
+
+::: note
+Another limitation, thought not frequently encountered, is that "sensitive"
+values, such as sensitive input variables, sensitive outputs, or sensitive
+resource attributes, cannot be used as arguments to `for_each`. As stated
+previously, the value supplied to `for_each` is used as part of the resource
+address, and as such, it will always be disclosed in UI output, which is why
+sensitive values are not allowed. Attempts to use sensitive values as
+`for_each` arguments will result in an error.
+:::
 
 Ideally, as we saw with IAM users in the examples above, the user would
 supply static keys in the initial configuration, and then they would always
