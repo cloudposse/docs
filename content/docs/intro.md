@@ -12,7 +12,7 @@ Start with getting familiar with the [geodesic](/reference/tools.mdx#geodesic).
 
 Get intimately familiar with docker inheritance and [multi-stage docker builds](/reference/best-practices/docker-best-practices.md#multi-stage-builds). We use this pattern extensively.
 
-Check out our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) for reference architectures to easily provision infrastructure
+Check out our [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) for reference architectures to easily provision infrastructure.
 
 ## Tools
 
@@ -70,7 +70,7 @@ Review our [glossary](/category/glossary/) if there are any terms that are confu
 
 File issues anywhere you find the documentation lacking by going to our [docs repo](https://github.com/cloudposse/docs).
 
-Join our [Slack Community](https://cloudposse.com/slack/) and speak directly with the maintainers
+Join our [Slack Community](https://cloudposse.com/slack/) and speak directly with the maintainers.
 
 We provide "white glove" DevOps support. [Get in touch](/contact-us.md) with us today!
 
