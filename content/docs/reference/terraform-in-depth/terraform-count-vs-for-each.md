@@ -402,7 +402,7 @@ better because it is simpler and all of the issues with `count` are already
 understood.
 
 ::: note
-Another limitation, thought not frequently encountered, is that "sensitive"
+Another limitation, though not frequently encountered, is that "sensitive"
 values, such as sensitive input variables, sensitive outputs, or sensitive
 resource attributes, cannot be used as arguments to `for_each`. As stated
 previously, the value supplied to `for_each` is used as part of the resource
