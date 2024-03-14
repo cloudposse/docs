@@ -100,6 +100,23 @@ conversion errors, and allows for future expansion without breaking changes.
 Make as many fields as possible optional, provide defaults at every level of
 nesting, and use `nullable = false` if possible.
 
+:::caution Extra (or Misspelled) Fields in Object Inputs Will Be Silently Ignored
+
+If you use an object with defaults as an input, Terraform will not give any
+indication if the user provides extra fields in the input object. This is
+particularly a problem if they misspelled an optional field name, because
+the misspelled field will be silently ignored, and the default value the
+user intended to override will silently be used. This is
+[a limitation of Terraform](https://github.com/hashicorp/terraform/issues/29204#issuecomment-1989579801).
+Furthermore, there is no way to add any checks for this situation, because
+the input will have already been transformed (unexpected fields removed) by
+the time any validation code runs. This makes using an object a trade-off
+versus using separate inputs, which do not have this problem, or `type = any`
+which allows you to write validation code to catch this problem and
+additional code to supply defaults for missing fields.
+
+:::
+
 Reserve `type = any` for exceptional cases where the input is highly
 variable and/or complex, and the module is designed to handle it. For
 example, the configuration of a [Datadog synthetic test](https://registry.terraform.io/providers/DataDog/datadog/latest/docs/resources/synthetics_test)
@@ -117,8 +134,9 @@ often use a large number of input variables of simple types. This is because
 in the early development of Terraform, there was no good way to define
 complex objects with defaults. However, now that Terraform supports complex
 objects with field-level defaults, we recommend using a single object input
-variable with such defaults to group related configuration. This makes the
-interface easier to understand and use.
+variable with such defaults to group related configuration, taking into consideration
+the trade-offs listed in the [above caution](#use-objects-with-optional-fields-for-complex-inputs).
+This makes the interface easier to understand and use.
 
 For example, prefer:
 
@@ -152,21 +170,8 @@ variable "eip_delete_timeout" {
 ```
 
 However, using an object with defaults versus multiple simple inputs is not
-without tradeoffs.
+without trade-offs, as explained in the [above caution](#use-objects-with-optional-fields-for-complex-inputs).
 
-:::caution Extra (or Misspelled) Fields in the Input Will Be Silently Ignored
-
-If you use an object with defaults as an input, Terraform will not give any
-indication if the user provides extra fields in the object. This is
-particularly a problem if they misspelled an optional field name, because
-the misspelled field will be silently ignored, and the default value the
-user intended to override will silently be used. This is
-[a limitation of Terraform](https://github.com/hashicorp/terraform/issues/29204#issuecomment-1989579801).
-Furthermore, there is no way to add any checks for this situation, because
-the input will have already been transformed (unexpected fields removed) by
-the time any validation code runs.
-
-:::
 
 There are a few ways to mitigate this problem besides using separate inputs:
 
