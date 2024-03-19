@@ -30,3 +30,12 @@ There are two ways to leverage multi-stage builds:
 One often overlooked, ultimately lean base-image is the `scratch` image. This is an empty filesystem which allows one to copy/distribute the minimal set of artifacts. For languages that can compile statically linked binaries, using the `scratch` base image (e.g. `FROM scratch`) is the most secure way as there will be no other exploitable packages bundled in the image.
 
 We use this pattern for our [`terraform-root-modules`](https://github.com/cloudposse/terraform-root-modules) distribution of terraform reference architectures.
+
+## Configure Cache Storage Backends
+
+When using BuildKit, you should configure a [cache storage backend](https://docs.docker.com/build/cache/backends/) that is suitable for your build environment. By itself, layer caching significantly speeds up builds by reusing layers from previous builds. By default, BuildKit uses its local cache, but in a CI/CD build environment such as GitHub Actions, an external cache storage backend is essential as there is little to no persistence between builds.
+
+Fortunately, Cloud Posse's [cloudposse/github-action-docker-build-push](https://github.com/cloudposse/github-action-docker-build-push) action uses `gha` (the [GitHub Actions Cache](https://docs.github.com/en/rest/actions/cache)) by default. Thus, even without any additional configuration, the action will automatically cache layers between builds.
+
+When using self-hosted GitHub Actions Runners in an AWS environment, however, we recommend using [ECR as a remote cache storage backend](https://aws.amazon.com/blogs/containers/announcing-remote-cache-support-in-amazon-ecr-for-buildkit-clients/). Using ECR as the remote cache backend—especially in conjunction with a [VPC endpoint for ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html)—results in reduced NAT Gateway costs and faster layered cache imports when compared to the GitHub Actions Cache.
+
