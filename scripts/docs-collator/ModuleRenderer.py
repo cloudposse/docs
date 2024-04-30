@@ -88,16 +88,39 @@ class ModuleRenderer(AbstractRenderer):
     def __copy_extra_resources_for_submodules(self, repo, module_download_dir, module_docs_dir):
         extra_resources_dir = os.path.join(module_download_dir, SUBMODULES_DIR)
         files = io.get_filenames_in_dir(extra_resources_dir, '*', True)
+        readme_files = {}
 
-        for file in files:
-            if not os.path.basename(file).endswith(README_MD):
+        for remote_file in files:
+            base_name = os.path.basename(remote_file)
+            dir_name = os.path.dirname(remote_file)
+
+            if base_name == README_YAML:
+                readme_files[dir_name] = remote_file
+            elif base_name == README_MD and dir_name not in readme_files:
+                readme_files[dir_name] = remote_file
+
+        for readme in readme_files.values():
+            basename = os.path.basename(readme)
+            rel_path = os.path.relpath(readme, module_download_dir)
+            rel_dir = os.path.dirname(rel_path)
+            dest_file = os.path.join(module_docs_dir, rel_path)
+            dest_dir = os.path.dirname(dest_file)
+            io.create_dirs(dest_dir)
+
+            # Render the README.yaml if we found one, and copy the README.md
+            if basename.endswith(README_YAML):
+                submodule_dir = os.path.dirname(readme)
+                readme_md = os.path.join(submodule_dir, README_MD)
+                self._pre_rendering_fixes(repo, module_download_dir, rel_dir)
+                self.__render_readme(submodule_dir, dest_dir)
+                self._post_rendering_fixes(repo, readme_md, rel_dir)
+                io.copy_file(readme_md, os.path.join(dest_dir, README_MD))
                 continue
 
-            rel_path = os.path.relpath(file, module_download_dir)
-            dest_file = os.path.join(module_docs_dir, rel_path)
+            # Copy the README.md if we found one and no README.yaml
             submodule_name = os.path.basename(os.path.dirname(dest_file))
-            submodule_readme_content = io.read_file_to_string(file)
-            submodule_readme_content = rendering.replace_relative_links_with_github_links(repo, submodule_readme_content, os.path.dirname(rel_path))
+            submodule_readme_content = io.read_file_to_string(readme)
+            submodule_readme_content = rendering.replace_relative_links_with_github_links(repo, submodule_readme_content, rel_dir)
 
             content = SUBMODULE_TEMPLATE.render(label=submodule_name,
                                                 title=submodule_name,

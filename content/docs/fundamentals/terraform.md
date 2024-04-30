@@ -11,7 +11,7 @@ import ReactPlayer from 'react-player'
 
 For the most part, we assume users have a solid grasp of `terraform`. Cloud Posse has adopted a number of conventions for how we work with `terraform` that we document here. Review [our opinionated public “best practices” as it relates to terraform](/reference/best-practices/terraform-best-practices/).
 
-We use [Atmos](/reference-architecture/fundamentals/tools/atmos) together with [Stacks](/reference-architecture/fundamentals/tools/stacks) to call [Components](/components) that provision infrastructure with `terraform`.
+We use [Atmos](/fundamentals/atmos) together with [Stacks](/fundamentals/stacks) to call [Components](/components) that provision infrastructure with `terraform`.
 
 :::caution
 Be aware of [Terraform Environment Variables](https://www.terraform.io/docs/cli/config/environment-variables.html) that can alter the behavior of `terraform` when run outside of what you see in `atmos` or `geodesic`. These are also helpful to change default behavior as well, such as by setting the `TF_DATA_DIR`.
@@ -116,7 +116,7 @@ Every input value can also be specified individually by name as a standard Terra
 
 ### Stacks and Components
 
-We use [Stacks](/reference-architecture/fundamentals/tools/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
+We use [Stacks](/fundamentals/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
 
 ### Atmos CLI
 
