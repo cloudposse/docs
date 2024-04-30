@@ -181,3 +181,9 @@ This also means that when something goes wrong, it becomes harder to troubleshoo
           timeout: 10m
    ```
   </details>
+
+## Operation
+
+Changes through terraform will not immediately be reflected in the ECS Service. This is because the task template has been updated, but whatever was in the `task-definition.json` file in the S3 bucket will be used for deployment.
+
+To update the ECS Service after updating the terraform for it, you must deploy through GitHub Actions. This will then download the new template and create a new updated `task-defintion.json` to store in s3.
