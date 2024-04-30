@@ -29,8 +29,8 @@ ECS Partial task definitions is the idea of breaking the task definition into sm
 
 We do this by setting up terraform to manage a portion of the task definition, and the application repository to manage another portion.
 
-The terraform (infrastructure) portion is created first, it will create an ECS Service in ECS then upload the task definition json to S3 as `task-template.json`. 
-The application repository will have a `task-definition.json` git controlled, during the development lifecycle, the application repository will download the task definition from S3, merge the task definitions, then update the ECS Service with the new task definition. 
+The terraform (infrastructure) portion is created first, it will create an ECS Service in ECS then upload the task definition json to S3 as `task-template.json`.
+The application repository will have a `task-definition.json` git controlled, during the development lifecycle, the application repository will download the task definition from S3, merge the task definitions, then update the ECS Service with the new task definition.
 Finally, GitHub actions will update the S3 bucket with the deployed task definition under `task-definition.json`.
 If terraform is planned again, it will use the new task definition as the base for the next deployment, thus not resetting the image or application configuration.
 
@@ -65,9 +65,9 @@ This also means that when something goes wrong, it becomes harder to troubleshoo
 
 1. Set up the S3 Bucket that will store the task definition.
 
-    <br>This bucket should be in the same account as the ECS Cluster.
+    <br/>This bucket should be in the same account as the ECS Cluster.
 
-    <br><details><summary>S3 Bucket Default Definition</summary>
+    <br/><details><summary>S3 Bucket Default Definition</summary>
 
       ```yaml
       components:
@@ -129,9 +129,9 @@ This also means that when something goes wrong, it becomes harder to troubleshoo
    ```
 2. Create an ECS Service in Terraform
 
-    <br>Set up the ECS Service in terraform using the [`ecs-service` component](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/ecs-service). This will create the ECS Service and upload the task definition to the S3 bucket.
+    <br/>Set up the ECS Service in terraform using the [`ecs-service` component](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/ecs-service). This will create the ECS Service and upload the task definition to the S3 bucket.
 
-    <br>To enable Partial Task Definitions, set the variable `s3_mirror_name` to be the component instance name of the bucket to mirror to. For example `s3-bucket/ecs-tasks-mirror`
+    <br/>To enable Partial Task Definitions, set the variable `s3_mirror_name` to be the component instance name of the bucket to mirror to. For example `s3-bucket/ecs-tasks-mirror`
 
     ```yaml
     components:
@@ -150,14 +150,14 @@ This also means that when something goes wrong, it becomes harder to troubleshoo
 
     An example application repository can be found [here](https://github.com/cloudposse-examples/app-on-ecs).
 
-    <br> Two things need to be pulled from this repository:
+    <br/> Two things need to be pulled from this repository:
 
    - The `task-definition.json` file under `deploy/task-definition.json`
    - The GitHub Workflows.
 
     An important note about the GitHub Workflows, in the example repository they all live under `.github/workflows`. This is done so development of workflows can be fast, however we recommend moving the shared workflows to a separate repository and calling them from the application repository. The application repository should only contain the workflows `main-branch.yaml`, `release.yaml` and `feature-branch.yml`.
 
-    <br>To enable Partial Task Definitions in the workflows, the call to [`cloudposse/github-action-run-ecspresso` (link)](https://github.com/cloudposse-examples/app-on-ecs/blob/main/.github/workflows/workflow-cd-ecspresso.yml#L133-L147) should have the input `mirror_to_s3_bucket` set to the S3 bucket name. the variable `use_partial_taskdefinition` should be set to `'true'`
+    <br/>To enable Partial Task Definitions in the workflows, the call to [`cloudposse/github-action-run-ecspresso` (link)](https://github.com/cloudposse-examples/app-on-ecs/blob/main/.github/workflows/workflow-cd-ecspresso.yml#L133-L147) should have the input `mirror_to_s3_bucket` set to the S3 bucket name. the variable `use_partial_taskdefinition` should be set to `'true'`
 
     <details><summary> Example GitHub Action Step </summary>
 
