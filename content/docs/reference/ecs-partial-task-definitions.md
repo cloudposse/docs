@@ -29,8 +29,7 @@ ECS Partial task definitions is the idea of breaking the task definition into sm
 
 We do this by setting up Terraform to manage a portion of the task definition, and the application repository to manage another portion.
 
-The Terraform (infrastructure) portion is created first, it will create an ECS Service in ECS then upload the task definition json to S3 as `task-template.json`.
-The application repository will have a `task-definition.json` git controlled, during the development lifecycle, the application repository will download the task definition from S3, merge the task definitions, then update the ECS Service with the new task definition.
+The Terraform (infrastructure) portion is created first. It will create an ECS Service in ECS, and then upload the task definition JSON to S3 as `task-template.json`.The application repository will have a `task-definition.json` git controlled, during the development lifecycle, the application repository will download the task definition from S3, merge the task definitions, then update the ECS Service with the new task definition.
 Finally, GitHub actions will update the S3 bucket with the deployed task definition under `task-definition.json`.
 If Terraform is planned again, it will use the new task definition as the base for the next deployment, thus not resetting the image or application configuration.
 
