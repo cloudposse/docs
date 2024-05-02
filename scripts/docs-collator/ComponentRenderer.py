@@ -25,9 +25,13 @@ class ComponentRenderer:
 
         files = io.get_filenames_in_dir(module_download_dir, README_MD, True)
         files += io.get_filenames_in_dir(module_download_dir, '*.md', True)
+        images = io.get_filenames_in_dir(module_download_dir, '*.png', True)
 
         for file in files:
             self.__render_doc(component, file)
+
+        for image in images:
+            io.copy_file(image, os.path.join(self.docs_dir, component, os.path.relpath(image, module_download_dir)))
 
     def __render_doc(self, component, file):
         module_download_dir = os.path.join(self.download_dir, 'modules')
@@ -48,7 +52,7 @@ class ComponentRenderer:
         title = component
         github_edit_url = f"https://github.com/{GITHUB_REPO}/blob/master/modules/{relative_path}"
 
-        if len(relative_path.split('/')) > 2:  # this is submodule
+        if len(relative_path.split('/')) > 2 and relative_path.split('/')[1] != 'docs' :  # this is submodule
             submodule_name = os.path.basename(os.path.dirname(result_file))
 
             label = submodule_name
