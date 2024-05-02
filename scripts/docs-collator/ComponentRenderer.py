@@ -24,6 +24,7 @@ class ComponentRenderer:
         module_download_dir = os.path.join(self.download_dir, 'modules', component)
 
         files = io.get_filenames_in_dir(module_download_dir, README_MD, True)
+        files += io.get_filenames_in_dir(module_download_dir, '*.md', True)
 
         for file in files:
             self.__render_doc(component, file)
