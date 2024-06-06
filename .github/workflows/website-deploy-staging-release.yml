@@ -2,7 +2,9 @@ name: "Website Deploy Staging Release"
 
 on:
   push:
-    - master
+    branches:
+      - main
+      - master
 
 env:
   AWS_REGION: us-east-2
