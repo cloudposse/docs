@@ -15,7 +15,7 @@ env:
   IAM_ROLE_SESSION_NAME: cloudposse-docs-ci-deploy-pr-${{ github.event.pull_request.number }}
   S3_BUCKET_NAME: cplive-plat-ue2-staging-cloudposse-docs-origin
   PR_NUMBER: ${{ github.event.pull_request.number }}
-  DEPLOYMENT_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.staging.plat.cloudposse.org
+  DEPLOYMENT_HOST: pr-${{ github.event.pull_request.number }}.docs.ue2.staging.plat.cloudposse.org
   ALGOLIA_INDEX_NAME: docs-preview.cloudposse.com
   ALGOLIA_APP_ID: 32YOERUX83
   GOOGLE_TAG_MANAGER: GTM-ABCD123
