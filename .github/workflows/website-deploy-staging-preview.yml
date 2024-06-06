@@ -1,0 +1,113 @@
+name: "Website Deploy Staging Preview"
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+env:
+  AWS_REGION: us-east-2
+  IAM_ROLE_ARN: arn:aws:iam::068007702576:role/cplive-plat-ue2-staging-cloudposse-docs-gha
+  IAM_ROLE_SESSION_NAME: cloudposse-docs-ci-deploy-pr-${{ github.event.pull_request.number }}
+  S3_BUCKET_NAME: cplive-plat-ue2-staging-cloudposse-docs-origin
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  DEPLOYMENT_HOST: pr-${{ github.event.pull_request.number }}.cloudposse-docs.ue2.staging.plat.cloudposse.org
+  ALGOLIA_INDEX_NAME: docs-preview.cloudposse.com
+  ALGOLIA_APP_ID: 32YOERUX83
+  GOOGLE_TAG_MANAGER: GTM-ABCD123
+  GOOGLE_SITE_VERIFICATION_ID: preview-github
+
+# These permissions are needed to interact with the GitHub's OIDC Token endpoint
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  website-deploy-preview:
+    # Only deploy preview if labeled for staging
+    if: ${{ contains(github.event.*.labels.*.name, 'deploy/staging') }}
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: preview
+      url: https://${{ env.DEPLOYMENT_HOST }}
+
+    steps:
+      # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.IAM_ROLE_ARN }}
+          role-session-name: ${{ env.IAM_ROLE_SESSION_NAME }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: "Checkout 'terraform-aws-components' Repository"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          repository: cloudposse/terraform-aws-components
+          ref: main
+          path: tmp/components/terraform-aws-components
+
+      - name: "Setup Python"
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: "Install Python Dependencies"
+        run: |
+          make init
+          pip install -r scripts/docs-collator/requirements.txt
+
+      - name: "Render Documentation for Terraform Components"
+        run: |
+          ./scripts/render-docs-for-components.sh
+
+      - name: "Render Documentation for Terraform Modules"
+        env:
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        run: |
+          ./scripts/render-docs-for-modules.sh
+
+      - name: "Render Documentation for GitHub Actions"
+        env:
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        run: |
+          ./scripts/render-docs-for-github-actions.sh
+
+      - name: Install Dependencies and Build Website
+        env:
+          GOOGLE_TAG_MANAGER: ${{ env.GOOGLE_TAG_MANAGER }}
+          GOOGLE_SITE_VERIFICATION_ID: ${{ env.GOOGLE_SITE_VERIFICATION_ID }}
+        run: |
+          make init
+          make build-production
+
+      - name: Copy Website to S3 Bucket PR Folder
+        run: |
+          cd build
+          aws sts get-caller-identity
+          aws s3 sync . s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --delete
+          aws s3 ls s3://${{ env.S3_BUCKET_NAME }}/pr-${{ env.PR_NUMBER }}/ --recursive --human-readable --summarize
+
+      - name: ReIndex with Algolia
+        if: ${{ contains(github.event.*.labels.*.name, 'reindex') }}
+        env:
+          ALGOLIA_SCRAPER_API_KEY: ${{ secrets.ALGOLIA_SCRAPER_API_KEY }}
+        run: |
+          ./algolia/reindex.sh
