@@ -96,7 +96,7 @@ jobs:
           GOOGLE_SITE_VERIFICATION_ID: ${{ env.GOOGLE_SITE_VERIFICATION_ID }}
         run: |
           make init
-          make build-production
+          make build-staging
 
       - name: Copy Website to S3 Bucket PR Folder
         run: |
