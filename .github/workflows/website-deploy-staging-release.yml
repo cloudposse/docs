@@ -1,6 +1,8 @@
-name: "Website Deploy Staging Release"
+name: "🚀 Deploy Staging Release"
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
@@ -23,7 +25,7 @@ permissions:
   contents: read
 
 jobs:
-  docs-deploy-release:
+  deploy:
     runs-on: ubuntu-latest
 
     environment:
