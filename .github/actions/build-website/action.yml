@@ -15,7 +15,6 @@ inputs:
   google_site_verification_id:
     description: "Google Site verification ID"
     default: ""
-secrets:
   repo_access_token:
     description: "GitHub Token used to access private repos"
     required: true
@@ -65,13 +64,13 @@ runs:
 
     - name: "Render Documentation for Terraform Modules"
       env:
-        PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.repo_access_token }}
+        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
       run: |
         ./scripts/render-docs-for-modules.sh
 
     - name: "Render Documentation for GitHub Actions"
       env:
-        PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.repo_access_token }}
+        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
       run: |
         ./scripts/render-docs-for-github-actions.sh
 

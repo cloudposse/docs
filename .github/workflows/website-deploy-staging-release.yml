@@ -44,7 +44,6 @@ jobs:
           iam_role_session_name: ${{ env.IAM_ROLE_SESSION_NAME }}
           google_tag_manager: ${{ env.GOOGLE_TAG_MANAGER }}
           google_site_verification_id: ${{ env.GOOGLE_SITE_VERIFICATION_ID }}
-        secrets:
           repo_access_token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: Copy Website to S3 Bucket
