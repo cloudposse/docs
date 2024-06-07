@@ -15,9 +15,6 @@ deps:
 build: deps
 	npm run build
 
-build-staging: build
-	@exit 0
-
 build-production: build
 	@exit 0
 
