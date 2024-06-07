@@ -1,4 +1,4 @@
-name: "🗑️ Clean up Staging Preview"
+name: "🗑️ Staging Preview"
 
 on:
   pull_request:

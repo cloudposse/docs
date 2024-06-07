@@ -1,4 +1,4 @@
-name: "🚀 Deploy Staging Release"
+name: "🚀 Staging Release"
 
 on:
   workflow_dispatch:
