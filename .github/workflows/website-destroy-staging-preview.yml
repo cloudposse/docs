@@ -1,9 +1,11 @@
 name: "🗑️ Staging Preview"
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - closed
+    branches:
+      - 'staging'
 
 env:
   AWS_REGION: us-east-2

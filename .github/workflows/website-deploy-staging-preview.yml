@@ -1,13 +1,13 @@
 name: "🚀 Staging Preview"
 
 on:
-  workflow_dispatch:
-
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - synchronize
       - reopened
+    branches:
+      - 'staging'
 
 env:
   AWS_REGION: us-east-2
@@ -26,9 +26,6 @@ permissions:
 
 jobs:
   deploy:
-    # Only deploy preview if labeled for staging
-    if: ${{ contains(github.event.*.labels.*.name, 'deploy/staging') }}
-
     runs-on: ubuntu-latest
 
     environment:
