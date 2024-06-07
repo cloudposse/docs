@@ -2,19 +2,19 @@ name: Build Cloud Posse Docs
 inputs:
   aws_region:
     description: "AWS Region for credentials"
-    default: ""
+    required: true
   iam_role_arn:
     description: "IAM Role ARN with access to S3 bucket origin"
-    default: ""
+    required: true
   iam_role_session_name:
     description: "Session name to use to assume access to S3 bucket origin"
-    default: ""
+    default: "cloudposse-docs-ci"
   google_tag_manager:
     description: "Google Tag Manager"
-    default: ""
+    default: "GTM-ABCD123"
   google_site_verification_id:
     description: "Google Site verification ID"
-    default: ""
+    default: "preview-github"
   repo_access_token:
     description: "GitHub Token used to access private repos"
     required: true

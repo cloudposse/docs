@@ -39,7 +39,7 @@ jobs:
       - name: Build Website
         uses: ./.github/actions/build-website
         with:
-          aws_region: ${{ env.REGION }}
+          aws_region: ${{ env.AWS_REGION }}
           iam_role_arn: ${{ env.IAM_ROLE_ARN }}
           iam_role_session_name: ${{ env.IAM_ROLE_SESSION_NAME }}
           google_tag_manager: ${{ env.GOOGLE_TAG_MANAGER }}
