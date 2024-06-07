@@ -15,8 +15,10 @@ deps:
 build: deps
 	npm run build
 
-build-staging: build
-	@exit 0
+build-staging:
+	cd cloudposse-docs-v2
+	npm install --only=production
+	npm run build
 
 build-production: build
 	@exit 0
