@@ -69,7 +69,6 @@ content/components/library/aws/**
 content/modules/library/**
 content/github-actions/library/actions/**
 content/reference-architecture/**
-static/assets/refarch/**
 !content/reference-architecture/index.md
 !content/reference-architecture/refarch.json
 !content/reference-architecture/sitemap.xml
