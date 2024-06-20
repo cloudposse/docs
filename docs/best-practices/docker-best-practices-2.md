@@ -5,6 +5,8 @@ description: "Collection of some of our docker-specific best practices."
 
 ## Inheritance
 
+this is a change
+
 Inheritance is when you use `FROM some-image:1.2.3` (vs `FROM scratch`) in a `Dockerfile`. We recommend to leverage lean base images (E.g. `alpine` or `busybox`).
 
 Try to leverage the same base image in as many of your images as possible for faster `docker pulls`.
