@@ -1,6 +1,6 @@
 ---
 title: "Maintenance"
-sidebar_position: 110
+sidebar_class_name: hidden
 custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/release-engineering/dockerized-eks-argocd.md
 ---
 
