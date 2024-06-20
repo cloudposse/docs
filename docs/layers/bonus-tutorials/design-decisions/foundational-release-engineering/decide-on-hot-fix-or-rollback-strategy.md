@@ -1,0 +1,30 @@
+---
+title: "Decide on Hot-fix or Rollback Strategy"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947700/REFARCH-428+-+Decide+on+Hot-fix+or+Rollback+Strategy
+sidebar_position: 100
+refarch_id: REFARCH-428
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-hot-fix-or-rollback-strategy.md
+---
+
+# Decide on Hot-fix or Rollback Strategy
+Releasing a change is when it’s made available to a user or subset of users. In an ideal world, deployments should not equal releases.
+
+## Considerations
+
+#### Feature Flagging
+
+This strategy involves using a feature-flagging feature such as LaunchDarkly in order to be able to toggle features without redeploying code to an environment. If a new feature does not work, it can be toggled off using the LaunchDarkly API without having to author a new release and have it redeployed using the CD pipeline. If the feature flags are configured properly, this can be an effective solution as the changes do not have to be authored and passed through the CD pipeline, hence shortening the mean time to restore.
+
+#### Rolling Forward
+
+This strategy involves authoring a patch release in order to disable a problematic feature or author a bug-fix, using the CD pipeline. This can lead to a longer mean time to restore when compared to feature flagging, since fixes or feature disablements need to be authored and passed through the CD pipeline.
+
+#### Release branches
+
+If release branches are utilized, then any bug-fix commits need to be pushed to the release branch, indicating a new patch semantic version corresponding to the minor semantic version corresponding to that release branch (for example if the release branch is 1.1.x and the 1.1.0 tag had a bug, then a bug-fix commit can be pushed to that release branch and tagged at 1.1.1). These changes then need to pass through the CD pipeline and deployed to the live environment. This is very similar to the _Rolling Forward_ strategy, with the only difference being that releases are not cut directly from the trunk.
+
+## Related
+
+- [Decide on Release Promotion Strategy](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/decide-on-release-promotion-strategy)
+
+

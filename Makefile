@@ -12,6 +12,11 @@ deps:
 
 .PHONY: build
 
+render:
+	./scripts/render-docs-for-components.sh
+	./scripts/render-docs-for-modules.sh
+	./scripts/render-docs-for-github-actions.sh
+
 build: deps
 	npm run build
 

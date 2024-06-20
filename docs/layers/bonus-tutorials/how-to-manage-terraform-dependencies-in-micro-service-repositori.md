@@ -1,0 +1,213 @@
+---
+title: "Manage Terraform Dependencies"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1212448779/How+to+Manage+Terraform+Dependencies+in+Micro-service+Repositories
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-manage-terraform-dependencies-in-micro-service-repositori.md
+---
+
+# How to Manage Terraform Dependencies in Micro-service Repositories
+
+## Problem
+The organization’s infrastructure monorepo (commonly located in GitHub at `[organization]/infrastructure`, `[organization]/infra`, etc.) is responsible for managing the organization’s foundational infrastructure, such as:
+
+- AWS Accounts
+
+- VPCs
+
+- EKS Clusters
+
+- Backing Services
+
+However, hosting certain microservice-specific dependencies in the infrastructure monorepo for all Terraform configurations may not be ideal, as their lifecycle is more closely coupled to the microservice than to the general infrastructure. This is particularly true when application-specific Terraform providers are used to manage resources such as Datadog monitors, LaunchDarkly feature flags, application-specific S3 buckets, IRSA IAM Roles, etc.
+
+That being said, a Terraform configuration created in a repository outside the infrastructure monorepo is not going to work out of the box with the same features as if it were to exist inside the monorepo. This is primarily because `atmos` is not used outside the monorepo.
+
+## Solution
+
+:::tip
+TL;DR: Create a Spacelift stack pointing to a microservice repo via the monorepo stack config, give Spacelift access to the microservice repo, drop in `drop-in.tf` into the microservice repository’s `terraform` directory. See also [How to Use Multiple Infrastructure Repositories with Spacelift?](/reference-architecture/how-to-guides/integrations/spacelift/how-to-use-multiple-infrastructure-repositories-with-spacelift)
+
+:::
+
+The following is a guide on how to create a Terraform configuration inside a microservice repo that can be used with Spacelift, and which retains some of the features and patterns stemming from the infrastructure monorepo, despite `atmos` not being involved.
+
+### Create the Terraform Configuration Directory in the Microservice Repository
+
+First, the Terraform configuration directory needs to be created. This directory should ideally exist in `terraform` in order for it to be easily identified. This directory _cannot_ be `.terraform` (note the preceding period) because that is a designated directory managed by Terraform, even when invoking Terraform from that directory (Terraform creates a `.terraform` directory inside the context from which it is invoked, so `.terraform/.terraform` should not be problematic technically, however Terraform is strict about the presence of any such directory).
+
+Because `atmos` is not involved inside the Microservice repository, we are presented with a couple of technical problems:
+
+- Cloud Posse’s [remote-state](https://github.com/cloudposse/terraform-yaml-stack-config/tree/main/modules/remote-state) module expects a `stacks` directory, which will not be present in the microservice repository.
+
+- Cloud Posse’s `providers.tf` pattern requires an invocation of the `account-map` component’s `iam-roles` submodule, which is not present in the microservice repository.
+
+To circumvent both of these issues, we clone the infrastructure monorepo using a `module` block. Ideally, a git ref should be used in order to avoid potentially different results when the Terraform configuration is run. Thus, authoring a release in the infrastructure monorepo is warranted.
+
+After this is done, we can drop in the following file into the microservice repo to resolve these two issues:
+
+```
+#
+# This file allows a Terraform config outside the organization's infrastructure repository in order to circumvent the
+# following two issues:
+#
+# 1. Cloud Posse’s 'remote-state' module expects a 'stacks' directory, which will not be present in this repository.
+# 2. Cloud Posse's providers.tf pattern requires an invocation of the 'account-map' component’s 'iam-roles' submodule,
+#    which is not present in this repository.
+#
+# The source attribute in the monorepo and iam_roles module invocations cannot be interpolated. So the git ref at the end
+# of these source URIs should be kept up to date with the latest release of the monorepo. This can be automated with
+# the use of Renovate (https://github.com/renovatebot/renovate).
+#
+
+module "monorepo" {
+  source = "git::ssh://git@github.com/ACME/infrastructure.git?ref=v0.0.1"
+}
+
+locals {
+  monorepo_local_path     = "${path.module}/.terraform/modules/monorepo"
+  stack_config_local_path = "${local.monorepo_local_path}/stacks"
+}
+
+provider "aws" {
+  region = var.region
+
+  # `terraform import` will not use data from a data source, so on import we have to explicitly specify the profile
+  profile = coalesce(var.import_profile_name, module.iam_roles.terraform_profile_name)
+}
+
+module "iam_roles" {
+  # https://www.terraform.io/docs/language/modules/sources.html#modules-in-package-sub-directories
+  source  = "git::ssh://git@github.com/ACME/infrastructure.git//components/terraform/account-map/modules/iam-roles?ref=v0.0.1"
+  stack_config_local_path_override = local.stack_config_local_path
+  context = module.this.context
+}
+
+variable "import_profile_name" {
+  type        = string
+  default     = null
+  description = "AWS Profile to use when importing a resource"
+}
+
+variable "region" {
+  description = "AWS Region."
+  type        = string
+}
+
+```
+
+After this file is dropped in, there is no need to create a `providers.tf` file.
+
+This file should have a consistent name when being dropped into all of the microservice repositories. For example, `infra-state.mixin.tf`, or something to that effect, so that it can be easily identified across all such repositories.
+
+Lastly, ensure that within the `account-map` component in the infrastructure monorepo, the `iam-roles` submodule has an override for `stack_config_local_path` when it is invoking the `account-map` module:
+
+```
+module "account_map" {
+  source  = "cloudposse/stack-config/yaml//modules/remote-state"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
+
+  component               = "account-map"
+  privileged              = var.privileged
+  environment             = var.global_environment_name
+  stack_config_local_path = coalesce(var.stack_config_local_path_override, "../../../stacks")
+  stage                   = var.root_account_stage_name
+  tenant                  = var.root_account_tenant_name
+
+  context = module.always.context
+}
+```
+
+The override variable can be declared as follows:
+
+```
+variable "stack_config_local_path_override" {
+  description = <<-EOT
+  An override for the `stack_config_local_path` when invoking the `account-map` module.
+
+  This is useful when invoking this module from another repository, which may not have a `stacks` directory.
+
+  Leave this as `null` when not performing such an invocation.
+  EOT
+  default     = null
+}
+```
+
+The `terraform/` directory should be structured similar to the following:
+
+```
+terraform/
+├── backend.tf.json
+├── context.tf
+├── default.auto.tfvars
+├── drop-in.tf
+├── main.tf
+├── remote-state.tf
+└── variables.tf
+```
+
+`backend.tf.json` should share the same format as files with the same name in the `components/[component]` directories in the infrastructure monorepo. In particular, `workspace_key_prefix` should be updated to reflect the name of the microservice repository:
+
+```
+{
+  "terraform": {
+    "backend": {
+      "s3": {
+        "acl": "bucket-owner-full-control",
+        "bucket": "acme-mgmt-uw2-root-tfstate",
+        "dynamodb_table": "acme-mgmt-uw2-root-tfstate-lock",
+        "encrypt": true,
+        "key": "terraform.tfstate",
+        "profile": "acme-mgmt-gbl-root-terraform",
+        "region": "us-west-2",
+        "workspace_key_prefix": "example-nestjs-api-server"
+      }
+    }
+  }
+}
+
+```
+
+### Give the Spacelift GitHub App Access to the Microservice Repository
+Spacelift needs access to the microservice repository in question in order to create the Spacelift Stack. In order to allow for this, perform the following actions:
+
+1. Visit  `https://github.com/organizations/[YOUR ORGANIZATION]/settings/profile`
+
+2. Click `Installed GitHub Apps`
+
+3. Select `spacelift.io`, then `Configure`
+
+4. Select the microservice repositories that will be deployed by Spacelift, in addition to the infrastructure monorepo.
+
+<img src="/assets/refarch/cleanshot-2021-11-30-at-21.47.01-20211201-024735.png" height="922" width="1610" /><br/>
+
+### Create a Spacelift Stack in the Infrastructure Monorepo pointing to the Microservice Repository
+
+```
+components:
+  terraform:
+    example-nestjs-api-server:
+      backend:
+        s3:
+          workspace_key_prefix: example-nestjs-api-server
+      settings:
+        spacelift:
+          workspace_enabled: true
+          repository: example-nestjs-api-server
+          branch: main
+          component_root: terraform
+      vars:
+        enabled: true
+```
+
+At this point, your stack should be running without issues in Spacelift.
+
+### How to Develop Terraform Configuration Locally
+
+In order to develop the Terraform Configuration Locally, you will need the `tfvars` JSON generated by Spacelift when the stack is created. In order to do this, create a very minimal Terraform configuration using the `infra-state.mixin.tf` (and maybe one or two resources). After the Spacelift stack is created using the administrative stack, navigate to the newly-created stack and to the `Env` tab in Spacelift:
+
+<img src="/assets/refarch/cleanshot-2022-03-08-at-14.30.44@2x-20220308-193147.png" height="832" width="1349" /><br/>
+
+Copy the contents of `spacelift.auto.tfvars.json` and populate a file with the same name in the Terraform directory in the application repository. You will then be able to run `terraform init` and `terraform plan`.
+
+

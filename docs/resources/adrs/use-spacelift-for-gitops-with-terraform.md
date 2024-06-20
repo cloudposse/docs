@@ -1,0 +1,99 @@
+---
+title: "Use Spacelift for GitOps with Terraform"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176371740/Use+Spacelift+for+GitOps+with+Terraform
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/use-spacelift-for-gitops-with-terraform.md
+---
+
+# Use Spacelift for GitOps with Terraform
+
+:::tip Latest!
+
+The content in this ADR is up-to-date! For questions, please reach out to Cloud Posse
+
+:::
+
+:::info
+A public page is available at [https://cloudposse.com/faqs/why-do-you-recommend-spacelift/](https://cloudposse.com/faqs/why-do-you-recommend-spacelift/) which shares a lot of these points.
+
+:::
+
+Spacelift checks off all the boxes for managing extremely large environments with a lot of state management. Since Cloud Posse's focus is on deploying large-scale loosely coupled infrastructure components with Terraform, it's common to have several hundred terraform states under management.
+
+Every successful business in existence uses accounting software to manage its finances and understand the health of its business. The sheer number of transactions makes it infeasible to reconcile the books by hand. The same is true of modern infrastructure. With hundreds of states managed programmatically with terraform, and modified constantly by different teams or individuals, the same kind of state reconciliation is required to know the health of its infrastructure. This need goes far beyond continuous delivery and few companies have solved it.
+
+## **Major Benefits**
+
+- **Reconciliation** helps you know what's deployed, what's failing, and what's queued.
+
+- **Plan Approvals** ensures changes are released when you expect them
+
+- **Policy-Driven Framework** based on OPA (open-source standard) is used to trigger runs and enforce permissions
+
+- **Drift Detection** runs on a customizable schedule surfaces inconsistencies with what's deployed and what's in git on previously successful stacks
+
+- **Terraform Graph Visualization** makes it easier to visualize the entire state across components
+
+- **Audit Logs** of every change traced back to the commit and filterable by time
+
+- **Affordable alternative** to other commercial offerings
+
+- **Works with more than Terraform** (e.g. Pulumi)
+
+- **Pull Request Previews** show what the proposed changes are before committing them
+
+- **Decoupling of Deploy from Release** ensures we can merge to trunk and still control when those changes are propagated to environments
+
+- **Ephemeral Environments** (Auto Deployment, Auto Destruction) enables us to bring up infrastructure with terraform and destroy it when it's no longer needed
+
+- **Self-hosted Runners** ensure we're in full control over what is executed in our own VPC, with no public endpoints
+
+## Concerns
+
+### **What level of access do the Spacelift worker pools have?**
+
+Spacelift Workers are deployed in your environment with the level of permission that we grant them via IAM instance profiles. When provisioning any infrastructure that requires modifying IAM, the minimum permission is administrative. Thus, workers are provisioned with administrative permissions in all accounts that we grant access to since the terraform we provision requires creating IAM roles and policies. Note, this is not a constraint of Spacelift; this is required regardless of the platform that performs the automation.
+
+### **What happens if Spacelift as a product goes away?**
+
+First off, while Spacelift might be a newer brand in the infrastructure space, it's used by publicly traded companies, Healthcare companies, banks, institutions, Fortune 500 companies, etc. So, Spacelift is not going away.
+
+But just to entertain the hypothetical, let's consider what would happen. Since we manage all terraform states in S3, we have the “break glass” capability to leave the platform at any time and can always run terraform manually. Of course, we would lose all the benefits.
+
+### **How tough would it be to move everything to a different platform?**
+
+Fortunately, with Spacelift, we can still use S3 as our standard state backend. So if at any time we need to move off of the platform, it's easy. Of course, we'd give up all the benefits but the key here is we're not locked into it.
+
+### **Why not just use Atlantis?**
+
+We used to predominately recommend Atlantis but stopped doing so a number of years ago. The project was more or less dormant for 2-3 years, and only recently started accepting any Pull Requests. Atlantis was the first project to define a GitOps workflow for Terraform, but it's been left in the dust compared to newer alternatives.
+
+- With Alantis, there is no regular reconciliation of what terraform state has been applied or not applied. So we really have no idea in atlantis the _actual_ state of anything. With a recent customer, we helped migrate them from Atlantis to Spacelift and it took 2 months to reconcile all the infrastructure that had drifted.
+
+- With Atlantis, there's no drift detection, but with spacelift, we detect it nightly (or as frequently as we want)
+
+- With Atlantis, there's no way to manage dependencies of components, so that when one component changes, any other components that depend on it should be updated.
+
+- With Atlantis, there's no way to setup OPA policies to trigger runs. The OPA support in atlantis is very basic.
+
+- With Atlantis, [anyone who can run a plan, can exfiltrate your root credentials](https://www.youtube.com/watch?v=H9KvPe09f5A). This [talked about by others](https://alex.kaskaso.li/post/terraform-plan-rce) and was recently [highlighted at the Defcon 2021 conference](https://www.youtube.com/watch?v=3ODhxYY9-9U).
+
+- With Atlantis, there's no way to limit who can run terraform plan or apply. If you have access to the repo, you can run a terraform plan. If your plan is approved, you can run terraform apply. [Cloud Posse even tried to fix it](https://github.com/runatlantis/atlantis/issues/308) (and maintained our own fork for some time), but the discussion went nowhere and we moved on.
+
+- With Atlantis, there's no way to restrict who has access to unlock workspaces via the web GUI. The only way is to install your own authentication proxy in front of it or restrict it in your load balancer.
+
+- With Atlantis, you have to expose the webhook endpoint publicly to GitHub.
+
+### **Why not use Terraform Cloud?**
+
+[Terraform Cloud](https://www.terraform.io/cloud) is prohibitively expensive for most non-enterprise customers we work with, and possibly 10x the cost of Spacelift. Terraform Cloud for Teams doesn't permit self-hosted runners and requires hardcoded IAM credentials in each workspace. That's insane and we cannot recommend it. Terraform Cloud for Business (and higher) support self-hosted runners that can leverage AWS IAM Instance profiles, but the number of runners is a significant factor of the cost. When leveraging several hundred loosely-coupled terraform workspaces, there is a significant need for a lot of workers for short periods of time. Unfortunately, even if those are only online for a short period of time, you need to commit to paying for them for the full month on an annualized basis. Terraform Cloud also requires that you use their state backend, which means there's no way to “break glass” and run terraform if they are down. If you want to migrate off of Terraform Cloud, you need to migrate the state of hundreds of workspaces out of the platform and into another state backend.
+
+## References
+
+- [https://www.spacelift.io/case-studies/cloud-posse](https://www.spacelift.io/case-studies/cloud-posse)
+
+- [https://spacelift.io/case-studies](https://spacelift.io/case-studies)
+
+- [https://cloudposse.com/faqs/why-do-you-recommend-spacelift/](https://cloudposse.com/faqs/why-do-you-recommend-spacelift/)
+
+

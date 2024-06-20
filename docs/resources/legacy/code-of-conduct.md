@@ -1,0 +1,195 @@
+---
+title: "Code of Conduct"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176076927/Code+of+Conduct
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/code-of-conduct.md
+---
+
+# Code of Conduct
+This code of conduct governs all documentation and related [<ins>Open Source Projects</ins>](https://github.com/cloudposse).
+
+**TL;DR:** Cloud Posse is a DevOps Accelerator founded to help organizations collaborate on DevOps. We want to make sure our community is as constructive as possible in order to help each other solve cool DevOps problems. Anything that goes against the spirit of this, isn’t cool. If you see something suspicious, derogatory, or otherwise inappropriate, etc. please send an email to [<ins>abuse@cloudposse.com</ins>](mailto:abuse@cloudposse.com) with details.
+
+### Introduction
+
+We strive to be inclusive to the largest number of contributors, with as diverse backgrounds as possible. That is why we are committed to providing an environment that encourages friendly, safe, and welcoming discussions for everyone interested in learning and sharing.
+
+This code of conduct outlines our expectations for all those who participate in our community, as well as the consequences for unacceptable behavior.
+
+We invite all those who participate in SweetOps to help us create safe and positive experiences for everyone.
+
+### Etiquette
+
+- Do not cross-post questions across multiple channels (pick one)
+
+- Use the professional language you would use at work. Avoid using profanity in any language.
+
+- Praise publicly (with tons of emojis!)
+
+- Criticize constructively, but never disparagingly
+(e.g. there are no “stupid” questions)
+
+- Practice empathy (e.g. “Ahk, that shouldn’t happen”)
+
+- Correct delicately (e.g. “Have you considered...”)
+
+- Avoid sarcasm, or feigning surprise
+(e.g. Don’t say “I’m surprised you didn’t know that”)
+
+- Seek to understand, not to embarrass, discredit or humiliate.
+(e.g. “Hrmm... could you explain that another way? I’m not following.”)
+
+- When posting for the first time, review the channel history to get a sense of how others interact. Also, check out our “Guidelines When Asking for Help.”
+
+- Check out the channel’s topic and purpose in order to stay on point
+
+- Use the `#refarch-general` channel if nothing else fits
+
+- Use threads when responding, especially in busy channels
+
+- Don’t use `@channel` and `@here` (we've disabled them)
+
+### Unacceptable Behavior
+
+The following are behaviors we consider forms of harassment that are unacceptable within our community:
+
+- Comments that may be considered sexist, racist, homophobic, transphobic or otherwise discriminatory or offensive in nature. (Everything you say in public is on the record)
+
+- Usernames that contain unwelcome, suggestive, derogatory or inappropriate terms.
+
+- Disrespect towards others is not tolerated.
+
+- Unprofessional jokes, innuendo, dismissive attitudes.
+
+- All forms of intimidation or harassment are prohibited.
+
+- Foul or obscene language (in any language!)
+
+- Disrespect towards differences of opinion.
+
+- Disparagement.
+
+- Deceptive or fraudulent activity.
+
+- Sustained disruptions (like spamming channels).
+
+- All forms of violence, threats of violence or violent language.
+
+This is not an exhaustive list of things we prohibit. In order to preserve the spirit of this community, we reserve the right to use our discretion when applying disciplinary actions to behaviors we deem inappropriate.
+
+### Solicitation
+
+We strictly prohibit companies or individuals to solicit work, post jobs, or engage in self-promotion. It is not acceptable to engage in this behavior in any channel or to send unsolicited direct messages concerning job opportunities or job marketplaces. Under no circumstances is it acceptable to solicit payment from members for any reason (e.g. recruiting fees). Additionally, the promotion of any kind of third-party job marketplace is not permitted. Any direct messages to members should be in relation to specific messages posted about job opportunities or candidates seeking work, but absolutely not for promoting other services. Recruiters may only reach out to individual candidates who have posted in the `#jobs` channel but are not permitted to directly solicit members or companies in this community.
+
+If you’ve received an unwelcome solicitation, please email [<ins>abuse@cloudposse.com</ins>](mailto:abuse@cloudposse.com) with details including screenshots.
+
+### Guidelines When Asking for Help
+
+**Tips to follow when asking for help:**
+
+We appreciate that not everyone has all the answers every time. That’s exactly why our community is here to help. Keep in mind, we are all volunteers. Everyone donates their time; no one receives any payment for helping answer your questions.
+
+1. <ins>Research the problem or question</ins>. Be prepared to share links of what you’ve already tried and considered. We expect you’ve “Googled it” before we do. If you don’t know where to begin, that’s okay. In that case, ask for help on how to approach the problem.
+
+2. <ins>State your problem, not just your solution</ins>. The [<ins>XY Problem</ins>](http://xyproblem.info/) is the fallacy of asking for help about your _attempted solution_ rather than ask for help solving your _actual_ _problem_. This leads to enormous amounts of wasted time and energy, both on the part of people asking for help, and on the part of those providing help.
+
+3. <ins>Search our Slack for the answer.</ins> We see a lot of the same questions asked over and over again. Do a quick search before asking your question.
+
+4. <ins>Ask Constructive Questions.</ins> When asking your question, mention any research you’ve done, relevant links and GitHub issues, as well as provide any relevant code samples.
+
+5. <ins>Use Markdown Formatting.</ins> When pasting code samples, make sure you use markdown formatting. Code that is not formatted makes it difficult for others to read and reduce the likelihood of getting an answer. For longer blobs of text, make sure you use snippets.
+**IMPORTANT**: Make sure you have permission to share any code samples because these will be public.
+
+6. <ins>Use the Appropriate Channel.</ins> We have dozens of channels that help us organize all the information and questions asked. The #general channel is only for welcoming new users or asking for help on where to ask a question.
+
+7. <ins>Do Not Cross-Post.</ins> Use one channel at a time to avoid spamming our community. Keep in mind, users are in 57 timezones. You may not get an answer right away.
+
+8. <ins>Keep Conversations in Threads</ins>. Our channels get pretty busy. When multiple concurrent conversations are happening, it’s hard to keep it straight. Also, it’s helpful if you add supplementary information in the thread of the question, rather than posting a new message.
+
+9. <ins>Give Copious Praise.</ins> Did you get the answer you were looking for? Did someone help you? Let them know! We operate on praise. There’s never enough.
+
+### Privacy
+
+All conversations that happen in our Slack channels are shared with other customers. For this reason, members should not have any expectation of privacy in their use.
+
+It’s the responsibility of our members to avoid sharing any information that might lead to loss or damages, such as a breach of their company’s security protocols or sharing of intellectual property.
+
+All direct messages are private. They are not accessible by anyone on the Slack team, including moderators and administrators.
+
+Your email address is private and will not be shared with anyone outside of Cloud Posse. From time to time, Slack (the Company) or Cloud Posse may send you notifications. If you are unable to opt-out for any reason, please let us know at [<ins>abuse@cloudposse.com</ins>](mailto:abuse@cloudposse.com).
+
+Additionally, Slack (the Company) has its own [<ins>Privacy Policy</ins>](https://slack.com/privacy-policy) which affects all communities hosted on the platform.
+
+### Logs and Records
+
+**Please be mindful that anything you say in our community is a matter of public record**.
+
+We cannot prevent people from taking screenshots or otherwise logging conversations in this slack team.
+
+We also can’t guarantee that every member’s login credentials and logged-in devices are secure and not compromised.
+
+Keep in mind that all files uploaded to this slack team can be viewed and downloaded by anyone both via Slack and our archives.
+
+Please exercise caution and refrain from sharing sensitive information that could harm you or others if it became public.
+
+### Message Retention
+
+Slack (the company) retains a complete log of all channels and direct messages back to the inception of the SweetOps Slack team.
+
+Slack is a U.S. company and therefore subject to subpoenas from U.S. courts. Our logs may be subject to subpoena and could become public as part of legal proceedings.
+
+### Reporting Guidelines
+
+Please let us know if you encounter any unacceptable behavior by sending us an email at [<ins>abuse@cloudposse.com</ins>](mailto:abuse@cloudposse.com). We would appreciate it if you would include any screenshots that provide a full context of whatever transpired. We might not be able to see what you see, especially if what was sent was in a private direct message.
+
+### Moderation
+
+We perform both automated and human moderation. To some degree, we expect our community to self-moderate and let us know when they see unacceptable behavior.
+
+Moderators reserve the right to delete excessive self-promotional or commercial posts. Similarly, any objectionable, inappropriate or off-topic comments may be deleted. Members posting this content will receive a warning and risk being blocked from the team if the unacceptable behavior persists.
+
+Official moderators of our community are:
+
+- Erik Osterman
+
+- Andriy Knysh
+
+### Enforcement & Consequences
+
+Any unacceptable behavior will not be tolerated.
+
+If you are the subject of or witness to any violations of this Code of Conduct, please email us at [<ins>abuse@cloudposse.com</ins>](mailto:abuse@cloudposse.com).
+
+If violations occur, our community moderators will take necessary and appropriate actions, up to and including expulsion from the community.
+
+### Membership
+
+Our customer community is private and restricted to paying customers. We reserve the right to remove anyone for any reason. Our goal is to facilitate collaboration across organizational boundaries so we can achieve SweetOps.
+
+### Open Source Collaboration
+
+One of the big goals of our community is to increase the amount of Open Source collaboration in the DevOps community. We hope that by encouraging participants to recognize and strengthen the relationships between companies, organizations and individuals that their effects on our community will be amplified. This is why we go the extra mile to ensure our community is open, welcoming, friendly, and encourages all participants to contribute to the fullest extent possible.
+
+### “Office Hours” Support
+
+Every week we hold public [<ins>community “office hours”</ins>](https://cloudposse.com/office-hours) which are an opportunity for members to get to know each other face-to-face, ask questions, and get help. These sessions abide by this Code of Conduct.
+
+These sessions may be recorded, published and shared.
+
+### Projects
+
+We support a lot of Open Source projects. These projects abide by this Code of Conduct.
+
+- [https://github.com/cloudposse](https://github.com/cloudposse) 
+
+### Contact
+
+We want to hear from you. Please let us know if there’s something we should add, amend or update as part of our Code of Conduct.
+
+**Email:** [<ins>community@cloudposse.com</ins>](mailto:community@cloudposse.com)
+**Phone:** +1 (310) 496-6556
+**Mailing Address:**
+340 S Lemon Ave #1430
+Walnut, CA 91789
+
+

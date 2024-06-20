@@ -1,0 +1,143 @@
+---
+title: waf-rulesets
+sidebar_label: waf-rulesets
+sidebar_class_name: command
+description: |-
+  Terraform module to manage CloudFlare WAF rulesets.
+
+  __NOTE:__ This module is a hard fork of [Innovation Norway's](https://github.com/innovationnorway/terraform-cloudflare-waf-rulesets) terraform module and adapted to Cloud Posse conventions.
+custom_edit_url: https://github.com/cloudposse/terraform-cloudflare-waf-rulesets/blob/main/README.yaml
+---
+
+# Module: `waf-rulesets`
+Terraform module to manage CloudFlare WAF rulesets.
+
+__NOTE:__ This module is a hard fork of [Innovation Norway's](https://github.com/innovationnorway/terraform-cloudflare-waf-rulesets) terraform module and adapted to Cloud Posse conventions.
+
+
+
+
+
+
+## Usage
+
+For a complete example, see [examples/complete](https://github.com/cloudposse/terraform-cloudflare-waf-rulesets/tree/main/examples/complete).
+
+For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest)
+(which tests and deploys the example on AWS), see [test](https://github.com/cloudposse/terraform-cloudflare-waf-rulesets/tree/main/test).
+
+```hcl
+module "label" {
+  source = "cloudposse/label/null"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version = "x.x.x"
+  namespace  = "eg"
+  stage      = "prod"
+  name       = "waf"
+  attributes = ["cf"]
+  delimiter  = "-"
+}
+
+module "waf_rulesets" {
+  source = "cloudposse/waf-rulesets/cloudflare"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version = "x.x.x"
+  zone = "cloudposse.co"
+
+  rulesets = [
+    {
+      name        = "OWASP ModSecurity Core Rule Set"
+      mode        = "simulate"
+      sensitivity = "off"
+      rule_groups = [
+        {
+          name = "OWASP Bad Robots"
+          mode = "on"
+          rules = [
+            {
+              id   = "990012" # Rogue web site crawler
+              mode = "off"
+            },
+          ]
+        },
+      ]
+    },
+  ]
+
+  context = module.label.context
+}
+```
+
+
+
+
+## Examples
+
+Here is an example of using this module:
+- [`examples/complete`](https://github.com/cloudposse/terraform-cloudflare-waf-rulesets/tree/main/examples/complete) - complete example of using this module
+
+
+
+<!-- markdownlint-disable -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | >= 2.19 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | >= 2.19 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [cloudflare_waf_group.default](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/waf_group) | resource |
+| [cloudflare_waf_package.default](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/waf_package) | resource |
+| [cloudflare_waf_rule.default](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/waf_rule) | resource |
+| [cloudflare_waf_groups.default](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/data-sources/waf_groups) | data source |
+| [cloudflare_waf_packages.default](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/data-sources/waf_packages) | data source |
+| [cloudflare_zones.default](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/data-sources/zones) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br/>This is for some rare cases where resources want additional configuration of tags<br/>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
+| <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br/>in the order they appear in the list. New attributes are appended to the<br/>end of the list. The elements of the list are joined by the `delimiter`<br/>and treated as a single ID element. | `list(string)` | `[]` | no |
+| <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br/>See description of individual variables for details.<br/>Leave string and numeric variables as `null` to use default value.<br/>Individual variable settings (non-null) override settings in context object,<br/>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br/>  "additional_tag_map": {},<br/>  "attributes": [],<br/>  "delimiter": null,<br/>  "descriptor_formats": {},<br/>  "enabled": true,<br/>  "environment": null,<br/>  "id_length_limit": null,<br/>  "label_key_case": null,<br/>  "label_order": [],<br/>  "label_value_case": null,<br/>  "labels_as_tags": [<br/>    "unset"<br/>  ],<br/>  "name": null,<br/>  "namespace": null,<br/>  "regex_replace_chars": null,<br/>  "stage": null,<br/>  "tags": {},<br/>  "tenant": null<br/>}</pre> | no |
+| <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br/>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
+| <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br/>Map of maps. Keys are names of descriptors. Values are maps of the form<br/>`{<br/>   format = string<br/>   labels = list(string)<br/>}`<br/>(Type is `any` so the map values can later be enhanced to provide additional options.)<br/>`format` is a Terraform format string to be passed to the `format()` function.<br/>`labels` is a list of labels, in order, to pass to `format()` function.<br/>Label values will be normalized before being passed to `format()` so they will be<br/>identical to how they appear in `id`.<br/>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
+| <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
+| <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters (minimum 6).<br/>Set to `0` for unlimited length.<br/>Set to `null` for keep the existing setting, which defaults to `0`.<br/>Does not affect `id_full`. | `number` | `null` | no |
+| <a name="input_label_key_case"></a> [label\_key\_case](#input\_label\_key\_case) | Controls the letter case of the `tags` keys (label names) for tags generated by this module.<br/>Does not affect keys of tags passed in via the `tags` input.<br/>Possible values: `lower`, `title`, `upper`.<br/>Default value: `title`. | `string` | `null` | no |
+| <a name="input_label_order"></a> [label\_order](#input\_label\_order) | The order in which the labels (ID elements) appear in the `id`.<br/>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br/>You can omit any of the 6 labels ("tenant" is the 6th), but at least one must be present. | `list(string)` | `null` | no |
+| <a name="input_label_value_case"></a> [label\_value\_case](#input\_label\_value\_case) | Controls the letter case of ID elements (labels) as included in `id`,<br/>set as tag values, and output by this module individually.<br/>Does not affect values of tags passed in via the `tags` input.<br/>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br/>Set this to `title` and set `delimiter` to `""` to yield Pascal Case IDs.<br/>Default value: `lower`. | `string` | `null` | no |
+| <a name="input_labels_as_tags"></a> [labels\_as\_tags](#input\_labels\_as\_tags) | Set of labels (ID elements) to include as tags in the `tags` output.<br/>Default is to include all labels.<br/>Tags with empty values will not be included in the `tags` output.<br/>Set to `[]` to suppress all generated tags.<br/>**Notes:**<br/>  The value of the `name` tag, if included, will be the `id`, not the `name`.<br/>  Unlike other `null-label` inputs, the initial setting of `labels_as_tags` cannot be<br/>  changed in later chained modules. Attempts to change it will be silently ignored. | `set(string)` | <pre>[<br/>  "default"<br/>]</pre> | no |
+| <a name="input_name"></a> [name](#input\_name) | ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.<br/>This is the only ID element not also included as a `tag`.<br/>The "name" tag is set to the full `id` string. There is no tag with the value of the `name` input. | `string` | `null` | no |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
+| <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br/>Characters matching the regex will be removed from the ID elements.<br/>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
+| <a name="input_rulesets"></a> [rulesets](#input\_rulesets) | A list of `rulesets` objects.<br/>name:<br/>  The name of the firewall package.<br/>sensitivity:<br/>  The sensitivity of the firewall package.<br/>mode:<br/>   The default action that will be taken for rules under the firewall package. <br/>   Possible values: `simulate`, `block`, `challenge`.<br/>rule\_groups:<br/>  name:<br/>    The name of the firewall rule group.<br/>  mode:<br/>    Whether or not the rules contained within this group are configurable/usable. <br/>    Possible values: `on`, `off`.<br/>rules:<br/>  id:<br/>    The ID of the WAF rule.<br/>  mode:<br/>     The mode to use when the rule is triggered. Value is restricted based on the allowed\_modes of the rule. <br/>     Possible values: `default`, `disable`, `simulate`, `block`, `challenge`, `on`, `off`. | <pre>list(object({<br/>    name        = string<br/>    sensitivity = string<br/>    mode        = string<br/>    rule_groups = list(object({<br/>      name = string<br/>      mode = string<br/>      rules = list(object({<br/>        id   = string<br/>        mode = string<br/>      }))<br/>    }))<br/>  }))</pre> | n/a | yes |
+| <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br/>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | ID element \_(Rarely used, not included by default)\_. A customer identifier, indicating who this instance of a resource is for | `string` | `null` | no |
+| <a name="input_zone"></a> [zone](#input\_zone) | The name of the DNS zone. | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_rulesets"></a> [rulesets](#output\_rulesets) | A list of `rulesets` objects. |
+<!-- markdownlint-restore -->
+

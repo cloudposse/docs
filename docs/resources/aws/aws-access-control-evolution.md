@@ -1,0 +1,571 @@
+---
+title: "Access Control Evolution"
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/aws/aws-access-control-evolution.md
+---
+# Access Control Evolution
+
+## Overview
+
+Unsurprisingly, Cloud Posse has evolved its approach to access control over time.
+This article documents that evolution in terms of "feature sets" that were added over time.
+The intent is to help people understand which version of the access control system
+they are currently using, how it integrates with current and future versions of
+the Reference Architecture and Components, what features are available but not yet
+imported into their system, and what are the benefits of upgrading.
+
+This article is not intended as an upgrade guide. Upgrade guides are scattered
+in release notes and individual component READMEs and CHANGELOGs. This article
+is intended to help you understand what you have and what you can have, and
+to help you decide when and if you want to upgrade.
+
+This article does not cover allowing GitHub actions to access AWS via OIDC.
+
+### Features are Both Code and Configuration
+
+The features described here are implemented in both code and configuration.
+Some upgrades require changes to all of the related components,
+some only to some of them. Sometimes, only a single component
+needs to be upgraded. Sometimes, if the components are already feature-capable,
+then only configuration changes are needed.
+
+The components involved are:
+
+- `account-map`
+- `aws-saml`
+- `aws-sso`
+- `aws-team-roles`
+- `aws-teams`
+- `tfstate-backend`
+
+The configuration involved is usually a change to the stacks, but if the
+input or local variable name begins with `overridable_`, then it must be
+overridden with a `*_override.tf` file in the same directory as
+where the variable is defined, and the override accomplished by changing
+the default or local value.
+
+### Component Versions
+
+The feature set descriptions below may reference specific versions of the
+[terraform-aws-components](https://github.com/cloudposse/terraform-aws-component)
+and/or Pull Requests (PRs) in that repository. The versions and PRs refer to
+where the feature was first introduced, as that is often the best place to
+find upgrade information and more details about the feature. However, there
+are often refinements and bug fixes in later versions, so at all times
+it is advisable to use the latest version of the component consistent with
+the feature set you are using.
+
+Pull Request numbers are used because until the pull request is merged,
+there is no version number associated with it.
+
+## Roadmap
+
+These features are being considered for future implementation. If you wish to
+have them, please contact Cloud Posse to discuss how to get them implemented.
+
+### SSO Permission Sets Automatically Acquire Team Permissions
+
+When the SSO Permission Set corresponding to a Team is created, it should
+automatically be granted the permissions that the Team has in the `identity` account.
+Currently, the sets have minimal permissions in the `identity` account, although
+they have the exact same ability to assume roles in other accounts as the Team does.
+
+## Feature Sets (reverse chronological order)
+
+
+### SSO Permission Sets as Teams
+
+- Components [version 1.238.0](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.238.0)
+- Components [PR 738](https://github.com/cloudposse/terraform-aws-components/pull/738)
+- Required component updates: `aws-sso`, `account-map`
+- Required configuration update complexity: minimal
+- Optional compatibility settings:
+  - `account-map/modules/roles-to-principals`:
+    - `overridable_team_permission_set_name_pattern`: Set to `Identity%sRoleAccess` if your existing permission sets
+       end with "RoleAccess" rather than "TeamAccess"
+    - `overridable_team_permission_sets_enabled`: Set to `false` to disable this feature
+- Forensics: You have this version or later if `account-map/modules/roles-to-principals/variables.tf`
+contains the `overridable_team_permission_sets_enabled` variable.
+
+#### Before
+
+Previously, for each `aws-team`, there was a configuration in `aws-sso` that
+enabled automatically creating a corresponding `Identity<team-name>TeamAccess`
+permission set in the `identity` account. This permission set was then granted
+the ability to assume the corresponding `aws-team` IAM role in the `identity`
+account. This allowed SSO users to have a workflow like this (in this
+example, they are accessing the `devops` team):
+
+- Log into AWS SSO, selecting the `identity` account and the
+`IdentityDevopsTeamAccess` permission set.
+- Assume the `<namespace>-core-gbl-identity-devops` role in the `identity` account
+in either of 2 ways:
+  - Use the "chained session" feature of Leapp to assume the role (preferred)
+  - Use the Geodesic `assume-role` command-line function to assume the role
+
+#### After
+
+With this update, the Team Access permission sets will directly be able to assume
+all the same roles as the corresponding `aws-teams` can. This eliminates the need
+to assume the `aws-team` IAM role in the `identity` account via chained sessions
+or an explicit `assume-role` command.
+
+---
+
+### SAML Login High Availability
+
+- Components [version 1.238.0](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.238.0)
+- Components [PR 738](https://github.com/cloudposse/terraform-aws-components/pull/738)
+- Required component updates: `aws-saml`
+- Required configuration update complexity: none, but `aws-saml` must be reapplied to take advantage of the new features.
+- Forensics: You have this feature if `aws-saml/main.tf` allows for multiple
+values of the `SAML:aud` policy variable, and not only `https://signin.aws.amazon.com/saml`
+
+#### Before
+
+Although the `aws-saml` component is global in scope, the trust policy that
+was being deployed required you to log in via `us-east-1`. If that region
+was having an outage, you could not log in.
+
+#### After
+
+The IdP's trust policy has been updated to allow you to log in via any region.
+To change login regions, just update the IdP's `ACS URL` to use
+the [AWS sign-in endpoint](https://docs.aws.amazon.com/general/latest/gr/signin-service.html)
+for the region you want to log in via. Keep in mind that the IdP may take
+a few minutes to make the change available to your users.
+
+Depending on your priorities, you may want to change your default `ACS URL`
+to use the AWS sign-in endpoint for either your primary or fail-over region.
+Setting it to your fail-over region will allow you to log in even if your
+primary region is having an outage.
+
+---
+
+### SAML Access Auditing
+
+- Components [version 1.238.0](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.238.0)
+- Components [PR 738](https://github.com/cloudposse/terraform-aws-components/pull/738)
+- Required component updates: `account-map`, `aws-saml`, `aws-sso`
+- Required configuration update complexity: none, but the following components
+  must be reapplied to take advantage of the new features:
+  - `aws-saml`
+  - `aws-sso`
+  - `aws-team-roles`
+  - `aws-teams`
+  - `tfstate-backend`
+- Forensics: You have this feature if every trust policy for user roles (not
+necessarily EKS IRSA, GitHub Actions roles, or AWS service-linked roles) has the
+`sts:SetSourceIdentity` permission. Search for relevant trust policies by looking for the
+`sts:TagSession` permission.
+
+
+#### Before
+
+Nearly all of the work done in deploying and maintaining resources is done
+by "assumed roles". Auditing who the real person is that is doing the work
+was difficult to impossible, and probably could be circumvented by a malicious
+actor. This is because the only indication of user's identity was
+in the IAM session name, which can be changed by the user.
+
+#### After
+
+To make auditing who is using an assumed role easier and more reliable,
+AWS introduced the concept of a
+[source identity](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_control-access_monitor.html)
+that can be set by the identity provider (IdP) when the user logs in and cannot
+be changed after it is set. In order for that to be useful, the IdP and
+all the roles to be assumed must have the `sts:SetSourceIdentity` permission.
+(See [Permissions required to set source identity](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_control-access_monitor.html#id_credentials_temp_control-access_monitor-perms).)
+
+With this update:
+
+- `aws-saml` will automatically add this permission to the IdP
+- `aws-team-roles` will automatically include this permission in the trust policies of all the roles it creates
+- `aws-teams`'s minimal `team-role-access` policy includes this permission
+
+**Important Note:** This update does **NOT** configure the IdP to set the Source Identity.
+That must be done in the IdP itself, by including the `https://aws.amazon.com/SAML/Attributes/SourceIdentity`
+attribute in the SAML assertion.
+See [SourceIdentity SAML attribute](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml_assertions.html#saml_sourceidentity) for more information.
+However, once that attribute is added to the SAMl assertion, the Source Identity
+should work automatically from there.
+
+---
+
+### Dynamic Terraform Roles, Normalization of Team Roles, Better Team and Team Role IAM Policy Management
+
+- Introduced in Components [version 1.227.0](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.227.0)
+  - Due to refinements, the minimum recommended version for this feature is
+    [version 1.242.0](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.242.0)
+- Components [PR 715](https://github.com/cloudposse/terraform-aws-components/pull/715), further refined
+in PRs
+  - [730](https://github.com/cloudposse/terraform-aws-components/pull/730)
+  - [740](https://github.com/cloudposse/terraform-aws-components/pull/740)
+  - [748](https://github.com/cloudposse/terraform-aws-components/pull/748)
+- Required component updates:
+  - `account-map`
+  - `aws-team-roles`
+  - `aws-teams`
+  - `tfstate-backend`
+  - ALL components that want to take advantage of the new features need to be updated. Ideally, the whole component
+   would be updated, but in most cases, it will be sufficient to update `providers.tf` within the component to v1.238.0
+   or later.
+- Required configuration update complexity: none if you update to v1.242.0 or later and do not want any of these features
+- Full implementation configuration update complexity: large, but easy to understand
+- Forensics: You have this feature if
+  - The `account-map` component includes the `dynamic-roles.tf` file
+  - The `aws-teams` and `aws-team-roles` components include an `additional-policy-map.tf` file
+  - The `tfstate-backend/iam.tf` file has a statement like this (line 38 in v1.227.0), including `local.caller_arn`
+    in `allowed_principal_arns`:
+
+```hcl
+allowed_principal_arns = concat(each.value.allowed_principal_arns, [local.caller_arn])
+```
+
+:::warning Using profile names instead of IAM roles ARNs is deprecated
+
+For a brief period, the Cloud Posse architecture suggested using `AWS_CONFIG_FILE` profiles instead of IAM role ARNs
+to assume roles in target accounts, due to insufficient support for using IAM role ARNs with AWS SSO. With this
+feature release, support for using profiles is deprecated, because the Cloud Posse reference architecture has
+evolved to the point where there is no longer any benefit (and there are some drawbacks) to using profiles. While
+historical use of profiles will continue to work, the features described here will not work with profiles. If you
+are using profiles, we recommend you switch to IAM roles and SSO Permission Sets if you are unsatisfied with the
+support of profiles.
+
+:::
+
+#### Summary of new features
+
+- A new class of access, "Terraform plan only", can be given to Teams. Team members can preview changes but not make them.
+- Users in production accounts (not assigned to "teams") can now be allowed to run Terraform in those accounts with
+  whatever permissions the user has in those accounts. This is particularly useful for developers or others who only need
+  access to a small number of accounts.
+- Most components that previously could only be managed by SuperAdmin can now be managed by any user with the
+  appropriate permissions.
+- It is now easier to understand the relationships and distinctions between "Teams" and "Team Roles" because there
+  is no longer any overlap in names and there are no more special cases.
+- Configuration files for the `aws` CLI and the "AWS Extend Switch Roles" browser plugin are now generated from automatically
+  generated Terraform outputs, so they can be updated by running a simple Atmos workflow.
+- Most custom IAM policies have been removed in favor of using AWS-managed policies.
+- Obsolete, dedicated outputs from `account-map/modules/iam-roles` in support of `helm` and `cicd` teams have been
+  disabled to discourage future use, but not completely eliminated to minimize the impact on existing code which may
+  reference the outputs without actually using them.
+
+#### Background
+
+Both before and after this update, all Terraform usage requires the use of 3 or 4 AWS
+IAM roles:
+
+- The "user" role: The initial role of the user when executing the Terraform command (with or without `atmos`)
+- The "backend" role: The role assumed by Terraform to access the Terraform State backend to read and update the state
+- The "remote state" role (when needed): the role assumed by Terraform to access the Terraform State backend to read the state of other components
+- The "Terraform assumed role": The role automatically assumed by Terraform in the target account to make the requested changes
+
+Note that the "remote state role" and the "Terraform assumed role" can be configured per user, the other 2 roles cannot.
+The "user" role is, of necessity, whatever IAM role the user presents credentials for. The "backend" role is the role
+that Terraform is configured to assume to access the Terraform State backend, which must be accessible before any other
+configuration can take place. (While it would be possible to use Atmos to configure a backend role based on the user's
+role, that would make it impossible to use Terraform without Atmos, which is a situation we want to avoid.)
+
+
+##### The usage of the "user" role
+
+Of necessity, the user issuing a Terraform (or Atmos) command can only be doing so with the credentials of
+a single IAM role. This role is called the "user" role. In a desire to simplify operations, the other roles
+necessary to execute the Terraform command are assumed by Terraform itself, and the user role is only used
+to access these other roles.
+
+However, the user role is still a full-fledged IAM role, and can be used to access any AWS resources that the
+user has permissions to access. So for security reasons, it is desirable to limit the direct permissions of
+the user role and to limit access to the roles under the principle of "least privilege". So to begin with, we
+create a separate account called the "identity" account which exists for the sole purpose of managing "user"
+IAM roles, which we now refer to as "aws teams". This means that even if a user gets full Administrator access
+to the account, they will not be able to access any AWS resources other than IAM roles. In particular, they will
+not be able to make changes in the Organization `root` account, which is the most sensitive account, unless they are
+further granted permission to assume a role in the `root` account.
+
+In many organizations, it is desirable to restrict even the most privileged users from being able to routinely manage
+the most sensitive resources, such as creating or changing IAM roles and policies in the `root` or `identity` accounts,
+so they may grant or restrict the access of the user roles accordingly.
+
+##### The SuperAdmin role
+
+Before any of the user (or other) IAM roles can be created by Terraform, a role must be created manually (via "Click Ops")
+to allow Terraform to create the other roles. This role is called the "SuperAdmin" role. It is created in
+the `root` account and has full AdministratorAccess permissions in the `root` account. It can also assume
+the `OrganizationAccountAccessRole` in any other account, giving it full AdministratorAccess to all accounts.
+
+Because this role is a technical necessity, some organizations choose to use it as the only way to make
+changes in the sensitive accounts, while others choose to enable certain teams to also make changes to
+them. In any case, creation of the IAM roles that make up "user" roles, and all the prerequisites for them,
+such as creating a Terraform state backend and the AWS accounts themselves, must be done by the SuperAdmin role.
+
+##### Technical limitations of the Terraform state backend and "remote state"
+
+**Terraform state backend**: Terraform stores information about how it expects resources are currently deployed in a "state file" in
+the Terraform state backend. This state file is updated whenever Terraform makes changes to resources.
+When Terraform is run, it uses the state file and the current configuration to determine what changes
+need to be made to bring the resources into the desired state. In this situation, this is called the
+"backend" or "Terraform state".
+
+**Remote state**: Terraform can also read the state files of other components to determine how they are configured and
+use that information to guide the creation of the current component's resources. For example, a component
+can access the state of the `vpc` component to determine the VPC ID and subnets to use for its resources.
+This is called "remote state", although it is stored in the same Terraform state "backend" as the current
+component's state.
+
+**Technical limitations**: The Terraform state backend is made up of 2 components: an S3 bucket and a DynamoDB table.
+The S3 bucket stores the state files, and the DynamoDB table is used to lock the state files to prevent concurrent
+updates and detect data corruption. Because the Terraform state backend is provisioned when only the `root` account
+exists, the S3 bucket and DynamoDB table are provisioned in the `root` account. While the
+S3 bucket supports cross-account access directly, via bucket policies, the DynamoDB table does not. So to allow
+users in the `identity` account to access the Terraform state backend in the root account, we must create an IAM
+role in the same account where the DynamoDB table is provisioned (the `root` account), and allow the users to assume that role.
+This role is called the "backend" role or the "Terraform state read/write role".
+
+To read the "remote state" of other components, we can either use the "backend" role or create a separate role for that
+purpose. This role is called the "remote state" role or the "Terraform state read-only role" (although, to be useful,
+the "read-only" role still has to have read/write access to the DynamoDB table).
+
+Before the user roles are created in the `identity` account and the backend role is created in the `root` account,
+only the SuperAdmin role (which is also in the `root` account) can access the Terraform state backend.
+
+##### The "Terraform assumed role"
+
+In order to make changes to AWS infrastructure in an account, Terraform must assume a role in that account.
+The "Terraform assumed role" is the role that Terraform assumes in the target account to make the requested changes.
+
+#### Before
+
+Prior to this update, the design and configuration of these roles and the access to them evolved over years,
+as new features were added to Terraform and as Atmos was introduced and developed, without a holistic (re-)design
+process, resulting in a hodgepodge. The following description of the resulting system is presented to describe it,
+not justify it.
+
+##### Confusion between "team" and "team role" names, inconsistent usage
+
+Although components [PR 438](https://github.com/cloudposse/terraform-aws-components/pull/438), version 1.27.0,
+brought a change from `iam-primary-roles` and `iam-delegated-roles` to `aws-teams` and `aws-team-roles`,
+the change was not complete. The components were renamed and the implementation changed to make them separate,
+but the configuration was not updated to follow through on the concept. The teams had the same names as the team-roles
+(e.g. `admin`, `terraform`) and for security reasons, the `terraform` role in the `root` and `identity` accounts
+did not behave like they did in other accounts.
+
+In the `identity` account, the `terraform` role was a team role without permission to make changes in the `identity` account.
+In the `root` account, the `terraform` role was the "Terraform state backend" role and again had no permissions to make
+changes in the `root` account.
+
+The "Terraform assumed role" for the `root` and `identity` accounts was the `admin` role.
+
+##### The "Terraform state backend" role was managed by `aws-team-roles`, causing problems for remote state
+
+The "Terraform state backend" role was `root-terraform` and was deployed by the `aws-team-roles` component in the `root`
+account. Because it was managed by `aws-team-roles`, it was not available until after all the team roles had been provisioned.
+This meant that any components that needed to be deployed before the team roles were provisioned could not use the Terraform
+state backend role, and had to be provisioned by SuperAdmin and _only_ SuperAdmin. Furthermore, it meant that no
+Terraform state backend role could be configured for the component, but the role would not be available for SuperAdmin
+to assume.
+
+Although only SuperAdmin could provision certain components, we still wanted any component to be able to read the
+component's remote state. We had been using the backend role for this purpose, but now we had components with
+no backend role configured. This led to the creation of the concept of a "remote state" role. This configuration
+was only used to look up remote state and could be set to use the backend role for components that were
+deployed after the role was created.
+
+Unfortunately, SuperAdmin still could not use this remote state role, so we added an extra flag called `privileged`.
+When set to `true`, the remote state role would be ignored and the user's role (presumably SuperAdmin) would be used
+as the remote state role instead.
+
+In sum: backend access was controlled by 3 settings: `backend.s3.role_arn`, `remote_state_backend.s3.role_arn`,
+and `var.privileged`, and still was not as flexible as we would like, because it still meant that only SuperAdmin could
+manage certain components.
+
+##### Each component could have only one "Terraform assumed role" per account
+
+For each component, there was a single mapping of accounts to "Terraform assumed roles". This meant that
+every user either had full access to make changes or no access at all, because they either were or were not
+allowed to assume the "Terraform assumed role" for that account. There was no ability to give users partial (e.g.
+read-only) access, and no ability to give SSO users logged directly into a target account to use their "user" role's
+permissions to have tailored access to make changes.
+
+Furthermore, it meant that if SuperAdmin needed to be able to Terraform the component, no one else could Terraform it,
+because SuperAdmin could not assume any of the roles that other users could assume.
+
+##### AWS configuration files were manually maintained
+
+An `aws-accounts` script was manually maintained and used, among other things, to generate configuration files for the
+`aws` CLI and the "AWS Extend Switch Roles" browser plugin. Updating this script was a manual process that was
+error-prone and tedious, and frequently neglected. As a result, new accounts or new roles were not added to these
+configuration files in a timely manner.
+
+##### Provided IAM policies were static even though based on dynamic AWS managed policies
+
+The `aws-teams` and `aws-team-roles` components provided a set of IAM policies that could be assigned. However, in
+several cases, these policies were run-time concatenations of AWS managed policies, which meant that when
+AWS updated the policies, the updates did not automatically flow through to the roles. This became a live problem
+[when AWS updated the Billing IAM actions](https://aws.amazon.com/blogs/aws-cloud-financial-management/changes-to-aws-billing-cost-management-and-account-consoles-permissions/)
+and the policies needed to be updated.
+
+#### After
+
+##### Team Role names are normalized and distinct from Team names
+
+Through configuration changes, along with support from `account-map`, the names of the team roles are now normalized
+so that all accounts use the `terraform` role as the default Terraform assumed role. The `root` and `identity` accounts
+are no longer treated specially.
+
+The Team names are distinct from the Team Role names, allowing `aws-team-roles` to be deployed to the `identity` account.
+
+This completes the separation of the concepts of "team" and "team role", with "team" being analogous to a "group" in
+a traditional access control system, in that it is a single entity that allows access to multiple other entities.
+
+##### The "Terraform state backend" role is managed by `tfstate-backend`, allowing it to be used by all
+
+The "Terraform state backend" role is now managed by `tfstate-backend`, meaning it is created as part of the first Terraform
+step, which enables it to be used by all users and components. This means that SuperAdmin can now assume the role, so
+all components can be configured with the backend role, and the `remote_state_backend.s3.role_arn` configuration and
+the `privileged` flag are no longer needed.
+
+This removes one of the barriers to allowing users other than SuperAdmin to manage components that are first created
+before the team roles are created. It also means that, if desired, users in accounts other than the `identity` account
+can be given access to the Terraform state backend role, allowing them to use Terraform to manage the account associated
+with their "user" role.
+
+##### Each component can have multiple "Terraform assumed roles" per account
+
+Previously, the "Terraform assumed role" for each account (after normalization) was the `terraform` role. The `terraform`
+role still works as before, and with this upgrade there are 2 new possibilities:
+
+1. There is automated support for a new Team Role called `planner`, the intention being that `planner` would have enough
+permissions to run `terraform plan` and see what would change if a Terraform `apply` command were run, but not enough
+permissions to actually make the changes. It can be used for drift detection or to preview changes.
+2. If a user does not have permission to assume the `terraform` or `planner` roles, then Terraform will not assume any
+role, and instead will use the user's role to make changes. This allows SSO users to log directly into a target account
+and use their "user" role's permissions to have tailored access to make changes. It also allows SuperAdmin to make changes
+in the `root` account while still allowing authorized Team members to make changes using their Team roles.
+
+##### Updates to AWS configuration files are mostly automatic
+
+The `aws-accounts` script has been replaced by the `aws-config` script, which uses files automatically generated by
+Terraform components `account-map`, `aws-teams`, and `aws-team-roles` to generate configuration files for the
+`aws` CLI and the "AWS Extend Switch Roles" browser plugin. After updates to the relevant components, the configuration
+files can be updated by running a simple Atmos workflow: `atmos workflow update-aws-config -f identity`.
+
+was manually maintained and used, among other things, to generate configuration files for the
+`aws` CLI and the "AWS Extend Switch Roles" browser plugin. Updating this script was a manual process that was
+error-prone and tedious, and frequently neglected. As a result, new accounts or new roles were not added to these
+configuration files in a timely manner.
+
+##### Custom IAM policies based on AWS-managed Policies have been removed
+
+The provided IAM policies are now limited to non-AWS-managed policies, which means that the policies are truly custom
+and cannot benefit from automatic AWS updates. Policies that can benefit from automatic AWS updates are now configured
+directly in the Team and Team Role configuration. So instead of the custom, non-updating `billing_read_only` policy:
+
+```yaml
+billing:
+  role_policy_arns:
+  - "billing_read_only"
+```
+
+You would use the AWS-managed `job-function/Billing` policy:
+
+```yaml
+billing:
+  role_policy_arns:
+    - "arn:aws:iam::aws:policy/AWSBillingReadOnlyAccess"
+```
+
+This gives you the benefit of automatic updates to the policy, and you can still customize the policy by adding
+an additional custom policy if you want to.
+
+---
+
+### Preserve Custom `aws-teams` and `aws-team-roles` IAM Policies on Upgrade
+
+- Components [version 1.216.1](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.216.1)
+- Components [PR 697](https://github.com/cloudposse/terraform-aws-components/pull/697)
+- Required component updates: `aws-teams`, `aws-team-roles`
+- Required configuration update complexity: none
+- Forensics: You have this feature if the `aws-teams` and `aws-team-roles` components have an `additional-policy-map.tf` file
+
+#### Before
+
+##### Custom IAM policies were overwritten on upgrade
+
+In order to add your own custom IAM policies to `aws-teams` or `aws-team-roles`,
+you had to modify the component code itself. This meant that when you upgraded
+the component, your changes would be overwritten.
+
+#### After
+
+##### Custom IAM policies are preserved on upgrade
+
+Users can now create custom IAM policies and integrate them with the `aws-teams` and `aws-team-roles` components by
+taking advantage of the Terraform [override feature](https://developer.hashicorp.com/terraform/language/files/override).
+This allows users to add custom IAM policies to Teams and Team Roles that will not be overwritten by updates to the
+components, while still getting any new IAM policies added by the component.
+
+---
+
+### Conversion From iam-primary-roles to aws-teams
+
+**Special note**: Although this section documents the conversion from `iam-primary-roles` to `aws-teams` as it was first
+introduced, several advancements (documented above) have been made since then. The recommended approach for converting
+from `iam-primary-roles` to `aws-teams` is to upgrade to the latest versions of the `account-map`, `aws-teams`,
+`aws-team-roles`, `aws-saml`, `aws-sso`, and `tfstate-backend` components in one large upgrade rather than incrementally.
+This will allow you to apply the latest recommended configuration and take advantage of the latest features, including
+semi-automatic generation of the AWS config files, and run a single migration of your authentication workflows, rather
+than suffer through multiple migrations with customized intermediate configurations.
+
+- Components [version 1.27.0](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.27.0)
+- Components [PR 438](https://github.com/cloudposse/terraform-aws-components/pull/438)
+- Required component updates: replace `iam-primary-roles` and `iam-delegated-roles` with `aws-teams` and `aws-team-roles`
+- Required configuration update complexity: complex, should be handled by Cloud Posse Professional Services
+- Forensics: You have this feature if you have `aws-teams` and `aws-team-roles` components.
+
+#### Before
+
+Before the development of Atmos, it was difficult to create DRY configurations for IAM roles and policies. The
+reference architecture mitigated this for creating the numerous IAM roles and policies needed to support Terraform
+and other operations in all the accounts by having a single component, `iam-primary-roles`, do double-duty, both
+creating the roles used in the `identity` account and creating templates for the roles used in the other accounts.
+Other accounts deployed the `iam-delegated-roles` component and only had to configure deviations from the templates.
+
+This was incredibly confusing to configure properly and was a constant source of errors. It also made it difficult
+to add new roles to a subset of accounts, or to integrate with AWS SSO permission sets.
+
+Additionally, access to the Terraform backend was via a role provisioned by the `iam-delegated-roles` component
+in the `root` account, which caused 2 problems:
+
+- The role was not available until after the `iam-delegated-roles` component was deployed, which meant that
+  components that needed to be deployed before the `iam-delegated-roles` component could not use the Terraform
+  backend role, and had to be provisioned by SuperAdmin and _only_ SuperAdmin.
+- The role for accessing the Terraform backend was the standard `root-terraform` delegated role with modified,
+  very limited permissions, which meant that to actually run Terraform, you had to use a different role
+  (the `admin` role) which had full permissions. This exception to the rule of which role Terraform would assume
+  to perform updates contributed to confusion and misunderstanding about who could do what, and how.
+
+#### After
+
+The conceptual framework of access control has been clarified, and with the support of Atmos, simplified while
+remaining DRY. Also, by the time you get to version 1.238.0, it is well integrated with AWS SSO permission sets.
+
+The `aws-teams` component is deployed to the `identity` account to create what we refer to as "Teams", which
+are analogous to "groups" in a traditional access control system. Users are assigned to one or more Teams
+via the Identity Provider (usually Okta or Google Workspaces, and possibly via the Identity Provider's "group"
+mechanism). Each Team has access to a collection of "Team Roles" (standardized AWS IAM Roles deployed by the
+`aws-team-roles` component) in a collection of AWS accounts (including possibly all accounts).
+
+All teams and team roles configure their own permissions and what other principals can assume them. Teams and
+AWS SSO Permission sets can be configured as principals allowed to assume the roles using symbolic names. Other
+principals can be configured using ARNs. Inheritance and DRY is provided via Atmos stacks.
+
+As of version 1.242.0, the wart of using the `root-terraform` role to access the Terraform backend has been removed,
+and the `terraform` role is now used consistently in all accounts. The `tfstate-backend` component is now used to
+create the Terraform backend role, now called `tfstate`, and it is available as soon as the Terraform state backend is
+created, which is the first step in the Terraform process, and means it is available to SuperAdmin for all subsequent
+steps, which means that all the components can be configured to use it, which means normal Terraform users can
+manage nearly all components.
+

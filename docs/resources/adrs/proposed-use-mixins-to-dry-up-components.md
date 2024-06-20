@@ -1,0 +1,130 @@
+---
+title: "Proposed: Use Mixins to DRY-up Components"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1277231107/Proposed%3A+Use+Mixins+to+DRY-up+Components
+sidebar_position: 200
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/proposed-use-mixins-to-dry-up-components.md
+---
+
+# Proposed: Use Mixins to DRY-up Components
+**Date**: **11 Mar 2022**
+
+:::warning Rejected!
+
+The proposal in this ADR was rejected! For questions, please reach out to Cloud Posse.
+
+- Cloud Posse does use mixins, but generally they are avoided. Instead, we recommend [using the override pattern](/reference-architecture/fundamentals/component-development/#how-can-terraform-modules-or-resources-be-added-to-a-component). This ADR should be updated to reflect the latest decision.
+
+:::
+
+## Status
+**DRAFT**
+
+## Problem
+Many Terraform components are not [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) component-to-component because they contain the same boilerplate for achieving similar functions: Configuring variables or the Helm Provider for an EKS Component, Creating a SopsSecret for an EKS Component, etc.
+
+## Considered Options
+
+A Terraform mixin (inspired by the [concept of the same name in OOP languages such as Python and Ruby](https://en.wikipedia.org/wiki/Mixin)) is a Terraform configuration file that can be dropped into a root-level module, i.e. a component, in order to add additional functionality.
+
+Mixins are meant to encourage code reuse, leading to more simple components with less code repetition between component to component.
+
+### Proposed Mixins
+
+#### Mixin: `infra-state.mixin.tf`
+
+Code: [https://github.com/cloudposse/terraform-aws-components/blob/6dc766d848306d6ce3ddb1a86bc26822b30ce56f/mixins/infra-state.mixin.tf](https://github.com/cloudposse/terraform-aws-components/blob/6dc766d848306d6ce3ddb1a86bc26822b30ce56f/mixins/infra-state.mixin.tf)
+
+This mixin is meant to be placed in a Terraform configuration outside the organization's infrastructure monorepo in order to:
+
+1. Instantiate an AWS Provider using roles managed by the infrastructure monorepo. This is required because Cloud Posse's `providers.tf` pattern requires an invocation of the `account-map` component’s `iam-roles` submodule, which is not present in a repository outside of the infrastructure monorepo.
+
+Retrieve outputs from a component in the infrastructure monorepo. This is required because Cloud Posse’s `remote-state` module expects a `stacks` directory, which will not be present in other repositories, the monorepo must be cloned via a `monorepo` module instantiation.
+
+Because the source attribute in the `monorepo` and `remote-state` modules cannot be interpolated and refers to a monorepo in a given organization, the following dummy placeholders have been put in place upstream and need to be replaced accordingly when "dropped into" a Terraform configuration:
+
+1. Infrastructure monorepo: `github.com/ACME/infrastructure`
+
+Infrastructure monorepo ref: `0.1.0`
+
+#### Mixin: `introspection.mixin.tf`
+
+Code: [https://github.com/cloudposse/terraform-aws-components/blob/6dc766d848306d6ce3ddb1a86bc26822b30ce56f/mixins/introspection.mixin.tf](https://github.com/cloudposse/terraform-aws-components/blob/6dc766d848306d6ce3ddb1a86bc26822b30ce56f/mixins/introspection.mixin.tf)
+
+This mixin is meant to be added to Terraform components in order to append a `Component` tag to all resources in the configuration, specifying which component the resources belong to.
+
+It's important to note that all modules and resources within the component then need to use `module.introspection.context` and `module.introspection.tags`, respectively, rather than `module.this.context` and `module.this.tags`.
+
+#### Mixin: `sops.mixin.tf`
+
+Code: [https://github.com/cloudposse/terraform-aws-components/blob/6dc766d848306d6ce3ddb1a86bc26822b30ce56f/mixins/sops.mixin.tf](https://github.com/cloudposse/terraform-aws-components/blob/6dc766d848306d6ce3ddb1a86bc26822b30ce56f/mixins/sops.mixin.tf)
+
+This mixin is meant to be added to Terraform EKS components which are used in a cluster where sops-secrets-operator (see: [https://github.com/isindir/sops-secrets-operator](https://github.com/isindir/sops-secrets-operator) ) is deployed. It will then allow for SOPS-encrypted SopsSecret CRD manifests (such as `example.sops.yaml`) placed in a `resources/` directory to be deployed to the cluster alongside the EKS component.
+
+This mixin assumes that the EKS component in question follows the same pattern as `alb-controller`, `cert-manager`, `external-dns`, etc. That is, that it has the following characteristics:
+
+1. Has a `var.kubernetes_namespace` variable.
+
+2. Does not already instantiate a Kubernetes provider (only the Helm provider is necessary, typically, for EKS components).
+
+#### Mixin: `helm.mixin.tf`
+
+Code: TODO
+
+This mixin is meant to be added to Terraform EKS components and performs the following functions:
+
+1. It provides consistent boilerplate for Helm charts, i.e. all of the Terraform variables required to configure a Helm chart and its version.
+
+2. It instantiates the Helm provider and the Kubernetes provider, and all of the variables to override it, including toggling of the Helm Provider’s experimental manifest feature.
+
+This mixin does _not_ instantiate the `helm-release` module itself. Rather, it encapsulates all of the boilerplate required to do so. The reason for this is because the module instantiation is unique to the component, and has an intuitive interface to set up policies for the IRSA role, etc.
+
+This mixin also assumes that EKS components will contain some values in `defaults.auto.tfvars`, which do not frequently change but can still be overridden by YAML stack configs. This includes things such as the chart repository and chart version. The benefit of this is that tools such as [renovatebot](https://github.com/renovatebot) can automatically increment the Helm chart version if these values are within `defaults.auto.tfvars`, rather than the YAML stack config. Additionally, the variables within `helm.mixin.tf` need defaults for these values, but these defaults should not exist within the variable declaration blocks themselves as they are unique per component, and the end user of the component should not always have to provide a YAML stack config with values for these variables, if they do not frequently change from user-to-user.
+
+```
+name = "alb-controller"
+
+chart            = "aws-load-balancer-controller"
+chart_repository = "https://aws.github.io/eks-charts"
+chart_version    = "1.4.0"
+
+kubernetes_namespace = "kube-system"
+
+resources = {
+  limits = {
+    cpu    = "200m"
+    memory = "256Mi"
+  },
+  requests = {
+    cpu    = "100m"
+    memory = "128Mi"
+  }
+}
+```
+
+### Additional Considerations
+
+#### Versioning
+
+See [Use Vendoring in Atmos](/reference-architecture/reference/adrs/use-vendoring-in-atmos)
+
+#### Mixin Best Practices
+
+- Whenever a Terraform mixin contains a Terraform Provider, it must set an alias for it. Otherwise, mixins will conflict with each other.
+
+#### Unit Testing Mixins
+
+- `terraform-aws-components` will contain both the mixins and components using them. The component configuration schema allows for referencing mixins using relative paths. Thus, the component can reference the mixin in the same repository. This provides an integration test for both the components and the mixins they use, ensuring both are functioning.
+
+## Decision
+
+**DECIDED**:
+
+## Consequences
+
+- TODO: Waiting on Decision
+
+## References
+
+- [https://github.com/cloudposse/terraform-aws-components/pull/385](https://github.com/cloudposse/terraform-aws-components/pull/385)
+
+

@@ -1,0 +1,277 @@
+---
+title: "Upgrade Atmos"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1225588737/How+to+Upgrade+Atmos
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-upgrade-atmos.md
+---
+
+# How to Upgrade Atmos
+
+## Problem
+You are running an out-of-date version of atmos and need to upgrade it to leverage some new functionality.
+
+## Solution
+
+:::tip
+TL;DR update the `ATMOS_VERSION` in the [Geodesic](/fundamentals/geodesic) `Dockerfile` of your `infrastructure` repository.
+
+:::
+
+### Upgrading from 0.x.x → 1.x
+
+:::note
+To reduce the number of variables in case something breaks, please make sure all spacelift stacks are in a confirmed state.
+
+:::
+
+:::note
+Terraform workspaces no longer are tied to root stack names and instead are created from context variables. For the rare scenarios where root stacks do not correlate to their pre-existing terraform workspaces and backwards compatibility is needed, `metadata.terraform_workspace` (1.3.20+) yaml key would need to be set to the name of the file (without .yaml) for each component in that root stack to prevent a destroy and recreate on each resource.
+
+:::
+
+:::caution
+The administrative stack must have its runner image set to custom Geodesic image built by the monorepo and not the default Spacelift runner image. This is because upgrading to the latest `cloud-infrastructure-automation` module introduces the Cloud Posse’s `utils` provider, which requires `atmos.yaml`.
+
+:::
+1. Update the `ATMOS_VERSION` in the [Geodesic](/fundamentals/geodesic) `Dockerfile` of your `infrastructure` repository (see “Atmos Versions”)
+
+2. Remove `variant` installation from the Dockerfile
+
+3. Add `atmos.yaml` to  `rootfs/usr/local/etc/atmos/atmos.yaml`
+
+- See [Atmos](/fundamentals/atmos)  for example.
+
+4. In `rootfs/usr/local/etc/atmos/atmos.yaml` file, review the following config:
+
+`excluded_paths` is a list of path globs that are NOT top-level stacks and should be excluded from searching by `atmos` (note that those stack config files are usually imported into top-level stacks).
+If, for example, the `catalog` folder is not used, but some other folder(s) are used to keep the imported files, remove the `"catalog/**/*"` item from the list and add the other folder(s) to exclude them.
+
+```
+  excluded_paths:
+    - "globals/**/*"
+    - "catalog/**/*"
+    - "**/*globals*"
+```
+
+5. Review all other settings in `rootfs/usr/local/etc/atmos/atmos.yaml`. For example, if `tenant` is not in use, modify `helm_aws_profile_pattern`, `cluster_name_pattern` and `name_pattern` settings.
+
+6. Upgrade [spacelift automation](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) module to latest version in the `spacelift` component
+- Note that the version below shows 0.45.0 but this may not be the latest version
+- Remove the variable `var.stack_config_path` from `components/terraform/spacelift/variables.tf`
+- Remove the following two fields from the Spacelift module invocation and remove `locals`
+
+```
+stacks                     = local.stacks
+stack_config_path          = var.stack_config_path
+
+locals {
+  config_filenames   = fileset(var.stack_config_path, "*.yaml")
+  stack_config_files = [for f in local.config_filenames : f if(replace(f, "globals", "") == f)]
+  stacks             = [for f in local.stack_config_files : trimsuffix(basename(f), ".yaml")]
+}
+```
+
+<img src="/assets/refarch/image-20211216-233728.png" height="560" width="969" /><br/>
+
+7. Update the file `components/terraform/spacelift/context.tf` to the latest version (take it from [https://github.com/cloudposse/terraform-null-label/blob/master/exports/context.tf](https://github.com/cloudposse/terraform-null-label/blob/master/exports/context.tf))
+
+8. Update the file `.spacelift/config.yml` with the following content
+
+```
+version: "1"
+
+stack_defaults:
+  before_init:
+    - spacelift-write-vars
+    - spacelift-tf-workspace
+
+  before_plan: []
+
+  before_apply: []
+
+  environment:
+    AWS_SDK_LOAD_CONFIG: true
+    AWS_CONFIG_FILE: /etc/aws-config/aws-config-cicd
+    # replace <namespace> with your namespace and remove this comment
+    AWS_PROFILE: <namespace>-gbl-identity
+    ATMOS_BASE_PATH: /mnt/workspace/source
+
+stacks:
+  infrastructure:
+    before_init: []
+    before_plan: []
+    before_apply: []
+
+```
+
+9. Update the file `rootfs/usr/local/bin/spacelift-tf-workspace` with the following content
+
+```
+#!/bin/bash
+
+# Add -x for troubleshooting
+set -ex -o pipefail
+
+terraform init -reconfigure
+
+echo "Selecting Terraform workspace..."
+echo "...with AWS_PROFILE=$AWS_PROFILE"
+echo "...with AWS_CONFIG_FILE=$AWS_CONFIG_FILE"
+
+atmos terraform workspace "$ATMOS_COMPONENT" --stack="$ATMOS_STACK"
+
+# Remove -x for security
+set -e +x
+
+```
+
+10. Update the file `rootfs/usr/local/bin/spacelift-write-vars` to look like the following
+
+```
+#!/bin/bash
+
+# Add -x for troubleshooting
+set -ex -o pipefail
+
+function main() {
+  if [[ -z $ATMOS_STACK ]] || [[ -z $ATMOS_COMPONENT ]]; then
+    echo "Missing required environment variable" >&2
+    echo "  ATMOS_STACK=$ATMOS_STACK" >&2
+    echo "  ATMOS_COMPONENT=$ATMOS_COMPONENT" >&2
+    return 3
+  fi
+
+  echo "Writing Stack variables to spacelift.auto.tfvars.json for Spacelift..."
+
+  atmos terraform write varfile "$ATMOS_COMPONENT" \
+    --stack="$ATMOS_STACK" -f spacelift.auto.tfvars.json > /dev/null
+  jq . <spacelift.auto.tfvars.json
+}
+
+main
+
+# Remove -x for security
+set -e +x
+
+```
+
+11. `Make sure the Spacelift scripts are executable` by running `chmod +x rootfs/usr/local/bin/spacelift*`
+
+12. Also change `remote-state.tf` for each component. Since the new atmos 1.x retrieves the stacks dynamically, we do
+
+Before in atmos 0.x
+
+```
+module "state" {
+  source  = "cloudposse/stack-config/yaml//modules/remote-state"
+  version = "0.19.0"
+
+  stack_config_local_path = "../../../stacks"
+  component               = lookup(each.value, "component", each.key)
+
+  context = module.this.context
+}
+```
+
+After in atmos 1.x (use the latest version of remote-state)
+
+```
+module "eks" {
+  source  = "cloudposse/stack-config/yaml//modules/remote-state"
+  # use the latest version
+  version = "0.22.3"
+
+  component = "eks"
+
+  context = module.this.context
+}
+```
+
+To script this, you can use [tfupdate](https://github.com/minamijoyo/tfupdate) or [hcledit](https://github.com/minamijoyo/hcledit).
+
+hcledit (use the latest version of remote-state)
+
+```
+apt update && apt install -y hcledit
+find . -name remote-state.tf > remote-state-files
+cat remote-state-files | \
+  while read remotestatefile; do \
+    hcledit block list --file $remotestatefile | \
+      while read block; do \
+        echo "hcledit attribute set $block.version '\"0.22.3\"' --file $remotestatefile -u"; \
+        echo "hcledit attribute rm $block.stack_config_local_path --file $remotestatefile -u"; \
+      done;
+  done > update-remotestate.sh
+chmod +x update-remotestate.sh
+./update-remotestate.sh
+```
+
+13. Bump Geodesic to the latest like `1.2.1`
+
+1. This is so the `ATMOS_BASE_PATH` env var no longer needs to be set
+
+14. Run `make all` to build a new container
+
+15. Change directory into the root path of your repository within `/localhost`
+
+16. Set the `export ATMOS_BASE_PATH=$(pwd)`env var if it’s not already set
+
+17. Run `atmos terraform plan vpc --stack <STACKNAME>` and other atmos commands as a test
+
+18. Open a pull request with the changes described above
+
+19. After approval, merge the PR into the default branch
+
+20. Rebuild the Docker image and push the latest version to the Docker registry used by Spacelift (usually ECR) with the tag `latest`. This is required for the changes to the Spacelift files in `rootfs/usr/local/bin/` to take effect, and is usually done by automation like calling a GitHub Actions or executing a Codefresh pipeline.
+
+21. Confirm that the `infrastructure` stack and components' stacks are operational in Spacelift
+
+### Troubleshooting
+
+#### Failed local runs
+
+```
+╷
+│ Error:
+│ No stack config files found in the provided paths:
+│ - /localhost/git/infrastructure/components/terraform/compliance/stacks/**/*
+```
+This means that the `ATMOS_BASE_PATH` (different for everyone, should be set to the absolute path of the repo root) is most likely unset or an older version of `atmos` is used.
+
+```
+$ atmos version
+1.3.17
+$ echo $ATMOS_BASE_PATH
+/localhost/git/infrastructure/
+```
+If it still fails, try running an `atmos terraform clean` command to remove any stale data like a stale `.terraform.lock.hcl` file and rerun.
+
+#### Failed Spacelift runs
+Any stack failures may be due to stacks pinned to a specific old hash even if it points to the default branch. Each failed stack should point to the latest HEAD because the latest will contain the `ATMOS_BASE_PATH` env var set in the `.spacelift/config`.
+
+To do this, for each failed stack
+
+1. Navigate to the stack
+
+2. Go to stack settings
+
+3. Change branch to something else
+
+4. Change it back to the original branch (like `main` or whatever the default branch is)
+
+5. Retrigger
+
+and it should show up as “Unconfirmed” or “No changes” as expected.
+
+
+
+## Atmos Versions
+[https://github.com/cloudposse/atmos/releases](https://github.com/cloudposse/atmos/releases)
+
+## Remote state module Versions
+[https://github.com/cloudposse/terraform-yaml-stack-config/releases](https://github.com/cloudposse/terraform-yaml-stack-config/releases)
+
+## Open Issues
+[https://github.com/cloudposse/atmos/issues](https://github.com/cloudposse/atmos/issues)
+
+

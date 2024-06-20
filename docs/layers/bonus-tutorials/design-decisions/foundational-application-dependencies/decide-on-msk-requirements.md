@@ -1,0 +1,89 @@
+---
+title: "Decide on MSK Requirements"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1201537168/REFARCH-486+-+Decide+on+MSK+Requirements
+sidebar_position: 100
+refarch_id: REFARCH-486
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-msk-requirements.md
+---
+
+# Decide on MSK Requirements
+
+## Problem
+Requirements for MSK clusters deployed to each active compute environment need to be outlined before an MSK component is configured and deployed.
+
+## Context
+Amazon MSK clusters are going to be used by applications that use Apache Kafka streams.
+
+## Considered Options
+
+### Create a standardized MSK cluster based on requirements.
+
+- Number of AZs
+
+- Apache Kafka version
+
+- Number of broker nodes
+
+- Broker instance type
+
+- Enhanced monitoring enabled?
+
+- Node and JMX Prometheus exporters enabled?
+
+- Broker volume size
+
+- S3 broker logging enabled?
+
+- CloudWatch Logs broker logging enabled?
+
+- CloudWatch Logs retention period (if CloudWatch Logs broker logging is enabled)
+
+- Kinesis Firehose broker logging enabled?
+
+- Authentication
+
+- Defaults to Mutual TLS authentication disabled
+
+- Private CA ARN can be used for mutual TLS authentication if that’s required. This can be created per account or in a single account and shared across accounts with AWS RAM.
+
+- Defaults to IAM (Client SASL IAM) authentication disabled.
+
+- Encryption at rest defaults to using amazon-managed “aws/msk” kms key.
+
+- MSK properties
+
+- Auto create topics ?
+
+- `auto.create.topics.enable` (this is explicitly set to false by default)
+
+- If auto creating topics is not required but topic creation is required, there is a separate component for it where topics can be explicitly created.
+
+- Allow deleting topics ?
+
+- `delete.topic.enable` (since kafka 1.0.0, this has defaulted to true but is not in the msk default)
+
+[Amazon provides an Excel spreadsheet](https://amazonmsk.s3.amazonaws.com/MSK_Sizing_Pricing.xlsx) to help make these calculations.
+
+[msk_sizing_pricing.xlsx](/assets/refarch/msk_sizing_pricing.xlsx)
+
+#### Standardized Amazon MSK Cluster Requirements
+
+The [Amazon-recommended Apache Kafka version](https://docs.aws.amazon.com/msk/latest/developerguide/supported-kafka-versions.html#2.6.2) (`2.6.2`) will be used in favor of `2.6.0`, because the minor semantic version difference is not expected to cause any compatibility issues, and contains bug fixes and remediations to CVEs (see: [Apache Kafka 2.6.2 release notes](https://downloads.apache.org/kafka/2.6.2/RELEASE_NOTES.html)).
+
+As a best practice, CloudWatch Logs broker logging should be enabled in order to have the ability to debug Apache Kafka issues when they arise. (Amazon MSK will log `info` level logs. See: [Apache Kafka log levels](https://httpd.apache.org/docs/2.4/mod/core.html#loglevel).) The retention period for these logs should be long enough for debugging in non-production environments (e.g. 60 days), and even longer in production environments in order to be able to debug issues that may be impacting or have impacted users in the past (e.g. 365 days).
+
+[LIST ATTRIBUTES FROM _Create a standardized MSK cluster based on requirements_ AND FILL THEM IN]
+
+## References
+
+- [Amazon MSK: Supported Apache Kafka versions](https://docs.aws.amazon.com/msk/latest/developerguide/supported-kafka-versions.html)
+
+- [Amazon MSK: Logging](https://docs.aws.amazon.com/msk/latest/developerguide/msk-logging.html)
+
+- [Amazon MSK now supports the ability to change the size or family of your Apache Kafka brokers](https://aws.amazon.com/about-aws/whats-new/2021/01/amazon-msk-now-supports-the-ability-to-change-the-size-or-family/)
+
+- [https://docs.aws.amazon.com/msk/latest/developerguide/msk-encryption.html](https://docs.aws.amazon.com/msk/latest/developerguide/msk-encryption.html)
+
+- [https://docs.aws.amazon.com/msk/latest/developerguide/msk-default-configuration.html](https://docs.aws.amazon.com/msk/latest/developerguide/msk-default-configuration.html)
+
+

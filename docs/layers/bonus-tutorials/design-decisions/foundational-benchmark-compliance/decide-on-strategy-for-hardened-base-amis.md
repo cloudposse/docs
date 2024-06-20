@@ -1,0 +1,54 @@
+---
+title: "Decide on Strategy for Hardened Base AMIs"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171980616/REFARCH-345+-+Decide+on+Strategy+for+Hardened+Base+AMIs
+sidebar_position: 100
+refarch_id: REFARCH-345
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-strategy-for-hardened-base-amis.md
+---
+
+# Decide on Strategy for Hardened Base AMIs
+
+## Problem
+When critical CVEs come out, they should be promptly remediated. If we rely strictly on upstream AMIs, we have little control over the time to remediate as we’re dependent on third parties to remediate the vulnerabilities and their failure to do so will jeopardize our ability to meet commitments.
+
+Many compliance frameworks require host-level hardening and the ability to demonstrate something along the lines of [https://www.cisecurity.org/controls/continuous-vulnerability-management/](https://www.cisecurity.org/controls/continuous-vulnerability-management/). Laws, regulations, standards, or contractual agreements may require an even higher priority or shorter timeline for remediation. For example, to comply with the [<ins>Payment Card Industry Data Security Standard (PCI DSS)</ins>](https://www.pcisecuritystandards.org/document_library), vulnerabilities in any PCI environment:
+
+- CVSS scores of 4 or higher must be remediated within 30 days of notification.
+
+- CVSS scores of less than 4 must be remediated within two to three months.
+
+See [Decide on Technical Benchmark Framework](/reference-architecture/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-technical-benchmark-framework)
+
+## Solution
+We need a solution that covers both EKS (for customers using it) and for standalone EC2 instances where applicable. Additionally, regardless of the solution, we’ll also need to instrument the process for rolling out the changes. See [How to Enable Spacelift Drift Detection](/reference-architecture/how-to-guides/integrations/spacelift/how-to-enable-spacelift-drift-detection) for a nice way to automatically update AMIs using data sources.
+
+### Use CIS or Not?
+
+> CIS benchmarks are internationally recognized as security standards for defending IT systems and data against cyberattacks. Used by thousands of businesses, they offer prescriptive guidance for establishing a secure baseline configuration.The CIS Foundation is the most recognized industry standard for hardening OS images, however, they have not yet published the CIS standard for container-optimized OS. The traditional CIS benchmarks are for full-blown OSs with a different set of concerns that do not apply to a container-optimized OS. What CIS has defined are [the best practices for hardening EKS as a platform](https://aws.amazon.com/de/blogs/containers/introducing-cis-amazon-eks-benchmark/) and that standard is covered by `kube-bench`.  So by running `kube-bench` on a cluster we would be able to validate if Bottlerocket meets the CIS standard for nodes managed by Kubernetes. While this is not the same as "certification", it might be good enough for benchmark compliance.
+
+### Use Existing Hardened Image
+- AWS does not provide turnkey CIS-compliant base AMIs (third-party vendors only).
+
+- Bottlerocket is more secure but is still not _technically_ CIS-compliant out of the box
+[https://github.com/bottlerocket-os/bottlerocket/issues/1297](https://github.com/bottlerocket-os/bottlerocket/issues/1297)
+
+- [https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami-bottlerocket.html](https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami-bottlerocket.html)
+
+- [https://aws.amazon.com/about-aws/whats-new/2021/10/amazon-eks-nodes-groups-bottlerocket/](https://aws.amazon.com/about-aws/whats-new/2021/10/amazon-eks-nodes-groups-bottlerocket/)
+
+- [CIS provides marketplace images](https://aws.amazon.com/marketplace/seller-profile?id=dfa1e6a8-0b7b-4d35-a59c-ce272caee4fc), but these add $0.02/hour.
+
+### DIY Hardened Images
+- Build our own AMIs based on something like Bottlerocket or Amazon Linux and do our own hardening.
+
+- Any hardening we do would necessitate the implementation of the packer configurations and pipelines for managing it.
+
+- Create GitHub Action pipeline to build packer images and distribute them to enabled regions
+
+### Cloud-Init Patching
+With `cloud-init` we can patch the system at runtime. This has the benefit of not requiring us to manage any complicated factory for building AMIs for multiple regions but violates the principle of immutable infrastructure.
+
+### AWS Systems Manager Patch Manager
+With AWS Systems Manager can apply patch documents to running systems based on policies, but violates the principle of immutable infrastructure.
+
+
