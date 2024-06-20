@@ -1,11 +1,12 @@
 ---
-title: "Structure of Terraform S3 State Backend Bucket"
+title: "Terraform S3 State"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1191641221/Structure+of+Terraform+S3+State+Backend+Bucket
 sidebar_position: 100
 custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/structure-of-terraform-s3-state-backend-bucket.md
 ---
 
 # Structure of Terraform S3 State Backend Bucket
+
 Understand the anatomy of a Terraform S3 state backend bucket and how workspaces, key prefixes and buckets are used.
 
 From HashiCorp
