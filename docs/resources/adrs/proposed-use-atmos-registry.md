@@ -1,0 +1,253 @@
+---
+title: "Proposed: Use Atmos Registry"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1247969307/Proposed%3A+Use+Atmos+Registry
+sidebar_position: 200
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/proposed-use-atmos-registry.md
+---
+
+# Proposed: Use Atmos Registry
+
+:::info Needs Update!
+
+The content in this ADR may be out-of-date and needing an update. For questions, please reach out to Cloud Posse
+
+- Cloud Posse uses the [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) repository with vendoring similarly to how a registry might behave. For more on vendoring, see [atmos vendor pull](https://atmos.tools/cli/commands/vendor/pull).
+
+:::
+
+## Problem
+We need a way to centralize cloudposse components for reuse across all customers. We have cloudposse/terraform-aws-components, but we do not use it as a source of truth. As a result, maintaining our vast library of components is challenging.
+
+We need some way to discover components to avoid duplication of effort. Providing a registry is a common characteristic among successful languages or tools (E.g. `python` has PyPi, `perl` has CPAN, `ruby` has RubyFoge, `docker` has DockerHub, `terraform` has the Terraform Registry).
+
+Additionally, we need some way to easily create new components (e.g. from a template).
+
+## Solution
+
+Implemnet a GitHub based “registry” for components, stacks and mixins. Use a generator pattern (e.g. like cookiecuter), but make it natively built-in to atmos. (E.g. see  [https://github.com/tmrts/boilr](https://github.com/tmrts/boilr) for inspiration, but anything we do should be a re-implementation with a very nice UI).
+
+### TODO: inconsistencies
+
+- Mixins (YAML vs Terraform)
+
+- Registry usage (search, generating components)
+
+### TODO: explanations
+
+- why even care about templating?
+
+- why add components to `--stack`
+
+### Use-case #1: Pull down existing components
+
+Imagine the command like this...
+
+```
+atmos component generate terraform/aurora-postgres \
+    --stack uw2-dev \
+    --source cloudposse/terraform-aws-components//modules/aurora-postgres \
+    --version 1.2.3
+```
+
+
+
+<img src="/assets/refarch/demo.gif" height="560" width="1040" /><br/>
+
+1. It will download the component
+
+2. It will prompt the user for any information needed, providing sane defaults. It will save the user’s answers, so subsequent generations persist state.
+
+3. It will add a component configuration to the `uw2-dev` stack if none found
+
+4. User commits to VCS
+
+```
+atmos component generate terraform/eks \
+  --source cloudposse/terraform-aws-components//modules/eks
+  --version 1.2.3
+
+atmos stacks generate stacks/catalog/eks \
+  --source cloudposse/terraform-aws-stacks//catalog/eks-pci
+  --version 1.2.3
+```
+
+### Use-case #2: Initialize a new component from the component template for AWS
+
+This will create a new component from some boilerplate template and add it to the `uw2-dev` stack.
+
+```
+atmos component generate terraform/my-new-component \
+   --stack uw2-dev \
+   --source cloudposse/terraform-aws-component-template
+
+```
+
+### Use-case #3: Mixins
+
+This will create a `context.tf` in the `components/my-new-component`
+
+```
+atmos mixins generate components/terraform/my-new-component/context.tf \
+   --source cloudposse/terraform-aws-components/mixins/context.tf
+
+```
+
+### Use-case #4: List & Search for Components, Stacks and Mixins.
+
+The `--filter` argument is used to filter the results.
+
+Search for all EKS components.
+
+```
+atmos component registry list --filter eks
+```
+
+Search for all EKS stacks
+
+```
+atmos stack registry list --filter eks
+```
+
+Search for all mixins
+
+```
+atmos mixin registry list --filter context
+```
+
+### Use-case #5: Add registries
+
+```
+atmos component registry add cloudposse/terraform-aws-components
+```
+
+Add our reference architecture registry
+
+```
+atmos stack registry add cloudposse/refarch
+```
+
+The `atmos.yml` contains:
+
+```
+components:
+  terraform:
+    registries:
+      - cloudposse/terraform-aws-components
+
+stacks:
+  registries:
+  - cloudposse/refarch
+```
+
+### Use-case #5: Configuration
+
+```
+import:
+- uw2-globals
+vars:
+  stage: testplatform
+terraform:
+  vars: {}
+helmfile:
+  vars:
+    account_number: "199589633144"
+components:
+  terraform:
+    # this will download all components into `aws-component/0.141.0`
+    # it's abstract because: atmos terraform apply aws-component doesn't make sense
+    "cloudposse/terarform-aws-components/0.141.0":
+      metadata:
+        type: abstract
+        source: https://github.com/cloudposse/terraform-aws-components//modules
+        version: 0.141.0
+
+    # this will run aurora-postgres from `aws-component/0.141.0/aurora-postgres`
+    aurora-postgres:
+      component: "cloudposse/terraform-aws-components/0.141.0/aurora-postgres"
+      mixins: # calling this mixins is confusing
+      # this will upgrade the context.tf
+      - file: context.tf
+        source: https://github.com/cloudposse/terraform-aws-components/mixins/context.tf
+        version: 1.2.3
+      vars:
+        # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html
+        instance_type: db.r4.large
+        cluster_size: 1
+        cluster_name: main
+        database_name: main
+
+
+   # this will run aurora-postgres from `aws-component/0.141.0/aurora-postgres`
+    eks:
+      component: "eks"
+      mixins:
+      metadata:
+        type: real
+        source: https://github.com/gruntwork/terraform-aws-components//modules/eks
+        version: 1.0
+      vars:
+        # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html
+        instance_type: db.r4.large
+        cluster_size: 1
+        cluster_name: main
+        database_name: main
+  helmfile:
+    cert-manager:
+      metadata:
+        type: real
+        source: https://github.com/cloudposse/helmfiles/cert-manager/
+        version: 1.0
+      vars:
+        ..
+```
+
+### Use-case #6: easy upgrades
+
+```
+atmos component upgrade terraform/aws-component --version latest
+```
+
+1. This will update `version: 0.141.0` to the latest (e.g. `0.142.0`)
+
+2. Then pull down the `latest` version of the component (in this case, the entire component library) and write it to `components/terraform/cloudposse/terraform-aws-components/0.142.0`
+
+3. User commits to VCS
+
+Optionally, the old version can be purged:
+
+```
+atmos component upgrade terraform/cloudposse/terraform-aws-components \
+  --version latest \
+  --update \     # update any derived component versions to use 0.142.0
+  --purge \      # delete previous versions
+  --commit       # idea: git commit these changes (what about branch, pr, etc)
+```
+
+### Use-case #7: diverge from cloudposse component
+
+```
+cp -a components/terraform/cloudposse/terraform-aws-modules/aurora-postgres \
+    components/terraform/aurora-postgres
+```
+
+### Use-case #8: diff
+
+```
+atmos component upgrade  --diff --use-defaults
+```
+
+### Use-case #6: refarch
+
+```
+atmos generate cloudposse/refarch/multi-account-eks-pci
+```
+
+1. pull down the refarch for a multi-account PCI compliance refarch
+
+2. It will prompt the user for all the inputs
+
+3. It will generate all the configs and components
+
+4. User commits to VCS
+
+

@@ -5,8 +5,7 @@ on:
 
   push:
     branches:
-      - main
-      - master
+      - "staging"
 
 env:
   AWS_REGION: us-east-2

@@ -310,3 +310,41 @@ svg.landingLogo path {
 aside.col.col--3 {
     --ifm-col-width: calc(2.5 / 12 * 100%);
 }
+
+
+/**
+ * Imported from atmos.tool
+ */
+
+li.menu__list-item.hidden {
+    display: none;
+}
+
+li.sidebar-title > div > a.menu__link {
+    text-transform: uppercase;
+    color: #b1b1b1;
+}
+
+li.sidebar-title {
+    border-top: 1px solid #6666663b;
+    padding-top: 1.2em;
+    margin-top: 1.2em;
+}
+
+li.sidebar-title:first-child {
+    border-top: none;
+    margin-top: inherit;
+}
+
+li.sidebar-title.menu__list-item:not(:first-child) {
+    margin-top: 1.2em !important;
+}
+
+li.sidebar-title > ul:first .menu__list .menu__list {
+    padding-left: 0;
+}
+
+.sidebar-title > ul.menu__list {
+    margin-left: 0;
+    padding-left: 0;
+}

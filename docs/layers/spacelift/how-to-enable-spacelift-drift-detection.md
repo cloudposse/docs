@@ -1,0 +1,60 @@
+---
+title: "Drift Detection"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1184301057/How+to+Enable+Spacelift+Drift+Detection
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-enable-spacelift-drift-detection.md
+---
+
+# How to Enable Spacelift Drift Detection
+
+## Problem
+
+The state of infrastructure may drift from what is defined in Infrastructure as Code via Terraform.
+
+This happens for multiple reasons: someone performs clickops in the AWS Web UI, Terraform introduces changes to resources, someone runs terraform or `atmos` locally without upstreaming their changes, an adversary exploits some mechanism to alter the state of your infrastructure, or simply you depend on some remote state not defined in the source control (e.g. [using the data source to pull the latest AMI](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami)). In any one of these situations, the state of our infrastructure has diverged from what we last knew, which is why we should perform regular reconciliation.
+
+## Solution
+
+:::tip
+Use spacelift drift detection to continuously reconcile the state of your infrastructure with what’s in GitHub
+
+:::
+
+Spacelift supports automatically detecting drift by re-running any stack on a cron schedule. When it detects changes (e.g. `terraform plan` indicates there are changes), then it can propose a run to remediate the change.
+
+The configuration can be controlled by updating the stack configuration for a component by toggling the `drift_detection_enabled` and `drift_detection_reconcile` settings.
+
+```
+components:
+  terraform:
+    your-component:
+      settings:
+        spacelift:
+          workspace_enabled: true
+          drift_detection_enabled: true
+          drift_detection_reconcile: true
+```
+<img src="/assets/refarch/cleanshot-2021-10-22-at-14.03.34-20211022-190417.png" height="788" width="918" /><br/>
+
+### Default Settings
+
+The defaults for all components are set in `spacelift` component in `default.auto.tfvars`file.
+
+```
+# This will enable the detection of drift. Use with `drift_detection_reconcile` to ensure automatic reconciliation.
+drift_detection_enabled = true
+
+# Enable automatic reconciliation (this will propose a run if there are changes)
+drift_detection_reconcile = true
+
+# Run every day at 04:00 am GMT
+drift_detection_schedule = [
+  "0 4 * * *"
+]
+```
+
+## Related
+
+- [Decide on Spacelift Administrative Stack Auto-deployment](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-spacelift-administrative-stack-auto-deployment)
+
+

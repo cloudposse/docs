@@ -1,5 +1,4 @@
 // @ts-check
-const { redirects } = require("./redirects");
 const lightCodeTheme = require('prism-react-renderer/themes/vsDark');
 const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
 
@@ -14,90 +13,16 @@ const config = {
   onBrokenMarkdownLinks: 'warn',
   onDuplicateRoutes: 'warn',
   favicon: 'img/favicon.png',
+
+  organizationName: 'cloudposse',
+  projectName: 'docs',
+  deploymentBranch: 'staging',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
   plugins: [
-    //['@docusaurus/plugin-debug', {'id': 'debug-docs'}],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'docs',
-        path: 'content/docs',
-        routeBasePath: '/',
-        sidebarPath: require.resolve('./sidebars-docs.js'),
-        editUrl: ({ versionDocsDirPath, docPath, locale }) => {
-          return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
-        }
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'components',
-        path: 'content/components',
-        routeBasePath: 'components/',
-        sidebarPath: require.resolve('./sidebars-components.js')
-      },
-    ],
-    [
-      require.resolve('./src/plugins/changelog/index.js'),
-      {
-        blogTitle: 'Components Changelog',
-        blogDescription: 'Stay informed about new features and breaking changes in every release',
-        blogSidebarCount: 'ALL',
-        blogSidebarTitle: 'Changelog',
-        routeBasePath: '/components/changelog',
-        showReadingTime: false,
-        postsPerPage: 20,
-        archiveBasePath: null,
-        authorsMapPath: 'authors.json',
-        feedOptions: {
-          type: 'all',
-          title: 'Cloud Posse Components Changelog',
-          description: 'Stay informed about new features and breaking changes in every release',
-          copyright: `Copyright © ${new Date().getFullYear()} Cloud Posse, LLC.`
-        },
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'modules',
-        path: 'content/modules',
-        routeBasePath: 'modules/',
-        sidebarPath: require.resolve('./sidebars-modules.js')
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'github_actions',
-        path: 'content/github-actions',
-        routeBasePath: 'github-actions/',
-        sidebarPath: require.resolve('./sidebars-github-actions.js')
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'reference-architecture',
-        path: 'content/reference-architecture',
-        routeBasePath: 'reference-architecture/',
-        sidebarPath: require.resolve('./sidebars-refarch.js')
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-pages',
-      {
-        id: 'account',
-        path: 'content/account/',
-        routeBasePath: 'account/'
-      },
-    ],
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects
-      },
-    ],
     [
       '@docusaurus/plugin-google-tag-manager',
       {
@@ -108,35 +33,40 @@ const config = {
       'docusaurus-plugin-image-zoom', {},
     ],
   ],
-  organizationName: 'cloudposse',
-  projectName: 'docs',
-  deploymentBranch: 'production',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
+
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: false,
-        blog: false,
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
+          docs: {
+              routeBasePath: '/',
+              sidebarPath: require.resolve('./sidebars.js'),
+              editUrl: ({versionDocsDirPath, docPath, locale}) => {
+                return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
+              },
+              exclude: ['README.md'],
+          },
+          theme: {
+              customCss: require.resolve('./src/css/custom.css'),
+          },
+
       }),
     ],
   ],
+
   scripts: [
     {
       src: "https://kit.fontawesome.com/3a9f2eb5b9.js",
     },
   ],
+
   markdown: {
     mermaid: true,
   },
+
   themes: ['@docusaurus/theme-mermaid'],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -156,48 +86,14 @@ const config = {
         },
         items: [
           {
-            to: '/intro',
+            to: '/learn',
             position: 'left',
-            label: 'Fundamentals',
-            activeBaseRegex:
-              'fundamentals/.*|' +
-              'tutorials/.*|' +
-              'howto/.*|' +
-              'how-to/.*|' +
-              'community/.*|' +
-              'glossary/.*|' +
-              'reference/.*|' +
-              '/intro/',
+            label: 'Learn',
           },
           {
-            type: 'dropdown',
-            label: 'Building Blocks',
+            to: '/reference',
             position: 'left',
-            to: '/fundamentals/building-blocks/',
-            items: [
-              {
-                to: '/components/',
-                label: 'Components',
-              },
-              {
-                to: '/modules/',
-                label: 'Modules',
-              },
-              {
-                to: '/github-actions/',
-                label: 'GitHub Actions',
-              },
-              {
-                href: 'https://atmos.tools',
-                label: 'Atmos',
-              },
-            ]
-          },
-          {
-            href: '/reference-architecture/',
-            position: 'left',
-            html: 'Reference Architecture',
-            target: '_self',
+            label: 'Reference',
           },
           {
             type: 'dropdown',
@@ -254,19 +150,16 @@ const config = {
         style: 'dark',
         links: [{
           title: 'Docs',
-          items: [{
-            label: 'Getting Started',
-            to: '/intro/',
-          }, {
-            label: 'Building Blocks',
-            to: '/fundamentals/building-blocks/',
-          }, {
-            label: 'Tutorials',
-            to: '/category/tutorials/',
-          }, {
-            label: 'How-To',
-            to: '/category/how-to/',
-          }],
+          items: [
+            {
+              label: 'Learn',
+              to: '/learn/',
+            },
+            {
+              label: 'Reference',
+              to: '/reference/',
+            }
+          ],
         }, {
           title: 'Community',
           items: [

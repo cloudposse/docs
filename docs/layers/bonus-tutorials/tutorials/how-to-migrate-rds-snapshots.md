@@ -1,0 +1,658 @@
+---
+title: "Migrate RDS Snapshots"
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-migrate-rds-snapshots.md
+---
+
+# How to Migrate RDS Snapshots Across AWS Organizations
+
+## Context
+
+:::info Namespace Abbreviations
+
+In this document we will refer to the Legacy Organization as `legacy` and refer to the new Organization as `acme`.
+
+:::
+
+At this point we have a populated database in the `legacy-prod` account that we want to migrate to the new organization.
+This database is encrypted with the Amazon Managed KMS key, `aws/rds`. We have already deployed an empty database to the
+new account, `acme-prod`. Now we want to migrate all data from the old to the new.
+
+### Additional considerations
+
+#### Notes from AWS
+
+> You can't share a snapshot that has been encrypted using the default KMS key of the AWS account that shared the
+> snapshot. To work around the default KMS key issue, perform the following tasks:
+>
+> 1. Create a customer managed key and give access to it.
+> 2. Copy and share the snapshot from the source account.
+> 3. Copy the shared snapshot in the target account.
+>
+> [reference](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ShareSnapshot.html#share-encrypted-snapshot)
+
+#### What does this mean
+
+1. We've encrypted the source RDS instance using the AWS managed KMS key for RDS, `aws/rds`
+2. We cannot modify the AWS managed KMS key, so we must copy the snapshot using a customer managed KMS key that we
+   create
+3. Then we can allow the destination account permission to access our new KMS key, which the destination account will
+   use to access the copied snapshot
+4. Restoring a DB instance from a cross account storage encrypted snapshot is not supported, so we must again copy the
+   shared snapshot in the destination account
+
+## Requirements
+
+- The developer needs to have `terraform` access in the new Organization for applying Terraform
+- The developer needs to have `admin` access in target account for the new Organization to read AWS SSM Parameters and
+  KMS keys and create snapshots
+- The developer needs to have Administrator access in the Legacy Organization source account to create snapshots and KMS
+  keys
+- We have an populated RDS database cluster in the Legacy Organization source account. This is the source of our data
+  for the migration.
+- _Any data in this database will be lost!_ We have an empty RDS database cluster in new Organization target account.
+  This is the destination of our data for the migration. We will recreate the DB instance with the new snapshot copy.
+
+## Steps
+
+:::info Example Region
+
+The remainder of this document assumes both the source and destination regions are `us-west-2`. We will use the
+environment abbreviation, `usw2`.
+
+:::
+
+Connect to _both_ `acme-identity` and `legacy-prod` in Leapp
+
+### Connect to `acme-identity`
+
+:::info AWS Team to Team Roles Permission
+
+You must have access assume the `acme-plat-gbl-prod-admin` role via your `acme-identity` profile.
+
+:::
+
+This is the normal AWS profile we use to connect to Leapp. Follow the steps in
+[How To Log into AWS](/reference-architecture/setup/how-to-log-into-aws/).
+
+When opening Geodesic, you should see the following with a "green" checkmark:
+
+```console
+ ⧉  acme
+ √ . [acme-identity] (HOST) infrastructure ⨠
+```
+
+### Connect to `legacy-prod`
+
+1. Open Leapp
+2. Create new Integration for the Legacy AWS Organization
+
+```yaml
+Type: AWS Single Sign-On
+Alias: Legacy
+Portal URL: https://<LEGACY-ORGANIZATION>.awsapps.com/start/
+Region: us-west-2
+Auth. method: In-browser # optional
+```
+
+3. Log into the new Integration and accept the pop up windows
+4. Find the `legacy-prod` - `AWSAdministratorAccess` Session or whichever Administrator Permission Set you have access
+   to assume.
+5. Select the "dots" on the right and click "Change" > "Named Profile"
+6. Enter `legacy-prod-admin`
+7. Start the session. You should see `legacy-prod-admin` under "Named Profile"
+8. Open Geodesic shell
+9. Assume the new profile:
+
+```bash
+assume-role legacy-prod-admin
+```
+
+You should now be connected to the Legacy Prod account:
+
+```bash
+ ✗ . [none] (HOST) infrastructure ⨠ assume-role legacy-prod-admin
+* Found SSH agent config
+ ⧉  acme
+ √ : [legacy-prod-admin] (HOST) infrastructure ⨠ aws sts get-caller-identity
+{
+    "UserId": "AROXXXXXXXXXXXXXXXXXX:daniel@cloudposse.com",
+    "Account": "111111111111",
+    "Arn": "arn:aws:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_40xxxxxxxxxxxxxx/daniel@cloudposse.com"
+}
+```
+
+### Apply Initial Terraform
+
+Before we execute the migration script, we need to apply the new `rds` component in the destination or `acme-prod`
+account. Applying this component will create the customer managed KMS key that we will need to copy the final legacy
+snapshot into the new account.
+
+We should already have the `rds` component configured for `acme-plat-usw2-prod`.
+
+This may be configured in the following file: `stacks/orgs/acme/plat/prod/us-west-2/data.yaml`. But please adapt this to
+your infrastructure file structure.
+
+Apply the `rds` component to create the KMS key now, if not already applied:
+
+```bash
+atmos terraform apply rds -s plat-usw2-prod
+```
+
+Once completed, Terraform will return all outputs. Find the output named `kms_key_alias`. For example:
+
+```bash
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+...
+kms_key_alias = "alias/acme-plat-usw2-prod-rds"
+...
+```
+
+### Prepare the migration script
+
+In order to run a helpful bash tool included with this script, add the following to your local Geodesic infrastructure
+Dockerfile. To read more about `gum`, please see [charmbracelet/gum](https://github.com/charmbracelet/gum).
+
+```
+# Install gum - a CLI tool for making bash scripts "pretty"
+# https://github.com/charmbracelet/gum
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+RUN echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+RUN apt-get update && apt-get install -y --allow-downgrades \
+    gum
+```
+
+In this guide, we include the `rds-snapshot-migration` script under `rootfs/usr/local/bin/` so that it will be included
+with your infrastructure Geodesic build. Create a new file called `rootfs/usr/local/bin/rds-snapshot-migration` or
+choose another path to store this script. Copy and paste the following into that file.
+
+:::warning Always Review Before Executing
+
+This bash script is a point-in-time copy. Please always review any code you execute, especially against production
+environments.
+
+:::
+
+<details>
+<summary>rds-snapshot-migration</summary>
+
+The migration script has hard-coded values for our organization. Open the script, add the KMS key alias from the
+previous step, and verify the rest of the values are what you'd expect. For example:
+
+```bash
+# Organization specific values
+legacy_account_id="111111111111" # legacy-prod
+legacy_rds_instance_id="legacy-prod"
+legacy_profile="legacy-prod-admin"
+legacy_region="us-west-2"
+acme_account_id="222222222222" # acme-prod
+acme_region="us-west-2"
+acme_profile="acme-plat-gbl-prod-admin"
+acme_region="us-west-2"
+acme_kms_key_alias="alias/acme-plat-usw2-prod-rds"
+```
+
+Now copy and paste the following:
+
+```bash
+#!/bin/bash
+
+set -e -o pipefail
+
+# Organization specific values
+legacy_account_id="111111111111" # legacy-prod
+legacy_rds_instance_id="legacy-prod"
+legacy_profile="legacy-prod-admin"
+legacy_region="us-west-2"
+acme_account_id="222222222222" # acme-prod
+acme_region="us-west-2"
+acme_profile="acme-plat-gbl-prod-admin"
+acme_region="us-west-2"
+acme_kms_key_alias="alias/acme-plat-usw2-prod-rds"
+
+# This path needs to exist. In Geodesic this is created by default to be your infrastructure directory
+infrastructure_dir_path="$GEODESIC_WORKDIR"
+# This is the path to the KMS Key policy template. Needs to exist before script runs
+additional_key_policy="$infrastructure_dir_path/docs/rds-migration/kms_key_policy_addition.json"
+# This is the path to where we will save the completed KMS key policy. Does not need to exist before script runs
+updated_key_policy="$infrastructure_dir_path/docs/rds-migration/generated_key_policy.json"
+
+function gum_log {
+	gum log --time rfc822 --structured --level info "$1"
+}
+
+function gum_exit {
+	gum log --time rfc822 --structured --level error "Something went wrong..."
+	printf "\n%s\n\n" "$1"
+	exit 1
+}
+
+function convert_seconds {
+	local total_seconds=$1
+	local hours=$((total_seconds / 3600))
+	local minutes=$(( (total_seconds % 3600) / 60))
+	local seconds=$((total_seconds % 60))
+	echo "$hours hours, $minutes minutes, $seconds seconds"
+}
+
+function assume_role {
+	profile=$1
+	region=$2
+
+	export AWS_PROFILE=$profile
+	export AWS_DEFAULT_REGION=$region
+
+	gum spin --spinner dot \
+		--title "Checking AWS session: $profile" -- \
+		aws sts get-caller-identity --output json \
+		|| { gum log --time rfc822 --structured --level error \
+		"Failed to retrieve AWS session name. Please ensure your AWS CLI is configured correctly."; exit 1; }
+}
+
+# The default wait for snapshot may not be enough in every case we've tried
+wait_for_snapshot() {
+	set +e # continue on errors
+  while true; do
+    gum spin --spinner dot --show-output \
+      --title "Waiting for database snapshot: $2 ..." -- \
+      aws rds wait db-snapshot-completed \
+      --db-instance-identifier "$1" \
+      --db-snapshot-identifier "$2"
+
+    if [ $? -eq 0 ]; then
+			set -e # resume failure on errors
+      gum_log "Snapshot completed successfully! Snapshot ID: $2"
+      return 0
+    else
+      gum_log "Failed to wait for snapshot. Retrying..."
+    fi
+  done
+}
+
+#########################################################################################################
+#
+# Welcome Messages
+#
+#########################################################################################################
+
+start_time=$(date +%s)
+gum_log "Database migration started..."
+
+gum style \
+	--foreground 212 --border-foreground 212 --border double \
+	--align center --width 50 --margin "1 2" --padding "2 4" \
+	"Welcome to the RDS Snapshot Migration helper!"
+
+gum style \
+	--foreground 31 \
+	--margin "1 2" \
+	"Legacy RDS Instance: ${legacy_rds_instance_id}" \
+	"..." \
+	"Legacy Account ID: ${legacy_account_id}" \
+	"Legacy Account Profile: ${legacy_profile}" \
+	"Legacy Account Region: ${legacy_region}" \
+	"..." \
+	"Destination Account ID: ${acme_account_id}" \
+	"Destination Account Profile: ${acme_profile}" \
+	"Destination Account Region: ${acme_region}"
+
+printf "Are you ready to start the datastore migration using these values?\n"
+response=$(gum choose "yes" "no")
+if [[ "$response" != "yes" ]]; then
+	gum log --time rfc822 --structured --level debug "Exiting..."
+	exit 0
+fi
+
+#########################################################################################################
+#
+# Begin Migration
+#
+#########################################################################################################
+
+assume_role $legacy_profile $legacy_region
+
+#########################################################################################################
+#
+# Create or Fetch KMS Key and update the key policy
+#
+#########################################################################################################
+
+kms_key_alias="alias/legacy-mockprod-rds-kms-$(date '+%Y%m')"
+
+alias_exists=$(gum spin --show-output --spinner dot \
+	--title "Detecting if KMS key already exists..." -- \
+	aws kms list-aliases \
+	--query "Aliases[?AliasName=='$kms_key_alias'] | length(@)" --output text) || gum_log "$alias_exists"
+
+if [[ "$alias_exists" -eq "0" ]]; then
+	gum_log "KMS doesn't exist. Creating..."
+
+	kms_key_id=$(gum spin --show-output --spinner dot --title "Creating KMS key..." -- \
+		aws kms create-key --query KeyMetadata.KeyId --output text) && gum_log "$kms_key_id"
+
+	kms_key_alias="legacy-mockprod-rds-kms-$(date '+%Y%m')"
+	gum spin --show-output --spinner dot \
+		--title "Creating KMS key alias..." -- \
+		aws kms create-alias \
+		--target-key-id $kms_key_id \
+		--alias-name alias/$kms_key_alias
+else
+	gum_log "KMS exists. Fetching..."
+	kms_key_id=$(gum spin --show-output --spinner dot --title "Retrieving KMS key ID..." -- \
+		aws kms describe-key --key-id $kms_key_alias --query 'KeyMetadata.KeyId' --output text) || gum_exit "$kms_key_id"
+fi
+
+kms_key_arn=$(gum spin --show-output --spinner dot --title "Retrieving KMS key ARN..." -- \
+	aws kms describe-key \
+	--key-id $kms_key_id \
+	--query 'KeyMetadata.Arn' --output text)
+
+gum_log "Key Alias: $kms_key_alias"
+gum_log "Key ID: $kms_key_id"
+gum_log "Key ARN: $kms_key_arn"
+
+gum_log "Updating KMS key policy..."
+
+gum spin --spinner dot --show-output \
+	--title "Creating KMS key policy..." -- \
+	sed \
+	-e "s/THIS_ACCOUNT_ID/${legacy_account_id}/" \
+	-e "s/ALLOWED_ACCOUNT_ID/${acme_account_id}/" \
+	$additional_key_policy > $updated_key_policy
+
+# Commented out to reduce noise. Uncomment if you need to check the KMS Key Policy
+# gum_log "Key Policy:"
+# cat $updated_key_policy | jq
+
+gum spin --show-output --spinner dot --show-output \
+	--title "Updating KMS key policy..." -- \
+	aws kms put-key-policy \
+	--key-id $kms_key_id \
+	--policy file://$updated_key_policy
+
+#########################################################################################################
+#
+# Create a RDS snapshot that we can share with the destination
+#
+#########################################################################################################
+
+timestamp="$(date '+%Y%m%d%H%M%S')" # Use timestamp to create a useful identifier for the RDS snapshots
+legacy_rds_snapshot_source_id="$legacy_rds_instance_id-snapshot-$timestamp"
+legacy_rds_snapshot_share_id="$legacy_rds_instance_id-snapshot-share-$timestamp"
+
+gum_log "Creating snapshot of existing RDS instance, encrypted with default KMS key..."
+
+gum spin --spinner dot --show-output \
+	--title "Creating database snapshot: $legacy_rds_snapshot_source_id ..." -- \
+	aws rds create-db-snapshot \
+	--db-instance-identifier $legacy_rds_instance_id \
+	--db-snapshot-identifier $legacy_rds_snapshot_source_id
+
+gum_log "Creating the initial snapshot typically takes around 3 minutes"
+wait_for_snapshot "$legacy_rds_instance_id" "$legacy_rds_snapshot_source_id"
+
+gum_log "Copying snapshot to share with new Organization, encrypted with customer managed KMS key..."
+
+gum spin --spinner dot --show-output \
+	--title "Copying database snapshot: $legacy_rds_snapshot_source_id > $legacy_rds_snapshot_share_id ..." -- \
+	aws rds copy-db-snapshot \
+	--source-db-snapshot-identifier $legacy_rds_snapshot_source_id \
+	--target-db-snapshot-identifier $legacy_rds_snapshot_share_id \
+	--kms-key-id $kms_key_id \
+	--copy-tags
+
+gum_log "Copying and reencrypting snapshots can take more than 20 minutes! Although sometimes it can be much quicker."
+gum_log "Check the status in the Legacy AWS Console: https://d-926767ca79.awsapps.com/"
+wait_for_snapshot "$legacy_rds_instance_id" "$legacy_rds_snapshot_share_id"
+
+#########################################################################################################
+#
+# Share the snapshot with the destination
+#
+#########################################################################################################
+
+# We need the snapshot ARN later. plus check if this snapshot actually exists
+legacy_rds_snapshot_share_arn=$(gum spin --show-output --spinner dot --title "Retrieving snapshot ARN..." -- \
+	aws rds describe-db-snapshots \
+	--db-snapshot-identifier $legacy_rds_snapshot_share_id \
+	--query 'DBSnapshots[*].DBSnapshotArn' --output text) || gum_exit "$legacy_rds_snapshot_share_arn"
+
+gum spin --spinner dot --show-output \
+	--title "Allowing target account to restore this snapshot..." -- \
+	aws rds modify-db-snapshot-attribute \
+  --db-snapshot-identifier $legacy_rds_snapshot_share_id \
+  --attribute-name "restore" \
+	--values-to-add $acme_account_id
+
+#########################################################################################################
+#
+# Copy the shared snapshot to the destination account so that we can restore RDS from that snapshot
+#
+#########################################################################################################
+
+assume_role $acme_profile $acme_region
+
+gum_log "Fetching KMS key in destination account..."
+
+acme_kms_key_id=$(gum spin --show-output --spinner dot \
+	--title "Retrieving KMS key ID..." -- \
+	aws kms list-aliases --query "Aliases[?AliasName=='$acme_kms_key_alias'].TargetKeyId" --output text) || gum_exit "$acme_kms_key_id"
+
+gum_log "Copying customer-managed KMS key encrypted snapshot into the destination account..."
+
+acme_rds_snapshot_id="${legacy_rds_instance_id}-snapshot-${timestamp}"
+
+gum spin --spinner dot --show-output \
+	--title "Copying database snapshot: $legacy_rds_snapshot_share_arn > $acme_rds_snapshot_id ..." -- \
+	aws rds copy-db-snapshot \
+	--source-db-snapshot-identifier $legacy_rds_snapshot_share_arn \
+	--target-db-snapshot-identifier $acme_rds_snapshot_id \
+	--source-region $legacy_region \
+	--kms-key-id $acme_kms_key_id
+
+gum_log "Copying and reencrypting snapshots can take more than 20 minutes! Although sometimes it can be much quicker."
+gum_log "Check the status in the acme AWS Console: https://d-92674d8c2c.awsapps.com/"
+wait_for_snapshot "$legacy_rds_instance_id" "$acme_rds_snapshot_id"
+
+gum_log "Legacy aws/kms Encrypted Snapshot ID: $legacy_rds_snapshot_source_id"
+gum_log "Legacy Customer-Managed KMS Key Encrypted Snapshot ID: $legacy_rds_snapshot_share_id"
+gum_log "acme Snapshot ID: $acme_rds_snapshot_id"
+
+#########################################################################################################
+#
+# Done! Print some helpful closing messages with the total execution time
+#
+#########################################################################################################
+
+end_time=$(date +%s)
+duration_in_seconds=$((end_time - start_time))
+formatted_time=$(convert_seconds $duration_in_seconds)
+gum_log "The script took: $formatted_time"
+
+printf "\n\nNow restore the database in the destination account using the snapshot ID\n\n%s\n\n" $acme_rds_snapshot_id
+```
+
+</details>
+
+This script refers to a locally stored KMS key policy JSON that we will use to allow cross account access. Create this
+file locally and set `additional_key_policy` to that JSON file path. The new JSON will be saved to the
+`updated_key_policy` variable file path. Update this value as well to a path that makes sense for your file structure.
+
+<details>
+<summary>KMS Key Policy</summary>
+
+The `THIS_ACCOUNT_ID` and `ALLOWED_ACCOUNT_ID` strings will be replaced by `sed` using the `legacy_account_id` and
+`acme_account_id` values respectively.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Id": "AllowCrossAccountKMS",
+  "Statement": [
+    {
+      "Sid": "AllowThisAccountUse",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::THIS_ACCOUNT_ID:root"
+      },
+      "Action": "kms:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowCrossAccountUse",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::ALLOWED_ACCOUNT_ID:root"
+      },
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey*",
+        "kms:ListGrants",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "kms:RevokeGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+</details>
+
+Now rebuild Geodesic in order to use the latest image and `rootfs` scripts:
+
+```bash
+make all
+```
+
+### Execute the migration script
+
+Now inside the Geodesic image, we should be authenticated with `acme-identity`.
+
+Enter the following command to execute the migration script:
+
+```bash
+rds-snapshot-migration
+```
+
+Your new snapshot name will be output at the end of the script:
+
+```bash
+Now restore the database in the destination account using the snapshot ID
+
+legacy-prod-snapshot-20240517234933
+```
+
+### Verify the results
+
+Your new snapshot should now exist in the target account, `acme-prod`. Optionally, run the following to verify:
+
+```bash
+AWS_PROFILE=acme-plat-gbl-prod-admin aws rds describe-db-snapshots --db-snapshot-identifier legacy-prod-snapshot-20240517234933
+```
+
+### Apply Terraform
+
+Add the snapshot ID to your `rds` component configuration in the `acme-prod` account.
+
+We also need to allow `core-usw2-network` private subnets (where the VPN is deployed) access through the RDS instance's
+security group in order to locally connect and validate the instance.
+
+Therefore to add this unique snapshot identifier for only `acme-plat-usw2-prod`. For example, your `rds` component may
+be configured in the following file path, but of course adapt this path to your needs:
+`stacks/orgs/acme/plat/prod/us-west-2/data.yaml`
+
+```yaml
+component:
+  terraform:
+    rds:
+      vars:
+        # This is the resulting snapshot from the rds-snapshot-migration script
+        snapshot_identifier: legacy-prod-snapshot-20240517234933
+
+        # Optionally allow the VPN through the DB's security group
+        allowed_cidr_blocks:
+          - 10.89.16.0/20 # VPN CIDR
+
+
+        # The rest of the configuration is irrelevant to this guide
+        # ...
+```
+
+And then apply the component, replacing the old DB instance with `-replace`:
+
+```bash
+atmos terraform apply rds -replace="module.rds_instance.aws_db_instance.default[0]" -s plat-usw2-prod
+```
+
+:::tip Replace the Database!
+
+A database will only use a snapshot on creation! If you have already created an empty RDS database in the destination
+account, you must trigger recreation of the database instance.
+
+:::
+
+Terraform can take 30 to 40 minutes to apply.
+
+### Setting Database Name and Admin Credentials
+
+:::caution Database Name and Admin Credentials
+
+When restoring RDS from a snapshot, the instance uses the same database name, admin username, and admin password as the
+original RDS instance. Make sure to set these values to match, or the next `terraform apply` will destroy and recreate
+the RDS instance!
+
+:::
+
+Add the `database_name` and `database_user` using the same values from the original `legacy-prod` database. Changing
+either of these values requires database recreation!
+
+```yaml
+database_name: foobar
+database_user: admin
+```
+
+However, you can leave `database_password` unset. If unset, Terraform will create a new password and store it in AWS
+SSM. This _does not_ require database recreation.
+
+### Validate the new RDS instance
+
+To validate the new RDS instance in `acme-plat-usw2-prod` connect to the VPN, connect to the instance, and list the
+tables.
+
+1. Connect to the EC2 Client VPN
+2. Open Geodesic
+3. Get the `psql` command from the output of the `rds` component applied above. Take note of this for later
+
+```bash
+# As a generic RDS component
+atmos terraform output rds -s plat-usw2-prod
+```
+
+4. Assume a role that has access to the DB password stored in AWS SSM. For example, we can assume the `admin` role
+
+```bash
+assume-role acme-plat-gbl-prod-admin
+```
+
+5. Connect to the RDS instance with `psql` using the command we copied from Terraform output above. For example, this
+   would be similar to the following:
+
+```bash
+PGPASSWORD=$(chamber read app/rds/admin db_password -q) psql --host=acme-plat-usw2-prod-rds.xxxxxxxxxxxx.us-west-2.rds.amazonaws.com --port=5432 --username=admin --dbname=foobar
+```
+
+4. List tables to verify they've been copied over
+
+```bash
+\dt
+```
+
+And that's it!

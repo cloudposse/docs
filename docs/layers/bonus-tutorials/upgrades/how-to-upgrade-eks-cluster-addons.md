@@ -1,0 +1,92 @@
+---
+title: "Upgrade EKS Cluster Addons"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1192493057/How+to+Upgrade+EKS+Cluster+Addons
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-upgrade-eks-cluster-addons.md
+---
+
+# How to Upgrade EKS Cluster Addons
+
+## Problem
+EKS clusters support “Addons” that can be automatically installed on a cluster, but they also need to be kept up to date. AWS officially supports 3 cluster add-ons and they are not automatically updated when updating the EKS cluster:
+
+- Amazon VPC CNI
+
+- CoreDNS
+
+- Kube-Proxy
+
+See [https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html](https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html), for more.
+
+## Solution
+
+:::tip
+Ensure all `addons` for the component use an `addon_version` that corresponds to the `cluster_kubernetes_version` using the `aws eks describe-addon-versions` command.
+
+:::
+
+:::caution
+- Requires EKS Cluster Version **1.18** or greater. See [How to Upgrade EKS](/reference-architecture/how-to-guides/upgrades/how-to-upgrade-eks) On Upgrading your cluster!
+
+- Requires `terraform-aws-eks-cluster` module version **0.43.0** or greater.  [https://github.com/cloudposse/terraform-aws-eks-cluster](https://github.com/cloudposse/terraform-aws-eks-cluster) which adds supports for `addons`
+
+- Requires [eks](/components/category/eks/) component which maps `addons` to `var.addons`
+
+:::
+
+Adding the `addons` variable will enable the addons to your cluster. However, determining the `addon_version` can be difficult. It can be done through ClickOps, or through CLI.  When running `aws eks describe-addon-versions` make sure to specify the `--kubernetes-version` which corresponds to the `cluster_kubernetes_version` in the stack configuration.
+
+See the “Troubleshooting” section, if you run into problems.
+
+```
+# Get all Addon Versions for All Plugins for kubernetes version 1.20
+aws eks describe-addon-versions --kubernetes-version 1.20  | jq
+
+# Get Latest Version for all Plugins for kubernetes version 1.20
+aws eks describe-addon-versions --kubernetes-version 1.20  | jq '.addons[] | "\(.addonName) \(.addonVersions[0].addonVersion)"'
+```
+
+Unfortunately, at the time of this writing, it does not appear that there’s any `data` source in `terraform` to retrieve the latest version of addons. The `eks_addons` [data source](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_addon) will only return information about the addons currently installed in an EKS cluster.
+
+Note that the addon version may or may not include the kubernetes version. E.g. `kube-proxy` versions their releases according to kubernetes releases, but appends the `eksbuild.2` which will vary. The `vpc-cni`, however, has it’s own versioning cadence.
+
+```
+components:
+  terraform:
+    eks:
+      vars:
+        cluster_kubernetes_version: "1.20"
+        addons:
+          - addon_name: "kube-proxy"
+            addon_version: "v1.20.4-eksbuild.2"
+            resolve_conflicts: "NONE"
+            service_account_role_arn: null
+          - addon_name: "vpc-cni"
+            addon_version: "v1.9.1-eksbuild.1"
+            resolve_conflicts: "NONE"
+            service_account_role_arn: null
+          - addon_name: "coredns"
+            addon_version: "v1.8.3-eksbuild.1"
+            resolve_conflicts: "NONE"
+            service_account_role_arn: null
+```
+
+## Troubleshooting
+
+### Error: `unexpected EKS Add-On (eg-uw2-tools-eks-cluster:kube-proxy) state returned during creation: unexpected state 'CREATE_FAILED', wanted target 'ACTIVE'`
+
+```
+│ Error: unexpected EKS Add-On (eg-uw2-tools-eks-cluster:kube-proxy) state returned during creation: unexpected state 'CREATE_FAILED', wanted target 'ACTIVE'. last error: 1 error occurred:
+│ 	* : ConfigurationConflict: Apply failed with 1 conflict: conflict with "before-first-apply" using v1: .data.config
+```
+
+:::tip
+The AWS API will run a first time script! This allows the addons to be created but will **FAIL** the first attempt through _spacelift_. If this happens Retry.
+
+:::
+
+:::note
+This leaves the cluster addons in a `Create Failed` State, which does not appear to impact services
+
+:::
+

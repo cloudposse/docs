@@ -1,0 +1,91 @@
+---
+title: "Decide on RDS Aurora DB Cluster Requirements"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1184661505/REFARCH-476+-+Decide+on+RDS+Aurora+DB+Cluster+Requirements
+sidebar_position: 100
+refarch_id: REFARCH-476
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-aurora-db-cluster-requirements.md
+---
+
+# Decide on RDS Aurora DB Cluster Requirements
+
+## Problem
+Requirements for Amazon Aurora DB clusters deployed to each active compute environment need to be outlined before an
+Amazon Aurora component is configured and deployed
+
+## Context
+
+Amazon RDS provides MySQL and PostgreSQL-compatible relational databases that are built for the cloud with greater performance and availability at 1/10th the cost of traditional enterprise databases with the simplicity and cost-effectiveness of open source databases. RDS Aurora features a distributed, fault-tolerant, self-healing storage system that auto-scales up to 128TB per database instance. It delivers high performance and availability with up to 15 low-latency read replicas, point-in-time recovery, continuous backup to Amazon S3, and replication across three Availability Zones.
+
+ Amazon Aurora DB clusters  (See: [Decide on RDS Technology and Architecture](/reference-architecture/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-technology-and-architecture))
+
+### Known Limitations
+
+- [Max of 15 Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Replication.html#:~:text=An%20Aurora%20DB%20cluster%20can%20contain%20up%20to%2015%20Aurora%20Replicas.%20The%20Aurora%20Replicas%20can%20be%20distributed%20across%20the%20Availability%20Zones%20that%20a%20DB%20cluster%20spans%20within%20an%20AWS%20Region.) (we had a customer decline RDS Aurora based on this limitation)
+
+- ~~Point-in-time recovery (PITR) is not yet supported~~  RDS Aurora now supports PITR. [https://aws.amazon.com/blogs/storage/point-in-time-recovery-and-continuous-backup-for-amazon-rds-with-aws-backup/](https://aws.amazon.com/blogs/storage/point-in-time-recovery-and-continuous-backup-for-amazon-rds-with-aws-backup/)
+
+- Cannot be launched on public subnets
+
+## Considered Options
+
+Create a standardized Aurora DB cluster based on the current use case:
+
+### Current Infrastructure Requirements
+
+### RDS Aurora Replication
+
+RDS aurora replication happens at the filesystem layer versus the conventional database layer. It’s actually a shared filesystem. Hitting the read replicas hard can still impact the masters since they are using the shared filesystem.
+
+> Because the cluster volume is shared among all DB instances in your DB cluster, minimal additional work is required to replicate a copy of the data for each Aurora Replica.
+[https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Replication.html](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Replication.html)
+
+### RDS Serverless v1 vs v2
+
+Using serverless could be more costly that using regular RDS aurora due to not having enough options for CPU.
+
+Serverless v1 offers more granular scaling units. Only operating in a single availability zone. Serverless v1 only supports up to v10 of Postgres (v10 will be sunset by Postgres on November 10, 2022).
+
+Serverless v2 offers multi-AZ, so that DB subnets can be across multiple availability zones. Supports Postgres 12+.
+
+[https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.upgrade.html](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.upgrade.html)
+
+### Future Aurora DB Cluster Requirements
+
+Because the [RDS Service documentation on Aurora DB clusters](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) recommends deploying at least one additional Aurora DB cluster instance to an Availability Zone other than where the primary instance is located in order to ensure High Availability, and since [3 AZs are used by the primary AWS region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region), it is recommended that 3 instances are deployed per Aurora DB cluster when High Availability is needed.
+
+- Explain how many instances exist in the cluster (or per region, if this is a global cluster)
+
+- Explain whether the cluster is global or regional, and reference [Decide on RDS Technology and Architecture](/reference-architecture/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-technology-and-architecture)
+
+- Explain how many secondary DB clusters should exist, if this is a global cluster
+
+Lastly, database storage encryption, deletion protection and cloudwatch logs exports should be enabled as a best practice.
+
+This, in addition to any of the requirements outlined in _v1 Infrastructure Requirements_, should be captured in the following table.
+
+|**Setting** | |
+| ----- | ----- |
+|Aurora DB cluster Engine | |
+|Aurora DB cluster Instance Family | |
+|Number of Aurora DB cluster Instances: 1 for all environments except for prod, 3 for prod (or 2 when <3 AZs are<br/>available) | |
+|Regional or Global DB Cluster | |
+|Security-related settings | |
+|Storage Encryption enabled | yes|
+
+## Other Considerations
+
+- Cost [https://aws.amazon.com/rds/aurora/pricing/](https://aws.amazon.com/rds/aurora/pricing/)
+
+## Consequences
+
+Create an Aurora DB Cluster component and tune it to the outlined requirements.
+
+## References
+
+- [Decide on RDS Technology and Architecture](/reference-architecture/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-technology-and-architecture)
+
+- [https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html)
+
+- [https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html)
+
+

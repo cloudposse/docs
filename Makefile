@@ -12,12 +12,12 @@ deps:
 
 .PHONY: build
 
-build: deps
-	npm run build
+render:
+	./scripts/render-docs-for-components.sh
+	./scripts/render-docs-for-modules.sh
+	./scripts/render-docs-for-github-actions.sh
 
-build-staging:
-	cd cloudposse-docs-v2
-	npm install --only=production
+build: deps
 	npm run build
 
 build-production: build

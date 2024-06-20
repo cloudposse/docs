@@ -1,0 +1,8 @@
+{
+  "label": "Terraform Components",
+  "position": 10,
+  "link": {
+    "type": "doc",
+    "id": "index"
+  }
+}

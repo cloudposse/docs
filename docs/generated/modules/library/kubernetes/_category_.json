@@ -1,0 +1,10 @@
+{
+  "label": "kubernetes",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "command",
+  "link": {
+    "type": "generated-index",
+    "title": "Provider: kubernetes"
+  }
+}

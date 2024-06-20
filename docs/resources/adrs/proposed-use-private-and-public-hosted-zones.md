@@ -1,0 +1,95 @@
+---
+title: "Proposed: Use Private and Public Hosted Zones"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1260617736/Proposed%3A+Use+Private+and+Public+Hosted+Zones
+sidebar_position: 200
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/proposed-use-private-and-public-hosted-zones.md
+---
+
+# Proposed: Use Private and Public Hosted Zones
+**Date**: **11 Feb 2022**
+
+:::warning Rejected!
+
+The proposal in this ADR was rejected! For questions, please reach out to Cloud Posse.
+
+- Context for rejection is needed. Overally this proposal adds complexity and cost for using private zones, as well as has a lack of customer demand.
+
+:::
+
+## Status
+**DRAFT**
+
+## Problem
+There is confusion regarding service discovery and vanity domains. Hisotically, service discovery domains are on privately hosted DNS zones, yet Cloud Posse typically advocates using public DNS zones for everything, including internal load balancers. Using public hosted zones leaks information about the cloud architecture, which is why some advocate for strictly using private zones.
+
+## Context
+
+## Considered Options
+
+### Option 1: Public zones only
+
+#### Pros
+
+- This is what we’re currently doing and this has been tried and tested
+
+- ACM certs can be used without PCA
+
+- LetsEncrypt can be an issuer for cert-manager (when using `ingress-nginx`)
+
+#### Cons
+
+- Route53 hostnames might be leaked (**although services won’t be accessible**).
+
+- Security through Obscurity.
+
+### Option 2: Private zones only
+
+This is an “old school” security best practice, which in principle is great but in practice rather limiting.
+
+#### Pros
+
+- Route53 hostnames cannot be leaked, making it more difficult for adversaries to map out the infrastructure for targeted attacks
+
+#### Cons
+
+- We’ve recently added support for this in a customer engagement. There could be “underwater stones” (credit to @Igor Rodionov for this term).
+
+- **IMPORTANT** Services cannot be exposed in any way to external third-party integrations (e.g. webhook callbacks with Twillio, GitHub, etc
+
+- Requires cross association of VPCs with private hosted zones
+
+- **IMPORTANT** Can only be associated with exactly one VPC
+
+- Is this true? I’ve been able to associate a private zone with multiple VPCs. @RB (Ronak Bhatia)
+
+- Requires a VPN solution like AWS Client VPN Endpoint in order to resolve any names
+
+- Private CA or a public hosted zone for ACM verification
+
+- Public hosted zone for acm verification which would require a split-view setup
+
+- or Private CA to sign certificates and sign ACM certs and cert-manager.
+
+- At least 2 Private CAs are recommended (one for prod, one for non-prod). Each private CA is $400/mo. [https://aws.amazon.com/certificate-manager/pricing/](https://aws.amazon.com/certificate-manager/pricing/)
+
+- Troubleshooting DNS lookups would require sshing via SSM to an instance in a VPC that is associated with a private HZ to check if DNS lookups work as expected
+
+### Option 3: Hybrid of public and private zones
+
+This has all the pros of Option 1 and Option 2 and mitigates some of the Cons.
+
+#### Pros
+
+- Best of both worlds
+
+- Public for vanity domains
+
+- Private for service discovery domains
+
+- Both public and private can co-exist
+
+#### Cons
+
+- Still requires either a public hosted zone for certificate verification OR the costly Private CA at $400/mo/ea x2.
+
+

@@ -85,4 +85,4 @@ runs:
         GOOGLE_SITE_VERIFICATION_ID: ${{ inputs.google_site_verification_id }}
       run: |
         make init
-        make build-staging
+        make build-production
