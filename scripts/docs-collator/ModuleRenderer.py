@@ -44,8 +44,6 @@ class ModuleRenderer(AbstractRenderer):
         self.__copy_extra_resources_for_images(module_download_dir, module_docs_dir)
         self.__copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir)
 
-        [os.path.join(dirpath,f) for (dirpath, dirnames, filenames) in os.walk(os.getcwd()) for f in filenames]
-
         self.__render_readme(module_download_dir, module_docs_dir)
 
         readme_md_file = os.path.join(module_download_dir, README_MD)

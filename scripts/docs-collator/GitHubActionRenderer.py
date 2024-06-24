@@ -55,8 +55,8 @@ class GitHubActionRenderer(AbstractRenderer):
                                    f"README_TEMPLATE_FILE={readme_tmpl_file}",
                                    f"README_FILE={readme_md_file}",
                                    f"README_YAML={readme_yaml_file}",
-                                   f"README_TEMPLATE_YAML={readme_yaml_file}",
-                                   f"README_INCLUDES={module_download_dir}"], capture_output=True)
+                                   # f"README_TEMPLATE_YAML={readme_yaml_file}",
+                                   f"README_INCLUDES={module_download_dir}/foo"], capture_output=True)
 
         if response.returncode != 0:
             error_message = response.stderr.decode("utf-8")
