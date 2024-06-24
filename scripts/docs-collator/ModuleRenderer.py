@@ -63,7 +63,7 @@ class ModuleRenderer(AbstractRenderer):
         readme_tmpl_file = os.path.join(TEMPLATES_DIR, MODULES_README_TEMPLATE)
 
         io.create_dirs(module_docs_dir)
-
+        logging.info(f"Rendering README.md: `make readme README_TEMPLATE_FILE={readme_tmpl_file} README_FILE={readme_md_file} README_YAML={readme_yaml_file} README_TEMPLATE_YAML={readme_yaml_file} README_INCLUDES={module_download_dir}`")
         response = subprocess.run(["make", "readme",
                                    f"README_TEMPLATE_FILE={readme_tmpl_file}",
                                    f"README_FILE={readme_md_file}",
