@@ -32,17 +32,11 @@ class ModuleRenderer(AbstractRenderer):
     def render(self, repo):
         logging.info(f"Rendering doc for: {repo.full_name}")
         module_download_dir = os.path.join(self.download_dir, repo.name)
-        logging.info(f"module_download_dir: {module_download_dir}")
 
         self._pre_rendering_fixes(repo, module_download_dir)
 
         provider, module_name = rendering.parse_terraform_repo_name(repo.name)
         module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
-        logging.info(f"module_docs_dir: {module_docs_dir}")
-
-        self._copy_extra_resources_for_docs(module_download_dir, module_docs_dir)
-        self.__copy_extra_resources_for_images(module_download_dir, module_docs_dir)
-        self.__copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir)
 
         self.__render_readme(module_download_dir, module_docs_dir)
 
@@ -51,6 +45,10 @@ class ModuleRenderer(AbstractRenderer):
 
         readme_md_file = os.path.join(module_docs_dir, README_MD)
         self._post_rendering_fixes(repo, readme_md_file)
+
+        self._copy_extra_resources_for_docs(module_download_dir, module_docs_dir)
+        self.__copy_extra_resources_for_images(module_download_dir, module_docs_dir)
+        self.__copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir)
 
         self.__create_index_for_provider(repo)
         self.__create_indexes_for_subfolders(repo)
@@ -61,17 +59,16 @@ class ModuleRenderer(AbstractRenderer):
         readme_tmpl_file = os.path.join(TEMPLATES_DIR, MODULES_README_TEMPLATE)
 
         io.create_dirs(module_docs_dir)
-        logging.info(f"Rendering README.md: `make readme README_TEMPLATE_FILE={readme_tmpl_file} README_FILE={readme_md_file} README_YAML={readme_yaml_file} README_TEMPLATE_YAML={readme_yaml_file} README_INCLUDES={module_download_dir}/foo`")
+
         response = subprocess.run(["make", "readme",
                                    f"README_TEMPLATE_FILE={readme_tmpl_file}",
                                    f"README_FILE={readme_md_file}",
                                    f"README_YAML={readme_yaml_file}",
-                                   # f"README_TEMPLATE_YAML={readme_yaml_file}",
+                                   f"README_TEMPLATE_YAML={readme_yaml_file}",
                                    f"README_INCLUDES={module_download_dir}/foo"], capture_output=True)
 
         if response.returncode != 0:
             error_message = response.stderr.decode("utf-8")
-            logging.error(f"Error rendering README.md: {error_message}")
             raise TerraformDocsRenderingError(error_message)
 
         logging.info(f"Rendered: {readme_md_file}")
