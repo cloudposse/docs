@@ -73,6 +73,7 @@ class ModuleRenderer(AbstractRenderer):
 
         if response.returncode != 0:
             error_message = response.stderr.decode("utf-8")
+            logging.error(f"Error rendering README.md: {error_message}")
             raise TerraformDocsRenderingError(error_message)
 
         logging.info(f"Rendered: {readme_md_file}")
