@@ -66,7 +66,7 @@ class ModuleRenderer(AbstractRenderer):
                                    f"README_FILE={readme_md_file}",
                                    f"README_YAML={readme_yaml_file}",
                                    f"README_TEMPLATE_YAML={readme_yaml_file}",
-                                   f"README_INCLUDES={module_download_dir}"], capture_output=True)
+                                   f"README_INCLUDES={module_download_dir}"], capture_output=True, cwd=module_download_dir)
 
         if response.returncode != 0:
             error_message = response.stderr.decode("utf-8")
