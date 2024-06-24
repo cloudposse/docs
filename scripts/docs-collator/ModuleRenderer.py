@@ -39,6 +39,13 @@ class ModuleRenderer(AbstractRenderer):
         provider, module_name = rendering.parse_terraform_repo_name(repo.name)
         module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
         logging.info(f"module_docs_dir: {module_docs_dir}")
+
+        self._copy_extra_resources_for_docs(module_download_dir, module_docs_dir)
+        self.__copy_extra_resources_for_images(module_download_dir, module_docs_dir)
+        self.__copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir)
+
+        [os.path.join(dirpath,f) for (dirpath, dirnames, filenames) in os.walk(os.getcwd()) for f in filenames]
+
         self.__render_readme(module_download_dir, module_docs_dir)
 
         readme_md_file = os.path.join(module_download_dir, README_MD)
@@ -46,10 +53,6 @@ class ModuleRenderer(AbstractRenderer):
 
         readme_md_file = os.path.join(module_docs_dir, README_MD)
         self._post_rendering_fixes(repo, readme_md_file)
-
-        self._copy_extra_resources_for_docs(module_download_dir, module_docs_dir)
-        self.__copy_extra_resources_for_images(module_download_dir, module_docs_dir)
-        self.__copy_extra_resources_for_submodules(repo, module_download_dir, module_docs_dir)
 
         self.__create_index_for_provider(repo)
         self.__create_indexes_for_subfolders(repo)
