@@ -82,6 +82,7 @@ Files:
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
+{{ $file = printf "/%s" $file }}
 {{ (include "readmeIncludesDir" $file) }}
 {{- end }}
 {{- end }}
