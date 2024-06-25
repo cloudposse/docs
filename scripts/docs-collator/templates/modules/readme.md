@@ -18,6 +18,9 @@ tags:
 custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master/README.md
 ---
 
+env.README_YAML: {{ .Env.README_YAML }}
+env.README_INCLUDES: {{ .Env.README_INCLUDES }}
+
 # Module: `{{ $shortModuleName }}`
 
 {{- if $deprecated }}
