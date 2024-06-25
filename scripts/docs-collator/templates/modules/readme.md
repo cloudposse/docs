@@ -20,6 +20,10 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master
 
 env.README_YAML: {{ .Env.README_YAML }}
 env.README_INCLUDES: {{ .Env.README_INCLUDES }}
+Files:
+{{ range $file := (datasource "config").include -}}
+ - `{{ $file }}`
+{{- end }}
 
 # Module: `{{ $shortModuleName }}`
 
@@ -78,7 +82,7 @@ env.README_INCLUDES: {{ .Env.README_INCLUDES }}
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" $file) }}
+{{ (include .Env.README_INCLUDES $file) }}
 {{- end }}
 {{- end }}
 {{- end }}
