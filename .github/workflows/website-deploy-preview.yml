@@ -82,7 +82,6 @@ jobs:
         env:
           PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
         run: |
-          gomplate --version
           ./scripts/render-docs-for-modules.sh
 
       - name: "Render Documentation for GitHub Actions"
