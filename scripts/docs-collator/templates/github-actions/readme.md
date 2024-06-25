@@ -1,5 +1,5 @@
-{{- defineDatasource "config" .Env.README_YAML | regexp.Replace ".*" "" -}}
-{{- defineDatasource "includes" .Env.README_INCLUDES | regexp.Replace ".*" "" -}}
+{{- defineDatasource "config" .Env.README_YAML -}}
+{{- defineDatasource "includes" (env.Getenv "README_INCLUDES") -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullName := (ds "config").name -}}
 {{- $shortName := (index ($fullName | strings.SplitN "-" 3) 2) -}}
