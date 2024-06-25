@@ -1,5 +1,5 @@
 {{- defineDatasource "config" .Env.README_YAML -}}
-{{- defineDatasource "includes" (env.Getenv "README_INCLUDES") -}}
+{{- defineDatasource "readmeIncludesDir" .Env.README_INCLUDES -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
 {{- $shortModuleName := (index ($fullModuleName | strings.SplitN "-" 3) 2) -}}
@@ -82,7 +82,7 @@ Files:
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include .Env.README_INCLUDES $file) }}
+{{ (include "readmeIncludesDir" $file) }}
 {{- end }}
 {{- end }}
 {{- end }}
