@@ -109,7 +109,7 @@ module.exports = {
               items: [
                 {
                   type: 'category',
-                  label: 'ECS',
+                  label: 'Using ECS',
                   collapsible: true,
                   collapsed: true,
                   link: {
@@ -125,7 +125,7 @@ module.exports = {
                 },
                 {
                   type: 'category',
-                  label: 'EKS',
+                  label: 'Using EKS',
                   collapsible: true,
                   collapsed: true,
                   link: {
@@ -143,7 +143,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Data',
+              label: 'Configure Databases',
               collapsible: true,
               collapsed: true,
               link: {
@@ -215,7 +215,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Monitoring',
+              label: 'Observability Platform',
               collapsible: true,
               collapsed: true,
               link: {
@@ -231,7 +231,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Alerting',
+              label: 'Alert Management',
               collapsible: true,
               collapsed: true,
               link: {

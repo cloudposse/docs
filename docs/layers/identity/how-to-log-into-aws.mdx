@@ -1,0 +1,124 @@
+---
+title: "Logging into AWS"
+sidebar_position: 10
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/iam-identity.md
+---
+
+# How to Log into AWS
+
+Locally authenticating with Leapp and AWS Identity Center (AWS SSO)
+
+## Requirements
+
+Install Leapp following [Leapp documentation](https://www.leapp.cloud/download/desktop-app) or with brew:
+
+```console
+brew install --cask leapp
+```
+
+(If required) Install AWS Session Manager:
+
+```console
+brew install --cask session-manager-plugin
+```
+
+Launch Leapp
+
+![Leapp Search](https://docs.cloudposse.com/assets/refarch/leapp-search.png)
+
+## Setup
+
+The following steps are required only for initial setup.
+
+1. Launch Leapp
+2. Create new Integration
+
+![Leapp Integration](https://docs.cloudposse.com/assets/refarch/leapp-integration.png)
+
+3. Fill out Single Sign-On configuration
+
+<!-- prettier-ignore-start -->
+```yaml
+Alias: {{ cookiecutter.baseline.namespace }} # This can be whatever you would like to label the Integration in Leapp
+Portal URL: {{ cookiecutter.identity.sso_url }} # Set this to your SSO Launch URL)
+AWS Region: {{ cookiecutter.baseline.region_0 }} # Your primary region
+Auth. Method: In-browser # Optional
+```
+<!-- prettier-ignore-end -->
+
+4. Click Integration “dots” and select “Login”. This should launch a tab in your web browser.
+
+![Leapp Integration Dots](https://docs.cloudposse.com/assets/refarch/leapp-integration-dots.png)
+![Leapp Integration Login](https://docs.cloudposse.com/assets/refarch/leapp-integration-login.png)
+
+5. Log into your IdP for your Organization and “Allow” Authorization request
+
+6. Create a “Chained Session” from the `core-identity` account with the `IdentityDevopsTeamAccess` Role
+
+:::info
+
+This Permission Set will match the given Team name. For example, Developers will use
+`IdentityDevelopersTeamAccess` and DevOps will use `IdentityDevopsTeamAccess`.
+
+:::
+
+![Leapp Chained Session](https://docs.cloudposse.com/assets/refarch/leapp-chained-session.png)
+
+7. Fill out the Chained Session configuration for connecting to `core-identity`
+
+```yaml
+Named profile: {{ cookiecutter.baseline.namespace }}-identity # This must match the profile name given in AWS config
+Session Alias: {{ cookiecutter.baseline.namespace }}-identity # Optional
+AWS Region: {{ cookiecutter.baseline.region_0 }} # This must be your primary region
+Role ARN: arn:aws:iam::{{ cookiecutter.baseline.account_map["core"]["identity"] }}:role/{{ cookiecutter.baseline.namespace }}-core-gbl-identity-devops # This ARN depends on the given team. This example uses the "devops" team
+Role Session Name: {{ cookiecutter.baseline.namespace }}-identity # Optional
+Assumer Session: core-identity # This must match the name of the identity account, almost always "core-identity"
+```
+
+![Leapp Chained Session Configuration](https://docs.cloudposse.com/assets/refarch/leapp-chained-session-configuration.png)
+
+8. (Optional) Pin the new `{{ cookiecutter.baseline.namespace }}-identity` IAM Role Chained Session
+
+This makes it easier to filter to the primary session we will be used for connecting to AWS
+
+- Go to All Sessions
+- Find the new IAM Role Chained Session for `{{ cookiecutter.baseline.namespace }}-identity` or whatever value you used
+  for `Session Alias`
+- Click the dots on the IAM Role Chained Session
+- Select Pin Session
+
+9. Connect to `{{ cookiecutter.baseline.namespace }}-identity` IAM Role Chained Session
+
+- Select the Session
+- Click Start Session
+
+![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+
+10. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
+
+```console
+make all
+```
+
+11. Done!
+
+![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)
+
+## Use
+
+After initial setup, quickly connect to AWS with the following steps:
+
+1. Launch Leapp
+2. Connect to `{{ cookiecutter.baseline.namespace }}-identity` IAM Role Chained Session
+
+![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+
+3. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
+
+```console
+make run
+```
+
+4. Done!
+
+![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)

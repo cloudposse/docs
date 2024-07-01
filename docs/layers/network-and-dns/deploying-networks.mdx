@@ -1,0 +1,39 @@
+---
+title: "Deploying Networks"
+sidebar_position: 0
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/network-and-dns.md
+---
+
+# Networking with AWS
+
+<img src="https://lucid.app/publicSegments/view/8b69815f-3b33-4ea1-8abb-cf3c52ae704c/image.png" style={{width: '100%', minHeight: '480', height: 'auto', margin: '10', position: 'relative'}}/><br/>
+
+## Account Isolation
+
+As a foundational design with the AWS Organization, we have already isolated resources into accounts. This separation
+creates a physical boundary between resources in AWS, including VPCs. Therefore, we can deploy a single or multiple
+VPCs in an account and guarantee that resources in those subnets will not be able to access resources in other accounts.
+
+Because of this design, we recommend deploying a single VPC per account (that needs a network). Production resources will
+only live in the VPC in the `plat-prod` account, and unless connected, no other VPC will be able to access those resources.
+Similarly, you could deploy a `data` account (or several) with a VPC to isolate data resources further.
+
+## Connecting Accounts
+
+Now that we have separated networks in each account, we need to be able to connect the account networks as required.
+We do this with Transit Gateway. We deploy a Transit Gateway hub and route table to the central Network account, and then deploy
+Transit Gateway spokes to all other accounts. The route table in the Network account specifies which accounts are able to access
+others, and the Transit Gateway spokes provide that connection.
+
+## Accessing the Network
+
+In order for a user to connect to the Network, we deploy an AWS Client VPN. This VPN is deployed to the Network account,
+which already has access to all other account networks. Then we define a set of rules for the VPN itself to specify
+where we want this VPN to be able to connect.
+
+## Implementation
+
+- [`vpc`](/components/library/aws/vpc/)
+- [`tgw/hub`](/components/library/aws/tgw/hub/)
+- [`tgw/spoke`](/components/library/aws/tgw/spoke/)
+- [`ec2-client-vpn`](/components/library/aws/ec2-client-vpn/)

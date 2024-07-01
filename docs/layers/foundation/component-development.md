@@ -1,6 +1,6 @@
 ---
-title: "Component Development"
-sidebar_position: 20
+title: "Developing Components"
+sidebar_position: 100
 custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/component-development.md
 ---
 
