@@ -13,8 +13,8 @@ We help companies achieve success in the cloud by automating systems for maximum
 |                 |                                                                                             |
 |:----------------|:--------------------------------------------------------------------------------------------|
 | Email           | [hello@cloudposse.com](mailto:hello@cloudposse.com)                                         |
-| Website         | <https://cloudposse.com>                                                                    |
-| GitHub          | <https://github.com/cloudposse>                                                             |
+| Website         | [cloudposse.com](https://cloudposse.com)                                                    |
+| GitHub          | [github.com/cloudposse](https://github.com/cloudposse)                                      |
 | Mailing Address | 12333 Sowden Rd Ste B PMB 95110, Houston, Texas 77080-2059                                  |
 | Schedule Time   | [calendly.com/cloudposse](https://calendly.com/cloudposse)                                  |
 | Call Us         | [+1 (800) 358-9018](tel:+18003589018)                                                       |

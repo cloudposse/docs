@@ -16,4 +16,4 @@ tags:
 The imperative approach focuses on how precisely the infrastructure should be defined.
 
 ## References
-- <https://en.wikipedia.org/wiki/Infrastructure_as_Code#Types_of_approaches>
+- https://en.wikipedia.org/wiki/Infrastructure_as_Code#Types_of_approaches

@@ -10,4 +10,4 @@ tags:
 ---
 The primary benefit of using a [`build-harness`](/reference/tools.mdx#build-harness) is it allows for the consolidation of business logic related to building software. This allows to keep things DRY. Using a centralized repo that can be versioned and shared across multiple projects reduces long-term technical debt associated with building and releasing software by reducing maintenance effort.
 
-We provide one that we use in nearly all of our projects. It's available here: <https://github.com/cloudposse/build-harness>
+We provide one that we use in nearly all of our projects. It's available here: https://github.com/cloudposse/build-harness
