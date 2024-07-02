@@ -67,11 +67,11 @@ indent_size = 4
 
 ## Editor Plugins
 
-Find all plugins here: <http://editorconfig.org/#download>
+Find all plugins here: http://editorconfig.org/#download
 
 - [Vim](https://github.com/editorconfig/editorconfig-vim#readme)
 - [Visual Studio](https://marketplace.visualstudio.com/items?itemName=EditorConfigTeam.EditorConfig)
 
 ## References
 
-- <http://editorconfig.org/>
+- http://editorconfig.org/

@@ -10,7 +10,9 @@ Inheritance is when you use `FROM some-image:1.2.3` (vs `FROM scratch`) in a `Do
 Try to leverage the same base image in as many of your images as possible for faster `docker pulls`.
 
 :::info
-- <https://docs.docker.com/engine/reference/builder/#from>
+
+- https://docs.docker.com/engine/reference/builder/#from
+
 :::
 
 ## Multi-stage Builds
@@ -21,8 +23,8 @@ There are two ways to leverage multi-stage builds:
 2. *Multiple-Inheritance* We like to think of "multi-stage builds" as a mechanism for "multiple inheritance" as it relates to docker images. While not technically the same thing, using multi-stage images makes it possible to `COPY --from=other-image` to keep things very DRY.
 
 :::info
-- <https://docs.docker.com/develop/develop-images/multistage-build/>
-- <https://blog.alexellis.io/mutli-stage-docker-builds/>
+- https://docs.docker.com/develop/develop-images/multistage-build/
+- https://blog.alexellis.io/mutli-stage-docker-builds/
 :::
 
 ## Use Scratch Base Image
@@ -41,7 +43,7 @@ When using self-hosted GitHub Actions Runners in an AWS environment, however, we
 
 The following example demonstrates how to configure the [cloudposse/github-action-docker-build-push](https://github.com/cloudposse/github-action-docker-build-push) action to use ECR as the remote cache storage backend:
 
-  ```diff
+```diff
     - name: Build
       id: build
       uses: cloudposse/github-action-docker-build-push@main

@@ -14,6 +14,6 @@ It should be noted that the cost of tech debt is very real. It manifests in the 
 :::info
 The best article ever written on "Tech Debt", is by Bill Clark at Riot Games.
 
-- <https://engineering.riotgames.com/news/taxonomy-tech-debt>
+- https://engineering.riotgames.com/news/taxonomy-tech-debt
 
 :::
