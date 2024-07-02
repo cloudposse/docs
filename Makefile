@@ -8,7 +8,7 @@ all: real-clean build
 	@exit 0
 
 deps:
-	npm install --only=production
+	npm install
 
 .PHONY: build
 
