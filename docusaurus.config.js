@@ -1,6 +1,6 @@
 // @ts-check
-const lightCodeTheme = require('prism-react-renderer/themes/vsDark');
-const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
+const lightCodeTheme = require('prism-react-renderer').themes.vsDark;
+const darkCodeTheme = require('prism-react-renderer').themes.nightOwl;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -98,7 +98,7 @@ const config = {
           {
             type: 'dropdown',
             label: 'Community',
-            position: 'right',
+            position: 'left',
             items: [
               {
                 label: 'GitHub Discussions',
@@ -122,23 +122,40 @@ const config = {
               },
             ],
           },
+
+
           {
             href: 'https://github.com/cloudposse/',
             className: 'header-github-link',
+            position: 'right',
+          },
+
+          {
+            type: 'search',
             position: 'right',
           },
           {
             to: 'https://cloudposse.com/',
             label: 'Accelerate',
             position: 'right',
-            className: 'button button--success header-accelerate-button'
-          },
-          {
-            type: 'search',
-            position: 'right',
+            className: 'navbar-cta-button'
           },
         ],
       },
+
+      colorMode: {
+        // "light" | "dark"
+        defaultMode: 'dark',
+
+        // Hides the switch in the navbar
+        // Useful if you want to force a specific mode
+        disableSwitch: false,
+
+        // Should respect the user's color scheme preference
+        // "light" | "dark" | "system"
+        respectPrefersColorScheme: false,
+      },
+
       algolia: {
         appId: process.env.ALGOLIA_APP_ID || '32YOERUX83',
         apiKey: process.env.ALGOLIA_SEARCH_API_KEY || '557985309adf0e4df9dcf3cb29c61928', // this is SEARCH ONLY API key and is not sensitive information
@@ -206,6 +223,12 @@ const config = {
           href: 'https://cloudposse.com/'
         },
         copyright: `© ${new Date().getFullYear()} Cloud Posse, LLC`,
+      },
+      mermaid: {
+        theme: {
+            light: 'neutral',
+            dark: 'dark',
+        },
       },
       prism: {
         theme: lightCodeTheme,

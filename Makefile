@@ -23,6 +23,7 @@ build: deps
 build-production: build
 	@exit 0
 
+up: start
 start:
 	npm start
 
@@ -33,3 +34,6 @@ real-clean:
 	rm -fr .docusaurus && \
     rm -fr build && \
     rm -fr node_modules
+
+lint:
+	npx docusaurus-mdx-checker --cwd docs

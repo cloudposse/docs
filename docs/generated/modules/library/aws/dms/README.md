@@ -3,7 +3,7 @@ title: dms
 sidebar_label: dms
 sidebar_class_name: command
 description: |-
-  Terraform modules for provisioning and managing AWS [DMS](https://aws.amazon.com/dms/) resources. 
+  Terraform modules for provisioning and managing AWS [DMS](https://aws.amazon.com/dms/) resources.
 
   The following DMS resources are supported:
 
@@ -18,7 +18,7 @@ custom_edit_url: https://github.com/cloudposse/terraform-aws-dms/blob/main/READM
 ---
 
 # Module: `dms`
-Terraform modules for provisioning and managing AWS [DMS](https://aws.amazon.com/dms/) resources. 
+Terraform modules for provisioning and managing AWS [DMS](https://aws.amazon.com/dms/) resources.
 
 The following DMS resources are supported:
 
@@ -280,7 +280,7 @@ For automated tests of the example using [bats](https://github.com/bats-core/bat
     sqs_dlq_enabled                        = false
     fifo_topic                             = false
     fifo_queue_enabled                     = false
-    encryption_enabled                     = false  
+    encryption_enabled                     = false
 
     allowed_aws_services_for_sns_published = [
       "cloudwatch.amazonaws.com",
@@ -339,14 +339,14 @@ For automated tests of the example using [bats](https://github.com/bats-core/bat
   }
 ```
 
-__NOTE:__  If a replication task is in "Failed" state (for any reason, e.g. network connectivity issues, database table issues, configuration issues), 
-it can't be destroyed with Terraform (but can be updated). 
+__NOTE:__  If a replication task is in "Failed" state (for any reason, e.g. network connectivity issues, database table issues, configuration issues),
+it can't be destroyed with Terraform (but can be updated).
 The task needs to be updated/fixed and moved to any other state like "Running", "Stopped", "Starting", "Ready", etc.
 
-You can monitor the progress of your task by checking the task status and by monitoring the task's control table. 
-The task status indicates the condition of an AWS DMS task and its associated resources. 
-It includes such indications as if the task is being created, starting, running, stopped, or failed. 
-It also includes the current state of the tables that the task is migrating, such as if a full load of a table has begun 
+You can monitor the progress of your task by checking the task status and by monitoring the task's control table.
+The task status indicates the condition of an AWS DMS task and its associated resources.
+It includes such indications as if the task is being created, starting, running, stopped, or failed.
+It also includes the current state of the tables that the task is migrating, such as if a full load of a table has begun
 or is in progress and details such as the number of inserts, deletes, and updates have occurred for the table.
 
 Refer to [Monitoring DMS Task Status](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Monitoring.html#CHAP_Tasks.Status) for more information.
@@ -381,7 +381,6 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br/>This is for some rare cases where resources want additional configuration of tags<br/>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br/>in the order they appear in the list. New attributes are appended to the<br/>end of the list. The elements of the list are joined by the `delimiter`<br/>and treated as a single ID element. | `list(string)` | `[]` | no |
-| <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br/>See description of individual variables for details.<br/>Leave string and numeric variables as `null` to use default value.<br/>Individual variable settings (non-null) override settings in context object,<br/>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br/>  "additional_tag_map": {},<br/>  "attributes": [],<br/>  "delimiter": null,<br/>  "descriptor_formats": {},<br/>  "enabled": true,<br/>  "environment": null,<br/>  "id_length_limit": null,<br/>  "label_key_case": null,<br/>  "label_order": [],<br/>  "label_value_case": null,<br/>  "labels_as_tags": [<br/>    "unset"<br/>  ],<br/>  "name": null,<br/>  "namespace": null,<br/>  "regex_replace_chars": null,<br/>  "stage": null,<br/>  "tags": {},<br/>  "tenant": null<br/>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br/>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br/>Map of maps. Keys are names of descriptors. Values are maps of the form<br/>`{<br/>   format = string<br/>   labels = list(string)<br/>}`<br/>(Type is `any` so the map values can later be enhanced to provide additional options.)<br/>`format` is a Terraform format string to be passed to the `format()` function.<br/>`labels` is a list of labels, in order, to pass to `format()` function.<br/>Label values will be normalized before being passed to `format()` so they will be<br/>identical to how they appear in `id`.<br/>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
