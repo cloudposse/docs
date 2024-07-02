@@ -122,23 +122,20 @@ const config = {
               },
             ],
           },
-
-
+          {
+            type: 'search',
+            position: 'right',
+          },
           {
             href: 'https://github.com/cloudposse/',
             className: 'header-github-link',
-            position: 'right',
-          },
-
-          {
-            type: 'search',
             position: 'right',
           },
           {
             to: 'https://cloudposse.com/',
             label: 'Accelerate',
             position: 'right',
-            className: 'navbar-cta-button'
+            className: 'button button--primary navbar-cta-button'
           },
         ],
       },
