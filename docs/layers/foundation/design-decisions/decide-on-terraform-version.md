@@ -1,9 +1,5 @@
 ---
 title: "Decide on Terraform Version"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176010868/REFARCH-280+-+Decide+on+Terraform+Version
-sidebar_position: 100
-refarch_id: REFARCH-280
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-terraform-version.md
 ---
 
 # Decide on Terraform Version

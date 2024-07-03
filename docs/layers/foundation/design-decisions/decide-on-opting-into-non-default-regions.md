@@ -1,9 +1,5 @@
 ---
 title: "Decide on Opting Into Non-default Regions"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175978007/REFARCH-392+-+Decide+on+Opting+Into+Non-default+Regions
-sidebar_position: 100
-refarch_id: REFARCH-392
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-opting-into-non-default-regions.md
 ---
 
 # Decide on Opting Into Non-default Regions
@@ -39,4 +35,4 @@ console, you are prompted to do this, so just follow the prompt.
 
 ## Related
 
-- [Decide on Primary AWS Region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region)
+- [Decide on Primary AWS Region](/layers/foundation/design-decisions/cold-start/decide-on-primary-aws-region)

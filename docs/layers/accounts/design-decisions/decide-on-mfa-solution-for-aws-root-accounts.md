@@ -1,9 +1,5 @@
 ---
 title: "Decide on MFA Solution for AWS Root Accounts"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175978040/REFARCH-50+-+Decide+on+MFA+Solution+for+AWS+Root+Accounts
-sidebar_position: 100
-refarch_id: REFARCH-50
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-mfa-solution-for-aws-root-accounts.md
 ---
 
 # Decide on MFA Solution for AWS Root Accounts

@@ -1,9 +1,5 @@
 ---
 title: "Decide on Secrets Management Strategy for Terraform"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175355661/REFARCH-81+-+Decide+on+Secrets+Management+Strategy+for+Terraform
-sidebar_position: 100
-refarch_id: REFARCH-81
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-secrets-management-strategy-for-terraform.md
 ---
 
 # Decide on Secrets Management Strategy for Terraform
@@ -24,6 +20,5 @@ like ASM/SSM is required.
 
 ## Related
 
-- [Use SSM over ASM for Infrastructure](/reference-architecture/reference/adrs/use-ssm-over-asm-for-infrastructure)
-
-- [Decide on 1Password Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-1password-strategy)
+- [Use SSM over ASM for Infrastructure](/resources/adrs/use-ssm-over-asm-for-infrastructure/)
+- [Decide on 1Password Strategy](/layers/foundation/design-decisions/decide-on-1password-strategy)

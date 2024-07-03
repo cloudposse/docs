@@ -1,9 +1,5 @@
 ---
 title: "Decide on ECR Strategy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171783800/REFARCH-254+-+Decide+on+ECR+Strategy
-sidebar_position: 100
-refarch_id: REFARCH-254
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-ecr-strategy.md
 ---
 
 # Decide on ECR Strategy

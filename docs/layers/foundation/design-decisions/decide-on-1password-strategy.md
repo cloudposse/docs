@@ -1,9 +1,5 @@
 ---
 title: "Decide on 1Password Strategy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1172013244/REFARCH-34+-+Decide+on+1Password+Strategy
-sidebar_position: 100
-refarch_id: REFARCH-34
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-1password-strategy.md
 ---
 
 # Decide on 1Password Strategy
@@ -18,7 +14,7 @@ credentials.
 means of sharing secrets with individuals. It also does not integrate with terraform.
 
 Please see
-[Decide on MFA Solution for AWS Root Accounts](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-mfa-solution-for-aws-root-accounts)
+[Decide on MFA Solution for AWS Root Accounts](/layers/accounts/design-decisions/decide-on-mfa-solution-for-aws-root-accounts)
 for additional context on why we recommend 1Password.
 
 ## Supported Options

@@ -1,9 +1,5 @@
 ---
 title: "Decide on Namespace Abbreviation"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175388263/REFARCH-53+-+Decide+on+Namespace+Abbreviation
-sidebar_position: 100
-refarch_id: REFARCH-53
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-namespace-abbreviation.md
 ---
 
 # Decide on Namespace Abbreviation
@@ -29,8 +25,10 @@ Examples:
 
 - Cloud Posse = `cpco`
 
-:::note It is advised to keep the namespace as short as possible (< 5 chars) because of resources with low max character
-limits [AWS Resources Limitations](/reference-architecture/reference/aws/aws-feature-requests-and-limitations)
+:::note
+
+It is advised to keep the namespace as short as possible (< 5 chars) because of resources with low max character limits
+[AWS Resources Limitations](/resources/aws/aws-feature-requests-and-limitations/)
 
 :::
 

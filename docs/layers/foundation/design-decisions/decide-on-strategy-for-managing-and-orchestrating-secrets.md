@@ -1,9 +1,5 @@
 ---
 title: "Decide on Strategy for Managing and Orchestrating Secrets"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1414070320/REFARCH-538+-+Decide+on+Strategy+for+Managing+and+Orchestrating+Secrets
-sidebar_position: 100
-refarch_id: REFARCH-538
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/decide-on-strategy-for-managing-and-orchestrating-secrets.md
 ---
 
 # Decide on Strategy for Managing and Orchestrating Secrets
@@ -111,4 +107,4 @@ We have run into this when migrating highly parameterized applications.
 
 ## References
 
-- [Decide on Secrets Management Strategy for Terraform](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-secrets-management-strategy-for-terraform)
+- [Decide on Secrets Management Strategy for Terraform](/layers/foundation/design-decisions/decide-on-secrets-management-strategy-for-terraform)

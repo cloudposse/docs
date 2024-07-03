@@ -1,9 +1,5 @@
 ---
 title: "Decide on Regional Naming Scheme"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175355513/REFARCH-209+-+Decide+on+Regional+Naming+Scheme
-sidebar_position: 100
-refarch_id: REFARCH-209
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-regional-naming-scheme.md
 ---
 
 # Decide on Regional Naming Scheme
@@ -36,5 +32,5 @@ Here are some more examples to help understand the relationships.
 | <pre><br/>namespace: acme<br/>tenant: vkng<br/>environment: ue2 # us-east-2<br/>stage: automation<br/>name: eks-cluster<br/></pre> | `acme-vkng-ue2-automation-eks-cluster` |
 
 Also, see the corresponding design decision for the
-[Decide on Hostname Scheme for Service Discovery](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-hostname-scheme-for-service-discovery)
+[Decide on Hostname Scheme for Service Discovery](/layers/network-and-dns/design-decisions/decide-on-hostname-scheme-for-service-discovery)
 as this will be impacted by whatever is chosen.

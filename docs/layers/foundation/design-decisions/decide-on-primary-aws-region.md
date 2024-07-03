@@ -1,9 +1,5 @@
 ---
 title: "Decide on Primary AWS Region"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1168474145/REFARCH-56+-+Decide+on+Primary+AWS+Region
-sidebar_position: 100
-refarch_id: REFARCH-56
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region.md
 ---
 
 # Decide on Primary AWS Region
@@ -59,7 +55,5 @@ Latency between v1 infrastructure and v2 infrastructure could be a factor. See
 ### References
 
 - [https://www.geekwire.com/2017/analysis-rethinking-cloud-architecture-outage-amazon-web-services/](https://www.geekwire.com/2017/analysis-rethinking-cloud-architecture-outage-amazon-web-services/)
-
 - [https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/](https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/)
-
 - [https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/](https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/)
