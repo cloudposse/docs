@@ -7,9 +7,12 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 ---
 
 # Decide on Primary AWS Region
-While the company might operate in multiple regions, one region should be selected as the primary region. There are certain resources that will not be geographically distributed and these should be provisioned in this default region.
 
-When starting from scratch with a new AWS account, it's a good time to revisit decisions that might have been made decades ago. There are many new AWS regions that might be better suited for the business.
+While the company might operate in multiple regions, one region should be selected as the primary region. There are
+certain resources that will not be geographically distributed and these should be provisioned in this default region.
+
+When starting from scratch with a new AWS account, it's a good time to revisit decisions that might have been made
+decades ago. There are many new AWS regions that might be better suited for the business.
 
 ### Customer Proximity
 
@@ -17,15 +20,21 @@ One good option is picking a default region that is closest to the where the maj
 
 ### Business Headquarters
 
-One good option is picking a default region that is closest to where the majority of business operations take place. This is especially true if most of the services in the default region will be consumed by the business itself.
+One good option is picking a default region that is closest to where the majority of business operations take place.
+This is especially true if most of the services in the default region will be consumed by the business itself.
 
 ### Stability
 
-When operating on AWS, selecting a region other than `us-east-1` is advisable as this is the default region (or used to be) for most AWS users. It has historically had the most service interruptions presumably because it is one of the most heavily-used regions and operates at a scale much larger than other AWS regions. Therefor we advise using `us-east-2` over `us-east-1` and the latencies between these regions is very minimal.
+When operating on AWS, selecting a region other than `us-east-1` is advisable as this is the default region (or used to
+be) for most AWS users. It has historically had the most service interruptions presumably because it is one of the most
+heavily-used regions and operates at a scale much larger than other AWS regions. Therefor we advise using `us-east-2`
+over `us-east-1` and the latencies between these regions is very minimal.
 
 ### High Availability / Availability Zones
 
-Not all AWS regions support the same number of availability zones.  [Many regions only offer (2) availability zones](https://howto.lintel.in/list-of-aws-regions-and-availability-zones/) when a minimum of (3) is recommended when operating kubernetes to avoid "split-brain" problems.
+Not all AWS regions support the same number of availability zones.
+[Many regions only offer (2) availability zones](https://howto.lintel.in/list-of-aws-regions-and-availability-zones/)
+when a minimum of (3) is recommended when operating kubernetes to avoid "split-brain" problems.
 
 ### Cost
 
@@ -33,7 +42,10 @@ Not all regions cost the same to operate.
 
 ### Service Availability
 
-Not all regions offer the full suite of AWS services or receive new services at the same rate as others. Other times, certain regions receive platform infrastructure updates slower than others. Also, recently AWS launched [Local Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#AWS_Local_Zones) (e.g. `us-west-2-lax-1a`) which operate a subset of AWS services.
+Not all regions offer the full suite of AWS services or receive new services at the same rate as others. Other times,
+certain regions receive platform infrastructure updates slower than others. Also, recently AWS launched
+[Local Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#AWS_Local_Zones) (e.g.
+`us-west-2-lax-1a`) which operate a subset of AWS services.
 
 ### Instance Types
 
@@ -41,7 +53,8 @@ Not all instance types are available in all regions
 
 ### Latency
 
-Latency between v1 infrastructure and v2 infrastructure could be a factor. See [cloudping.co/grid](https://www.cloudping.co/grid) for more information.
+Latency between v1 infrastructure and v2 infrastructure could be a factor. See
+[cloudping.co/grid](https://www.cloudping.co/grid) for more information.
 
 ### References
 
@@ -50,5 +63,3 @@ Latency between v1 infrastructure and v2 infrastructure could be a factor. See [
 - [https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/](https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/)
 
 - [https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/](https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/)
-
-

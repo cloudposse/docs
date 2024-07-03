@@ -7,7 +7,9 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 ---
 
 # Decide on Infrastructure Repository Name
-We highly recommend using a mono-repo for your foundational infrastructure. This doesn’t preclude introducing other infrastructure repositories in the future.
+
+We highly recommend using a mono-repo for your foundational infrastructure. This doesn’t preclude introducing other
+infrastructure repositories in the future.
 
 Suggestions:
 
@@ -26,5 +28,3 @@ Suggestions:
 - `cloud-ops`
 
 If you already have a repo by any of these names, we suggest you create a new one so we can start with a clean history.
-
-

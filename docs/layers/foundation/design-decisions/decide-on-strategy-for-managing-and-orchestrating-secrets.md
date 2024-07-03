@@ -9,14 +9,21 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 # Decide on Strategy for Managing and Orchestrating Secrets
 
 ## Context and Problem Statement
-We’ll inevitably need some way to store confidential key material and then access that from applications. Many options exist, and the best option depends on the circumstance. An often overlooked piece of the puzzle is how the key material will be created and updated, and how that ties into the broader release engineering workflow.
+
+We’ll inevitably need some way to store confidential key material and then access that from applications. Many options
+exist, and the best option depends on the circumstance. An often overlooked piece of the puzzle is how the key material
+will be created and updated, and how that ties into the broader release engineering workflow.
 
 ## Considerations
 
 ### Exfiltration
-From a security perspective, we ideally want to avoid direct access to application-level secrets in the CI/CD pipeline. This is achieved using two techniques: encrypted files or kubernetes operators and direct platform integration with the secrets store. When not using Kubernetes the operator approach is not suitable.
+
+From a security perspective, we ideally want to avoid direct access to application-level secrets in the CI/CD pipeline.
+This is achieved using two techniques: encrypted files or kubernetes operators and direct platform integration with the
+secrets store. When not using Kubernetes the operator approach is not suitable.
 
 ### Secrets for Applications
+
 - Secrets storage (e.g. SSM, ASM, Vault, Encrypt Files)
 
 - Secrets retrieval
@@ -30,14 +37,18 @@ From a security perspective, we ideally want to avoid direct access to applicati
 - Secrets orchestration (CRUD)
 
 ## Considered Options for GitHub Actions
+
 For all options, we assume secrets will be manually created and updated.
 
 ### Option A: GitHub Secrets
-During the CI or CD pipeline execution, it may be necessary to have access to secrets. For example, integration tokens with third-party vendors, or tokens to retrieve files (e.g. from VCS or S3).
+
+During the CI or CD pipeline execution, it may be necessary to have access to secrets. For example, integration tokens
+with third-party vendors, or tokens to retrieve files (e.g. from VCS or S3).
 
 - GitHub Secrets Environment variables
 
 ### Option B: AWS Secrets (SSM, ASM)
+
 - GitHub Action reads from {SSM, ASM} storage leveraging GitHub OIDC to access secrets in AWS
 
 - IAM Roles & Permissions for applications
@@ -47,49 +58,57 @@ During the CI or CD pipeline execution, it may be necessary to have access to se
 ## Considered Options for ECS
 
 ### Option A: Use SSM
+
 Natively supported by ECS. The `chamber` tool is convenient for updating values.
 
 ### Option B: Use ASM
-Natively supported by ECS. ASM supports lambda hooks that can rotate secrets. Not as easy to manage on the command-line as using `chamber.
+
+Natively supported by ECS. ASM supports lambda hooks that can rotate secrets. Not as easy to manage on the command-line
+as using `chamber.
 
 ### Option C: Use S3
+
 Story secrets in a KMS encrypted file in a private S3 bucket. Fetch the file as part of the container entrypoint script.
 
-This is only recommended if the number of secrets is so large we exceed the max document size of a container definition. We have run into this when migrating highly parameterized applications.
+This is only recommended if the number of secrets is so large we exceed the max document size of a container definition.
+We have run into this when migrating highly parameterized applications.
 
 ## Considered Options for EKS
 
-### Option 1:  Use SSM + External Secrets Operator (Recommended for EKS)
+### Option 1: Use SSM + External Secrets Operator (Recommended for EKS)
 
-:::tip
-We recommend this option because SSM is a centralized source of truth and well understood.
+:::tip We recommend this option because SSM is a centralized source of truth and well understood.
 
-:::
-[https://external-secrets.io/](https://external-secrets.io/)
+::: [https://external-secrets.io/](https://external-secrets.io/)
 
 #### Pros
+
 - Applications automatically updated when SSM values change
 
 - Easier to rotate secrets without CI/CD application deployments (a new `ReplicaSet` is created)
 
 #### Cons
-- es If many secrets change at around the same time, it can be disruptive to the application as each change causes kubernetes to create a new `ReplicaSet` as part of the Kubernetes `Deployment`
+
+- es If many secrets change at around the same time, it can be disruptive to the application as each change causes
+  kubernetes to create a new `ReplicaSet` as part of the Kubernetes `Deployment`
 
 ### Option 2: Use Sops Secrets Operator + KMS
+
 [https://github.com/isindir/sops-secrets-operator](https://github.com/isindir/sops-secrets-operator)
 
 #### Pros
+
 - Easily rollout secrets along side application deployments
 
 - Secrets are protected by KMS using IAM
 
 #### Cons
+
 - Secrets rotation requires application deployment
 
 - Mozilla SOPS project (despite being used by thousands of projects) lack maintainers.
-[https://github.com/mozilla/sops/discussions/927](https://github.com/mozilla/sops/discussions/927)
+  [https://github.com/mozilla/sops/discussions/927](https://github.com/mozilla/sops/discussions/927)
 
 ## References
+
 - [Decide on Secrets Management Strategy for Terraform](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-secrets-management-strategy-for-terraform)
-
-

@@ -1,0 +1,62 @@
+---
+title: "Creating a Repository"
+sidebar_position: 20
+---
+
+# Creating an Infrastructure repository
+
+Create an empty GitHub repository to host infrastructure tools and configuration, and clone it to your host computer
+into a directory below your `$HOME` directory in the directory tree, for example,`/Users/user/src/infrastructure`.
+
+## Setup basic repository settings
+
+We recommend the following GitHub repository settings.
+
+1. Under "Features", ensure "Issues" are enabled. We will use Issues with Atmos GitHub Actions for Terraform.
+1. Under "Pull Requests", disable both "Allow merge commits" and "Allow rebase merging". We do this to create a clean
+   commit history. Otherwise, the git history on the main branch will contain individual commits from each feature
+   branch, which will result in a history which may contain _"dirty"_ commits.
+1. Under "Pull Requests", check "Always suggest updating pull request branches"
+1. Under "Pull Requests", check "Automatically delete head branches"
+
+## Enable branch protection
+
+1. Under branches, select "Add branch ruleset"
+1. Name this ruleset whatever you'd like. For example, "Protected Branches"
+1. Under "Bypass list", add your admin team. This team is able to skip the rules were are about to add, so this the
+   bypass list should be sparingly granted
+1. Under "Target branches", select "Add target" and "Include all default branches"
+1. Then check the following rules:
+
+- [x] Restrict deletions
+- [x] Require a pull request before merging
+- [x] Block force pushes
+
+## Add collaborators and teams
+
+Now add in your collaborators and teams. Under "Collaborators and teams", click "Add Teams". Generally most teams should
+have "Write" access, and "Admin" access should be granted sparingly.
+
+For engagements with Cloud Posse, please grant Cloud Posse "Write" access.
+
+## Atmos Component Updater
+
+The Atmos Component Updater will automatically suggest pull requests in your new repository. To do so, we need to create
+and install a GitHub App and allow GitHub Actions to create and approve pull requests within your GitHub Organization.
+For more on the Atmos Component Updater, see
+[atmos.tools](https://atmos.tools/integrations/github-actions/component-updater).
+
+1. Ensure [all requirements are met](https://atmos.tools/integrations/github-actions/component-updater/#requirements).
+1. Set up a [Github App](https://atmos.tools/integrations/github-actions/component-updater/#using-a-github-app) with
+   permission to create Pull Requests. We use a GitHub App because Pull Requests will only trigger other GitHub Action
+   Workflows if the Pull Request is created by a GitHub App or PAT.
+1. Create a
+   [GitHub Environment](https://atmos.tools/integrations/github-actions/component-updater/#using-github-environments).
+   With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before
+   running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the
+   GitHub UI
+
+## Import the Reference Architecture
+
+With the GitHub repository prepared, we are now ready to import the Cloud Posse reference architecture. Reach out to
+Cloud Posse for details!

@@ -1,8 +1,222 @@
 ---
 sidebar_class_name: hidden
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/edit/main/docs/docs/fundamentals/gitops.md
 ---
 
-# Foundation
+# Getting Started
 
-TODO
+## Problem
+
+As a new engineer joining the project, you are familiar with AWS, Terraform, Kubernetes, Docker, etc, but you’re not
+familiar with the opinionated way that Cloud Posse does it — what we call the _SweetOps_ method. There are so many
+tools, conventions, components, stacks, that you don’t know where to get started.
+
+## Solution
+
+:::tip Review the documentation, then start by getting your hands dirty with your first project. Don’t be afraid to
+reach out and ask for help, if you get stuck. You’ll learn much faster this way and be less overwhelmed trying to master
+the concepts that have taken us the better part of 7 years to develop.
+
+:::
+
+Here you will find a quick start document for each layer of infrastructure. These documents are intended to present a
+common problem and a Cloud Posse solution to that problem.
+
+Also included here are common tools for Cloud Posse as well as the library of
+[**Design Decisions**](/reference-architecture/fundamentals/design-decisions) with context of every decision behind the
+Reference Architecture.
+
+## Introduction to Toolset
+
+import ReactPlayer from "react-player";
+
+<ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/introduction-to-toolchain.mp4" />
+
+## Checklist
+
+:::info Documentation is our top priority
+
+Please let us know if anything is missing or holding you up. We’ll make sure to prioritize it.
+
+:::
+
+This guide assumes you have the following:
+
+- Terraform experience working with modules, providers, public registry, state backends, etc
+- AWS experience including a firm understanding of IAM, SDK, web-based console, etc
+- Existing AWS environment; See [Implement AWS Cold Start](/reference-architecture/setup/cold-start) for what Cloud
+  Posse implements as part of our Foundational Infrastructure.
+
+If this all sounds a little bit daunting, you may want to start by reviewing the
+[Learning Resources](/reference-architecture/reference/learning-resources).
+
+### 0. Prerequisites
+
+Prerequisites for your local host computer:
+
+- [ ] Docker installed (to run our tools)
+- [ ] Slack installed (to communicate with our team)
+- [ ] `make` installed, preferably GNU Make
+- [ ] `git` installed
+- [ ] [Leapp](/fundamentals/leapp) for authentication
+- [ ] Infrastructure Git repo cloned
+
+#### Homebrew Users
+
+We typically ship a `Brewfile` with a list of local dependencies. Make sure you have [Homebrew](https://brew.sh) and use
+`brew bundle` to install dependencies from the `Brewfile`
+
+1. First, make sure you’ve cloned the `infrastructure` repository for your organization.
+2. Just run `brew bundle install` to install all localhost dependencies.
+
+```
+brew "asdf"
+brew "gawk"
+brew "coreutils"
+brew "pre-commit"
+brew "terraform-docs"
+brew "tflint"
+
+# Hedge against linuxbrew, `aws-vault` is a cask on MacOS
+# but a regular formula in linuxbrew.
+cask "aws-vault" if OS.mac?
+brew "aws-vault" unless OS.mac?
+```
+
+Next, you'll need docker set up. There are a variety of ways to do this.
+
+#### Docker on Unix Systems
+
+You should be able to use `docker` as normal. Launch docker before running the Makefile.
+
+:::info
+
+Linux users should run Docker in ["rootless"](https://docs.docker.com/engine/security/rootless/) mode. In this mode, the
+Docker daemon runs as the host user (rather than as root) and files created by the root user in Geodesic are owned by
+the host user on the host. Not only does this configuration solve
+[this issue](https://github.com/cloudposse/geodesic/issues/594), but it provides much better system security overall.
+
+:::
+
+#### Docker on Windows
+
+##### Setting up containers on Windows
+
+1. [Install Docker Desktop](https://docs.docker.com/docker-for-windows/install/) or install
+   [Rancher Desktop](https://rancherdesktop.io/) and configure it to use `docker` instead of `nerdctl`.
+1. If you picked Docker Desktop, follow [instructions on WSL setup](https://docs.docker.com/desktop/wsl/), otherwise
+   follow [Rancher's setup docs](https://docs.rancherdesktop.io/ui/preferences/wsl).
+
+##### Using Ubuntu on Windows
+
+1. First, [setup WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and then configure WSL to use version
+   2 by default with this command: `wsl --set-default-version 2`
+1. [Install Ubuntu for Windows](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
+1. [Install Windows terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)
+1. Launch Ubuntu shell from Windows Terminal
+1. [Add user to Docker](https://docs.docker.com/engine/install/linux-postinstall/)
+1. If you chose to use Rancher, just install `docker`. If you chose to use Docker Desktop, you'll need to go into
+   settings and enable your Ubuntu distro. Once applied, you'll see `docker` available in your Ubuntu shell PATH.
+
+##### Running Geodesic on Windows
+
+1. You'll need an editor that supports WSL2. [VSCode](https://code.visualstudio.com/) and most JetBrains IDEs support
+   WSL2 using remote development plugins.
+1. Clone this repo into your WSL2 environment
+1. Install `curl` and `build-essential` with `apt-get`
+1. Launch your editor's remote development mode and open the repo
+1. You should now be able to run `make all` and have it build the container and launch a shell inside it
+
+#### Building the Toolbox Image
+
+Build the Geodesic infrastructure container. This is a container that has all the tools for building the app. It's built
+from the `Dockerfile` using a `Makefile`.
+
+The standard `Makefile` includes a number of commands. In order to build the initial, complete Geodesic image, run the
+following:
+
+```bash
+make all
+```
+
+On future builds, use `make run` to use the cached image.
+
+#### Cloud Access
+
+- [ ] AWS SSO Access (talk to your AWS administrator)
+- [ ] Ensure you can log in to AWS. See
+      [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp) to get
+      started.
+
+### 1. Onboarding
+
+After ensuring you’ve satisfied all the prerequisites, we recommend doing the following
+
+- [ ] Join the Shared “Slack connect” channels with our team. These are usually named something like `#cloudposse-` on
+      the customer’s side.
+- [ ] Ensure you’ve been added to any calls with the Cloud Posse team. Depending on the type of engagement, you may have
+      weekly cadance calls (Enterprise only) or weekly Customer Workshops (all customers). Cloud Posse PMs can help add
+      members to the calendar event.
+- [ ] Ensure you’ve been added to the <ins>Cloud Posse Jira Project</ins> for your company’s engagement with our team.
+      Cloud Posse PMs can help add members. **Only applicable for Enterprise engagements**.
+- [ ] Learn more about Cloud Posse because as a [DevOps Accelerator](https://cloudposse.com) we are very different from
+      typical professional services companies.
+- [ ] Review the different ways you can get [Support](/reference-architecture/support).
+
+### 2. Learn the Cloud Posse Toolchain
+
+- [ ] Read through the [Introduction to Toolset](#introduction-to-toolset) slides and become familiar with the concepts
+      of [Components](/components), [Stacks](/fundamentals/stacks), and
+      [Stack Catalogs](https://atmos.tools/core-concepts/stacks/catalogs).
+- [ ] Review [Geodesic](/fundamentals/geodesic) docker toolbox and
+      [How to Customize the Geodesic Shell](/reference-architecture/how-to-guides/tutorials/how-to-customize-the-geodesic-shell)
+      to your liking.
+- [ ] Review [Atmos](/fundamentals/atmos) CLI
+- [ ] [How to use Atmos](/reference-architecture/how-to-guides/tutorials/how-to-use-atmos)
+- [ ] Review our [Conventions](/reference-architecture/reference/conventions) (there are a lot of them)
+- [ ] Review [Fundamentals](/reference-architecture/fundamentals) and each core concept included as a subpage.
+- [ ] Review the Architectural Design Records (ADRs) for your organization; these are typically in `docs/adr` within the
+      infrastructure repository.
+- [ ] Review Cloud Posse’s [Architectural Design Records (ADRs)](/reference-architecture/reference/adrs), which may not
+      be the same as your organizations' practices
+- [ ] Check out the [Learning Resources](/reference-architecture/reference/learning-resources) that have been curated
+      from our weekly office hours
+
+### 3. AWS Toolchain
+
+- [ ] Review [Leapp](/fundamentals/leapp) and
+      [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp)
+- [ ] Review why we
+      [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform)
+
+### 4. Kubernetes Toolchain
+
+- [ ] [Helm](/reference-architecture/reference/helm)
+- [ ] [Kubernetes](/reference-architecture/reference/kubernetes)
+- [ ] [Lens](/reference-architecture/reference/lens)
+
+### 5. Training Exercise
+
+- [ ] Clone your company’s infrastructure repository
+- [ ] Review the components in your company’s infrastructure repository (e.g. `infrastructure/components/terraform`)
+- [ ] Review the stack configurations in your company’s infrastructure repository (e.g. `infrastructure/stacks/`)
+- [ ] Review the catalog configurations in your company’s infrastructure repository (e.g.
+      `infrastructure/stacks/catalog`)
+
+### 6. How we Use Terraform (for developers)
+
+- [ ] Review [Terraform](/fundamentals/terraform) conventions used by Cloud Posse
+- [ ] We store all the terraform states in S3. Make sure you understand the
+      [Structure of Terraform S3 State Backend Bucket](/reference-architecture/reference/structure-of-terraform-s3-state-backend-bucket)
+- [ ] Learn
+      [How to Use Terraform Remote State](/reference-architecture/how-to-guides/tutorials/how-to-use-terraform-remote-state) -
+      we make it really easy to read the state of any component in any account.
+- [ ] Review [Component Development](reference-architecture/fundamentals/component-development/).
+- [ ] [How to Switch Versions of Terraform](/reference-architecture/how-to-guides/tutorials/how-to-switch-versions-of-terraform)
+- [ ] [How to Use Atmos with Existing Terraform](/reference-architecture/how-to-guides/tutorials/how-to-use-atmos-with-existing-terraform)
+
+### 7. Where to go from here?
+
+- [ ] Review our [public documentation](https://docs.cloudposse.com/).
+- [ ] Review [atmos.tools](https://atmos.tools/).
+- [ ] Review the [How-to Guides](/reference-architecture/how-to-guides) so you’re aware of what guides exist.
+- [ ] Review [References](/reference-architecture/category/reference/) for additional context and documentation.
