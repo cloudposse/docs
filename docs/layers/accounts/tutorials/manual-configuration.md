@@ -310,7 +310,9 @@ We'll now provision all other components using the S3 backend.
 
 ### Provision AWS Organization using the `account` component
 
-:::caution Verify and confirm all account settings now. Changing account settings after provisioning accounts can be
+:::caution
+
+Verify and confirm all account settings now. Changing account settings after provisioning accounts can be
 highly difficult. In particular, be sure to double and triple check the provided email address. You must have access to
 this email address to access, update, or delete the account.
 
@@ -329,7 +331,9 @@ SuperAdmin) credentials you have saved in 1Password.
 
 #### Request an increase in the maximum number of accounts allowed
 
-:::caution Make sure your support plan for the _root_ account was upgraded to the "Business" level (or Higher). This is
+:::caution
+
+Make sure your support plan for the _root_ account was upgraded to the "Business" level (or Higher). This is
 necessary to expedite the quota increase requests, which could take several days on a basic support plan. Without it,
 AWS support will claim that since we’re not currently utilizing any of the resources, so they do not want to approve the
 requests. AWS support is not aware of your other organization. If AWS still gives you problems, please escalate to your
@@ -467,14 +471,18 @@ atmos terraform import account --stack core-gbl-root 'aws_organizations_organiza
 AWS accounts and organizational units are generated dynamically by the `terraform/account` component using the
 configuration in the `gbl-root` stack.
 
-:::info _**Special note:**_ \*\*\*\* In the rare case where you will need to be enabling non-default AWS Regions,
+:::info Special note
+
+In the rare case where you will need to be enabling non-default AWS Regions,
 temporarily comment out the `DenyRootAccountAccess` service control policy setting in `gbl-root.yaml`. You will restore
 it later, after enabling the optional Regions. See related:
 [Decide on Opting Into Non-default Regions](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-opting-into-non-default-regions)
 
 :::
 
-:::caution **You must wait until your quota increase request has been granted.** If you try to create the accounts
+:::caution You must wait until your quota increase request has been granted.
+
+If you try to create the accounts
 before the quota increase is granted, you can expect to see failures like `ACCOUNT_NUMBER_LIMIT_EXCEEDED`.
 
 :::
@@ -597,7 +605,7 @@ atmos terraform apply aws-saml --stack core-gbl-identity
 In the output, make note of the SAML provider ARNs, as you will need them when provisioning user access in GSuite or
 Okta.
 
-:::info _**Security Note**_
+:::info Security Note
 
 The following guidance provides clarity on the security of the metadata files.
 

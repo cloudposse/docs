@@ -67,7 +67,7 @@ Typically our recommendation is Docker Desktop running on a local, dedicated (to
 the user cannot install new applications due to administrative restrictions, then all of the above components, plus
 [Leapp](https://leapp.cloud/), should be pre-installed for them.
 
-:::caution **Apple M1 Support**
+:::caution Apple M1 Support
 
 Geodesic works on the M1 running as `amd64` (not `arm64`). Docker auto-detects this by default, but otherwise it’s
 possible to pass `--platform linux/amd64` to `docker` to force the platform.

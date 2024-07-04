@@ -13,11 +13,13 @@ Legacy AWS accounts may be owned by an organization (the company, not the AWS or
 ## Solution
 
 :::caution
+
 When you remove a member account from an Organization, the member account’s access to AWS services that are integrated with the Organization are lost. In some cases, resources in the member account might be deleted. For example, when an account leaves the Organization, the AWS CloudFormation stacks created using StackSets are removed from the management of StackSets. You can choose to either delete or retain the resources managed by the stack. For a list of AWS services that can be integrated with Organizations, see [AWS services that you can use with AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html). ([source](https://aws.amazon.com/premiumsupport/knowledge-center/organizations-move-accounts/))
 
 :::
 
 :::tip
+
 Legacy AWS Accounts must be invited to the AWS Organization managed by the Infrastructure Monorepo, and imported into the `account` component. From there, the Geodesic image and the Atmos stacks must be updated to reflect the presence of the new accounts.
 
 :::
@@ -38,6 +40,7 @@ An email will be sent to the email address(es) associated with the AWS account(s
 ### Add the Account(s) to the `account` Component Configuration
 
 :::info
+
 The OU that you are adding the legacy AWS accounts to needs to be adjusted to match your business use case. Some organizations may choose to employ a “legacy” OU. Others, as in the example below, have an OU for each “tenant” within the organization, and legacy AWS accounts will live alongside current AWS accounts within a single OU.
 
 :::
@@ -178,6 +181,7 @@ Entries corresponding to the legacy AWS accounts need to be added before the acc
 Once entries are created, a Terraform plan can be run against the `account` component when assuming the `admin` delegated role in `mgmt-root`:
 
 :::caution
+
 If the Terraform plan attempts to destroy the newly-added legacy account, do not apply it! See section on working around destructive Terraform plans for newly-added legacy accounts.
 
 :::
@@ -491,9 +495,11 @@ $ terraform import ... # import VPC and subnets
 Once the stacks are added, deploy the following components:
 
 :::info
+
 If AWS SSO is being used via the `aws-sso` component, the configuration of the aforementioned component needs to be updated in order to configure permission sets for the newly added accounts. Then, the component needs to be redeployed.
 
 :::
+
 - `account-map` (in `mgmt-gbl-root`)
 
 - `iam-primary-roles` (in `mgmt-gbl-identity`)
@@ -509,6 +515,7 @@ If AWS SSO is being used via the `aws-sso` component, the configuration of the a
 ### Validate Access
 
 :::info
+
 Existing AWS Accounts invited to an AWS organization lack the OrganizationAccountAccessRole IAM role created automatically when creating the account with the AWS Organizations service. The role grants admin permissions to the member account to delegated IAM users in the master account.
 
 Thus the [https://github.com/cloudposse/terraform-aws-organization-access-role](https://github.com/cloudposse/terraform-aws-organization-access-role) module should be leveraged as part of the `account-settings` component in order to deploy this IAM role.

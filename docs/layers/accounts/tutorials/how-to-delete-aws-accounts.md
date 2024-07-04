@@ -11,6 +11,7 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 Sometimes accounts are provisioned that are no longer needed or were provisioned by accident. AWS provides no easy programmatic way to destroy accounts. The following ClickOps method is required to destroy the account.
 
 :::caution
+
 Email accounts associated with AWS accounts are globally unique and cannot be re-used even after the account deletion. If you ever intend to use the email address again with AWS on another account, we strongly recommend that you first rename the email address on record before proceeding to delete the account.
 
 :::
@@ -18,6 +19,7 @@ Email accounts associated with AWS accounts are globally unique and cannot be re
 ## Solution
 
 :::caution
+
 We recommend renaming or repurposing accounts rather than deleting them due to the overhead.
 
 :::
@@ -167,14 +169,17 @@ These are not covered by `cloud-nuke` (might be covered by `aws-nuke`)
 ### Delete the Account
 
 :::caution
+
 A valid payment method is no longer required to close an account. However, the API does not support this feature yet. For now, each account must be manually closed.
 
 :::
 
 :::info
+
 You can only close up to 10% of accounts per month.
 
 :::
+
 1. Open the AWS Console, and go to the `root` account for the given Organization. Close the account from Organizations > AWS accounts > select account > Close > check all boxes and enter Account ID > Close account
 
 2. Remove the account from the Terraform state for the `account` component

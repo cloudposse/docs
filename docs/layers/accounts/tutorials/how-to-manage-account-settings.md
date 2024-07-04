@@ -13,9 +13,11 @@ We want to update Account Settings for a given AWS Account
 ## Solution
 
 :::tip
+
 TL;DR Update the `account-settings` component
 
 :::
+
 Account Settings are managed by the `account-settings` component and deployed for each account. Update the `account-settings` catalog and reapply the component.
 
 For example to add password requirements, add the following to `stacks/catalog/account-settings.yaml`:
@@ -42,6 +44,7 @@ atmos terraform apply account-settings -s example-gbl-foo
 Budgets are also managed with the `account-settings` component. In order to create budgets, enable budgets in the `account-settings` component
 
 :::info
+
 Budgets were added to the `account-settings` component in early 2022. Make sure the component contains `budgets.tf`. If not, pull the latest from [the upstream modules](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/account-settings).
 
 :::

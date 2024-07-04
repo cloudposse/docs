@@ -25,7 +25,9 @@ it as a root module (as opposed to a terraform child module). The backend tells 
 deployed state of infrastructure for the given component. Since the backend is stored in S3, it’s easily accessed by in
 a distributed manner by anyone running terraform.
 
-:::info An identical `backend.tf.json` file is used by all environments (stacks). Environments are selected using the
+:::info
+
+An identical `backend.tf.json` file is used by all environments (stacks). Environments are selected using the
 `terraform workspace` command, which happens automatically when using `atmos` together with the `--stack`argument.
 
 :::
@@ -51,7 +53,9 @@ For reference, this is the anatomy of the backend configuration: (note this is j
 }
 ```
 
-:::note Either `profile` or `role_arn` can be used here
+:::note
+
+Either `profile` or `role_arn` can be used here
 
 :::
 
@@ -114,7 +118,9 @@ aws --profile acme-gbl-root-admin \
   s3 ls s3://{bucket_name}/vpc/
 ```
 
-:::note If a component is mistakenly deployed somewhere and destroyed, a leftover `terraform.tfstate` file will be
+:::note
+
+If a component is mistakenly deployed somewhere and destroyed, a leftover `terraform.tfstate` file will be
 present on your local filesystem with a small file size so while this is a good way to search for backends, it's not the
 best way to determine where a component is deployed. Also, the S3 bucket has versioning enabled, ensuring we can always
 (manually) revert to a previous state if need be.

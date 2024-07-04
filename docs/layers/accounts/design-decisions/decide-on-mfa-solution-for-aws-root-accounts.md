@@ -8,7 +8,9 @@ refarch_id: REFARCH-50
 We need an MFA solution for protecting the master AWS accounts. The two most common options are `TOTP` and U2F
 (universal authenticator devices).
 
-:::tip Cloud Posse recommends **1Password for Teams** or **1Password for Business**
+:::tip
+
+Cloud Posse recommends **1Password for Teams** or **1Password for Business**
 
 :::
 
@@ -22,7 +24,9 @@ For this reason, Cloud Posse recommends **1Password for Teams** or
 
 ### Yubikey (U2F)
 
-:::danger You cannot have more than one hooked up to an account for the root account credentials, so there’s no way
+:::danger
+
+You cannot have more than one hooked up to an account for the root account credentials, so there’s no way
 practical way to manage Yubikeys in a distributed team environment
 
 :::
@@ -41,7 +45,9 @@ on Slack.
 
 ### Authy
 
-:::danger Does not support shared TOTP credentials
+:::danger
+
+Does not support shared TOTP credentials
 
 :::
 
@@ -50,7 +56,9 @@ shared login must instead be used. This is not recommended.
 
 ### LastPass
 
-:::danger Does not support shared TOTP credentials
+:::danger
+
+Does not support shared TOTP credentials
 
 :::
 

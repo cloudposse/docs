@@ -23,7 +23,9 @@ With the addition of `aws-teams`, `aws-team-roles`, and `aws-saml`, the `iam-pri
 
 #### Provision `sso` component
 
-:::caution Deprecated with the addition of `aws-teams`. Use `aws-saml` instead
+:::caution
+
+Deprecated with the addition of `aws-teams`. Use `aws-saml` instead
 
 :::
 
@@ -40,7 +42,7 @@ atmos terraform apply sso --stack gbl-identity
 In the output, make note of the SAML provider ARNs, as you will need them when provisioning user access in GSuite or
 Okta.
 
-:::info _**Security Note**_
+:::info Security Note
 
 The following guidance provides clarity on the security of the metadata files.
 
@@ -54,7 +56,9 @@ Learn more about the [sso](/components/library/aws/aws-sso/) component.
 
 #### Provision `iam-primary-roles` component
 
-:::caution Deprecated with the addition of `aws-teams`. Use `aws-teams` instead
+:::caution
+
+Deprecated with the addition of `aws-teams`. Use `aws-teams` instead
 
 :::
 
@@ -102,7 +106,9 @@ component.
 
 #### Provision `iam-delegated-roles` component
 
-:::caution Deprecated with the addition of `aws-teams`. Use `aws-team-roles` instead
+:::caution
+
+Deprecated with the addition of `aws-teams`. Use `aws-team-roles` instead
 
 :::
 
@@ -154,7 +160,9 @@ component.
 
 ## Deactivate SuperAdmin user
 
-:::info SuperAdmin is no longer deactivated with the addition of the `aws-teams` components. SuperAdmin is required to
+:::info
+
+SuperAdmin is no longer deactivated with the addition of the `aws-teams` components. SuperAdmin is required to
 make changes to root components, since the `...root-terraform` role no longer has permission to make changes to the the
 `root` account
 

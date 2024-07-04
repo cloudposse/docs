@@ -179,6 +179,7 @@ Click `Add users` button
 21.
 
 :::tip
+
 Done!
 
 :::
@@ -186,7 +187,9 @@ Done!
 ### Related articles
 
 :::note
+
 The content by label feature displays related articles automatically, based on labels you choose. To edit options for this feature, select the placeholder below and tap the pencil icon.
+
 :::
 
 |Related issues | |

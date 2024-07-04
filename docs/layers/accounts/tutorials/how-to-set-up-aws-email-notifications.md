@@ -7,8 +7,9 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 # How to Set Up AWS Email Notifications
 
-:::caution Make sure to use the email address corresponding to the
-[Decide on Email Address Format for AWS Accounts](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-email-address-format-for-aws-accounts)
+:::caution
+
+Make sure to use the email address corresponding to the [Decide on Email Address Format for AWS Accounts](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-email-address-format-for-aws-accounts)
 ADR.
 
 :::

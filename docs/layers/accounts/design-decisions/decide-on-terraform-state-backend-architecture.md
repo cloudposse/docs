@@ -33,7 +33,9 @@ Anyone who should be able to run `terraform` locally will need read/write access
 
 ### Option 1: Single Bucket (Recommended for Companies without Compliance Requirements )
 
-:::tip Our Recommendation is to use Option 1 because it’s the least complicated to maintain. Additionally, if you have a
+:::tip
+
+Our Recommendation is to use Option 1 because it’s the least complicated to maintain. Additionally, if you have a
 small team, there won’t be a distinction between those who have or do not have access to the bucket.
 
 :::

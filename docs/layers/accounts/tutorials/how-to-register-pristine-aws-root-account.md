@@ -28,7 +28,9 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 ### Instructions
 
-:::info See the official AWS Documentation for the most up to date instructions.
+:::info
+
+See the official AWS Documentation for the most up to date instructions.
 [https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
 
 :::
@@ -101,7 +103,9 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 31. Enter the password that was stored in 1Password for this account in step 3 and click `Sign in`
 
-:::tip Congratulations! You are now able to proceed with the rest of the cold start process.
+:::tip
+
+Congratulations! You are now able to proceed with the rest of the cold start process.
 
 :::
 
