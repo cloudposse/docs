@@ -26,8 +26,7 @@ The following is an example of how to set up this channel and configure email ro
 email address:
 
 1. **Create the shared Slack channel (under Slack Connect):** (see also:
-   [How to Provision Shared Slack Channels](/reference/how-to-provision-shared-slack-channels/)
-   )
+   [How to Provision Shared Slack Channels](/reference/how-to-provision-shared-slack-channels/) )
 
 <img src="/assets/refarch/image-20211016-221505.png" height="496" width="500" /><br/>
 

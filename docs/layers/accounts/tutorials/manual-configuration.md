@@ -11,10 +11,9 @@ These steps are part of laying the foundation for your environment and are neces
 
 This document includes many advanced and alternate configurations for the Cold Start implementation, including detailed
 explanations and manual set up steps. Alternatively we have a simplified
-[Automated Cold Start Implementation](layers/accounts/deploy-accounts/) that includes
-the minimum requirements for provisioning a Cold Start. That setup document makes use of
-Atmos Workflows to alleviate Click Ops woes but does not account for edge
-cases.
+[Automated Cold Start Implementation](layers/accounts/deploy-accounts/) that includes the minimum requirements for
+provisioning a Cold Start. That setup document makes use of Atmos Workflows to alleviate Click Ops woes but does not
+account for edge cases.
 
 Please refer to the below documentation as the source of truth for the Cold Start.
 
@@ -28,8 +27,8 @@ Please refer to the below documentation as the source of truth for the Cold Star
   [Decide on Namespace Abbreviation](/learn/foundation/design-decisions/decide-on-namespace-abbreviation)
 
 - Decide on a default AWS Region to deploy the initial set of resources. Optionally, decide on a failover Region for
-  backup resources. Decide on the [Region abbreviation scheme](/learn/reference/aws/aws-region-codes)
-  you want to use: `short` or `fixed`. Cloud Posse slightly favors `fixed` to keep IDs and labels shorter.
+  backup resources. Decide on the [Region abbreviation scheme](/learn/reference/aws/aws-region-codes) you want to use:
+  `short` or `fixed`. Cloud Posse slightly favors `fixed` to keep IDs and labels shorter.
   [Decide on Primary AWS Region](/learn/foundation/design-decisions/decide-on-primary-aws-region)
 
 - Decide on whether or not you are going to use Spot Instances. Decide on your desired default quota for Spot Instance
@@ -45,8 +44,8 @@ Please refer to the below documentation as the source of truth for the Cold Star
 - The collaboration Slack channel should be named something like `[organization]-general`.
 
 - The AWS notifications Slack channel should be named something like `[organization]-aws-notifications`. See
-  [How to Set Up AWS Email Notifications](/layers/accounts/tutorials/how-to-set-up-aws-email-notifications)
-  for more information.
+  [How to Set Up AWS Email Notifications](/layers/accounts/tutorials/how-to-set-up-aws-email-notifications) for more
+  information.
 
 - Choose, provision, and share with Cloud Posse a mechanism for securely storing and sharing secrets, including MFA TOTP
   keys. Cloud Posse uses [1Password](https://1password.com/) and can provide a 1Password `vault` if needed. In this
@@ -81,13 +80,12 @@ Please refer to the below documentation as the source of truth for the Cold Star
   addresses are set up and forwarded to a shared Slack channel that Cloud Posse has access to before continuing.**
   [Decide on Email Address Format for AWS Accounts](/learn/foundation/design-decisions/decide-on-email-address-format-for-aws-accounts)
 
-- [Sign up with AWS](/layers/accounts/tutorials/how-to-register-pristine-aws-root-account), create the
-  `root` account (you may want to call it `main`, `master`, `management`, or something else, but we will refer to it in
-  this document as `root`) using the email address you decided on. This is often performed by multiple people, so
-  coordinate with all involved. If you already have a billing relationship with AWS, then this may be a different
-  process than if you do not. The link shows up how to get started if you have no relationship to AWS, and you will need
-  to provide valid billing details including a credit card, so sometimes this is best done by someone in the finance
-  department.
+- [Sign up with AWS](/layers/accounts/tutorials/how-to-register-pristine-aws-root-account), create the `root` account
+  (you may want to call it `main`, `master`, `management`, or something else, but we will refer to it in this document
+  as `root`) using the email address you decided on. This is often performed by multiple people, so coordinate with all
+  involved. If you already have a billing relationship with AWS, then this may be a different process than if you do
+  not. The link shows up how to get started if you have no relationship to AWS, and you will need to provide valid
+  billing details including a credit card, so sometimes this is best done by someone in the finance department.
 
 - **Getting started with "root credentials".** Each person involved in creating and setting up the `root` account should
   work toward ensuring the account is configured as described in this subsection. The configuration must be done with

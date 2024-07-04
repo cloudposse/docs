@@ -12,8 +12,7 @@ The set up process for the "baseline" or "account" tier is commonly referred to 
 :::
 
 The Cold Start is the most manually involved tier. Read through the following steps and see
-[the detailed documentation](/layers/accounts/tutorials/manual-configuration/)
-for edge cases.
+[the detailed documentation](/layers/accounts/tutorials/manual-configuration/) for edge cases.
 
 In short,
 
@@ -26,8 +25,7 @@ In short,
 
 ## Prerequisites
 
-Follow the
-[prerequisites steps in the How-to Get Started guide](/layers/foundation/#0-prerequisites).
+Follow the [prerequisites steps in the How-to Get Started guide](/layers/foundation/#0-prerequisites).
 
 Ensure Geodesic is fully up and running before continuing.
 
@@ -44,10 +42,10 @@ From the root account:
    [the instructions in the AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root)
    for enabling a virtual MFA device for an AWS account root user. Save the MFA TOTP key in 1Password by using
    1Password's TOTP field and built-in screen scanner to scan the QR code presented on the web page.
-1. [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/).
-   Do not enable "console login", do set up MFA, and then create a single Access key. Create an API Credential for the
-   `SuperAdmin` credentials in 1Password and store the Access Key ID, Secret Access Key, Assigned MFA device ARN, and
-   TOTP key. This is the user we will use until AWS Team Roles (`aws-team-roles` component) are provisioned.
+1. [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/). Do not enable "console
+   login", do set up MFA, and then create a single Access key. Create an API Credential for the `SuperAdmin` credentials
+   in 1Password and store the Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key. This is the user
+   we will use until AWS Team Roles (`aws-team-roles` component) are provisioned.
 1. For billing users, you need to enable IAM access. As the root user
    [open up the account settings for AWS Billing](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account),
    then scroll to the section "IAM user and role access to Billing information" and enable it.

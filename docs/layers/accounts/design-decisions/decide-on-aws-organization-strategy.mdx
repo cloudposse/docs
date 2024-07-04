@@ -31,9 +31,9 @@ Here are some considerations for how we can work around the problems.
 ### Use Net-New Organization (Recommended)
 
 This process involves
-[How to Register Pristine AWS Root Account](/layers/accounts/tutorials/how-to-register-pristine-aws-root-account)
-which will serve as a net-new AWS organization (e.g. top-level payer account). Use transit gateway or VPC peering
-between heritage accounts and new accounts.
+[How to Register Pristine AWS Root Account](/layers/accounts/tutorials/how-to-register-pristine-aws-root-account) which
+will serve as a net-new AWS organization (e.g. top-level payer account). Use transit gateway or VPC peering between
+heritage accounts and new accounts.
 
 This process ensures that there’s a clear delineation between the historical infrastructure and next-gen. We’ll treat
 the historical infrastructure as _tainted_, as in we do not know what was done with IaC; we’ll treat the next-gen

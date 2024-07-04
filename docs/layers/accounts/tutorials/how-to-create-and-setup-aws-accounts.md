@@ -198,5 +198,4 @@ are more components to deploy.
 
 ## References
 
-- [How to Delete AWS Accounts](/learn/accounts/tutorials/how-to-delete-aws-accounts) (in case a
-  mistake was made)
+- [How to Delete AWS Accounts](/learn/accounts/tutorials/how-to-delete-aws-accounts) (in case a mistake was made)
