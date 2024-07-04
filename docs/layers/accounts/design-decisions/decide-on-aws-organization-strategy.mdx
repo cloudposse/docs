@@ -5,7 +5,9 @@ refarch_id: REFARCH-471
 
 # Decide on AWS Organization Strategy
 
-:::tip Cloud Posse recommends starting with a **Net-New Organization**
+:::tip
+
+Cloud Posse recommends starting with a **Net-New Organization**
 
 :::
 
@@ -39,12 +41,16 @@ This process ensures that there’s a clear delineation between the historical i
 the historical infrastructure as _tainted_, as in we do not know what was done with IaC; we’ll treat the next-gen
 accounts as pristine, hermetic environments where all changes are performed using IaC.
 
-:::info Companies with an AWS Enterprise Agreement (EA) can arrange for consolidated invoicing by speaking with their
-AWS Account Representative.
+:::info
+
+Companies with an AWS Enterprise Agreement (EA) can arrange for consolidated invoicing by speaking with their AWS
+Account Representative.
 
 :::
 
-:::caution Reserved Instances and AWS Savings Plans cannot be shared across organizations.
+:::caution
+
+Reserved Instances and AWS Savings Plans cannot be shared across organizations.
 
 :::
 
@@ -53,14 +59,17 @@ AWS Account Representative.
 You will need to grant Cloud Posse Administrative permissions in the root account in order to perform terraform
 automation of organizational infrastructure (E.g. Accounts, SCPs, Cloud Trails, etc).
 
-:::danger Cloud Posse does not prefer to work with **Existing Organizations** due to the liability. Cloud Posse does not
-know your organization as well as you do, and in order for us to manage an organization with Terraform we need to be
+:::danger
+
+Cloud Posse does not prefer to work with **Existing Organizations** due to the liability. Cloud Posse does not know your
+organization as well as you do, and in order for us to manage an organization with Terraform we need to be
 Organizational Admins.
 
 :::
 
-:::caution Cloud Posse recommends using the **Model Organization** pattern if you wish to use an **Existing
-Organization**.
+:::caution
+
+Cloud Posse recommends using the **Model Organization** pattern if you wish to use an **Existing Organization**.
 
 :::
 
@@ -74,15 +83,21 @@ This pattern builds on the **Net-New Organization** but anticipates the customer
 their own existing organization. This process takes longer, but ensures your team gets the maximum onboarding experience
 and validates the documentation end-to-end by running your team through the process.
 
-:::caution Cloud Posse cannot estimate the time it will take your team to follow the documentation and implement it in
-your existing organization.
+:::caution
+
+Cloud Posse cannot estimate the time it will take your team to follow the documentation and implement it in your
+existing organization.
 
 :::
 
-:::caution Reserved Instances and AWS Savings Plans cannot be shared across organizations.
+:::caution
+
+Reserved Instances and AWS Savings Plans cannot be shared across organizations.
 
 :::
 
-:::danger We do not recommend this pattern if Release Engineering is in scope with your engagement with Cloud Posse.
+:::danger
+
+We do not recommend this pattern if Release Engineering is in scope with your engagement with Cloud Posse.
 
 :::
