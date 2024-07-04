@@ -1,8 +1,5 @@
 ---
 title: "Deprecated Cold Start Components"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1391886355/Deprecated+Cold+Start+Components
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/setup/cold-start/deprecated-cold-start-components.md
 ---
 
 # Deprecated Cold Start Components
@@ -162,8 +159,8 @@ component.
 
 :::info
 
-SuperAdmin is no longer deactivated with the addition of the `aws-teams` components. SuperAdmin is required to
-make changes to root components, since the `...root-terraform` role no longer has permission to make changes to the the
+SuperAdmin is no longer deactivated with the addition of the `aws-teams` components. SuperAdmin is required to make
+changes to root components, since the `...root-terraform` role no longer has permission to make changes to the the
 `root` account
 
 :::

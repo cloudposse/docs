@@ -1,8 +1,5 @@
 ---
-title: "How to Create SuperAdmin user"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1093959811/How+to+Create+SuperAdmin+user
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/setup/cold-start/how-to-create-superadmin-user.md
+title: "Create the SuperAdmin user"
 ---
 
 # How to Create SuperAdmin user

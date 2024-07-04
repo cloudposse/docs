@@ -1,8 +1,5 @@
 ---
-title: "How to Register Pristine AWS Root Account"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/931037265/How+to+Register+Pristine+AWS+Root+Account
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/setup/cold-start/how-to-register-pristine-aws-root-account.md
+title: "Register Pristine AWS Root Account"
 ---
 
 # How to Register Pristine AWS Root Account

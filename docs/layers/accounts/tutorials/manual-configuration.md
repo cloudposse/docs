@@ -1,10 +1,9 @@
 ---
-title: "Manual Cold Start Implementation"
-sidebar_position: 0
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/setup/cold-start/manual-configuration.md
+title: "Detailed Cold Start Implementation"
+sidebar_position: 10
 ---
 
-# Manual Cold Start Implementation
+# Cold Start Implementation In Depth
 
 These steps are part of laying the foundation for your environment and are necessary prerequisites for using Terraform.
 
@@ -312,9 +311,9 @@ We'll now provision all other components using the S3 backend.
 
 :::caution
 
-Verify and confirm all account settings now. Changing account settings after provisioning accounts can be
-highly difficult. In particular, be sure to double and triple check the provided email address. You must have access to
-this email address to access, update, or delete the account.
+Verify and confirm all account settings now. Changing account settings after provisioning accounts can be highly
+difficult. In particular, be sure to double and triple check the provided email address. You must have access to this
+email address to access, update, or delete the account.
 
 :::
 
@@ -333,11 +332,11 @@ SuperAdmin) credentials you have saved in 1Password.
 
 :::caution
 
-Make sure your support plan for the _root_ account was upgraded to the "Business" level (or Higher). This is
-necessary to expedite the quota increase requests, which could take several days on a basic support plan. Without it,
-AWS support will claim that since we’re not currently utilizing any of the resources, so they do not want to approve the
-requests. AWS support is not aware of your other organization. If AWS still gives you problems, please escalate to your
-AWS TAM. See [AWS](/reference-architecture/reference/aws).
+Make sure your support plan for the _root_ account was upgraded to the "Business" level (or Higher). This is necessary
+to expedite the quota increase requests, which could take several days on a basic support plan. Without it, AWS support
+will claim that since we’re not currently utilizing any of the resources, so they do not want to approve the requests.
+AWS support is not aware of your other organization. If AWS still gives you problems, please escalate to your AWS TAM.
+See [AWS](/reference-architecture/reference/aws).
 
 :::
 
@@ -473,17 +472,17 @@ configuration in the `gbl-root` stack.
 
 :::info Special note
 
-In the rare case where you will need to be enabling non-default AWS Regions,
-temporarily comment out the `DenyRootAccountAccess` service control policy setting in `gbl-root.yaml`. You will restore
-it later, after enabling the optional Regions. See related:
+In the rare case where you will need to be enabling non-default AWS Regions, temporarily comment out the
+`DenyRootAccountAccess` service control policy setting in `gbl-root.yaml`. You will restore it later, after enabling the
+optional Regions. See related:
 [Decide on Opting Into Non-default Regions](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-opting-into-non-default-regions)
 
 :::
 
 :::caution You must wait until your quota increase request has been granted.
 
-If you try to create the accounts
-before the quota increase is granted, you can expect to see failures like `ACCOUNT_NUMBER_LIMIT_EXCEEDED`.
+If you try to create the accounts before the quota increase is granted, you can expect to see failures like
+`ACCOUNT_NUMBER_LIMIT_EXCEEDED`.
 
 :::
 
