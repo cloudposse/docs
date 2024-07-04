@@ -1,5 +1,6 @@
 ---
 title: "Decide on Terraform Version"
+refarch_id: REFARCH-280
 ---
 
 # Decide on Terraform Version
@@ -12,9 +13,13 @@ but with hundreds of modules and components, there’s sometimes a delay before 
 
 ## Considerations
 
-:::tip Cloud Posse recommends using the latest 1.x version of terraform
+:::tip
 
-::: Prior to terraform 1.x, the version of terraform was a big deal due to backward compatibility issues between minor
+Cloud Posse recommends using the latest 1.x version of terraform
+
+:::
+
+Prior to terraform 1.x, the version of terraform was a big deal due to backward compatibility issues between minor
 releases.
 
 For customers who’ll need to use terraform versions < 1.0, that’s not a problem. We can support any version of terraform

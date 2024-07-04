@@ -32,8 +32,12 @@ resources for any deployment.
 - Detailed documentation for using components with Atmos can be found under
   [atmos.tools Core Concepts](https://atmos.tools/core-concepts/components/)
 
-:::info Pro tip! We recommend that you always check first with Cloud Posse to see if we have an existing component
-before writing your own. Sometimes we have work that has not yet been upstreamed to our public repository. :::
+:::info Pro tip!
+
+We recommend that you always check first with Cloud Posse to see if we have an existing component
+before writing your own. Sometimes we have work that has not yet been upstreamed to our public repository.
+
+:::
 
 ## Prerequisites
 
@@ -92,8 +96,12 @@ curl -sL https://raw.githubusercontent.com/cloudposse/terraform-null-label/maste
 - Use `module.this.tags` when you want to pass a list of tags to a resources or module not provided by Cloud Posse. Tags
   are already included with `var.context` for any Cloud Posse module.
 
-:::info Cloud Posse has a lot of open source modules, so
-[check here first](https://registry.terraform.io/namespaces/cloudposse) to avoid repeating existing effort. :::
+:::info
+
+Cloud Posse has a lot of open source modules, so
+[check here first](https://registry.terraform.io/namespaces/cloudposse) to avoid repeating existing effort.
+
+:::
 
 - Handle the variable `module.this.enabled`, so that resources are not created when `var.enabled` is set to `false`.
   Cloud Posse modules will do this automatically when passed `var.context`. When adding a resource or using a non-Cloud
