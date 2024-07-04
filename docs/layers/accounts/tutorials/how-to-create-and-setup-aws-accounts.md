@@ -198,5 +198,5 @@ are more components to deploy.
 
 ## References
 
-- [How to Delete AWS Accounts](/reference-architecture/how-to-guides/tutorials/how-to-delete-aws-accounts) (in case a
+- [How to Delete AWS Accounts](/learn/accounts/tutorials/how-to-delete-aws-accounts) (in case a
   mistake was made)

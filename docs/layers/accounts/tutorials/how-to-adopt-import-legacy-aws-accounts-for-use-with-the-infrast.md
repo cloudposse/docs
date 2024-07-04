@@ -573,4 +573,4 @@ within Geodesic.
 
 - [account](/components/library/aws/account/)
 
-- [Implement AWS Cold Start](/reference-architecture/setup/cold-start)
+- [Implement AWS Cold Start](/layers/accounts/tutorials/cold-start/)

@@ -21,7 +21,7 @@ Add the new OU to the `account` catalog and reapply the component.
 :::info
 
 The `account` component must be applied with the SuperAdmin user, which is typically found in 1Password. For more on
-SuperAdmin, see[How to Create SuperAdmin user](/reference-architecture/setup/cold-start/how-to-create-superadmin-user)
+SuperAdmin, see[How to Create SuperAdmin user](/learn/accounts/tutorials/how-to-create-superadmin-user)
 
 :::
 

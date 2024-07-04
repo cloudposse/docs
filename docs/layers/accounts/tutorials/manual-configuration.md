@@ -11,9 +11,9 @@ These steps are part of laying the foundation for your environment and are neces
 
 This document includes many advanced and alternate configurations for the Cold Start implementation, including detailed
 explanations and manual set up steps. Alternatively we have a simplified
-[Automated Cold Start Implementation](/reference-architecture/setup/cold-start/automated-configuration) that includes
+[Automated Cold Start Implementation](layers/accounts/deploy-accounts/) that includes
 the minimum requirements for provisioning a Cold Start. That setup document makes use of
-[Atmos Workflows](/reference-architecture/setup/workflows/) to alleviate Click Ops woes but does not account for edge
+Atmos Workflows to alleviate Click Ops woes but does not account for edge
 cases.
 
 Please refer to the below documentation as the source of truth for the Cold Start.
@@ -25,12 +25,12 @@ Please refer to the below documentation as the source of truth for the Cold Star
 - This first set of steps can be done in any order. The remaining steps need to be done in the order listed.
 
 - Decide on a "namespace" for your organization in consultation with Cloud Posse.
-  [Decide on Namespace Abbreviation](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-namespace-abbreviation)
+  [Decide on Namespace Abbreviation](/learn/foundation/design-decisions/decide-on-namespace-abbreviation)
 
 - Decide on a default AWS Region to deploy the initial set of resources. Optionally, decide on a failover Region for
-  backup resources. Decide on the [Region abbreviation scheme](/reference-architecture/reference/aws/aws-region-codes)
+  backup resources. Decide on the [Region abbreviation scheme](/learn/reference/aws/aws-region-codes)
   you want to use: `short` or `fixed`. Cloud Posse slightly favors `fixed` to keep IDs and labels shorter.
-  [Decide on Primary AWS Region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region)
+  [Decide on Primary AWS Region](/learn/foundation/design-decisions/decide-on-primary-aws-region)
 
 - Decide on whether or not you are going to use Spot Instances. Decide on your desired default quota for Spot Instance
   and On-Demand Instance vCPUs. Also, decide on default quotas for any special instance types such as GPU-enabled
@@ -45,13 +45,13 @@ Please refer to the below documentation as the source of truth for the Cold Star
 - The collaboration Slack channel should be named something like `[organization]-general`.
 
 - The AWS notifications Slack channel should be named something like `[organization]-aws-notifications`. See
-  [How to Set Up AWS Email Notifications](/reference-architecture/setup/cold-start/how-to-set-up-aws-email-notifications)
+  [How to Set Up AWS Email Notifications](/layers/accounts/tutorials/how-to-set-up-aws-email-notifications)
   for more information.
 
 - Choose, provision, and share with Cloud Posse a mechanism for securely storing and sharing secrets, including MFA TOTP
   keys. Cloud Posse uses [1Password](https://1password.com/) and can provide a 1Password `vault` if needed. In this
   document, we will refer to this storage as 1Password, but you can substitute any other system you want.
-  [Decide on 1Password Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-1password-strategy)
+  [Decide on 1Password Strategy](/learn/foundation/design-decisions/decide-on-1password-strategy)
 
 - Identify a credit card for AWS to bill charges to and provide the details to whomever is going to set up the initial
   AWS account.
@@ -73,15 +73,15 @@ Please refer to the below documentation as the source of truth for the Cold Star
   company.
 
 - Decide on your account, organization names, and organization structure.
-  [Decide on AWS Account Flavors and Organizational Units](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-aws-account-flavors-and-organizational-units)
-  [Decide on AWS Organization Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-aws-organization-strategy)
+  [Decide on AWS Account Flavors and Organizational Units](/learn/foundation/design-decisions/decide-on-aws-account-flavors-and-organizational-units)
+  [Decide on AWS Organization Strategy](/learn/foundation/design-decisions/decide-on-aws-organization-strategy)
 
 - Decide on and set up email addresses for all accounts. We recommend using a single email address/account with "+"
   addressing for each AWS account, and forwarding all emails to a single shared Slack channel. **Ensure that the email
   addresses are set up and forwarded to a shared Slack channel that Cloud Posse has access to before continuing.**
-  [Decide on Email Address Format for AWS Accounts](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-email-address-format-for-aws-accounts)
+  [Decide on Email Address Format for AWS Accounts](/learn/foundation/design-decisions/decide-on-email-address-format-for-aws-accounts)
 
-- [Sign up with AWS](/reference-architecture/setup/cold-start/how-to-register-pristine-aws-root-account), create the
+- [Sign up with AWS](/layers/accounts/tutorials/how-to-register-pristine-aws-root-account), create the
   `root` account (you may want to call it `main`, `master`, `management`, or something else, but we will refer to it in
   this document as `root`) using the email address you decided on. This is often performed by multiple people, so
   coordinate with all involved. If you already have a billing relationship with AWS, then this may be a different
@@ -150,7 +150,7 @@ Please refer to the below documentation as the source of truth for the Cold Star
   provision initial AWS resources, including member accounts, SSO and IAM roles). Do _not_ enable "console login", do
   set up MFA, and then create a single Access key. Create a Secure Note for the SuperAdmin credentials in 1Password and
   store the Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key in it. See
-  [create SuperAdmin user](/reference-architecture/setup/cold-start/how-to-create-superadmin-user) for more details.
+  [create SuperAdmin user](/layers/accounts/tutorials/how-to-create-superadmin-user) for more details.
 
 - Configure Leapp to use the `SuperAdmin` Access key with the profile `acme-SuperAdmin`, where `acme` is the "namespace"
   you have chosen for your organization, and using the AWS Region you have chosen as default. Refer to the
@@ -159,7 +159,7 @@ Please refer to the below documentation as the source of truth for the Cold Star
 
 - Generate and check into `git` and GitHub an initial configuration. Include SSO IdP metadata files. Update reference
   configuration (including Dockerfile). For more information, see
-  [How to Create an Infrastructure repository](/reference-architecture/setup/cold-start/how-to-create-an-infrastructure-repository)
+  [How to Create an Infrastructure repository](layers/foundation/create-repository/)
 
 We are almost done with the manual steps. Unfortunately, we will have to take a few more manual steps later, after we
 have some other things provisioned.
@@ -220,7 +220,7 @@ Prerequisites for your host computer:
 If all goes well, you should be able to build and run the Infrastructure Docker image from your host by executing
 `make all` from the command line in the root directory of your Git repo clone. If you have issues at this step, contact
 Cloud Posse or look for help in the Cloud Posse [Geodesic](https://github.com/cloudposse/geodesic/) or
-[Reference Architecture](https://github.com/cloudposse/reference-architectures) repos.
+[Reference Architecture](https://github.com/cloudposse/learns) repos.
 
 At this point (after `make all` concludes successfully) you should be running a `bash` shell inside the Infrastructure
 Docker container (which we will also call the "Geodesic shell") and your prompt should look something like this:
@@ -336,7 +336,7 @@ Make sure your support plan for the _root_ account was upgraded to the "Business
 to expedite the quota increase requests, which could take several days on a basic support plan. Without it, AWS support
 will claim that since we’re not currently utilizing any of the resources, so they do not want to approve the requests.
 AWS support is not aware of your other organization. If AWS still gives you problems, please escalate to your AWS TAM.
-See [AWS](/reference-architecture/reference/aws).
+See [AWS](/learn/reference/aws).
 
 :::
 
@@ -475,7 +475,7 @@ configuration in the `gbl-root` stack.
 In the rare case where you will need to be enabling non-default AWS Regions, temporarily comment out the
 `DenyRootAccountAccess` service control policy setting in `gbl-root.yaml`. You will restore it later, after enabling the
 optional Regions. See related:
-[Decide on Opting Into Non-default Regions](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-opting-into-non-default-regions)
+[Decide on Opting Into Non-default Regions](/learn/foundation/design-decisions/decide-on-opting-into-non-default-regions)
 
 :::
 

@@ -227,6 +227,6 @@ You can only close up to 10% of accounts per month.
 - [https://onecloudplease.com/blog/automating-aws-account-deletion#deleting-an-aws-account](https://onecloudplease.com/blog/automating-aws-account-deletion#deleting-an-aws-account)
   (including for comedic value) 🤣
 
-- [How to Create and Setup AWS Accounts](/reference-architecture/how-to-guides/tutorials/how-to-create-and-setup-aws-accounts)
+- [How to Create and Setup AWS Accounts](/learn/accounts/tutorials/how-to-create-and-setup-aws-accounts)
 
 - [https://github.com/gruntwork-io/cloud-nuke](https://github.com/gruntwork-io/cloud-nuke)

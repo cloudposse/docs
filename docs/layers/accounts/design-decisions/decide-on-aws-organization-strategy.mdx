@@ -1,9 +1,6 @@
 ---
 title: "Decide on AWS Organization Strategy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176077606/REFARCH-471+-+Decide+on+AWS+Organization+Strategy
-sidebar_position: 100
 refarch_id: REFARCH-471
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-aws-organization-strategy.md
 ---
 
 # Decide on AWS Organization Strategy
@@ -34,7 +31,7 @@ Here are some considerations for how we can work around the problems.
 ### Use Net-New Organization (Recommended)
 
 This process involves
-[How to Register Pristine AWS Root Account](/reference-architecture/setup/cold-start/how-to-register-pristine-aws-root-account)
+[How to Register Pristine AWS Root Account](/layers/accounts/tutorials/how-to-register-pristine-aws-root-account)
 which will serve as a net-new AWS organization (e.g. top-level payer account). Use transit gateway or VPC peering
 between heritage accounts and new accounts.
 

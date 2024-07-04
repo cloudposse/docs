@@ -7,11 +7,11 @@ title: "Deprecated Cold Start Components"
 This page serves as a tombstone for deprecated components included in the cold start. Here you will find documentation
 on how you could set those components up.
 
-| **Deprecated Component** | **Replaced By:** | **Notes**                                                            |
-| ------------------------ | ---------------- | -------------------------------------------------------------------- |
-| `sso`                    | `aws-saml`       | [Implement AWS Cold Start](/reference-architecture/setup/cold-start) |
-| `iam-primary-roles`      | `aws-teams`      | [Implement AWS Cold Start](/reference-architecture/setup/cold-start) |
-| `iam-delegated-roles`    | `aws-team-roles` | [Implement AWS Cold Start](/reference-architecture/setup/cold-start) |
+| **Deprecated Component** | **Replaced By:** |
+| ------------------------ | ---------------- |
+| `sso`                    | `aws-saml`       |
+| `iam-primary-roles`      | `aws-teams`      |
+| `iam-delegated-roles`    | `aws-team-roles` |
 
 ### Deprecated Steps for Deploying IAM Roles
 

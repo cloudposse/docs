@@ -108,7 +108,7 @@ Congratulations! You are now able to proceed with the rest of the cold start pro
 
 ### Related articles
 
-- [Decide on AWS Organization Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-aws-organization-strategy)
+- [Decide on AWS Organization Strategy](/learn/accounts/design-decisions/decide-on-aws-organization-strategy)
 
 - [AWS Documentation: How do I create and activate a new AWS account?](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
 
