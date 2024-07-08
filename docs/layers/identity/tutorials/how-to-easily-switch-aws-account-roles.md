@@ -1,8 +1,6 @@
 ---
 title: "Easily Switch AWS Account Roles"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1186693440/How+to+Easily+Switch+AWS+Account+Roles
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-easily-switch-aws-account-roles.md
+sidebar_position: 10
 ---
 
 # How to Easily Switch AWS Account Roles
@@ -14,8 +12,10 @@ you used. This gets old really quick and you want a better UX switching roles in
 
 ## Solution
 
-:::tip The [aws-extend-switch-roles](https://github.com/tilfinltd/aws-extend-switch-roles) browser extension can be used
-to switch roles across many accounts easily from the browser.
+:::tip
+
+The [aws-extend-switch-roles](https://github.com/tilfinltd/aws-extend-switch-roles) browser extension can be used to
+switch roles across many accounts easily from the browser.
 
 :::
 
@@ -60,7 +60,9 @@ to switch roles across many accounts easily from the browser.
 You should now be able to switch IAM roles across accounts by clicking the extension in your browser and selecting the
 desired IAM role.
 
-:::info See the [official extension docs](https://github.com/tilfinltd/aws-extend-switch-roles#configuration) for more
+:::info
+
+See the [official extension docs](https://github.com/tilfinltd/aws-extend-switch-roles#configuration) for more
 configuration options.
 
 :::

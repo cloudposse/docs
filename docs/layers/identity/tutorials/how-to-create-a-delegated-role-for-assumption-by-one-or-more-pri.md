@@ -1,8 +1,6 @@
 ---
 title: "Create a Delegated role"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/930807817/How+to+create+a+Delegated+role+for+assumption+by+one+or+more+Primary+roles
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-create-a-delegated-role-for-assumption-by-one-or-more-pri.md
+sidebar_position: 999
 ---
 
 # How to create a Delegated role for assumption by one or more Primary roles

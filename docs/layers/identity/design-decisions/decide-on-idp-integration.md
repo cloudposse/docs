@@ -2,13 +2,12 @@
 
 ## Problem
 
-After [deciding on which IdP](reference-architecture/fundamentals/design-decisions/cold-start/decide-on-idp/) will be
-used, companies need to decide on how they will authenticate with AWS using that IdP. Organizations require efficient
-and streamlined methods to authenticate and manage access to their AWS resources. Without a centralized or user-friendly
-system, managing access across multiple AWS organizations or accounts becomes cumbersome and prone to errors. Multiple
-SSO authentication options exist within AWS. Choosing between AWS Identity Center (SSO) and SAML requires organizations
-to determine which method aligns best with their operational structure and goals. This choice can be daunting without
-clear guidance.
+After [deciding on which IdP](/learn/identity/design-decisions/decide-on-idp/) will be used, companies need to decide on
+how they will authenticate with AWS using that IdP. Organizations require efficient and streamlined methods to
+authenticate and manage access to their AWS resources. Without a centralized or user-friendly system, managing access
+across multiple AWS organizations or accounts becomes cumbersome and prone to errors. Multiple SSO authentication
+options exist within AWS. Choosing between AWS Identity Center (SSO) and SAML requires organizations to determine which
+method aligns best with their operational structure and goals. This choice can be daunting without clear guidance.
 
 Each authentication method comes with its own set of advantages and limitations. AWS SAML offers centralized access
 across multiple organizations but may be overkill for entities with a single AWS Organization. On the other hand, AWS
@@ -48,7 +47,7 @@ Both options can be deployed simultaneously. You can choose to have both or eith
 Since AWS Identity Center does not support multiple identity providers, we always deploy AWS SAML for Cloud Posse's
 access for the duration of our engagement. We do that to control access in our own team and to make it easier for the
 customer to cut off all of Cloud Posse's access at any time. For more on offboarding, see
-[Offboarding Cloud Posse](/reference-architecture/reference/offboarding-cloud-posse/)
+[Offboarding Cloud Posse](/resources/offboarding-cloudposse/)
 
 :::
 
@@ -65,7 +64,7 @@ to 1Password.
 
 - [GSuite](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/): Follow the
   "Google Workspace SAML application setup" steps only. Cloud Posse will handle the rest.
-- [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-office-365-aws-sso/)
+- [Office 365](/reference/integrations/office365/how-to-setup-office-365-aws-sso/)
 - [AWS supported IdPs: Azure AD, CyberArk, JumpCloud, Okta, OneLogin, Ping Identity](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html)
 
 ### AWS SAML
@@ -75,6 +74,6 @@ please refer to the relevant linked guide.
 
 - [GSuite](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/):
   Follow Steps 1 through 7. This document refers to Appstream, but the process will be the same for AWS.
-- [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-saml-login-to-aws-from-office-365/)
+- [Office 365](/reference/integrations/office365/how-to-setup-saml-login-to-aws-from-office-365/)
 - [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
 - [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)

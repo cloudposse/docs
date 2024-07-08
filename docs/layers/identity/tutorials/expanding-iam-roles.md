@@ -1,8 +1,6 @@
 ---
 title: "Expanding IAM roles"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1296236604/Expanding+IAM+roles
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/expanding-iam-roles.md
+sidebar_position: 10
 ---
 
 # Expanding IAM roles
