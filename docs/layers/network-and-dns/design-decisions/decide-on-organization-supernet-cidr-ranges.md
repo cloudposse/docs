@@ -10,11 +10,14 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 ## Problem
 
-- We need to record all existing and provisioned CIDR ranges as a system of record, as well as any additional context as necessary (E.g. what the CIDRs are used for).
+- We need to record all existing and provisioned CIDR ranges as a system of record, as well as any additional context as
+  necessary (E.g. what the CIDRs are used for).
 
-- We need to decide on the all-encompassing CIDR for this organization for contiguous networks. It’s not a requirement, but a strong recommendation.
+- We need to decide on the all-encompassing CIDR for this organization for contiguous networks. It’s not a requirement,
+  but a strong recommendation.
 
-- All VPCs subnets should be carved out of this supernet. [Decide on AWS Account VPC Subnet CIDR Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy)
+- All VPCs subnets should be carved out of this supernet.
+  [Decide on AWS Account VPC Subnet CIDR Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy)
 
 ## Solution
 
@@ -32,8 +35,7 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 ## Pro Tip
 
-Use the [https://tidalmigrations.com/subnet-builder/](https://tidalmigrations.com/subnet-builder/)  with an additional overlay from CleanshotX.
+Use the [https://tidalmigrations.com/subnet-builder/](https://tidalmigrations.com/subnet-builder/) with an additional
+overlay from CleanshotX.
 
 <img src="/assets/refarch/image-20211025-172520.png" height="258" width="868" /><br/>
-
-

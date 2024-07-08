@@ -10,7 +10,8 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 ## Context and Problem Statement
 
-You need to remotely access resource that reside in a private VPC. Different teams or individuals need access to different resources.
+You need to remotely access resource that reside in a private VPC. Different teams or individuals need access to
+different resources.
 
 ## Solution
 
@@ -22,12 +23,13 @@ Each option below can be integrated with AWS SSO.
 
 ### Option 1: Deploy 1 Client VPN in the Network Account
 
-:::tip
-Our Recommendation is to use Option 1 for customers who do not need fine-grained network access controls. Anyone on the VPN should have access to all network services via the Transit Gateway.
+:::tip Our Recommendation is to use Option 1 for customers who do not need fine-grained network access controls. Anyone
+on the VPN should have access to all network services via the Transit Gateway.
 
 :::
 
-Ideal for companies where one team will require access to all accounts and there are no plans to introduce access for other teams.
+Ideal for companies where one team will require access to all accounts and there are no plans to introduce access for
+other teams.
 
 #### Pros
 
@@ -43,7 +45,8 @@ Ideal for companies where one team will require access to all accounts and there
 
 ### Option 2: Deploy Multiple Client VPNs Depending on Network Segments in the Network Account
 
-Ideal for companies where certain teams require segmented access to multiple accounts. We define these accounts as a segment.
+Ideal for companies where certain teams require segmented access to multiple accounts. We define these accounts as a
+segment.
 
 #### Pros
 
@@ -74,5 +77,3 @@ This is a requirement when you know you need very granular access controls with 
 ## References
 
 -
-
-

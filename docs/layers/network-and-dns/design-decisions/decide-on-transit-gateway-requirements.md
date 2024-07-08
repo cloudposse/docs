@@ -10,11 +10,15 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 ## Context and Problem Statement
 
-The [AWS Transit Gateway](https://aws.amazon.com/transit-gateway/) connects VPCs located in any account or organization (and on-premises networks) through a centrally managed network hub. This simplifies the work of connecting networks and puts an end to complex VPC peering connections. Think of it like a cloud router, where each new connection is only made once.
+The [AWS Transit Gateway](https://aws.amazon.com/transit-gateway/) connects VPCs located in any account or organization
+(and on-premises networks) through a centrally managed network hub. This simplifies the work of connecting networks and
+puts an end to complex VPC peering connections. Think of it like a cloud router, where each new connection is only made
+once.
 
-As you expand globally, inter-region peering connections, the AWS Transit Gateway helps establish a global network. All data is automatically encrypted and never travels over the public internet.
+As you expand globally, inter-region peering connections, the AWS Transit Gateway helps establish a global network. All
+data is automatically encrypted and never travels over the public internet.
 
-With this in mind, the transit gateway needs to be configured to support the specific  For example:
+With this in mind, the transit gateway needs to be configured to support the specific For example:
 
 - In which accounts will certain services live (e.g. Automation/Spacelift Runners, custom apps, etc)?
 
@@ -26,10 +30,10 @@ With this in mind, the transit gateway needs to be configured to support the spe
 
 ## Considered Options
 
-### Option 1  (Recommended)
+### Option 1 (Recommended)
 
-:::tip
-Cloud Posse recommends Option 1 because it enables the use of automation to perform changes as well as any other business requirement
+:::tip Cloud Posse recommends Option 1 because it enables the use of automation to perform changes as well as any other
+business requirement
 
 :::
 
@@ -48,5 +52,3 @@ Cloud Posse recommends Option 1 because it enables the use of automation to perf
 ## References
 
 - [https://aws.amazon.com/transit-gateway/](https://aws.amazon.com/transit-gateway/)
-
-

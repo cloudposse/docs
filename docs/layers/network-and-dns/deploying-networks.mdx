@@ -1,39 +1,77 @@
 ---
 title: "Deploying Networks"
 sidebar_position: 0
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/network-and-dns.md
 ---
 
-# Networking with AWS
+# Deploying the Network
 
-<img src="https://lucid.app/publicSegments/view/8b69815f-3b33-4ea1-8abb-cf3c52ae704c/image.png" style={{width: '100%', minHeight: '480', height: 'auto', margin: '10', position: 'relative'}}/><br/>
+## Requirements
 
-## Account Isolation
+Before deploying the Networking layer, first purchase the vanity and service domains chosen by ADR
+[2001](/reference-architecture/reference/adrs/jumpstart/service-discovery-domain/) and
+[2002](/reference-architecture/reference/adrs/jumpstart/decide-on-vanity-domain/)
 
-As a foundational design with the AWS Organization, we have already isolated resources into accounts. This separation
-creates a physical boundary between resources in AWS, including VPCs. Therefore, we can deploy a single or multiple
-VPCs in an account and guarantee that resources in those subnets will not be able to access resources in other accounts.
+When registering a new domain, we have the option of using Route53’s built-in registrar or using an existing registrar.
+Many enterprise-scale organizations use MarkMonitor to manage their domain portfolio. Our convention is to use the `dns`
+account as the registrar.
 
-Because of this design, we recommend deploying a single VPC per account (that needs a network). Production resources will
-only live in the VPC in the `plat-prod` account, and unless connected, no other VPC will be able to access those resources.
-Similarly, you could deploy a `data` account (or several) with a VPC to isolate data resources further.
+**Note**, the AWS Route53 Registrar cannot be automated with Terraform, so ClickOps is still required for domain
+registration.
 
-## Connecting Accounts
+[Registering domain names using Amazon Route 53 - Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html)
 
-Now that we have separated networks in each account, we need to be able to connect the account networks as required.
-We do this with Transit Gateway. We deploy a Transit Gateway hub and route table to the central Network account, and then deploy
-Transit Gateway spokes to all other accounts. The route table in the Network account specifies which accounts are able to access
-others, and the Transit Gateway spokes provide that connection.
+We recommend checking with your legal department on where they want to consolidate domain ownership. It has larger
+ramifications as to IP/trademark defense.
 
-## Accessing the Network
+## Deployment
 
-In order for a user to connect to the Network, we deploy an AWS Client VPN. This VPN is deployed to the Network account,
-which already has access to all other account networks. Then we define a set of rules for the VPN itself to specify
-where we want this VPN to be able to connect.
+First, vendor the networking components by running the following:
 
-## Implementation
+```bash
+atmos workflow vendor -f network
+```
 
-- [`vpc`](/components/library/aws/vpc/)
-- [`tgw/hub`](/components/library/aws/tgw/hub/)
-- [`tgw/spoke`](/components/library/aws/tgw/spoke/)
-- [`ec2-client-vpn`](/components/library/aws/ec2-client-vpn/)
+Once this is done, initialize all the VPCs in every configured region by running the following command:
+
+```bash
+atmos workflow deploy/vpc -f network
+```
+
+Next, go ahead and set up the Transit Gateway (TGW) by running the following:
+
+```bash
+atmos workflow deploy/tgw -f network
+```
+
+## Known Issues
+
+Please NOTE! At this time you will need to make sure that all EKS VPCs are commented out in the TGW catalog. This is
+because the components currently have a race condition requiring EKS clusters to exist before the TGW can be
+provisioned. This will be fixed in the future, but for now comment out the cluster variable until clusters are created.
+
+It's worth noting that propagation can fail during provisioning of Transit Gateway spokes. You'll likely see an error
+like this:
+
+```
+╷
+│ Error: reading EC2 Transit Gateway Route Table Propagation (tgw-rtb-*_tgw-attach-*): empty result
+│
+│   with module.tgw_hub_routes.aws_ec2_transit_gateway_route_table_propagation.default["plat-sandbox"],
+│   on .terraform/modules/tgw_hub_routes/main.tf line 71, in resource "aws_ec2_transit_gateway_route_table_propagation" "default":
+│   71: resource "aws_ec2_transit_gateway_route_table_propagation" "default" {
+│
+```
+
+If this happens, you can safely wait a minute or two and then re-attempt the provisioning.
+
+### Redeploy `tgw` when Deploying a New EKS Cluster
+
+The file `stacks/catalog/tgw/hub.yaml` and the separate `tgw/spokes` in each `stacks/org/**/global-region/network.yaml`
+potentially contain references to EKS Clusters using the `eks_component_names` variable. If you add an EKS Cluster, then
+you will want to look up the individual `spoke` and `hub` components that are affected. If you are using cross-region
+`tgw/cross-region-hub-connector` components, you will also want to update `eks_component_names` on the regional
+connections.
+
+```
+atmos workflow deploy/tgw -f network
+```

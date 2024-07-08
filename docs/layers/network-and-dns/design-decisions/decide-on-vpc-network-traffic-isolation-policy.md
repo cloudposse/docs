@@ -18,8 +18,8 @@ Both options support principles of least privilege.
 
 ### Option 1 - Use a Flat Network with two Subnets per AZ (Public, Private) (Recommended)
 
-:::tip
-Our Recommendation is to use Option 1 because it is the easiest to administer and reduces the complexity of the network architecture
+:::tip Our Recommendation is to use Option 1 because it is the easiest to administer and reduces the complexity of the
+network architecture
 
 :::
 
@@ -33,7 +33,8 @@ Our Recommendation is to use Option 1 because it is the easiest to administer an
 
 #### Cons
 
-- Security Groups have limited flexibility across regions: e.g. Security Group ACLs only work with CIDRs across regions (and not by Security Group ID)
+- Security Groups have limited flexibility across regions: e.g. Security Group ACLs only work with CIDRs across regions
+  (and not by Security Group ID)
 
 - Harder to monitor traffic between workloads
 
@@ -65,8 +66,8 @@ Our Recommendation is to use Option 1 because it is the easiest to administer an
 
 ## References
 
-- Also relates to [Decide on AWS Account VPC Subnet CIDR Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy)
+- Also relates to
+  [Decide on AWS Account VPC Subnet CIDR Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy)
 
-- Also relates to [Decide on VPC NAT Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-vpc-nat-strategy)
-
-
+- Also relates to
+  [Decide on VPC NAT Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-vpc-nat-strategy)
