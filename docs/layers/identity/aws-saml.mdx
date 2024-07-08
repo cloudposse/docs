@@ -1,0 +1,21 @@
+---
+title: "Connect with AWS SAML"
+sidebar_position: 10
+---
+
+# Using AWS SAML to Access AWS
+
+## Setting up IdP Metadata for SAML
+
+Export an Identity Provider (IdP) metadata file from the chosen provider. You'll need to place this file inside the
+`aws-saml` component directory (`components/terraform/aws-saml/`) and commit this to version control. The filename
+should match the variable configured in `stacks/catalog/aws-saml.yaml`.
+
+The creation of these metadata files will be different for each IdP. Here are some example setup references:
+
+1. [Google Workspace](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/)
+   (Note that
+   [Workspace can now sync users](https://aws.amazon.com/about-aws/whats-new/2023/06/aws-iam-identity-center-automated-user-provisioning-google-workspace/)
+   )
+2. [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
+3. [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)

@@ -1,7 +1,6 @@
 ---
 title: "Centralized Terraform Access"
 sidebar_position: 00
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/iam-identity.md
 ---
 
 # Centralized access management for Terraform
@@ -17,8 +16,9 @@ hierarchy.
 
 The `aws-teams` component creates AWS Teams in the Identity account. The **Team** is
 the entry point for a group of users, and the Identity account acts as an "Identity Hub"
-for centralized role assumption management across all delegated accounts. Those roles are
-then assumed by the team members after they login to their identity provider (AWS SSO or AWS SAML).
+for centralized role assumption management across all delegated accounts.
+
+Think of each team as a group of users, such as `developers` or `devops`.
 
 ### AWS Team Roles
 
