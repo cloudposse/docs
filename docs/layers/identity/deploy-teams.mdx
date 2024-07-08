@@ -15,12 +15,11 @@ sidebar_position: 30
 | Reconfigure Terraform Backend | `atmos workflow deploy/tfstate -f baseline` |
 | Deploy baseline components    | `atmos workflow deploy -f baseline`         |
 
-The identity components are designed to provision all primary user and system roles into a centralized identity
-account. These components are expected to be used together to provide fine-grained role delegation across the account
-hierarchy.
+The identity components are designed to provision all primary user and system roles into a centralized identity account.
+These components are expected to be used together to provide fine-grained role delegation across the account hierarchy.
 
-Deploy these components across all accounts by running the following command. Note that if any users
-or groups are missing, `aws-sso` will fail.
+Deploy these components across all accounts by running the following command. Note that if any users or groups are
+missing, `aws-sso` will fail.
 
 ```bash
 atmos workflow deploy/all -f identity
@@ -47,9 +46,9 @@ image, exit the image and rerun `make all`.
 
 One of these configuration files will be named `aws-config-teams`. This file holds local configuration for all local
 user authentication to AWS. This file will be the same for both SAML and SSO users, as well as for all teams. This file
-looks for a specific AWS profile for your namespace, for example `acme-identity `, and
-uses that profile as the entry-point for all role assumption. From this profile, all users with proper permission will
-be able to execute Terraform or assume other roles across the AWS Organization.
+looks for a specific AWS profile for your namespace, for example `acme-identity `, and uses that profile as the
+entry-point for all role assumption. From this profile, all users with proper permission will be able to execute
+Terraform or assume other roles across the AWS Organization.
 
 :::info
 

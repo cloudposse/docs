@@ -5,7 +5,9 @@ sidebar_position: 50
 
 # How to Log into AWS
 
-Locally authenticating with Leapp and AWS Identity Center (AWS SSO)
+We use Leapp to facilitate logging into AWS. Leapp is a tool that allows you to authenticate with your organization's
+Identity Provider (IdP) and then assume an IAM Role in AWS. This allows you to use your organization's SSO to
+authenticate with AWS.
 
 ## Requirements
 
@@ -38,9 +40,9 @@ The following steps are required only for initial setup.
 
 <!-- prettier-ignore-start -->
 ```yaml
-Alias: {{ cookiecutter.baseline.namespace }} # This can be whatever you would like to label the Integration in Leapp
-Portal URL: {{ cookiecutter.identity.sso_url }} # Set this to your SSO Launch URL)
-AWS Region: {{ cookiecutter.baseline.region_0 }} # Your primary region
+Alias: acme # This can be whatever you would like to label the Integration in Leapp
+Portal URL: https://d-1111aa1a11.awsapps.com/start/ # Set this to your SSO Launch URL)
+AWS Region: us-east-1 # Your primary region
 Auth. Method: In-browser # Optional
 ```
 <!-- prettier-ignore-end -->
@@ -56,8 +58,8 @@ Auth. Method: In-browser # Optional
 
 :::info
 
-This Permission Set will match the given Team name. For example, Developers will use
-`IdentityDevelopersTeamAccess` and DevOps will use `IdentityDevopsTeamAccess`.
+This Permission Set will match the given Team name. For example, Developers will use `IdentityDevelopersTeamAccess` and
+DevOps will use `IdentityDevopsTeamAccess`.
 
 :::
 
@@ -66,27 +68,26 @@ This Permission Set will match the given Team name. For example, Developers will
 7. Fill out the Chained Session configuration for connecting to `core-identity`
 
 ```yaml
-Named profile: {{ cookiecutter.baseline.namespace }}-identity # This must match the profile name given in AWS config
-Session Alias: {{ cookiecutter.baseline.namespace }}-identity # Optional
-AWS Region: {{ cookiecutter.baseline.region_0 }} # This must be your primary region
-Role ARN: arn:aws:iam::{{ cookiecutter.baseline.account_map["core"]["identity"] }}:role/{{ cookiecutter.baseline.namespace }}-core-gbl-identity-devops # This ARN depends on the given team. This example uses the "devops" team
-Role Session Name: {{ cookiecutter.baseline.namespace }}-identity # Optional
+Named profile: acme-identity # This must match the profile name given in AWS config
+Session Alias: acme-identity # Optional
+AWS Region: us-east-1 # This must be your primary region
+Role ARN: arn:aws:iam::666666666666:role/acme-core-gbl-identity-devops # This ARN depends on the given team. This example uses the "devops" team
+Role Session Name: acme-identity # Optional
 Assumer Session: core-identity # This must match the name of the identity account, almost always "core-identity"
 ```
 
 ![Leapp Chained Session Configuration](https://docs.cloudposse.com/assets/refarch/leapp-chained-session-configuration.png)
 
-8. (Optional) Pin the new `{{ cookiecutter.baseline.namespace }}-identity` IAM Role Chained Session
+8. (Optional) Pin the new `acme-identity` IAM Role Chained Session
 
 This makes it easier to filter to the primary session we will be used for connecting to AWS
 
 - Go to All Sessions
-- Find the new IAM Role Chained Session for `{{ cookiecutter.baseline.namespace }}-identity` or whatever value you used
-  for `Session Alias`
+- Find the new IAM Role Chained Session for `acme-identity` or whatever value you used for `Session Alias`
 - Click the dots on the IAM Role Chained Session
 - Select Pin Session
 
-9. Connect to `{{ cookiecutter.baseline.namespace }}-identity` IAM Role Chained Session
+9. Connect to `acme-identity` IAM Role Chained Session
 
 - Select the Session
 - Click Start Session
@@ -108,7 +109,7 @@ make all
 After initial setup, quickly connect to AWS with the following steps:
 
 1. Launch Leapp
-2. Connect to `{{ cookiecutter.baseline.namespace }}-identity` IAM Role Chained Session
+2. Connect to `acme-identity` IAM Role Chained Session
 
 ![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
 
