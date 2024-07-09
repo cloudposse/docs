@@ -1,9 +1,6 @@
 ---
 title: "Decide on Helm Chart Repository Strategy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176895937/REFARCH-207+-+Decide+on+Helm+Chart+Repository+Strategy
-sidebar_position: 100
 refarch_id: REFARCH-207
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-helm-chart-repository-strategy.md
 ---
 
 # Decide on Helm Chart Repository Strategy

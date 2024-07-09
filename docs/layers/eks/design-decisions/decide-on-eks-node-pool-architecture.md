@@ -1,9 +1,6 @@
 ---
 title: "Decide on EKS Node Pool Architecture"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176764939/REFARCH-236+-+Decide+on+EKS+Node+Pool+Architecture
-sidebar_position: 100
 refarch_id: REFARCH-236
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-eks-node-pool-architecture.md
 ---
 
 # Decide on EKS Node Pool Architecture

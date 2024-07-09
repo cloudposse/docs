@@ -67,4 +67,4 @@ integrity of the cluster after the modification is important.
 
 ## See Also
 
-- [How to Tune SpotInst Parameters for EKS](/reference-architecture/how-to-guides/integrations/spotinst/how-to-tune-spotinst-parameters-for-eks)
+- [How to Tune SpotInst Parameters for EKS](/reference/integrations/spotinst/how-to-tune-spotinst-parameters-for-eks/)

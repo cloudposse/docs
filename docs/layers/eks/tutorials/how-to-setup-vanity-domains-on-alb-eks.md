@@ -1,6 +1,5 @@
 ---
 title: "Setup Vanity Domains on an ALB"
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-setup-vanity-domains-on-alb-eks.md
 tags:
   - network
   - dns
@@ -17,14 +16,13 @@ import TabItem from '@theme/TabItem';
 
 ## Pre-requisites
 
-- [Understand the differences between Vanity Domains and Service Discovery Domains](/reference-architecture/reference/learning-resources/#the-difference-between-vanity-domains-and-service-discovery-domains)
-- [Setup Network Architecture](/reference-architecture/setup/network/)
+- [Understand the differences between Vanity Domains and Service Discovery Domains](/resources/legacy/learning-resources/#the-difference-between-vanity-domains-and-service-discovery-domains)
+  - [Network Architecture](/learn/network/)
   - Only requires `dns-primary` & `dns-delegated` to be deployed.
 
 ## Context
 
-After setting up your [Network Architecture](/reference-architecture/setup/network/) you will have 2 hosted zones in
-each platform account.
+After setting up your [Network Architecture](/learn/network/) you will have 2 hosted zones in each platform account.
 
 In `dev` for example, you will have Hosted Zones for `dev-acme.com` and `dev.platform.acme.com`.
 
@@ -258,7 +256,6 @@ spec:
 **values.yaml**
 
 ```yaml
-
 ---
 ingress:
   vanity_domains:

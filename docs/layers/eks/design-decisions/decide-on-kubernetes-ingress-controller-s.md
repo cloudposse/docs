@@ -1,9 +1,6 @@
 ---
 title: "Decide on Kubernetes Ingress Controller(s)"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176372152
-sidebar_position: 100
 refarch_id: REFARCH-300
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-kubernetes-ingress-controller-s.md
 ---
 
 # Decide on Kubernetes Ingress Controller(s)

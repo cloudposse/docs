@@ -1,9 +1,6 @@
 ---
 title: "Decide on email address for cert-manager support emails"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1223327759/REFARCH-202+-+Decide+on+email+address+for+cert-manager+support+emails
-sidebar_position: 100
 refarch_id: REFARCH-202
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-email-address-for-cert-manager-support-emails.md
 ---
 
 # Decide on email address for cert-manager support emails

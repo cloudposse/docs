@@ -1,9 +1,6 @@
 ---
 title: "Decide on Host OS Flavor for EKS"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176109972/REFARCH-49+-+Decide+on+Host+OS+Flavor+for+EKS
-sidebar_position: 100
 refarch_id: REFARCH-49
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-host-os-flavor-for-eks.md
 ---
 
 # Decide on Host OS Flavor for EKS
@@ -12,9 +9,9 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 We need to pick the AMI which will be used by the EKS cluster nodes. There are a few options and the right one depends
 on your needs and organization’s requirements for compliance and packaging. It also relates to
-[Decide on Technical Benchmark Framework](/reference-architecture/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-technical-benchmark-framework)
+[Decide on Technical Benchmark Framework](/layers/security-and-compliance/design-decisions/decide-on-technical-benchmark-framework)
 and
-[Decide on Strategy for Hardened Base AMIs](/reference-architecture/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-strategy-for-hardened-base-amis).
+[Decide on Strategy for Hardened Base AMIs](/layers/security-and-compliance/design-decisions/decide-on-strategy-for-hardened-base-amis).
 
 ## Solution
 
