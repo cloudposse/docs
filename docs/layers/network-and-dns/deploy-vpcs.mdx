@@ -1,0 +1,20 @@
+---
+title: "Deploy VPCs"
+sidebar_position: 0
+---
+
+# Deploying the Network
+
+## Deployment
+
+First, vendor the networking components by running the following:
+
+```bash
+atmos workflow vendor -f network
+```
+
+Once this is done, initialize all the VPCs in every configured region by running the following command:
+
+```bash
+atmos workflow deploy/vpc -f network
+```

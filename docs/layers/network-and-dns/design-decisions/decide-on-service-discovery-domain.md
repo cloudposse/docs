@@ -91,9 +91,9 @@ which is a security best-practice, but nonetheless inconsistent with other TLDs.
 ### Multiple AWS Organizations
 
 For customers using the “Model Organization” pattern (see
-[Decide on AWS Organization Strategy](/learn/accounts/design-decisions/decide-on-aws-organization-strategy))
-we recommend one TLD Service Discovery domain per AWS Organization. Organizations are a top-level construct for
-isolation, so we believe that extends all the way down to the Service Discovery domain.
+[Decide on AWS Organization Strategy](/learn/accounts/design-decisions/decide-on-aws-organization-strategy)) we
+recommend one TLD Service Discovery domain per AWS Organization. Organizations are a top-level construct for isolation,
+so we believe that extends all the way down to the Service Discovery domain.
 
 ### Multi-Cloud / On-prem
 
@@ -128,8 +128,8 @@ using the service discovery domain to third parties services (e.g. partners, ven
 Fivetran, etc).
 
 See also our related ADR
-[Proposed: Use Private and Public Hosted Zones](/resources/adrs/proposed-use-private-and-public-hosted-zones/)
-for additional context.
+[Proposed: Use Private and Public Hosted Zones](/resources/adrs/proposed-use-private-and-public-hosted-zones/) for
+additional context.
 
 ### Dedicated TLD per Organization, Delegated DNS Zones per AWS Account
 

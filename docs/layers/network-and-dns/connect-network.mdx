@@ -1,41 +1,11 @@
 ---
-title: "Deploying Networks"
-sidebar_position: 0
+title: "Establish Connectivity"
+sidebar_position: 10
 ---
 
-# Deploying the Network
-
-## Requirements
-
-Before deploying the Networking layer, first purchase the vanity and service domains chosen by ADR
-[2001](/reference-architecture/reference/adrs/jumpstart/service-discovery-domain/) and
-[2002](/reference-architecture/reference/adrs/jumpstart/decide-on-vanity-domain/)
-
-When registering a new domain, we have the option of using Route53’s built-in registrar or using an existing registrar.
-Many enterprise-scale organizations use MarkMonitor to manage their domain portfolio. Our convention is to use the `dns`
-account as the registrar.
-
-**Note**, the AWS Route53 Registrar cannot be automated with Terraform, so ClickOps is still required for domain
-registration.
-
-[Registering domain names using Amazon Route 53 - Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html)
-
-We recommend checking with your legal department on where they want to consolidate domain ownership. It has larger
-ramifications as to IP/trademark defense.
+# Establish Connectivity with Transit Gateway
 
 ## Deployment
-
-First, vendor the networking components by running the following:
-
-```bash
-atmos workflow vendor -f network
-```
-
-Once this is done, initialize all the VPCs in every configured region by running the following command:
-
-```bash
-atmos workflow deploy/vpc -f network
-```
 
 Next, go ahead and set up the Transit Gateway (TGW) by running the following:
 

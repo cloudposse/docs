@@ -16,8 +16,7 @@ This is not an easily reversible decision once whatever convention is in use acr
 1. Multi-cloud? e.g. AWS, GCP, Azure (we recommend baking the cloud into the service discovery domain. See
    [Decide on Service Discovery Domain](/learn/network/design-decisions/decide-on-service-discovery-domain))
 
-2. Multi-region?
-   [Decide on Primary AWS Region](/learn/network/design-decisions/decide-on-primary-aws-region)
+2. Multi-region? [Decide on Primary AWS Region](/learn/network/design-decisions/decide-on-primary-aws-region)
 
 3. Pet or Cattle? → Blue/green or multi-generational
 

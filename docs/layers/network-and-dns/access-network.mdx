@@ -1,65 +1,9 @@
-# Networking
+---
+title: "Access the Network"
+sidebar_position: 20
+---
 
-### DNS
-
-The DNS stacks are broken up into two kinds: Primary and Delegated. Primary DNS zones only start with an `NS` record
-among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console
-manages the respective domain. Consult the component's README (`components/terraform/dns-primary/README.md`) for more
-information.
-
-The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated. Consult the
-component's README `components/terraform/dns-delegated/README.md` for more information.
-
-To start the dns setup, run `atmos workflow deploy/dns -f network`. This will go through creating primaries, and then
-follow up with establishing the delegates.
-
-#### Adding `NS` records to the Registered Domain (Click Ops)
-
-In order to connect the newly provisioned Hosted Zone to the purchased domains, add the `NS` records to the chosen
-Domain Registrar. Retrieve these with the output of `dns-primary`. These will need to be manually added to the
-registered domain.
-
-Shared Service Domain, acme-svc.com
-
-```
-atmos terraform output dns-primary -s core-gbl-dns
-```
-
-Platform Sandbox Vanity Domain, acme-sandbox.com
-
-```
-atmos terraform output dns-primary -s plat-gbl-sandbox
-```
-
-Platform Dev Vanity Domain, acme-dev.com
-
-```
-atmos terraform output dns-primary -s plat-gbl-dev
-```
-
-Platform Staging Vanity Domain, acme-stage.com
-
-```
-atmos terraform output dns-primary -s plat-gbl-staging
-```
-
-Platform Prod Vanity Domain, acme-prod.com
-
-```
-atmos terraform output dns-primary -s plat-gbl-prod
-```
-
-[For more on `NS` records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html)
-
-### ACM
-
-Note that each `dns-primary` component will already create its own ACM certs. These are only for the vanity domains and
-won't do the more critical service domain certificates.
-
-We use a separate instance of the `acm` component to provision the service domain certificates, which still rely on the
-`dns-delegated` component. Setting these up can be done quickly by running `atmos workflow deploy/acm -f network`.
-
-### VPN
+# Accessing the Network
 
 Lastly, configure the VPN. The VPN will be provisioned in the `network` account and will leverage Transit Gateway to
 connect various VPCs to the VPN client. VPN deployment consists of three parts: authentication, component deployment,

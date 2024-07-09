@@ -66,5 +66,4 @@ network architecture
 - Also relates to
   [Decide on AWS Account VPC Subnet CIDR Strategy](/learn/network/design-decisions/decide-on-aws-account-vpc-subnet-cidr-strategy)
 
-- Also relates to
-  [Decide on VPC NAT Strategy](/learn/network/design-decisions/decide-on-vpc-nat-strategy)
+- Also relates to [Decide on VPC NAT Strategy](/learn/network/design-decisions/decide-on-vpc-nat-strategy)
