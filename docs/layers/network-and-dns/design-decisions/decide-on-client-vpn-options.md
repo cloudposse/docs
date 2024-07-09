@@ -1,9 +1,6 @@
 ---
 title: "Decide on Client VPN Options"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1268711437/REFARCH-517+-+Decide+on+Client+VPN+Options
-sidebar_position: 100
 refarch_id: REFARCH-517
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-infrastructure/decide-on-client-vpn-options.md
 ---
 
 # Decide on Client VPN Options

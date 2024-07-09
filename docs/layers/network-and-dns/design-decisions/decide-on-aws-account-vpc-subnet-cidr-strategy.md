@@ -1,9 +1,6 @@
 ---
 title: "Decide on AWS Account VPC Subnet CIDR Strategy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175617734/REFARCH-217+-+Decide+on+AWS+Account+VPC+Subnet+CIDR+Strategy
-sidebar_position: 100
 refarch_id: REFARCH-217
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy.md
 ---
 
 # Decide on AWS Account VPC Subnet CIDR Strategy

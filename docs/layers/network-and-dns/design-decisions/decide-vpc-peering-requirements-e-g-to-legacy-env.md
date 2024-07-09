@@ -1,9 +1,6 @@
 ---
 title: "Decide VPC Peering Requirements (e.g. to Legacy Env)"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175355632
-sidebar_position: 100
 refarch_id: REFARCH-80
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-infrastructure/decide-vpc-peering-requirements-e-g-to-legacy-env.md
 ---
 
 # Decide VPC Peering Requirements (e.g. to Legacy Env)

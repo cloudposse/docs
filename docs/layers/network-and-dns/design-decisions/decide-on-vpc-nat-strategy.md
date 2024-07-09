@@ -1,9 +1,6 @@
 ---
 title: "Decide on VPC NAT Strategy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1358069761/REFARCH-523+-+Decide+on+VPC+NAT+Strategy
-sidebar_position: 100
 refarch_id: REFARCH-523
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-infrastructure/decide-on-vpc-nat-strategy.md
 ---
 
 # Decide on VPC NAT Strategy
@@ -77,4 +74,4 @@ in the Network (transit) account, there will be a DMZ with a Firewall.
   [https://aws.amazon.com/solutions/implementations/compliant-framework-for-federal-and-dod-workloads-in-aws-govcloud-us/](https://aws.amazon.com/solutions/implementations/compliant-framework-for-federal-and-dod-workloads-in-aws-govcloud-us/)
 
 - Relates to
-  [Decide on AWS Account VPC Subnet CIDR Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy)
+  [Decide on AWS Account VPC Subnet CIDR Strategy](/learn/network/design-decisions/decide-on-aws-account-vpc-subnet-cidr-strategy)

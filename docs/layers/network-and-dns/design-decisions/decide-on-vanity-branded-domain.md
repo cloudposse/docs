@@ -1,9 +1,6 @@
 ---
 title: "Decide on Vanity (Branded) Domain"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176010913/REFARCH-54+-+Decide+on+Vanity+%28Branded%29+Domain
-sidebar_position: 100
 refarch_id: REFARCH-54
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-vanity-branded-domain.md
 ---
 
 import ReactPlayer from 'react-player'
@@ -19,7 +16,7 @@ domains currently in use for any other purpose.
 :::caution **IMPORTANT**
 
 This is not the same as
-[Decide on Service Discovery Domain](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-service-discovery-domain).
+[Decide on Service Discovery Domain](/learn/network/design-decisions/decide-on-service-discovery-domain).
 
 :::
 
@@ -95,6 +92,6 @@ will work for both `staging.acme.com` and `prod.acme.com`, and that's a bad thin
 
 ## Related
 
-- [Decide on Service Discovery Domain](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-service-discovery-domain)
+- [Decide on Service Discovery Domain](/learn/network/design-decisions/decide-on-service-discovery-domain)
 
 - [https://youtu.be/ao-2mfA5OTE](https://youtu.be/ao-2mfA5OTE)

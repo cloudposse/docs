@@ -1,9 +1,6 @@
 ---
 title: "Decide on Hostname Scheme for Service Discovery"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176010884/REFARCH-208+-+Decide+on+Hostname+Scheme+for+Service+Discovery
-sidebar_position: 100
 refarch_id: REFARCH-208
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-hostname-scheme-for-service-discovery.md
 ---
 
 # Decide on Hostname Scheme for Service Discovery
@@ -17,15 +14,15 @@ This is not an easily reversible decision once whatever convention is in use acr
 ### Considered Options
 
 1. Multi-cloud? e.g. AWS, GCP, Azure (we recommend baking the cloud into the service discovery domain. See
-   [Decide on Service Discovery Domain](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-service-discovery-domain))
+   [Decide on Service Discovery Domain](/learn/network/design-decisions/decide-on-service-discovery-domain))
 
 2. Multi-region?
-   [Decide on Primary AWS Region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region)
+   [Decide on Primary AWS Region](/learn/network/design-decisions/decide-on-primary-aws-region)
 
 3. Pet or Cattle? → Blue/green or multi-generational
 
 4. Short or Long region name? see
-   [Decide on Regional Naming Scheme](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-regional-naming-scheme)
+   [Decide on Regional Naming Scheme](/learn/foundation/design-decisions/decide-on-regional-naming-scheme)
 
 5. Does it extend all the way down to the VPC? (we do not recommend this due to excessive subnet allocations and
    complications around network routing)
@@ -57,4 +54,4 @@ We may want to consider that following convention:
 
 ## Related
 
-- [Decide on Service Discovery Domain](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-service-discovery-domain)
+- [Decide on Service Discovery Domain](/learn/network/design-decisions/decide-on-service-discovery-domain)

@@ -1,9 +1,6 @@
 ---
 title: "Decide on Service Discovery Domain"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175846989/REFARCH-46+-+Decide+on+Service+Discovery+Domain
-sidebar_position: 100
 refarch_id: REFARCH-46
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/cold-start/decide-on-service-discovery-domain.md
 ---
 
 import ReactPlayer from 'react-player'
@@ -20,7 +17,7 @@ domain can be hosted anywhere.
 The "service discovery domain" will be further subdivided by delegating a dedicated zone to each AWS account. For
 example, we don’t share DNS zones between production and staging. Therefore each account has its own service discovery
 domain (E.g. `prod.example.net`). See
-[Decide on Hostname Scheme for Service Discovery](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-hostname-scheme-for-service-discovery)
+[Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
 for more context.
 
 This is a non-reversible decision, so we recommend taking the time to discuss with the team what they like the best.
@@ -94,7 +91,7 @@ which is a security best-practice, but nonetheless inconsistent with other TLDs.
 ### Multiple AWS Organizations
 
 For customers using the “Model Organization” pattern (see
-[Decide on AWS Organization Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-aws-organization-strategy))
+[Decide on AWS Organization Strategy](/learn/accounts/design-decisions/decide-on-aws-organization-strategy))
 we recommend one TLD Service Discovery domain per AWS Organization. Organizations are a top-level construct for
 isolation, so we believe that extends all the way down to the Service Discovery domain.
 
@@ -104,7 +101,7 @@ If your organization plans to operate in multiple public clouds or on-prem, we r
 each cloud gets its own service discovery domain, rather than sharing the domain across all clouds (e.g. by delegating
 zones). The primary reason is to reduce the number of zones delegated, but also to decouple cloud dependencies. See the
 related design decision on
-[Decide on Hostname Scheme for Service Discovery](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-hostname-scheme-for-service-discovery)
+[Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
 to understand our zone delegation strategy.
 
 e.g. Suppose you had to support AWS, GCP, Azure and On-prem, the convention could be:
@@ -131,7 +128,7 @@ using the service discovery domain to third parties services (e.g. partners, ven
 Fivetran, etc).
 
 See also our related ADR
-[Proposed: Use Private and Public Hosted Zones](/reference-architecture/reference/adrs/proposed-use-private-and-public-hosted-zones)
+[Proposed: Use Private and Public Hosted Zones](/resources/adrs/proposed-use-private-and-public-hosted-zones/)
 for additional context.
 
 ### Dedicated TLD per Organization, Delegated DNS Zones per AWS Account
@@ -150,16 +147,16 @@ Delegate one dedicated "Top Level Domain" to each account (or some subnet). For 
 up with a scalable DNS naming convention. Thus a hybrid between DNS zone delegation and multiple-TLDs is recommended.
 
 We think this is overkill and instead, recommend the dedicated TLD per AWS Organization coupled and
-[Decide on Hostname Scheme for Service Discovery](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-hostname-scheme-for-service-discovery)
+[Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
 leveraging delegated zones by account.
 
 <ReactPlayer url='https://www.youtube.com/watch?v=ao-2mfA5OTE' width={"800px"} height={"450px"} controls={true} />
 
 ## Related
 
-- [Decide on Hostname Scheme for Service Discovery](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-hostname-scheme-for-service-discovery)
+- [Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
 
-- [Decide on Vanity (Branded) Domain](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-vanity-branded-domain)
+- [Decide on Vanity (Branded) Domain](/learn/network/design-decisions/decide-on-vanity-branded-domain)
 
 - [https://youtu.be/ao-2mfA5OTE](https://youtu.be/ao-2mfA5OTE)
 

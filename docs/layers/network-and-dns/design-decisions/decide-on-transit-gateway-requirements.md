@@ -1,9 +1,6 @@
 ---
 title: "Decide on Transit Gateway Requirements"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1201537185/REFARCH-487+-+Decide+on+Transit+Gateway+Requirements
-sidebar_position: 100
 refarch_id: REFARCH-487
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-transit-gateway-requirements.md
 ---
 
 # Decide on Transit Gateway Requirements

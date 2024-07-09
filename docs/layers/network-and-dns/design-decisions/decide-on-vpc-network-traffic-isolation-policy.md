@@ -1,9 +1,6 @@
 ---
 title: "Decide on VPC Network Traffic Isolation Policy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1358462977/REFARCH-524+-+Decide+on+VPC+Network+Traffic+Isolation+Policy
-sidebar_position: 100
 refarch_id: REFARCH-524
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-infrastructure/decide-on-vpc-network-traffic-isolation-policy.md
 ---
 
 # Decide on VPC Network Traffic Isolation Policy
@@ -67,7 +64,7 @@ network architecture
 ## References
 
 - Also relates to
-  [Decide on AWS Account VPC Subnet CIDR Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy)
+  [Decide on AWS Account VPC Subnet CIDR Strategy](/learn/network/design-decisions/decide-on-aws-account-vpc-subnet-cidr-strategy)
 
 - Also relates to
-  [Decide on VPC NAT Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-vpc-nat-strategy)
+  [Decide on VPC NAT Strategy](/learn/network/design-decisions/decide-on-vpc-nat-strategy)

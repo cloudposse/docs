@@ -1,9 +1,6 @@
 ---
 title: "Decide on Organization Supernet CIDR Ranges"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175388431/REFARCH-240+-+Decide+on+Organization+Supernet+CIDR+Ranges
-sidebar_position: 100
 refarch_id: REFARCH-240
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-infrastructure/decide-on-organization-supernet-cidr-ranges.md
 ---
 
 # Decide on Organization Supernet CIDR Ranges
@@ -17,7 +14,7 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
   but a strong recommendation.
 
 - All VPCs subnets should be carved out of this supernet.
-  [Decide on AWS Account VPC Subnet CIDR Strategy](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-aws-account-vpc-subnet-cidr-strategy)
+  [Decide on AWS Account VPC Subnet CIDR Strategy](/learn/network/design-decisions/decide-on-aws-account-vpc-subnet-cidr-strategy)
 
 ## Solution
 
