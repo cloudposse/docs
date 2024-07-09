@@ -2,11 +2,11 @@
 
 ## Quick Start
 
-| Steps                               | Example                                                       |
-| :---------------------------------- | :------------------------------------------------------------ |
-| 1. Vendor EKS components            | `atmos workflow vendor -f eks`                                |
-| 2. Connect to the VPN               |                                                               |
-| 3. Deploy roles for each EKS stack  | `atmos workflow deploy/iam-service-linked-roles -f eks`       |
+| Steps                               | Example                                                   |
+| :---------------------------------- | :-------------------------------------------------------- |
+| 1. Vendor EKS components            | `atmos workflow vendor -f eks`                            |
+| 2. Connect to the VPN               |                                                           |
+| 3. Deploy roles for each EKS stack  | `atmos workflow deploy/iam-service-linked-roles -f eks`   |
 | 4. Deploy cluster into each stack   | `atmos workflow deploy/cluster -s plat-use1-dev -f eks`   |
 | 5. Deploy resources into each stack | `atmos workflow deploy/resources -s plat-use1-dev -f eks` |
 

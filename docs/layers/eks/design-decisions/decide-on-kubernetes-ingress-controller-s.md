@@ -10,15 +10,17 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 ## Considerations
 
-Kubernetes supports any number of ingress controllers deployed multiple times. The choice of Ingress controller will determine which AWS features we can natively support (e.g. WAF requires an ALB).
+Kubernetes supports any number of ingress controllers deployed multiple times. The choice of Ingress controller will
+determine which AWS features we can natively support (e.g. WAF requires an ALB).
 
-Our recommendation is to use the `aws-loadbalancer-controller` (aka `aws-alb-ingress-controller` v2) with ACM certificates provisioned by terraform.
+Our recommendation is to use the `aws-loadbalancer-controller` (aka `aws-alb-ingress-controller` v2) with ACM
+certificates provisioned by terraform.
 
-:::caution
-TLS terminates at the ALB. It’s then _optionally_ unencrypted if the downstream services support it, such as with self-signed certificates and a TLS sidecar like Envoy or Nginx. Without this, traffic is in clear-text between the ALB and the downstream service or pod.
+:::caution TLS terminates at the ALB. It’s then _optionally_ unencrypted if the downstream services support it, such as
+with self-signed certificates and a TLS sidecar like Envoy or Nginx. Without this, traffic is in clear-text between the
+ALB and the downstream service or pod.
 
 :::
 
-Historically, we’ve recommended `ingress-nginx` (formerly `nginx-ingress`), but prefer to use the AWS load balancer controller due to it’s native support by AWS.
-
-
+Historically, we’ve recommended `ingress-nginx` (formerly `nginx-ingress`), but prefer to use the AWS load balancer
+controller due to it’s native support by AWS.

@@ -6,92 +6,132 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/d
 
 # EKS Foundational Platform
 
-Amazon EKS is a managed Kubernetes service to run Kubernetes in the AWS cloud and on-premises data centers. In the cloud, Amazon
-EKS automatically manages the availability and scalability of the Kubernetes control plane nodes responsible for scheduling containers,
-managing application availability, storing cluster data, and other key tasks. With Amazon EKS, you can take advantage of all the
-performance, scale, reliability, and availability of AWS infrastructure, as well as integrations with AWS networking and security
-services. On-premises, EKS provides a consistent, fully-supported Kubernetes solution with integrated tooling and simple deployment
-to AWS Outposts, virtual machines, or bare metal servers.
+Amazon EKS is a managed Kubernetes service to run Kubernetes in the AWS cloud and on-premises data centers. In the
+cloud, Amazon EKS automatically manages the availability and scalability of the Kubernetes control plane nodes
+responsible for scheduling containers, managing application availability, storing cluster data, and other key tasks.
+With Amazon EKS, you can take advantage of all the performance, scale, reliability, and availability of AWS
+infrastructure, as well as integrations with AWS networking and security services. On-premises, EKS provides a
+consistent, fully-supported Kubernetes solution with integrated tooling and simple deployment to AWS Outposts, virtual
+machines, or bare metal servers.
 
 ## The Problem
 
-Although Amazon EKS is a managed service, there is still much that is needed to set up any given cluster. First of all, we must decide
-how we want to deploy Nodes for the cluster. EC2 instance backed nodes, Amazon Fargate, or Karpenter all provide solutions for the
-foundation of a cluster. Next we must provide a method to authenticate with the cluster. Amazon IAM roles can grant API access to the
-EKS service but do not grant control within Kubernetes. Kubernetes system roles are native to the cluster, but we need to be able
-to scope finer access of users and resources than what is provided natively. Furthermore, we need to connect each cluster to our
-network and DNS architecture. Clusters must be secure and protected from the public internet, yet developers still need to be
-able to connect and manage cluster resources. And finally, we need a place to storage application data.
+Although Amazon EKS is a managed service, there is still much that is needed to set up any given cluster. First of all,
+we must decide how we want to deploy Nodes for the cluster. EC2 instance backed nodes, Amazon Fargate, or Karpenter all
+provide solutions for the foundation of a cluster. Next we must provide a method to authenticate with the cluster.
+Amazon IAM roles can grant API access to the EKS service but do not grant control within Kubernetes. Kubernetes system
+roles are native to the cluster, but we need to be able to scope finer access of users and resources than what is
+provided natively. Furthermore, we need to connect each cluster to our network and DNS architecture. Clusters must be
+secure and protected from the public internet, yet developers still need to be able to connect and manage cluster
+resources. And finally, we need a place to storage application data.
 
 ## Our Solution
 
-Cloud Posse deploys EKS through a number of components. Each component has a specific responsibility and works in harmony with the
-rest. We first deploy a nodeless EKS cluster and create an AWS Auth config mapping. This `ConfigMap` connects our existing AWS Teams
-architecture to the cluster and allows us to assign Kubernetes roles to a given Team Role. Next we use Karpenter to manage nodes
-on the cluster. Karpenter automatically launches compute resources to handle cluster applications and provides fast and simple
-compute provisioning for Kubernetes clusters. We then deploy a set of controllers and operators for the cluster. These controllers
-will automatically connect the cluster to our network and DNS architecture by annotations and manage storage within the cluster.
-Simply adding the relevant annotation to a given resources triggers the creation and management of Load Balancers in AWS, adds routing
-to the relevant Route 53 Hosted Zone, provisions certificates, and more. These resources set the foundation for any application platform.
-From this foundation, your application will be fully secure, scalable, and resilient.
+Cloud Posse deploys EKS through a number of components. Each component has a specific responsibility and works in
+harmony with the rest. We first deploy a nodeless EKS cluster and create an AWS Auth config mapping. This `ConfigMap`
+connects our existing AWS Teams architecture to the cluster and allows us to assign Kubernetes roles to a given Team
+Role. Next we use Karpenter to manage nodes on the cluster. Karpenter automatically launches compute resources to handle
+cluster applications and provides fast and simple compute provisioning for Kubernetes clusters. We then deploy a set of
+controllers and operators for the cluster. These controllers will automatically connect the cluster to our network and
+DNS architecture by annotations and manage storage within the cluster. Simply adding the relevant annotation to a given
+resources triggers the creation and management of Load Balancers in AWS, adds routing to the relevant Route 53 Hosted
+Zone, provisions certificates, and more. These resources set the foundation for any application platform. From this
+foundation, your application will be fully secure, scalable, and resilient.
 
 ### Implementation
 
-<img src="https://lucid.app/publicSegments/view/3aaf739b-2eed-4bdd-bd11-bb340b38ce90/image.png" style={{width: '100%', minHeight: '480', height: 'auto', margin: '10', position: 'relative'}}/><br/>
+<img
+  src="https://lucid.app/publicSegments/view/3aaf739b-2eed-4bdd-bd11-bb340b38ce90/image.png"
+  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
+/>
+<br />
 
-We first deploy the foundation for the cluster. The `eks/cluster` component deploys the initial EKS resources to AWS, including
-Auth Config mapping. We do not deploy any nodes with the cluster initially. Then once EKS is available, we connect to the cluster
-and start deploying resources. First is Karpenter. We deploy the Karpenter chart on a Fargate node and the IAM service role to allow
-Karpenter to purchase Spot Instances. Karpenter is the only resources that will be deployed to Fargate. Then we deploy Karpenter
-Provisioners using the CRD created by the initial Karpenter component. These provisioners will automatically launch and scale the
-cluster to meet our demands. Next we deploy `idp-roles` to manage custom roles for the cluster, and deploy `metrics-server` to provide
-access to resource metrics.
+We first deploy the foundation for the cluster. The `eks/cluster` component deploys the initial EKS resources to AWS,
+including Auth Config mapping. We do not deploy any nodes with the cluster initially. Then once EKS is available, we
+connect to the cluster and start deploying resources. First is Karpenter. We deploy the Karpenter chart on a Fargate
+node and the IAM service role to allow Karpenter to purchase Spot Instances. Karpenter is the only resources that will
+be deployed to Fargate. Then we deploy Karpenter Provisioners using the CRD created by the initial Karpenter component.
+These provisioners will automatically launch and scale the cluster to meet our demands. Next we deploy `idp-roles` to
+manage custom roles for the cluster, and deploy `metrics-server` to provide access to resource metrics.
 
-Then we connect the cluster to our network. First we must deploy the `cert-manager` component to provision X.509 certificates on the
-cluster. Then we deploy the `alb-controller` component to provision and associate ALBs or NLBs based on `Ingress` annotations
-that route traffic to the cluster. Then we deploy the `alb-controller-ingress-group` to actually create that ALB. Next, we deploy
-`external-dns` which will look for annotations to make services discoverable, and then create records in our Route 53 Hosted Zones
-mapping to the cluster. Finally we deploy `echo-server` to validate the complete setup.
+Then we connect the cluster to our network. First we must deploy the `cert-manager` component to provision X.509
+certificates on the cluster. Then we deploy the `alb-controller` component to provision and associate ALBs or NLBs based
+on `Ingress` annotations that route traffic to the cluster. Then we deploy the `alb-controller-ingress-group` to
+actually create that ALB. Next, we deploy `external-dns` which will look for annotations to make services discoverable,
+and then create records in our Route 53 Hosted Zones mapping to the cluster. Finally we deploy `echo-server` to validate
+the complete setup.
 
 :::info
 
-Connecting to an EKS cluster requires a VPN connection! See
-[ec2-client-vpn](/components/library/aws/ec2-client-vpn/) for details.
+Connecting to an EKS cluster requires a VPN connection! See [ec2-client-vpn](/components/library/aws/ec2-client-vpn/)
+for details.
 
 :::
 
-Depending on your application requirements we can also deploy a number of operators. The most common is the `efs-controller`, which
-we use to provide encrypted block storage that is not zone-locked. Other operators are optionally but often include the
-`external-secrets-operator` to automatically sync secrets from AWS SSM Parameter Store.
+Depending on your application requirements we can also deploy a number of operators. The most common is the
+`efs-controller`, which we use to provide encrypted block storage that is not zone-locked. Other operators are
+optionally but often include the `external-secrets-operator` to automatically sync secrets from AWS SSM Parameter Store.
 
-Monitoring and release engineering are handled separately from the components mentioned here, and we will expand of those implementations
-in follow up topics. For details, see the [Monitoring](/reference-architecture/category/quick-start/) and
+Monitoring and release engineering are handled separately from the components mentioned here, and we will expand of
+those implementations in follow up topics. For details, see the
+[Monitoring](/reference-architecture/category/quick-start/) and
 [Release Engineering](/reference-architecture/category/quick-start/) quick start documents.
 
 #### Foundation
-- [`eks/cluster`](/components/library/aws/eks/cluster/): This component is responsible for provisioning an end-to-end EKS Cluster, including IAM role to Kubernetes Auth Config mapping.
-- [`eks/karpenter`](/components/library/aws/eks/karpenter/): Installs the Karpenter chart on the EKS cluster and prepares the environment for provisioners.
-  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-provisioner/): Deploys Karpenter Provisioners using CRDs made available by `eks/karpenter`
-  - [`iam-service-linked-roles`](/components/library/aws/iam-service-linked-roles/): Provisions [IAM Service-Linked](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html) roles. These are required for Karpenter to purchase Spot instances.
-- [`idp-roles`](/components/library/aws/eks/idp-roles): These identity provider roles specify several pre-determined permission levels for cluster users and come with bindings that make them easy to assign to Users and Groups. Use this component to define custom permission within EKS.
-- [`metrics-server`](/components/library/aws/eks/metrics-server): A Kubernetes addon that provides resource usage metrics used in particular by other addons such Horizontal Pod Autoscaler. For more, see [metrics-server](https://github.com/kubernetes-sigs/metrics-server).
-- [`reloader`](/components/library/aws/eks/reloader): Installs the [Stakater Reloader](https://github.com/stakater/Reloader) for EKS clusters. `reloader` can watch `ConfigMaps` and `Secrets` for changes and use these to trigger rolling upgrades on pods and their associated `DeploymentConfigs`, `Deployments`, `Daemonsets` `Statefulsets` and `Rollouts`.
+
+- [`eks/cluster`](/components/library/aws/eks/cluster/): This component is responsible for provisioning an end-to-end
+  EKS Cluster, including IAM role to Kubernetes Auth Config mapping.
+- [`eks/karpenter`](/components/library/aws/eks/karpenter/): Installs the Karpenter chart on the EKS cluster and
+  prepares the environment for provisioners.
+  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-provisioner/): Deploys Karpenter Provisioners
+    using CRDs made available by `eks/karpenter`
+  - [`iam-service-linked-roles`](/components/library/aws/iam-service-linked-roles/): Provisions
+    [IAM Service-Linked](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html) roles. These
+    are required for Karpenter to purchase Spot instances.
+- [`idp-roles`](/components/library/aws/eks/idp-roles): These identity provider roles specify several pre-determined
+  permission levels for cluster users and come with bindings that make them easy to assign to Users and Groups. Use this
+  component to define custom permission within EKS.
+- [`metrics-server`](/components/library/aws/eks/metrics-server): A Kubernetes addon that provides resource usage
+  metrics used in particular by other addons such Horizontal Pod Autoscaler. For more, see
+  [metrics-server](https://github.com/kubernetes-sigs/metrics-server).
+- [`reloader`](/components/library/aws/eks/reloader): Installs the
+  [Stakater Reloader](https://github.com/stakater/Reloader) for EKS clusters. `reloader` can watch `ConfigMaps` and
+  `Secrets` for changes and use these to trigger rolling upgrades on pods and their associated `DeploymentConfigs`,
+  `Deployments`, `Daemonsets` `Statefulsets` and `Rollouts`.
 
 #### Network
+
 - [`cert-manager`](/components/library/aws/eks/cert-manager): A Kubernetes addon that provisions X.509 certificates.
-- [`alb-controller`](/components/library/aws/eks/alb-controller): A Kubernetes addon that, in the context of AWS, provisions and manages ALBs and NLBs based on `Service` and `Ingress` annotations. This module is also provision a default `IngressClass`.
-  - [`alb-controller-ingress-group`](/components/library/aws/eks/alb-controller-ingress-group): A Kubernetes Service that creates an ALB for a specific `IngressGroup`. An `IngressGroup` is a feature of the `alb-controller` which allows multiple Kubernetes Ingresses to share the same Application Load Balancer.
-- [`external-dns`](/components/library/aws/eks/external-dns): A Kubernetes addon that configures public DNS servers with information about exposed Kubernetes services to make them discoverable. This component is responsible for adding DNS records to your Route 53 Hosted Zones.
-- [`echo-server`](/components/library/aws/eks/echo-server): The echo server is a server that sends it back to the client a JSON representation of all the data the server received. We use this component is validate a cluster deployment.
+- [`alb-controller`](/components/library/aws/eks/alb-controller): A Kubernetes addon that, in the context of AWS,
+  provisions and manages ALBs and NLBs based on `Service` and `Ingress` annotations. This module is also provision a
+  default `IngressClass`.
+  - [`alb-controller-ingress-group`](/components/library/aws/eks/alb-controller-ingress-group): A Kubernetes Service
+    that creates an ALB for a specific `IngressGroup`. An `IngressGroup` is a feature of the `alb-controller` which
+    allows multiple Kubernetes Ingresses to share the same Application Load Balancer.
+- [`external-dns`](/components/library/aws/eks/external-dns): A Kubernetes addon that configures public DNS servers with
+  information about exposed Kubernetes services to make them discoverable. This component is responsible for adding DNS
+  records to your Route 53 Hosted Zones.
+- [`echo-server`](/components/library/aws/eks/echo-server): The echo server is a server that sends it back to the client
+  a JSON representation of all the data the server received. We use this component is validate a cluster deployment.
 
 #### Storage
-- [`efs`](/components/library/aws/efs/): Deploys an [EFS](https://aws.amazon.com/efs/) Network File System with KMS encryption-at-rest. EFS is an excellent choice as the default block storage for EKS clusters so that volumes are not zone-locked.
-  - [`eks/efs-controller`](/components/library/aws/eks/efs-controller/): Deploys [the Amazon Elastic File System Container Storage Interface (CSI) Driver controller](https://github.com/kubernetes-sigs/aws-efs-csi-driver) to EKS. The Amazon EFS CSI Driver implements the CSI specification for container orchestrators to manage the lifecycle of Amazon EFS file systems.
+
+- [`efs`](/components/library/aws/efs/): Deploys an [EFS](https://aws.amazon.com/efs/) Network File System with KMS
+  encryption-at-rest. EFS is an excellent choice as the default block storage for EKS clusters so that volumes are not
+  zone-locked.
+  - [`eks/efs-controller`](/components/library/aws/eks/efs-controller/): Deploys
+    [the Amazon Elastic File System Container Storage Interface (CSI) Driver controller](https://github.com/kubernetes-sigs/aws-efs-csi-driver)
+    to EKS. The Amazon EFS CSI Driver implements the CSI specification for container orchestrators to manage the
+    lifecycle of Amazon EFS file systems.
 
 #### Additional Operators
-- [`external-secrets-operator`](/components/library/aws/eks/external-secrets-operator/): This component (ESO) is used to create an external `SecretStore` configured to synchronize secrets from AWS SSM Parameter store as Kubernetes Secrets within the cluster.
+
+- [`external-secrets-operator`](/components/library/aws/eks/external-secrets-operator/): This component (ESO) is used to
+  create an external `SecretStore` configured to synchronize secrets from AWS SSM Parameter store as Kubernetes Secrets
+  within the cluster.
 
 ## References
+
 - [Decide on EKS Node Pool Architecture](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-eks-node-pool-architecture/)
 - [Decide on Kubernetes Ingress Controller(s)](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-kubernetes-ingress-controller-s/)
 - [How to Load Test in AWS](/reference-architecture/how-to-guides/tutorials/how-to-load-test-in-aws/)
@@ -107,20 +147,31 @@ in follow up topics. For details, see the [Monitoring](/reference-architecture/c
 
 Consider deploying the [`external-secrets-operator` component](/components/library/aws/eks/external-secrets-operator).
 
-This component creates an external SecretStore configured to synchronize secrets from AWS SSM Parameter store
-as Kubernetes Secrets within the cluster. Per the operator pattern, the `external-secret-operator` pods will
-watch for any ExternalSecret resources which reference the SecretStore to pull secrets from.
+This component creates an external SecretStore configured to synchronize secrets from AWS SSM Parameter store as
+Kubernetes Secrets within the cluster. Per the operator pattern, the `external-secret-operator` pods will watch for any
+ExternalSecret resources which reference the SecretStore to pull secrets from.
 
 ### How does the `alb-controller-ingress-group` determine the name of the ALB?
 
-1. First the component uses null label to generate our intended name. We do this to meet the character length restrictions on ALB names. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L75-L83)
-2. Then we pass that output to the Kubernetes Ingress resource with an annotation intended to define the ALB's name. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L98)
-3. Now the Ingress is created and `alb-controller` creates an ALB using the annotations on that `Ingress`. This ALB name will have a dynamic character sequence at the end of it, so we cannot know what the name will be ahead of time.
-4. Finally, we grab the actual name that is given to the created ALB with the `data.aws_lb` resources. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L169)
-5. Then output that name for future reference. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L36)
+1. First the component uses null label to generate our intended name. We do this to meet the character length
+   restrictions on ALB names.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L75-L83)
+2. Then we pass that output to the Kubernetes Ingress resource with an annotation intended to define the ALB's name.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L98)
+3. Now the Ingress is created and `alb-controller` creates an ALB using the annotations on that `Ingress`. This ALB name
+   will have a dynamic character sequence at the end of it, so we cannot know what the name will be ahead of time.
+4. Finally, we grab the actual name that is given to the created ALB with the `data.aws_lb` resources.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L169)
+5. Then output that name for future reference.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L36)
 
 ### How can we create Self Hosted Runners for GitHub with EKS?
 
-Self-Hosted Runners are a great way to save cost and add customizations with GitHub Actions. Since we've already implemented EKS for our platform, we can build off that foundation to create another cluster to manage Self-Hosted runners in GitHub. We deploy that new EKS cluster to `core-auto` and install the [Actions Runner Controller (ARC) chart](https://github.com/actions/actions-runner-controller). This controller will launch and scale runners for GitHub automatically.
+Self-Hosted Runners are a great way to save cost and add customizations with GitHub Actions. Since we've already
+implemented EKS for our platform, we can build off that foundation to create another cluster to manage Self-Hosted
+runners in GitHub. We deploy that new EKS cluster to `core-auto` and install the
+[Actions Runner Controller (ARC) chart](https://github.com/actions/actions-runner-controller). This controller will
+launch and scale runners for GitHub automatically.
 
-For more on how to set up ARC, see the [GitHub Action Runners setup docs for EKS](/reference-architecture/setup/github-actions-runners/).
+For more on how to set up ARC, see the
+[GitHub Action Runners setup docs for EKS](/reference-architecture/setup/github-actions-runners/).

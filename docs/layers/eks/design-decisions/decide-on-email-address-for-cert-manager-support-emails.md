@@ -14,10 +14,9 @@ Describe why we are making this decision or what problem we are solving.
 
 ## Considered Options
 
-### Option 1  (Recommended)
+### Option 1 (Recommended)
 
-:::tip
-Our Recommendation is to use Option 1 because....
+:::tip Our Recommendation is to use Option 1 because....
 
 :::
 
@@ -52,5 +51,3 @@ Our Recommendation is to use Option 1 because....
 ## References
 
 - Links to any research, ADRs or related Jiras
-
-

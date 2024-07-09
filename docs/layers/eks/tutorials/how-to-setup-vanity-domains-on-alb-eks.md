@@ -16,30 +16,35 @@ import TabItem from '@theme/TabItem';
 # How to Setup Vanity Domains on an existing ALB used for Service Discovery Domains
 
 ## Pre-requisites
-* [Understand the differences between Vanity Domains and Service Discovery Domains](/reference-architecture/reference/learning-resources/#the-difference-between-vanity-domains-and-service-discovery-domains)
-* [Setup Network Architecture](/reference-architecture/setup/network/)
-  * Only requires `dns-primary` & `dns-delegated` to be deployed.
+
+- [Understand the differences between Vanity Domains and Service Discovery Domains](/reference-architecture/reference/learning-resources/#the-difference-between-vanity-domains-and-service-discovery-domains)
+- [Setup Network Architecture](/reference-architecture/setup/network/)
+  - Only requires `dns-primary` & `dns-delegated` to be deployed.
 
 ## Context
 
-After setting up your [Network Architecture](/reference-architecture/setup/network/) you will have 2 hosted zones in each platform account.
+After setting up your [Network Architecture](/reference-architecture/setup/network/) you will have 2 hosted zones in
+each platform account.
 
 In `dev` for example, you will have Hosted Zones for `dev-acme.com` and `dev.platform.acme.com`.
 
 You should also have an ACM certificate that registers `*.dev-acme.com` and `*.dev.platform.acme.com`.
 
-We also should've deployed applications to your EKS cluster and have an ALB for service discovery. For example the [`echo-server`](/components/library/aws/eks/echo-server) component.
+We also should've deployed applications to your EKS cluster and have an ALB for service discovery. For example the
+[`echo-server`](/components/library/aws/eks/echo-server) component.
 
-Now we want to set up a vanity subdomain for `dev-acme.com` that will point to the ALB used for service discovery. This saves us money by not requiring a new ALB for each vanity domain.
+Now we want to set up a vanity subdomain for `dev-acme.com` that will point to the ALB used for service discovery. This
+saves us money by not requiring a new ALB for each vanity domain.
 
 ## Implementation
 
-This is fairly simple to implement. All we need to do is set up our Kubernetes ingresses and ensure ACM doesn't have duplicate certs for domains.
-
+This is fairly simple to implement. All we need to do is set up our Kubernetes ingresses and ensure ACM doesn't have
+duplicate certs for domains.
 
 ### Setup Ingresses
 
-Ingresses for your applications can use several different `.spec.rules` to provide access to the application via many different URLs.
+Ingresses for your applications can use several different `.spec.rules` to provide access to the application via many
+different URLs.
 
 #### Example
 
@@ -64,28 +69,28 @@ metadata:
   namespace: dev
 spec:
   rules:
-  # new Vanity Domain
-  - host: api.dev-acme.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: my-app-api
-            port:
-              number: 8081
-        path: /api/*
-        pathType: ImplementationSpecific
-  # Existing Service discovery domain
-  - host: my-app-api.dev.plat.acme-svc.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: my-app-api
-            port:
-              number: 8081
-        path: /*
-        pathType: ImplementationSpecific
+    # new Vanity Domain
+    - host: api.dev-acme.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: my-app-api
+                port:
+                  number: 8081
+            path: /api/*
+            pathType: ImplementationSpecific
+    # Existing Service discovery domain
+    - host: my-app-api.dev.plat.acme-svc.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: my-app-api
+                port:
+                  number: 8081
+            path: /*
+            pathType: ImplementationSpecific
 ```
 
 </TabItem>
@@ -94,7 +99,6 @@ spec:
 
 <details>
 <summary><code>_helpers.tpl</code></summary>
-
 
 ```yaml
 {{/*
@@ -163,10 +167,10 @@ Create the name of the service account to use
 
 ```
 
-
 </details>
 
 **Ingress.yaml**
+
 ```yaml
 {{- if or (eq (printf "%v" .Values.ingress.nginx.enabled) "true") (eq (printf "%v" .Values.ingress.alb.enabled) "true") -}}
   {{- $fullName := include "this.fullname" . -}}
@@ -254,7 +258,8 @@ spec:
 **values.yaml**
 
 ```yaml
-...
+
+---
 ingress:
   vanity_domains:
     # api.dev-acme.com, path: /*
@@ -289,40 +294,52 @@ ingress:
       s3_bucket_prefix: ""
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ### Setup ACM Certs
 
-By default, our `dns-primary` component and `dns-delegated` component will create ACM certs for each Hosted Zone in the platform account, along with an **additional** cert for `*.dev-acme.com`. Depending on the level of subdomains you want, you may need to disable this with the variable `request_acm_certificate: false`
+By default, our `dns-primary` component and `dns-delegated` component will create ACM certs for each Hosted Zone in the
+platform account, along with an **additional** cert for `*.dev-acme.com`. Depending on the level of subdomains you want,
+you may need to disable this with the variable `request_acm_certificate: false`
 
 If a single subdomain is sufficient. e.g. `api.dev-acme.com` then you can leave this enabled.
 
-The important thing to note is that you **cannot** have duplicate certs in ACM. So if you want to add a new subdomain, you will need to delete the existing cert for `*.dev-acme.com` and create a new one with the new subdomain. This can lead to issues when trying to delete certificates, as they are in use by the ALB. You will need to delete the ALB first, then delete the certificate.
+The important thing to note is that you **cannot** have duplicate certs in ACM. So if you want to add a new subdomain,
+you will need to delete the existing cert for `*.dev-acme.com` and create a new one with the new subdomain. This can
+lead to issues when trying to delete certificates, as they are in use by the ALB. You will need to delete the ALB first,
+then delete the certificate.
 
 See the troubleshooting section if you run into issues with recreating resources.
 
 ## How it works:
 
-With a single valid ACM cert for your domains, the `alb-controller` is able to register your domain to the ALB. The ALB is able to do this by recognizing the valid certificate in ACM. This is why we need to ensure we have a valid certificate for our domains.
+With a single valid ACM cert for your domains, the `alb-controller` is able to register your domain to the ALB. The ALB
+is able to do this by recognizing the valid certificate in ACM. This is why we need to ensure we have a valid
+certificate for our domains.
 
-You can validate your cert is picked up by the ALB by checking the ALB's target group. You should see the certificate listed under the `Certificates` tab.
+You can validate your cert is picked up by the ALB by checking the ALB's target group. You should see the certificate
+listed under the `Certificates` tab.
 
 ## Troubleshooting
 
-The problem with this comes when you need to remove a subdomain or ACM certificate. By running `atmos terraform deploy dns-delegated -s plat-<region>-dev` with `request_acm_certificate: false`, you are trying to destroy a single ACM certificate in an account. While this is a small scope deletion, the ACM certificate is in use by the ALB, and the ALB has many different targets. Thus Terraform will stall out.
+The problem with this comes when you need to remove a subdomain or ACM certificate. By running
+`atmos terraform deploy dns-delegated -s plat-<region>-dev` with `request_acm_certificate: false`, you are trying to
+destroy a single ACM certificate in an account. While this is a small scope deletion, the ACM certificate is in use by
+the ALB, and the ALB has many different targets. Thus Terraform will stall out.
 
 You need to:
+
 1. Delete the listeners and targets of the ALB that are using the certificate
 2. Delete the ALB
 3. Terraform will then successfully delete the ACM certificate.
 
 You will notice:
+
 1. The ALB will be recreated
 2. Ingresses should reconcile for service discovery domains
 3. ALB Targets should be recreated pointing at service discovery domains.
 
-Once you recreate the correct ACM certificates and have valid ingresses you should be able to access your applications via the vanity domain.
+Once you recreate the correct ACM certificates and have valid ingresses you should be able to access your applications
+via the vanity domain.
