@@ -155,7 +155,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Setup GitHub',
+              label: 'Setup GitHub Actions',
               collapsible: true,
               collapsed: true,
               items: [
@@ -231,7 +231,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Observability Platform',
+              label: 'Monitor Everything',
               collapsible: true,
               collapsed: true,
               link: {
@@ -247,7 +247,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Alert Management',
+              label: 'Manage Incidents',
               collapsible: true,
               collapsed: true,
               link: {
@@ -279,7 +279,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Maintenance',
+              label: 'Stay Up-to-Date',
               collapsible: true,
               collapsed: true,
               link: {
