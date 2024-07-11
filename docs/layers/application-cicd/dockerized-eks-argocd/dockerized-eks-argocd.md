@@ -1,7 +1,6 @@
 ---
 title: "Dockerized App to EKS with ArgoCD"
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/release-engineering/dockerized-eks-argocd.md
 ---
 
 ```mdx-code-block

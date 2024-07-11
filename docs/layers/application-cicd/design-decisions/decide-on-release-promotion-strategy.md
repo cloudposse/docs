@@ -3,7 +3,6 @@ title: "Decide on Release Promotion Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171750987/REFARCH-419+-+Decide+on+Release+Promotion+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-419
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-release-promotion-strategy.md
 ---
 
 # Decide on Release Promotion Strategy

@@ -2,7 +2,6 @@
 title: "Use Atmos"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176338474/How+to+use+Atmos
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-use-atmos.md
 ---
 
 # How to use Atmos

@@ -3,7 +3,6 @@ title: "Decide on Transactional Email (SMTP) Provider for Operational Emails"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175650562/REFARCH-79+-+Decide+on+Transactional+Email+%28SMTP%29+Provider+for+Operational+Emails
 sidebar_position: 100
 refarch_id: REFARCH-79
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-transactional-email-smtp-provider-for-operational-email.md
 ---
 
 # Decide on Transactional Email (SMTP) Provider for Operational Emails

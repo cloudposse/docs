@@ -3,7 +3,6 @@ title: "Decide on ArgoCD Deployment Repo Architecture"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947862/REFARCH-405+-+Decide+on+ArgoCD+Deployment+Repo+Architecture
 sidebar_position: 100
 refarch_id: REFARCH-405
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-argocd-deployment-repo-architecture.md
 ---
 
 # Decide on ArgoCD Deployment Repo Architecture

@@ -1,7 +1,6 @@
 ---
 title: "Identity Center Apps"
 sidebar_position: 30
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/argocd/identity-center-apps.md
 tags:
   - argocd
   - identity

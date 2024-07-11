@@ -3,7 +3,6 @@ title: "Decide on How to Restrict Access to Metrics and Logs in Datadog"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171652763/REFARCH-294+-+Decide+on+How+to+Restrict+Access+to+Metrics+and+Logs+in+Datadog
 sidebar_position: 100
 refarch_id: REFARCH-294
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-monitoring-platform/decide-on-how-to-restrict-access-to-metrics-and-logs-in-datadog.md
 ---
 
 # Decide on How to Restrict Access to Metrics and Logs in Datadog

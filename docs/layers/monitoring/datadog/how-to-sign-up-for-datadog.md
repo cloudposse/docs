@@ -2,7 +2,6 @@
 title: "Sign Up for Datadog"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1209335952
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/how-to-sign-up-for-datadog.md
 ---
 
 # How to Sign Up for Datadog?

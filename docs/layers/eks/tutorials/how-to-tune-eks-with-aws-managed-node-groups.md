@@ -2,7 +2,6 @@
 title: "Tune EKS with AWS Managed Node Groups"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1249476615/How+to+Tune+EKS+with+AWS+Managed+Node+Groups
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-tune-eks-with-aws-managed-node-groups.md
 ---
 
 # How to Tune EKS with AWS Managed Node Groups

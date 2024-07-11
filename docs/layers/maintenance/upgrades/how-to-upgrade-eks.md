@@ -2,7 +2,6 @@
 title: "Upgrade EKS"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1183612963/How+to+Upgrade+EKS
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-upgrade-eks.md
 ---
 
 # How to Upgrade EKS

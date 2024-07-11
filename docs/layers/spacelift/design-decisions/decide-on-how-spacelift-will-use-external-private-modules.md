@@ -3,7 +3,6 @@ title: "Decide on how Spacelift will use external private modules"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1365737481/REFARCH-535+-+Decide+on+how+Spacelift+will+use+external+private+modules
 sidebar_position: 100
 refarch_id: REFARCH-535
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-how-spacelift-will-use-external-private-modules.md
 ---
 
 # Decide on how Spacelift will use external private modules

@@ -3,7 +3,6 @@ title: "Decide on S3 Bucket Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175617703/REFARCH-364+-+Decide+on+S3+Bucket+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-364
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-s3-bucket-requirements.md
 ---
 
 # Decide on S3 Bucket Requirements

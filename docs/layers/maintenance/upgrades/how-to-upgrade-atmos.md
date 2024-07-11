@@ -2,7 +2,6 @@
 title: "Upgrade Atmos"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1225588737/How+to+Upgrade+Atmos
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-upgrade-atmos.md
 ---
 
 # How to Upgrade Atmos

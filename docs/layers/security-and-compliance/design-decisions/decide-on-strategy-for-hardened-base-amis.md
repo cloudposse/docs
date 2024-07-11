@@ -3,7 +3,6 @@ title: "Decide on Strategy for Hardened Base AMIs"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171980616/REFARCH-345+-+Decide+on+Strategy+for+Hardened+Base+AMIs
 sidebar_position: 100
 refarch_id: REFARCH-345
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-strategy-for-hardened-base-amis.md
 ---
 
 # Decide on Strategy for Hardened Base AMIs

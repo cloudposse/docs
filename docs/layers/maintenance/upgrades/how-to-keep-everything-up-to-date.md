@@ -2,7 +2,6 @@
 title: "Keep Everything Up to Date"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1209434183/How+to+Keep+Everything+Up+to+Date
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-keep-everything-up-to-date.md
 ---
 
 # How to Keep Everything Up to Date

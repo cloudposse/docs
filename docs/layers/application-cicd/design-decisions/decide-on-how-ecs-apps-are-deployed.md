@@ -3,7 +3,6 @@ title: "Decide on how ECS apps are deployed"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175847107/REFARCH-411+-+Decide+on+how+ECS+apps+are+deployed
 sidebar_position: 100
 refarch_id: REFARCH-411
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-how-ecs-apps-are-deployed.md
 ---
 
 # Decide on how ECS apps are deployed

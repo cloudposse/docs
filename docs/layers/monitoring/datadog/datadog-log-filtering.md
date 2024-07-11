@@ -1,6 +1,5 @@
 ---
 title: "Log Filtering"
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/datadog-log-filtering.md
 ---
 ## Datadog Log Filtering
 

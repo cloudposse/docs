@@ -3,7 +3,6 @@ title: "Decide on Technical Benchmark Framework"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171620109/REFARCH-470+-+Decide+on+Technical+Benchmark+Framework
 sidebar_position: 100
 refarch_id: REFARCH-470
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-technical-benchmark-framework.md
 ---
 
 # Decide on Technical Benchmark Framework

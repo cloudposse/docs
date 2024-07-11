@@ -3,7 +3,6 @@ title: "Decide on Hot-fix or Rollback Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947700/REFARCH-428+-+Decide+on+Hot-fix+or+Rollback+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-428
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-hot-fix-or-rollback-strategy.md
 ---
 
 # Decide on Hot-fix or Rollback Strategy

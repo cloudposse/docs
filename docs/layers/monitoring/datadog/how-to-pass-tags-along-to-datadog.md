@@ -2,7 +2,6 @@
 title: "Passing Tags"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1288962522/How+to+Pass+Tags+Along+to+Datadog
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/how-to-pass-tags-along-to-datadog.md
 ---
 
 # How to Pass Tags Along to Datadog

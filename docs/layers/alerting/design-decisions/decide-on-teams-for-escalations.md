@@ -3,7 +3,6 @@ title: "Decide on Teams for Escalations"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947816/REFARCH-468+-+Decide+on+Teams+for+Escalations
 sidebar_position: 100
 refarch_id: REFARCH-468
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-incident-management/decide-on-teams-for-escalations.md
 ---
 
 # Decide on Teams for Escalations

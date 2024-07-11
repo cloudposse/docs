@@ -2,7 +2,6 @@
 title: "Component Dependencies"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1191313474/How+to+Manage+Explicit+Component+Dependencies+with+Spacelift
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-manage-explicit-component-dependencies-with-spacelift.md
 ---
 
 # How to Manage Explicit Component Dependencies with Spacelift

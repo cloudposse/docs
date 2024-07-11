@@ -2,7 +2,6 @@
 title: "Scale Spacelift Runners"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1249050678/How+to+Scale+Spacelift+Runners
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-scale-spacelift-runners.md
 ---
 
 # How to Scale Spacelift Runners

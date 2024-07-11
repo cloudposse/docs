@@ -2,7 +2,6 @@
 title: "Document a New Design Decision"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1173454868/How+to+Document+a+New+Design+Decision
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-document-a-new-design-decision.md
 ---
 
 # How to Document a New Design Decision

@@ -2,7 +2,6 @@
 title: "Drift Detection"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1184301057/How+to+Enable+Spacelift+Drift+Detection
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-enable-spacelift-drift-detection.md
 ---
 
 # How to Enable Spacelift Drift Detection

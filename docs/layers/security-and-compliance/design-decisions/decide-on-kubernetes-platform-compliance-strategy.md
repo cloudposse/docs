@@ -3,7 +3,6 @@ title: "Decide on Kubernetes Platform Compliance Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171980600/REFARCH-343+-++Decide+on+Kubernetes+Platform+Compliance+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-343
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-kubernetes-platform-compliance-strategy.md
 ---
 
 # Decide on Kubernetes Platform Compliance Strategy

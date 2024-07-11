@@ -2,7 +2,6 @@
 title: "OpsGenie"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1192231154/How+to+Implement+Incident+Management+with+OpsGenie
 sidebar_position: 10
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/opsgenie/how-to-implement-incident-management-with-opsgenie.md
 ---
 
 # How to Implement Incident Management with OpsGenie

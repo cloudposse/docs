@@ -1,7 +1,6 @@
 ---
 title: "Alerting"
 sidebar_class_name: hidden
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/alerting.md
 ---
 
 # Alerting

@@ -2,7 +2,6 @@
 title: "Upgrade Terraform"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1221853205/How+to+Upgrade+or+Install+Versions+of+Terraform
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-upgrade-or-install-versions-of-terraform.md
 ---
 
 # How to Upgrade or Install Versions of Terraform

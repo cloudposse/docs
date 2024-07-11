@@ -3,7 +3,6 @@ title: "Decide on ArgoCD Architecture"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171980417/REFARCH-420+-+Decide+on+ArgoCD+Architecture
 sidebar_position: 100
 refarch_id: REFARCH-420
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-argocd-architecture.md
 ---
 
 # Decide on ArgoCD Architecture

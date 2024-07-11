@@ -3,7 +3,6 @@ title: "Decide on Seeding Strategy for Staging Environments"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947646/REFARCH-423+-+Decide+on+Seeding+Strategy+for+Staging+Environments
 sidebar_position: 100
 refarch_id: REFARCH-423
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-seeding-strategy-for-staging-environments.md
 ---
 
 # Decide on Seeding Strategy for Staging Environments

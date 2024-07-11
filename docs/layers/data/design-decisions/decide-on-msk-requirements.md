@@ -3,7 +3,6 @@ title: "Decide on MSK Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1201537168/REFARCH-486+-+Decide+on+MSK+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-486
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-msk-requirements.md
 ---
 
 # Decide on MSK Requirements

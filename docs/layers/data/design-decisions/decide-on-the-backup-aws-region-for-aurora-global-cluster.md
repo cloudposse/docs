@@ -3,7 +3,6 @@ title: "Decide on the backup AWS region for Aurora Global Cluster"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175978124/REFARCH-242+-+Decide+on+the+backup+AWS+region+for+Aurora+Global+Cluster
 sidebar_position: 100
 refarch_id: REFARCH-242
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-the-backup-aws-region-for-aurora-global-cluster.md
 ---
 
 # Decide on the backup AWS region for Aurora Global Cluster

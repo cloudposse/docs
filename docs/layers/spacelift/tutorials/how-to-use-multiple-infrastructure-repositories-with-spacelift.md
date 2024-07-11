@@ -2,7 +2,6 @@
 title: "Multiple Infrastructure Repositories"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1182367758
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-use-multiple-infrastructure-repositories-with-spacelift.md
 ---
 
 # How to Use Multiple Infrastructure Repositories with Spacelift

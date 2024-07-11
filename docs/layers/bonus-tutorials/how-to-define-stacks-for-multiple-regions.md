@@ -2,7 +2,6 @@
 title: "Define Multiple Regions"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1186365815
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-define-stacks-for-multiple-regions.md
 ---
 
 # How to Define Stacks for Multiple Regions?

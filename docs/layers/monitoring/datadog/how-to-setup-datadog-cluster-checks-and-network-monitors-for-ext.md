@@ -2,7 +2,6 @@
 title: "Cluster Checks and Network Monitors"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1295974434/How+to+Setup+Datadog+Cluster+Checks+and+Network+Monitors+for+External+URLs+of+Applications
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/how-to-setup-datadog-cluster-checks-and-network-monitors-for-ext.md
 ---
 
 # How to Setup Datadog Cluster Checks and Network Monitors for External URLs of Applications

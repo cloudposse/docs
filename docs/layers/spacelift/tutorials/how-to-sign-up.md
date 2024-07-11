@@ -2,7 +2,6 @@
 title: "How to Sign Up"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1185382459/How+to+Sign+Up+for+Spacelift
 sidebar_position: 0
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/spacelift.md
 ---
 
 # How to Sign Up for Spacelift

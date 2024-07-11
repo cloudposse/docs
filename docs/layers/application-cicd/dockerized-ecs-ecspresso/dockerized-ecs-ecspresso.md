@@ -1,7 +1,6 @@
 ---
 title: "Dockerized App to ECS with Ecspresso"
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/release-engineering/dockerized-ecs-ecspresso.md
 ---
 
 

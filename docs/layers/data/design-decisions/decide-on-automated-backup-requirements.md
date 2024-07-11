@@ -3,7 +3,6 @@ title: "Decide on Automated Backup Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1222541490/REFARCH-493+-+Decide+on+Automated+Backup+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-493
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-automated-backup-requirements.md
 ---
 
 # Decide on Automated Backup Requirements

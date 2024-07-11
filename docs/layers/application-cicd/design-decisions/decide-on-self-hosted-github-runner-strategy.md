@@ -3,7 +3,6 @@ title: "Decide on Self-Hosted GitHub Runner Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175355578/REFARCH-394+-+Decide+on+Self-Hosted+GitHub+Runner+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-394
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-self-hosted-github-runner-strategy.md
 ---
 
 # Decide on Self-Hosted GitHub Runner Strategy

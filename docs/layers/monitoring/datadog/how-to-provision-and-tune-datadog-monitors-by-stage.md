@@ -2,7 +2,6 @@
 title: "Monitors by Stage"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1201438874/How+to+Provision+and+Tune+Datadog+Monitors+by+Stage
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/how-to-provision-and-tune-datadog-monitors-by-stage.md
 ---
 
 # How to Provision and Tune Datadog Monitors by Stage

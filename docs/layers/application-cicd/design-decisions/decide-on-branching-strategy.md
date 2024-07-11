@@ -3,7 +3,6 @@ title: "Decide on Branching Strategy"
 confluence:
 sidebar_position: 100
 refarch_id:
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-branching-strategy.md
 ---
 
 # Decide on Branching Strategy

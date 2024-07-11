@@ -3,7 +3,6 @@ title: "GuardDuty for EKS"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1265893397/REFARCH-516+-+Enable+GuardDuty+for+EKS+Protection
 sidebar_position: 100
 refarch_id: REFARCH-516
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/enable-guardduty-for-eks-protection.md
 ---
 
 # Enable GuardDuty for EKS Protection

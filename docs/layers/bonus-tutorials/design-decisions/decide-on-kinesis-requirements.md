@@ -3,7 +3,6 @@ title: "Decide on Kinesis Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1365409860/REFARCH-527+-+Decide+on+Kinesis+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-527
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/decide-on-kinesis-requirements.md
 ---
 
 # Decide on Kinesis Requirements

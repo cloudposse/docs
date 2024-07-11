@@ -3,7 +3,6 @@ title: "Decide on Incident Ruleset"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1271922722/REFARCH-519+-+Decide+on+Incident+Ruleset
 sidebar_position: 100
 refarch_id: REFARCH-519
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-incident-management/decide-on-incident-ruleset.md
 ---
 
 # Decide on Incident Ruleset

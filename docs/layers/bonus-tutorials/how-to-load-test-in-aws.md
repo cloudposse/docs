@@ -2,7 +2,6 @@
 title: "Load Test in AWS"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1257799689/How+to+Load+Test+in+AWS
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-load-test-in-aws.md
 ---
 
 # How to Load Test in AWS

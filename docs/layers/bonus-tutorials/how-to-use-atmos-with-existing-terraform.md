@@ -2,7 +2,6 @@
 title: "Use Atmos with Existing Terraform"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1195769857/How+to+Use+Atmos+with+Existing+Terraform
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-use-atmos-with-existing-terraform.md
 ---
 
 # How to Use Atmos with Existing Terraform

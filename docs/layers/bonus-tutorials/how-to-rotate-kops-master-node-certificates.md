@@ -2,7 +2,6 @@
 title: "Rotate Kops Master Node Certificates"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1381990476/How+to+Rotate+Kops+Master+Node+Certificates
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-rotate-kops-master-node-certificates.md
 ---
 
 # How to Rotate Kops Master Node Certificates

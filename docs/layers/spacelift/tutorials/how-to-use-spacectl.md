@@ -2,7 +2,6 @@
 title: "Spacectl"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1261601332/How+to+use+Spacectl
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-use-spacectl.md
 ---
 
 # How to use Spacectl

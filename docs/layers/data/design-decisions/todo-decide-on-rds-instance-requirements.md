@@ -3,7 +3,6 @@ title: "(TODO) Decide on RDS Instance Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1184661520/REFARCH-477+-+%28TODO%29+Decide+on+RDS+Instance+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-477
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/todo-decide-on-rds-instance-requirements.md
 ---
 
 # (TODO) Decide on RDS Instance Requirements

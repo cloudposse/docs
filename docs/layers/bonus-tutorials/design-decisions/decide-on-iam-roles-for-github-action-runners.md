@@ -3,7 +3,6 @@ title: "Decide on IAM Roles for GitHub Action Runners"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175978160/REFARCH-305+-+Decide+on+IAM+Roles+for+GitHub+Action+Runners
 sidebar_position: 100
 refarch_id: REFARCH-305
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-iam-roles-for-github-action-runners.md
 ---
 
 # Decide on IAM Roles for GitHub Action Runners

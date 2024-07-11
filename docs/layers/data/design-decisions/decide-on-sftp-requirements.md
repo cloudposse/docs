@@ -3,7 +3,6 @@ title: "Decide on SFTP Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1201438831/REFARCH-485+-+Decide+on+SFTP+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-485
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-sftp-requirements.md
 ---
 
 # Decide on SFTP Requirements

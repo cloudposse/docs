@@ -2,7 +2,6 @@
 title: "Manage Terraform Dependencies"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1212448779/How+to+Manage+Terraform+Dependencies+in+Micro-service+Repositories
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-manage-terraform-dependencies-in-micro-service-repositori.md
 ---
 
 # How to Manage Terraform Dependencies in Micro-service Repositories

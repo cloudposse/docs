@@ -3,7 +3,6 @@ title: "Decide on Datadog Account Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1417805916/REFARCH-539+-+Decide+on+Datadog+Account+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-539
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-monitoring-platform/decide-on-datadog-account-strategy.md
 ---
 
 # Decide on Datadog Account Strategy

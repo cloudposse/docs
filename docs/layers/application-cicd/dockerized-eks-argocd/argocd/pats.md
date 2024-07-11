@@ -1,7 +1,7 @@
 ---
 title: "Authorization (PAT)"
 sidebar_position: 20
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/argocd/pats.md
+tags:
   - argocd
   - github
   - eks

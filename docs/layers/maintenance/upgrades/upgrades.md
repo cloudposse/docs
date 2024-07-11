@@ -2,7 +2,6 @@
 title: "Upgrades"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1197113345/Upgrades
 sidebar_position: 10
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/upgrades.md
 ---
 
 # Upgrades
