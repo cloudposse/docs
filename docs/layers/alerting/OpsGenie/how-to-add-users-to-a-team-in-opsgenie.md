@@ -2,7 +2,6 @@
 title: "Adding Users to a Team"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1289027670/How+to+Add+Users+to+a+Team+in+OpsGenie
 sidebar_position: 102
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/opsgenie/how-to-add-users-to-a-team-in-opsgenie.md
 ---
 
 # How to Add Users to a Team in OpsGenie

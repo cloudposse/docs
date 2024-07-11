@@ -3,7 +3,6 @@ title: "Decide on Spacelift Administrative Stack Auto-deployment"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171980545/REFARCH-410+-+Decide+on+Spacelift+Administrative+Stack+Auto-deployment
 sidebar_position: 100
 refarch_id: REFARCH-410
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-spacelift-administrative-stack-auto-deployment.md
 ---
 
 # Decide on Spacelift Administrative Stack Auto-deployment

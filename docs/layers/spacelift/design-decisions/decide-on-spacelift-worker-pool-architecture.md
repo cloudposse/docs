@@ -3,7 +3,6 @@ title: "Decide on Spacelift Worker Pool Architecture"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1182597207/REFARCH-475+-+Decide+on+Spacelift+Worker+Pool+Architecture
 sidebar_position: 100
 refarch_id: REFARCH-475
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-spacelift-worker-pool-architecture.md
 ---
 
 # Decide on Spacelift Worker Pool Architecture

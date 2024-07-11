@@ -3,7 +3,6 @@ title: "Decide on API Gateway Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1423867939/REFARCH-540+-+Decide+on+API+Gateway+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-540
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/decide-on-api-gateway-requirements.md
 ---
 
 # Decide on API Gateway Requirements

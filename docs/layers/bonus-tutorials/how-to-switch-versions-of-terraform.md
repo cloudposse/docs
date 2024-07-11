@@ -2,7 +2,6 @@
 title: "Switch Versions of Terraform"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1190330414/How+to+Switch+Versions+of+Terraform
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-switch-versions-of-terraform.md
 ---
 
 # How to Switch Versions of Terraform

@@ -3,7 +3,6 @@ title: "Decide on Database Schema Migration Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171783759/REFARCH-422+-+Decide+on+Database+Schema+Migration+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-422
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-database-schema-migration-strategy.md
 ---
 
 # Decide on Database Schema Migration Strategy

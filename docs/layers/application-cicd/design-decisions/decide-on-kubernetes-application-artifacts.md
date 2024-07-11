@@ -3,7 +3,6 @@ title: "Decide on Kubernetes Application Artifacts"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171980462/REFARCH-427+-+Decide+on+Kubernetes+Application+Artifacts
 sidebar_position: 100
 refarch_id: REFARCH-427
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-kubernetes-application-artifacts.md
 ---
 
 # Decide on Kubernetes Application Artifacts

@@ -3,7 +3,6 @@ title: "Decide on whether to use Datadog roles"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1192722498/REFARCH-480+-+Decide+on+whether+to+use+Datadog+roles
 sidebar_position: 100
 refarch_id: REFARCH-480
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-monitoring-platform/decide-on-whether-to-use-datadog-roles.md
 ---
 
 # Decide on whether to use Datadog roles

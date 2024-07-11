@@ -3,7 +3,6 @@ title: "Decide on RDS Technology and Architecture"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175388285/REFARCH-211+-+Decide+on+RDS+Technology+and+Architecture
 sidebar_position: 100
 refarch_id: REFARCH-211
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-technology-and-architecture.md
 ---
 
 # Decide on RDS Technology and Architecture

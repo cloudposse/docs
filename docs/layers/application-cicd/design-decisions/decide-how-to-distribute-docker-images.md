@@ -3,7 +3,6 @@ title: "Decide How to distribute Docker Images"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175847134/REFARCH-91+-+Decide+How+to+distribute+Docker+Images
 sidebar_position: 100
 refarch_id: REFARCH-91
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-how-to-distribute-docker-images.md
 ---
 
 # Decide How to distribute Docker Images

@@ -2,7 +2,6 @@
 title: "Monitor a new Service"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1295876536/How+to+Monitor+a+new+Service
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/how-to-monitor-a-new-service.md
 ---
 
 # How to Monitor a new Service

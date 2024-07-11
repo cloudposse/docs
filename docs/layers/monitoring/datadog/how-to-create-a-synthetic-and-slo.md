@@ -2,7 +2,6 @@
 title: "Create a Synthetic and SLO"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1291190303/How+to+create+a+Synthetic+and+SLO
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/how-to-create-a-synthetic-and-slo.md
 ---
 
 # How to create a Synthetic and SLO

@@ -1,46 +1,81 @@
 ---
-title: "DNS Setup"
-sidebar_position: 10
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/network-and-dns.md
+title: "Setup DNS"
+sidebar_position: 20
 ---
 
 # Setting up DNS
 
-## Service Domains
+## Requirements
 
-We recommend deploying a Service Domain in the DNS account and then connecting all app (platform) accounts to this service domain via subdomains.
-We delegate a single Host Zone for each account's subdomain. Since DNS is global, multi-resource records or resources in other regions will all be
-included in this same zone. This is why we consider the `dns` components as global.
-Furthermore, any services added has a logically defined record in the delegated zone.
+Before deploying DNS, first purchase your chosen vanity and service domains in the `core-dns` account or in your chosen registrar. Refer back to the [Decide on Vanity (Branded) Domain](layers/network-and-dns/design-decisions/decide-on-vanity-branded-domain/) and [Decide on Service Discovery Domain](/layers/network-and-dns/design-decisions/decide-on-service-discovery-domain/) design decisions for more information.
 
-Consider the diagram below. Here `acme-svc.com` would be deployed with `dns-primary` in the DNS account, and all subdomains would be deployed
-in the respective app accounts with `dns-delegated` and use logically defined and hierarchical subdomains. For example,
-`echo.use1.dev.plat.acme-svc.com`, `echo.use1.prod.plat.acme-svc.com`, and `echo.use1.auto.core.acme-svc.com`. These domains are logically
-creating following the service, region, stage, tenant, and then finally the service domain.
+When registering a new domain, we have the option of using Route53’s built-in registrar or using an existing registrar.
+Many enterprise-scale organizations use MarkMonitor to manage their domain portfolio. Our convention is to use the `dns`
+account as the registrar.
 
-<img src="https://lucid.app/publicSegments/view/ce2727a8-09a3-43d6-8bd9-47222bba7c1e/image.png" style={{width: '100%', minHeight: '480', height: 'auto', margin: '10', position: 'relative'}}/><br/>
+**Note**, the AWS Route53 Registrar cannot be automated with Terraform, so ClickOps is still required for domain
+registration.
 
-_The `echo.use1` resource record (CNAME) is created in the `dev.plat` hosted zone with `dns-delegated`, which is delegated from primary hosted zone, acme-svc.com, in the DNS account with `dns-primary`_
+[Registering domain names using Amazon Route 53 - Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html)
 
-## Vanity Domains
+We recommend checking with your legal department on where they want to consolidate domain ownership. It has larger
+ramifications as to IP/trademark defense.
 
-Vanity domains are commonly referred to as "branded" or "marketing" domains and are used to meet the requirements of your individual business.
-A business may have any number of vanity domains as required, and that list of domains will grow as your business expands.
+## Deployment
 
-Unlike service domains, we do not recommend delegatation on vanity domains. We do not want to share stages for vanity domains, because we must ensure
-total isolation between domains in each stage. To do this, we recommend deploying at least one domain per app account. By doing so, we can create
-symmetry between prod and non-prod environments and avoid cross-site scripting. This enables properly testing of an apex or root domain, so that
-we can fully validate a configuration before deploying to production.
+The DNS stacks are broken up into primary and delegated deployments. Primary DNS zones only start with an `NS` record
+among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console
+manages the respective domain. Consult the component's README (`components/terraform/dns-primary/README.md`) for more
+information.
 
-In the diagram below, we have many domains deploy across the organization. The DNS account holds only the root service domain deployed by `dns-primary`.
-All other stages control their respective vanity domains with a single `dns-primary` component. For example, we deploy a single vanity domain to dev, `acme-dev.com`,
-single vanity domain to staging, `acme-staging.com`, and many vanity domains to production, `acme.com`, `acme-prod.com`, `acme-marketing.com`, or even `alternate-brand.com`.
-These domains can be whatever your business requires.
+The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated. Consult the
+component's README `components/terraform/dns-delegated/README.md` for more information.
 
-<img src="https://lucid.app/publicSegments/view/2240707a-a123-4c3c-98ba-6fd0d4e7b143/image.png" style={{width: '100%', minHeight: '480', height: 'auto', margin: '10', position: 'relative'}}/><br/>
+To start the dns setup, run `atmos workflow deploy/dns -f network`. This will go through creating primaries, and then
+follow up with establishing the delegates.
 
-## Implementation
+### Adding `NS` records to the Registered Domain (Click Ops)
 
-- [`dns-primary`](/components/library/aws/dns-primary/)
-- [`dns-delegated`](/components/library/aws/dns-delegated/)
-- [`acm`](/components/library/aws/acm/)
+In order to connect the newly provisioned Hosted Zone to the purchased domains, add the `NS` records to the chosen
+Domain Registrar. Retrieve these with the output of `dns-primary`. These will need to be manually added to the
+registered domain.
+
+Shared Service Domain, acme-svc.com
+
+```
+atmos terraform output dns-primary -s core-gbl-dns
+```
+
+Platform Sandbox Vanity Domain, acme-sandbox.com
+
+```
+atmos terraform output dns-primary -s plat-gbl-sandbox
+```
+
+Platform Dev Vanity Domain, acme-dev.com
+
+```
+atmos terraform output dns-primary -s plat-gbl-dev
+```
+
+Platform Staging Vanity Domain, acme-stage.com
+
+```
+atmos terraform output dns-primary -s plat-gbl-staging
+```
+
+Platform Prod Vanity Domain, acme-prod.com
+
+```
+atmos terraform output dns-primary -s plat-gbl-prod
+```
+
+[For more on `NS` records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html)
+
+### ACM
+
+Note that each `dns-primary` component will already create its own ACM certs. These are only for the vanity domains and
+won't do the more critical service domain certificates.
+
+We use a separate instance of the `acm` component to provision the service domain certificates, which still rely on the
+`dns-delegated` component. Setting these up can be done quickly by running `atmos workflow deploy/acm -f network`.

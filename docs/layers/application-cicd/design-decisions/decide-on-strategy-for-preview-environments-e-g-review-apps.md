@@ -3,7 +3,6 @@ title: "Decide on Strategy for Preview Environments (e.g. Review Apps)"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171980430
 sidebar_position: 100
 refarch_id: REFARCH-425
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-strategy-for-preview-environments-e-g-review-apps.md
 ---
 
 # Decide on Strategy for Preview Environments (e.g. Review Apps)

@@ -2,7 +2,6 @@
 title: "Support GovCloud and Other AWS Partitions"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1186365528/How+to+support+GovCloud+and+Other+AWS+Partitions+with+Terraform
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-support-govcloud-and-other-aws-partitions-with-terraform.md
 ---
 
 # How to support GovCloud and Other AWS Partitions with Terraform

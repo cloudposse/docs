@@ -3,7 +3,6 @@ title: "Decide on Cognito Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1365213271/REFARCH-525+-+Decide+on+Cognito+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-525
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/decide-on-cognito-requirements.md
 ---
 
 # Decide on Cognito Requirements

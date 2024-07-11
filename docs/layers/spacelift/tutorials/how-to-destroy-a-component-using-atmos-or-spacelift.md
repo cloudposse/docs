@@ -2,7 +2,6 @@
 title: "Destroy a Component"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1245020165/How+to+Destroy+a+Component+using+%60atmos%60+or+Spacelift
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-destroy-a-component-using-atmos-or-spacelift.md
 ---
 
 # How to Destroy a Component using `atmos` or Spacelift

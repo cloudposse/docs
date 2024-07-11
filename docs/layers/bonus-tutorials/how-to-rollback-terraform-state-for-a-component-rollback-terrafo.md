@@ -2,7 +2,6 @@
 title: "Rollback Terraform State"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1245610009
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-rollback-terraform-state-for-a-component-rollback-terrafo.md
 ---
 
 # How to Rollback Terraform State for a Component (rollback `terraform.tfstate` file to a previous version)

@@ -3,7 +3,6 @@ title: "Decide on Log Retention and Durability Architecture"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175978183/REFARCH-355+-+Decide+on+Log+Retention+and+Durability+Architecture
 sidebar_position: 100
 refarch_id: REFARCH-355
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-log-retention-and-durability-architecture.md
 ---
 
 # Decide on Log Retention and Durability Architecture

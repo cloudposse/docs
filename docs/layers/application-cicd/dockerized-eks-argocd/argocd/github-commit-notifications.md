@@ -1,7 +1,6 @@
 ---
 title: "Synchronous Notifications"
 sidebar_position: 40
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/argocd/github-commit-notifications.md
 tags:
   - argocd
   - github

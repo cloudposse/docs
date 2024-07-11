@@ -2,7 +2,6 @@
 title: "Horizontal Pod Autoscaling (HPA)"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1197834268
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/how-to-use-datadog-metrics-for-horizontal-pod-autoscaling-hpa.md
 ---
 
 # How to use Datadog Metrics for Horizontal Pod Autoscaling (HPA)

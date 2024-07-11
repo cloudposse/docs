@@ -2,7 +2,6 @@
 title: "Upgrade EKS Cluster Addons"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1192493057/How+to+Upgrade+EKS+Cluster+Addons
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-upgrade-eks-cluster-addons.md
 ---
 
 # How to Upgrade EKS Cluster Addons

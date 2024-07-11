@@ -3,7 +3,6 @@ title: "Decide on Database Seeding Strategy for Ephemeral Preview Environments"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171619913/REFARCH-144+-+Decide+on+Database+Seeding+Strategy+for+Ephemeral+Preview+Environments
 sidebar_position: 100
 refarch_id: REFARCH-144
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-database-seeding-strategy-for-ephemeral-preview-enviro.md
 ---
 
 # Decide on Database Seeding Strategy for Ephemeral Preview Environments

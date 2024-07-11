@@ -2,7 +2,6 @@
 title: "Version Pin Components in Stack Configurations"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1183973747/How+to+Version+Pin+Components+in+Stack+Configurations
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-version-pin-components-in-stack-configurations.md
 ---
 
 # How to Version Pin Components in Stack Configurations

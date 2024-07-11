@@ -3,7 +3,6 @@ title: "Decide on DocumentDB Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1183973819/REFARCH-479+-+Decide+on+DocumentDB+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-479
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-documentdb-requirements.md
 ---
 
 # Decide on DocumentDB Requirements

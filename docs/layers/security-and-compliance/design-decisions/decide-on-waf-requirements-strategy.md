@@ -3,7 +3,6 @@ title: "Decide on WAF Requirements/Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176010839
 sidebar_position: 100
 refarch_id: REFARCH-384
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-waf-requirements-strategy.md
 ---
 
 # Decide on WAF Requirements/Strategy

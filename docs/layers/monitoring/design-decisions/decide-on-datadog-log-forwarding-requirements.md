@@ -3,7 +3,6 @@ title: "Decide on Datadog Log Forwarding Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1278738446/REFARCH-521+-+Decide+on+Datadog+Log+Forwarding+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-521
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/decide-on-datadog-log-forwarding-requirements.md
 ---
 
 # Decide on Datadog Log Forwarding Requirements

@@ -3,7 +3,6 @@ title: "Decide on Datadog Private Locations"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1223426229/REFARCH-499+-+Decide+on+Datadog+Private+Locations
 sidebar_position: 100
 refarch_id: REFARCH-499
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-monitoring-platform/decide-on-datadog-private-locations.md
 ---
 
 # Decide on Datadog Private Locations

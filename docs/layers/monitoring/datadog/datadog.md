@@ -2,7 +2,6 @@
 title: "Datadog"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1165852673/How+to+Implement+SRE+with+Datadog
 sidebar_position: 10
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/datadog/datadog.md
 ---
 
 # How to Implement SRE with Datadog

@@ -1,7 +1,6 @@
 ---
 title: "ArgoCD"
 sidebar_position: 10
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/argocd/argocd.md
 tags:
   - argocd
 ---

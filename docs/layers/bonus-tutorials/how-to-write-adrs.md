@@ -2,7 +2,6 @@
 title: "Write ADRs"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171652644/How+to+write+ADRs
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-write-adrs.md
 ---
 
 # How to write ADRs

@@ -3,7 +3,6 @@ title: "Decide on Amazon OpenSearch Service (Elasticsearch)  Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175355560/REFARCH-362+-+Decide+on+Amazon+OpenSearch+Service+%28Elasticsearch%29++Requirements
 sidebar_position: 100
 refarch_id: REFARCH-362
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-amazon-opensearch-service-elasticsearch-requirements.md
 ---
 
 # Decide on Amazon OpenSearch Service (Elasticsearch)  Requirements

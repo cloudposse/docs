@@ -3,7 +3,6 @@ title: "Decide on Terraform Configuration Pattern for Application Repositories"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1264746925/REFARCH-514+-+Decide+on+Terraform+Configuration+Pattern+for+Application+Repositories
 sidebar_position: 100
 refarch_id: REFARCH-514
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-terraform-configuration-pattern-for-application-reposi.md
 ---
 
 # Decide on Terraform Configuration Pattern for Application Repositories

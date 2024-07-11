@@ -2,7 +2,6 @@
 title: "Archived Decisions"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1184432667/Archived+Decisions
 sidebar_position: 10
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/archived-decisions/archived-decisions.md
 ---
 
 # Archived Decisions

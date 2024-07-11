@@ -3,7 +3,6 @@ title: "Decide on Amazon Managed Workflows for Apache Airflow (MWAA) Requirement
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1203929171/REFARCH-491+-+Decide+on+Amazon+Managed+Workflows+for+Apache+Airflow+%28MWAA%29+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-491
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-amazon-managed-workflows-for-apache-airflow-mwaa-requi.md
 ---
 
 # Decide on Amazon Managed Workflows for Apache Airflow (MWAA) Requirements

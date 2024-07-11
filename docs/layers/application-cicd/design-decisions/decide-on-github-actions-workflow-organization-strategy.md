@@ -3,7 +3,6 @@ title: "Decide on GitHub Actions Workflow Organization Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947681/REFARCH-421+-+Decide+on+GitHub+Actions+Workflow+Organization+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-421
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/edit/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-github-actions-workflow-organization-strategy.md
 ---
 
 # Decide on GitHub Actions Workflow Organization Strategy

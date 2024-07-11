@@ -3,7 +3,6 @@ title: "Decide on Pipeline Strategy"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171718383/REFARCH-253+-+Decide+on+Pipeline+Strategy
 sidebar_position: 100
 refarch_id: REFARCH-253
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-pipeline-strategy.md
 ---
 
 # Decide on Pipeline Strategy

@@ -1,0 +1,61 @@
+---
+title: "Deploy Roles"
+sidebar_position: 30
+---
+
+# Deploy AWS Teams and Team Roles across your AWS Organization
+
+| Steps                         |                                             |
+| ----------------------------- | ------------------------------------------- |
+| Install requirements          |                                             |
+| Vendor components             | `atmos workflow vendor -f identity`         |
+| Prepare AWS SSO               | Click Ops                                   |
+| Add your SAML provider        | Click Ops                                   |
+| Deploy identity components    | `atmos workflow deploy/all -f identity`     |
+| Reconfigure Terraform Backend | `atmos workflow deploy/tfstate -f baseline` |
+| Deploy baseline components    | `atmos workflow deploy -f baseline`         |
+
+The identity components are designed to provision all primary user and system roles into a centralized identity account.
+These components are expected to be used together to provide fine-grained role delegation across the account hierarchy.
+
+Deploy these components across all accounts by running the following command. Note that if any users or groups are
+missing, `aws-sso` will fail.
+
+```bash
+atmos workflow deploy/all -f identity
+```
+
+Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.
+Apply those changes to Terraform State Backend by running the following:
+
+```bash
+atmos workflow deploy/tfstate -f baseline
+```
+
+## Generate AWS Config
+
+Once the identity components have been deployed, we will need to create local AWS configuration for these new roles and
+profiles. Generate those files now by running the following command from within Geodesic.
+
+```bash
+atmos workflow update-aws-config -f identity
+```
+
+This will generate AWS configuration to the `rootfs` directory locally. In order to apply these updates to your Geodesic
+image, exit the image and rerun `make all`.
+
+One of these configuration files will be named `aws-config-teams`. This file holds local configuration for all local
+user authentication to AWS. This file will be the same for both SAML and SSO users, as well as for all teams. This file
+looks for a specific AWS profile for your namespace, for example `acme-identity `, and uses that profile as the
+entry-point for all role assumption. From this profile, all users with proper permission will be able to execute
+Terraform or assume other roles across the AWS Organization.
+
+:::info
+
+Anytime that teams or roles are changed, rebuild AWS config
+
+```bash
+atmos workflow update-aws-config -f identity
+```
+
+:::

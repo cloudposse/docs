@@ -2,7 +2,6 @@
 title: "Adding Escalation Rules"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1278377985/How+to+Create+Escalation+Rules+in+OpsGenie
 sidebar_position: 103
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/opsgenie/how-to-create-escalation-rules-in-opsgenie.md
 ---
 
 # How to Create Escalation Rules in OpsGenie

@@ -3,7 +3,6 @@ title: "Decide on Strategy for Developer Environments"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171685583/REFARCH-424+-+Decide+on+Strategy+for+Developer+Environments
 sidebar_position: 100
 refarch_id: REFARCH-424
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-strategy-for-developer-environments.md
 ---
 
 # Decide on Strategy for Developer Environments

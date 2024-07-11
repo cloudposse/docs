@@ -2,7 +2,6 @@
 title: "Use Terraform Remote State"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1193738389/How+to+Use+Terraform+Remote+State
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-use-terraform-remote-state.md
 ---
 
 # How to Use Terraform Remote State

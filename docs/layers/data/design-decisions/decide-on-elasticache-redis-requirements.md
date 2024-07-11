@@ -3,7 +3,6 @@ title: "Decide on Elasticache Redis Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175650441/REFARCH-365+-+Decide+on+Elasticache+Redis+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-365
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-elasticache-redis-requirements.md
 ---
 
 # Decide on Elasticache Redis Requirements

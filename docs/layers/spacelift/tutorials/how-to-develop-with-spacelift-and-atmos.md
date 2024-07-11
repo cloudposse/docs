@@ -2,7 +2,6 @@
 title: "Develop with Atmos"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176010979/How+to+Develop+with+Spacelift+and+Atmos
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spacelift/how-to-develop-with-spacelift-and-atmos.md
 ---
 
 # How to Develop with Spacelift and Atmos

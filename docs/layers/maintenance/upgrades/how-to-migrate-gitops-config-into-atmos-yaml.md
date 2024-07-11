@@ -1,7 +1,6 @@
 ---
 title: "Upgrade GitOps V2 config"
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/upgrades/how-to-migrate-gitops-config-into-atmos-yaml.md
 ---
 
 # How to Move `atmos-gitops-config.yaml` to `atmos.yaml`

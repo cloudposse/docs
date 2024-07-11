@@ -2,7 +2,6 @@
 title: "Design Decisions"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1168212012/Design+Decisions
 sidebar_position: 200
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/design-decisions.md
 ---
 
 # Design Decisions

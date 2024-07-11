@@ -3,7 +3,6 @@ title: "Decide on CloudFront Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1365016609/REFARCH-530+-+Decide+on+CloudFront+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-530
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/decide-on-cloudfront-requirements.md
 ---
 
 # Decide on CloudFront Requirements

@@ -3,7 +3,6 @@ title: "Decide on AWS EMR Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1204125709/REFARCH-490+-+Decide+on+AWS+EMR+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-490
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-aws-emr-requirements.md
 ---
 
 # Decide on AWS EMR Requirements

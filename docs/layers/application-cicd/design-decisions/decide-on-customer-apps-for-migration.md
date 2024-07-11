@@ -3,7 +3,6 @@ title: "Decide on Customer Apps for Migration"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171783740/REFARCH-256+-+Decide+on+Customer+Apps+for+Migration
 sidebar_position: 100
 refarch_id: REFARCH-256
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-release-engineering/decide-on-customer-apps-for-migration.md
 ---
 
 # Decide on Customer Apps for Migration

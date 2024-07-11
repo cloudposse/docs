@@ -2,7 +2,6 @@
 title: "Onboard a New Service"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1288601737/How+to+Onboard+a+New+Service+with+Datadog+and+OpsGenie
 sidebar_position: 105
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/opsgenie/how-to-onboard-a-new-service-with-datadog-and-opsgenie.md
 ---
 
 # How to Onboard a New Service with Datadog and OpsGenie

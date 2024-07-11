@@ -2,7 +2,6 @@
 title: "Adding Rotations"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1277788177/How+to+Setup+Rotations+in+OpsGenie
 sidebar_position: 104
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/opsgenie/how-to-setup-rotations-in-opsgenie.md
 ---
 
 # How to Setup Rotations in OpsGenie

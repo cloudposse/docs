@@ -1,0 +1,20 @@
+---
+title: "Deploy CloudTrail"
+sidebar_position: 30
+---
+
+# Deploy CloudTrail and ECR
+
+Now that all the accounts have been deployed, we need to finalize the setup of the accounts. This includes deploying CloudTrail and ECR. These foundational components will be necessary to move forward with the rest of the deployment.
+
+| Steps                         |                                             |
+| ----------------------------- | ------------------------------------------- |
+| Deploy baseline components    | `atmos workflow deploy -f baseline`         |
+
+## Deploy Baseline Components
+
+Deploy CloudTrail and ECR with the following workflow:
+
+```bash
+atmos workflow deploy -f baseline
+```

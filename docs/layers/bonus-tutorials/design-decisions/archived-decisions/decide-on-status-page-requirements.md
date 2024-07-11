@@ -3,7 +3,6 @@ title: "Decide on Status Page Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947803/REFARCH-467+-+Decide+on+Status+Page+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-467
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/archived-decisions/decide-on-status-page-requirements.md
 ---
 
 # Decide on Status Page Requirements

@@ -3,7 +3,6 @@ title: "Decide on KMS Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1364951148/REFARCH-532+-+Decide+on+KMS+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-532
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/decide-on-kms-requirements.md
 ---
 
 # Decide on KMS Requirements

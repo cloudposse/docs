@@ -3,7 +3,6 @@ title: "Decide on Default Schedules"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1271824449/REFARCH-520+-+Decide+on+Default+Schedules
 sidebar_position: 100
 refarch_id: REFARCH-520
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-incident-management/decide-on-default-schedules.md
 ---
 
 # Decide on Default Schedules

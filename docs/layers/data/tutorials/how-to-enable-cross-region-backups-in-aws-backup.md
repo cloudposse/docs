@@ -2,7 +2,6 @@
 title: "Enable Cross-Region Backups in AWS-Backup"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1190952961/How+to+Enable+Cross-Region+Backups+in+AWS-Backup
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-enable-cross-region-backups-in-aws-backup.md
 ---
 
 # How to Enable Cross-Region Backups in AWS-Backup

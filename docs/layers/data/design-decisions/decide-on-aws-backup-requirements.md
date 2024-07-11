@@ -3,7 +3,6 @@ title: "Decide on AWS Backup Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1203830920/REFARCH-489+-+Decide+on+AWS+Backup+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-489
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-on-aws-backup-requirements.md
 ---
 
 # Decide on AWS Backup Requirements

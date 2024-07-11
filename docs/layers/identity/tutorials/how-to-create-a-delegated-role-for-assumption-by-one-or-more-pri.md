@@ -1,8 +1,6 @@
 ---
 title: "Create a Delegated role"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/930807817/How+to+create+a+Delegated+role+for+assumption+by+one+or+more+Primary+roles
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-create-a-delegated-role-for-assumption-by-one-or-more-pri.md
+sidebar_position: 999
 ---
 
 # How to create a Delegated role for assumption by one or more Primary roles
@@ -13,17 +11,26 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 ## Problem
 
-You want to configure a new set of fine-grained IAM roles (e.g. for an intern) using [iam-primary-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-primary-roles) and [iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles) and not sure how to go about it.
+You want to configure a new set of fine-grained IAM roles (e.g. for an intern) using
+[iam-primary-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-primary-roles) and
+[iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles)
+and not sure how to go about it.
 
 ## Solution
 
 ### Plan the privileges of the new role
 
-A Delegated role grants a collection of privileges. Users associated with a Primary role allowed to assume the Delegated role can access these privileges.
+A Delegated role grants a collection of privileges. Users associated with a Primary role allowed to assume the Delegated
+role can access these privileges.
 
 ### Implement the IAM role
 
-Not to be overlooked is the importance of choosing a good name. It should be informative, and for the sake of automation, consist solely of letters (no symbols). For this example, we will create the role `restricted`. Because we want `restricted` to be able to do more than an `observer` but less than a `poweruser`, we will need to create a new Delegated role. If we are creating this permission set for use with a Primary role that is not yet defined, we will need to create that too, but for the sake of this example, we will assume we have already created a Primary IAM role, `intern`, that will be granted permission to assume this new Delegated role.
+Not to be overlooked is the importance of choosing a good name. It should be informative, and for the sake of
+automation, consist solely of letters (no symbols). For this example, we will create the role `restricted`. Because we
+want `restricted` to be able to do more than an `observer` but less than a `poweruser`, we will need to create a new
+Delegated role. If we are creating this permission set for use with a Primary role that is not yet defined, we will need
+to create that too, but for the sake of this example, we will assume we have already created a Primary IAM role,
+`intern`, that will be granted permission to assume this new Delegated role.
 
 ```
 delegated_roles_config:
@@ -47,23 +54,40 @@ delegated_roles_config:
 
 ```
 
-If we wanted to create a new policy for the new role, we would follow the example of `delegated_assume_role`. Create a new file with the role name in `components/terraform/iam-primary-roles/`, create the policy in the file, and add the policy to the `custom_policy_map` in `components/terraform/iam-primary-roles/main.tf`, but we do not need to allow our interns anything special in the `identity` account.
+If we wanted to create a new policy for the new role, we would follow the example of `delegated_assume_role`. Create a
+new file with the role name in `components/terraform/iam-primary-roles/`, create the policy in the file, and add the
+policy to the `custom_policy_map` in `components/terraform/iam-primary-roles/main.tf`, but we do not need to allow our
+interns anything special in the `identity` account.
 
 #### Configure or disable the Delegated role in the other accounts
 
-By default, delegated roles are created in every account. This may or may not be desired behavior. If there are any accounts in which your role is irrelevant or should not be used to grant privileges, disable it by adding it to the `exclude_roles` list in `stacks/gbl-$stage.yaml`.
+By default, delegated roles are created in every account. This may or may not be desired behavior. If there are any
+accounts in which your role is irrelevant or should not be used to grant privileges, disable it by adding it to the
+`exclude_roles` list in `stacks/gbl-$stage.yaml`.
 
 ##### Configure IAM policy in other accounts
 
-By default, Delegated roles will get the same-named policies in other accounts as they got in `identity`. In practice, this is rarely correct, but if it is correct in this case, then you need not take any of the following steps. Otherwise, you need to collect the policies to apply to the role and list them in the `role_policy_arns` map (which we will get to after collecting the entries).
+By default, Delegated roles will get the same-named policies in other accounts as they got in `identity`. In practice,
+this is rarely correct, but if it is correct in this case, then you need not take any of the following steps. Otherwise,
+you need to collect the policies to apply to the role and list them in the `role_policy_arns` map (which we will get to
+after collecting the entries).
 
 ###### Identify one or more AWS managed IAM policies to apply
 
-If you want, you can use [AWS managed policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html#aws-managed-policies) (although there is a [case to be made against it](https://summitroute.com/blog/2018/07/02/aws_managed_policies_are_an_anti_pattern/), which includes that they are not easily found or comprehensively documented). Their ARNs can be used directly in the `role_policy_arns` map.
+If you want, you can use
+[AWS managed policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html#aws-managed-policies)
+(although there is a
+[case to be made against it](https://summitroute.com/blog/2018/07/02/aws_managed_policies_are_an_anti_pattern/), which
+includes that they are not easily found or comprehensively documented). Their ARNs can be used directly in the
+`role_policy_arns` map.
 
 ###### Create a custom policy for the role
 
-Just as with the `iam-primary-roles` project, we can create a custom policy for the new role. We will create a restricted policy that [lets them modify resources that are tagged](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html#access_tags_control-resources) `restrictedModify: allowed`. We will combine this with the AWS managed `ViewOnly` policy so they can look at things. (The AWS `ReadOnly` policy is more permissive and would let them read secrets, so we do not want to use that.)
+Just as with the `iam-primary-roles` project, we can create a custom policy for the new role. We will create a
+restricted policy that
+[lets them modify resources that are tagged](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html#access_tags_control-resources)
+`restrictedModify: allowed`. We will combine this with the AWS managed `ViewOnly` policy so they can look at things.
+(The AWS `ReadOnly` policy is more permissive and would let them read secrets, so we do not want to use that.)
 
 1. Create a new file with the policy name under `iam-delegated-roles` called `restricted-policy`.
 
@@ -112,7 +136,9 @@ resource "aws_iam_policy" "restricted" {
 
 5. Override the default policy assignment for the new role
 
-In `iam-delegated-roles/default.auto.tfvars` the `role_policy_arns` map is just that: a map whose keys are role names and whose values are lists of policy ARNs (or names in the `custom_policy_map`) to assign to that role, overriding the assignments made in `iam-primary-roles`. Add an entry for the new role.
+In `iam-delegated-roles/default.auto.tfvars` the `role_policy_arns` map is just that: a map whose keys are role names
+and whose values are lists of policy ARNs (or names in the `custom_policy_map`) to assign to that role, overriding the
+assignments made in `iam-primary-roles`. Add an entry for the new role.
 
 ```
 role_policy_arns = {
@@ -124,7 +150,11 @@ role_policy_arns = {
 
 ##### Configure custom access to Delegated role
 
-We need to allow one or more Primary IAM roles to assume this Delegated IAM role in one or more stages of our infrastructure for it to have any effect. As noted above, we will assume here that we have created the `intern` Primary role. Further, let's assume we wish to allow our new intern access to the `restricted` role's permissions only in our `sbx` and `dev` stages. We can accomplish this by adding a line for our new role to `trusted_primary_role_overrides` for `sbx` and `dev` as shown below.
+We need to allow one or more Primary IAM roles to assume this Delegated IAM role in one or more stages of our
+infrastructure for it to have any effect. As noted above, we will assume here that we have created the `intern` Primary
+role. Further, let's assume we wish to allow our new intern access to the `restricted` role's permissions only in our
+`sbx` and `dev` stages. We can accomplish this by adding a line for our new role to `trusted_primary_role_overrides` for
+`sbx` and `dev` as shown below.
 
 In `stacks/gbl-sbx.yaml` add
 
@@ -151,13 +181,15 @@ projects:
 
 ##### Extra Credit: disable roles entirely in `root` and `audit`
 
-Because we have assigned this role the `delegated_assume_role` policy, it cannot get into `root` or `audit`, but to be extra careful, we can prevent this role from being created in those accounts in the first place.
+Because we have assigned this role the `delegated_assume_role` policy, it cannot get into `root` or `audit`, but to be
+extra careful, we can prevent this role from being created in those accounts in the first place.
 
 In `stacks/gbl-root.yaml` and in `stacks/gbl-audit.yaml` add "restricted" to the list of additionally excluded roles.
 
 ##### Run Terraform to actually provision the accounts and policies
 
-These steps must be run as admin in the `root` account. We must run plan and apply once for each account that uses delegated roles. Perform as below for each stage, replacing $stage with the literal stage name.
+These steps must be run as admin in the `root` account. We must run plan and apply once for each account that uses
+delegated roles. Perform as below for each stage, replacing $stage with the literal stage name.
 
 ```
 assume-role eg-gbl-root-admin bash -l
@@ -172,13 +204,19 @@ exit
 
 ### Implement the Kubernetes role
 
-EKS maps IAM _roles_ to Kubernetes _groups_. Selecting appropriate permissions for the `restricted` group in Kubernetes is beyond the scope of this article. We will go through the steps without specifics.
+EKS maps IAM _roles_ to Kubernetes _groups_. Selecting appropriate permissions for the `restricted` group in Kubernetes
+is beyond the scope of this article. We will go through the steps without specifics.
 
 #### Assign Kubernetes usernames and groups to the Delegated roles in each account
 
-The admin, ops, poweruser, and observer primary IAM roles and the same delegated roles plus the terraform and helm roles required for our automation to function are configured in `stacks/eks/default.auto.tfvars.` Additional roles can be configured in the same file for universal permissions, or for each account in the relevant account config file. In this example, we need to add a new Kubernetes user and group and assign the new Delegated role to it. We will use the `sbx` account and the `uw2` environment, and add the following to `stacks/uw2-sbx.yaml`.
+The admin, ops, poweruser, and observer primary IAM roles and the same delegated roles plus the terraform and helm roles
+required for our automation to function are configured in `stacks/eks/default.auto.tfvars.` Additional roles can be
+configured in the same file for universal permissions, or for each account in the relevant account config file. In this
+example, we need to add a new Kubernetes user and group and assign the new Delegated role to it. We will use the `sbx`
+account and the `uw2` environment, and add the following to `stacks/uw2-sbx.yaml`.
 
-Edit `stacks/uw2-dev.yaml` and add an entry for the `restricted` role to the `projects:terraform:eks:vars:delegated_iam_roles` list:
+Edit `stacks/uw2-dev.yaml` and add an entry for the `restricted` role to the
+`projects:terraform:eks:vars:delegated_iam_roles` list:
 
 ```
 projects:
@@ -192,23 +230,37 @@ projects:
           groups: ["idp:restricted"]
 ```
 
-Do this for every account. Be sure to use the correct stage name and account number in the role ARN and username. We use the `idp:` prefix on the Kubernetes groups we create in order to avoid conflict with any pre-defined groups or roles. "IDP" is for Identity Provider and was chosen because the Kubernetes group membership is assigned based on an identity provided by an outside identity provider.
+Do this for every account. Be sure to use the correct stage name and account number in the role ARN and username. We use
+the `idp:` prefix on the Kubernetes groups we create in order to avoid conflict with any pre-defined groups or roles.
+"IDP" is for Identity Provider and was chosen because the Kubernetes group membership is assigned based on an identity
+provided by an outside identity provider.
 
-If you want to create a mapping from the Primary role in `identity` to a Kubernetes role, you can do that by adding an entry in the `primary_additional_iam_roles` map in the `defaults.auto.tfvars` file, but this is not recommended. That feature is provided as a shortcut for operations personnel, is not required for anything, and should not be extended to other roles because it can open up unintended privileges.
+If you want to create a mapping from the Primary role in `identity` to a Kubernetes role, you can do that by adding an
+entry in the `primary_additional_iam_roles` map in the `defaults.auto.tfvars` file, but this is not recommended. That
+feature is provided as a shortcut for operations personnel, is not required for anything, and should not be extended to
+other roles because it can open up unintended privileges.
 
-Note that we assigned the role to the group "idp:restricted". That group does not exist yet; we must create it. However, you can run the Terraform to apply the changes now if you prefer, or you can wait until after the groups are created.
+Note that we assigned the role to the group "idp:restricted". That group does not exist yet; we must create it. However,
+you can run the Terraform to apply the changes now if you prefer, or you can wait until after the groups are created.
 
 #### Create Kubernetes roles and bindings in each account
 
-Kubernetes roles and role mappings are defined in `/projects/helmfiles/idp-roles/` The `helmfile.yaml` uses the Kubernetes "raw chart" to directly specify Kubernetes resources. You can follow the examples in the existing `helmfile.yaml` for creating ClusterRoles and ClusterRoleBindings, and create new ones as needed. At a minimum, you will need to create a new ClusterRoleBinding to bind the Group "idp:restricted" to a ClusterRole. The examples bind a User as well, but that has no practical effect.
+Kubernetes roles and role mappings are defined in `/projects/helmfiles/idp-roles/` The `helmfile.yaml` uses the
+Kubernetes "raw chart" to directly specify Kubernetes resources. You can follow the examples in the existing
+`helmfile.yaml` for creating ClusterRoles and ClusterRoleBindings, and create new ones as needed. At a minimum, you will
+need to create a new ClusterRoleBinding to bind the Group "idp:restricted" to a ClusterRole. The examples bind a User as
+well, but that has no practical effect.
 
 #### Run Terraform and Helm in each account
 
-Be sure to run both the Terraform under `eks` and the Helm under `helmfiles/idp-roles` for each account with an EKS cluster. These can be run the normal way, as `eg-gbl-identity-ops`.
+Be sure to run both the Terraform under `eks` and the Helm under `helmfiles/idp-roles` for each account with an EKS
+cluster. These can be run the normal way, as `eg-gbl-identity-ops`.
 
 ### Update the company AWS `config` file with the new Delegated role
 
-If you created a new Delegated role, then people who want to use that role need to add it to their AWS `config` files, normally stored as `~/.aws/config` on individual's computers. We keep the shared configuration in the repo as `/aws-config`.
+If you created a new Delegated role, then people who want to use that role need to add it to their AWS `config` files,
+normally stored as `~/.aws/config` on individual's computers. We keep the shared configuration in the repo as
+`/aws-config`.
 
 To update the file,
 
@@ -217,5 +269,3 @@ To update the file,
 - Run the modified `aws-config-gen` and save the output in `/aws-config`
 
 Let people know to update their configuration files.
-
-

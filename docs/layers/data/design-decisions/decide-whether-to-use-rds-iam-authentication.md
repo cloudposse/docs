@@ -3,7 +3,6 @@ title: "Decide Whether to Use RDS IAM Authentication"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176110022/REFARCH-210+-+Decide+Whether+to+Use+RDS+IAM+Authentication
 sidebar_position: 100
 refarch_id: REFARCH-210
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-platform/decide-whether-to-use-rds-iam-authentication.md
 ---
 
 # Decide Whether to Use RDS IAM Authentication

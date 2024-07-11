@@ -3,7 +3,6 @@ title: "Decide on RDS Aurora DB Cluster Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1184661505/REFARCH-476+-+Decide+on+RDS+Aurora+DB+Cluster+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-476
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-aurora-db-cluster-requirements.md
 ---
 
 # Decide on RDS Aurora DB Cluster Requirements

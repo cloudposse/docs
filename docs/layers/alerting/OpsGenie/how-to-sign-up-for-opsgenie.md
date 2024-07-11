@@ -2,7 +2,6 @@
 title: "Sign Up"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1209499827
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/opsgenie/how-to-sign-up-for-opsgenie.md
 ---
 
 # How to Sign Up for OpsGenie?

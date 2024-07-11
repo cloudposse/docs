@@ -3,7 +3,6 @@ title: "Decide on AWS Managed RabbitMQ Requirements"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1204256781/REFARCH-488+-+Decide+on+AWS+Managed+RabbitMQ+Requirements
 sidebar_position: 100
 refarch_id: REFARCH-488
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/design-decisions/foundational-application-dependencies/decide-on-aws-managed-rabbitmq-requirements.md
 ---
 
 # Decide on AWS Managed RabbitMQ Requirements

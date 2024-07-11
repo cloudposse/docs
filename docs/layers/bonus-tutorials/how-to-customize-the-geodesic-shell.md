@@ -2,7 +2,6 @@
 title: "Customize the Geodesic Shell"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1186103470/How+to+Customize+the+Geodesic+Shell
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-customize-the-geodesic-shell.md
 ---
 
 # How to Customize the Geodesic Shell
