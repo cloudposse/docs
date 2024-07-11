@@ -1,8 +1,5 @@
 ---
-title: "How to Register Pristine AWS Root Account"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/931037265/How+to+Register+Pristine+AWS+Root+Account
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/setup/cold-start/how-to-register-pristine-aws-root-account.md
+title: "Register Pristine AWS Root Account"
 ---
 
 # How to Register Pristine AWS Root Account
@@ -111,7 +108,7 @@ Congratulations! You are now able to proceed with the rest of the cold start pro
 
 ### Related articles
 
-- [Decide on AWS Organization Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-aws-organization-strategy)
+- [Decide on AWS Organization Strategy](/learn/accounts/design-decisions/decide-on-aws-organization-strategy)
 
 - [AWS Documentation: How do I create and activate a new AWS account?](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
 

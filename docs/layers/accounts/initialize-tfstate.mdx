@@ -1,0 +1,58 @@
+---
+title: "Initialize Terraform Backend"
+sidebar_position: 10
+---
+
+# Initializing the Terraform State S3 Backend
+
+| Steps                     |                                           |
+| ------------------------- | ----------------------------------------- |
+| Configure Terraform state | `atmos workflow init/tfstate -f baseline` |
+
+## The Toolbox Image
+
+Build the toolbox image locally before continuing. Follow the
+[toolbox image setup steps in the How-to Get Started guide](/layers/foundation/#building-the-toolbox-image). In short,
+run `make all`.
+
+The container will have the given local home mapped, so you should be able to use aws normally inside it once you set a
+profile that has valid credentials. For instance, if I log in to the profile `acme` with
+[leapp](https://github.com/Noovolari/leapp), I can run `aws --profile acme sts get-caller-identity` and get a response.
+
+Once you've verified that the infra container has access to aws resources, we can move on to the next step.
+
+## Setting up the Terraform State Backend
+
+This is where we configure and run Atmos. Atmos is a workflow automation tool that we will use to call Terraform which
+will provision all the accounts and resources you need to create and manage infrastructure. The Atmos configuration can
+be found in the `atmos.yaml`.
+
+If you're unfamiliar with atmos, you can read more about it [here](https://atmos.tools).
+
+If you look at `components/terraform/`, you'll see a bunch of directories. These contain Terraform "root modules" that
+are provisioned with Atmos. At first they'll only have their vendor files, such as
+`components/terraform/tfstate-backend/component.yaml`.
+
+You can use `atmos workflow vendor -f baseline` to vendor all the `baseline` modules, if the Terraform files are not
+present. You'll want to at least see Terraform files in `tfstate-backend` and `account-map`.
+
+Once you've done that, you can run `atmos workflow init/tfstate -f baseline` to deploy the Terraform Backend.
+
+Note that it can take a minute for the S3 buckets you created to become available. The workflow will attempt to wait
+until the bucket is created and available, with a 5-second delay between each check. Eventually, you should see this
+prompt:
+
+```
+Initializing the backend...
+Do you want to migrate all workspaces to "s3"?
+```
+
+Type `yes` to continue. This will migrate the state from the local backend to the s3 backend.
+
+:::info Granting SuperAdmin Access to TFState
+
+The IAM User for SuperAdmin will be granted access to Terraform State by principal ARN. This ARN is passed to the
+`tfstate-backend` stack catalog under `allowed_principal_arns`. Verify that this ARN is correct now. You may need to
+update the root account ID.
+
+:::

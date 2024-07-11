@@ -1,8 +1,6 @@
 ---
-title: "Terraform S3 State"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1191641221/Structure+of+Terraform+S3+State+Backend+Bucket
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/structure-of-terraform-s3-state-backend-bucket.md
+title: "Structure of Terraform S3 State"
+sidebar_position: 20
 ---
 
 # Structure of Terraform S3 State Backend Bucket
@@ -120,9 +118,9 @@ aws --profile acme-gbl-root-admin \
 
 :::note
 
-If a component is mistakenly deployed somewhere and destroyed, a leftover `terraform.tfstate` file will be
-present on your local filesystem with a small file size so while this is a good way to search for backends, it's not the
-best way to determine where a component is deployed. Also, the S3 bucket has versioning enabled, ensuring we can always
+If a component is mistakenly deployed somewhere and destroyed, a leftover `terraform.tfstate` file will be present on
+your local filesystem with a small file size so while this is a good way to search for backends, it's not the best way
+to determine where a component is deployed. Also, the S3 bucket has versioning enabled, ensuring we can always
 (manually) revert to a previous state if need be.
 
 :::

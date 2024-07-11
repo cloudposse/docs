@@ -1,11 +1,345 @@
 ---
 title: "Accounts"
 sidebar_class_name: hidden
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/blob/main/docs/docs/fundamentals/account-management.md
 ---
 
 # Account Management
 
-import ReactPlayer from 'react-player';
+This chapter is intended to present how Cloud Posse has designed AWS Account architecture and management. We will
+explain how Cloud Posse provisions and manages AWS Accounts, the reasoning behind our decisions, and how this
+architecture will better align your organization with the
+[AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
 
-<ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4' />
+import ReactPlayer from "react-player";
+
+<ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4" />
+
+## The Problem
+
+The
+[AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
+defines AWS architectural best practices and presents a set of foundational questions to enable you to understand how a
+specific architecture aligns with cloud best practices.
+
+The AWS Well-Architected Framework provides several foundational recommendations, one of which is to distribute
+workloads across multiple AWS accounts. However, the framework does not prescribe how this should be achieved. AWS
+offers resources such as Control Tower or Account Factory for provisioning accounts, but these resources have some
+limitations. The primary issue is that they cannot be managed with Terraform, which means that manual effort is required
+to use them.
+
+## Our Solution
+
+Cloud Posse has developed a set of components to provision, configure, and manage AWS Accounts and Organizations.
+
+<img
+  src="https://lucid.app/publicSegments/view/8499e634-7da0-4fdb-9776-7088fad21ffc/image.png"
+  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
+/>
+<br />
+
+### Using an Organization
+
+Leveraging multiple AWS accounts within an AWS Organization is the only way to satisfy these requirements. Guard rails
+can be be in place to restrict what can happen in an account and by whom.
+
+We then further organize the flat account structure into organizational units. Organizational units (OUs) can then
+leverage things like Service Control Policies to restrict what can happen inside the accounts.
+
+- **core**: Management accounts, such as the organizational root account or a network hub. This accounts are singletons
+  and will never need to be duplicated.
+- **plat**: Platform accounts, such as sandbox, dev, staging, and prod. These accounts are dynamic and can be specific
+  to the needs of your Organizations.
+
+### Account Boundaries
+
+Constructs like VPCs only provide network-level isolation, but not IAM-level isolation. And within a single AWS account,
+there’s no practical way to manage IAM-level boundaries between multiple stages like dev/staging/prod. For example, to
+provision most Terraform modules, “administrative” level access is required because provisioning any IAM roles requires
+admin privileges. That would mean that a developer needs to be an “admin” in order to iterate on a module.
+
+Multiple AWS accounts should be used to provide a higher degree of isolation by segmenting/isolating workloads. There is
+no additional cost for operating multiple AWS accounts. It does add additional overhead to manage as a standard set of
+components will to manage the account. AWS Support only applies to one account, so it may need to be purchased for each
+account unless the organization upgrades to Enterprise Support.
+
+Multiple AWS accounts are all managed underneath an AWS Organization and organized into multiple organizational units
+(OUs). Service Control Policies can restrict what runs in an account and place boundaries around an account that even
+account-level administrators cannot bypass.
+
+### Account Architecture
+
+<dl>
+  <dt>
+    <code>core-root</code>
+  </dt>
+  <dd>
+    <p>
+      The "root" (parent, billing) account creates all child accounts. The root account has special capabilities not
+      found in any other account
+    </p>
+    <p>
+      An administrator in the <code>root</code> account by default has the <code>OrganizationAccountAccessRole</code> to
+      all other accounts (admin access)
+    </p>
+    <p>
+      Organizational CloudTrails can only be provisioned in this account. It’s the only account that can have member
+      accounts associated with it
+    </p>
+    <p>Service Control Policies can only be set in this account</p>
+    <p>It’s the only account that can manage the AWS Organization</p>
+  </dd>
+  <dt>
+    <code>core-audit</code>
+  </dt>
+  <dd>
+    <p>The "audit" account is where all logs end up</p>
+  </dd>
+  <dt>
+    <code>core-security</code>
+  </dt>
+  <dd>
+    <p>
+      The "security" account is where to run automated security scanning software that might operate in a read-only
+      fashion against the audit account.
+    </p>
+  </dd>
+  <dt>
+    <code>core-identity</code>
+  </dt>
+  <dd>
+    <p>
+      The "identity" account is where to add users and delegate access to the other accounts and is where users log in
+    </p>
+  </dd>
+  <dt>
+    <code>core-network</code>
+  </dt>
+  <dd>
+    <p>The “network” account is where the transit gateway is managed and all inter-account routing</p>
+  </dd>
+  <dt>
+    <code>core-dns</code>
+  </dt>
+  <dd>
+    <p>
+      The “dns” account is the owner for all zones (may have a legal role with <code>Route53Registrar.*</code>{" "}
+      permissions). Cannot touch zones or anything else. Includes billing.
+    </p>
+  </dd>
+  <dt>
+    <code>core-auto</code>
+  </dt>
+  <dd>
+    <p>
+      The “automation” account is where any gitops automation will live. Some automation (like Spacelift) has “god” mode
+      in this account. The auto account will typically have transit gateway access to all other accounts, therefore we
+      want to limit what is deployed in the automation account to only those services which need it.
+    </p>
+  </dd>
+  <dt>
+    <code>core-artifacts</code>
+  </dt>
+  <dd>
+    <p>
+      This “artifacts” account is where we recommend centralizing and storing artifacts (e.g. ECR, assets, etc) for
+      CI/CD
+    </p>
+  </dd>
+  <dt>
+    <code>plat-prod</code>
+  </dt>
+  <dd>
+    <p>The "production" is the account where you run your most mission-critical applications</p>
+  </dd>
+  <dt>
+    <code>plat-staging</code>
+  </dt>
+  <dd>
+    <p>The “staging” account is where QA and integration tests will run for public consumption.</p>
+    <p>
+      This is production for QA engineers and partners doing integration tests. It must be stable for third-parties to
+      test. It runs a kubernetes cluster.
+    </p>
+  </dd>
+  <dt>
+    <code>plat-dev</code>
+  </dt>
+  <dd>
+    <p>The "dev" account is where to run automated tests, load tests infrastructure code.</p>
+    <p>
+      This is where the entire engineering organization operates daily. It needs to be stable for developers. This
+      environment is Production for developers to develop code.
+    </p>
+  </dd>
+  <dt>
+    <code>plat-sandbox</code>
+  </dt>
+  <dd>
+    <p>
+      The "sandbox" account is where you let your developers have fun and break things. Developers get admin. This is
+      where changes happen first. It will be used by developers who need the bleeding edge. Only DevOps work here or
+      developers trying to get net-new applications added to tools like slice.
+    </p>
+  </dd>
+</dl>
+
+### Terraform State
+
+We need someplace to store the terraform state. Multiple options exist (e.g. Vault, Terraform Enterprise, GitLab,
+Spacelift), but the only one we’ll focus on right now is using S3. The terraform state may contain secrets, which is
+unavoidable for certain kinds of resources (e.g. master credentials for RDS clusters). For this reason, it is advisable
+for companies with security and compliance requirements to segment their state backends to make it easier to control
+with IAM who has access to what.
+
+While on the other hand adding multiple state backends is good from a security perspective, on the other it
+unnecessarily complicates the architecture for companies that do not need the added layer of security.
+
+We will use a single S3 bucket, as it is the least complicated to maintain. Anyone who should be able to run terraform
+locally will need read/write access to this state bucket.
+
+### Components
+
+Cloud Posse manages this process with the following components.
+
+<dl>
+  <dt>
+    <a href="/components/library/aws/account/">
+      <code>account</code>
+    </a>
+  </dt>
+  <dd>
+    This component is responsible for provisioning the full account hierarchy along with Organizational Units (OUs). It
+    includes the ability to associate Service Control Policies (SCPs) to the Organization, each Organizational Unit and
+    account.
+  </dd>
+  <dt>
+    <a href="/components/library/aws/account-settings/">
+      <code>account-settings</code>
+    </a>
+  </dt>
+  <dd>
+    This component is responsible for provisioning account level settings: IAM password policy, AWS Account Alias, EBS
+    encryption, and Service Quotas. We can also leverage this component to enable account or organization level budgets.
+  </dd>
+  <dt>
+    <a href="/components/library/aws/account-map/">
+      <code>account-map</code>
+    </a>
+  </dt>
+  <dd>
+    Transforms account metadata to a safe place for all designated roles to able to access. IAM roles should not able to
+    read `account`. Once `account-map` is provisioned, other components can utilized `remote-state` to pull account
+    metadata such as Account ID mapping or IAM Roles to assume for a given account.
+  </dd>
+  <dt>
+    <a href="/components/library/aws/account-quotas/">
+      <code>account-quotas</code>
+    </a>
+  </dt>
+  <dd>
+    This component is responsible for requesting service quota increases. We recommend making requests here rather than
+    in `account-settings` because `account-settings` is a restricted component that can only be applied by SuperAdmin.
+  </dd>
+  <dt>
+    <a href="/components/library/aws/tfstate-backend/">
+      <code>tfstate-backend</code>
+    </a>
+  </dt>
+  <dd>
+    Provisions the Terraform state backends. This component already follows all standard best practices around private
+    ACLs, encryption, versioning, locking, etc.
+  </dd>
+  <dt>
+    <a href="/components/library/aws/cloudtrail/">
+      <code>cloudtrail</code>
+    </a>
+  </dt>
+  <dd>
+    This component is responsible for provisioning cloudtrail auditing in an individual account. It's expected to be
+    used alongside the cloudtrail-bucket component as it utilizes that bucket via remote state.
+  </dd>
+  <dt>
+    <a href="/components/library/aws/cloudtrail-bucket/">
+      <code>cloudtrail-bucket</code>
+    </a>
+  </dt>
+  <dd>This component is responsible for provisioning a bucket for storing cloudtrail logs for auditing purposes</dd>
+</dl>
+
+## References
+
+- [Decide on AWS Organization Strategy](/layers/accounts/design-decisions/decide-on-aws-organization-strategy/)
+- [Decide on AWS Account Flavors and Organizational Units](/layers/accounts/design-decisions/decide-on-aws-account-flavors-and-organizational-units/)
+- [Decide on AWS Support](/layers/accounts/design-decisions/decide-on-aws-support/)
+- [Decide on Email Address Format for AWS Accounts](/layers/accounts/design-decisions/decide-on-email-address-format-for-aws-accounts/)
+- [Structure of Terraform S3 State Backend Bucket](/layers/accounts/tutorials/terraform-s3-state/)
+
+## FAQ
+
+### Why not use Control Tower?
+
+AWS Control Tower cannot be managed with Terraform. Depending on the Scope of Work, Cloud Posse is usually responsible
+for provisioning accounts with terraform which requires all the same access as Control Tower.
+
+### Why are there so many accounts?
+
+Leveraging multiple AWS accounts within an AWS Organization is the only way to satisfy IAM level isolation. Each account
+has a very specific purpose, that all associated resources are isolated in that given account.
+
+### How we can set budgets?
+
+Create budgets with the `account-settings` component. For more, see
+[the `account-settings` component documentation](/components/library/aws/account-settings/)
+
+:::info
+
+Budgets created for the `root` account apply to the AWS Organization as a whole
+
+:::
+
+### How do you add or remove Service Control Policies?
+
+Service Control Policies are managed with the `account` component variable, `service_control_policies_config_paths`. For
+more, see [the `account` component documentation](/components/library/aws/account/)
+
+:::caution
+
+This component manages the state of all AWS accounts, so apply with extreme caution!
+
+:::
+
+### How can you create an Account?
+
+[Follow the documentation for creating and setting up AWS Accounts](/layers/accounts/tutorials/how-to-create-and-setup-aws-accounts/)
+
+### How do you delete an Account?
+
+[Follow the documentation for deleting AWS Accounts](/layers/accounts/tutorials/how-to-delete-aws-accounts/)
+
+### How can you create a Tenant?
+
+[Follow the documentation for creating a new Organizational Unit](/layers/accounts/tutorials/how-to-add-a-new-organizational-unit/)
+
+### Mixins and Imports with Atmos
+
+As infrastructure grows, we end up with hundreds or thousands of settings for components and stack configurations. If we
+copy and paste these settings everywhere, it’s error-prone and not DRY. What we really want to do is to define a sane
+set of defaults and override those defaults when we need them to change.
+
+We accomplish this with Mixins. Mixins are imported into all stacks and each follow a set of rules. We use the
+`mixins/region` and `mixins/account` configurations to define common **variables** for all stacks. For example,
+`mixins/region/us-east-1.yaml` will define the variable `region: us-east-1`.
+
+**Note.** Do not import components into the account or region mixins. These are imported multiple times to define common
+variables, so any component imports would be duplicated and cause an Atmos error such as this:
+
+```
+Executing command:
+/usr/bin/atmos terraform deploy account-settings -s core-gbl-artifacts
+
+Found duplicate config for the component 'account-settings' for the stack 'core-gbl-artifacts' in the files: orgs/cch/core/artifacts/global-region/baseline, orgs/cch/core/artifacts/global-region/monitoring, orgs/cch/core/artifacts/global-region/identity.
+Check that all context variables in the stack name pattern '{tenant}-{environment}-{stage}' are correctly defined in the files and not duplicated.
+Check that all imports are valid.
+
+exit status 1
+```

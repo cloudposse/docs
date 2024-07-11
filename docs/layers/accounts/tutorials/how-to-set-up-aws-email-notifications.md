@@ -1,15 +1,13 @@
 ---
-title: "How to Set Up AWS Email Notifications"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176371445/How+to+Set+Up+AWS+Email+Notifications
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/setup/cold-start/how-to-set-up-aws-email-notifications.md
+title: "Set Up AWS Email Notifications"
 ---
 
 # How to Set Up AWS Email Notifications
 
 :::caution
 
-Make sure to use the email address corresponding to the [Decide on Email Address Format for AWS Accounts](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-email-address-format-for-aws-accounts)
+Make sure to use the email address corresponding to the
+[Decide on Email Address Format for AWS Accounts](/learn/foundation/design-decisions/decide-on-email-address-format-for-aws-accounts)
 ADR.
 
 :::
@@ -28,8 +26,7 @@ The following is an example of how to set up this channel and configure email ro
 email address:
 
 1. **Create the shared Slack channel (under Slack Connect):** (see also:
-   [How to Provision Shared Slack Channels](/reference-architecture/how-to-guides/integrations/how-to-provision-shared-slack-channels)
-   )
+   [How to Provision Shared Slack Channels](/reference/how-to-provision-shared-slack-channels/) )
 
 <img src="/assets/refarch/image-20211016-221505.png" height="496" width="500" /><br/>
 

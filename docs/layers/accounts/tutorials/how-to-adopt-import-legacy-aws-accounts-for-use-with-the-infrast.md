@@ -1,47 +1,70 @@
 ---
 title: "Adopt/Import Legacy AWS Accounts"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1238630405
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/tutorials/how-to-adopt-import-legacy-aws-accounts-for-use-with-the-infrast.md
 ---
 
 # How to Adopt/Import Legacy AWS Accounts for Use With the Infrastructure Monorepo
 
 ## Problem
-Legacy AWS accounts may be owned by an organization (the company, not the AWS organization) but not part of the AWS Organization provisioned by the Infrastructure Monorepo via Atmos. This process is meant to “adopt” or “import” the accounts in question for use with the Infrastructure Monorepo, so that their infrastructure may be automated via Atmos and Spacelift.
+
+Legacy AWS accounts may be owned by an organization (the company, not the AWS organization) but not part of the AWS
+Organization provisioned by the Infrastructure Monorepo via Atmos. This process is meant to “adopt” or “import” the
+accounts in question for use with the Infrastructure Monorepo, so that their infrastructure may be automated via Atmos
+and Spacelift.
 
 ## Solution
 
 :::caution
 
-When you remove a member account from an Organization, the member account’s access to AWS services that are integrated with the Organization are lost. In some cases, resources in the member account might be deleted. For example, when an account leaves the Organization, the AWS CloudFormation stacks created using StackSets are removed from the management of StackSets. You can choose to either delete or retain the resources managed by the stack. For a list of AWS services that can be integrated with Organizations, see [AWS services that you can use with AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html). ([source](https://aws.amazon.com/premiumsupport/knowledge-center/organizations-move-accounts/))
+When you remove a member account from an Organization, the member account’s access to AWS services that are integrated
+with the Organization are lost. In some cases, resources in the member account might be deleted. For example, when an
+account leaves the Organization, the AWS CloudFormation stacks created using StackSets are removed from the management
+of StackSets. You can choose to either delete or retain the resources managed by the stack. For a list of AWS services
+that can be integrated with Organizations, see
+[AWS services that you can use with AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html).
+([source](https://aws.amazon.com/premiumsupport/knowledge-center/organizations-move-accounts/))
 
 :::
 
 :::tip
 
-Legacy AWS Accounts must be invited to the AWS Organization managed by the Infrastructure Monorepo, and imported into the `account` component. From there, the Geodesic image and the Atmos stacks must be updated to reflect the presence of the new accounts.
+Legacy AWS Accounts must be invited to the AWS Organization managed by the Infrastructure Monorepo, and imported into
+the `account` component. From there, the Geodesic image and the Atmos stacks must be updated to reflect the presence of
+the new accounts.
 
 :::
 
 ### Invite the AWS Account(s) Into the Organization Managed by the Infrastructure Monorepo
-Before the AWS account(s) can be managed by Terraform + Atmos in the Infrastructure Monorepo, they need to invited to the AWS Organization managed by the Infrastructure Monorepo.
 
-From the management account (usually named `root` or `mgmt-root`), navigate to `AWS Organizations` → `AWS Accounts` → `Add an AWS Account` → `Invite an existing AWS account`. Enter the ID of the AWS account that is to be invited, then `Send Invitation`.
+Before the AWS account(s) can be managed by Terraform + Atmos in the Infrastructure Monorepo, they need to invited to
+the AWS Organization managed by the Infrastructure Monorepo.
 
-This step does **not** have to be done (and in terms of best-practices **should not** be done) via the root user. It can be done via an assumed role provisioned by `iam-delegated-roles` that has the `organizations:DescribeOrganization` and `organizations:InviteAccountToOrganization` permissions — i.e. the `admin` delegated role.
+From the management account (usually named `root` or `mgmt-root`), navigate to `AWS Organizations` → `AWS Accounts` →
+`Add an AWS Account` → `Invite an existing AWS account`. Enter the ID of the AWS account that is to be invited, then
+`Send Invitation`.
 
-The email address of the management account must be verified, if not already done so. Otherwise, the invitation cannot be sent.
+This step does **not** have to be done (and in terms of best-practices **should not** be done) via the root user. It can
+be done via an assumed role provisioned by `iam-delegated-roles` that has the `organizations:DescribeOrganization` and
+`organizations:InviteAccountToOrganization` permissions — i.e. the `admin` delegated role.
+
+The email address of the management account must be verified, if not already done so. Otherwise, the invitation cannot
+be sent.
 
 <img src="/assets/refarch/cleanshot-2022-01-11-at-14.21.39@2x-20220111-122144.png" height="1011" width="1189" /><br/>
 
-An email will be sent to the email address(es) associated with the AWS account(s) in question. The link leads to the AWS console where the invitation can be accepted or denied. Once again, this step does **not** have to be done (and in terms of best-practices **should not** be done) via the root user. However, since this is a legacy account, it does not have the roles deployed by `iam-delegated-roles`. Thus, ensure that the assumed role used to accept the invitation has the `organizations:ListHandshakesForAccount`, `organizations:AcceptHandshake` and `iam:CreateServiceLinkedRole` permissions, for example via the built-in `AdministratorAccess` policy.
+An email will be sent to the email address(es) associated with the AWS account(s) in question. The link leads to the AWS
+console where the invitation can be accepted or denied. Once again, this step does **not** have to be done (and in terms
+of best-practices **should not** be done) via the root user. However, since this is a legacy account, it does not have
+the roles deployed by `iam-delegated-roles`. Thus, ensure that the assumed role used to accept the invitation has the
+`organizations:ListHandshakesForAccount`, `organizations:AcceptHandshake` and `iam:CreateServiceLinkedRole` permissions,
+for example via the built-in `AdministratorAccess` policy.
 
 ### Add the Account(s) to the `account` Component Configuration
 
 :::info
 
-The OU that you are adding the legacy AWS accounts to needs to be adjusted to match your business use case. Some organizations may choose to employ a “legacy” OU. Others, as in the example below, have an OU for each “tenant” within the organization, and legacy AWS accounts will live alongside current AWS accounts within a single OU.
+The OU that you are adding the legacy AWS accounts to needs to be adjusted to match your business use case. Some
+organizations may choose to employ a “legacy” OU. Others, as in the example below, have an OU for each “tenant” within
+the organization, and legacy AWS accounts will live alongside current AWS accounts within a single OU.
 
 :::
 
@@ -178,11 +201,13 @@ Entries corresponding to the legacy AWS accounts need to be added before the acc
 ...
 ```
 
-Once entries are created, a Terraform plan can be run against the `account` component when assuming the `admin` delegated role in `mgmt-root`:
+Once entries are created, a Terraform plan can be run against the `account` component when assuming the `admin`
+delegated role in `mgmt-root`:
 
 :::caution
 
-If the Terraform plan attempts to destroy the newly-added legacy account, do not apply it! See section on working around destructive Terraform plans for newly-added legacy accounts.
+If the Terraform plan attempts to destroy the newly-added legacy account, do not apply it! See section on working around
+destructive Terraform plans for newly-added legacy accounts.
 
 :::
 
@@ -290,7 +315,9 @@ Changes to Outputs:
 ```
 
 ##### Workaround for Destructive Terraform Plans for Legacy Accounts
-Terraform will sometimes try to destroy a legacy account because the `iam_user_access_to_billing` attribute is not modifiable via Terraform (or the AWS CLI, for that matter):
+
+Terraform will sometimes try to destroy a legacy account because the `iam_user_access_to_billing` attribute is not
+modifiable via Terraform (or the AWS CLI, for that matter):
 
 [https://github.com/hashicorp/terraform-provider-aws/issues/12959](https://github.com/hashicorp/terraform-provider-aws/issues/12959)
 
@@ -300,19 +327,24 @@ Terraform will sometimes try to destroy a legacy account because the `iam_user_a
 
 The workaround for this is to edit the `iam_user_access_to_billing` attribute manually in the Terraform state:
 
-1. Download the Terraform state locally in Geodesic via `assume-role aws s3 cp s3://eg-mgmt-ue1-root-admin-tfstate/account/mgmt-root/terraform.tfstate ./terraform.tfstate`
+1. Download the Terraform state locally in Geodesic via
+   `assume-role aws s3 cp s3://eg-mgmt-ue1-root-admin-tfstate/account/mgmt-root/terraform.tfstate ./terraform.tfstate`
 
-2. Find the `iam_user_access_to_billing` attribute for the account in question and change it to either `ENABLE` or `DENY`, depending on whether or not IAM access to billing is enabled for the account in question. Ensure that the value inputted into the state manually reflects the actual state of the AWS account in question.
+2. Find the `iam_user_access_to_billing` attribute for the account in question and change it to either `ENABLE` or
+   `DENY`, depending on whether or not IAM access to billing is enabled for the account in question. Ensure that the
+   value inputted into the state manually reflects the actual state of the AWS account in question.
 
 <img src="/assets/refarch/cleanshot-2022-01-23-at-17.34.32@2x-20220123-154819.png" height="261" width="941" /><br/>
 
-Overwrite the Terraform state via `assume-role aws s3 cp --sse AES256 ./terraform.tfstate s3://eg-mgmt-ue1-root-admin-tfstate/account/mgmt-root/terraform.tfstate`.
+Overwrite the Terraform state via
+`assume-role aws s3 cp --sse AES256 ./terraform.tfstate s3://eg-mgmt-ue1-root-admin-tfstate/account/mgmt-root/terraform.tfstate`.
 
 1. Run the same Terraform plan and copy the expected MD5 digest for the Terraform state.
 
 <img src="/assets/refarch/cleanshot-2022-01-23-at-17.52.48@2x-20220123-155328.png" height="285" width="807" /><br/>
 
-2. In DynamoDB, find the MD5 digest item for the Terraform state for the workspace in question (e.g. `mgmt-root` in `eg-mgmt-ue1-root`) and overwrite the current digest value with the expected digest value.
+2. In DynamoDB, find the MD5 digest item for the Terraform state for the workspace in question (e.g. `mgmt-root` in
+   `eg-mgmt-ue1-root`) and overwrite the current digest value with the expected digest value.
 
 <img src="/assets/refarch/cleanshot-2022-01-23-at-17.54.50@2x-20220123-155507.png" height="470" width="1379" /><br/>
 
@@ -327,7 +359,8 @@ $ terraform import 'aws_organizations_account.organizational_units_accounts["cor
 $ terraform import 'aws_organizations_account.organizational_units_accounts["core-legacyprod"]' 123456789026
 ```
 
-Once the legacy accounts have been imported to the `account` component workspace, their attributes can be updated by running a Terraform apply.
+Once the legacy accounts have been imported to the `account` component workspace, their attributes can be updated by
+running a Terraform apply.
 
 ```
 $ cd ../../../ # go back to the root of the infrastructure monoorepo
@@ -338,9 +371,11 @@ $ atmos terraform apply account -s mgmt-gbl-root
 
 ### Update Geodesic Image
 
-The Geodesic container image contains an `aws-accounts` script that is responsible for creating the AWS CLI profile used within the image both by users and Spacelift. It needs to be updated to reflect the newly-added AWS accounts.
+The Geodesic container image contains an `aws-accounts` script that is responsible for creating the AWS CLI profile used
+within the image both by users and Spacelift. It needs to be updated to reflect the newly-added AWS accounts.
 
-The existing `rootfs/usr/local/bin/aws-accounts` script should have a section with an associative array representing the account names and their IDs, and a list representing the order of profiles corresponding to each AWS account:
+The existing `rootfs/usr/local/bin/aws-accounts` script should have a section with an associative array representing the
+account names and their IDs, and a list representing the order of profiles corresponding to each AWS account:
 
 ```
 ...
@@ -418,7 +453,8 @@ $ aws-accounts config-cicd > rootfs/etc/aws-config/aws-config-cicd # (and commit
 
 ### Add and Deploy Atmos Stacks for Newly-added Legacy AWS Accounts
 
-Once the Geodesic image has been updated, global and regional stacks for the newly-added legacy accounts need to be added. These stacks should also contain core components for the newly-added accounts.
+Once the Geodesic image has been updated, global and regional stacks for the newly-added legacy accounts need to be
+added. These stacks should also contain core components for the newly-added accounts.
 
 ```
 ...
@@ -496,7 +532,8 @@ Once the stacks are added, deploy the following components:
 
 :::info
 
-If AWS SSO is being used via the `aws-sso` component, the configuration of the aforementioned component needs to be updated in order to configure permission sets for the newly added accounts. Then, the component needs to be redeployed.
+If AWS SSO is being used via the `aws-sso` component, the configuration of the aforementioned component needs to be
+updated in order to configure permission sets for the newly added accounts. Then, the component needs to be redeployed.
 
 :::
 
@@ -516,19 +553,24 @@ If AWS SSO is being used via the `aws-sso` component, the configuration of the a
 
 :::info
 
-Existing AWS Accounts invited to an AWS organization lack the OrganizationAccountAccessRole IAM role created automatically when creating the account with the AWS Organizations service. The role grants admin permissions to the member account to delegated IAM users in the master account.
+Existing AWS Accounts invited to an AWS organization lack the OrganizationAccountAccessRole IAM role created
+automatically when creating the account with the AWS Organizations service. The role grants admin permissions to the
+member account to delegated IAM users in the master account.
 
-Thus the [https://github.com/cloudposse/terraform-aws-organization-access-role](https://github.com/cloudposse/terraform-aws-organization-access-role) module should be leveraged as part of the `account-settings` component in order to deploy this IAM role.
+Thus the
+[https://github.com/cloudposse/terraform-aws-organization-access-role](https://github.com/cloudposse/terraform-aws-organization-access-role)
+module should be leveraged as part of the `account-settings` component in order to deploy this IAM role.
 
 :::
 
-Finally, validate access to the newly-added legacy accounts via the delegated IAM roles by signing into the AWS console and also running `assume-role eg-core-gbl-legacydev-admin aws sts get-caller-identity` (for each newly added account) within Geodesic.
+Finally, validate access to the newly-added legacy accounts via the delegated IAM roles by signing into the AWS console
+and also running `assume-role eg-core-gbl-legacydev-admin aws sts get-caller-identity` (for each newly added account)
+within Geodesic.
 
 ### References
+
 - [https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_invites.html](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_invites.html)
 
 - [account](/components/library/aws/account/)
 
-- [Implement AWS Cold Start](/reference-architecture/setup/cold-start)
-
-
+- [Implement AWS Cold Start](/layers/accounts/tutorials/cold-start/)
