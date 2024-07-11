@@ -1,5 +1,5 @@
 ---
-title: "Dockerized App to EKS with ArgoCD"
+title: "EKS with ArgoCD"
 sidebar_position: 100
 ---
 

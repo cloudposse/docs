@@ -1,5 +1,5 @@
 ---
-title: "App to Lambda with GitHub Workflows"
+title: "Lambda with GitHub Workflows"
 sidebar_position: 100
 ---
 

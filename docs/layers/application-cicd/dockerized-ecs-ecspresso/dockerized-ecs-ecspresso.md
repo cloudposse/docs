@@ -1,5 +1,5 @@
 ---
-title: "Dockerized App to ECS with Ecspresso"
+title: "ECS with ecspresso"
 sidebar_position: 100
 ---
 
