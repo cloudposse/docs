@@ -5,14 +5,14 @@ sidebar_position: 100
 refarch_id: REFARCH-253
 ---
 
-# Decide on Pipeline Strategy
-
 ## Context and Problem Statement
 
 ## Problem Statement
+
 Teams need a release engineering process to help QA and developer teams operate efficiently. Namely, QA needs a way to validate changes in QA environments before releasing them to staging or production. Changes to production require approval gates, so only authorized persons can release to production. And if changes need to be made to the running production release, those need to be performed via hotfixes that need a special CI/CD and release workflow. The more service you operate, the more important it is that workflows are very DRY and are not copied between all repositories, making maintenance difficult.
 
 ## Prerequisites
+
 Before implementation on the pipeline strategy, the following should be in place
 
 - An inventory of the applications for migration to the new pipelines
@@ -31,15 +31,22 @@ Cloud Posse’s turn-key implementation is an approach that provides QA environm
 
 Predefined workflows
 
-- _<ins>Feature branch workflow</ins>_ is triggered on changes in a pull request that target the `main` branch. It will perform CI (build and test) and CD (deploy into _Preview_ and/or _QA_ environments) jobs
+<dl>
+<dt>Feature branch workflow</dt>
+<dd>Triggered on changes in a pull request that target the `main` branch. It will perform CI (build and test) and CD (deploy into _Preview_ and/or _QA_ environments) jobs.</dd>
 
-- _<ins>Main branch workflow</ins>_ triggered on commit into the `main` branch to integrate the latest changes and create/update the next draft release. It will perform CI (build and test) and CD (deploy into `Dev` environment) jobs.
+<dt>Main branch workflow</dt>
+<dd>Triggered on commit into the `main` branch to integrate the latest changes and create/update the next draft release. It will perform CI (build and test) and CD (deploy into `Dev` environment) jobs.</dd>
 
-- _<ins>Release workflow</ins>_ is triggered when a new release is published. The workflow will promote artifacts (docker image) that was built by the “_Feature branch workflow_“ to the release version and deploy them to the `Staging` and `Production` environments with approval gates. In addition, the workflow will create a special `release/{version}` branch that is required for the hotfixes workflow.
+<dt>Release workflow</dt>
+<dd>Triggered when a new release is published. The workflow will promote artifacts (docker image) that was built by the “_Feature branch workflow_“ to the release version and deploy them to the `Staging` and `Production` environments with approval gates. In addition, the workflow will create a special `release/{version}` branch that is required for the hotfixes workflow.</dd>
 
-- _<ins>Hot Fix Branch workflow</ins>_ is triggered on changes in a pull request that target any `release/{version}` branch.  It will perform CI (build and test) and CD (deploy into `Hotfix` environment) jobs.
+<dt>Hot Fix Branch workflow</dt>
+<dd>Triggered on changes in a pull request that target any `release/{version}` branch. It will perform CI (build and test) and CD (deploy into `Hotfix` environment) jobs.</dd>
 
-- _<ins>Hot Fix Release workflow</ins>_ is triggered on commit into the `release/{version}` branch to integrate new hotfix changes. It will perform CI (build and test) and CD (deploy into the `Production` environment with approval gates) jobs. In addition, it will create a new release with incremented patch version and create a regular PR target `main` branch to integrate the hotfix with the latest code.
+<dt>Hot Fix Release workflow</dt>
+<dd>Triggered on commit into the `release/{version}` branch to integrate new hotfix changes. It will perform CI (build and test) and CD (deploy into the `Production` environment with approval gates) jobs. In addition, it will create a new release with incremented patch version and create a regular PR target `main` branch to integrate the hotfix with the latest code.</dd>
+</dl>
 
 The implementation should use custom GitHub actions and reusable workflows to have DRY code and a clear definition for each `workflow/job/step/action`.
 
@@ -59,23 +66,74 @@ The top 3 goals of our approach is to...
 
 What we implement as part of our approach and the specific use cases we address is explained below.
 
-|       |       |
-| ----- | ----- |
-|CI testing based on the Feature branch workflow | A developer creates a PR target to the `main` branch. GHA will perform build and run test on each commit. The developer should have ability to deploy/undeploy the changes to `Preview` and/or `QA` environment by adding/removing specific labels in PR Gihub UI. When PR merged or closed GHA should undeploy the code from  `Preview`/`QA` environments where it is deployed to.|
-|CI Preview Environments | Preview environments are unlimited ephimerial environments running on Kubernetes. When a PR with a target of the `main` branch is labeled with the `deploy` label, it will be deployed into a new preview environment. If developer needs to test the integration between several services they can deploy those apps into the same preview environment by creating PRs using the same named branch (e.g. `feature/add-widgets`). <br/><br/>Preview environments by convention expect that all third party services (databases, messaging bus, cache and etc) are deployed from scratch in Kubernetes as a part of the environment and removed on PR close. <br/>The developer is responsible for defining third party services and to orchestrate them in Kubernetes (e.g. with [Operators](https://operatorhub.io/)).|
-|CI QA Environments | QA environments are a discreet set of static environments running on Kubernetes with preprovisioned third party services. They are similar to preview environments, except that environments are shared by QA engineers to verify PR changes in “close to real live” environment. QA engineer can deploy/undeploy PR changes to one of the QA environments by adding or removing the `deploy/qa{number}` label.<br/><br/>If several PRs of one repo have `deploy/qa{number}` label then the latest deployment (commit & push) will override each other. <br/>It is responsibility of QA engineers to avoid this conflict. GitHub environments UI is useful for seeing what is deployed.|
-|Test commits into the main branch | On each commit into the `main` branch, the “_Main branch workflow_” triggers. It will build and test the latest code from the `main` branch, create or update the latest draft release and deploy the code to `Dev` environment. <br/><br/>If the commit was done by merging a PR then the PR title/description would be added to the release changelog.|
-|Bleeding Edge Environment on Dev | The “dev” environment is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Staging` and `Production` environments. Developers and QA engineers need it to perform integration testing and validate the interaction between the latest version of applications and services before cutting a release. This is why it’s called the “bleeding edge.”|
-|Automatic Draft Releases Following Semver Convention | On commit in the `main` branch GHA should create new draft release or update it. The release should have auto generated changelog based on commit comment messages and PRs title/descriptions.<br/><br/>Developer can manage sections of the changelog by adding specific labels to the PR. <br/><br/>Also labels are used to define the release major/minor semver increment (minor increments by default)|
-|Automated Releases with Approval Gates | When a Developer (or Release Manager) decides to issue a new release they need just to publish the _Draft Release_ that will trigger the “_Release workflow_“. The workflow should create a new “Release branch” `release/{version}`, promote docker image with release version and consequentially deploy it to `Staging` and `Production` environments with approval gates. Developer need to approve deployment on `Staging` environment, wait the deployment would be successfully completed and then repeat the same for `Production` environment.|
-|Staging Environment | `Staging` is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Production` environment. Developers and QA engineers use it to perform integration testing, run migrations, test deploy procedures and interactions of the latest released versions. So while the the `Dev` environment operates on the latest commit into `main`, the `Staging` environment operates on the latest release.|
-|Production Environment | `Production` is a single environment with provisioned third party services used by real users. It operates on releases that have been promoted from `Staging` after approval.|
-|Hotfix Pull Request workflow | In the case when there is a bug in the application that runs in the `Production` environment, the Developer needs to create a Hotfix PR.<br/><br/>Hotfix PR should target to “_Release branch_” `release/{version}`.  GHA should perform build and run tests on each commit. The developer should have ability to deploy/undeploy the changes to `Hotfix` environment by adding/removing specific labels in PR Gihub UI. When PR merged or closed GHA should undeploy the code from  `Hotfix` environment.|
-|Hotfix Environment | `Hotfix` is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Production` environment. Developers and QA engineers need it to perform integration testing, migrations, deploy procedures and interactions of the hotfix with other services. <br/><br/>If there are several `hotfix` PRs in one repo deployments to `Hotfix` environment will be conflicting. The latest deploy will be running on `Hotfix` environment.  <br/>This is responsibility of Developers and QA engineers to avoid that conflicts.|
-|Hotfix Release workflow | On each commit into a  “_Release branch_” `release/{version}` “_Hotfix release workflow_” triggers. It will build and test the latest code from the branch, create a new release with increased patched version and deploy it with approval gate to the `Production` environment. <br/>Developer should also take care of the hotfix to the `main` branch, for which a reintegration PR will be created automatically.|
-|Deployments | All deployments are by default performed with `helmfile` on Kubernetes clusters.|
-|Reusable workflows and GHA | All workflows and custom github actions should be reusable and have not specific repository references.|
-|“Reusable workflows in private repo“ pattern | Reusable worklows should be stored in separate repo and copied on change across all repositories by special workflow - according to `Reusable workflow in private organization repositories` pattern.|
+### CI testing based on the Feature branch workflow
+
+- A developer creates a PR target to the `main` branch. GHA will perform build and run test on each commit. The developer should have ability to deploy/undeploy the changes to `Preview` and/or `QA` environment by adding/removing specific labels in PR Gihub UI. When PR merged or closed GHA should undeploy the code from  `Preview`/`QA` environments where it is deployed to.
+
+### CI Preview Environments
+
+- Preview environments are unlimited ephimerial environments running on Kubernetes. When a PR with a target of the `main` branch is labeled with the `deploy` label, it will be deployed into a new preview environment. If developer needs to test the integration between several services they can deploy those apps into the same preview environment by creating PRs using the same named branch (e.g. `feature/add-widgets`).
+- Preview environments by convention expect that all third party services (databases, messaging bus, cache and etc) are deployed from scratch in Kubernetes as a part of the environment and removed on PR close.
+- The developer is responsible for defining third party services and to orchestrate them in Kubernetes (e.g. with [Operators](https://operatorhub.io/)).
+
+### CI QA Environments
+
+- QA environments are a discreet set of static environments running on Kubernetes with preprovisioned third party services. They are similar to preview environments, except that environments are shared by QA engineers to verify PR changes in “close to real live” environment. QA engineer can deploy/undeploy PR changes to one of the QA environments by adding or removing the `deploy/qa{number}` label.
+- If several PRs of one repo have `deploy/qa{number}` label then the latest deployment (commit & push) will override each other.
+- It is responsibility of QA engineers to avoid this conflict. GitHub environments UI is useful for seeing what is deployed.
+
+### Test commits into the main branch
+
+- On each commit into the `main` branch, the “_Main branch workflow_” triggers. It will build and test the latest code from the `main` branch, create or update the latest draft release and deploy the code to `Dev` environment.
+- If the commit was done by merging a PR then the PR title/description would be added to the release changelog.
+
+### Bleeding Edge Environment on Dev
+
+- The “dev” environment is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Staging` and `Production` environments. Developers and QA engineers need it to perform integration testing and validate the interaction between the latest version of applications and services before cutting a release. This is why it’s called the “bleeding edge.”
+
+### Automatic Draft Releases Following Semver Convention
+
+- On commit in the `main` branch GHA should create new draft release or update it. The release should have auto generated changelog based on commit comment messages and PRs title/descriptions.
+- Developer can manage sections of the changelog by adding specific labels to the PR.
+- Also labels are used to define the release major/minor semver increment (minor increments by default)
+
+### Automated Releases with Approval Gates
+
+- When a Developer (or Release Manager) decides to issue a new release they need just to publish the _Draft Release_ that will trigger the “_Release workflow_“. The workflow should create a new “Release branch” `release/{version}`, promote docker image with release version and consequentially deploy it to `Staging` and `Production` environments with approval gates. Developer need to approve deployment on `Staging` environment, wait the deployment would be successfully completed and then repeat the same for `Production` environment.
+
+### Staging Environment
+
+- `Staging` is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Production` environment. Developers and QA engineers use it to perform integration testing, run migrations, test deploy procedures and interactions of the latest released versions. So while the the `Dev` environment operates on the latest commit into `main`, the `Staging` environment operates on the latest release.
+
+### Production Environment
+
+- `Production` is a single environment with provisioned third party services used by real users. It operates on releases that have been promoted from `Staging` after approval.
+
+### Hotfix Pull Request workflow
+
+- In the case when there is a bug in the application that runs in the `Production` environment, the Developer needs to create a Hotfix PR.
+- Hotfix PR should target to “_Release branch_” `release/{version}`.  GHA should perform build and run tests on each commit. The developer should have ability to deploy/undeploy the changes to `Hotfix` environment by adding/removing specific labels in PR Gihub UI. When PR merged or closed GHA should undeploy the code from  `Hotfix` environment.
+
+### Hotfix Environment
+
+- `Hotfix` is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Production` environment. Developers and QA engineers need it to perform integration testing, migrations, deploy procedures and interactions of the hotfix with other services.
+- If there are several `hotfix` PRs in one repo deployments to `Hotfix` environment will be conflicting. The latest deploy will be running on `Hotfix` environment.
+- This is responsibility of Developers and QA engineers to avoid that conflicts.
+
+### Hotfix Release workflow
+
+- On each commit into a  “_Release branch_” `release/{version}` “_Hotfix release workflow_” triggers. It will build and test the latest code from the branch, create a new release with increased patched version and deploy it with approval gate to the `Production` environment.
+- Developer should also take care of the hotfix to the `main` branch, for which a reintegration PR will be created automatically.
+
+### Deployments
+
+- All deployments are by default performed with `helmfile` on Kubernetes clusters.
+
+### Reusable workflows and GHA
+
+- All workflows and custom github actions should be reusable and have not specific repository references.
+- “Reusable workflows in private repo“ pattern
+- Reusable worklows should be stored in separate repo and copied on change across all repositories by special workflow - according to `Reusable workflow in private organization repositories` pattern.
 
 ## Considerations
 
@@ -123,14 +181,19 @@ We recommend a monorepo for non-GitHub enterprise users. If we take this approac
 
 ## **Out of Scope**
 
-Anything we do not attempt to address as part of this work is explicitly called out below.
-
-|       |       |
-| ----- | ----- |
-|**Automated Rollbacks** | Automated triggering of rollbacks is not supported. Manually initiated, automatic rollbacks are supported, but should be triggered by reverting the pull request and using the aforementioned release process.|
-|**Provision environments** | Provision k8s clusters, third party services for any environments should be performed as separate mile stone. We expect already have K8S credentials for deployments|
-|**Define Docker based third party services** | Third party services running in docker should be declared individually per application. This is Developers field of work.|
-|**Key Metrics & Observability** | Monitoring CI pipelines and tests for visibility (e.g. with with Datadog CI) is not factored in but can be added at a later time.<br/><br/>[https://www.datadoghq.com/blog/datadog-ci-visibility/](https://www.datadoghq.com/blog/datadog-ci-visibility/)|
+<dl>
+  <dt>Automated Rollbacks</dt>
+  <dd>Automated triggering of rollbacks is not supported. Manually initiated, automatic rollbacks are supported, but should be triggered by reverting the pull request and using the aforementioned release process.</dd>
+  <dt>Provision environments</dt>
+  <dd>Provision k8s clusters, third party services for any environments should be performed as separate mile stone. We expect already have K8S credentials for deployments</dd>
+  <dt>Define Docker based third party services</dt>
+  <dd>Third party services running in docker should be declared individually per application. This is Developers field of work.</dd>
+  <dt>Key Metrics & Observability</dt>
+  <dd>
+    Monitoring CI pipelines and tests for visibility (e.g. with with Datadog CI) is not factored in but can be added at a later time.<br/><br/>
+    [https://www.datadoghq.com/blog/datadog-ci-visibility/](https://www.datadoghq.com/blog/datadog-ci-visibility/)
+  </dd>
+</dl>
 
 ## **Open Issues & Key Decisions**
 
@@ -247,7 +310,7 @@ To get this PAT with minimal required permissions follows these steps:
 
 1. Create a technical user on Github  ( like `bot+private-gha@example.com` )
 
-2. Added the user to the `Private Actions` repository with 'read-only' permissions [https://github.com/{organization}/{repository}/settings/access](https://github.com/{organization}/{repository}/settings/access)
+2. Added the user to the `Private Actions` repository with 'read-only' permissions (`https://github.com/{organization}/{repository}/settings/access`)
 
 3. <img src="/assets/refarch/cleanshot-2022-07-07-at-16.26.48@2x-20220707-132652.png" height="74" width="768" /><br/>
 
@@ -255,7 +318,7 @@ Generate a PAT for the technical user with that level of permissions  [https://g
 
 <img src="/assets/refarch/cleanshot-2022-07-07-at-16.30.35@2x-20220707-133043.png" height="218" width="548" /><br/>
 
-4. Save the PAT as organization secret with name `GITHUB_PRIVATE_ACTIONS_PAT` [https://github.com/organizations/{organization}/settings/secrets/actions](https://github.com/organizations/{organization}/settings/secrets/actions)
+4. Save the PAT as organization secret with name `GITHUB_PRIVATE_ACTIONS_PAT` (`https://github.com/organizations/{organization}/settings/secrets/actions`)
 
 - [https://github.com/actions/checkout#checkout-multiple-repos-private](https://github.com/actions/checkout#checkout-multiple-repos-private)
 
@@ -292,5 +355,3 @@ That permission can be granted on the same with default scopes for '_Default tok
 - [https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#stealing-the-jobs-github_token](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#stealing-the-jobs-github_token)
 
 ## Change History
-
-
