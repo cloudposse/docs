@@ -35,7 +35,7 @@ Build Docker image and push it.
       runs-on: ubuntu-latest
       steps:
       - name: github-action-docker-build-push
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: github-action-docker-build-push
         id: build

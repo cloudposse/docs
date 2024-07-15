@@ -31,7 +31,7 @@ runs:
         role-session-name: ${{ inputs.iam_role_session_name }}
 
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -41,7 +41,7 @@ runs:
         node-version-file: ".nvmrc"
 
     - name: "Checkout 'terraform-aws-components' Repository"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
         repository: cloudposse/terraform-aws-components

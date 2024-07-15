@@ -43,24 +43,24 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ env.IAM_ROLE_ARN }}
           role-session-name: ${{ env.IAM_ROLE_SESSION_NAME }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
 
       - name: "Checkout 'terraform-aws-components' Repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           repository: cloudposse/terraform-aws-components
@@ -68,7 +68,7 @@ jobs:
           path: tmp/components/terraform-aws-components
 
       - name: "Setup Python"
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
