@@ -16,6 +16,18 @@
   }
 }
 
+html[data-theme='dark'] .landing-page nav.navbar {
+  background: transparent !important;
+}
+
+.landing-page {
+  background-image: -webkit-linear-gradient(to bottom, #00163b, transparent) !important;  /* Chrome 10-25, Safari 5.1-6 */
+  background-image: linear-gradient(to bottom, #00163b, transparent) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-size: 100% 25%; /* Adjust the second value to control height */
+  background-repeat: no-repeat; /* Prevent repeating the gradient */
+  background-position: top;
+}
+
 .buttons {
   display: flex;
   align-items: center;

@@ -23,10 +23,6 @@ body {
     line-height: 30px;
 }
 
-.theme-admonition {
-    max-width: 1200px;
-}
-
 .pagination-nav__link {
     max-width: 700px;
 }
@@ -50,6 +46,8 @@ body {
     --aa-input-border-color-rgb: var(--ifm-toc-border-color);
     --aa-input-border-color-alpha: var(--ifm-toc-border-color);
     --aa-primary-color-rgb: var(--ifm-toc-border-color) !important;
+
+    --mg-bg: rgb(16 36 69 / 27%);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
