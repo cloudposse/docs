@@ -28,7 +28,7 @@ export default function HomeCallouts() {
             title: 'How-To',
             subtitle: 'Guides on how to solve specific problems with SweetOps via a series of easy to follow steps',
             urlText: 'Our Guides',
-            url: useBaseUrl('/category/how-to/'),
+            url: useBaseUrl('/layers/bonus-tutorials'),
         },
         {
             title: 'Reference',
