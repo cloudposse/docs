@@ -1,0 +1,37 @@
+.footer {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.footer__copyright {
+  text-align: center;
+  margin: 0 var(--ifm-spacing-horizontal);
+  font-size: 11px;
+}
+
+.footer__logo {
+    max-width: 80%;
+}
+.footer__links {
+    width: 75%;
+    float: right;
+}
+.footer__bottom {
+    width: 25%;
+}
+.footer__bottom > div {
+    text-align: left;
+}
+.footer--dark {
+    --ifm-footer-background-color: #0a1922;
+    --ifm-footer-padding-vertical: 85px;
+    background: linear-gradient(to top, #00163b75, transparent) !important;
+}
+
+.footer__copyright {
+    margin-left: 0;
+}
+
+.footer__bottom > div > a {
+    opacity: 0.9;
+}
