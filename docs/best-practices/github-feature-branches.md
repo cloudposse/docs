@@ -30,7 +30,7 @@ A _Pull Request_ allows many things to happen:
 - **Description**: A long description that details **_What_** was changed, **_Why_** it was deemed necessary, and any other **_References_** that might be useful (E.g. Jira ticket)
 - **Comments**: let anyone provide arbitrary feedback viewable by everyone.
 - **Diffs**: show what changed between this feature and the current master branch
-- **Formal Code Review Process:** let multiple people contribute to the code review process by submitting comments on a line-by-line basis. Having these code reviews formally documented serves as an excellent teaching tool. Over time, the reviews become faster and faster as developers learn what is expected. {{< img src="/assets/9df4fad-image_2.png" title="Example of Code Review" >}}
+- **Formal Code Review Process:** let multiple people contribute to the code review process by submitting comments on a line-by-line basis. Having these code reviews formally documented serves as an excellent teaching tool. Over time, the reviews become faster and faster as developers learn what is expected. ![Example of Code Review](/assets/9df4fad-image_2.png)
 - **Merging**: Once the PR is approved, the developer can squash and merge their code into the master branch. Squashing allows the master branch to have a very clean commit history where every commit corresponds to a PR. ![Example of Merging](/assets/2b3e7eb-image_4.png)
 - **Clean Commit History**: means that every change to the master branch is documented and justified. No one is sneaking in changes. ![Example of Clean Commit History](/assets/b3dae79-image_5.png)
 - **History of Features** and when they were added ![History of Features](/assets/f9a3727-image_7.png)

@@ -62,8 +62,8 @@ resource "aws_s3_bucket" "assets" {
 For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](https://github.com/cloudposse/terraform-aws-s3-log-storage) module.
 
 :::info
-- <https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html>
-- <https://www.terraform.io/docs/providers/aws/r/s3_bucket.html#using-object-lifecycle>
+- https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html
+- https://www.terraform.io/docs/providers/aws/r/s3_bucket.html#using-object-lifecycle
 :::
 
 

@@ -43,5 +43,5 @@ This documentation site breaks down SweetOps into the following sections to help
 
 - *[Introduction](/category/fundamentals)*: Explains what SweetOps is, what it can do, and what comprises the methodology.
 - *[Tutorials](/category/tutorials)*: Lessons on how to utilize SweetOps to implement a project.
-- *[How-To](/category/how-to)*: Guides on how to solve specific problems with SweetOps via a series of easy to follow steps.
+- *[How-To](/layers/bonus-tutorials)*: Guides on how to solve specific problems with SweetOps via a series of easy to follow steps.
 - *[Reference](/category/reference)*: Informative materials on specific tools and patterns within SweetOps.

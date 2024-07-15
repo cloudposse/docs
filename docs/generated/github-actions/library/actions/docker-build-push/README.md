@@ -18,7 +18,7 @@ Build Docker image and push it
 
 ## Introduction
 
-Build Docker image and push it. 
+Build Docker image and push it.
 
 
 
@@ -35,7 +35,7 @@ Build Docker image and push it.
       runs-on: ubuntu-latest
       steps:
       - name: github-action-docker-build-push
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: github-action-docker-build-push
         id: build
@@ -84,7 +84,6 @@ Build Docker image and push it.
 | cache-to | List of cache export destinations for buildx (e.g., user/app:cache, type=local,dest=path/to/dir) | type=gha,mode=max | false |
 | docker-metadata-pr-head-sha | Set to `true` to tag images with the PR HEAD SHA instead of the merge commit SHA within pull requests. | false | false |
 | file | Dockerfile name | Dockerfile | false |
-| image\_name | Image name (excluding registry). Defaults to {{$organization/$repository}}. |  | false |
 | login | Docker login |  | false |
 | no-cache | Send the --no-cache flag to the docker build process | false | false |
 | organization | Organization | N/A | true |

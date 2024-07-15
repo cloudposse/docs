@@ -25,7 +25,7 @@ Once that is happy, push the rebased changes back to the origin.
 git push origin newfeature -f
 ```
 
-Then follow these instructions once you're ready: <https://help.github.com/articles/creating-a-pull-request/>
+Then follow these instructions once you're ready: https://help.github.com/articles/creating-a-pull-request/
 
 ## Pull Request Template
 
@@ -45,5 +45,5 @@ Use the following markdown template to describe the Pull Request.
 **Pro Tip:** Use a `.github/pull_request_template.md` file to automatically populate this template when creating new Pull Requests.
 
 :::info
-<https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/>
+https://help.github.com/articles/creating-a-pull-request-template-for-your-repository/
 :::
