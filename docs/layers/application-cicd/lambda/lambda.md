@@ -128,7 +128,7 @@ jobs:
       id: get-tag-from-ssm
       run: |
         TAG=`aws ssm get-parameter --name /lambda/${{ inputs.function-name }}/tag | jq -r .Parameter.Value`
-        echo "::set-output name=tag::$TAG"
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
     - name: Copy Lambda to local
       run: |
         aws s3 cp s3://${{ inputs.artifacts-bucket-and-prefix }}/${{ inputs.function-name }}/${{ steps.get-tag-from-ssm.outputs.tag }}.zip .
