@@ -1,6 +1,7 @@
 .footer {
   padding-left: 0;
   padding-right: 0;
+  display: flex;
 }
 
 .footer__copyright {
@@ -22,10 +23,15 @@
 .footer__bottom > div {
     text-align: left;
 }
-.footer--dark {
+
+[data-theme='dark'] .footer--dark {
     --ifm-footer-background-color: #0a1922;
     --ifm-footer-padding-vertical: 85px;
     background: linear-gradient(to top, #00163b75, transparent) !important;
+}
+
+.footer--dark {
+  background: linear-gradient(to top, #00163b, black) !important;
 }
 
 .footer__copyright {

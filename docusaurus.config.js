@@ -107,31 +107,9 @@ const config = {
             label: 'Reference',
           },
           {
-            type: 'dropdown',
+            to: '/community',
             label: 'Community',
             position: 'left',
-            items: [
-              {
-                label: 'GitHub Discussions',
-                href: 'https://ask.sweetops.com/',
-              },
-              {
-                label: 'Community',
-                href: 'https://sweetops.com/',
-              },
-              {
-                label: 'Slack',
-                href: 'https://slack.sweetops.com/',
-              },
-              {
-                label: 'Slack Archives',
-                href: 'https://archive.sweetops.com/refarch/',
-              },
-              {
-                label: 'Office Hours',
-                href: 'https://cloudposse.com/office-hours/',
-              },
-            ],
           },
           {
             type: 'search',
@@ -144,7 +122,7 @@ const config = {
           },
           {
             to: 'https://cloudposse.com/',
-            label: 'Accelerate',
+            label: 'Get a Jumpstart',
             position: 'right',
             className: 'button button--primary navbar-cta-button'
           },

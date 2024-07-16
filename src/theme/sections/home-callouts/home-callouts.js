@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './home-callouts.module.css';
-import CalloutBox from "../../../components/callout-box/callout-box";
-import Container from "../../../components/container/container";
+import CalloutBox from "@site/src/components/callout-box/callout-box";
+import Container from "@site/src/components/container/container";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 export default function HomeCallouts() {
@@ -49,7 +49,11 @@ export default function HomeCallouts() {
             <div className={styles.homeCallouts}>
                 {callouts.map((callout, i) => (
                     <div key={i} className={styles.homeCallouts__item}>
-                        <CalloutBox title={callout.title} subtitle={callout.subtitle} url={callout.url} urlText={callout.urlText} />
+                        <CalloutBox title={callout.title}
+                                    subtitle={callout.subtitle}
+                                    url={callout.url}
+                                    urlText={callout.urlText}
+                         />
                     </div>
                 ))}
             </div>

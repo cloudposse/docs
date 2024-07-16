@@ -259,3 +259,16 @@ svg.landingLogo path {
 aside.col.col--3 {
     --ifm-col-width: calc(2.5 / 12 * 100%);
 }
+
+
+article {
+  min-height: 70vh;
+}
+
+[data-theme='dark'] .join-slack {
+  background: transparent;
+}
+
+.join-slack {
+  background: #000;
+}

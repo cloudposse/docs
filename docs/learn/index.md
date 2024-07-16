@@ -1,8 +1,7 @@
 ---
 title: "Reference Architecture Overview"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/overview
-sidebar_position: 0
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/index.md
+sidebar_position: 2
+sidebar_label: "Reference Architecture"
 ---
 
 # Reference Architecture Overview
