@@ -1,0 +1,53 @@
+---
+title: "Decide on Transit Gateway Requirements"
+refarch_id: REFARCH-487
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# Decide on Transit Gateway Requirements
+
+## Context and Problem Statement
+
+The [AWS Transit Gateway](https://aws.amazon.com/transit-gateway/) connects VPCs located in any account or organization
+(and on-premises networks) through a centrally managed network hub. This simplifies the work of connecting networks and
+puts an end to complex VPC peering connections. Think of it like a cloud router, where each new connection is only made
+once.
+
+As you expand globally, inter-region peering connections, the AWS Transit Gateway helps establish a global network. All
+data is automatically encrypted and never travels over the public internet.
+
+With this in mind, the transit gateway needs to be configured to support the specific For example:
+
+- In which accounts will certain services live (e.g. Automation/Spacelift Runners, custom apps, etc)?
+
+- Where will the VPN solution be deployed, if there is one?
+
+- In which accounts will EKS clusters be deployed to?
+
+- Do certain stages need to communicate with one another (e.g. staging → prod and prod → staging)?
+
+## Considered Options
+
+### Option 1 (Recommended)
+
+:::tip Cloud Posse recommends Option 1 because it enables the use of automation to perform changes as well as any other
+business requirement
+
+:::
+
+- Connect all accounts with the `auto` account to enable automation (Spacelift, GitHub Action Runners, etc)
+
+- Connect all accounts with the `network` account to use it as the entry-point for VPN connections
+
+- Any other requirements that are business driven (e.g. dev → staging, staging → prod, dev → dev, etc)
+
+#### Consequences
+
+- Can use automation (Spacelift) to handle changes to infrastructure
+
+- Can create private EKS clusters, accessible via automation and human (via VPN)
+
+## References
+
+- [https://aws.amazon.com/transit-gateway/](https://aws.amazon.com/transit-gateway/)

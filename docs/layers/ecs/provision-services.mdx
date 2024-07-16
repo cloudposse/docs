@@ -1,9 +1,11 @@
 ---
-title: "Provision Services"
+title: "Provisioing Services on the ECS Platform"
+sidebar_label: "Provision Services"
 sidebar_position: 20
 ---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
 
-# Provisioing Services on the ECS Platform
 
 ## Quick Start
 
@@ -13,9 +15,7 @@ sidebar_position: 20
 
 ### Deploy Echo Server
 
-Once the cluster is up and running, continue with the first ECS service deployment. We deploy Echo Server as an example
-and to validate a given cluster. This deploys two ECS services: one private and one public. The private deployment
-should only be accessible by VPN.
+Once the cluster is up and running, continue with the first ECS service deployment. We deploy Echo Server as an example and to validate a given cluster. This deploys two ECS services: one private and one public. The private deployment should only be accessible by VPN.
 
 Run the following Atmos Workflow to deploy `ecs/platform/service/echo-server` and
 `ecs/platform/service/echo-server-private` to every cluster.
@@ -24,16 +24,14 @@ Run the following Atmos Workflow to deploy `ecs/platform/service/echo-server` an
 atmos workflow deploy/echo-server -f ecs
 ```
 
-Validate each cluster deployment with Echo Server and the targeted service domain. The following URL should return a
-success message for each stage's public deployment:
+Validate each cluster deployment with Echo Server and the targeted service domain. The following URL should return a success message for each stage's public deployment:
 
 1. `plat-sandbox`: https://echo-server.public-platform.use1.sandbox.plat.acme-svc.com/
 1. `plat-dev`: https://echo-server.public-platform.use1.dev.plat.acme-svc.com/
 1. `plat-staging`: https://echo-server.public-platform.use1.staging.plat.acme-svc.com/
 1. `plat-prod`: https://echo-server.public-platform.use1.prod.plat.acme-svc.com/
 
-Each of the following should time out if not connected to the VPN. Verify these are not publicly accessible. Then
-connect to the VPN to successfully load the endpoint.
+Each of the following should time out if not connected to the VPN. Verify these are not publicly accessible. Then connect to the VPN to successfully load the endpoint.
 
 1. `plat-sandbox`: https://echo-server.private-platform.use1.sandbox.plat.acme-svc.com/
 1. `plat-dev`: https://echo-server.private-platform.use1.dev.plat.acme-svc.com/

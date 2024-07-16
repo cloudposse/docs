@@ -2,43 +2,33 @@
 title: "Network and DNS"
 sidebar_class_name: hidden
 ---
+import ReactPlayer from "react-player";
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
 
 # Network and DNS
 
-This document is intended to present Cloud Posse's approach to designing Network and DNS architectures. The contents of
-this document assume that the reader is familiar with the basics of
-[networking and content delivery services in AWS](https://aws.amazon.com/products/networking/).
-
-import ReactPlayer from "react-player";
+This document is intended to present Cloud Posse's approach to designing Network and DNS architectures. The contents of this document assume that the reader is familiar with the basics of [networking and content delivery services in AWS](https://aws.amazon.com/products/networking/).
 
 <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/network-and-dns.mp4" />
 
 ## The Problem
 
-There is no single solution for Network and DNS architecture. Ultimately, the right network architecture may come down
-to your individual business needs. Yet often too much thought in design leads to snowflake designs that are specific to
-a given business but are entirely unique, overly complex, and difficult to maintain.
+There is no single solution for Network and DNS architecture. Ultimately, the right network architecture may come down to your individual business needs. Yet often too much thought in design leads to snowflake designs that are specific to a given business but are entirely unique, overly complex, and difficult to maintain.
 
-However, all network designs have a fundamental set of requirements that we can define. All networks need some private
-subnets and some public subnets. All networks need to be able to restrict access and enforce boundaries externally and
-internally, and finally all networks need some way to discover services inside the network.
+However, all network designs have a fundamental set of requirements that we can define. All networks need some private subnets and some public subnets. All networks need to be able to restrict access and enforce boundaries externally and internally, and finally all networks need some way to discover services inside the network.
 
 When it comes to DNS, often there is no design consideration for domain management. Companies may have hundreds or
-thousands of marketing domains, e.g. for SEO, and yet have no sane method for services to discover each other using DNS.
-At the same time, DNS needs some of the same boundaries as the network: services should be isolated and secure.
+thousands of marketing domains, e.g. for SEO, and yet have no sane method for services to discover each other using DNS. At the same time, DNS needs some of the same boundaries as the network: services should be isolated and secure.
 
-Furthermore, networking in a cloud environment is entirely software defined. We have the ability to do things that would
-be too tedious or too difficult to achieve in physical environments. Companies still largely rely on IPv4 networks,
-which have limited IP space, and we need to ensure that how we allocate networks can scale with your business and even
-integrate with other third party providers.
+Furthermore, networking in a cloud environment is entirely software defined. We have the ability to do things that would be too tedious or too difficult to achieve in physical environments. Companies still largely rely on IPv4 networks, which have limited IP space, and we need to ensure that how we allocate networks can scale with your business and even integrate with other third party providers.
 
 Networking and content delivery is far from trivial. There are countless designs and architectures that accomplish
 similar outcomes. Ultimately our goal is to ensure that whatever we implement will enable your success.
 
 ## Our Solution
 
-As with all infrastructure design, Cloud Posse has an opinionated solution. We aim to reduce complexity where possible,
-while providing secure and robust networks that are maintainable and scalable.
+As with all infrastructure design, Cloud Posse has an opinionated solution. We aim to reduce complexity where possible, while providing secure and robust networks that are maintainable and scalable.
 
 We have identified the most common and reusable pattern for network architecture, so that we can define reusable
 building blocks for a network. We've standardized the definition of a VPC, provided distinction between marketing and
@@ -53,9 +43,7 @@ other across the accounts.
 
 ### Account Isolation
 
-As a foundational design with the AWS Organization, we have already isolated resources into accounts. This separation
-creates a physical boundary between resources in AWS, including VPCs. Therefore, we can deploy a single or multiple VPCs
-in an account and guarantee that resources in those subnets will not be able to access resources in other accounts.
+As a foundational design with the AWS Organization, we have already isolated resources into accounts. This separation creates a physical boundary between resources in AWS, including VPCs. Therefore, we can deploy a single or multiple VPCs in an account and guarantee that resources in those subnets will not be able to access resources in other accounts.
 
 Because of this design, we recommend deploying a single VPC per account (that needs a network). Production resources
 will only live in the VPC in the `plat-prod` account, and unless connected, no other VPC will be able to access those

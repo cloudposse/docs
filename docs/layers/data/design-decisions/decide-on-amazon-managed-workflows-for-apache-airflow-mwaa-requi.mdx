@@ -1,0 +1,97 @@
+---
+title: "Decide on Amazon Managed Workflows for Apache Airflow (MWAA) Requirements"
+sidebar_position: 100
+refarch_id: REFARCH-491
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# Decide on Amazon Managed Workflows for Apache Airflow (MWAA) Requirements
+
+## Problem
+Requirements for MWAA environments deployed to each active compute environment must be outlined before an MWAA environment is configured and deployed. Customers will likely require integrations with other systems like Redshift or S3. There’s no generic way of handling all these cases, so each will need to be handled separately. Each case may require additional resources like IAM roles to be provisioned, which we cannot anticipate and will rely entirely on information supplied by the customer.
+
+## Context
+Amazon MWAA environments will be used by applications that use Apache Airflow.
+
+## Considered Options
+
+Create a standardized MWAA Environment based on requirements.
+
+### Integrations
+
+- What integrations are required with other systems?
+
+- e.g. S3 will require IAM roles be provisioned
+
+- e.g. RDS will require database users, grants and security groups be opened up
+
+- Have those other systems already been deployed?
+
+- Should we provide an example?
+
+- How will DAGs be managed in S3?
+
+#### Standardized Managed Workflows for Apache Airflow (MWAA) Configuration Settings
+
+- Number of workers
+
+- Min number of workers
+
+- Max number of workers
+
+- Webserver access mode
+
+- Can be one of: `PUBLIC_ONLY`, `PRIVATE_ONLY`. Defaults to `PRIVATE_ONLY`.
+
+- If it’s private, how will you intend to access it? e.g. we’ll need something like [Decide on Client VPN Options](/reference-architecture/fundamentals/design-decisions/foundational-infrastructure/decide-on-client-vpn-options)
+
+- Environment class
+
+- Can be one of: `mw1.small`, `mw1.medium`, `mw1.large`
+
+- Airflow version
+
+- Supported versions outlined here: [https://docs.aws.amazon.com/mwaa/latest/userguide/airflow-versions.html](https://docs.aws.amazon.com/mwaa/latest/userguide/airflow-versions.html)
+
+- If not specified, the latest available version will be used. The latest available version of Apache Airflow will be used unless a previous minor version must be used to provide compatibility with an application environment. This provides the latest bug fixes and security patches for Apache Airflow, which is especially important if the webserver access mode is set to `PUBLIC_ONLY`. If an older minor version must be used to provide compatibility with an application environment, then the latest available patch version should be used to include all possible bug fixes and security patches.
+
+- Use custom `plugins.zip` file?
+
+- If so, where are those plugins stored?
+
+- What is generating the plugin's artifact? CI/CD for this artifact could be out of scope.
+
+- Use custom `requirements.txt` file?
+
+- If so, we’ll need the customer to provide this file.
+
+- DAG processing logs
+
+- From least to most verbose: disabled, `CRITICAL`, `ERROR`, `WARNING`, `INFO`, `DEBUG`. Defaults to `INFO`.
+
+- Scheduler logs
+
+- From least to most verbose: disabled, `CRITICAL`, `ERROR`, `WARNING`, `INFO`, `DEBUG`. Defaults to `INFO`.
+
+- Task logs
+
+- From least to most verbose: disabled, `CRITICAL`, `ERROR`, `WARNING`, `INFO`, `DEBUG`. Defaults to `INFO`.
+
+- Webserver logs
+
+- From least to most verbose: disabled, `CRITICAL`, `ERROR`, `WARNING`, `INFO`, `DEBUG`. Defaults to `INFO`.
+
+- Worker logs
+
+- From least to most verbose: disabled, `CRITICAL`, `ERROR`, `WARNING`, `INFO`, `DEBUG`. Defaults to `INFO`.
+
+## References
+
+- [Amazon Managed Workflows for Apache Airflow (MWAA): Create an Environment](https://docs.aws.amazon.com/mwaa/latest/userguide/create-environment.html)
+
+- [Amazon Managed Workflows for Apache Airflow (MWAA): Supported Versions](https://docs.aws.amazon.com/mwaa/latest/userguide/airflow-versions.html)
+
+## Change History
+
+

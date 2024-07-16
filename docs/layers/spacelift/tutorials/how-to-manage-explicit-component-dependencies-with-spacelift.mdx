@@ -1,0 +1,158 @@
+---
+title: "Component Dependencies"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# How to Manage Explicit Component Dependencies with Spacelift
+
+## Problem
+
+When Spacelift deploys a component into a particular environment it doesn’t natively understand any HCL or what that component needs. Spacelift does not compute any sort of DAG between components the way that Terraform does between resources in the graph of a single root module. If a component relates to other components via a remote state (E.g. our convention using the `remote-state.tf` file in each component's folder), this is not Spacelift’s concern to handle it. Nonetheless, we need to be able to explicitly define cross-component dependencies in order to do things with remote-state.
+
+## Solution
+
+:::tip
+Use labels in Spacelift to define the dependencies between components
+
+:::
+
+:::info
+NOTE: Our spacelift module will automatically derive dependencies based on `imports` , which means that and stack configuration (E.g. in `catalog/*`) that is imported by any other stack configuration, is now an implicit (or derived) dependency of that stack. So that means that when that upstream file that is imported is modified, it will also trigger an plan of any stack that imports it.
+
+- For example, if you modify `globals.yaml`, since that file is imported by every single stack, it will trigger every single stack to plan.
+
+- For example, if you modify something like `catalog/rds.yaml`, it will only trigger stacks that import that config.
+
+:::
+
+We have a very primitive dependency system based on a custom to `depends-on` label (`depends_on` spacelift setting in component configuration)  which gets added to `labels` for the Spacelift stacks to express dependencies.  For each stack, in YAML stack config, we allow specifying the stack dependencies on other components in the same environment and on other stacks. We automatically detect if the dependency is a stack or a component in the current stack, and throws an error if it's not a valid stack and not a valid component.  Using Spacelift workflows which are simply Rego policies under the wood, we trigger the dependent stacks after the "parent" stacks finish running.
+
+The Rego policy is defined here [https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation/blob/0.42.0/catalog/policies/trigger.dependencies.rego](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation/blob/0.42.0/catalog/policies/trigger.dependencies.rego)
+
+For details, see PR that implemented it [https://github.com/cloudposse/terraform-provider-utils/pull/43](https://github.com/cloudposse/terraform-provider-utils/pull/43))
+
+:::caution
+**Processing** **Dependencies**
+
+Spacelift can only operate on dependency relationships within a single commit. There’s no way to express a dependency relationship for what should happen between multiple commits, e.g. multiple Pull Requests are merged around the same time and requiring components in one stack be applied before other stacks is not possible.
+
+:::
+
+### Ways to Express Dependencies with Labels
+
+<img src="/assets/refarch/cleanshot-2021-11-01-at-23.13.11@2x-20211102-041453.png" height="187" width="742" /><br/>
+
+There are many ways to express dependencies. Which to use depends on what you need to accomplish. You can see the dependencies easily in the Spacelift UI by looking at the labels. Not all labels are dependencies, only the ones that begin with `deps:`or `depends-on:`. (note, the folders are created similarly by prefixing labels with `folder:`)
+
+We support globbing with `*` and `**` so you can express things like `stacks/uw2/**` to match all files recursively in the `stacks/uw2` folder.
+
+A component can depend on any folder as part of the VCS. If a change is detected in that folder, then it will trigger a plan. Just prefix the label with `deps:` and add a `/*` at the end to match all files.
+
+```
+labels:
+- deps:component/aurora-postgres-2/*
+- deps:uw2/dev/*
+```
+
+A component can express explicit dependencies on other files.
+
+```
+labels:
+- deps:stacks/catalog/rds-defaults.yaml
+- deps:stacks/globals.yaml
+- deps:stacks/uw2-dev.yaml
+- deps:stacks/uw2-globals.yaml
+- deps:config/secrets/dev-internal-secrets.yml
+
+```
+
+A component can express explicit dependencies on other components in other stacks (e.g. the `vpc` component in the `uw2-dev` stack)
+
+```
+labels:
+- depends-on:uw2-dev-vpc
+- depends-on:uw2-dev-dns-delegated
+- depends-on:gbl-dns-dns-primary
+```
+
+A component can express explicit dependencies on the current stack (E.g. the `vpc`) without needing to express the canonical component name.
+
+```
+labels:
+- depends-on:vpc
+- depends-on:dns-delegated
+- depends-on:dns-primary
+```
+
+### Step-by-Step Process
+
+1.  You use `depends_on` in YAML like this:
+
+```
+ dms-iam:
+      settings:
+        spacelift:
+          workspace_enabled: true
+          policies_by_name_enabled:
+            - "access.dms"
+
+    dms-replication-instance:
+      settings:
+        spacelift:
+          workspace_enabled: true
+          depends_on:               # Stack dependencies. This stack will be triggered after the parent stack finishes running
+            - "dms-iam"
+```
+
+2. When your `spacelift` component (which uses [https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation)) parses the YAML, it adds the label to the Spacelift stacks
+
+3. Spacelift checks the rego policy `trigger.dependencies.rego` to determine if the label exists on the stack and triggers the dependent stack(s)
+
+### Example
+
+```
+    aurora-postgres-2:
+      component: aurora-postgres
+      settings:
+        spacelift:
+          workspace_enabled: true
+          autodeploy: true
+          labels:
+            - "deps:config/secrets/dev-internal-secrets.yml"
+          depends_on:
+            - vpc
+            - dns-delegated
+            - gbl-dns-dns-primary
+```
+
+Will associate the following labels in Spacelift with the Stack:
+
+```
+labels:
+    - deps:stacks/catalog/rds-defaults.yaml
+    - deps:stacks/globals.yaml
+    - deps:stacks/uw2-dev.yaml
+    - deps:stacks/uw2-globals.yaml
+    - deps:config/secrets/dev-internal-secrets.yml
+    - depends-on:uw2-dev-vpc
+    - depends-on:uw2-dev-dns-delegated
+    - depends-on:gbl-dns-dns-primary
+    - folder:component/aurora-postgres-2
+    - folder:uw2/dev
+```
+
+## Troubleshooting
+
+If any of the entries in `depends_on` is not a valid stack and not a valid component in the current stack, the following errors will be thrown:
+
+```
+Error: Component 'aurora-postgres-2' in stack 'uw2-dev' specifies 'depends_on' dependency 'vpc3',
+but 'vpc3' is not a stack and not a terraform component in 'uw2-dev' stack
+
+Error: Component 'aurora-postgres-2' in stack 'uw2-dev' specifies 'depends_on' dependency 'gbl-ops-dns-primary',
+but 'gbl-ops-dns-primary' is not a stack and not a terraform component in 'uw2-dev' stack
+```
+
+

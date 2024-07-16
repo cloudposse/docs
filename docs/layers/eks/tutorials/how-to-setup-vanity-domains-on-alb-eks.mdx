@@ -1,0 +1,341 @@
+---
+title: "Setup Vanity Domains on an ALB"
+tags:
+  - network
+  - dns
+  - alb
+  - eks
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Setup Vanity Domains on an existing ALB used for Service Discovery Domains
+
+## Pre-requisites
+
+- [Understand the differences between Vanity Domains and Service Discovery Domains](/resources/legacy/learning-resources/#the-difference-between-vanity-domains-and-service-discovery-domains)
+  - [Network Architecture](/learn/network/)
+  - Only requires `dns-primary` & `dns-delegated` to be deployed.
+
+## Context
+
+After setting up your [Network Architecture](/learn/network/) you will have 2 hosted zones in each platform account.
+
+In `dev` for example, you will have Hosted Zones for `dev-acme.com` and `dev.platform.acme.com`.
+
+You should also have an ACM certificate that registers `*.dev-acme.com` and `*.dev.platform.acme.com`.
+
+We also should've deployed applications to your EKS cluster and have an ALB for service discovery. For example the
+[`echo-server`](/components/library/aws/eks/echo-server) component.
+
+Now we want to set up a vanity subdomain for `dev-acme.com` that will point to the ALB used for service discovery. This
+saves us money by not requiring a new ALB for each vanity domain.
+
+## Implementation
+
+This is fairly simple to implement. All we need to do is set up our Kubernetes ingresses and ensure ACM doesn't have
+duplicate certs for domains.
+
+### Setup Ingresses
+
+Ingresses for your applications can use several different `.spec.rules` to provide access to the application via many
+different URLs.
+
+#### Example
+
+<Tabs groupId="eks-deployment-method">
+<TabItem value="kubernetes" label="Kubernetes">
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/group.name: alb-controller-ingress-group
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/target-type: ip
+    external-dns.alpha.kubernetes.io/hostname: my-app-api.dev.plat.acme-svc.com
+    kubernetes.io/ingress.class: alb
+    outputs.platform.cloudposse.com/webapp-url: https://my-app-api.dev.plat.acme-svc.com
+  name: my-app-api
+  namespace: dev
+spec:
+  rules:
+    # new Vanity Domain
+    - host: api.dev-acme.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: my-app-api
+                port:
+                  number: 8081
+            path: /api/*
+            pathType: ImplementationSpecific
+    # Existing Service discovery domain
+    - host: my-app-api.dev.plat.acme-svc.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: my-app-api
+                port:
+                  number: 8081
+            path: /*
+            pathType: ImplementationSpecific
+```
+
+</TabItem>
+
+<TabItem value="helm" label="Helm Template">
+
+<details>
+<summary><code>_helpers.tpl</code></summary>
+
+```yaml
+{{/*
+Expand the name of the chart.
+*/}}
+{{- define "this.name" -}}
+  {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
+{{- define "this.fullname" -}}
+  {{- if .Values.fullnameOverride }}
+    {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+  {{- else }}
+    {{- $name := default .Chart.Name .Values.nameOverride }}
+    {{- if contains $name .Release.Name }}
+      {{- .Release.Name | trunc 63 | trimSuffix "-" }}
+    {{- else }}
+      {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
+{{- define "this.chart" -}}
+  {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Common labels
+  helm.sh/chart: {{ include "this.chart" . }}
+  {{- if .Chart.AppVersion }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+  {{- end }}
+  app.kubernetes.io/managed-by: {{ .Release.Service }}
+*/}}
+{{- define "this.labels" -}}
+  {{ include "this.selectorLabels" . }}
+{{- end }}
+
+{{/*
+Selector labels
+  app.kubernetes.io/name: {{ include "this.name" . }}
+  app.kubernetes.io/instance: {{ .Release.Name }}
+*/}}
+{{- define "this.selectorLabels" -}}
+  app: {{ include "this.fullname" . }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "this.serviceAccountName" -}}
+  {{- if .Values.serviceAccount.create }}
+    {{- default (include "this.fullname" .) .Values.serviceAccount.name }}
+  {{- else }}
+    {{- default "default" .Values.serviceAccount.name }}
+  {{- end }}
+{{- end }}
+
+```
+
+</details>
+
+**Ingress.yaml**
+
+```yaml
+{{- if or (eq (printf "%v" .Values.ingress.nginx.enabled) "true") (eq (printf "%v" .Values.ingress.alb.enabled) "true") -}}
+  {{- $fullName := include "this.fullname" . -}}
+  {{- $svcName := include "this.name" . -}}
+  {{- $svcPort := .Values.service.port -}}
+  {{- $nginxTlsEnabled := and (eq (printf "%v" .Values.ingress.nginx.enabled) "true") (eq (printf "%v" .Values.tlsEnabled) "true")}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  annotations:
+    {{- if eq (printf "%v" .Values.ingress.nginx.enabled) "true" }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.nginx.class }}
+      {{- if (index .Values.ingress.nginx "tls_certificate_cluster_issuer") }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.nginx.tls_certificate_cluster_issuer }}
+      {{- end }}
+    {{- else if eq (printf "%v" .Values.ingress.alb.enabled) "true" }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.alb.class }}
+    alb.ingress.kubernetes.io/group.name: {{ .Values.default_alb_ingress_group | default "alb-controller-ingress-group" }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+      {{- if .Values.ingress.alb.access_logs.enabled }}
+    alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket={{.Values.ingress.alb.access_logs.s3_bucket_name}},access_logs.s3.prefix={{.Values.ingress.alb.access_logs.s3_bucket_prefix}}
+      {{- end }}
+    alb.ingress.kubernetes.io/target-type: 'ip'
+      {{- if eq (printf "%v" .Values.ingress.alb.ssl_redirect.enabled) "true" }}
+    alb.ingress.kubernetes.io/ssl-redirect: '{{ .Values.ingress.alb.ssl_redirect.port }}'
+      {{- end }}
+      {{- if eq (printf "%v" .Values.tlsEnabled) "true" }}
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS":443}]'
+      {{- else }}
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+      {{- end }}
+
+  {{- if eq .Values.environment "preview" }}
+    external-dns.alpha.kubernetes.io/hostname: {{ $svcName }}-{{ .Release.Namespace }}.{{ .Values.platform.default_ingress_domain }}
+    outputs.platform.cloudposse.com/webapp-url: "https://{{ $svcName }}-{{ .Release.Namespace }}.{{ .Values.platform.default_ingress_domain }}"
+  {{- else }}
+    external-dns.alpha.kubernetes.io/hostname: {{ $svcName }}.{{ .Values.platform.default_ingress_domain }}
+    outputs.platform.cloudposse.com/webapp-url: "https://{{ $svcName }}.{{ .Values.platform.default_ingress_domain }}"
+  {{- end }}
+
+    {{- end }}
+  labels:
+    {{- include "this.labels" . | nindent 4 }}
+spec:
+  {{- if $nginxTlsEnabled }}
+  tls: # < placing a host in the TLS config will indicate a certificate should be created
+    - hosts:
+        - {{ .Values.ingress.hostname }}
+      secretName: {{ $svcName }}-cert # < cert-manager will store the created certificate in this secret.
+  {{- end }}
+  rules:
+  {{- if eq .Values.environment "preview" }}
+    - host: "{{ $svcName }}-{{ .Release.Namespace }}.{{ .Values.platform.default_ingress_domain }}"
+  {{- else }}
+    {{- range .Values.ingress.vanity_domains }}
+    - host: "{{.prefix | default "api" }}.{{ $.Values.platform.default_vanity_domain }}"
+      http:
+        paths:
+          - path: /{{.path | default "*" }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $svcName }}
+                port:
+                  number: {{ $svcPort }}
+    {{- end }}
+
+    - host: "{{ $svcName }}.{{ .Values.platform.default_ingress_domain }}"
+  {{- end }}
+      http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $svcName }}
+                port:
+                  number: {{ $svcPort }}
+{{- end }}
+
+```
+
+**values.yaml**
+
+```yaml
+---
+ingress:
+  vanity_domains:
+    # api.dev-acme.com, path: /*
+    - prefix: "api"
+    # api.dev-acme.com, path: /v2/*
+    - prefix: "api"
+      path: "v2/*"
+  nginx:
+    # ingress.nginx.enabled -- Enable NGiNX ingress
+    enabled: false
+    # annotation values
+    ## kubernetes.io/ingress.class:
+    class: "nginx"
+    ## cert-manager.io/cluster-issuer:
+    tls_certificate_cluster_issuer: "letsencrypt-prod"
+  alb:
+    enabled: true
+    # annotation values
+    ## kubernetes.io/ingress.class:
+    class: "alb"
+    ## alb.ingress.kubernetes.io/load-balancer-name:
+    ### load_balancer_name: "k8s-common"
+    ## alb.ingress.kubernetes.io/group.name:
+    ### group_name: "common"
+    ssl_redirect:
+      enabled: true
+      ## alb.ingress.kubernetes.io/ssl-redirect:
+      port: 443
+    access_logs:
+      enabled: false
+      ## s3_bucket_name: "acme-ue2-prod-eks-cluster-alb-access-logs"
+      s3_bucket_prefix: ""
+```
+
+</TabItem>
+
+</Tabs>
+
+### Setup ACM Certs
+
+By default, our `dns-primary` component and `dns-delegated` component will create ACM certs for each Hosted Zone in the
+platform account, along with an **additional** cert for `*.dev-acme.com`. Depending on the level of subdomains you want,
+you may need to disable this with the variable `request_acm_certificate: false`
+
+If a single subdomain is sufficient. e.g. `api.dev-acme.com` then you can leave this enabled.
+
+The important thing to note is that you **cannot** have duplicate certs in ACM. So if you want to add a new subdomain,
+you will need to delete the existing cert for `*.dev-acme.com` and create a new one with the new subdomain. This can
+lead to issues when trying to delete certificates, as they are in use by the ALB. You will need to delete the ALB first,
+then delete the certificate.
+
+See the troubleshooting section if you run into issues with recreating resources.
+
+## How it works:
+
+With a single valid ACM cert for your domains, the `alb-controller` is able to register your domain to the ALB. The ALB
+is able to do this by recognizing the valid certificate in ACM. This is why we need to ensure we have a valid
+certificate for our domains.
+
+You can validate your cert is picked up by the ALB by checking the ALB's target group. You should see the certificate
+listed under the `Certificates` tab.
+
+## Troubleshooting
+
+The problem with this comes when you need to remove a subdomain or ACM certificate. By running
+`atmos terraform deploy dns-delegated -s plat-<region>-dev` with `request_acm_certificate: false`, you are trying to
+destroy a single ACM certificate in an account. While this is a small scope deletion, the ACM certificate is in use by
+the ALB, and the ALB has many different targets. Thus Terraform will stall out.
+
+You need to:
+
+1. Delete the listeners and targets of the ALB that are using the certificate
+2. Delete the ALB
+3. Terraform will then successfully delete the ACM certificate.
+
+You will notice:
+
+1. The ALB will be recreated
+2. Ingresses should reconcile for service discovery domains
+3. ALB Targets should be recreated pointing at service discovery domains.
+
+Once you recreate the correct ACM certificates and have valid ingresses you should be able to access your applications
+via the vanity domain.

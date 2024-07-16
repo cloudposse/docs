@@ -261,7 +261,7 @@ aside.col.col--3 {
 }
 
 
-article {
+div > article {
   min-height: 70vh;
 }
 

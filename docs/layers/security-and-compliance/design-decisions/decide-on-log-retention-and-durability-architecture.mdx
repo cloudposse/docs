@@ -1,0 +1,66 @@
+---
+title: "Decide on Log Retention and Durability Architecture"
+sidebar_position: 100
+refarch_id: REFARCH-355
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# Decide on Log Retention and Durability Architecture
+
+## Problem
+Not all logs were created equal. Some may contain PHI (Protected Health Information) or CHD (Card Holder Data) while others are simply HTTP request logs.  Depending on regional jurisdiction (E.g. Europe), there can be other requirements (E.g. [GDPR on AWS](https://docs.aws.amazon.com/whitepapers/latest/navigating-gdpr-compliance/monitoring-and-logging.html)).
+
+We need to identify the log destinations to discuss how to handle them.
+
+### Recommendations
+- Use 90 days unless the compliance framework stipulates differently (e.g. PCI/DSS)
+
+- Use 60 days in the standard S3 storage tier and then transfer to glacier for the last 30 days.
+
+## Considerations
+
+### Which Logs are in Scope?
+- **Cloud Trails** (AWS API logs)
+
+- **CloudWatch** Logs (platform logs)
+
+- **Datadog** Logs (logs stored in datadog)
+
+- **Web Access Logs** (e.g. ALBs)
+
+- **WAF** Logs
+
+- **Shield** Logs
+
+- **VPC flow logs** (these are huge - every packet that flows through the VPC)
+
+- **Application logs** (the events emitted from your applications)
+
+### How are logs handled?
+For everything in scope, we need to address:
+
+- Where should logs be aggregated (e.g. S3 bucket in audit account, datadog)?
+
+- Do logs need to be replicated to any backup region?
+
+- Should logs be versioned?
+
+- Which logs should get forwarded to Datadog? (e.g. ALBs, flow logs, cloud trails, etc)
+
+- How long is the log data online (e.g. easily accessible vs cold storage like [Glacier](https://aws.amazon.com/s3/storage-classes/glacier/))?
+
+- Does any of the data contain PHI, PII, CHD, etc.?
+
+- Are there any data locality, data residency restrictions on logs? e.g. Can logs pass regional boundaries (E.g. for GDPR compliance logs may need to stay in EU)?
+
+- What’s the tolerance for the latency of accessing log events (e.g. can it be hours or needs to be within seconds)?
+
+### References
+- [https://docs.aws.amazon.com/whitepapers/latest/navigating-gdpr-compliance/monitoring-and-logging.html](https://docs.aws.amazon.com/whitepapers/latest/navigating-gdpr-compliance/monitoring-and-logging.html)
+
+- [https://www.pcidssguide.com/what-are-the-pci-dss-log-retention-requirements/](https://www.pcidssguide.com/what-are-the-pci-dss-log-retention-requirements/)
+
+- [https://aws.amazon.com/s3/storage-classes/glacier/](https://aws.amazon.com/s3/storage-classes/glacier/)
+
+
