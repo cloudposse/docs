@@ -40,9 +40,18 @@ class ModuleFetcher(AbstractFetcher):
 
     def __fetch_submodules(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, SUBMODULES_DIR)
+        readme_files = {}
 
         for remote_file in remote_files:
-            if os.path.basename(remote_file) != README_MD:
-                continue
+            base_name = os.path.basename(remote_file)
+            dir_name = os.path.dirname(remote_file)
 
-            self.github_provider.fetch_file(repo, remote_file, module_download_dir)
+            if base_name == README_YAML:
+                readme_files[dir_name] = remote_file
+            elif base_name == README_MD and dir_name not in readme_files:
+                readme_files[dir_name] = remote_file
+
+        for readme_file in readme_files.values():
+            self.github_provider.fetch_file(repo, readme_file, module_download_dir)
+            if os.path.basename(readme_file) == README_YAML:
+                self._fetch_docs(repo, module_download_dir, submodule_dir=os.path.dirname(readme_file))

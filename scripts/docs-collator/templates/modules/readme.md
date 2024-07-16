@@ -1,5 +1,5 @@
-{{- defineDatasource "config" .Env.README_YAML | regexp.Replace ".*" "" -}}
-{{- defineDatasource "includes" .Env.README_INCLUDES | regexp.Replace ".*" "" -}}
+{{- defineDatasource "config" .Env.README_YAML -}}
+{{- defineDatasource "readmeIncludesDir" .Env.README_INCLUDES -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
 {{- $shortModuleName := (index ($fullModuleName | strings.SplitN "-" 3) 2) -}}
@@ -17,6 +17,7 @@ tags:
 {{- end }}
 custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master/README.md
 ---
+
 
 # Module: `{{ $shortModuleName }}`
 
@@ -75,7 +76,7 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" $file) }}
+{{ (include "readmeIncludesDir" $file) }}
 {{- end }}
 {{- end }}
 {{- end }}

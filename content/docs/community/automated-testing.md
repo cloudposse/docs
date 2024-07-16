@@ -5,9 +5,9 @@ description: 'Our automated testing strategy and resources'
 
 ## Terraform Testing
 
-All of our Terraform modules have automated tests. We have two sets of checks: 
+All of our Terraform modules have automated tests. We have two sets of checks:
 
-- The first set of checks is executed through the feature-branch workflow, which can be found [here](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml) 
+- The first set of checks is executed through the feature-branch workflow, which can be found [here](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml)
 This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they *are automatically run* on every commit.
 Before committing and pushing your changes, you can and should run this set of checks locally by executing the following command on your host
 ```
@@ -58,9 +58,8 @@ To initialize one of our modules with chatops, run the following commands:
 1. `git clone` the terraform module repository
 1. `cd $repo` to enter the repository directory
 1. `make init` to initialize the build-harness
-1. `make github/init` to write all the scaffolding
 1. `git add *` to add the changes
-1. Add the build badge to the `README.yaml` under the `badges` section. 
+1. Add the build badge to the `README.yaml` under the `badges` section.
 1. `make readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
-1. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/terraform-github-repository-webhooks/pull/17).
+1. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/atmos/pull/555).
 1. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)

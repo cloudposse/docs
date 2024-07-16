@@ -9,7 +9,7 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 
 `atmos` is both a command-line tool and Golang module for provisioning, managing and orchestrating workflows across various toolchains including `terraform` and `helmfile`.
 
-The `atmos` tool is part of the SweetOps toolchain and was built to make DevOps and Cloud automation easier across multiple tools. It has direct support for automating Terraform, Helmfile. By utilizing [Stacks](/reference-architecture/fundamentals/tools/stacks), `atmos` enable you to effortlessly manage your Terraform and Helmfile [Components](/components) from your local machine, in your CI/CD pipelines, or using [spacelift](/components/library/aws/spacelift/).
+The `atmos` tool is part of the SweetOps toolchain and was built to make DevOps and Cloud automation easier across multiple tools. It has direct support for automating Terraform, Helmfile. By utilizing [Stacks](/fundamentals/stacks), `atmos` enable you to effortlessly manage your Terraform and Helmfile [Components](/components) from your local machine, in your CI/CD pipelines, or using [spacelift](/components/library/aws/spacelift/).
 
 ## Problem
 A modern infrastructure depends on lots of various tools like terraform, packer, helmfile, helm, kubectl, docker, etc. All these tools have varying degrees of configuration support, but most are not optimized for defining DRY configurations across dozens or hundreds of environments. Moreover, the configuration format is very different between the tools, but usually, boils down to some kind of key-value configuration in either JSON or YAML. This lack of configuration consistency poses a problem when we want to make it easy to declaratively define the settings that end-users should care about.
@@ -313,7 +313,7 @@ For example, to run the `deploy-all` workflow from the [workflows](https://githu
 ## Recommended Filesystem Layout
 
 :::info
-For an example of what this looks like within [Geodesic](/reference-architecture/fundamentals/tools/geodesic) see the section on “Filesystem Layout”
+For an example of what this looks like within [Geodesic](/fundamentals/geodesic) see the section on “Filesystem Layout”
 
 :::
 
@@ -356,7 +356,7 @@ infrastructure/
 
 Atmos supports a CLI configuration to define configure the behavior working with stacks and components.
 
-In [Geodesic](/reference-architecture/fundamentals/tools/geodesic) we typically put this in `/usr/local/etc/atmos/atmos.yaml` (e.g. in `rootfs/...` in the `infrastructure` repository). Note this file uses the stack config format for consistency, but we do not consider it a stack configuration.
+In [Geodesic](/fundamentals/geodesic) we typically put this in `/usr/local/etc/atmos/atmos.yaml` (e.g. in `rootfs/...` in the `infrastructure` repository). Note this file uses the stack config format for consistency, but we do not consider it a stack configuration.
 
 The CLI config is loaded from the following locations (from lowest to highest priority):
 
@@ -475,6 +475,6 @@ stacks:
 
 ## Concepts
 
-- [Stacks](/reference-architecture/fundamentals/tools/stacks)
+- [Stacks](/fundamentals/stacks)
 
 - [Components](/components)

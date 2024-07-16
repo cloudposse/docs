@@ -15,20 +15,23 @@ class TerraformDocsRenderingError(Exception):
 
 
 class AbstractRenderer:
-    def _pre_rendering_fixes(self, repo, module_download_dir):
-        readme_yaml_file = os.path.join(module_download_dir, README_YAML)
+    def _pre_rendering_fixes(self, repo, module_download_dir, submodule_dir=""):
+        readme_yaml_file = os.path.join(module_download_dir, submodule_dir, README_YAML)
         content = io.read_file_to_string(readme_yaml_file)
         content = rendering.remove_targets_md(content)
-        content = rendering.rename_name(repo, content)
+        if submodule_dir == "":
+            content = rendering.rename_name(repo.name, content)
+        else:
+            content = rendering.rename_name("pre-fix-" + os.path.basename(submodule_dir), content)
         io.save_string_to_file(readme_yaml_file, content)
 
-    def _post_rendering_fixes(self, repo, readme_md_file):
+    def _post_rendering_fixes(self, repo, readme_md_file, submodule_dir=""):
         content = io.read_file_to_string(readme_md_file)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
-        content = rendering.fix_github_edit_url(content, repo)
-        content = rendering.fix_sidebar_label(content, repo)
-        content = rendering.replace_relative_links_with_github_links(repo, content)
+        content = rendering.fix_github_edit_url(content, repo, submodule_dir)
+        content = rendering.fix_sidebar_label(content, repo, os.path.basename(submodule_dir))
+        content = rendering.replace_relative_links_with_github_links(repo, content, submodule_dir)
         io.save_string_to_file(readme_md_file, content)
 
     def _copy_extra_resources_for_docs(self, module_download_dir, module_docs_dir):

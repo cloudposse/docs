@@ -64,13 +64,16 @@ def shift_headings(content):
     return '\n'.join(fixed_lines)
 
 
-def fix_sidebar_label(content, repo):
-    provider, module_name = parse_terraform_repo_name(repo.name)
+def fix_sidebar_label(content, repo, submodule_name=""):
+    module_name = submodule_name
+    if not module_name:
+        provider, module_name = parse_terraform_repo_name(repo.name)
     return SIDEBAR_LABEL_REGEX.sub(f'sidebar_label: {module_name}', content)
 
 
-def fix_github_edit_url(content, repo):
-    github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/blob/{repo.default_branch}/README.yaml"
+def fix_github_edit_url(content, repo, submodule_dir=""):
+    subdir = f"/{submodule_dir}" if submodule_dir else ''
+    github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/blob/{repo.default_branch}{subdir}/README.yaml"
     return CUSTOM_EDIT_URL_REGEX.sub(github_edit_url, content)
 
 
@@ -89,8 +92,8 @@ def remove_prefix(string, prefix):
         return string[len(prefix):]
 
 
-def rename_name(repo, content):
-    return NAME_REGEX.sub(f'name: {repo.name}', content)
+def rename_name(name, content):
+    return NAME_REGEX.sub(f'name: {name}', content)
 
 
 def parse_terraform_repo_name(name):
@@ -119,13 +122,13 @@ def replace_relative_links_with_github_links(repo, content, relative_path=None):
         updated_link = link
 
         # remove leading './' or '/'
-        if link.startswith('./'):
-            updated_link = updated_link.replace('./', '', 1)
-        elif link.startswith('/'):
+        if link.startswith('/'):
             updated_link = updated_link.replace('/', '', 1)
-
-        if relative_path:
-            updated_link = f"{relative_path}/{updated_link}"
+        else:
+            if link.startswith('./'):
+                updated_link = updated_link.replace('./', '', 1)
+            if relative_path:
+                updated_link = f"{relative_path}/{updated_link}"
 
         content = content.replace(f"]({link})", f"](https://github.com/{repo.full_name}/tree/{repo.default_branch}/{updated_link})")
 

@@ -1,0 +1,357 @@
+---
+title: "Error: Values Cannot Be Determined Until Apply"
+description: "Details about computed values can cause `terraform plan` to fail"
+slug: "terraform-unknown-at-plan-time"
+tags:
+  - "Best Practices"
+  - "Terraform"
+  - "Terraform in Depth"
+categories:
+  - "Community Resources"
+  - "Terraform"
+  - "Terraform in Depth"
+---
+
+![Terraform](/assets/08bcd99-terraform.png)
+
+# Terraform in Depth
+
+This article is part of our [Terraform in Depth](/category/terraform-in-depth)
+series, where we dive into
+advanced details of Terraform that require a deeper understanding of Terraform
+and longer explanation than are required for our other Terraform articles.
+
+## Terraform Errors When Planning: Values Cannot Be Determined Until Apply
+
+One of the more frustrating errors you can encounter when using Terraform is
+an error message referring to a value "that cannot be determined until
+apply". These are often referred to as "unknown at plan time" errors, in
+part because they show up when running `terraform plan`.
+
+```
+Error: Invalid count argument
+
+The "count" value depends on resource attributes that cannot be determined
+until apply, so Terraform cannot predict how many instances will be created.
+```
+
+These errors always occur in the context of creating a variable number of
+resources, and they can be confusing, because it can appear to the user that
+the value in question should be known at plan time. In fact, the same code
+will sometimes work and sometimes not, depending on the specific details of
+how it is used and the state of the infrastructure. This is a particular
+problem for authors of reusable Terraform modules, because they need to be
+aware of potential problems that may occur when their module is used in
+contexts they did not anticipate.
+
+In this article, we will explain what these errors mean, why they occur, and
+how to avoid them.
+
+### The Two-Phase Execution Model
+
+To begin with, Terraform implements a [two-phase execution model](https://developer.hashicorp.com/terraform/intro/core-workflow).
+
+1. The first phase is the "plan" phase, where Terraform determines what changes
+   are necessary to achieve the desired state.
+2. The second phase is the "apply" phase, where Terraform makes the changes
+   determined to be required during the plan phase.
+
+The rationale for this two-phase model is to allow Terraform to show you what
+changes it will make before it makes them. Terraform is designed so that it
+make no changes during the plan phase, making it always safe to run `terraform plan`.
+Then, during the apply phase, it will only make the changes you approved
+from the plan phase.
+
+The error message above only occurs during the plan phase, and it means that
+some value that Terraform needs to know in order to plan the changes is not
+known while executing the plan phase. It implies that the value is properly
+defined, but that it depends on some value that will be generated during the
+apply phase.
+
+
+### When Does an Unknown Value Cause a Plan to Fail?
+
+Terraform always requires you to approve any changes before it makes them,
+but it does not always show you the exact details of the changes it will make.
+
+#### Unknown Individual Attribute Values are Allowed in a Plan
+
+It is impractical for Terraform to compute every detail of the changes it will
+make during the apply phase, and therefore some details can be declared
+"unknown" at plan time but still allow the plan to succeed and be approved.
+In general, the value of a resource attribute is allowed to be unknown, and
+the plan will show that the attribute will change, but show that the new value
+is unknown, or, more specifically: `(known after apply)`.
+
+For example, consider the case where you want to create a new compute instance
+and then add
+it as a target to a load balancer. Terraform will not know the specific IP
+address of the compute instance until it is created, so it cannot show you
+the exact details of how it will be added as a target to the load balancer.
+Instead, it will show you that it will add a target to the load balancer,
+and you will have to approve that change without knowing the exact details.
+<small>(The alternative would be to require that you create the compute
+instance in
+one configuration, obtain its IP address from that configuration, and then
+use that IP address in a second configuration to add it as a target to the
+load balancer. If you want that level of control, you can set up your
+configurations to work that way, but in most cases, people prefer to manage
+as much as possible with a single configuration.)</small>
+
+#### Resource Creation and Destruction Always Require Explicit Approval
+
+Terraform always requires explicit approval to create or destroy a resource.
+It also allows you to create a number of resources of the same type using a
+parameter with `count` or `for_each` to determine how many to create. For
+example:
+
+```hcl
+resource "aws_instance" "bastion" {
+  count = length(var.availability_zones)
+  # ...
+}
+```
+
+This feature is also used in practice to create a resource conditionally:
+
+```hcl
+resource "aws_instance" "bastion" {
+  count = var.bastion_enabled ? 1 : 0
+  # ...
+}
+```
+
+Terraform needs to know how many resources to create during the plan phase or
+the plan will fail with an error message like the one at the beginning of
+this article.
+
+### What is Known and Unknown at Plan Time, Part 1: The Obvious
+
+In the planning phase, Terraform knows the current state of the infrastructure,
+and some information provided to it via variables and data sources, but it does
+not know the future state of the infrastructure. (The exact amount of data
+available at plan time, particularly from data sources, and the freshness of
+the data from data sources, has varied over time as Terraform has matured,
+with the general direction being that more data is available at plan time
+and less data remains unknown. For example, you can tell
+Terraform to create a new compute instance, and you can tell it what IP address
+to assign to that instance, at which point Terraform with know the IP of the
+instance at plan time. Alternatively, you can not supply
+an IP address, and the cloud provider will assign one, but then Terraform
+does not know the IP address at plan time, either. In either case, Terraform
+will not know the specific instance ID until it creates the instance.
+
+It is important to note that:
+
+- In terms of known versus unknown, `null` was not a special value
+  [prior to Terraform version 1.6](https://github.com/hashicorp/terraform/issues/26755#issuecomment-1771450399).
+  If you create a resource, its ID is not known at plan time. Even if you know that
+  successful creation of the resource will result in a non-null ID, Terraform
+  may not, and a test like `id == null` may fail as being unknown at plan
+  time.
+- Because this behavior is changing in Terraform, but some people are still
+  using older versions or switching to open source forks due to licensing
+  issues, it is important for authors of reusable modules to be aware that
+  this limitation may exist for many users but be invisible to the module
+  author because they are testing their code with a newer version of Terraform.
+- Passing values into or out of a module usually does affect whether Terraform
+  knows the value is `null` or not at plan time. For example, if you had a
+  module that would create an EBS volume when an instance is created, you
+  might have a snippet like this:
+
+```hcl
+resource "aws_ebs_volume" "example" {
+  count = module.ec2_instance.bastion.id != null ? 1 : 0
+  # ...
+}
+```
+
+In this case, Terraform will not know the value of
+`module.ec2_instance.bastion.id` at plan time. Passing the instance ID into
+a module does not change that. <small>(You could, in Terraform version 1.6,
+declare
+the input non-nullable (`nullable = false`), and then Terraform would know
+that the value is not `null` at plan time, but if you did that, then you would
+never get the `id == null` condition and always create the EBS volume, so
+that is not a real solution, if you want to make the creation of the EBS
+volume conditional)</small>
+
+It is on Hashicorp's roadmap to allow resource providers
+to declare attributes to be null or non-null at plan time, but you should
+not rely on that. Rather, you should be aware that your testing may not turn
+up this issue because you are using later versions of Terraform and
+providers, but you should still guard against it.
+
+:::tip
+Using the _value_ of a module input to conditionally create resources is a
+common source of issues in a reusable module. When the
+module is called with a configured value, as can be common when testing, the
+module works fine, but if the value is not known at plan time, which is
+common in actual use when the value is computed from other resources,
+the module will fail. Using a `random_integer` with a `keeper` of `timestamp()`
+can help you simulate the behavior of a value that is not known at plan
+time during testing and catch these kinds of issues ahead of time.
+
+Best practice is to either use a separate boolean input (e.g.
+`ebs_volume_enabled`) to condition the resource creation, or to take the
+optional value as an element of a list and use the length of the list to
+determine whether to create the resource. See [Use feature flags or lists to
+control optional behaviors](/reference/best-practices/terraform-best-practices/#use-feature-flags-to-enabledisable-functionality)
+for more information.
+:::
+
+### What is Known and Unknown at Plan Time, Part 2: The Less Obvious
+
+#### The State of the Infrastructure Is Known at Plan Time
+
+Hopefully it is obvious to see why Terraform would complain about not knowing
+how many null resources to create in the following example:
+
+```hcl
+resource "random_integer" "example" {
+  min = 1
+  max = 2
+}
+resource "null_resource" "example" {
+  count = random_integer.example.result
+}
+```
+
+(Here we use `random_integer` to represent a computed value unknown at
+plan time, and `null_resoure` to represent a dependent resource, so
+that you can easily try these examples on your own.)
+
+Terraform does not know if it should create one or two null resources until
+it knows the value of `random_integer.example.result`. However, if you run
+
+```
+terraform apply -target=random_integer.example -auto-approve
+```
+
+so that the `random_integer.example` resource is created, it becomes
+part of the infrastructure, and Terraform has a known value for
+`random_integer.example.result` at plan time. Therefore, if you run
+`terraform apply` after that, it will succeed.
+
+This is both the good news and the bad news:
+- The good news is that Terraform will not complain about theoretically
+  unknown values in most cases where it can figure out the value during the
+  plan phase. (Not in all cases, though, [as we will see below](#the-results-are-the-same-but-the-path-to-get-there-is-different).)
+  This means that if you use a module that uses an input variable to
+  determine how many resources to create, and you provide a value for that
+  input variable that is known at plan time, then Terraform will not complain.
+- The bad news is that Terraform will not complain about theoretically unknown
+  values in most cases where it can figure out the value during the plan phase.
+  This means that you can write Terraform code that will work in some cases
+  and not in others, and you may not realize it because it works when you
+  try it.
+
+#### Known Values Can Be Transformed Into Unknown Values in Non-Obvious Ways
+
+##### The Results are the Same, but the Path to Get There is Different
+
+The following example is a bit more subtle. Using the same `random_integer`
+resource as above, say we want to choose from 1 of 2 configurations,
+rather than directly affect the number of resources created. For
+example, we want to configure subnet IDs based on whether the
+resource is in public or private subnets. Consider the
+following code:
+
+```hcl
+locals {
+  visibility = random_integer.example.result == 1 ? "public" : "private"
+  config_map = {
+    public = {
+      subnets = ["subnet-0abcd1234efgh5678", "subnet-1abcd1234efgh5679"]
+    }
+    private = {
+      subnets = ["subnet-2abcd1234efgh5678", "subnet-3abcd1234efgh5679"]
+    }
+  }
+}
+resource "null_resource" "example" {
+  count = length(local.config_map[local.visibility].subnets)
+}
+```
+
+This will fail, even though the value of `random_integer.example.result` is
+irrelevant to the number of resources created. Regardless of the value
+of `random_integer.example.result`, Terraform should create 2 resources.
+However, Terraform is not so sophisticated that it can figure out
+that the keys of the possible maps yield lists of the same length,
+regardless of which map is chosen. Instead, it will say that the value of
+`random_integer.example.result` is unknown, so the element of `local.config_map`
+is unknown, and so on.
+
+This is what we referred to above as where Terraform will complain about
+theoretically unknown values in some cases where it actually could figure out
+the value during the plan phase.
+
+###### One Solution to This Particular Problem
+```hcl
+locals {
+  visibility = random_integer.example.result == 1 ? "public" : "private"
+  config_map = {
+    public = {
+      subnets = ["subnet-0abcd1234efgh5678", "subnet-1abcd1234efgh5679"]
+    }
+    private = {
+      subnets = ["subnet-2abcd1234efgh5678", "subnet-3abcd1234efgh5679"]
+    }
+  }
+  subnets = [local.config_map[local.visibility].subnets[0], local.config_map[local.visibility].subnets[1]]
+}
+resource "null_resource" "example" {
+  count = length(local.subnets)
+}
+```
+
+:::tip
+We saw before that Terraform could not deduce that the length of
+`local.config_map[local.visibility].subnets` was 2 regardless of the value of
+`local.visibility`. However, by explicitly creating a list with 2 entries,
+Terraform knows the length of the list, and the plan will succeed. This is
+not the only way to get around the problem, but it is a common one.
+:::
+
+##### Explicit Transformations of Lists
+
+One good thing about using the length of a list to determine the count is
+that the length of the list can be known even if the values of the list are
+not. As we saw in the previous example, the length of `local.subnets` was
+known even if the subnet IDs in the list were not, ant that was sufficient.
+
+On the other hand, transformations of a list with unknown values can make the
+length of the list once again unknown.
+
+- `compact` will remove `null` values from a list and `flatten` will remove
+  empty nested lists (`length(flatten(1, [], 2)` is 2), so the length of the
+  list will become unknown unless all of the values are known, even if you
+  as a human can tell there are no `null` values or empty nested lists.
+- `distinct` and `toset()` will remove duplicate values from a list, so again
+  the length of the list will become unknown unless all of the values are known.
+- `sort`, prior to Terraform version 1.6, [would make the length of the list
+  unknown](https://github.com/hashicorp/terraform/issues/31035) unless all of the values were known.
+
+:::tip
+When providing a list that will be used to determine the number of resources
+to create, it is important to avoid using any transformations that can cause
+the length of the list to become unknown.
+:::
+
+
+##### Implicit Transformations of Maps
+
+For reasons detailed in [Terraform Count vs For Each](/reference/terraform-in-depth/terraform-count-vs-for-each.md),
+it is usually preferable to use `for_each` rather than `count` to create
+multiple resources. However, when using `for_each`, it is required that all
+of the keys be known at plan time. If you use a list of strings to make the
+keys, such as via `zipmap` or a `for` expression, then the list is implicitly
+transformed into a set via the equivalent of `distinct(compact(list))`. As
+explained [above](#explicit-transformations-of-lists), this will make the
+length of the list unknown unless all of the values are known at plan time.
+
+In general, keys to map inputs should be user-supplied configuration values
+given as inputs, and not computed values. Most of the benefits of using maps
+over lists are lost if you use computed values as keys, so only use lists
+where it is likely that users can supply the keys.

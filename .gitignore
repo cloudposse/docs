@@ -7,6 +7,16 @@
 # Generated files
 .docusaurus
 .cache-loader
+/layouts
+/public
+/resources
+/themes
+/tmp
+
+/static/css
+/static/js
+/static/styleguide
+/static/webfonts
 
 # Misc
 .env

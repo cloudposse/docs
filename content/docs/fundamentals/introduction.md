@@ -34,7 +34,7 @@ How does it differentiate from these solutions?
 
 1. It's 100% Open Source: SweetOps [is on GitHub](https://github.com/cloudposse) and is free to use with no strings attached under Apache 2.0.
 1. It's comprehensive: SweetOps is not only about Terraform. It provides patterns and conventions for building cloud native platforms that are security focused, Kubernetes-based, and driven by continuous delivery.
-1. It's community focused: SweetOps has [over 3400 users in Slack](https://sweetops.com/slack/), well-attended weekly office hours, and a [budding community forum](https://ask.sweetops.com/).
+1. It's community focused: SweetOps has [over 9000 users in Slack](https://sweetops.com/slack/), well-attended weekly office hours, and a [budding community forum](https://ask.sweetops.com/).
 
 
 ## How is this documentation structured?

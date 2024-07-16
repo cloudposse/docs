@@ -12,7 +12,7 @@ Stacks are a way to express the complete infrastructure needed for an environmen
 
 Stacks are a central SweetOps abstraction layer that is used to instantiate [Components](/components). They’re a set of YAML files [that follow a standard schema](https://github.com/cloudposse/atmos/blob/master/docs/schema/stack-config-schema.json) to enable a **fully declarative description of your various environments**. This empowers you with the ability to separate your infrastructure’s environment configuration settings from the business logic behind it (provided via components).
 
-SweetOps utilizes a custom YAML configuration format for stacks because it’s an easy-to-work-with format that is nicely portable across multiple tools. The stack YAML format is natively supported today via [Atmos](/reference-architecture/fundamentals/tools/atmos) , [the terraform-yaml-stack-config module](https://github.com/cloudposse/terraform-yaml-stack-config), and [Spacelift](https://spacelift.io/) via [the terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation).
+SweetOps utilizes a custom YAML configuration format for stacks because it’s an easy-to-work-with format that is nicely portable across multiple tools. The stack YAML format is natively supported today via [Atmos](/fundamentals/atmos) , [the terraform-yaml-stack-config module](https://github.com/cloudposse/terraform-yaml-stack-config), and [Spacelift](https://spacelift.io/) via [the terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation).
 
 :::note
 Stacks define a generic schema for expressing infrastructure
@@ -36,7 +36,7 @@ Stacks define a generic schema for expressing infrastructure
 We have a number of important conventions around stacks that are worth noting.
 
 :::info
-Make sure you’re already familiar with the core [Concepts](/reference-architecture/fundamentals/tools/concepts).
+Make sure you’re already familiar with the core [Concepts](/fundamentals/concepts).
 
 :::
 
