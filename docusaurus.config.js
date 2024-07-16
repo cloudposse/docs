@@ -1,11 +1,22 @@
 // @ts-check
 const lightCodeTheme = require('prism-react-renderer').themes.vsDark;
 const darkCodeTheme = require('prism-react-renderer').themes.nightOwl;
+const fs = require('fs');
+const path = require('path');
+
+// Define the directory containing your CSS files
+const cssDirectory = path.resolve(__dirname, './src/css');
+
+// Read all CSS files from the directory
+const customCssFiles = fs.readdirSync(cssDirectory)
+  .filter(file => file.endsWith('.css'))
+  .map(file => require.resolve(path.join(cssDirectory, file)));
+
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'The Cloud Posse Developer Hub',
-  tagline: 'Welcome to the Cloud Posse developer hub. You\'ll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let\'s jump right in!',
+  tagline: 'Welcome to the Cloud Posse Reference Architecture documentation portal. You\'ll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let\'s jump right in!',
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
@@ -48,7 +59,7 @@ const config = {
               exclude: ['README.md'],
           },
           theme: {
-              customCss: require.resolve('./src/css/custom.css'),
+              customCss: customCssFiles,
           },
 
       }),

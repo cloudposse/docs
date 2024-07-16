@@ -4,6 +4,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import Container from "../../../components/container/container";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
+import PrimaryCTA from '@site/src/components/PrimaryCTA'
+import SecondaryCTA from '@site/src/components/SecondaryCTA'
 
 export default function Hero() {
     const {siteConfig} = useDocusaurusContext();
@@ -23,13 +25,13 @@ export default function Hero() {
                     </div>
                     <div>
                         <div>
-                            <h1 className="hero__title">The Cloud Posse</h1>
-                            <h1 className="hero__title">Developer Hub</h1>
+
+                            <h1 className="hero__title">Reference Architecture</h1>
                             <p className="hero__subtitle">{siteConfig.tagline}</p>
                         </div>
                         <div className={styles.buttons}>
-                          <Link className="button button--secondary button--lg" to="/intro" style={{ marginRight: 10 }}>Get Started</Link>
-                          <Link className="button button--success button--lg" href="https://cloudposse.com/">Accelerate</Link>
+                          <PrimaryCTA to="/learn">Get Started</PrimaryCTA>
+                          <SecondaryCTA to="https://cloudposse.com/">Get a Jumpstart</SecondaryCTA>
                         </div>
                     </div>
                 </div>

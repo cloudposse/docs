@@ -4,10 +4,6 @@
  * work well for content-centric websites.
  */
 
-.navbar__title {
-    font-size: 2em;
-}
-
 .menu__list-item-collapsible {
     font-weight: bold;
 }
@@ -17,68 +13,22 @@
 }
 
 body {
+    background-color: var(--ifm-background-color);
     background-position: 98% 98%;
     background-repeat: no-repeat;
     background-size: 15em;
     background-attachment: fixed;
-    font-family: "Lato", sans-serif;
-}
-
-/*
-nav.navbar {
-    -webkit-box-shadow: 0 4px 16px rgb(0 0 0 / 24%);
-    box-shadow: 0 4px 16px rgb(0 0 0 / 24%);
-}
-*/
-
-/* .menu__link {
-    order: 1;
-} */
-
-.navbar-cta-button {
-    color: var(--ifm-button-color);
-    font-weight: bolder;
-    order: 2;
-    margin-left: 2em;
-}
-
-.navbar-cta-button:hover {
-    color: var(--ifm-button-color);
-}
-
-.navbar-sidebar__item .navbar-cta-button {
-    margin-left: inherit;
-}
-
-
-.header-accelerate-button {
-    color: #ebedf0;
-}
-
-.header-accelerate-button:hover {
-    color: #ebedf0;
-}
-
-.menu__caret:before {
-    background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem;
-}
-
-li > ul.menu__list {
-    margin-left: 1em;
-}
-
-.theme-admonition {
-    max-width: 1200px;
+    font-family: 'Optimistic Text', -apple-system, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-size: 17px;
+    line-height: 30px;
 }
 
 .pagination-nav__link {
     max-width: 700px;
 }
 
-
 /* You can override the default Infima variables here. */
 :root {
-    --ifm-container-width-xl: 90%;
     --ifm-code-font-size: 95%;
     --ifm-menu-color: var(--c-gray-100);
     --ifm-menu-link-padding-horizontal: 0.25rem;
@@ -97,7 +47,7 @@ li > ul.menu__list {
     --aa-input-border-color-alpha: var(--ifm-toc-border-color);
     --aa-primary-color-rgb: var(--ifm-toc-border-color) !important;
 
-    --ifm-button-color: white;
+    --mg-bg: rgb(16 36 69 / 27%);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -110,8 +60,13 @@ li > ul.menu__list {
     --ifm-color-primary-lighter: #72a1ed;
     --ifm-color-primary-lightest: #9abcf2;
     --ifm-card-background-color: #eeeeee14;
+    --ifm-button-color: #ccc;
     --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-    --ifm-button-color: white;
+}
+
+[data-theme='dark'] ::selection {
+    color: #67ffded2;
+    background-color: #00fff61d;
 }
 
 .button--lg {
@@ -139,14 +94,11 @@ li > ul.menu__list {
     background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E") no-repeat;
 }
 
-[data-theme='dark'] ::selection {
-    color: #000;
-    background-color: yellow;
-}
-
 html[data-theme='dark'] {
-    --ifm-background-color: #1e2125;
-    --ifm-background-surface-color: #1b1e22;
+    --ifm-background-surface-color: #030711;
+    --ifm-navbar-background-color: #030711;
+    --ifm-background-color: #030711;
+    background: transparent;
 }
 
 table tr td {
@@ -224,16 +176,6 @@ html[data-theme='dark'] {
     background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E") no-repeat;
 }
 
-.footer {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.footer__copyright {
-  text-align: center;
-  margin: 0 var(--ifm-spacing-horizontal);
-  font-size: 11px;
-}
 
 svg.landingLogo path {
   fill: #ebedf0
@@ -283,31 +225,6 @@ svg.landingLogo path {
   text-decoration: line-through;
 }
 
-.footer__logo {
-    max-width: 80%;
-}
-.footer__links {
-    width: 75%;
-    float: right;
-}
-.footer__bottom {
-    width: 25%;
-}
-.footer__bottom > div {
-    text-align: left;
-}
-.footer--dark {
-    --ifm-footer-background-color: #0a1922;
-    --ifm-footer-padding-vertical: 85px;
-}
-.footer__copyright {
-    margin-left: 0;
-}
-
-.footer__bottom > div > a {
-    opacity: 0.9;
-}
-
 .github_buttons > ul {
   list-style-type: none;
   padding-left: 0px;
@@ -341,42 +258,4 @@ svg.landingLogo path {
 
 aside.col.col--3 {
     --ifm-col-width: calc(2.5 / 12 * 100%);
-}
-
-
-/**
- * Imported from atmos.tool
- */
-
-li.menu__list-item.hidden {
-    display: none;
-}
-
-li.sidebar-title > div > a.menu__link {
-    text-transform: uppercase;
-    color: #b1b1b1;
-}
-
-li.sidebar-title {
-    border-top: 1px solid #6666663b;
-    padding-top: 1.2em;
-    margin-top: 1.2em;
-}
-
-li.sidebar-title:first-child {
-    border-top: none;
-    margin-top: inherit;
-}
-
-li.sidebar-title.menu__list-item:not(:first-child) {
-    margin-top: 1.2em !important;
-}
-
-li.sidebar-title > ul:first .menu__list .menu__list {
-    padding-left: 0;
-}
-
-.sidebar-title > ul.menu__list {
-    margin-left: 0;
-    padding-left: 0;
 }
