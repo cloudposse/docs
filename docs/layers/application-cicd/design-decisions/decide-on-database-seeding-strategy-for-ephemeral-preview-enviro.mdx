@@ -1,15 +1,14 @@
 ---
 title: "Decide on Database Seeding Strategy for Ephemeral Preview Environments"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171619913/REFARCH-144+-+Decide+on+Database+Seeding+Strategy+for+Ephemeral+Preview+Environments
+sidebar_label: "Database Seeding Strategy"
 sidebar_position: 100
 refarch_id: REFARCH-144
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Database Seeding Strategy for Ephemeral Preview Environments
-
 ## Problem
+
 We need to decide how to provision databases for use with preview environments. These databases must come up very quickly (e.g. 10-20 seconds rather than 20-30 minutes it takes for RDS). Once these databases come online, we need to have data staged for them to be useful. Restoring very large database dumps can be very slow and we need to update database dumps and scrub them. We typically cannot (and should not) use snapshots directly from production due to constraints around how we must handle PII, PHI, CDH, etc.
 
 :::caution

@@ -1,12 +1,11 @@
 ---
 title: "Decide on Seeding Strategy for Staging Environments"
+sidebar_label: "Seeding Strategy for Staging"
 sidebar_position: 100
 refarch_id: REFARCH-423
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# Decide on Seeding Strategy for Staging Environments
 
 ## Problem
 Longer-lived staging environments need a dataset that closely resembles production. If this dataset becomes stale, we’ll not be effectively testing releases before they hit production. Restoring snapshots from production is not recommended.

@@ -1,15 +1,14 @@
 ---
 title: "Decide on GitHub Actions Workflow Organization Strategy"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171947681/REFARCH-421+-+Decide+on+GitHub+Actions+Workflow+Organization+Strategy
+sidebar_label: "GitHub Actions Workflow Organization Strategy"
 sidebar_position: 100
 refarch_id: REFARCH-421
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on GitHub Actions Workflow Organization Strategy
-
 ## Problem
+
 GitHub Actions Workflow files scattered in repositories throughout the GitHub organization can quickly violate the DRY principle if they contain repeated code.
 
 ## Considerations
@@ -17,6 +16,7 @@ GitHub Actions Workflow files scattered in repositories throughout the GitHub or
 ### Standardize Workflows Across the Organization
 
 ### Metrics and Observability
+
 With appropriate metrics, you’ll be able to answer questions like:
 
 - Are we deploying faster? ...or slowing down?
@@ -30,16 +30,19 @@ See [https://www.datadoghq.com/blog/datadog-github-actions-ci-visibility/](https
 [https://www.leanix.net/en/wiki/vsm/dora-metrics](https://www.leanix.net/en/wiki/vsm/dora-metrics)
 
 ### Public Actions
+
 Trusted organizations for public actions
 
 Verified organizations for public actions
 
 ### Private Actions
+
 Private actions technically require GitHub Enterprise. We can do a workaround for non-enterprise organizations: an explicit `git clone` of a private actions repo.
 
 ### Shared Workflows
 
 ### Code Reusability
+
 [Composite Actions](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) can be leveraged to solve that problem. Composite Actions are very similar to GHA workflow files in that they contain multiple steps, some of which can reference open-source Actions. Still, they are not individual workflows but rather actions that another workflow can reference. These Composite Actions thus reduce code repetition within the organization.
 
 ### GitHub Script
@@ -58,6 +61,7 @@ deployment.newDeployment(JSON.parse(`${{ inputs.stages }}`))
 ```
 
 ## Recommendation
+
 - Use a private repository for reusable GitHub workflows (e.g. `acme/github-workflows`)
 
 - Use GitHub Enterprise to support approval steps
@@ -77,6 +81,7 @@ back replicas. The recommended default is 30 minutes, but no one size fits all. 
 documentation for your consideration: [scaling runners](https://github.com/actions/actions-runner-controller/blob/master/docs/automatically-scaling-runners.md)
 
 ## Related
+
 -  [Decide on Strategy for Continuous Integration](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/decide-on-strategy-for-continuous-integration)
 
 - [Decide on Self-Hosted GitHub Runner Strategy](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/decide-on-self-hosted-github-runner-strategy)

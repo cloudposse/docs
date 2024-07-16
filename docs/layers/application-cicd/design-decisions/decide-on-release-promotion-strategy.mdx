@@ -1,14 +1,14 @@
 ---
 title: "Decide on Release Promotion Strategy"
+sidebar_label: "Release Promotion Strategy"
 sidebar_position: 100
 refarch_id: REFARCH-419
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Release Promotion Strategy
-
 ### Problem and Context
+
 We need to control when a release is deployed to a given stage (E.g. dev, staging, production).
 
 We must decide how releases will be promoted from staging to production.
@@ -16,6 +16,7 @@ We must decide how releases will be promoted from staging to production.
 How that will be accomplished will depend on whether or not GitHub Enterprise features are available and whether or not it’s possible to use semantic versioning or not.
 
 ### Assumptions
+
 - Auto deployment to the `dev` stage will be triggered upon every commit to the default branch (e.g. `main`)
 
 ### Options

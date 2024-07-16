@@ -1,20 +1,13 @@
 ---
 title: Decide on Identity Provider (IdP) Integration Method
-sidebar_label: Decide on IdP Integration Method
+sidebar_label: IdP Integration Method
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Identity Provider (IdP) Integration Method
-
 ## Problem
 
-After [deciding on which IdP](/learn/identity/design-decisions/decide-on-idp/) will be used, companies need to decide on
-how they will authenticate with AWS using that IdP. Organizations require efficient and streamlined methods to
-authenticate and manage access to their AWS resources. Without a centralized or user-friendly system, managing access
-across multiple AWS organizations or accounts becomes cumbersome and prone to errors. Multiple SSO authentication
-options exist within AWS. Choosing between AWS Identity Center (SSO) and SAML requires organizations to determine which
-method aligns best with their operational structure and goals. This choice can be daunting without clear guidance.
+After [deciding on which IdP](/learn/identity/design-decisions/decide-on-idp/) will be used, companies need to decide on how they will authenticate with AWS using that IdP. Organizations require efficient and streamlined methods to authenticate and manage access to their AWS resources. Without a centralized or user-friendly system, managing access across multiple AWS organizations or accounts becomes cumbersome and prone to errors. Multiple SSO authentication options exist within AWS. Choosing between AWS Identity Center (SSO) and SAML requires organizations to determine which method aligns best with their operational structure and goals. This choice can be daunting without clear guidance.
 
 Each authentication method comes with its own set of advantages and limitations. AWS SAML offers centralized access
 across multiple organizations but may be overkill for entities with a single AWS Organization. On the other hand, AWS

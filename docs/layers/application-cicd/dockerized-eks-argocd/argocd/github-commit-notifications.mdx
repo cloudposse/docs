@@ -1,6 +1,8 @@
 ---
-title: "Synchronous Notifications"
+title: "How to setup Synchronous Notifications for ArgoCD with GitHub Commit Statuses"
+sidebar_label: "Synchronous Notifications"
 sidebar_position: 40
+description: "Setup Synchronous Notifications for ArgoCD with GitHub Commit Statuses"
 tags:
   - argocd
   - github
@@ -8,8 +10,6 @@ tags:
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# How to setup Synchronous Notifications for ArgoCD with GitHub Commit Statuses
 
 Synchronous notifications are used in ArgoCD release engineering workflows to notify an application workflow of a successful deployment. The application repo deploys an updated app manifest to the ArgoCD deployment repo. Then the ArgoCD app in the EKS cluster pulls and deploys that updated application. Depending on the result of that deployment, ArgoCD triggers a notifier.
 
