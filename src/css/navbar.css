@@ -42,10 +42,6 @@ html[data-theme='dark'] nav.navbar {
     color: #ebedf0;
 }
 
-.menu__caret:before {
-    background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem;
-}
-
 li > ul.menu__list {
     margin-left: 1em;
 }

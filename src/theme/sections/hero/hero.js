@@ -1,9 +1,7 @@
 import React from 'react';
 import styles from './hero.module.css';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import Container from "../../../components/container/container";
+import Container from "@site/src/components/container/container";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Link from '@docusaurus/Link';
 import PrimaryCTA from '@site/src/components/PrimaryCTA'
 import SecondaryCTA from '@site/src/components/SecondaryCTA'
 
@@ -25,7 +23,6 @@ export default function Hero() {
                     </div>
                     <div>
                         <div>
-
                             <h1 className="hero__title">Reference Architecture</h1>
                             <p className="hero__subtitle">{siteConfig.tagline}</p>
                         </div>
