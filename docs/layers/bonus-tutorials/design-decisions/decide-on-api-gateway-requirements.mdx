@@ -1,16 +1,16 @@
 ---
 title: "Decide on API Gateway Requirements"
+sidebar_label: "API Gateway"
 sidebar_position: 100
 refarch_id: REFARCH-540
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on API Gateway Requirements
-
 ## Context and Problem Statement
 
 ## Overview
+
 Amazon API Gateway is an AWS service designed to simplify publishing highly-scalable REST, HTTP, and WebSocket APIs. These API Gateways act as a central point of access at the edge and can access backend services running on EC2, EKS, ECS, Lambda, and AWS Services directly, such as DynamoDB, S3, or SQS. The API Gateway has several benefits over a conventional ALB in that it’s optimized for APIs: namely, it can authenticate requests, cache, rate-limiting, feature flagging, a/b testing, rewrite requests/responses, aggregate requests, etc. It’s arguably a simpler alternative to using something like a Service Mesh.
 
 ## Common Scenarios

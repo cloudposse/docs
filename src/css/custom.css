@@ -111,7 +111,6 @@ table tr td {
     aspect-ratio: 16/9 !important;
 }
 
-
 div > ul > li > a.table-of-contents__link.toc-highlight {
     font-weight: 600;
 }
@@ -260,7 +259,6 @@ aside.col.col--3 {
     --ifm-col-width: calc(2.5 / 12 * 100%);
 }
 
-
 div > article {
   min-height: 70vh;
 }
@@ -271,4 +269,8 @@ div > article {
 
 .join-slack {
   background: #000;
+}
+
+.hidden {
+  display: none;
 }

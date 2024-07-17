@@ -1,15 +1,16 @@
 ---
 title: "Decide on KMS Requirements"
+sidebar_label: "KMS Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-532
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on KMS Requirements
 AWS Key Management Service (AWS KMS) makes it easy to create and manage cryptographic keys and control their use across various AWS services and in your applications. AWS KMS is a secure and resilient service that uses hardware security modules that have been validated under FIPS 140-2, or are in the process of being validated, to protect your keys. AWS KMS is integrated with AWS CloudTrail to provide you with logs of all key usage to help meet your regulatory and compliance needs.
 
 ## Context and Problem Statement
+
 Best practice, security certifications, and compliance regulations require that data be “encrypted at rest.” AWS provides options for encrypting data at rest virtually anywhere AWS provides for data storage. However, there remain considerations regarding managing the encryption _keys_ for the encrypted data.
 
 Consideration should begin with a review of governmental, industry, and corporate compliance requirements, standards, and goals regarding encryption at rest, auditability, data localization, data preservation and recovery, high availability, and disaster recovery. Cloud Posse does not provide advice on compliance requirements, it is up to the client to determine their own needs. For example, here is AWS' approach to HIPAA compliance, summarized:

@@ -1,16 +1,18 @@
 ---
-title: "Rotate Kops Master Node Certificates"
+title: "How to Rotate Kops Master Node Certificates"
+sidebar_label: "Rotate Kops Certificates"
 sidebar_position: 100
+description: "How to Rotate Kops Master Node Certificates"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# How to Rotate Kops Master Node Certificates
-
 ## Problem
+
 Old Kubernetes clusters (deployed prior to Kubernetes 1.16.2) may require manual certificate rotation. When the certificates expire, the master nodes can no longer communicate and the cluster becomes destabilized.
 
 ## Solution
+
 If the master nodes are all still operating normally, then upgrading to Kubernetes 1.16.2 or later should fix the issue and prevent it from recurring. However, if master nodes are already off line due to expired certificates, you will need to rotate them manually.
 
 :::tip
@@ -60,6 +62,7 @@ echo | openssl s_client -connect localhost:2380 2>/dev/null | openssl x509 -noou
 ### Repeat this entire process on all master nodes
 
 ### Verify cluster healthy
+
 Wait for pods to show as `Ready`
 
 ```

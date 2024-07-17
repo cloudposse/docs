@@ -1,5 +1,6 @@
 ---
-title: "AWS SSO Login"
+title: "How to Setup Okta AWS SSO"
+sidebar_label: "AWS SSO Login"
 sidebar_position: 100
 tags:
   - okta
@@ -9,12 +10,12 @@ tags:
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# How to Setup Okta AWS SSO
-
 ## Problem
+
 Okta is a common business suite that has an active director to manage users and permissions. We need to utilize this to login to AWS.
 
 ## Solution
+
 Okta has **Applications** that are used to sign in to things from your Okta Account.
 
 ### Okta
@@ -27,6 +28,7 @@ Okta has **Applications** that are used to sign in to things from your Okta Acco
 6. Then go to Provisioning and click **Configure API Integration**
 
 ### AWS SSO
+
 1. Sign into AWS SSO under your management account (`core-root`)
 2. Go to the AWS IAM Identity Center (successor to AWS Single Sign-On) application
 3. Enable IAM Identity Center

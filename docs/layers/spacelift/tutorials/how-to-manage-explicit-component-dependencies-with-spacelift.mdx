@@ -1,11 +1,10 @@
 ---
-title: "Component Dependencies"
+title: "How to Manage Explicit Component Dependencies with Spacelift"
+sidebar_label: "Component Dependencies"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# How to Manage Explicit Component Dependencies with Spacelift
 
 ## Problem
 
@@ -18,8 +17,8 @@ Use labels in Spacelift to define the dependencies between components
 
 :::
 
-:::info
-NOTE: Our spacelift module will automatically derive dependencies based on `imports` , which means that and stack configuration (E.g. in `catalog/*`) that is imported by any other stack configuration, is now an implicit (or derived) dependency of that stack. So that means that when that upstream file that is imported is modified, it will also trigger an plan of any stack that imports it.
+:::note
+Our spacelift module will automatically derive dependencies based on `imports` , which means that and stack configuration (E.g. in `catalog/*`) that is imported by any other stack configuration, is now an implicit (or derived) dependency of that stack. So that means that when that upstream file that is imported is modified, it will also trigger an plan of any stack that imports it.
 
 - For example, if you modify `globals.yaml`, since that file is imported by every single stack, it will trigger every single stack to plan.
 
@@ -33,8 +32,7 @@ The Rego policy is defined here [https://github.com/cloudposse/terraform-spaceli
 
 For details, see PR that implemented it [https://github.com/cloudposse/terraform-provider-utils/pull/43](https://github.com/cloudposse/terraform-provider-utils/pull/43))
 
-:::caution
-**Processing** **Dependencies**
+:::caution Processing Dependencies
 
 Spacelift can only operate on dependency relationships within a single commit. There’s no way to express a dependency relationship for what should happen between multiple commits, e.g. multiple Pull Requests are merged around the same time and requiring components in one stack be applied before other stacks is not possible.
 

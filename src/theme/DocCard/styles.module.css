@@ -1,9 +1,3 @@
-/**
- * Copyright 2023 Cloud Posse, LLC
- *
- * This software is based on Docusaurus: Copyright 2022 - 2023 Facebook, Inc
- */
-
 .cardContainer {
   --ifm-link-color: var(--ifm-color-emphasis-800);
   --ifm-link-hover-color: var(--ifm-color-emphasis-700);

@@ -1,13 +1,13 @@
 ---
-title: "Spacectl"
+title: "How to use Spacectl"
+sidebar_label: "Spacectl"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# How to use Spacectl
-
 ## Problem
+
 You have many stacks that you need to manipulate in some way that the Spacelift Web UI doesn’t support or makes very cumbersome to do one by one. For example, maybe the stacks are pointing to the wrong `HEAD` commit.
 
 You need to get some data out of Spacelift for reporting purposes.
@@ -25,13 +25,13 @@ See docs [https://github.com/spaceone-dev/spacectl](https://github.com/spaceone-
 
 ### Install
 
-```
+```shell
 ⨠ apt install -y spacectl -qq
 ```
 
 ### Setup a profile
 
-```
+```shell
 ⨠ spacectl profile login acme
 Enter Spacelift endpoint (eg. https://unicorn.app.spacelift.io/): https://acme.app.spacelift.io
 Select credentials type: 1 for API key, 2 for GitHub access token: 1
@@ -41,13 +41,13 @@ Enter API key secret:
 
 ### Listing stacks
 
-```
+```shell
 spacectl stack list
 ```
 
 Grab all the stack ids (use the JSON output to avoid bad chars)
 
-```
+```shell
 spacectl stack list --output json | jq -r '.[].id' > stacks.txt
 ```
 
@@ -57,7 +57,7 @@ If the latest commit for each stack is desired, run something like this.
 
 NOTE: remove the `echo` to remove the dry-run functionality
 
-```
+```shell
 cat stacks.txt | while read stack; do
   echo $stack && echo spacectl stack set-current-commit --sha snip --id $stack;
 done

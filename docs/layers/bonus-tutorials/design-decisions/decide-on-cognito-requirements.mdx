@@ -1,19 +1,20 @@
 ---
 title: "Decide on Cognito Requirements"
+sidebar_label: "Cognito Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-525
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Cognito Requirements
-
 ## Overview
+
 Amazon Cognito provides authentication, authorization, and user management for your web and mobile apps. Users can sign in directly with a user name and password stored in Cognito or through a third party such as a SAML IdP, OIDC, Facebook, Amazon, Google, or Apple.
 
 There are two main components to Amazon Cognito: User Pools and Identity Pools. User Pools are directories of your applications’ users while Identity Pools are used to grant application users access to other AWS services such as S3. User Pools and Identity Pools can be used together or separately, depending on your needs.
 
 ## Common Scenarios
+
 There are several common use cases for Cognito, some of the most common of which are detailed below. To configure the Cognito component, we’ll need to know as much as possible about your configuration. Ideally, you’ve already set it up previously and can share the precise configuration you’re using.
 
 ### App Authentication and Authorization

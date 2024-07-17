@@ -1,14 +1,14 @@
 ---
 title: "Decide on IAM Roles for GitHub Action Runners"
+sidebar_label: "IAM Roles for GitHub Action Runners"
 sidebar_position: 100
 refarch_id: REFARCH-305
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on IAM Roles for GitHub Action Runners
-
 ## Problem
+
 In order for GitHub Actions runners to be able to access AWS resources, they need to be able to assume an IAM role.
 The trust relationship of this IAM role depends on how the Runners are hosted:
 

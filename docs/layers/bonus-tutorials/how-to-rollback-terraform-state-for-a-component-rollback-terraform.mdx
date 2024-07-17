@@ -1,18 +1,18 @@
 ---
-title: "Rollback Terraform State"
+title: "How to rollback Terraform state for a component"
+sidebar_label: "Rollback Terraform State"
 sidebar_position: 100
+description: "How to Rollback Terraform State for a Component (rollback `terraform.tfstate` file to a previous version)"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# How to Rollback Terraform State for a Component (rollback `terraform.tfstate` file to a previous version)
 
 ## Problem
 
 If Terraform state for a component gets corrupted or lost for some reason, it’s possible to rollback the terraform state to a previous version since we use S3 bucket versioning on all state objects.
 
-##
-Solution
+## Solution
+
 Components represent terraform “root” modules and their Terraform state is stored in an s3 state bucket. Rolling back to that state requires a series of commands to be executed under the appropriate IAM role.
 
 1. Assume the `root-admin` IAM role to be able to access s3 buckets in the `root` account. From `geodesic`, run the following command (replace `<namespace>` with your company namespace):

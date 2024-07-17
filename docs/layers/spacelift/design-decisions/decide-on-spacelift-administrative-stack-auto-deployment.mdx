@@ -1,19 +1,20 @@
 ---
 title: "Decide on Spacelift Administrative Stack Auto-deployment"
+sidebar_label: "Spacelift Administrative Stack Auto-deployment"
 sidebar_position: 100
 refarch_id: REFARCH-410
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Spacelift Administrative Stack Auto-deployment
-
 ## Problem
+
 Spacelift (and for that matter, pretty much any CI/CD platform including Atlantis) will only run workflows that have been configured to run on the platform (e.g. there is no auto-discovery of stacks). While systems like GitHub Actions will automatically run workflows in a branch or Pull Request from any repo, Spacelift by design does not do this for security reasons, since that would mean any rogue repo or branch could modify infrastructure.
 
 In order for the stack to run in spacelift, the configuration needs to be merged into `main` and confirmed (e.g. applied). Frequently, users forget about this, so after merging to main the infrastructure stack is not confirmed and then they are left scratching their heads why their stack didn’t run.
 
 ## Context
+
 There are 2 kinds of Spacelift stacks: administrative stacks and component stacks (which are created by an admin stack).
 
 The “infrastructure” stack is an _administrative stack_ that deploys and manages component stacks. This means this stack has special permissions to manage spacelift itself, but actually no credentials to manage AWS (or other services). In the screenshot, you can see that the stack is _Administrative_ on the status line under Resources.

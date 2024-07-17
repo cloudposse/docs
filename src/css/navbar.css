@@ -45,3 +45,7 @@ html[data-theme='dark'] nav.navbar {
 li > ul.menu__list {
     margin-left: 1em;
 }
+
+aside.theme-doc-sidebar-container button.button.button--secondary {
+    border: none;
+}

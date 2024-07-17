@@ -1,18 +1,18 @@
 ---
 title: "Decide on Kinesis Requirements"
+sidebar_label: "Kinesis Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-527
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Kinesis Requirements
-
 ## Context and Problem Statement
 
 Amazon Kinesis collects, processes, and analyzes real-time, streaming data to get timely insights and react quickly to new information. It provides key capabilities to cost-effectively process streaming data at any scale, along with the flexibility to choose the tools that best suit the requirements of your application. Frequently, it’s used to ingest real-time data such as video, audio, application logs, website clickstreams, and IoT telemetry data for machine learning, analytics, and other applications. With Kinesis, information can be acted on as soon as it arrives, so apps can respond instantly instead of waiting until all data is collected before processing.
 
 ## Considered Options
+
 Kinesis has 4 major use-cases: streaming, firehose, analytics, and video. We have experience working with streams and firehose, but not the newer analytics and video offerings.
 
 **AWS Kinesis Data Streams** is for real-time data streaming. It can continuously capture gigabyte-scale data every second from multiple sources. It’s basically Amazon’s proprietary alternative to Kafka.

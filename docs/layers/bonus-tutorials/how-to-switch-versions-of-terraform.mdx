@@ -1,18 +1,19 @@
 ---
-title: "Switch Versions of Terraform"
+title: "How to Switch Versions of Terraform"
+sidebar_label: "Switch Versions of Terraform"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# How to Switch Versions of Terraform
-
 ## Problem
+
 You need to use (or want to upgrade to) the latest version of terraform for a component you’re working on, but do not want to affect other components.
 
 ## Solution
 
 #### Install Desired Version of Terraform
+
 First, make sure you’ve installed the latest version of `terraform` in [Geodesic](/fundamentals/geodesic) by following our guide [How to Upgrade or Install Versions of Terraform](/reference-architecture/how-to-guides/upgrades/how-to-upgrade-or-install-versions-of-terraform).
 
 #### Switch Terraform Versions (Local Geodesic Shell)
@@ -28,6 +29,7 @@ update-alternatives --set terraform /usr/share/terraform/${Major.Minor}/bin/terr
 ```
 
 ### Terraform Releases
+
 [https://github.com/hashicorp/terraform/releases](https://github.com/hashicorp/terraform/releases)
 
 #### Switch Terraform Versions for a Component on a stack

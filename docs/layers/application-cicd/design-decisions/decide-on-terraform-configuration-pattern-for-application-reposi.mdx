@@ -7,8 +7,6 @@ refarch_id: REFARCH-514
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Terraform Configuration Pattern for Application Repositories
-
 ## Context and Problem Statement
 
 The infrastructure monorepo that exists within an organization is responsible for configuring the core infrastructure of the organization: AWS accounts, VPCs, Kubernetes clusters, Route53, etc. However, AWS resources and/or other dependencies specific to a single application — such as a single S3 bucket — is not in the scope of the infrastructure monorepo, and should be managed externally, such that developers responsible for the application in question can manage its dependencies via infrastructure-as-code.

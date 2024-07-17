@@ -1,11 +1,10 @@
 ---
-title: "Multiple Infrastructure Repositories"
+title: "How to Use Multiple Infrastructure Repositories with Spacelift"
+sidebar_label: "Multiple Infrastructure Repositories"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# How to Use Multiple Infrastructure Repositories with Spacelift
 
 ## Problem
 
@@ -26,7 +25,7 @@ This strategy is useful in combination with deploying infrastructure code for en
 
 In the following snippet, we’re deploying a component named `snowflake` defined in the `snowflake` repository under the `terraform` folder from the `main` branch.
 
-```
+```yaml
 components:
   terraform:
     snowflake:

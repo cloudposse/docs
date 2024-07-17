@@ -1,13 +1,13 @@
 ---
-title: "Cluster Checks and Network Monitors"
+title: "How to Setup Datadog Cluster Checks and Network Monitors for External URLs of Applications"
+sidebar_label: "Cluster Checks and Network Monitors"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# How to Setup Datadog Cluster Checks and Network Monitors for External URLs of Applications
-
 ## Problem
+
 We often want a lightweight way to ensure our endpoints remain healthy. In kubernetes this requires that a loadbalancer be setup with the right annotations and certs to allow traffic to your application. This creates dependencies on cert-manager and other platform tools. The Health Check of a kubernetes app will always use the local IP, which doesn’t really test your networking. We need a way to test that your apps are still ready to receive requests.
 
 ## Solution
@@ -33,6 +33,7 @@ clusterAgent:
 ```
 
 ### External URLs
+
 We then need to set particular helm values for each installation of the agent in each cluster. the external URL checks must be written into the agent configuration and cannot be dynamically loaded by annotations.
 
 CloudPosse Datadog Agent now supports **Cluster Checks** this via `this pr`
@@ -40,6 +41,7 @@ CloudPosse Datadog Agent now supports **Cluster Checks** this via `this pr`
 Upgrade to the latest and add your network checks as yaml. This follows the same configuration as monitors. Where checks are deep merged and templated, they can be configured per environment.
 
 ## Datadog Monitors
+
 After your Cluster Checks are setup we need to create monitors for them.
 
 <img src="/assets/refarch/screen-shot-2022-04-21-at-10.35.21-am.png" height="819" width="1785" /><br/>
@@ -87,7 +89,3 @@ https-checks:
 
 ```
 <img src="/assets/refarch/screen-shot-2022-04-21-at-10.38.41-am.png" height="893" width="1780" /><br/>
-
-
-
-

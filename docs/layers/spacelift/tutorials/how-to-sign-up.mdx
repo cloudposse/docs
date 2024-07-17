@@ -1,13 +1,13 @@
 ---
 title: "How to Sign Up"
+sidebar_label: "How to Sign Up for Spacelift"
 sidebar_position: 0
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# How to Sign Up for Spacelift
-
 ## Problem
+
 You’ve been asked to signup for the Spacelift service and you’re not sure which plan to choose or where to go next. You have questions on pricing and want to better understand your options. You already use GitHub Actions, or some other CI/CD platform and want to understand why you need yet another platform.
 
 ## Solution
@@ -18,9 +18,11 @@ Signup for any trial Spacelift account and it will automatically be enabled as a
 :::
 
 ### Why do we need Spacelift?
+
 See [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform) to learn why.
 
 ### Why do we need an Enterprise Agreement?
+
 For Cloud Posse engagements, you’ll need to have the **Enterprise-tier** agreement which enables these features.
 - **“Self-hosted private worker pools”** which will execute `terraform plan/apply` on the EC2 instances that we provision and control, not on the Spacelift cloud -- better, or required in many cases, for security and compliance.
 
@@ -151,7 +153,7 @@ Sign up for Spacelift after the cold start components and `vpc` component have b
 
 9. Finally, click `Create Policy`
 
-```
+```rego
 package spacelift
 # See https://docs.spacelift.io/concepts/policy/login-policy for implementation details.
 # Note: Login policies don't affect GitHub organization or SSO admins.

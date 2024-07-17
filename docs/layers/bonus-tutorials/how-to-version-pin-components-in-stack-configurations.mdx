@@ -1,13 +1,13 @@
 ---
-title: "Version Pin Components in Stack Configurations"
+title: "How to Version Pin Components in Stack Configurations"
+sidebar_label: "Version Pin Components"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# How to Version Pin Components in Stack Configurations
-
 ## Problem
+
 One of the common best practices in Infrastructure as Code is to use strict version pinning. But before we get into the details on how to do this, let’s note that in all of our components and modules, we refer to a module by specific version (e.g. `1.2.3`) or some semver expression (e.g. `~> 1.2.0`). However, in most of our stack configs, you’ll generally see that all stacks refer to the same exact version of a component (e.g. the same exact directory). Doesn’t this violate the principle of version pinning? Not exactly. Rather than pin each environment to a specific version, we’re saying we want to pin all environments to the same version (commit SHA), and instead, release to environments at the cadence we want. The driver behind this is we want all environments to converge on the same version and we want our tools (e.g. Spacelift) to tell us when they diverge. If on the other hand, we were version pinning each environment, then we would need to devise some other strategy to ensure that environments do not diverge.
 
 With that said, there are still some situations where we want to forcibly diverge environments for an extended period of time. For example, perhaps some environment will be sunset in the near future, and keeping it current is not worth the effort. In this case, we might want to diverge so we can release hotfixes without needing to upgrade.
@@ -44,6 +44,7 @@ There’s nothing special about the `rds@1.2.3` component name. You could use `r
 Other hacks like Git submodules can be used to accomplish a similar outcome. We just cannot stress enough that practicing version pinning of components by the environment will lead to serious drift and offload the burden to keep the environments updated to engineers, rather than automation.
 
 ## Related
+
 - [How to Keep Everything Up to Date](/reference-architecture/how-to-guides/upgrades/how-to-keep-everything-up-to-date)
 
 

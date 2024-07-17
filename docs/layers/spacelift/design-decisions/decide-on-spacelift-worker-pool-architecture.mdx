@@ -1,17 +1,18 @@
 ---
 title: "Decide on Spacelift Worker Pool Architecture"
+sidebar_label: "Spacelift Worker Pool Architecture"
 sidebar_position: 100
 refarch_id: REFARCH-475
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Spacelift Worker Pool Architecture
-
 ## Problem
+
 In order to provision infrastructure, we need to sufficient IAM permissions (e.g. Service Accounts) for Terraform to modify infrastructure. If we give it too much power, very bad things can happen; if we don’t give it enough, then we have no way to run automation in an unattended fashion. In an ideal world, Spacelift would use the credentials of the person making the changes, but that is not the case and this is not a problem unique to Spacelift (e.g. Terraform Cloud, Atlantis, all work this way). Instead, Terraform runs with the permissions granted to the Spacelift runners and we use Rego policies to control what a user can or cannot do.
 
 ## Context
+
 Spacelift can use workers run Terraform inside your VPCs much like GitHub Action runners. These workers are then provisioned with IAM service account profiles that determine what Spacelift can or cannot do.
 
 :::caution

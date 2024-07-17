@@ -8,12 +8,12 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import ReactPlayer from "react-player";
 
 <Intro>
-This chapter presents how Cloud Posse designs and managed AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
+This chapter presents how Cloud Posse designs and manages AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
 </Intro>
 
 <KeyPoints>
-- Why to leverage multiple AWS accounts within an AWS Organization to ensure IAM-level isolation and to align with the AWS Well-Architected Framework, but without using AWS Control Tower
-- How we organize accounts into organizational units (OUs) to manage access and apply Service Control Policies (SCPs) to provide guard rails, ensuring proper segmentation and isolation of workloads across different environments such as core, platform, and sandbox accounts.
+- Why to leverage multiple AWS accounts within an AWS Organization
+- How we organize accounts into organizational units (OUs) to manage access and apply Service Control Policies (SCPs) to provide guard rails
 - The set of components we use to provision, configure, and manage AWS accounts, including account-level settings, service control policies, and Terraform state backends, using native Terraform with Atmos
 </KeyPoints>
 

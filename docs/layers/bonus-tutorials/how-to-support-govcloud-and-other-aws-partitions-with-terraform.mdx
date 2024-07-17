@@ -1,11 +1,10 @@
 ---
-title: "Support GovCloud and Other AWS Partitions"
+title: "How to support GovCloud and Other AWS Partitions with Terraform"
+sidebar_label: "Support GovCloud and Other AWS Partitions"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# How to support GovCloud and Other AWS Partitions with Terraform
 
 ## Problem
 
@@ -18,7 +17,7 @@ Most Cloud Posse terraform modules should work in these partitions.
 
 :::
 
-For services available in the China regions, see [https://www.amazonaws.cn/en/about-aws/regional-product-services/](https://www.amazonaws.cn/en/about-aws/regional-product-services/) . For services available in GovCloud, consult [https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-services.html](https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-services.html) .
+For services available in the China regions, see [https://www.amazonaws.cn/en/about-aws/regional-product-services/](https://www.amazonaws.cn/en/about-aws/regional-product-services/). For services available in GovCloud, consult [https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-services.html](https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-services.html).
 
 In order to support multiple partitions in HCL, simply use the following convention leveraging the `aws_partition` data source anywhere you need to construct an ARN.
 
@@ -40,4 +39,3 @@ data "aws_iam_policy_document" "bucket_policy" {
   }
 }
 ```
-

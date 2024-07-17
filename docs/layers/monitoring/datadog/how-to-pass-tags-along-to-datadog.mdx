@@ -1,11 +1,10 @@
 ---
-title: "Passing Tags"
+title: "How to Pass Tags Along to Datadog"
+sidebar_label: "Passing Tags"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# How to Pass Tags Along to Datadog
 
 ## Problem
 Tags are a great approach to describing who owns what services, and who should respond to different incidents related to those services. In order for to be able to act on the information, we need to ensure it’s passed along to datadog. Depending on if something is running on Kubernetes or infrastructure like RDS or an ALB, the way we tag (or label) things will differ.
