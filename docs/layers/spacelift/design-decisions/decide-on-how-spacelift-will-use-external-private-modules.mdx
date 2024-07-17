@@ -1,0 +1,106 @@
+---
+title: "Decide on how Spacelift will use external private modules"
+sidebar_label: "Spacelift with external private modules"
+sidebar_position: 100
+refarch_id: REFARCH-535
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+**Date**: **19 Oct 2021**
+
+## Status
+**DRAFT**
+
+## Problem
+App (or other) repositories outside the infrastructure monorepo may require access to other GitHub repositories, such as an in-house terraform module.
+
+By default, Spacelift only has access to a single repository when cloning and only clones the app repository.
+
+## Considered Options
+
+#### Option 1: Use a GitHub Personal Access Token (PAT) **RECOMMENDED**
+Cloud Posse usually uses this approach on private runners.
+
+- `.netrc` would require a read-only PAT (spenmo doesn’t like PATs) on a shared bot user
+
+- PAT could have access to multiple repositories
+
+- Private terraform modules should be referenced like `git::https://github.com/your-org/terraform-aws-example`
+
+#### Option 2: Use the Spacelift private module registry
+- This uses the Spacelift Github App permissions
+
+- The infrastructure module would be turned into a terraform module in the private registry.
+
+- The `source` of the terraform module would point to spacelift i.e. `spacelift.io/<organization>/<module_name>/<provider>` e.g. `spacelift.io/client-org/infrastructure/aws`
+
+- Local spacelift API creds would be needed to iterate to retrieve the module source
+
+- or we could set up the terraform for local sources and use something like an on-the-fly terraform change in a `before_init` hook
+
+- [https://docs.spacelift.io/vendors/terraform/module-registry](https://docs.spacelift.io/vendors/terraform/module-registry)
+
+#### Option 3: Use a Github App
+- Private terraform modules should be referenced like `git::https://github.com/your-org/terraform-aws-example`
+
+#### Option 4: Use a GitHub “deploy” key **NOT RECOMMENDED**
+Cloud Posse recommends avoiding this approach.
+
+- Private terraform modules should be referenced like `git::https://github.com/your-org/terraform-aws-example`
+
+- Configure an SSH “deploy” key on a shared bot user
+
+- Deploy key will only have access to a single repository
+
+- [https://docs.github.com/en/rest/deploy-keys](https://docs.github.com/en/rest/deploy-keys)
+
+- Unfortunately, deploy keys cannot be shared across repositories, meaning many keys will need to be managed if there are a lot of private repositories.
+
+### Options on how to use the key
+
+#### Option 1: Private worker pools bake a static token in userdata
+
+Cloud Posse usually uses this approach on private runners.
+
+- Retrieve the token from SSM
+
+- Save it in the userdata of the spacelift worker pool
+
+- Mount the token as an environment variable for all runs
+
+#### Option 2: Use only a `before_init` hook
+
+- The app id and app pem are used to create a JWT which is used to create a temporary 1hr access token
+
+- The spacelift worker pool uses a `before_init` hook
+
+- to retrieve the token from SSM to create the `.netrc` file on-the-fly
+
+- to run `git config url.insteadof` to replace the source with the user and token
+
+#### Option 3: Use a mounted file per stack
+
+Cloud Posse recommends avoiding this approach.
+
+- This would require retrieving the secret during the admin stack `spacelift` component run and adding the secret to each stack as a file
+
+- Then once the secret is added, a `before_init` hook would be required
+
+## References
+
+- [https://docs.spacelift.io/vendors/terraform/external-modules](https://docs.spacelift.io/vendors/terraform/external-modules)
+
+- [https://superuser.com/questions/1314064/read-only-access-to-github-repo-via-ssh-key](https://superuser.com/questions/1314064/read-only-access-to-github-repo-via-ssh-key)
+
+- [https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys](https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys)
+
+- [https://www.terraform.io/language/state/remote-state-data](https://www.terraform.io/language/state/remote-state-data)
+
+- [https://maelvls.dev/gh-actions-with-tf-private-repo/](https://maelvls.dev/gh-actions-with-tf-private-repo/)
+
+-
+
+## Change History
+
+

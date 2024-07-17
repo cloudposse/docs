@@ -1,0 +1,109 @@
+---
+title: "How to Load Test in AWS"
+sidebar_label: "Load Test in AWS"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+You’re tasked with load testing a service in AWS. You need to understand what can adversely affect your testing and anything to be aware of before beginning your tests.
+
+## Solution
+
+:::caution
+Load testing without adequate observability in place is not advised.
+
+:::
+
+### Load Testing Methods and Utilities
+Cloud Posse’s recommended load-testing tool for AWS is [k6](https://k6.io/). k6 is a CLI-driven load-testing-as-code tool from Grafana Labs with a Javascript DSL. Cloud Posse prefers using k6 for load-testing for the following reasons:
+
+- **Open Source** - well documented (see [docs](https://docs.k6.io/docs)) and with simple command line usage
+
+- **Synthetic Testing** - allows to easily create load test scenarios based on virtual users and simulated traffic configurations
+
+- **Small Footprint** - implemented in [Go](https://golang.org/), which has excellent support for concurrency and small memory footprint
+
+- **JavaScript DSL** - scenario scripting in `JavaScript` ES2015/ES6 with support for local and remote modules
+
+- **Testing as Code** - test logic and configuration options are both in JS for version control friendliness
+
+- **Command-line Driven** - can be run from the command line with command & control through CLI
+
+- **Compatible with** [**HAR**](http://www.softwareishard.com/blog/har-12-spec/) - has a built-in [HAR](http://www.softwareishard.com/blog/har-12-spec/) converter that will read HAR files and convert them to `k6` scripts (see [session recording](https://docs.k6.io/docs/session-recording-har-support))
+
+- **Automated Testing** - can be easily integrated into CI/CD pipelines
+
+- **Comprehensive Metrics** - provides a comprehensive set of built-in [metrics](https://docs.k6.io/docs/result-metrics)
+
+- **Beautiful Visualizations** - can stream metrics into [InfluxDB](https://www.influxdata.com/) for storage and visualization with [Grafana](https://grafana.com/) (see [influxdb-grafana](https://docs.k6.io/docs/influxdb-grafana))
+
+A Cloud Posse repository with code snippets and a container image definitions for automated testing via k6 exists [here](https://github.com/cloudposse/load-testing).
+
+Other alternatives for load-testing on AWS include:
+
+- [gatling.io](https://gatling.io/) — another CLI-driven load-testing-as-code tool with Scala, Java and Kotlin DSLs. Gatling does not have a built-in HAR converter, but has a built-in _Gatling Recorder_ which records HTTP requests and responses for later use in load-testing.
+
+- [locust.io](https://locust.io/) — a web-UI-driven load-testing framework written in Python. Predates both Gatling and k6, but at the same time may be considered outdated.
+
+### Important Considerations
+
+#### Notifying AWS Before Commencing Network Stress Tests
+Most customer testing is testing workloads for performance (E.g. MTTR).  These load tests do not generate traffic levels that qualify them as network stress tests. If on the other hand you’re planning on testing network performance, be advised that AWS has guidelines on how to go about it.
+
+Read more here: [https://aws.amazon.com/ec2/testing/](https://aws.amazon.com/ec2/testing/)
+
+> This policy only applies when a customer's network stress test generates traffic from their Amazon EC2 instances which meets one or more of the following criteria: sustains, in aggregate, for more than 1 minute, over 1 Gbps (1 billion bits per second) or 1 Gpps (1 billion packets per second); generates traffic that appears to be abusive or malicious; or generates traffic that has the potential for impact to entities other than the anticipated target of the testing (such as routing or shared service infrastructure). Customers will need to ensure the target endpoint has authorized the testing and understands the expected volumes. Some external endpoints or AWS services may have lower than expected thresholds for certain testing scenarios. We understand that many of our large customers generate more than 1 Gbps or 1 Gpps of traffic in normal production mode regularly, which is completely normal and not under the purview of this policy, unless specifically done for the purpose of network stress testing.Stress tests that will exceed these guidelines require that you fill out an Amazon EC2 Network Stress Test intake form, which can be obtained by [completing the form](https://console.aws.amazon.com/support/contacts#/simulated-events).
+
+#### AWS Load-testing Limitations
+- Load testing from outside of AWS is not advised as you’ll hit the limits of all the transit connections.
+
+- Load testing from within containers might be limited by the resource constraints of the container
+
+- EC2 Network Bandwidth is tied to the instance size. [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html)
+
+- RDS clusters recently restored from snapshots will be much less performant as [blocks are lazy-loaded in the background](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_RestoreFromSnapshot.html#:~:text=The%20DB%20instance%20continues%20to%20load%20data%20in%20the%20background.%20This%20is%20known%20as%20lazy%20loading.) and caches are not yet hydrated
+
+#### Common AWS Load Testing Pitfalls
+Review the [AWS Common pitfalls](https://aws.amazon.com/articles/best-practices-in-evaluating-elastic-load-balancing/#:~:text=Common%20Pitfalls%20When%20Testing%20Elastic%20Load%20Balancing) when load testing.
+
+#### Horizontal Pod Autoscaling
+
+:::caution
+Horizontal Pod Autoscaling requires the `metrics-server` component be deployed
+
+:::
+[https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+
+#### Pre-warming AWS Resources
+Certain resources in AWS need to be pre-warmed. Most notably, [Elastic Load Balancers still require prewarming](https://aws.amazon.com/articles/best-practices-in-evaluating-elastic-load-balancing/#pre-warming).
+
+<img src="/assets/refarch/cleanshot-2022-02-07-at-18.25.34-20220208-002609.png" height="187" width="773" /><br/>
+
+This includes ALBs, however, we do not have any links to documentation to back that up. Reach out to Amazon to ask them to pre-warm your load balancers. Alternatively, make sure you scale your tests progressively, as ELBs scale best with a gradual increase in traffic load. ELBs do not respond well to spiky loads, and you’ll see 503s if too much traffic is directed their way too quickly.
+
+[NLBs do not need prewarming.](https://aws.amazon.com/blogs/aws/new-network-load-balancer-effortless-scaling-to-millions-of-requests-per-second/) NLB is designed to handle tens of millions of requests per second while maintaining high throughput at ultra-low latency, with no effort on the customer's part. As a result, no pre-warm is needed.
+
+EKS Clusters and Kubernetes Pods, and ECS tasks do not scale instantaneously. Autoscaling is designed for real-world scenarios where traffic progressively increases. Therefore make sure you either overscale your clusters and containers, or ensure tests are progressively scaled up to allow for autoscaling.
+
+Also, consider pre-warming all database caches (e.g. RDS and Elasticache).
+
+#### Scaling AWS Resources
+- Make sure to raise account limits for resources as needed.
+
+<img src="/assets/refarch/cleanshot-2022-02-07-at-18.16.18-20220208-001639.png" height="226" width="754" /><br/>
+
+- [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-limits.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-limits.html)
+
+- If using SpotInst, make sure to raise the limits of AWS spot instances as well as adjust Budgets in [Spot.io](https://console.spotinst.com/spt/budget/aws) by NetApp.
+
+- [https://spot.io/blog/elastigroup-budgets-track-and-administer-your-cloud-compute-spendings-in-real-time/](https://spot.io/blog/elastigroup-budgets-track-and-administer-your-cloud-compute-spendings-in-real-time/)
+
+### See Also
+- [How to Tune SpotInst Parameters for EKS](/reference-architecture/how-to-guides/integrations/spotinst/how-to-tune-spotinst-parameters-for-eks)
+
+- [How to Tune EKS with AWS Managed Node Groups](/reference-architecture/how-to-guides/tutorials/how-to-tune-eks-with-aws-managed-node-groups)
+
+

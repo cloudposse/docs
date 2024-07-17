@@ -1,0 +1,62 @@
+---
+title: "Decide on Kinesis Requirements"
+sidebar_label: "Kinesis Requirements"
+sidebar_position: 100
+refarch_id: REFARCH-527
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Context and Problem Statement
+
+Amazon Kinesis collects, processes, and analyzes real-time, streaming data to get timely insights and react quickly to new information. It provides key capabilities to cost-effectively process streaming data at any scale, along with the flexibility to choose the tools that best suit the requirements of your application. Frequently, it’s used to ingest real-time data such as video, audio, application logs, website clickstreams, and IoT telemetry data for machine learning, analytics, and other applications. With Kinesis, information can be acted on as soon as it arrives, so apps can respond instantly instead of waiting until all data is collected before processing.
+
+## Considered Options
+
+Kinesis has 4 major use-cases: streaming, firehose, analytics, and video. We have experience working with streams and firehose, but not the newer analytics and video offerings.
+
+**AWS Kinesis Data Streams** is for real-time data streaming. It can continuously capture gigabyte-scale data every second from multiple sources. It’s basically Amazon’s proprietary alternative to Kafka.
+
+We have terraform support for [https://github.com/cloudposse/terraform-aws-kinesis-stream](https://github.com/cloudposse/terraform-aws-kinesis-stream)
+
+**AWS Kinesis Data Firehose** allows loading data streams into AWS data stores. This is the simplest approach for capturing, transforming, and loading data streams into AWS-specific data stores like RedShift, S3, or ElasticSearch service. The service can automatically scale to handle gigabytes of data per second and supports batching, encryption, and streaming data compression.
+
+We have previously implemented data firehose for customer-specific applications, but do not have a generalized component for this.
+
+### Option 1: AWS Kinesis Data Streams
+In order to provision the kinesis streams component, we’ll need to know more about how it will be used.
+
+| |  | |
+| ----- | ----- | ----- |
+|**Name(s) of the Streams** | What are the names of the streams? or just provide some examples | |
+|**Region** | AWS Region for the cluster | |
+|**Number of Shards** | The number of shards to provision for the stream. | |
+|**Retention Period** | Length of time data records are accessible after they are added to the stream. The maximum value is 168 hours. Minimum value is 24. | |
+|**Shard Level Metrics** | A list of shard-level CloudWatch metrics to enabled for the stream. Options are IncomingBytes, OutgoingBytes | |
+|**Enforce Consumer Deletion** | Forcefully delete stream consumers before destroying the stream | |
+|**Encryption Type** | The encryption type to use. Acceptable values are `NONE` and `KMS` | |
+|**Steaming Mode** | The capacity mode of the stream. Must be either `PROVISIONED` or `ON_DEMAND`. | |
+
+### Option 2: AWS Kinesis Data Firehose
+We’ll need more information about how it will be used to provision the firehose. Implementing the component will likely be highly custom to your use case.
+
+Standard use-cases are:
+
+- Extended S3 Destination with Lambdas
+
+- Extended S3 Destination with native support for shipping to S3
+
+- Redshift
+
+- Elasticsearch
+
+- Splunk
+
+- HTTP Endpoint
+
+## References
+- [https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_stream](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_stream)
+
+- [https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_firehose_delivery_stream](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_firehose_delivery_stream)
+
+

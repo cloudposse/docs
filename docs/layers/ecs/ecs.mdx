@@ -1,28 +1,26 @@
 ---
-title: "ECS"
+title: "ECS Foundational Platform"
+sidebar_label: "ECS"
 sidebar_class_name: hidden
 ---
-
-# ECS Foundational Platform
-
-Elastic Container Service (ECS) is a fully-managed container orchestration service provided by Amazon Web Services (AWS)
-that simplifies the process of deploying, managing, and scaling containerized applications. ECS makes it easy to run and
-manage Docker containers on AWS infrastructure, providing a secure and scalable platform for your applications.
-
 import ReactPlayer from "react-player";
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
 
-<ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/ecs.mp4" />
+
+Elastic Container Service (ECS) is a fully-managed container orchestration service provided by Amazon Web Services (AWS) that simplifies the process of deploying, managing, and scaling containerized applications. ECS makes it easy to run and manage Docker containers on AWS infrastructure, providing a secure and scalable platform for your applications.
+
+<figure>
+  <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/ecs.mp4" />
+  <figcaption>AI generated voice</figcaption>
+</figure>
 
 ## The Problem
 
-The emergence of Docker necessitated the development of container management solutions, with Kubernetes being one of the
-most widely adopted options. However, Kubernetes is often considered overly complex for smaller scale operations, akin
-to using a nuclear reactor to charge a phone. In such scenarios, Elastic Container Service (ECS) is a more practical
-choice for deploying applications with speed and efficiency.
+The emergence of Docker necessitated the development of container management solutions, with Kubernetes being one of the most widely adopted options. However, Kubernetes is often considered overly complex for smaller scale operations, akin to using a nuclear reactor to charge a phone. In such scenarios, Elastic Container Service (ECS) is a more practical choice for deploying applications with speed and efficiency.
 
 With ECS there is no need to upgrade the underlying platform. Unlike EKS which requires consistent upgrades to stay
-current, ECS is a managed service that is always up to date. This means that you can focus on your application and not
-the underlying platform.
+current, ECS is a managed service that is always up to date. This means that you can focus on your application and not the underlying platform.
 
 ## Our Solution
 
@@ -34,8 +32,7 @@ The [`ecs` component] is used to deploy an ECS cluster and an associated load ba
 
 #### Application Load Balancer (ALB)
 
-Through stack configuration you can determine your domains, subdomains, and the number of instances to deploy. The
-component also supports the deployment of a bastion host, which can be used to access containers on the ECS Cluster.
+Through stack configuration you can determine your domains, subdomains, and the number of instances to deploy. The component also supports the deployment of a bastion host, which can be used to access containers on the ECS Cluster.
 
 ```yaml
 alb_configuration:
@@ -50,9 +47,7 @@ alb_configuration:
 
 #### Autoscaling
 
-The cluster component has the ability to scale with a variety of options. Fargate provides a serverless way of scaling.
-Spot instances provide a cheaper way to run instances than on demand ec2. you can mix these options to provide a cost
-effective and scalable solution.
+The cluster component has the ability to scale with a variety of options. Fargate provides a serverless way of scaling. Spot instances provide a cheaper way to run instances than on demand ec2. you can mix these options to provide a cost effective and scalable solution.
 
 ```yaml
 name: ecs
@@ -68,8 +63,7 @@ capacity_providers_ec2:
 
 The [`ecs-service` component] is used to deploy an ECS service. This includes the task and the service definition.
 
-By default we also support datadog logging and metrics. This can be disabled by setting `datadog_agent_sidecar_enabled`
-to false.
+By default we also support datadog logging and metrics. This can be disabled by setting `datadog_agent_sidecar_enabled` to false.
 
 ```yaml
 datadog_agent_sidecar_enabled: false
@@ -79,8 +73,7 @@ datadog_agent_sidecar_enabled: false
 
 ### How do I add a new service to an existing ECS cluster?
 
-Add a new instance of the `ecs-service` component to your stack configuration. The component will automatically detect
-the ECS cluster and add the service to it.
+Add a new instance of the `ecs-service` component to your stack configuration. The component will automatically detect the ECS cluster and add the service to it.
 
 ### How can I add AWS Policies to my ECS Tasks?
 
@@ -93,8 +86,7 @@ task_policy_arns:
 
 ### How can I inject secrets into my ECS Service?
 
-Use the `map_secrets` variable which maps a environment variable key to an SSM param store key. This will inject the
-value of the SSM param store key into the environment variable.
+Use the `map_secrets` variable which maps a environment variable key to an SSM param store key. This will inject the value of the SSM param store key into the environment variable.
 
 ```yaml
 map_secrets:
@@ -103,7 +95,6 @@ map_secrets:
 
 ### How can we create Self Hosted Runners for GitHub with ECS?
 
-If we are not deploying EKS for our platform, it doesnt make much sense to configure EKS solely for self-hosted runners.
-Instead we deploy an EC2 Autoscaling Group in AWS and connect those instances to GitHub.
+If we are not deploying EKS for our platform, it doesnt make much sense to configure EKS solely for self-hosted runners. Instead we deploy an EC2 Autoscaling Group in AWS and connect those instances to GitHub.
 
 For more on GitHub Runners in an ASG, see [`github-runners`](/components/library/aws/github-runners/).

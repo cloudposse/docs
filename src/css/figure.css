@@ -1,0 +1,13 @@
+figure figcaption {
+  font-size: 0.8em;
+  color: #666;
+  text-align: left;
+  font-style: italic;
+  margin-top: 0.4em;
+  line-height: 0.7em;
+}
+
+
+figure > div  {
+  box-shadow: var(--ifm-alert-shadow);
+}

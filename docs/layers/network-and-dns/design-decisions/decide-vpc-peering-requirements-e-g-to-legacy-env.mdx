@@ -1,0 +1,65 @@
+---
+title: "Decide on VPC Peering Requirements (e.g. to Legacy Env)"
+sidebar_label: "VPC Peering Requirements"
+refarch_id: REFARCH-80
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Context and Problem Statement
+
+VPC peering is used when we need network connectivity between VPCs - possibly residing in different accounts underneath
+different organizations.
+
+## Use cases
+
+- Peering with legacy/heritage accounts to facilitate migrations with minimal downtime.
+
+- Enablement of CI/CD to connect to clusters and databases within VPCs
+
+- Service migration
+
+- Connecting VPCs in multiple regions
+
+## Considered Options
+
+### VPC Peering
+
+:::tip Our recommendation is to use VPC peering mostly for connecting third-party networks or for cost optimization over
+transit gateways (when necessary).
+
+:::
+
+This is where we would provision a vpc-peering component and require the legacy vpc id, account id, and an IAM role that
+can be assumed by the identity account.
+
+Direct VPC peering may reduce costs where there’s significant traffic going between two VPCs.
+
+[https://aws.amazon.com/about-aws/whats-new/2021/05/amazon-vpc-announces-pricing-change-for-vpc-peering/](https://aws.amazon.com/about-aws/whats-new/2021/05/amazon-vpc-announces-pricing-change-for-vpc-peering/)
+
+### Transit Gateway
+
+:::tip Our recommendation is to _always_ deploy a transit gateway so we can use it with Terraform automation to manage
+clusters and databases. <ins>This is regardless of whether or not we deploy VPC peering.</ins>
+
+:::
+
+An alternative approach to VPC peering between accounts in AWS is also to leverage the transit gateway, which we usually
+deploy in most engagements to facilitate CI/CD with GitHub Actions and Spacelift automation.
+
+This would require a transit gateway already set up and configured in the legacy account so we can peer the v2
+transit-gateway with the v1 infrastructure.
+
+[https://aws.amazon.com/transit-gateway/pricing/](https://aws.amazon.com/transit-gateway/pricing/)
+
+Be advised, that _excessive_ traffic over a transit-gateway will be costly. This is why there is a use-case to leverage
+both VPC peering and transit gateways. If the costs are significant between any two VPCs, direct VPC peering is a more
+cost-effective way to do it because the traffic doesn't egress to the transit gateway and then ingress back into the
+other account, effectively cutting transit costs in half.
+
+### NAT Gateways
+
+If there are overlapping CIDR ranges in the VPCs, we’ll also need to consider deploying private NAT gateways to
+translate network addresses.
+
+[https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-scenarios.html#private-nat-overlapping-networks](https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-scenarios.html#private-nat-overlapping-networks)

@@ -1,0 +1,88 @@
+---
+title: "Alerting"
+sidebar_class_name: hidden
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+Alerting is the process of notifying users of a system of a change in its state. This is typically done by sending an email or a text message to a user or a group of users.
+
+Alerting goes hand in hand with [monitoring](/reference-architecture/fundamentals/monitoring/). When a system is monitored properly, only the right people are notified when something goes wrong.
+
+:::important
+
+This Quick Start assumes you have read through [the Monitoring Quick Start](/reference-architecture/fundamentals/monitoring/)
+
+:::
+
+## The Problem
+
+
+When a system is not monitored properly, it's easy to get overwhelmed with alerts. This is called alert fatigue. Alert fatigue is a real problem that can lead to a system being ignored and eventually failing.
+
+Furthermore, a system must be in place for alerts to be escalated to the right team and people. When a single system goes down, there are often cascading effects on other services.
+
+## Our Solution
+
+Our solution begins with [OpsGenie](https://www.opsgenie.com/). OpsGenie is a modern incident management platform for operating always-on services, empowering Dev and Ops teams to plan for service disruptions and stay in control during incidents.
+
+We integrate [OpsGenie with Datadog](https://support.atlassian.com/opsgenie/docs/integrate-opsgenie-with-datadog/) to pair it with our monitoring solution.
+
+### Implementation
+
+We have a singular component that can be instanced for every team. This component is called [`opsgenie-team`](/components/library/aws/opsgenie-team/) and it handles the surrounding work of setting up a team in OpsGenie.
+
+To get started with this component, you'll need an OpsGenie API key, which you can get from the [OpsGenie API page](https://support.atlassian.com/opsgenie/docs/api-key-management/).
+
+Follow the Component README to get started, this will create a catalog entry which should be configured to your company's defaults for every team. Then start by creating a team for each team in your organization.
+
+### How it works
+
+Our Monitors have a global configurable variable called `alert_tags`, this should be set to include `@opsgenie-{{team.name}}`, such as:
+
+```yaml
+alert_tags: ["@opsgenie-{{team.name}}"]
+```
+
+This creates a message on the Datadog monitor that uses the team tag to send the alert to the correct team in OpsGenie. When an event or alert is triggered, the **data's** tag of `team` will be used to dynamically send an alert to the corresponding team in OpsGenie. An important distinction in that the tag is not fetched from the monitor, but the data sent to the monitor.
+
+Having the data's tag of team being used is beneficial, monitors can be configured to send alert to different teams. For example, you can have a single monitor for pods crashlooping on EKS, if each deployment is properly labeled with the `team:foo` or `team:bar` tag, then the alert will be sent to the correct team.
+
+<img src="https://lucid.app/publicSegments/view/85d1e0c3-8de1-4714-8ab1-f08c5d448999/image.jpeg" style={{width: '100%', minHeight: '480', height: 'auto', margin: '10', position: 'relative'}}/><br/>
+
+### Service Level Indicators (SLIs) and Service Level Objectives (SLOs)
+
+SLIs and SLOs are a way to measure the reliability of a service. They are a way to measure the quality of a service.
+
+Sometimes a business has contractual obligations to their SLOs. For example, a business may have a contractual obligation to have 99.9% uptime. This means that the service must be available 99.9% of the time.
+
+Datadog supports SLOs, they can be a set of metrics or monitors. For example, you can have a monitor that checks if a service is up or down. This monitor can be used as an SLO.
+
+You can then use SLO Monitors to report Incidents in OpsGenie, when you create a team, you can specify the level of priority that is considered an **Incident**. When the alert matches the priority level of an Incident, an Incident is created in OpsGenie. An [**Incident**](https://support.atlassian.com/opsgenie/docs/what-is-an-incident/) is a specialized alert that is used to track the progress of an issue, it can have cascading effects on other services.
+
+<img src="https://lucid.app/publicSegments/view/e1098c4f-aad5-41c1-95c9-f04d73294968/image.jpeg" style={{width: '100%', minHeight: '480', height: 'auto', margin: '10', position: 'relative'}}/><br/>
+
+## References
+
+:::tip
+
+[This article](/reference-architecture/how-to-guides/integrations/opsgenie/) goes more in-depth on some of the above topics.
+
+:::
+
+- [OpsGenie](https://www.opsgenie.com/)
+- [How to Sign Up for OpsGenie?](/reference-architecture/how-to-guides/integrations/opsgenie/how-to-sign-up-for-opsgenie/)
+- [How to Create New Teams in OpsGenie](/reference-architecture/how-to-guides/integrations/opsgenie/how-to-create-new-teams-in-opsgenie/)
+- [How to Add Users to a Team in OpsGenie](/reference-architecture/how-to-guides/integrations/opsgenie/how-to-add-users-to-a-team-in-opsgenie/)
+- [How to Onboard a New Service with Datadog and OpsGenie](/reference-architecture/how-to-guides/integrations/opsgenie/how-to-onboard-a-new-service-with-datadog-and-opsgenie/)
+- [Component `opsgenie-team`](/components/library/aws/opsgenie-team/)
+- [Datadog: How to Pass Tags Along to Datadog](/reference-architecture/how-to-guides/integrations/datadog/how-to-pass-tags-along-to-datadog/)
+
+## FAQ
+
+### How do I set up SSO with OpsGenie?
+
+There are [official docs on how to configure SSO/SAML](https://support.atlassian.com/opsgenie/docs/configure-saml-based-sso/). Those should suffice for using AWS Identity Center. AWS also has
+[docs on adding SAML applications](https://docs.aws.amazon.com/singlesignon/latest/userguide/saasapps.html)
+which includes an official config for OpsGenie already. If you don't plan on using AWS IC, there
+are [docs on configuring SSO with other identity providers](https://support.atlassian.com/opsgenie/docs/configure-sso-for-opsgenie/).

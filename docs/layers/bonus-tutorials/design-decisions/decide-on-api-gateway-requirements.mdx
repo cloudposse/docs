@@ -1,0 +1,116 @@
+---
+title: "Decide on API Gateway Requirements"
+sidebar_label: "API Gateway"
+sidebar_position: 100
+refarch_id: REFARCH-540
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Context and Problem Statement
+
+## Overview
+
+Amazon API Gateway is an AWS service designed to simplify publishing highly-scalable REST, HTTP, and WebSocket APIs. These API Gateways act as a central point of access at the edge and can access backend services running on EC2, EKS, ECS, Lambda, and AWS Services directly, such as DynamoDB, S3, or SQS. The API Gateway has several benefits over a conventional ALB in that it’s optimized for APIs: namely, it can authenticate requests, cache, rate-limiting, feature flagging, a/b testing, rewrite requests/responses, aggregate requests, etc. It’s arguably a simpler alternative to using something like a Service Mesh.
+
+## Common Scenarios
+There are several common use cases for API Gateway, some of the most common of which are detailed below.
+
+### REST API
+
+:::info
+Choose REST APIs if you need features such as API keys, per-client throttling, request validation, AWS WAF integration, or private API endpoints.
+[https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html)
+
+:::
+
+At its core, an API Gateway REST API comprises resources (e.g. customers) and methods. A resource is a logical entity that can be accessed through a resource path. A method corresponds to a REST API request submitted by the user of your API and the response returned to the user.
+
+> [RESTful APIs have strong controls](https://aws.amazon.com/blogs/compute/from-poll-to-push-transform-apis-using-amazon-api-gateway-rest-apis-and-websockets/#:~:text=RESTful%20APIs%20have%20strong%20controls%20to%20ensure%20that%20user%20requests%20for%20data%20are%20validated%20and%20given%20guardrails%20for%20the%20intended%20query%20purpose.%20This%20helps%20prevent%20rogue%20requests%20and%20unforeseen%20impacts%20to%20the%20analytics%20environment%2C%20especially%20when%20exposed%20to%20a%20large%20number%20of%20users.) to ensure that user requests for data are validated and given guardrails for the intended query purpose. This helps prevent rogue requests and unforeseen impacts to the analytics environment, especially when exposed to a large number of users.
+For example, `/customers` could be the path of a resource representing the business’s customers. A resource supports one or more operations defined by standard HTTP verbs such as GET, POST, PUT, PATCH, and DELETE. A combination of a resource path and an operation identifies a method of the API. For example, a `POST /customers` method could add a new customer, and a `GET /customers` method could return a list of all of the customers.
+
+The API caller doesn't need to know where the requested data is stored and fetched from on the backend. In API Gateway REST APIs, the front-end interface is encapsulated by _method requests_ and _method responses_. The API interfaces with the backend by means of _integration requests_ and _integration responses_.
+
+For example, with DynamoDB as the backend, the API developer sets up the integration request to forward the incoming method request to the chosen backend (DynamoDB). The setup includes specifications of a DynamoDB action, required IAM role and policies, and required input data transformation. The backend returns the result to API Gateway as an integration response.
+
+To return the integration response to the client (method response), you can configure the integration response to map response parameters from integration to method. You can also translate the output data format of the backend to that of the front end (e.g. map specific DynamoDB columns to the JSON response), if necessary. API Gateway enables you to define a schema or model for the [payload](https://en.wikipedia.org/wiki/Payload_(computing)) to facilitate setting up the body mapping template.
+
+In addition to the functionality listed above, API Gateway REST APIs also provide additional management functionality such as:
+
+- Generating custom SDKs and creating API documentation using API Gateway extensions to OpenAPI
+
+- API Key management
+
+- Throttling of HTTP requests
+
+### HTTP API
+
+:::info
+Choose HTTP APIs if you don't need the features included with REST APIs.
+
+:::
+
+HTTP APIs enable you to create RESTful APIs with lower latency and cost than REST APIs. You can use HTTP APIs to forward requests to any publicly routable HTTP endpoint or AWS Lambda Functions. For example, you can create an HTTP API that integrates with a Lambda function on the backend. When a client calls your API, API Gateway sends the request to the Lambda function and returns the function's response to the client.
+
+The [Use API Gateway REST API vs HTTP API](/reference-architecture/reference/adrs/use-api-gateway-rest-api-vs-http-api) document compares and contrasts the differences between REST and HTTP API Gatewayways.
+
+### WebSocket API
+
+:::info
+ Choose a WebSocket API to push results to your clients. Note, consider mixing and matching REST APIs and WebSocket APIs. See [https://aws.amazon.com/blogs/compute/from-poll-to-push-transform-apis-using-amazon-api-gateway-rest-apis-and-websockets/](https://aws.amazon.com/blogs/compute/from-poll-to-push-transform-apis-using-amazon-api-gateway-rest-apis-and-websockets/)
+
+:::
+
+A WebSocket API is a special kind of API where the connection stays open between the client and the server so they can send messages anytime. Backend servers can easily push data to connected users and devices, avoiding implementing complex polling mechanisms.
+
+For example, you could build a serverless application using an API Gateway WebSocket API and AWS Lambda to send and receive messages to and from individual users or groups of users in a chat room. Or you could invoke backend services such as AWS Lambda, Amazon Kinesis, or an HTTP endpoint based on message content.
+
+You can use API Gateway WebSocket APIs to build secure, real-time communication applications without having to provision or manage any servers to manage connections or large-scale data exchanges. Targeted use cases include real-time applications such as the following:
+
+- Chat applications
+
+- Real-time dashboards such as stock tickers
+
+- Real-time alerts and notifications
+
+## Considerations
+
+### Authentication
+
+Authentication and Authorization is one of the more complex topics when using API Gateway because there are so many different options that vary depending on the API Gateway you are deploying, or may not even be deployed at all, in the case of a public API.
+
+#### REST API
+
+REST APIs support the following authentication types:
+
+- IAM Authentication
+
+- AWS Cognito
+
+- API Key
+
+- Lambda Authorizer
+
+### Monitoring and Tracing
+
+**TODO**
+
+### Web Application Firewall (WAF)
+
+**TODO**
+
+See also:[Decide on WAF Requirements/Strategy](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-waf-requirements-strategy)
+
+## References
+
+- [Use API Gateway REST API vs HTTP API](/reference-architecture/reference/adrs/use-api-gateway-rest-api-vs-http-api)
+
+- [Decide on WAF Requirements/Strategy](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-waf-requirements-strategy)
+
+- [https://aws.amazon.com/blogs/compute/from-poll-to-push-transform-apis-using-amazon-api-gateway-rest-apis-and-websockets/](https://aws.amazon.com/blogs/compute/from-poll-to-push-transform-apis-using-amazon-api-gateway-rest-apis-and-websockets/)
+
+- [https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html)
+
+## Change History
+
+

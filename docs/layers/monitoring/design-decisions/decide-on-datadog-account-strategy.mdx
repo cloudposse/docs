@@ -1,0 +1,130 @@
+---
+title: "Decide on Datadog Account Strategy"
+sidebar_label: "Decide on Datadog Account Strategy"
+sidebar_position: 100
+refarch_id: REFARCH-539
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Context and Problem Statement
+
+Datadog supports multiple organizations much like AWS (note Datadog calls them “organizations” instead of “accounts”). Using organizations is a way to tightly restrict access to monitoring data but introduces limitations.
+
+Managed Service Providers typically use this feature with customers who do not have access to each others’ data. For example, if you have a multi-tenant use case where you need to provide access to Datadog to your customers, then this may be the best way to go. In this model, users can be added to the parent organization and/or multiple child organizations and switch between them from the [user account settings menu](https://docs.datadoghq.com/account_management/#managing-your-organizations). The parent organization can view the usage (not the underlying metrics collected) of individual child organizations, allowing them to track trends in usage.
+
+Account settings, such as allow-listed IP addresses, are not inherited by child organizations from their parent organization.
+
+The Multi-organization Account feature is not enabled by default. Contact [Datadog support](https://docs.datadoghq.com/help/) to have it enabled.
+
+[https://docs.datadoghq.com/account_management/multi_organization/](https://docs.datadoghq.com/account_management/multi_organization/)
+
+## Considered Options
+
+### Option 1: Use Single Datadog Organization
+
+:::tip
+This is our recommended approach as it’s the easiest to implement, supports tracing across all your accounts and ensures you don’t need to switch organizations to view dashboards.
+
+:::
+
+Cloud Posse will need access to your current production Datadog organization if we go this route.
+
+Also, see: [Decide on How to Restrict Access to Metrics and Logs in Datadog](/reference-architecture/fundamentals/design-decisions/foundational-monitoring-platform/decide-on-how-to-restrict-access-to-metrics-and-logs-in-datadog)
+
+### Option 2: Use Multiple Datadog Child Organizations
+
+:::danger
+We do not recommend this approach because you cannot do cross-account tracing. Datadog alert email notifications do not include the account information which is problematic when using multiple accounts.
+
+:::
+
+:::caution
+Child organizations are an optional feature and has to be requested from Datadog support.
+
+:::
+
+[Datadog supports organizations](https://docs.datadoghq.com/account_management/multi_organization/) the way AWS supports organizations of member accounts.
+
+When created, each child organization has a default API and app keys.
+
+The original organization can remain AS IS, untouched. For example, if you want to create a partition between your current environments and the new ones we’re provisioning, this would be the way to go.
+
+There is no way to aggregate metrics across organizational boundaries.
+
+#### Child org per AWS account
+
+Each AWS account gets its own Datadog child organization.
+
+e.g.
+
+```
+acme-plat-gbl-dev
+acme-plat-gbl-prod
+```
+
+#### Groups of child orgs (i.e. prod and non-prod)
+
+Singleton and dev/sandbox/staging AWS account can be placed under `non-prod` child org.
+
+Prod would be placed under `prod` child org.
+
+e.g.
+
+```
+acme-plat-prod
+acme-plat-nonprod
+```
+
+Or perhaps a different grouping?
+
+## Other Considerations
+
+### Key storage
+
+#### Option 1: Shared in Automation Account (Recommended)
+
+In this model, we store the keys in a shared account (e.g. automation) using SSM parameterized.
+
+For a single organization, the SSM parameters might look like this:
+
+```
+/datadog/DD_API_KEY
+/datadog/DD_APP_KEY
+```
+
+Or, for a multi-child organization, each child org would be differentiated by the SSM parameter.
+
+```
+/datadog/<org>/datadog_api_key
+/datadog/<org>/datadog_app_key
+```
+
+#### Option 2: Shared in Each Respective Child Organization
+
+In each AWS account, respective child org creds can be stored like this:
+
+```
+/datadog/datadog_api_key
+/datadog/datadog_app_key
+```
+
+The reason to copy the keys into each AWS account from the shared account is limited access to the SSM cross-account. Various services will only allow access to SSM in the same as account as the service e.g. ECS task definitions.
+
+### Authentication
+
+#### Option 1: Use SAML
+
+This is the recommended long-term solution.
+
+#### Option 2: Invite users
+
+This is the fastest way to get up and running. SAML can always be added later if it’s needed.
+
+## References
+
+- [Decide on How to Restrict Access to Metrics and Logs in Datadog](/reference-architecture/fundamentals/design-decisions/foundational-monitoring-platform/decide-on-how-to-restrict-access-to-metrics-and-logs-in-datadog)
+
+- [https://docs.datadoghq.com/account_management/multi_organization/](https://docs.datadoghq.com/account_management/multi_organization/)
+
+

@@ -1,0 +1,184 @@
+---
+title: "Restricting Admin Access to Sensitive Accounts"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# Restricting Admin Access to Sensitive Accounts
+
+## Overview
+
+The Cloud Posse Reference Architecture provides standard workflows
+(described elsewhere) for managing resources in a multi-account AWS organization
+via Terraform. Those workflows cannot apply to certain very sensitive operations
+due to technical limitations, and by design should require some kind of
+elevated privilege to perform in sensitive accounts. This document
+describes options for how to restrict access and perform those operations.
+In particular, it describes the differing options and configurations
+available with different versions of the Cloud Posse Reference Architecture.
+
+#### What Are the "Sensitive" Accounts?
+
+In the Cloud Posse Reference Architecture, some accounts are considered
+sensitive and organizations should consider tightly controlling access to them,
+even more so than "production" accounts. This document will focus on the most
+sensitive accounts, `root` and `identity`, but the same principles can be
+applied to any account, and organizations should consider treating the `audit`
+and `security` accounts as sensitive as well.
+
+- The `root` account is the first account created and is what AWS terms
+the "Organization Management Account". It is the only account that can create
+other accounts, and as such, any privileged user in this account can
+assume the `OrganizationAccountAccessRole` in any other account, and
+therefore has full administrative access to all accounts in the organization.
+- The `identity` account is the account where IAM roles are defined and where
+users initially log in. This is separated from the `root` account for many
+reasons, chief among them being that privileged users in this account cannot
+automatically assume the `OrganizationAccountAccessRole` in other accounts.
+Other than IAM Roles, very minimal resources are created in this account.
+
+#### What Are the Basic Access Controls in Place?
+
+The standard Cloud Posse Reference Architecture configuration creates IAM
+roles Cloud Posse identifies as "teams" in the `identity` account. These
+roles are assumed by users when they log in via Federated SSO using SAML.
+Starting with Components [version 1.238.0](https://github.com/cloudposse/terraform-aws-components/releases/tag/1.238.0)
+Users can also create corresponding AWS SSO (now called AWS IAM Identity Center)
+Permission Sets that can be assumed by users by logging in via AWS SSO.
+
+The "teams" correspond to traditional access control "groups" (although they
+are implemented as IAM Roles for technical reasons), and are
+usually configured to provide access to most if not all of the accounts in the
+organization via what Cloud Posse calls "team roles". The "team roles" are
+a consistent set of IAM Roles in each account: they have the same permissions
+in every account and by default allow the same teams to access them in
+every account.
+
+#### What is SuperAdmin?
+
+The `SuperAdmin` user is a special IAM User in the `root` account that has
+full AdministratorAccess permissions in `root`, and can assume the `OrganizationAccountAccessRole` in any other account,
+giving it full AdministratorAccess to all accounts. It is intended
+to be used in situations where it is not possible to use teams or team roles
+(such as initially creating the teams). It should not be used for day-to-day work, and
+should be tightly controlled.
+
+#### Who Should Have Access to the Sensitive Accounts and How?
+
+Some organizations choose to use the `SuperAdmin` user as the only
+way to make changes in the sensitive accounts, while others choose to
+enable certain teams to also make changes to the sensitive accounts.
+Considerations include the practicality of controlling access to the
+`SuperAdmin` user and any privileged team, and the ability to audit
+changes made by the `SuperAdmin` or privileged teams, especially
+tracking who the human user is that is using the `SuperAdmin` credentials
+or assuming the team roles.
+
+This document does not attempt to provide or recommend a single solution,
+but rather to describe the options available and how to implement them.
+
+
+## Generic Details
+
+In the sections below, we will get into details specific to differing versions
+of the Cloud Posse Reference Architecture. In this section, we will describe
+the basic concepts and terminology that apply to all versions.
+
+#### SuperAdmin
+
+The `SuperAdmin` user is a special IAM User in the `root` account that has
+full AdministratorAccess permissions in `root`, and can assume the
+`OrganizationAccountAccessRole` in any other account, giving it full
+AdministratorAccess to all accounts. The `SuperAdmin` user does not have
+a password and cannot log into the AWS Web console, but it does have
+MFA enabled. It is created and managed manually by the root user in the root
+account and is only used via its Access Key. Its access key can be disabled
+or deleted as desired to prevent its use.
+
+For technical reasons, only `SuperAdmin` can deploy the following components:
+
+- `tfstate-backend` to create the S3 bucket and DynamoDB table for Terraform
+state storage and IAM roles that can be assumed to access the state
+- `account` to create new accounts in the organization
+- `account-map` to collect and publish critical information about the accounts,
+used by other components.
+
+Although in some instances a team role can be used to update the following components,
+there is a risk that during the update process, the team or team role will
+have its permissions removed (before different permissions are later added),
+causing the update to fail and leaving everyone locked out of the accounts.
+So it is recommended that `SuperAdmin` be the only user to update these
+components:
+
+- `aws-sso`
+- `aws-saml`
+- `aws-teams`
+- `aws-team-roles`
+
+#### The "ops" and "empowered" teams
+
+The team and team role names have changed over time, and are fully
+configurable and customizable anyway, so it is impossible to consistently
+refer to them by their actual names. In this document we will use the names "ops"
+and "empowered" to refer to the teams in a generic way, with the understanding
+that the actual names will be different in different installations.
+
+- The teams and team roles are implemented as IAM Roles.
+- The teams' IAM Roles have limited permissions. They are not intended
+to be used directly, but rather to provide access to the team roles.
+- When using Terraform, in most cases Terraform automatically assumes a
+team role in the account where changes are being made. A user's ability to
+make changes in an account is determined by whether the team they are logged
+into in the `identity` account can assume the required team role in the
+account where the changes are being made.
+
+The "ops" team can assume the Terraform role in all accounts except for
+`identity` and `root` (and possibly other sensitive accounts). This allows that
+team to administer all other accounts via Terraform and is suitable for
+day-to-day work.
+
+The "empowered" team can assume the Terraform role in all accounts, including
+`identity` and `root`. This allows that team to administer all accounts via
+Terraform. This team is intended to be used only for special circumstances.
+
+
+To manage the `identity` and `root` accounts, the most common options are:
+
+1. Do not create an "empowered" team and only use the `SuperAdmin` user to make
+changes in sensitive accounts
+2. Create a separate "empowered" team and limit access to it
+3. Empower the "ops" team, so that there is only one team to manage all accounts
+
+
+# TODO:
+
+## Weedy Technical Details of Terraform Configuration
+
+- Access role in target account
+- Access read/write role in root account to access TF state backend
+- Access read-only role in root account to access TF state backend
+- `providers.tf` and `account-map` selection of `role_arn`
+- `backend` and `remote-state` configuration of `role_arn`
+- The `privileged` input variable
+
+## Configuration Variations
+
+- Name of "ops" team
+- Name of "empowered" team
+- Name of Access role in target account
+- Name and ownership of Access read/write role in root account to access TF state backend
+- Name and ownership of Access read-only role in root account to access TF state backend
+
+
+## Probably Not Needed
+
+Among the "team roles" are the `admin` and `terraform` roles, which have
+full AdministratorAccess permissions. Access to these roles in the `root`
+and `identity` accounts should be tightly controlled. Unfortunately,
+because of the way the Cloud Posse Reference Architecture evolved,
+there is no single set of instructions or configuration changes to
+accomplish this. Furthermore, organizations have different priorities
+for ease of use versus security, so there are multiple options
+to consider regardless of the base configuration.
+

@@ -1,36 +1,28 @@
 ---
 title: "Decide on AWS Account Flavors and Organizational Units"
+sidebar_label: "AWS Account Flavors and OUs"
+description: "Decide how to organize workloads for isolation and management"
 refarch_id: REFARCH-55
 ---
-
-# Decide on AWS Account Flavors and Organizational Units
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
 
 ## Context and Problem Statement
 
-The
-[AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
-recommends splitting workloads across multiple AWS accounts.
+The [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/userguide/wellarchitected-ug.pdf) recommends splitting workloads across multiple AWS accounts.
 
 When moving to an infrastructure-as-code (IaC) model of infrastructure provisioning, many of the same best practices
 that apply to regular software development should apply to IaC. Part of that is not making changes to a production
-environment that hasn't been tested in a staging environment. If the production and staging environments are in the same
-account, then there are insufficient assurances/guarantees/protections in place to prevent breaking production.
+environment that hasn't been tested in a staging environment. If the production and staging environments are in the same account, then there are insufficient assurances/guarantees/protections in place to prevent breaking production.
 
-Constructs like VPCs only provide network-level isolation, but not IAM-level isolation. And within a single AWS account,
-there’s no practical way to manage IAM-level boundaries between multiple stages like dev/staging/prod. For example, to
-provision most terraform modules, “administrative” level access is required because provisioning any IAM roles requires
-admin privileges. That would mean that a developer needs to be an “admin” in order to iterate on a module.
+Constructs like VPCs only provide network-level isolation, but not IAM-level isolation. And within a single AWS account, there’s no practical way to manage IAM-level boundaries between multiple stages like dev/staging/prod. For example, to provision most terraform modules, “administrative” level access is required because provisioning any IAM roles requires admin privileges. That would mean that a developer needs to be an “admin” in order to iterate on a module.
 
-Leveraging multiple AWS accounts within an AWS Organization is the _only way_ to satisfy these requirements. Guardrails
-can be be in place to restrict what can happen in an account and by whom.
+Leveraging multiple AWS accounts within an AWS Organization is the _only way_ to satisfy these requirements. Guardrails can be be in place to restrict what can happen in an account and by whom.
 
 We must decide how to organize the flat account structure into organizational units. Organizational units can then
 leverage things like Service Control Policies to restrict what can happen inside the accounts.
 
-Multiple AWS accounts should be used to provide a higher degree of isolation by segmenting/isolating workloads. There is
-no additional cost for operating multiple AWS accounts. It does add additional overhead to manage as a standard set of
-components will to manage the account. AWS support only applies to one account, so it may need to be purchased for each
-account unless the organization upgrades to Enterprise Support.
+Multiple AWS accounts should be used to provide a higher degree of isolation by segmenting/isolating workloads. There is no additional cost for operating multiple AWS accounts. It does add additional overhead to manage as a standard set of components will to manage the account. AWS support only applies to one account, so it may need to be purchased for each account unless the organization upgrades to Enterprise Support.
 
 Multiple AWS accounts are all managed underneath an AWS Organization and organized into multiple organizational units
 (OUs). Service Control Policies can restrict what runs in an account and place boundaries around an account that even

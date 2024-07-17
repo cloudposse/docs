@@ -1,0 +1,157 @@
+---
+title: "Decide on Service Discovery Domain"
+sidebar_label: "Service Discovery Domain"
+refarch_id: REFARCH-46
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import ReactPlayer from 'react-player'
+
+It's important to distinguish between branded/vanity domains (e.g. `cloudposse.com`, `slack.cloudposse.com`) used by customers and your infrastructure service discovery domains (e.g. `cloudposse.net`) used by services or internal consumers. For example, a product might have dozens of branded domains for SEO and marketing purposes, but you'll only have one infrastructure powering it. The service discovery domain is only for internal consumption. We get to define the conventions for this, not marketing. 😉 The service discovery domain will always be hosted on Route53, while the vanity domain can be hosted anywhere.
+
+The "service discovery domain" will be further subdivided by delegating a dedicated zone to each AWS account. For
+example, we don’t share DNS zones between production and staging. Therefore each account has its own service discovery domain (E.g. `prod.example.net`). See [Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery) for more context.
+
+This is a non-reversible decision, so we recommend taking the time to discuss with the team what they like the best.
+
+## Considerations
+
+### Length of Domain
+
+:::tip
+
+Our recommendation is to keep it short and simple.
+
+:::
+
+The length of the domain doesn’t technically matter, but your engineers will be typing this out all the time.
+
+### Buy New or Re-use
+
+:::tip We usually recommend registering a net-new domain (e.g. on route53) rather than repurposing an existing one.
+Domains are too inexpensive these days to worry about the cost.
+
+:::
+
+The "service discovery domain" does not need to be associated with the company’s brand identity and can be something
+completely separate from the company itself.
+
+If you prefer to repurpose an existing one, then we recommend a TLD which has no existing resource records.
+
+:::caution We do not recommend using the service discovery domain for AWS account addresses due to the cold start
+problem. You cannot provision the accounts without the email & domain, and you cannot provision the email & domain in
+the new accounts since they do not yet exist.
+
+:::
+
+### Registrar
+
+:::tip We recommend using the Route53 Registrar from the `dns` account
+
+:::
+
+When registering a new domain, we have the option of using Route53’s built-in registrar or using your existing
+registrar. Many enterprise-scale organizations use MarkMonitor to manage their domain portfolio. Our convention is to
+use the `dns` account (see
+[REFARCH-55 - Decide on AWS Account Flavors and Organizational Units](https://cloudposse.atlassian.net/browse/REFARCH-55))
+as the registrar. Note, the AWS Route53 Registrar cannot be automated with terraform and ClickOps is still required for
+domain registration.
+
+[https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html)
+
+We recommend checking with your legal department on where they want to consolidate domain ownership. It has larger
+ramifications as to IP/trademark defense.
+
+### Choose Top-level Domain Wisely
+
+The `.com`, `.net`, or `.org`domains are what we typically recommend due to the maturity of the TLDs.
+
+:::caution Newer, trendier TLDs like `.io`, `.ninja`, `.sh`, etc. have unproven long-term viability. The `.io` domain,
+trendy amongst startups is actually the registrar for the Indian Ocean and has been the subject of much scrutiny.
+
+[https://thehackerblog.com/the-io-error-taking-control-of-all-io-domains-with-a-targeted-registration/](https://thehackerblog.com/the-io-error-taking-control-of-all-io-domains-with-a-targeted-registration/)
+
+[https://fortune.com/2020/08/31/crypto-fraud-io-domain-chagos-islands-uk-colonialism-cryptocurrency/](https://fortune.com/2020/08/31/crypto-fraud-io-domain-chagos-islands-uk-colonialism-cryptocurrency/)
+
+[https://www.spamhaus.org/statistics/tlds/](https://www.spamhaus.org/statistics/tlds/)
+
+:::
+
+TLDs operated by Google (`.dev`, `.app`, Et al.) have mandatory HSTS (TLS) enabled in Chrome and browsers which adopt
+[https://hstspreload.org/](https://hstspreload.org/) . This means that you cannot access `http://` URLs by default,
+which is a security best-practice, but nonetheless inconsistent with other TLDs.
+[https://security.googleblog.com/2017/09/broadening-hsts-to-secure-more-of-web.html](https://security.googleblog.com/2017/09/broadening-hsts-to-secure-more-of-web.html)
+
+### Multiple AWS Organizations
+
+For customers using the “Model Organization” pattern (see
+[Decide on AWS Organization Strategy](/learn/accounts/design-decisions/decide-on-aws-organization-strategy)) we
+recommend one TLD Service Discovery domain per AWS Organization. Organizations are a top-level construct for isolation,
+so we believe that extends all the way down to the Service Discovery domain.
+
+### Multi-Cloud / On-prem
+
+If your organization plans to operate in multiple public clouds or on-prem, we recommend adopting a convention where
+each cloud gets its own service discovery domain, rather than sharing the domain across all clouds (e.g. by delegating
+zones). The primary reason is to reduce the number of zones delegated, but also to decouple cloud dependencies. See the
+related design decision on
+[Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
+to understand our zone delegation strategy.
+
+e.g. Suppose you had to support AWS, GCP, Azure and On-prem, the convention could be:
+
+- `example-aws.net`
+
+- `example-gcp.net`
+
+- `example-azure.net`
+
+- `example-onprem.net`
+
+### Internal/Public Route53 Zones
+
+:::tip We recommend using public DNS zones for service discovery
+
+:::
+
+We generally prescribe using public DNS zones rather than internal zones. Security is all about Defense in Depth (DiD),
+and while this adds another layer between VPC, Private Subnets, Security Groups, Firewalls, Network ACLs and Shield that
+the added layer of obscurity has fewer benefits than detractions. The benefits of keeping the zones public are easier
+interoperability between networks that do not share a common DNS server, and the ability to expose services as necessary
+using the service discovery domain to third parties services (e.g. partners, vendors, integrations like Snowflake or
+Fivetran, etc).
+
+See also our related ADR
+[Proposed: Use Private and Public Hosted Zones](/resources/adrs/proposed-use-private-and-public-hosted-zones/) for
+additional context.
+
+### Dedicated TLD per Organization, Delegated DNS Zones per AWS Account
+
+Delegate one zone per AWS account name to each AWS account. For example `prod.example.net`, `staging.example.net`, and
+`corp.example.net`.
+
+:::tip We recommend delegating one zone per AWS account
+
+:::
+
+### Dedicated TLD per AWS Account
+
+Delegate one dedicated "Top Level Domain" to each account (or some subnet). For example, `example.qa` for staging and
+`example.com` for prod. The benefit of this approach is we truly share nothing between accounts. The downside is coming
+up with a scalable DNS naming convention. Thus a hybrid between DNS zone delegation and multiple-TLDs is recommended.
+
+We think this is overkill and instead, recommend the dedicated TLD per AWS Organization coupled and
+[Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
+leveraging delegated zones by account.
+
+<ReactPlayer url='https://www.youtube.com/watch?v=ao-2mfA5OTE' width={"800px"} height={"450px"} controls={true} />
+
+## Related
+
+- [Decide on Hostname Scheme for Service Discovery](/learn/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
+
+- [Decide on Vanity (Branded) Domain](/learn/network/design-decisions/decide-on-vanity-branded-domain)
+
+- [https://youtu.be/ao-2mfA5OTE](https://youtu.be/ao-2mfA5OTE)
+
+## Change History

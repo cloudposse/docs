@@ -1,0 +1,326 @@
+---
+title: "How to Use Leapp to Authenticate with AWS"
+sidebar_label: "Leapp"
+sidebar_position: 10
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/leapp/leapp.md
+---
+
+Learn how to use Leapp to supply AWS credentials to tools used within Geodesic.
+
+## Problem
+
+Your company uses AWS SSO, AWS Federated IAM, or AWS IAM Users and you need to login to AWS. Tools like `saml2aws` offer
+inconsistent login experiences depending on the SSO provider. You’re a developer and would like to keep your session
+active during your working day without constantly re-entering your MFA token or running cumbersome command-line tools.
+
+## Solution
+
+:::tip Leapp App
+
+Use the Leapp desktop app to seamlessly login to AWS with any IdP and keep your session current
+
+:::
+
+In this how-to, we will help you get started using Geodesic to work with AWS resources by helping you set up and use
+[Leapp](https://leapp.cloud/) to handle credentials and authentication. Leapp is an open-source tool that makes this
+easier.
+
+### Prerequisites
+
+1. Install Leapp CLI from [https://www.leapp.cloud/releases](https://www.leapp.cloud/releases)
+
+2. Install the AWS CLI (e.g. `brew install awscli`); afterwards, you may need to symlink your homebrew AWS CLI
+   installation to `/usr/local/bin` by running: `ln -s /opt/homebrew/bin/aws /usr/local/bin/`
+
+3. Install the AWS Session Manager Plugin, see
+   [https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+
+We expect you’ve gone through our guide on [Geodesic](/fundamentals/geodesic) prior to using Leapp since that contains
+some important understanding of what Geodesic is, how it works, and what it’s doing.
+
+Your organization is already set up with either the [sso](/components/library/aws/aws-sso/) or the
+[iam-primary-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-primary-roles) and
+[iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles)
+components.
+
+#### AWS Region
+
+It will be helpful to know which AWS Region you will be primarily working in. This should be fairly common knowledge
+among people with AWS access at your company and documented as part of the ADR for
+[Decide on Primary AWS Region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region).
+If you are doing this on your own, choose the region closest to you geographically. If you are still in doubt, pick
+
+- `ca-central-1` if in Canada,
+
+- `us-east-2` if in the United States east of the Mississippi,
+
+- `us-west-2` if anywhere else in North America or anywhere in Central America,
+
+- `sa-east-1` if in South America,
+
+- `eu-north-1` if in Europe,
+
+- `af-south-1` if in Africa,
+
+- `ap-south-1` if in Asia, or
+
+- `ap-southeast-2` if in Australia or Antarctica.
+
+#### Credentials
+
+You will have to have some way of authenticating to AWS already set up, and you need to know the nature of your
+credentials. Whoever gave you access to AWS should be able to tell you what kind of access you have. It should be one of
+the following:
+
+- **Federated Role** (recommended). This means you log into something you use to identify yourself to a lot of places
+  (usually referred to as Single Sign-On or SSO), and it is set up to log you into AWS with a specific IAM Role as well.
+  At a company, this is usually Google Workspaces (formerly GSuite), Okta, or Active Directory. This is also known as a
+  SAML IdP.
+
+- **AWS SSO**. This means your company has configured AWS as a Single Sign-On provider. This is AWS _as_ a Single
+  Sign-On provider, allowing you to access multiple _permission sets_ within AWS, not using some other Single Sign-On
+  provider to sign in to AWS as a single IAM Role. Please note that even if your company has set up AWS _as_ a Single
+  Sign-On provider, you still may be using your company’s primary SSO provider to authenticate to AWS SSO.
+
+- **AWS IAM User**. This is the older way of authenticating to AWS, with a basic username and password to log into the
+  AWS console and a long-lived “Access Key” for API access. If you are going to use this method, we strongly recommend
+  that you enable multi-factor authentication (MFA).
+
+Based on which kind of credentials you have, you will need to gather different information with which to configure
+Leapp. Whoever is in charge of setting up your access to AWS should be able to give you the information you need.
+
+##### Federated Role
+
+If using Federated Login, you will need
+
+- Your IdP Single Sign-On URL.
+
+- For Google Workspaces, it looks something like
+  `https://accounts.google.com/o/saml2/initsso?idpid=C0asdfasdfal&spid=12344321`.
+
+- For Okta, it looks something like `https://company.okta.com/app/company_samlidp_1/Hka1abcke6h4P1WQr5d7/sso/saml`.
+
+- Most importantly,it should not be confused with the AWS Single Sign-On URLs like these (**do not use these**)
+
+- `https://signin.aws.amazon.com/saml` (this is used by your IdP admin)
+
+- `https://my-sso-portal.awsapps.com/start` (this means you are using AWS SSO)
+
+- The AWS Identity Provider ARN is assigned by AWS to your IdP. Something like
+
+- `arn:aws:iam::123434211234:saml-provider/company-name`
+
+- Your assigned/authorized AWS IAM Role ARN. Something like
+
+- `arn:aws:iam::123434211234:role/role-name`
+
+##### AWS SSO
+
+If using AWS SSO, you will need:
+
+- Your AWS SSO “start URL”, also known as your “portal URL”. It should be very close to:
+
+- `https://something.awsapps.com/start`
+
+- The region in which AWS SSO has been deployed. This may or may not be the same region you will be working in.
+
+##### AWS IAM User
+
+If you are a regular IAM User who can log into the AWS Console, you should log into the AWS Console while setting up
+Leapp. Choose “My Security Credentials” from the Account drop-down menu:
+
+- Copy and paste your MFA ARN or Serial Number from the “Assigned MFA device”
+
+- Click on “Create access key” to create a new access key and copy the Access Key ID and Secret Access Key from the
+  console and paste directly into the appropriate fields in Leapp.
+
+### Step-by-Step Process
+
+#### Start Geodesic
+
+If you are a Cloud Posse client, you will have a customized version of Geodesic that sets an initial value for the
+environment variable `AWS_PROFILE`. Alternatively, you may have customized it yourself, or you may want to. In any case,
+we will go with what you have. So start Geodesic, and at the command prompt, type
+
+```
+echo $AWS_PROFILE
+```
+
+This is the value you will give to the profile in Leapp when you configure it. If the output of `echo` is blank, as
+would be expected if you are running our public tutorial image, use “default” for the profile name.
+
+Verify you do not have any credentials set via your environment variables. The following command should have no output:
+
+```
+declare -p | grep -E '(AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY|AWS_SESSION_TOKEN)='
+```
+
+If any values are output by the `declare -p | grep...` command, you need to find a way to prevent those environment
+variables from being set when you start Geodesic. Most likely they were set via some customization you have installed,
+or by running something like `aws-vault`. Fix this before going forward, as having those environment variables set will
+prevent Leapp from being effective.
+
+#### Install Leapp
+
+Please refer to the official Leapp documentation for the latest instructions on installing and configuring Leapp. Now
+that you are armed with the information from the previous steps, it should be pretty easy.
+
+- Visit the [Leapp website](https://leapp.cloud/)
+
+- Download and install Leapp as instructed by the website
+
+- If using homebrew, you can `brew install --cask leapp`
+
+- Follow the instructions (under “Docs”) for configuring AWS
+
+#### Configure Leapp using the cli
+
+[https://www.npmjs.com/package/@noovolari/leapp-cli](https://www.npmjs.com/package/@noovolari/leapp-cli)
+
+`brew install Noovolari/brew/leapp-cli`
+
+Setup some environment variables, use your `LEAPP_IDP_URL` and
+
+```
+# your IDP URL by right clicking on the Google AWS icon and clicking "Copy Link"
+export LEAPP_IDP_URL="https://accounts.google.com/o/saml2/initsso?idpid=snip&spid=snip&forceauthn=false"
+# Customer environment variables from https://cloudposse.atlassian.net/wiki/spaces/CP/pages/920879105/How+to+Set+Up+Customer+AWS+Access+with+SAML
+export LEAPP_IDP_ARN="arn:aws:iam::1234567890:saml-provider/identity"
+export LEAPP_ROLE_ARN="arn:aws:iam::1234567890:role/identity"
+export LEAPP_PROFILE_NAME="my-identity-profile"
+export LEAPP_PROFILE_ALIAS="my-profile-alias"
+export LEAPP_REGION="us-east-2"
+```
+
+Create the idp url only once
+
+```
+✗ leapp idp-url create --idpUrl $LEAPP_IDP_URL
+identity provider URL created
+```
+
+For each customer
+
+```
+✗ leapp profile create --profileName $LEAPP_PROFILE_NAME \
+  && leapp session add \
+    --providerType "aws" \
+    --sessionType "awsIamRoleFederated" \
+    --sessionName $LEAPP_PROFILE_ALIAS \
+    --roleSessionName $LEAPP_PROFILE_ALIAS \
+    --region $LEAPP_REGION \
+    --roleArn $LEAPP_ROLE_ARN  \
+    --idpUrl $LEAPP_IDP_URL \
+    --idpArn $LEAPP_IDP_ARN \
+    --profileId $(leapp profile list -x | grep $LEAPP_PROFILE_NAME | awk '{ print $1 }' | head -1)
+profile created
+session added
+✗ LEAPP_SESSION_ID=$(leapp session list -x --csv | grep $LEAPP_PROFILE_ALIAS | cut -d',' -f1)
+✗ leapp session start --sessionId $LEAPP_SESSION_ID
+session started
+```
+
+#### Configure Leapp using the app
+
+Below is some guidance to the Leapp documentation that applies as of the time of this writing. By the time you read this
+it may be out of date, but hopefully will still be of help in guiding you through the Leapp site.
+
+<img src="/assets/refarch/image-20211027-143855.png" height="1296" width="1030" /><br/>
+
+- The “AWS Profile” setting in Leapp must match _exactly_ the value of `$AWS_PROFILE` you found in Geodesic in the
+  earlier step.
+
+- The “AWS Region” you set in the Leapp session should be the AWS Region you most often use, as discussed
+  [above](/howto/geodesic/authenticate-with-leapp/#aws-region-and-credentials).
+
+- The “Session Alias” is completely up to you: it is the name for this set of credentials that you will see in the UI.
+
+The Leapp documentation is at [https://docs.leapp.cloud/](https://docs.leapp.cloud/) and the best set of instructions to
+follow are the ones under a sub-menu on the left side of the page: **Tutorials > AWS**
+
+- If you have a **Federated Login**, pick “AWS IAM Federated Role”. Most of the tutorial is about how to configure
+  Federated Login itself, and you can skip all that. Just follow the last step: “Setup in Leapp”.
+
+- Otherwise, pick “AWS SSO” or “AWS IAM User” and follow the steps.
+
+#### Log in Using Leapp
+
+Leapp provides two UIs for logging into or out of a session. There is a system-wide menu item in the taskbar on Windows
+systems or as a “status menu” on the Mac menu bar. Click on it and a menu will appear with all your configured session
+names and their corresponding profile names. An icon for each session will appear either in gray if logged out or orange
+if logged in (at least those are the current defaults for the “Light” color scheme on macOS). Just select the menu item
+to toggle the state.
+
+<img src="/assets/refarch/image-20211027-144503.png" height="1288" width="1018" /><br/>
+
+Alternately, you can select “Show” from the menu and be shown a richer UI where you can do more, but still, the main
+thing is that you click on a session name to change its state and the indicator shows gray for logged out and orange for
+logged in.
+
+If you are not using IAM user access keys then in order to access AWS you will have to log in to your “identity
+provider” (e.g. Okta, Google) like you do for access to other resources. Therefore, when you try to activate a session
+in Leapp, it may open a small web browser window popup or open a window or tab in your default browser so you can
+complete the login flow, including supplying a second factor if you are using MFA, and perhaps solving a CAPTCHA puzzle.
+This is normal and expected behavior, not a virus or hacking attempt. When you finish logging in via the web browser,
+Leapp uses the credentials provided by your identity provider to authenticate to AWS, just as if you were logging into
+the AWS web console or SSO portal.
+
+Like your web browser, Leapp can store cookies and other information, and in addition, Leapp is able to use your system
+keychain for secure storage of other things like your Secret Access Key. Because of this, and depending on your identity
+provider and their settings, simply being logged into your computer may be enough authentication for Leapp to grant you
+access when you enable a session without asking you for anything. However, AWS requires periodic refreshing of session
+keys and if you are using MFA with AWS, you should enable Leapp notifications so you can receive prompts when your AWS
+session expires and Leapp needs a new MFA token in order to start a new session for you.
+
+#### It Should “Just Work”
+
+Once you log in to AWS using Leapp, go back into Geodesic and simply hit return at the prompt. The prompt should change
+from having a red ✗ and `[none]` to having a green √ and `[default]` or whatever your profile name is. This is
+Geodesic’s way of letting you know you are authorized with AWS, and what profile you have active.
+
+You can always confirm your current authentication status by running:
+
+```
+aws sts get-caller-identity
+```
+
+When you are properly authenticated, it will output your IAM role and other information. When you are logged out, it
+will print some kind of error message, usually:
+
+```
+Unable to locate credentials. You can configure credentials by running "aws configure".
+```
+
+### FAQ
+
+#### “Named Profile” does not show my profile in the dropdown
+
+Click the box under “Named Profile” and start typing to add a new list item. Your text should replace what is in the
+box, i.e. “default”, and you will get an option to add a new list item.
+
+#### Getting Leapp integrated with Windows
+
+This presents a unique challenge as `docker` does not understand Windows block devices. If you try to simply mount the
+`.aws` from your Windows-native Leapp into a Geodesic container, the volume mount will fail to follow a symlink. It also
+will not share the Windows device.
+
+To get around this, there are two options:
+
+1. Set up a cronjob that regularly syncs the `.aws` directory from your Windows native Leapp into your WSL2 home
+   directory. This is the easiest option, but it means you'll have to wait for a few seconds depending on how often you
+   run the cronjob.
+2. Set up a FIFO pipe using `mkfifo` that will allow you to stream the output of `leapp` into the `.aws/credentials`
+   file. If your `.aws/config` changes a lot, you'd also need a separate file. This is the more complicated option, but
+   you can run `leapp` and have it immediately available in your Geodesic container. A simple example follows:
+
+```bash
+#!/bin/bash
+mkfifo ~/.aws/credentials
+(while :; do cat /mnt/c/Users/<username>/.aws/credentials > ~/.aws/credentials; done) &
+```
+
+Because there has to be a reader in order to write, the while loop will block until something tries to read from the
+pipe. At worst, you may need to enter Geodesic twice to ensure the latest credentials are used.
+
+NOTE: This is just a mundane script. Sophistication can be added to support closing the pipe on exit, detecting if the
+pipe is already open, etc.

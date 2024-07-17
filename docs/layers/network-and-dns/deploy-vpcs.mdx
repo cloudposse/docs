@@ -1,12 +1,14 @@
 ---
-title: "Deploy VPCs"
+title: "Deploying the Network"
+sidebar_label: "Deploy VPCs"
 sidebar_position: 0
 ---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
 
-# Deploying the Network
-
-The first step in deploying the network is to deploy the VPCs in each region. This will create the necessary foundation
-for the platform to run and includes the VPC, subnets, route tables, security groups, and VPC endpoints.
+<Intro>
+The first step in deploying the network is to deploy the VPCs in each region. This will create the necessary foundation for the platform to run and includes the VPC, subnets, route tables, security groups, and VPC endpoints.
+</Intro>
 
 ## Deployment
 
@@ -22,8 +24,7 @@ Once this is done, initialize all the VPCs in every configured region by running
 atmos workflow deploy/vpc -f network
 ```
 
-Once all VPCs are deployed, decomission the default VPC in each region by running the following command from within the
-Geodesic shell:
+Once all VPCs are deployed, decomission the default VPC in each region by running the following command from within the Geodesic shell:
 
 ```bash
 wipe-default-vpcs

@@ -1,9 +1,10 @@
 ---
-title: "Establish Connectivity"
+title: "Establish Connectivity with Transit Gateway"
+sidebar_label: "Establish Connectivity"
 sidebar_position: 10
 ---
-
-# Establish Connectivity with Transit Gateway
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
 
 ## Deployment
 
@@ -36,11 +37,7 @@ If this happens, you can safely wait a minute or two and then re-attempt the pro
 
 ### Redeploy `tgw` when Deploying a New EKS Cluster
 
-The file `stacks/catalog/tgw/hub.yaml` and the separate `tgw/spokes` in each `stacks/org/**/global-region/network.yaml`
-potentially contain references to EKS Clusters using the `eks_component_names` variable. If you add an EKS Cluster, then
-you will want to look up the individual `spoke` and `hub` components that are affected. If you are using cross-region
-`tgw/cross-region-hub-connector` components, you will also want to update `eks_component_names` on the regional
-connections.
+The file `stacks/catalog/tgw/hub.yaml` and the separate `tgw/spokes` in each `stacks/org/**/global-region/network.yaml` potentially contain references to EKS Clusters using the `eks_component_names` variable. If you add an EKS Cluster, then you will want to look up the individual `spoke` and `hub` components that are affected. If you are using cross-region `tgw/cross-region-hub-connector` components, you will also want to update `eks_component_names` on the regional connections.
 
 ```
 atmos workflow deploy/tgw -f network

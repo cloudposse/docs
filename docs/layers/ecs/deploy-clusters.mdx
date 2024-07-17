@@ -1,9 +1,10 @@
 ---
-title: "Deploy Clusters"
+title: "Deploying the ECS Platform"
+sidebar_label: "Deploy Clusters"
 sidebar_position: 10
 ---
-
-# Deploying the ECS Platform
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
 
 ## Quick Start
 
@@ -16,9 +17,7 @@ sidebar_position: 10
 
 ## Requirements
 
-In order to deploy ECS, Networking must be fully deployed and functional. In particular, the user deploying the cluster
-must have a working VPN connection to the targeted account. See
-[the network documentation](https://docs.cloudposse.com/reference-architecture/setup/network/) for details.
+In order to deploy ECS, Networking must be fully deployed and functional. In particular, the user deploying the cluster must have a working VPN connection to the targeted account. See [the network documentation](https://docs.cloudposse.com/reference-architecture/setup/network/) for details.
 
 All deployment steps below assume that the environment has been successfully set up with the following steps.
 
@@ -45,21 +44,15 @@ atmos vendor pull --component ecs-service
 
 ### Deploy
 
-ECS provisioning includes deploying certificate requirements, the default ECS cluster, and Echo Server. Echo Server is a
-basic service used to validate a successful cluster deployed and is an example of an ECS service. Find ECS Service
-definitions under `catalog/stacks/ecs-services`.
+ECS provisioning includes deploying certificate requirements, the default ECS cluster, and Echo Server. Echo Server is a basic service used to validate a successful cluster deployed and is an example of an ECS service. Find ECS Service definitions under `catalog/stacks/ecs-services`.
 
-To provision each cluster, these components need to be deployed in order. The included Atmos Workflows will carry out
-this deployment in the proper order, but any of these step can be run outside of a workflow if desired.
+To provision each cluster, these components need to be deployed in order. The included Atmos Workflows will carry out this deployment in the proper order, but any of these step can be run outside of a workflow if desired.
 
 See the ecs workflow (`stacks/workflows/ecs.yaml`) for each individual deployment step.
 
 #### Deploy ACM Certificates
 
-First deploy all required ACM certificates for each ECS cluster. These certificates validate the given service domain.
-You can deploy these certificates before associating the given Route 53 Hosted Zone with the purchased domain in your
-chosen Domain Registrar, but the certificate will not be ISSUED until the registered domain and Hosted Zone are
-connected.
+First deploy all required ACM certificates for each ECS cluster. These certificates validate the given service domain. You can deploy these certificates before associating the given Route 53 Hosted Zone with the purchased domain in your chosen Domain Registrar, but the certificate will not be ISSUED until the registered domain and Hosted Zone are connected.
 
 Run the following Atmos Workflow to deploy every required ACM certificate for ECS.
 

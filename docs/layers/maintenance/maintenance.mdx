@@ -1,0 +1,199 @@
+---
+title: "Maintenance"
+sidebar_label: "Maintenance"
+sidebar_class_name: hidden
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## The Problem
+
+Even if we codify our infrastructure, that doesn't mean our job is done.
+Time needs to be spent updating components, adding features, and fixing bugs.
+Over time this churn can create significant tech debt or worse, stagnation.
+Moreover, open source software isn't a silver bullet of 'free updates'
+( ie. projects can become stale or abandoned ).
+
+## Our Solution
+
+We discuss many of the common tasks, best-practices, and the means of automation, along
+with guidance on how to lean on that automation without overdoing it early on.
+The trick with ownership is to take things in stride, starting slow and building up
+automation.
+
+## What needs to be maintained
+
+### Making decisions
+
+Read through your ADR documents and make sure that they are up to date.
+When you make a deliberate effort to change something, try in earnest to document those changes.
+This doesn't mean you need to write up components, but certainly express when one technology should
+be preferred over another, and discuss patterns that your team should adopt and reherse.
+
+Good ADR Examples:
+- Technology choices (adding, removing)
+- Scaling up infrastructure (new orgs, new regions, etc)
+- Analysis, direction, or principles of patterns
+
+### Creating components
+
+We have a [separate guide on authoring components](/reference-architecture/fundamentals/component-development) that
+can guide you through the methods, but we should also talk about the impact on maintenance
+separately.
+
+[Make sure your component doesn't already exist](https://github.com/cloudposse/terraform-aws-components)
+and that includes [checking for PRs](https://github.com/cloudposse/terraform-aws-components/pulls).
+Maximize the use of modules by searching the [Terraform Registry](https://registry.terraform.io/) and
+remember that there is a high cost to components:
+
+- Keep your providers up to date:
+  - GitOps and Spacelift solutions will warn you about deprecation in their logs. Read them and
+    deligently create issues on them.
+- Dependencies should be carefully considered:
+  - Avoid mixing global and regional resources. Two smaller components will compose better
+- If you need to make many instances of a resource, consider drying that up with Atmos
+  - i.e. if you need to make 4 VPCs, then make 4 instances of a component that produces the VPC
+  - It is significantly easier to use Atmos for DRYing configuration rather than Terraform
+- Maintenance will include disabling/enabling components. Make sure that your component respects this
+  flag or it could be very difficult to update and extend.
+- Consider versioning and maintaining components outside of your infrastructure repo. If you plan
+  for other organizations to use your component, make sure you practice vendoring.
+
+### Updating components
+
+Components in Atmos support vendoring. This means you can version them independently of your
+infrastructure to best manage the operational cost of updating them.
+Make sure you [read up on how vendoring works in Atmos](https://atmos.tools/core-concepts/components/vendoring)
+and carefully read [release information](https://github.com/cloudposse/terraform-aws-components/releases)
+for risks and breaking changes.
+
+### Updating infrastructure
+
+When you are working on altering your `stacks` folder, Atmos has several features to help
+manage the sprawl. [Be sure to read up on how Atmos manages stacks](https://atmos.tools/core-concepts/stacks).
+
+Some key patterns for success while maintaining stacks:
+- [Validate stacks often while configuring them](https://atmos.tools/core-concepts/stacks/validation)
+- [Use the `describe` command to look at imported files](https://atmos.tools/core-concepts/stacks/describing)
+- Try to dry up catalog entries after `atmos terraform plan` is working, not before
+  - Often, catalog patterns emerge once your components are configured in many environments
+  - Mixin and layer patterns emerge over many PRs and with maturity. Rushing them can lead to significant tech debt
+
+### Operational Headaches
+
+Some situations you should plan for include:
+
+- Expect `atmos terraform destroy` to fail. Test with `enabled=false`, then destroy.
+- Updating runners for things like GitOps, GitHub Actions, or Spacelift can be a catch-22. Carefully consider that while you replace them, they could destroy themselves or otherwise mess up state locks.
+- What order of operations does a set of infrastructure pieces take?
+  - Document all required clickops. Many apis like AWS still have these
+  - Tools like [Spacelift](https://docs.spacelift.io/concepts/stack/stack-dependencies) understand dependencies.
+    [You can use Atmos to make sure they are tracked](https://atmos.tools/cli/commands/describe/dependents)
+  - Consider [Atmos Workflows](https://atmos.tools/cli/commands/workflow) when steps need to manage resources in peculiar fashions such as using the [Terraform `-target` flag](https://developer.hashicorp.com/terraform/cli/commands/plan#target-address)
+- It's always easier to add/remove than to mutate. Prefer replacing components whenever you are making complex changes.
+- If availability or global dependencies are a concern:
+  - ADR Docs should be present to discuss risks and describe how they are mitigated
+  - Consider using a new stage. The [AWS Well-Architected](https://aws.amazon.com/architecture/well-architected/) and
+    [12-factor](https://12factor.net/) patterns go over the patterns of a good platform.
+    _You are maintaining a platform_.
+
+### Secrets rotation
+
+Simply put, SSM Parameter Store is very helpful, but it won't let you know about rotation and drift.
+
+- Consider [using developer automation features in 1Password](https://1password.com/developers/secrets-management) to help with secret rotation
+- You can also use an ADR to document credentials that should expire and when
+- [Atmos workflows](https://atmos.tools/cli/commands/workflow) can be used to rotate secrets
+- [Terraform has the `time_rotating` resource](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating.html)
+- Make sure you are using bot accounts or applications for GitHub secrets.
+  If any of the tokens in your 1Password vault are personal, there will be foreseeable problems.
+  You can use the `gh auth status` command from the `gh` cli to verify the user of each token.
+
+## Automation and tooling
+
+### Renovate
+
+Renovate is a swiss-army knife for keeping abreast of changes in open source software.
+Some leading patterns and best practices include:
+
+- [Renovate can watch for releases and notify you on a dashboard](https://docs.renovatebot.com/key-concepts/dashboard/)
+- [Renovate can watch Dockerfiles](https://docs.renovatebot.com/modules/datasource/docker/)
+- [Renovate can notify EndOfLife cycles](https://docs.renovatebot.com/modules/datasource/endoflife-date/)
+  - Make sure you consider your platform, such as Kubernetes or AMI distributions
+  - Consider the aforementioned "dashboard" feature so you avoid alert fatigue
+- [Renovate can watch terraform modules](https://docs.renovatebot.com/modules/datasource/terraform-module)
+- [Renovate can watch terraform providers](https://docs.renovatebot.com/modules/datasource/terraform-provider)
+
+Since it can be daunting to configure Renovate for everything, we recommend
+starting with only the basic and most crucial sources of tech debt:
+- Make sure Geodesic updates create PRs
+  - You'll get a lot of automated updates from this alone, including patches to Terraform and `aws-cli`
+- Create module and provider rules for custom components
+
+### UpdateCLI
+
+[UpdateCLI](https://www.updatecli.io/) is a tool that can be used to update
+many different types of software and can implement auto-discovery.
+While the configuration is more complex than Renovate, it can be customized to
+do much more in-depth automation.
+
+Considerations:
+- Auto-discovery quickly leads to alert fatigue. Consider it for high churn
+- Updating stacks is possible, and you can even update AMI searches or db versions, but make sure
+  you have a good understanding of the impact of the change before you automate it.
+
+### Atmos
+
+Atmos has a [Component Updater](https://atmos.tools/integrations/github-actions/component-updater)
+which can be enabled as a GitHub action. Currently, plans are to EOL this feature in favor of Renovate.
+
+## Maturing infrastructure
+
+Many of the topics above concern maturing infrastructure. As you grow, you will
+find many patterns in how your platform responds to business needs.
+
+This takes time.
+
+Make sure that you retro your platform regularly. Patterns to consider for maturing your
+infrastructure include:
+
+- Monthly meetings to sync on tech debt, outages, and vulnerabilities
+- Rotating ownership of components
+- Reviewing telemetry and auditing PRs
+
+## References
+
+- [Renovate](https://www.mend.io/renovate/)
+- [UpdateCLI](https://www.updatecli.io/)
+- [Atmos](https://atmos.tools/)
+- [AWS Well-Architected](https://aws.amazon.com/architecture/well-architected/)
+- [12-factor](https://12factor.net/)
+
+## FAQs
+
+### How can I quickly patch a newly vendored component?
+
+We recommend using [Terraform override files](https://developer.hashicorp.com/terraform/language/files/override)
+to quickly patch a component.
+
+### What if the resources in my component need to move after vendoring?
+
+Consider using [Terraform `moved` configuration](https://developer.hashicorp.com/terraform/tutorials/configuration-language/move-config#move-your-resources-with-the-moved-configuration-block),
+understanding that the state commands can also be codified in Atmos workflows.
+
+### Should I teach my infrastructure to update itself?
+
+It's best to first do as much manual work as possible. Once you feel like you
+have a well analyzed pattern, consider making a PR to add an ADR and discuss.
+If the ADR holds up to criticism, it should encapsulate what you plan to automate.
+
+### Developers want to iterate on infrastructure. How do I manage this?
+
+If developers want to use your platform in a way that affects terraform state:
+- Can these resources be released from state? Then give developers access with `aws-teams`
+- If developers want to codify their own infrastructure outside of your platform:
+  - Do they just need extra environments? Codify them using [Atmos template imports](https://atmos.tools/core-concepts/stacks/imports/#go-templates-in-imports)
+  - Can they manage components in a separate repo? Then vendor their component repo. They can use the `sandbox` account to test their components.
+
+Mostly, the platform you make will need room to iterate, but this can get costly quickly.
+Make sure to start small and set goals to drive when you can increase the cost of the platform.

@@ -1,0 +1,56 @@
+---
+title: "Decide on Helm Chart Repository Strategy"
+refarch_id: REFARCH-207
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# Decide on Helm Chart Repository Strategy
+
+## Problem
+
+Helm charts were originally intended to be compiled into packages which are `.tar.gz` archives with a manifest and the
+templatized kubernetes manifests. This chart repository will house proprietary charts your organization depends on and
+therefore is on the critical path for both availability and supply-chain attacks. Any adversary who controls your chart
+repository effectively controls what you can run on your cluster. The chart registry goes down, your company will be
+unable to deploy applications via helm. The same goes for third-party charts, hosted on external registries.
+
+## Solution
+
+Fortunately, charts are very simple to produce and host. They are easily served from a VCS (e.g. git) or S3. There are a
+few ways to host chart repositories, but our recommendation is just to use VCS. Using `terraform` or `helmfile`, we can
+just point directly to GitHub and short-circuit the need for managing a chart repository altogether. Terraform natively
+supports this pattern.
+
+:::tip Our recommendation is to use GitHub directly and to avoid using chart repositories unless there are specific
+requirements for it.
+
+:::
+
+## Considerations
+
+If we must, then here are the considerations:
+
+1. **Use VCS** (e.g. GitHub) to pull charts directly and build on-demand.
+
+2. **Use OCI** (docker registry) to push/pull charts (e.g. ECR). Support for terraform will probably drop soon.
+   [https://github.com/hashicorp/terraform-provider-helm/issues/633#issuecomment-1021093381](https://github.com/hashicorp/terraform-provider-helm/issues/633#issuecomment-1021093381)
+   [https://aws.amazon.com/blogs/containers/oci-artifact-support-in-amazon-ecr/](https://aws.amazon.com/blogs/containers/oci-artifact-support-in-amazon-ecr/)
+
+3. **Use GitHub Actions** to build chart artifacts and push them to a static endpoint.
+   [https://github.com/helm/chart-releaser-action](https://github.com/helm/chart-releaser-action)
+
+4. **Use Nexus** - Self-hosted artifactory alternative
+
+5. **Use Artifactory** (SaaS preferred)
+
+6. **Use S3** (public or private chart repositories)
+   [https://github.com/hypnoglow/helm-s3](https://github.com/hypnoglow/helm-s3)
+
+7. **ChartMuseum** → S3 [https://github.com/helm/chartmuseum](https://github.com/helm/chartmuseum)
+
+Using Nexus or Artifactory make the most sense if we plan to use them elsewhere to cache artifacts.
+
+## References
+
+- [https://helm.sh/docs/topics/chart_repository](https://helm.sh/docs/topics/chart_repository)
