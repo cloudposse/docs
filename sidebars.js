@@ -223,7 +223,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Monitor Everything',
+              label: 'Monitoring Platform',
               collapsible: true,
               collapsed: true,
               link: {
