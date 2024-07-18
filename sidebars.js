@@ -407,8 +407,8 @@ module.exports = {
           items: [ 'community/slack',
                    'community/office-hours',
                    'community/contact-us',
-                   'community/support',
-                   'community/faq' ]
+                   'community/support'
+                 ]
       },
       {
         type: 'category',

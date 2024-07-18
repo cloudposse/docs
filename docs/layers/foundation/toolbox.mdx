@@ -1,0 +1,11 @@
+## The Toolbox Image
+
+Build the toolbox image locally before continuing. Follow the
+[toolbox image setup steps in the How-to Get Started guide](/layers/foundation/#building-the-toolbox-image). In short,
+run `make all`.
+
+The container will have the given local home mapped, so you should be able to use aws normally inside it once you set a
+profile that has valid credentials. For instance, if I log in to the profile `acme` with
+[leapp](https://github.com/Noovolari/leapp), I can run `aws --profile acme sts get-caller-identity` and get a response.
+
+Once you've verified that the infra container has access to aws resources, we can move on to the next step.

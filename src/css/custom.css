@@ -274,3 +274,25 @@ div > article {
 .hidden {
   display: none;
 }
+
+ul.contains-task-list {
+    margin-left: 2.8em;
+}
+
+ul.contains-task-list [type='checkbox'] {
+  padding: 0;
+  /* width: 0; */
+  margin-right: -1.6em;
+  overflow: visible;
+  position: relative;
+  left: -2em;
+}
+
+
+.license {
+    float: left;
+}
+
+li.menu__list-item.deprecated > a {
+  color: #444950;
+}

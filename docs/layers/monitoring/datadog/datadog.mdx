@@ -6,7 +6,7 @@ sidebar_position: 10
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-Cloud Posse advises customers that all have <ins>very similar monitoring requirements</ins> because we filter for customers who match our delivery model. The actual fine-tuning of it will be specific to the customer.
+Cloud Posse advises customers that all have <i>very similar monitoring requirements</i> because we filter for customers who match our delivery model. The actual fine-tuning of it will be specific to the customer.
 
 Our goal with this ADR is to identify the reusable, standard SLI/SLO for our customers that we can readily implement time and time again.
 
@@ -64,7 +64,7 @@ Golden Signals are a form of telemetry that applies to anything with throughput.
 
 - **Saturation** - How "full" your service is. A measure of your system fraction, emphasizing the resources that are most constrained (e.g., in a memory-constrained system, show memory; in an I/O-constrained system, show I/O).
 
-These golden signals are closely related to the <ins>[RED metrics](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)</ins> for microservices: rate, errors, and duration, and the older <ins>[USE method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)</ins> focusing on utilization, saturation, and errors. These signals are used to calculate the service level objectives (SLOs).
+These golden signals are closely related to the <i>[RED metrics](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)</i> for microservices: rate, errors, and duration, and the older <i>[USE method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)</i> focusing on utilization, saturation, and errors. These signals are used to calculate the service level objectives (SLOs).
 
 Here are other useful metrics that are examples which don’t necessarily fit into the Golden Signals.
 

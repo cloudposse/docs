@@ -1,11 +1,16 @@
 ---
 title: "Alerting"
 sidebar_class_name: hidden
+description: "Set up effective alerting with OpsGenie and Datadog"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-Alerting is the process of notifying users of a system of a change in its state. This is typically done by sending an email or a text message to a user or a group of users.
+<Intro>
+Learn how to set up an effective alerting system that notifies the right people when issues arise. This involves configuring OpsGenie for incident management and integrating it with Datadog for monitoring, ensuring alerts are properly escalated and managed to prevent alert fatigue and system failures.
+</Intro>
+
+Alerting notifies users about changes in a system’s state, typically via emails or text messages sent to specific individuals or groups.
 
 Alerting goes hand in hand with [monitoring](/reference-architecture/fundamentals/monitoring/). When a system is monitored properly, only the right people are notified when something goes wrong.
 
@@ -18,7 +23,7 @@ This Quick Start assumes you have read through [the Monitoring Quick Start](/ref
 ## The Problem
 
 
-When a system is not monitored properly, it's easy to get overwhelmed with alerts. This is called alert fatigue. Alert fatigue is a real problem that can lead to a system being ignored and eventually failing.
+When a system is not monitored properly, it's easy to get overwhelmed with alerts. This leads to alert fatigue. Alert fatigue is a real problem that can lead to a system being ignored and eventually failing.
 
 Furthermore, a system must be in place for alerts to be escalated to the right team and people. When a single system goes down, there are often cascading effects on other services.
 

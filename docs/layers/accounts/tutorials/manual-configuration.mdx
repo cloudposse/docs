@@ -1,22 +1,24 @@
 ---
-title: "Cold Start Implementation In Depth"
-sidebar_label: "Detailed Cold Start"
+title: "Manual Cold Start Implementation"
+sidebar_label: "Manual Cold Start"
 sidebar_position: 10
+description: Manual guide to setting up AWS Organization with SweetOps
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+<Intro>
+This guide covers the manual cold-start process for setting up a new AWS Organization using Cloud Posse’s SweetOps process. It involves numerous manual steps and configurations to establish the necessary tooling and environments before you can use Terraform effectively.
+</Intro>
+
 These steps are part of laying the foundation for your environment and are necessary prerequisites for using Terraform.
 
-:::info Automated Solution as an Alternative
+:::tip Automated Solution as an Alternative (Recommended)
 
 This document includes many advanced and alternate configurations for the Cold Start implementation, including detailed
-explanations and manual set up steps. Alternatively we have a simplified
-[Automated Cold Start Implementation](layers/accounts/deploy-accounts/) that includes the minimum requirements for
-provisioning a Cold Start. That setup document makes use of Atmos Workflows to alleviate Click Ops woes but does not
-account for edge cases.
+explanations and manual setup steps. We also do not regularly test this, and it's likely out of date.
 
-Please refer to the below documentation as the source of truth for the Cold Start.
+Alternatively, we have a simplified [Automated Cold Start Implementation](layers/accounts/deploy-accounts/) that includes the minimum requirements for provisioning a Cold Start. This automated setup document makes use of Atmos Workflows to alleviate Click Ops woes but does not account for edge cases.
 
 :::
 

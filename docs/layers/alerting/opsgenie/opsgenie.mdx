@@ -3,11 +3,17 @@ title: "How to Implement Incident Management with OpsGenie"
 sidebar_label: "OpsGenie"
 confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1192231154/How+to+Implement+Incident+Management+with+OpsGenie
 sidebar_position: 10
+description: Standardize incident management with clear escalations and response processes
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+<Intro>
+Implementing incident management with OpsGenie involves setting up a standardized, reusable method to handle incidents effectively. This guide outlines the strategy used by Cloud Posse to integrate OpsGenie with Datadog for incident management, ensuring rapid response and remediation while minimizing alert fatigue.
+</Intro>
+
 ## Introduction
+
 Cloud Posse advises customers with <ins>very similar monitoring requirements</ins> because we have standardized our delivery model for our customers. This is our strategy for implementing OpsGenie for Incident Management. The actual fine-tuning of any implementation needs to be tailored to the customer’s needs based on the [Design Decisions](#design-decisions).
 
 Our goal with this guide is to define the reusable method for incident management we use with our customers that we can readily implement time and time again.

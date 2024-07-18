@@ -6,21 +6,14 @@ sidebar_position: 10
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+<Intro>
+Follow these steps to configure and initialize the Terraform state backend using Atmos, ensuring proper setup of the infrastructure components and state management.
+</Intro>
+
 | Steps                     |                                           |
 | ------------------------- | ----------------------------------------- |
 | Configure Terraform state | `atmos workflow init/tfstate -f baseline` |
 
-## The Toolbox Image
-
-Build the toolbox image locally before continuing. Follow the
-[toolbox image setup steps in the How-to Get Started guide](/layers/foundation/#building-the-toolbox-image). In short,
-run `make all`.
-
-The container will have the given local home mapped, so you should be able to use aws normally inside it once you set a
-profile that has valid credentials. For instance, if I log in to the profile `acme` with
-[leapp](https://github.com/Noovolari/leapp), I can run `aws --profile acme sts get-caller-identity` and get a response.
-
-Once you've verified that the infra container has access to aws resources, we can move on to the next step.
 
 ## Setting up the Terraform State Backend
 
@@ -43,14 +36,14 @@ Note that it can take a minute for the S3 buckets you created to become availabl
 until the bucket is created and available, with a 5-second delay between each check. Eventually, you should see this
 prompt:
 
-```
+```shell
 Initializing the backend...
 Do you want to migrate all workspaces to "s3"?
 ```
 
 Type `yes` to continue. This will migrate the state from the local backend to the s3 backend.
 
-:::info Granting SuperAdmin Access to TFState
+:::info Granting SuperAdmin Access to Terraform State
 
 The IAM User for SuperAdmin will be granted access to Terraform State by principal ARN. This ARN is passed to the
 `tfstate-backend` stack catalog under `allowed_principal_arns`. Verify that this ARN is correct now. You may need to

@@ -142,10 +142,24 @@ Considerations:
 - Updating stacks is possible, and you can even update AMI searches or db versions, but make sure
   you have a good understanding of the impact of the change before you automate it.
 
-### Atmos
+
+## Atmos Component Updater
 
 Atmos has a [Component Updater](https://atmos.tools/integrations/github-actions/component-updater)
-which can be enabled as a GitHub action. Currently, plans are to EOL this feature in favor of Renovate.
+which can be enabled as a GitHub action.
+
+The Atmos Component Updater will automatically suggest pull requests in your new repository. To do so, we need to create and install a GitHub App and allow GitHub Actions to create and approve pull requests within your GitHub Organization. For more on the Atmos Component Updater, see [atmos.tools](https://atmos.tools/integrations/github-actions/component-updater).
+
+1. Ensure [all requirements are met](https://atmos.tools/integrations/github-actions/component-updater/#requirements).
+1. Set up a [Github App](https://atmos.tools/integrations/github-actions/component-updater/#using-a-github-app) with
+   permission to create Pull Requests. We use a GitHub App because Pull Requests will only trigger other GitHub Action
+   Workflows if the Pull Request is created by a GitHub App or PAT.
+1. Create a
+   [GitHub Environment](https://atmos.tools/integrations/github-actions/component-updater/#using-github-environments).
+   With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before
+   running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the
+   GitHub UI
+
 
 ## Maturing infrastructure
 

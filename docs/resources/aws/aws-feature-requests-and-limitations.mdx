@@ -19,7 +19,7 @@ Resources like RDS clusters/instances and Elasticache Redis support TLS out-of-t
 
 AWS accounts are today treated as scarce quantities and pets. Net-new AWS accounts are not permitted to raise the limit, yet a standard well-architected infrastructure includes about a dozen accounts (master, identity, prod, staging, uat, dev, network, workspaces, sandbox, audit, security, data, etc)
 
-<ins>Once accounts are created, they cannot be easily destroyed and require human intervention.</ins> This precludes e2e CI/CD testing of account automation.
+<i>Once accounts are created, they cannot be easily destroyed and require human intervention.</i> This precludes e2e CI/CD testing of account automation.
 
 Account email addresses are one-time-use. After destroying an account, it cannot be recreated using the same email address, requiring a roundabout way of first renaming the address on-file before destroying.
 
@@ -32,7 +32,7 @@ AWS Launched Amazon Managed Service for Prometheus which provides highly availab
 
 :::
 
-~~AWS provides a time series service called Timestream, but it does not support a format compatible with Prometheus. Prometheus~~ [~~<ins>won’t support it</ins>~~](https://github.com/prometheus/prometheus/issues/5086) ~~out-of-the-box. Given that Prometheus is the most popular open source monitoring framework, this would be a big win and a great way to increase adoption for Timestream.~~
+~~AWS provides a time series service called Timestream, but it does not support a format compatible with Prometheus. Prometheus~~ [~~<i>won’t support it</i>~~](https://github.com/prometheus/prometheus/issues/5086) ~~out-of-the-box. Given that Prometheus is the most popular open source monitoring framework, this would be a big win and a great way to increase adoption for Timestream.~~
 
 <img src="/assets/refarch/hqgln2qu-n3ghkdsczbcbruu0ucd24smrhugyw9xpxivusnxd7eeqwd6gjzotwe5" height="194" width="937" /><br/>
 
@@ -40,7 +40,7 @@ AWS Launched Amazon Managed Service for Prometheus which provides highly availab
 
 We were severely hampered in our use of high-level CDK constructs because we wanted to create an environment-agnostic CFT that deploys into an existing VPC. We created the CFT using low level constructs that took VPC ID and subnets as parameters, but it would have been much easier for us if we could have fed those parameters into the high level constructs where they currently require a full VPC object created at synth time.
 
-One specific example, we cannot create CloudWatch Metrics or Alarms on the Application Load Balancer we create in our CFT because that requires text processing of the Load Balancer ARN, which the CDK’s `Arn.parse` method is [<ins>explicitly documented as being unable to do</ins>](https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.core/Arn.html#aws_cdk.core.Arn.parse). If we used the high-level `ApplicationLoadBalancer` construct, it would provide us with `Metric` objects, but we cannot use it because [<ins>it requires an</ins>](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html#metricmetricname-props) `IVpc` <ins>object</ins>.
+One specific example, we cannot create CloudWatch Metrics or Alarms on the Application Load Balancer we create in our CFT because that requires text processing of the Load Balancer ARN, which the CDK’s `Arn.parse` method is [<i>explicitly documented as being unable to do</i>](https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.core/Arn.html#aws_cdk.core.Arn.parse). If we used the high-level `ApplicationLoadBalancer` construct, it would provide us with `Metric` objects, but we cannot use it because [<i>it requires an</i>](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html#metricmetricname-props) `IVpc` <i>object</i>.
 
 ### Better CDK documentation
 
@@ -48,19 +48,19 @@ We understand documentation is hard, and there is voluminous documentation for t
 
 Similarly, we could not find examples about how to set up, using the Python CDK, a stack that has CloudWatch metrics and alarms that would monitor instance metrics for EC2 instances launched as part of an AutoScaling Group. All we could find were alarms on the AutoScaling Group itself, such as `autoscaling:EC2_INSTANCE_LAUNCH_ERROR`.
 
-We found [<ins>this note</ins>](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-autoscaling-readme.html#future-work) but disagreed about what it means:
+We found [<i>this note</i>](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-autoscaling-readme.html#future-work) but disagreed about what it means:
 
 `Future Work: CloudWatch Events (impossible to add currently as the AutoScalingGroup ARN is necessary to make this rule and this cannot be accessed from CloudFormation).`
 
 Does that mean we also cannot set up CloudWatch Metrics and Alarms?
 
-Here is another [<ins>random example</ins>](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.CreateAlarmOptions.html#evaluatelowsamplecountpercentile): `evaluateLowSampleCountPercentile` is a `string` that “specifies whether to evaluate the data and potentially change the alarm state if there are too few data points to be statistically significant.” Why is that a `string`? How is the string interpreted? I would expect it to be a boolean given the variable name.
+Here is another [<i>random example</i>](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.CreateAlarmOptions.html#evaluatelowsamplecountpercentile): `evaluateLowSampleCountPercentile` is a `string` that “specifies whether to evaluate the data and potentially change the alarm state if there are too few data points to be statistically significant.” Why is that a `string`? How is the string interpreted? I would expect it to be a boolean given the variable name.
 
 ### Account Limit operations should be available via API
 
 Currently, AWS does not provide a generally available way to alert when limits are reached. This is adverse to providing an ultimately stable platform for your customers. Reaching limits is something that can happen when you least expect it and lead to forced outages. AWS needs to make it easier to programmatically increase these limits (e.g. via an API we can call from terraform) and trigger alerts when thresholds are met.
 
-[<ins>https://aws.amazon.com/solutions/implementations/limit-monitor/</ins>](https://aws.amazon.com/solutions/implementations/limit-monitor/)
+[<i>https://aws.amazon.com/solutions/implementations/limit-monitor/</i>](https://aws.amazon.com/solutions/implementations/limit-monitor/)
 
 [https://github.com/awslabs/aws-limit-monitor](https://github.com/awslabs/aws-limit-monitor)
 
@@ -88,7 +88,7 @@ No updates on this issue for over a year.
 
 **Use-case**: e2e automation testing
 
-The problem is that Edge Lambdas once provisioned can take hours if not days to destroy. Implementing any kind of automated testing (e.g. using [<ins>terratest</ins>](https://github.com/gruntwork-io/terratest)) for this is complicated then by the fact we cannot iterate. Infrastructure on Amazon must be considered ephemeral and be built with testing in mind from the ground up, especially as Infrastructure as Code is becoming more mainstream.
+The problem is that Edge Lambdas once provisioned can take hours if not days to destroy. Implementing any kind of automated testing (e.g. using [<i>terratest</i>](https://github.com/gruntwork-io/terratest)) for this is complicated then by the fact we cannot iterate. Infrastructure on Amazon must be considered ephemeral and be built with testing in mind from the ground up, especially as Infrastructure as Code is becoming more mainstream.
 
 ### CloudFront Distributions are Too Slow to Modify
 

@@ -7,6 +7,10 @@ refarch_id: REFARCH-50
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+<Intro>
+When setting up MFA for AWS root accounts, you need to decide on the most suitable solution to ensure security and manageability. The two most common options are TOTP (Time-Based One-Time Password) and U2F (Universal 2nd Factor). Cloud Posse recommends using 1Password for Teams or 1Password for Business to securely share TOTP tokens among stakeholders, ensuring both accessibility and protection.
+</Intro>
+
 We need an MFA solution for protecting the master AWS accounts. The two most common options are `TOTP` and U2F
 (universal authenticator devices).
 
@@ -26,16 +30,7 @@ For this reason, Cloud Posse recommends **1Password for Teams** or
 
 ### Yubikey (U2F)
 
-:::danger
-
-You cannot have more than one hooked up to an account for the root account credentials, so there’s no way practical way
-to manage Yubikeys in a distributed team environment
-
-:::
-
-This is by far the most secure option but comes with a MASSIVE liability. This physical device can be lost, broken, or
-damaged. Distributed team environments where the key can not be easily passed around adds to the difficulty of
-maintaining continuity when team members are out-of-the-office. Getting locked out of an AWS master account is not fun.
+This is by far the most secure option but comes with a significant liability, if you do not add at least two or more physical devices. This physical device can be lost, broken, or damaged. Distributed team environments where the key can not be easily passed around adds to the difficulty of maintaining continuity when team members are out-of-the-office. Getting locked out of an AWS root account is not fun.
 For these reasons, we do not recommend it from a practical security perspective.
 
 ### Slack Bots

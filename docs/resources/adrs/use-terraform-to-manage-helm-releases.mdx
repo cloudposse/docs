@@ -71,17 +71,17 @@ Note, changing the port in a running service is not a good test as it fails even
 
 - Modify any value in `default.auto.tfvars`. Then, check that that change is detected by terraform.
 
-- Modify any deployed resource via `kubectl edit` and observe that that change is <ins>not</ins> detected by Terraform.
+- Modify any deployed resource via `kubectl edit` and observe that that change is <i>not</i> detected by Terraform.
 
 #### Part 2: `cert-manager` (using the `cert-manager` component from the `>v0.185.1` releases of `cloudposse/terraform-aws-components`)
 
 - With `letsencrypt_enabled: true` and `cert_manager_issuer_selfsigned_enabled: false`, modify any value in `cert-manager-issuer/templates/letsencrypt-issuer.yaml`. Then, check that that change is detected by terraform.
 
-- With `letsencrypt_enabled: true` and `cert_manager_issuer_selfsigned_enabled: false`, modify any value in either `cert-manager-issuer/templates/selfsigning-certificate.yaml` or `cert-manager-issuer/templates/selfsigning-issuer.yaml`. Then, check that the change is <ins>not</ins> detected by Terraform, because these files will not be rendered in the deployed helm component (due to the if statements at the top of them).
+- With `letsencrypt_enabled: true` and `cert_manager_issuer_selfsigned_enabled: false`, modify any value in either `cert-manager-issuer/templates/selfsigning-certificate.yaml` or `cert-manager-issuer/templates/selfsigning-issuer.yaml`. Then, check that the change is <i>not</i> detected by Terraform, because these files will not be rendered in the deployed helm component (due to the if statements at the top of them).
 
 - Modify any value in `default.auto.tfvars`. Then, check that that change is detected by terraform.
 
-- Modify any deployed resource via `kubectl edit` and observe that that change is <ins>not</ins> detected by Terraform.
+- Modify any deployed resource via `kubectl edit` and observe that that change is <i>not</i> detected by Terraform.
 
 ## Considered Options
 

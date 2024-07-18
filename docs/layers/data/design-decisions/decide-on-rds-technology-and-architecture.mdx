@@ -18,7 +18,7 @@ Amazon’s RDS Relational Database Service (Amazon RDS) is a fully managed Datab
 There are several ways in which an RDS Cluster can be deployed.
 
 ### **Option 1:** Amazon RDS Instances
-Amazon RDS Instances are the original version of RDS and provide simple master-slave replication with multiple read replicas and multi-AZ fail-over capabilities. RDS Instances are best suited for one-off databases (e.g. for microservices or dev environments) where performance is likely not an issue and the ability to do point-in-time restores for a database is required.  Point in time recovery allows you to create an <ins>additional</ins> RDS instance (e.g. it does replace your running instance), based on the data as it existed on your instance at any specific point in time by restoring and replaying the journal to a specific point in time. This feature is not supported yet by RDS Aurora.
+Amazon RDS Instances are the original version of RDS and provide simple master-slave replication with multiple read replicas and multi-AZ fail-over capabilities. RDS Instances are best suited for one-off databases (e.g. for microservices or dev environments) where performance is likely not an issue and the ability to do point-in-time restores for a database is required.  Point in time recovery allows you to create an <i>additional</i> RDS instance (e.g. it does replace your running instance), based on the data as it existed on your instance at any specific point in time by restoring and replaying the journal to a specific point in time. This feature is not supported yet by RDS Aurora.
 
 [https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIT.html](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIT.html)
 

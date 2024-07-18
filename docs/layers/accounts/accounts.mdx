@@ -26,7 +26,7 @@ This chapter presents how Cloud Posse designs and manages AWS Account architectu
 
 The [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf) defines AWS architectural best practices and presents a set of foundational questions to enable you to understand how a specific architecture aligns with cloud best practices.
 
-The AWS Well-Architected Framework provides several foundational recommendations, one of which is to distribute workloads across multiple AWS accounts. However, the framework does not prescribe how this should be achieved. AWS offers resources such as Control Tower or Account Factory for provisioning accounts, but these resources have some limitations. The primary issue is that they cannot be managed with Terraform, which means that manual effort is required to use them.
+The AWS Well-Architected Framework provides several foundational recommendations, one of which is to distribute workloads across multiple AWS accounts. However, the framework does not prescribe how this should be achieved. AWS offers resources such as Control Tower or Account Factory for provisioning accounts, but these resources have some limitations. The primary issue is that they cannot be managed sufficiently with Terraform, which means manual effort is required to use them.
 
 ## Our Solution
 

@@ -7,6 +7,10 @@ refarch_id: REFARCH-522
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+<Intro>
+When organizing your Terraform state, you need to decide on the backend architecture. Using S3, you can either opt for a single bucket, which simplifies management but grants broad access, or multiple buckets, which enhance security by segmenting access but add complexity. Consider your company’s security and compliance needs when making this decision.
+</Intro>
+
 ## Context and Problem Statement
 
 We need someplace to store the terraform state. Multiple options exist (e.g. Vault, Terraform Enterprise, GitLab,
