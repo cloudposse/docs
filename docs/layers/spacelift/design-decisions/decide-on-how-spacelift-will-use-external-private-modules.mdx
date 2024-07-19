@@ -10,9 +10,11 @@ import KeyPoints from '@site/src/components/KeyPoints';
 **Date**: **19 Oct 2021**
 
 ## Status
+
 **DRAFT**
 
 ## Problem
+
 App (or other) repositories outside the infrastructure monorepo may require access to other GitHub repositories, such as an in-house terraform module.
 
 By default, Spacelift only has access to a single repository when cloning and only clones the app repository.
@@ -20,6 +22,7 @@ By default, Spacelift only has access to a single repository when cloning and on
 ## Considered Options
 
 #### Option 1: Use a GitHub Personal Access Token (PAT) **RECOMMENDED**
+
 Cloud Posse usually uses this approach on private runners.
 
 - `.netrc` would require a read-only PAT (spenmo doesn’t like PATs) on a shared bot user
@@ -29,6 +32,7 @@ Cloud Posse usually uses this approach on private runners.
 - Private terraform modules should be referenced like `git::https://github.com/your-org/terraform-aws-example`
 
 #### Option 2: Use the Spacelift private module registry
+
 - This uses the Spacelift Github App permissions
 
 - The infrastructure module would be turned into a terraform module in the private registry.
@@ -42,9 +46,11 @@ Cloud Posse usually uses this approach on private runners.
 - [https://docs.spacelift.io/vendors/terraform/module-registry](https://docs.spacelift.io/vendors/terraform/module-registry)
 
 #### Option 3: Use a Github App
+
 - Private terraform modules should be referenced like `git::https://github.com/your-org/terraform-aws-example`
 
 #### Option 4: Use a GitHub “deploy” key **NOT RECOMMENDED**
+
 Cloud Posse recommends avoiding this approach.
 
 - Private terraform modules should be referenced like `git::https://github.com/your-org/terraform-aws-example`
@@ -99,7 +105,6 @@ Cloud Posse recommends avoiding this approach.
 
 - [https://maelvls.dev/gh-actions-with-tf-private-repo/](https://maelvls.dev/gh-actions-with-tf-private-repo/)
 
--
 
 ## Change History
 

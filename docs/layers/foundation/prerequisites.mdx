@@ -1,0 +1,110 @@
+---
+title: Prerequisites
+sidebar_label: Setup Prerequisites
+sidebar_position: 3
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+
+<Step>
+  ## <StepNumber/> Obtain Cloud Access
+
+  - [ ] AWS SSO Access (talk to your AWS administrator)
+  - [ ] Ensure you can log in to AWS. See
+        [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp) to get
+        started.
+</Step>
+
+<Step>
+  ## <StepNumber/> Setup Workstation
+
+  Prerequisites for your local host computer:
+
+  - [ ] Docker installed (to run our tools)
+  - [ ] Slack installed (to communicate with our team)
+  - [ ] `make` installed, preferably GNU Make
+  - [ ] `git` installed
+  - [ ] [Leapp](/fundamentals/leapp) for authentication
+  - [ ] Infrastructure Git repo cloned
+
+  <Tabs>
+    <TabItem value="macos" label="macOS" default>
+      ### Homebrew Users
+
+      We typically ship a `Brewfile` with a list of local dependencies. Make sure you have [Homebrew](https://brew.sh) and use
+      `brew bundle` to install dependencies from the `Brewfile`
+
+      1. First, make sure you’ve [cloned the `infrastructure` repository](/layers/foundation/create-repository) for your organization.
+      2. Just run `brew bundle install` to install all localhost dependencies. Here's an example `Brewfile`:
+
+          ```shell
+          brew "asdf"
+          brew "gawk"
+          brew "coreutils"
+          brew "pre-commit"
+          brew "terraform-docs"
+          brew "tflint"
+
+          # Hedge against linuxbrew, `aws-vault` is a cask on MacOS
+          # but a regular formula in linuxbrew.
+          cask "aws-vault" if OS.mac?
+          brew "aws-vault" unless OS.mac?
+          ```
+
+      Next, you'll need docker set up. There are a variety of ways to do this.
+
+      Review the [Docker for Desktop](https://docs.docker.com/desktop/install/mac-install/) installation guide for macOS.
+    </TabItem>
+
+    <TabItem value="windows" label="Windows">
+      ### Docker on Windows
+
+      ##### Setting up containers on Windows
+
+      1. [Install Docker Desktop](https://docs.docker.com/docker-for-windows/install/) or install
+        [Rancher Desktop](https://rancherdesktop.io/) and configure it to use `docker` instead of `nerdctl`.
+      1. If you picked Docker Desktop, follow [instructions on WSL setup](https://docs.docker.com/desktop/wsl/), otherwise
+        follow [Rancher's setup docs](https://docs.rancherdesktop.io/ui/preferences/wsl).
+
+      ##### Using Ubuntu on Windows
+
+      1. First, [setup WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and then configure WSL to use version
+        2 by default with this command: `wsl --set-default-version 2`
+      1. [Install Ubuntu for Windows](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
+      1. [Install Windows terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)
+      1. Launch Ubuntu shell from Windows Terminal
+      1. [Add user to Docker](https://docs.docker.com/engine/install/linux-postinstall/)
+      1. If you chose to use Rancher, just install `docker`. If you chose to use Docker Desktop, you'll need to go into
+        settings and enable your Ubuntu distro. Once applied, you'll see `docker` available in your Ubuntu shell PATH.
+
+      ##### Running Geodesic on Windows
+
+      1. You'll need an editor that supports WSL2. [VSCode](https://code.visualstudio.com/) and most JetBrains IDEs support
+        WSL2 using remote development plugins.
+      1. Clone this repo into your WSL2 environment
+      1. Install `curl` and `build-essential` with `apt-get`
+      1. Launch your editor's remote development mode and open the repo
+      1. You should now be able to run `make all` and have it build the container and launch a shell inside it
+    </TabItem>
+
+    <TabItem value="linux" label="Linux">
+
+      #### Docker on Linux Systems
+
+      You should be able to use `docker` as normal. Launch docker before running the `Makefile`.
+
+      Linux users should run Docker in ["rootless"](https://docs.docker.com/engine/security/rootless/) mode. In this mode, the Docker daemon runs as the host user (rather than as root) and files created by the root user in Geodesic are owned by the host user on the host. Not only does this configuration solve [this issue](https://github.com/cloudposse/geodesic/issues/594), but it provides much better system security overall.
+
+    </TabItem>
+  </Tabs>
+</Step>
+
+<ActionCard title="What comes next?">
+  Now that you’ve set up your workstation and obtained cloud access, you’re ready to get started with setting up the infrastructure repository. This repository will be used to store all your infrastructure as code, ensuring a structured and organized approach to managing your resources.
+
+  <PrimaryCTA to="/layers/foundation/create-repository">Next Step</PrimaryCTA>
+</ActionCard>

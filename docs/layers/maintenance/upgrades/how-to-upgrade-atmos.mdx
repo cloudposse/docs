@@ -46,7 +46,7 @@ The administrative stack must have its runner image set to custom Geodesic image
 `excluded_paths` is a list of path globs that are NOT top-level stacks and should be excluded from searching by `atmos` (note that those stack config files are usually imported into top-level stacks).
 If, for example, the `catalog` folder is not used, but some other folder(s) are used to keep the imported files, remove the `"catalog/**/*"` item from the list and add the other folder(s) to exclude them.
 
-```
+```yaml
   excluded_paths:
     - "globals/**/*"
     - "catalog/**/*"
@@ -60,7 +60,7 @@ If, for example, the `catalog` folder is not used, but some other folder(s) are 
 - Remove the variable `var.stack_config_path` from `components/terraform/spacelift/variables.tf`
 - Remove the following two fields from the Spacelift module invocation and remove `locals`
 
-```
+```hcl
 stacks                     = local.stacks
 stack_config_path          = var.stack_config_path
 
@@ -77,7 +77,7 @@ locals {
 
 8. Update the file `.spacelift/config.yml` with the following content
 
-```
+```yaml
 version: "1"
 
 stack_defaults:
@@ -106,7 +106,7 @@ stacks:
 
 9. Update the file `rootfs/usr/local/bin/spacelift-tf-workspace` with the following content
 
-```
+```bash
 #!/bin/bash
 
 # Add -x for troubleshooting
@@ -127,7 +127,7 @@ set -e +x
 
 10. Update the file `rootfs/usr/local/bin/spacelift-write-vars` to look like the following
 
-```
+```bash
 #!/bin/bash
 
 # Add -x for troubleshooting
@@ -161,7 +161,7 @@ set -e +x
 
 Before in atmos 0.x
 
-```
+```hcl
 module "state" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
   version = "0.19.0"
@@ -175,7 +175,7 @@ module "state" {
 
 After in atmos 1.x (use the latest version of remote-state)
 
-```
+```hcl
 module "eks" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
   # use the latest version
@@ -191,7 +191,7 @@ To script this, you can use [tfupdate](https://github.com/minamijoyo/tfupdate) o
 
 hcledit (use the latest version of remote-state)
 
-```
+```bash
 apt update && apt install -y hcledit
 find . -name remote-state.tf > remote-state-files
 cat remote-state-files | \
@@ -230,7 +230,7 @@ chmod +x update-remotestate.sh
 
 #### Failed local runs
 
-```
+```console
 ╷
 │ Error:
 │ No stack config files found in the provided paths:
@@ -238,7 +238,7 @@ chmod +x update-remotestate.sh
 ```
 This means that the `ATMOS_BASE_PATH` (different for everyone, should be set to the absolute path of the repo root) is most likely unset or an older version of `atmos` is used.
 
-```
+```console
 $ atmos version
 1.3.17
 $ echo $ATMOS_BASE_PATH
@@ -262,8 +262,6 @@ To do this, for each failed stack
 5. Retrigger
 
 and it should show up as “Unconfirmed” or “No changes” as expected.
-
-
 
 ## Atmos Versions
 [https://github.com/cloudposse/atmos/releases](https://github.com/cloudposse/atmos/releases)

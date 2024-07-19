@@ -1,0 +1,195 @@
+---
+title: Action Items
+sidebar_label: Action Items
+---
+import Intro from '@site/src/components/Intro';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+
+<Intro>
+Cloud Posse will need a few subscriptions set up from you in order to deploy your infrastructure. Some of these may not apply to all engagements, but please start setting up the relevant subscriptions now.
+</Intro>
+
+## Subsucriptions
+
+### 1Password
+
+Cloud Posse will use 1Password to share secrets your team. You do not need to use 1Password internally, but Cloud Posse will need to use 1Password to transfer secrets.
+You can either create your own 1Password Vault and add Cloud Posse as members or request that Cloud Posse create a temporary vault (free for you). However, if Cloud Posse creates that vault for you,
+only three users can be added at a time.
+
+**We cannot create AWS accounts until we have access to 1Password.**
+
+### Slack
+
+We should already be using Slack for a shared general channel between Cloud Posse and your team. However, we will need an additional channel for AWS notifications and to access AWS account setup emails. We'll also use this channel for AWS budget alerts.
+
+- [ ] Create a new Slack channel for AWS notifications, for example `#aws-notifications`
+- [ ] Invite Cloud Posse
+- [ ] [Set Up AWS Email Notifications](/reference-architecture/setup/cold-start/how-to-set-up-aws-email-notifications/) with your chosen email address for each account. If you are using plus-addressing, you will only need to connect the primary email address.
+- [ ] [Create a Slack Webhook for that same channel](https://api.slack.com/messaging/webhooks). This is required to enable Budget alerts in Slack. Please share the Webhook URL and the final name of the Slack channel with Cloud Posse.
+
+### AWS Organization (root account)
+
+We will be launching a new AWS Organization from a single root account. Cloud Posse will be terraforming your entire organization, creating 12-plus accounts, and doing everything from the ground up. We're responsible for configuring SSO, fine-grained IAM roles, and more. We'll need a net-new Organization, so we cannot jeopardize any of your current operations.
+
+Please create a new AWS root account and add the root credentials to 1Password. Cloud Posse will take it from there.
+
+### GitHub
+
+Please create a new repository in your GitHub organization and grant the Cloud Posse team access. We will need GitHub access to create your Infrastructure as Code repository.
+
+## Atmos Component Updater Requirements
+
+Cloud Posse will deploy a GitHub Action that will automatically suggest pull requests in your new repository.
+To do so, we need to create and install a GitHub App and allow GitHub Actions to create and approve pull requests within your GitHub Organization.
+For more on the Atmos Component Updater, see [atmos.tools](https://atmos.tools/integrations/github-actions/component-updater).
+
+<Step>
+##### <StepNumber/> Create and install a GitHub App for Atmos
+
+1. Create a new GitHub App
+2. Name this new app whatever you prefer. For example, `Atmos Component Updater`.
+3. List a Homepage URL of your choosing. This is required by GitHub, but you can use any URL. For example use our documentation page: `https://atmos.tools/integrations/github-actions/component-updater/`
+4. (Optional) Add an icon for your new app (example provided below)
+5. Assign only the following Repository permissions:
+    ```diff
+    + Contents: Read and write
+    + Pull Requests: Read and write
+    + Metadata: Read-only
+    ```
+6. Generate a new private key [following the GitHub documentation](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps#generating-private-keys).
+7. Share both the App ID and the new private key with Cloud Posse in 1Password
+
+<details>
+   <summary>Feel free to download and use our Atmos icon with your GitHub App!</summary>
+
+   ![App Icon](/assets/refarch/github-app-icon.png)
+
+</details>
+
+
+</Step>
+
+
+
+<Step>
+##### <StepNumber/> Allow GitHub Actions to create and approve pull requests
+
+1. Go to `https://github.com/organizations/YOUR_ORG/settings/actions`
+2. Check "Allow GitHub Actions to create and approve pull requests"
+</Step>
+
+<Step>
+##### <StepNumber/> Create `atmos` GitHub Environment
+
+:::tip Optional
+
+If you grant Cloud Posse `admin` in your new infrastructure repository, we will do this for you.
+
+:::
+
+We recommend creating a new GitHub environment for Atmos. With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the GitHub UI.
+
+1. Open "Settings" for your repository
+1. Navigate to "Environments"
+1. Select "New environment"
+1. Name the new environment, "atmos".
+1. In the drop-down next to "Deployment branches and tags", select "Protected branches only"
+1. In "Environment secrets", create the two required secrets for App ID and App Private Key created above and in 1Password. We will pull these secrets from GitHub Actions with `secrets.ATMOS_APP_ID` and `secrets.ATMOS_PRIVATE_KEY` respectively.
+</Step>
+
+#### GitHub Enterprise
+
+If you are deploying Release Engineering with Cloud Posse, we will also need a GitHub Enterprise subscription. GitHub Enterprise is required to support native approval gates on deployments to environments.
+
+### AWS IAM Identity Center (AWS SSO)
+
+In order connect your chosen IdP to AWS IAM Identity Center (AWS SSO), we will to configure your provider and create a metadata file. Please follow the relevant linked guide and follow the steps for the Identity Provider. All steps in AWS will be handled by Cloud Posse.
+
+Please also provision a single test user in your IdP for Cloud Posse to use for testing and add those user credentials to 1Password.
+
+- [GSuite](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/): Follow the "Google Workspace SAML application setup" steps only. Cloud Posse will handle the rest.
+- [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-office-365-aws-sso/)
+- [JumpCloud](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
+- [Other AWS supported IdPs: Azure AD, CyberArk, Okta, OneLogin, Ping Identity](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html)
+
+:::caution
+
+GSuite does not automatically sync Users and Groups with AWS Identity Center without additional configuration! If using GSuite as an IdP, considering deploying the [ssosync tool](https://github.com/awslabs/ssosync).
+
+:::
+
+:::tip Integrating JumpCloud with AWS IAM Identity Center
+
+The official AWS documentation for setting up JumpCloud with AWS IAM Identity Center is not accurate. Instead, please refer to the [JumpCloud official documentation](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
+
+:::
+
+### AWS SAML
+
+If deploying AWS SAML as an alternative to AWS SSO, we will need a separate configuration and metadata file. Again, please refer to the relevant linked guide.
+
+- [GSuite](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/): Follow Steps 1 through 7. This document refers to Appstream, but the process will be the same for AWS.
+- [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-saml-login-to-aws-from-office-365/)
+- [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
+- [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
+
+### Requirements for Purchasing Domains
+
+If we plan to use the `core-dns` account to register domains, we will need to add a credit card directly to that individual account. When the account is ready, please add a credit card to the `core-dns` account following the [AWS documentation](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-cc.html#Add-cc).
+
+### Spacelift
+
+If deploying Spacelift, we will need a Spacelift subscription. Please see [How to Sign Up for Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/). This document answers many common questions and describes the signup process step-by-step.
+
+Cloud Posse will need "admin" access for Spacelift to deploy all resources.
+
+### Datadog
+
+Sign up for Datadog following the [How to Sign Up for Datadog?](/reference-architecture/how-to-guides/integrations/datadog/how-to-sign-up-for-datadog/) documentation.
+
+Cloud Posse will need "admin" access for Datadog as well to complete the Datadog setup.
+
+### OpsGenie
+
+Sign up for OpsGenie following the [How to Sign Up for OpsGenie?](/reference-architecture/how-to-guides/tutorials/how-to-implement-incident-management-with-opsgenie/how-to-sign-up-for-opsgenie/) documentation.
+
+### Self Hosted Github Runners on EKS
+
+If you are deploying the Actions Runner Controller solution for Self-Hosted Github Runners, please generate the required secrets following the
+[GitHub Action Runner Controller setup docs](/reference-architecture/setup/github-arc/#requirements).
+
+Feel free to store these secrets in 1Password if you do not have AWS access yet. Cloud Posse can complete the setup from there.
+
+### Self Hosted Github Runners with Philips Labs (ECS)
+
+If you have chosen ECS as a platform, we recommend deploying Philips Labs GitHub Action Runners. Please read through the [Philips Labs GitHub Action Runners Setup Requirements](/reference-architecture/setup/philips-labs-github-runners/#requirements).
+
+In particular, we will need a new GitHub App including a Private Key, an App ID, and an App Installation ID. Please store these secrets in 1Password.
+
+### Release Engineering
+
+If we are deploying release engineering as part of the engagement, we will need a few additional items from your team.
+
+- [ ] [Enable GitHub Actions for your GitHub Organization](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization).
+- [ ] [Allow access via fine-grained personal access tokens for your GitHub Organization](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization#restricting-access-by-fine-grained-personal-access-tokens).
+- [ ] Create an empty `example-app` private repository in your Organization. We'll deploy an example for release engineering here.
+
+#### PATs for ECS with `ecspresso`
+
+1. Create one fine-grained PAT with the following permission. Please see [Creating a fine-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+
+This PAT needs read access to your `infrastructure` repository:
+
+```diff
+Repository
++ Contents: Read-only
++ Metadata: Read-only
+```
+
+2. Save the new fine-grained PAT as a GitHub environment secret in the new `example-app` private repository in your Organization.
+
+#### PATs for EKS with ArgoCD
+
+ArgoCD requires a number of PATs. Please see [How to set up Authorization for ArgoCD with GitHub PATs](/reference-architecture/how-to-guides/integrations/argocd/pats)

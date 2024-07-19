@@ -31,28 +31,28 @@ While we always recommend making all changes to IaC via Pull Request, if the des
 
 The parameters that affect scale up behavior are:
 
-|**Setting** | **Description**|
-| ----- | ----- |
-|`min_size` | The minimum of the instances|
-|`max_size` | The maximum number of instances|
-|`desired_capacity` | The number of instances desired online all the time.|
-|`health_check_grace_period` | |
-|`spacelift_agents_per_node` | The number of Spacelift agents running per EC2 instance. Increase for greater density of agents per node.|
-|`cpu_utilization_high_threshold_percent` | Percent CPU utilization (integer between 0 and 100) required to trigger a scale up event|
-|`wait_for_capacity_timeout` | Before scaling further, wait for this many seconds for capacity requirements to be met.|
+| **Setting**                              | **Description**                                                                                           |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `min_size`                               | The minimum of the instances                                                                              |
+| `max_size`                               | The maximum number of instances                                                                           |
+| `desired_capacity`                       | The number of instances desired online all the time.                                                      |
+| `health_check_grace_period`              |                                                                                                           |
+| `spacelift_agents_per_node`              | The number of Spacelift agents running per EC2 instance. Increase for greater density of agents per node. |
+| `cpu_utilization_high_threshold_percent` | Percent CPU utilization (integer between 0 and 100) required to trigger a scale up event                  |
+| `wait_for_capacity_timeout`              | Before scaling further, wait for this many seconds for capacity requirements to be met.                   |
 
 The parameters that affect scale-down behavior are:
 
-|**Setting** | **Description**|
-| ----- | ----- |
-|`default_cooldown` | |
-|`scale_down_cooldown_seconds` | |
-|`cpu_utilization_low_threshold_percent` | Percent CPU utilization (integer between 0 and 100) required to trigger a scale down event. The higher this number, the more likely the cluster will be scaled down because nodes are typically not very CPU intensive _on average._|
-|`max_size` | |
+| **Setting**                             | **Description**                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `default_cooldown`                      |                                                                                                                                                                                                                                      |
+| `scale_down_cooldown_seconds`           |                                                                                                                                                                                                                                      |
+| `cpu_utilization_low_threshold_percent` | Percent CPU utilization (integer between 0 and 100) required to trigger a scale down event. The higher this number, the more likely the cluster will be scaled down because nodes are typically not very CPU intensive _on average._ |
+| `max_size`                              |                                                                                                                                                                                                                                      |
 
 Here’s a sample `spacelift-worker-pool` configuration.
 
-```
+```yaml
 components:
   terraform:
     spacelift-worker-pool:
@@ -139,7 +139,7 @@ Before scaling spacelift workers down, check the “**Pending runs**” and “*
 
 Get the name of the ASG
 
-```
+```bash
 AWS_PROFILE=$NAMESPACE-gbl-auto-admin
 
 # Get ASG name

@@ -13,9 +13,11 @@ Our goal with this ADR is to identify the reusable, standard SLI/SLO for our cus
 Also, make sure to see [How to Implement Incident Management with OpsGenie](/reference-architecture/how-to-guides/tutorials/how-to-implement-incident-management-with-opsgenie)
 
 ## Problem
+
 A typical business operating in AWS has literally tens of thousands of data points that leads to analysis paralysis. If we sit down and try to make sense of it all, we realize knowing what is critical and when is non-trivial. Modern advances in monitoring platforms have brought Artificial Intelligence and Anomaly Detection, but those are not foolproof. There is no silver bullet. AI can not tell us what is mission-critical for _our_ business to succeed. That’s because they only see part of the story. They have no visibility into our finances or business objectives.  Defining Service Level Objectives, therefore, becomes paramount and while mathematically trivial to compute, but defining what are services in the context of your organization and what your objectives are, is still very subjective. There’s an overwhelming amount of theory on what we should do, but not that much prescriptive step-by-step advice on how to actually implement it using IaC resulting in a fully functioning system.
 
 ## Solution
+
 - Define a process for us to help our customers easily define SLOs that are special to their business
 
 - Define a process for us to identify generalized SLOs for every one of our customers that have a very common stack
@@ -198,11 +200,11 @@ With well-defined SLOs we can ensure that everyone from the business side to eng
 
 SLOs will not necessarily be the same per business.
 
-|**Business Impact** | **Good examples of SLOs** |  **Bad Examples of SLOs** |
-| ----- | ----- | ----- |
-|Our SEO experts require that pages respond within 300ms or we will drop in rankings. The website receives most of it’s traffic from natural search. | 99.95% of pages respond with a 200 response code in less than 300ms | CPU utilization is less than 95%<br/><br/>SQL Database Read I/O is at 90% utilization|
-|As an e-commerce business, users must be able to add products to their cart and checkout or have no revenue. | 99.99% of cart transactions succeed without error. <br/><br/>99.99% of checkout transactions succeed without error. | |
-|As a online store, customers are much more likely to purchase products with images than with placeholder images. | 99.99% of images served are actual product images (e.g.<br/><br/>99.99% of images are served within a latency of 100ms<br/><br/>99.99% of images are served with a status code of 2XX | |
+| **Business Impact**                                                                                                                                 | **Good examples of SLOs**                                                                                                                                                             | **Bad Examples of SLOs**                                                              |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Our SEO experts require that pages respond within 300ms or we will drop in rankings. The website receives most of it’s traffic from natural search. | 99.95% of pages respond with a 200 response code in less than 300ms                                                                                                                   | CPU utilization is less than 95%<br/><br/>SQL Database Read I/O is at 90% utilization |
+| As an e-commerce business, users must be able to add products to their cart and checkout or have no revenue.                                        | 99.99% of cart transactions succeed without error. <br/><br/>99.99% of checkout transactions succeed without error.                                                                   |                                                                                       |
+| As a online store, customers are much more likely to purchase products with images than with placeholder images.                                    | 99.99% of images served are actual product images (e.g.<br/><br/>99.99% of images are served within a latency of 100ms<br/><br/>99.99% of images are served with a status code of 2XX |                                                                                       |
 
 #### Goals
 
@@ -419,36 +421,36 @@ Questions:
 
 #### Golden Signals Workbook
 
-| |  **Golden Signals**|
-| ----- | ----- |
-|**Services** | **Latency** | **Traffic** | **Errors** | **Saturation**|
-| ----- | ----- | ----- | ----- | ----- |
-|**Platform Owners**|
-|Kubernetes Cluster: Pod Scheduling |  |  |  | |
-|Kubernetes Cluster: Capacity |  | Healthy Nodes / <br/><br/>Total Nodes online |  | |
-|Application Deployments | Time to Deploy / <br/>Total time of | Number of Successful Deployments / <br/><br/>Total number of Deployments | 1 - (Unsuccessful Deployments / <br/>       Total Deployments) | Total Time to Deploy in Seconds per Duration / <br/>Seconds in Duration (e.g. 86400 = 1 day)|
-|AWS Spend |  |  |  | |
-|**Security & Compliance**|
-| | Time to Acknowledge<br/><br/> Time to fix |  | False Positives<br/>Number of Security Vulnerabilities | |
-| |  |  |  | |
-|**Development & PM**|
-|Pull Request Throughput | Time to Close or Merge PR / <br/>??? | 1 - (Number of Open PRs / <br/>       Total Number of PRs) | PRs Open with Tests Passing / <br/>Total PRs Open | 1 - (PRs Open / <br/>       Max Number of PRs Acceptable)|
-| |  |  |  | |
-| |  |  |  | |
-| |  |  |  | |
-| |  |  |  | |
-|Sprint Throughput | Total Number of Sprints to Complete Issues / <br/>Total Number of Issues | Issues Transitioned to Done / <br/>Total Issues in Sprint | Bugs Added to Active Sprint / <br/>Total Issues in Sprint | Total Issues Not Completed / <br/><br/>Total Issues in Sprint|
-| |  |  |  | |
-|**Microservice / Web Application**|
-|HTTP Requests |  |  |  | Notes: INFO, DEBUG log level alerts relative to all alerts.|
-|Transactions |  |  |  | |
-|Synthetic Requests |  |  |  | |
-|**Customer Experience** |  |  |  | |
-| |  |  |  | |
-| |  |  |  | |
-|**CI/CD and Release Management**|
-|Lead Time To Deploy |  |  |  | |
-|Code Coverage |  |  |  | |
-|Test Coverage |  |  |  | |
-|GitHub Action Runs | Time to start build |  |  | |
+|                                    | **Golden Signals**                                                       |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| **Services**                       | **Latency**                                                              | **Traffic** | **Errors** | **Saturation**
+| -----                              | -----                                                                    | ----- | ----- | -----
+| **Platform Owners**                |                                                                          |
+| Kubernetes Cluster: Pod Scheduling |                                                                          |  
+| Kubernetes Cluster: Capacity       |                                                                          | Healthy Nodes / <br/><br/>Total Nodes online 
+| Application Deployments            | Time to Deploy / <br/>Total time of                                      | Number of Successful Deployments / <br/><br/>Total number of Deployments | 1 - (Unsuccessful Deployments / <br/>       Total Deployments) | Total Time to Deploy in Seconds per Duration / <br/>Seconds in Duration (e.g. 86400 = 1 day)
+| AWS Spend                          |                                                                          |  
+| **Security & Compliance**          |                                                                          |
+|                                    | Time to Acknowledge<br/><br/> Time to fix                                |  | False Positives<br/>Number of Security Vulnerabilities
+|                                    |                                                                          |  
+| **Development & PM**               |                                                                          |
+| Pull Request Throughput            | Time to Close or Merge PR / <br/>???                                     | 1 - (Number of Open PRs / <br/>       Total Number of PRs) | PRs Open with Tests Passing / <br/>Total PRs Open | 1 - (PRs Open / <br/>       Max Number of PRs Acceptable)
+|                                    |                                                                          |  
+|                                    |                                                                          |  
+|                                    |                                                                          |  
+|                                    |                                                                          |  
+| Sprint Throughput                  | Total Number of Sprints to Complete Issues / <br/>Total Number of Issues | Issues Transitioned to Done / <br/>Total Issues in Sprint | Bugs Added to Active Sprint / <br/>Total Issues in Sprint | Total Issues Not Completed / <br/><br/>Total Issues in Sprint
+|                                    |                                                                          |  
+| **Microservice / Web Application** |                                                                          |
+| HTTP Requests                      |                                                                          |  |  | Notes: INFO, DEBUG log level alerts relative to all alerts.
+| Transactions                       |                                                                          |  
+| Synthetic Requests                 |                                                                          |  
+| **Customer Experience**            |                                                                          |  
+|                                    |                                                                          |  
+|                                    |                                                                          |  
+| **CI/CD and Release Management**   |                                                                          |
+| Lead Time To Deploy                |                                                                          |  
+| Code Coverage                      |                                                                          |  
+| Test Coverage                      |                                                                          |  
+| GitHub Action Runs                 | Time to start build                                                      |  
 

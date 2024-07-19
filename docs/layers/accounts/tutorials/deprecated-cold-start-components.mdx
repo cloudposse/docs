@@ -4,6 +4,7 @@ sidebar_class_name: deprecated
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
 
 This page serves as a tombstone for deprecated components included in the cold start. Here you will find documentation on how you could set those components up.
 
@@ -65,9 +66,10 @@ and will be generated in the next step through the
 [iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles)
 component.
 
-**NOTE:** `sso` project must be completed so the identity providers exist. If identity providers are added or deleted,
-[https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=992116823](https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=992116823)
-must also be updated.
+<Note>
+`sso` project must be completed so the identity providers exist. If identity providers are added or deleted,
+[https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=992116823](https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=992116823) must also be updated.
+</Note>
 
 Refer to the `full_account_map` you saved from `account-map` and copy the account ID (number) for the `identity` account
 to the `gbl-identity.yaml` stack as the value for `components.terraform.iam-primary-roles.vars.primary_account_id`. _Be

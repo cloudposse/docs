@@ -6,6 +6,7 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
 ## Problem
+
 EKS Clusters need to be upgraded to stay up to date with the newest features. AWS only supports the latest 3 major releases, so staying up to date is important. Upgrading may require not only updating the cluster, but the client tools, operators, API versions, addons, annotations, and AMIs.
 
 ## Prerequisites
@@ -70,17 +71,17 @@ The version of `kubectl` CLI needs to be within one minor version of the version
 
 :::
 
-| |  | |
-| ----- | ----- | ----- |
-|`kubectl-1.13` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.13](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.13) | **Ubuntu**: `apt-get install -y kubectl-1.13`<br/>**Alpine**: `apk add kubectl-1.13@cloudposse`|
-|`kubectl-1.14` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.14](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.14) | **Ubuntu**: `apt-get install -y kubectl-1.14`<br/>**Alpine**: `apk add kubectl-1.14@cloudposse`|
-|`kubectl-1.15` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.15](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.15) | **Ubuntu**: `apt-get install -y kubectl-1.15`<br/>**Alpine**: `apk add kubectl-1.15@cloudposse`|
-|`kubectl-1.16` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.16](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.16) | **Ubuntu**: `apt-get install -y kubectl-1.16`<br/>**Alpine**: `apk add kubectl-1.16@cloudposse`|
-|`kubectl-1.17` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.17](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.17) | **Ubuntu**: `apt-get install -y kubectl-1.17`<br/>**Alpine**: `apk add kubectl-1.17@cloudposse`|
-|`kubectl-1.18` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.18](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.18) | **Ubuntu**: `apt-get install -y kubectl-1.18`<br/>**Alpine**: `apk add kubectl-1.18@cloudposse`|
-|`kubectl-1.19` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.19](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.19) | **Ubuntu**: `apt-get install -y kubectl-1.19`<br/>**Alpine**: `apk add kubectl-1.19@cloudposse`|
-|`kubectl-1.20` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.20](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.20) | **Ubuntu**: `apt-get install -y kubectl-1.20`<br/>**Alpine**: `apk add kubectl-1.20@cloudposse`|
-|`kubectl-1.21` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.21](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.21) | **Ubuntu**: `apt-get install -y kubectl-1.21`<br/>**Alpine**: `apk add kubectl-1.21@cloudposse`|
+|                |                                                                                                                                                  |                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `kubectl-1.13` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.13](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.13) | **Ubuntu**: `apt-get install -y kubectl-1.13`<br/>**Alpine**: `apk add kubectl-1.13@cloudposse` |
+| `kubectl-1.14` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.14](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.14) | **Ubuntu**: `apt-get install -y kubectl-1.14`<br/>**Alpine**: `apk add kubectl-1.14@cloudposse` |
+| `kubectl-1.15` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.15](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.15) | **Ubuntu**: `apt-get install -y kubectl-1.15`<br/>**Alpine**: `apk add kubectl-1.15@cloudposse` |
+| `kubectl-1.16` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.16](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.16) | **Ubuntu**: `apt-get install -y kubectl-1.16`<br/>**Alpine**: `apk add kubectl-1.16@cloudposse` |
+| `kubectl-1.17` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.17](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.17) | **Ubuntu**: `apt-get install -y kubectl-1.17`<br/>**Alpine**: `apk add kubectl-1.17@cloudposse` |
+| `kubectl-1.18` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.18](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.18) | **Ubuntu**: `apt-get install -y kubectl-1.18`<br/>**Alpine**: `apk add kubectl-1.18@cloudposse` |
+| `kubectl-1.19` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.19](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.19) | **Ubuntu**: `apt-get install -y kubectl-1.19`<br/>**Alpine**: `apk add kubectl-1.19@cloudposse` |
+| `kubectl-1.20` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.20](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.20) | **Ubuntu**: `apt-get install -y kubectl-1.20`<br/>**Alpine**: `apk add kubectl-1.20@cloudposse` |
+| `kubectl-1.21` | [https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.21](https://github.com/cloudposse/packages/tree/master/vendor/kubectl-1.21) | **Ubuntu**: `apt-get install -y kubectl-1.21`<br/>**Alpine**: `apk add kubectl-1.21@cloudposse` |
 
 #### Switch `kubectl` Versions (Local Geodesic Shell)
 

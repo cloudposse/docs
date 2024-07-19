@@ -23,7 +23,7 @@ This means that metrics automatically collected by Datadog Cluster Agent can be 
 
 Take for example the following HorizontalPodAutoscaler manifest, which leverages the `nginx.net.request_per_s` metric automatically collected by Datadog Cluster Agent:
 
-```
+```yaml
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:

@@ -37,6 +37,7 @@
     "docusaurus-plugin-sass": "^0.2.5",
     "docusaurus-plugin-sentry": "^2.0.0",
     "html-loader": "^5.0.0",
+    "js-cookie": "^3.0.5",
     "marked": "^13.0.2",
     "node-fetch": "^3.3.2",
     "posthog-docusaurus": "^2.0.0",

@@ -5,6 +5,7 @@ sidebar_class_name: hidden
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import ReactPlayer from "react-player";
 
 There are several methods available to sign in to AWS through a browser or terminal, such as AWS SAML or IAM Identity
 Center (successor to AWS Single Sign-On). Various tooling has been tried to support AWS SAML, like "saml2aws," and
@@ -18,9 +19,10 @@ any allowed accounts. A significant advantage of this approach is the availabili
 with all AWS sign-in methods. In the following pages, the Cloud Posse strategy will be explained in detail,
 demonstrating how it can be used to establish fine-grained access control for an entire organization.
 
-import ReactPlayer from "react-player";
-
-<ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/identity-and-authentication.mp4" />
+<figure>
+  <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/identity-and-authentication.mp4" />
+  <figcaption>AI generated voice</figcaption>
+</figure>
 
 ## The Problem
 

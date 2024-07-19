@@ -18,7 +18,7 @@ TL;DR Create the changes according to the [Move atmos-gitops-config.yaml to atmo
 Set [GitHub action variables](https://github.com/cloudposse-examples/infra-demo-gitops/settings/variables/actions) `ATMOS_VERSION` and `ATMOS_CONFIG_PATH`
 
 | variable name       | value                           |
-|---------------------|---------------------------------|
+| ------------------- | ------------------------------- |
 | `ATMOS_VERSION`     | `1.63.0`                        |
 | `ATMOS_CONFIG_PATH` | `./rootfs/usr/local/etc/atmos/` |
 
@@ -30,15 +30,15 @@ Create changes following the [Move atmos-gitops-config.yaml to atmos.yaml](https
 
 The following configuration fields now moved to [GitHub action variables](https://github.com/cloudposse-examples/infra-demo-gitops/settings/variables/actions) `ATMOS_VERSION` and `ATMOS_CONFIG_PATH`
 
-|         name            | variable name       | value                                       |
-|-------------------------|---------------------|---------------------------------------------|
-| `atmos-version`         | `ATMOS_VERSION`     | `1.63.0` |
-| `atmos-config-path`     | `ATMOS_CONFIG_PATH` | `./rootfs/usr/local/etc/atmos/`             |
+| name                | variable name       | value                           |
+| ------------------- | ------------------- | ------------------------------- |
+| `atmos-version`     | `ATMOS_VERSION`     | `1.63.0`                        |
+| `atmos-config-path` | `ATMOS_CONFIG_PATH` | `./rootfs/usr/local/etc/atmos/` |
 
 The following configuration fields moved to the `atmos.yaml` configuration file.
 
-|         name             | YAML path in `atmos.yaml`                            |
-|--------------------------|------------------------------------------------------|
+| name                     | YAML path in `atmos.yaml`                            |
+| ------------------------ | ---------------------------------------------------- |
 | `aws-region`             | `integrations.github.gitops.artifact-storage.region` |
 | `terraform-state-bucket` | `integrations.github.gitops.artifact-storage.bucket` |
 | `terraform-state-table`  | `integrations.github.gitops.artifact-storage.table`  |

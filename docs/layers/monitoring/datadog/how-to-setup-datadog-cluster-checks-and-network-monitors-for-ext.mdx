@@ -23,7 +23,7 @@ To get started follow this guide: [https://docs.datadoghq.com/agent/cluster_agen
 
 For helm that means ensuring the following values are set
 
-```
+```yaml
 datadog:
   clusterChecks:
     enabled: true
@@ -56,7 +56,7 @@ SSL check will verify the certificate of your URL
 :::
 <img src="/assets/refarch/image-20220421-173807.png" height="148" width="1004" /><br/>
 
-```
+```yaml
 https-checks:
   name: "(Network Check) ${stage} - HTTPS Check"
   type: service check
@@ -86,6 +86,6 @@ https-checks:
     critical: 1
     warning: 1
     ok: 1
-
 ```
+
 <img src="/assets/refarch/screen-shot-2022-04-21-at-10.38.41-am.png" height="893" width="1780" /><br/>

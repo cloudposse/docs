@@ -241,10 +241,9 @@ svg.landingLogo path {
 }
 
 .margin-top--md, .margin-vert--md {
-    margin-top: 1rem!important;
+    margin-top: 1rem !important;
     margin-right: 1em;
     margin-left: 1em;
-    font-weight: bold;
 }
 
 .container.margin-vert--lg {
@@ -295,4 +294,8 @@ ul.contains-task-list [type='checkbox'] {
 
 li.menu__list-item.deprecated > a {
   color: #444950;
+}
+
+ol ::marker {
+    font-weight: bold;
 }
