@@ -299,3 +299,14 @@ li.menu__list-item.deprecated > a {
 ol ::marker {
     font-weight: bold;
 }
+
+.theme-last-updated {
+  color: #666;
+  font-style: initial;
+}
+
+.youtube figcaption {
+  font-style: initial;
+  font-weight: normal !important;
+  font-size: 1em;
+}

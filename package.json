@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.24.8",
+    "@codesweetly/react-youtube-playlist": "^3.0.0",
     "@docusaurus/core": "^3.4.0",
     "@docusaurus/mdx-loader": "^3.4.0",
     "@docusaurus/plugin-client-redirects": "^3.4.0",

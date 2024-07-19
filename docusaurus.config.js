@@ -57,6 +57,8 @@ const config = {
                 return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
               },
               exclude: ['README.md'],
+              showLastUpdateTime: true,
+              showLastUpdateAuthor: true
           },
           theme: {
               customCss: customCssFiles,

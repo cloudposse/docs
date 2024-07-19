@@ -3,6 +3,7 @@ title: Prerequisites
 sidebar_label: Setup Prerequisites
 sidebar_position: 3
 ---
+import Intro from '@site/src/components/Intro';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Step from '@site/src/components/Step';
@@ -10,8 +11,14 @@ import StepNumber from '@site/src/components/StepNumber';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
+<Intro>
+Before we start provisioning the reference architecture, ensure you have sufficient cloud access to provision the resources and that your local workstation has the necessary software installed.
+</Intro>
+
 <Step>
   ## <StepNumber/> Obtain Cloud Access
+
+  If you're provisioning the infrastructure from scratch, you'll need the AWS root account credentials as part of the bootstrapping process before AWS Single Sign-On is set up. If you're working within an existing organization, ensure you have sufficient access to the accounts you'll be managing.
 
   - [ ] AWS SSO Access (talk to your AWS administrator)
   - [ ] Ensure you can log in to AWS. See
@@ -20,7 +27,7 @@ import PrimaryCTA from '@site/src/components/PrimaryCTA';
 </Step>
 
 <Step>
-  ## <StepNumber/> Setup Workstation
+  ## <StepNumber/> Setup Your Workstation
 
   Prerequisites for your local host computer:
 
@@ -104,7 +111,7 @@ import PrimaryCTA from '@site/src/components/PrimaryCTA';
 </Step>
 
 <ActionCard title="What comes next?">
-  Now that you’ve set up your workstation and obtained cloud access, you’re ready to get started with setting up the infrastructure repository. This repository will be used to store all your infrastructure as code, ensuring a structured and organized approach to managing your resources.
+  With your repository set up, you’re ready to configure the toolbox container. This container, based on Geodesic, will provide you with an interactive and consistent environment to execute all the necessary commands in the upcoming steps. In the next step, you’ll dive deeper into Geodesic and its powerful features.
 
-  <PrimaryCTA to="/layers/foundation/create-repository">Next Step</PrimaryCTA>
+  <PrimaryCTA to="/layers/foundation/toolbox">Next Step</PrimaryCTA>
 </ActionCard>

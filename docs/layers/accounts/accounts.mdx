@@ -6,9 +6,12 @@ sidebar_class_name: hidden
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import ReactPlayer from "react-player";
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import SecondaryCTA from '@site/src/components/SecondaryCTA';
 
 <Intro>
-This chapter presents how Cloud Posse designs and manages AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
+This chapter presents how Cloud Posse designs and manages AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts using Atmos and Terraform, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf).
 </Intro>
 
 <KeyPoints>
@@ -68,6 +71,8 @@ Multiple AWS accounts are all managed underneath an AWS Organization and organiz
 account-level administrators cannot bypass.
 
 ### Account Architecture
+
+By convention, we prefix each account name with its organizational unit (OU) to distinguish it from other accounts of the same type. For example, if we have an OU called `plat` (short for platform) and an account called "production" (or `prod` for short), we would name the account `plat-prod`.  In practice, there might be multiple production accounts, such as in a `data` OU, a `network` OU, and a `plat` OU. By prefixing each account with its OU, it is sufficiently disambiguated and follows a consistent convention.
 
 <dl>
   <dt>
@@ -266,6 +271,18 @@ Cloud Posse manages this process with the following components.
   </dt>
   <dd>This component is responsible for provisioning a bucket for storing cloudtrail logs for auditing purposes</dd>
 </dl>
+
+
+<ActionCard title="What comes next?">
+  Next, we'll prepare the organization to provision the Terraform State backend, followed by account provisioning.
+  If you're curious about the though that went into this process, please review the design decisions documentation.
+
+  <div>
+    <PrimaryCTA to="/layers/accounts/prepare-aws-organization">Next Step</PrimaryCTA>
+    <SecondaryCTA to="/layers/accounts/design-decisions">Review Design Decisions</SecondaryCTA >
+  </div>
+</ActionCard>
+
 
 ## References
 

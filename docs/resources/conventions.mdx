@@ -10,9 +10,11 @@ import ReactPlayer from 'react-player'
 Here’s a summary of all of our conventions across Terraform, Stacks, Catalogs, etc.
 
 ## SweetOps Conventions
+
 SweetOps is built on top of a number of high-level concepts and terminology that are critical to understanding prior to getting started. In this document, we break down these concepts to help you better understand our conventions as we introduce them.
 
 ### Components
+
 [Components](/components) are opinionated, self-contained units of infrastructure as code that solve one, specific problem or use-case. SweetOps has two flavors of components:
 
 1. **Terraform:** Stand-alone root modules that implement some piece of your infrastructure. For example, typical components might be an EKS cluster, RDS cluster, EFS filesystem, S3 bucket, DynamoDB table, etc. You can find the [full library of SweetOps Terraform components on GitHub](https://github.com/cloudposse/terraform-aws-components). We keep these types of components in the `components/terraform/` directory within the infrastructure repository.
@@ -58,7 +60,7 @@ Stacks are a way to express the complete infrastructure needed for an environmen
 
 Here is an example stack defined for a Dev environment in the us-west-2 region:
 
-```
+```yaml
 # Filename: stacks/uw2-dev.yaml
 import:
   - eks/eks-defaults
@@ -156,25 +158,31 @@ Today SweetOps provides a couple important catalogs:
 In the future, you’re likely to see additional open-source catalogs for OPA rules and tools to make sharing configurations even easier. But it is important to note that how you use catalogs is really up to you to define, and the best catalogs will be specific to your organization.
 
 ### Collections
+
 Collections are groups of stacks.
 
 ### Segments
+
 Segments are interconnected networks. For example, a production segment connects all production-tier stacks, while a non-production segment connects all non-production stacks.
 
 ### Primary vs Delegated
+
 Primary vs Delegated is a common implementation pattern in SweetOps. This is most easily described when looking at the example of domain and DNS usage in a multi-account AWS organization: SweetOps takes the approach that the root domain (e.g. `example.com`) is owned by a **primary** AWS account where the apex zone resides. Subdomains on that domain (e.g. `dev.example.com`) are then **delegated** to the other AWS accounts via an `NS` record on the primary hosted zone which points to the delegated hosted zone’s name servers.
 
 You can see examples of this pattern in the [dns-primary](/components/library/aws/dns-primary/), [dns-delegated](/components/library/aws/dns-delegated/) and [iam-primary-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-primary-roles)  / [iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles)  components.
 
 ### Live vs Model (or Synthetic)
+
 Live represents something that is actively being used. It differs from stages like “Production” and “Staging” in the sense that both stages are “live” and in-use. While terms like “Model” and “Synthetic” refer to something which is similar, but not in use by end-users. For example, a live production vanity domain of `acme.com` might have a synthetic vanity domain of `acme-prod.net`.
 
 ### Docker Based Toolbox (aka Geodesic)
+
 In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/fundamentals/geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps tooling.
 
 Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize `atmos`, `terraform`, `kubectl`, `helmfile`, the AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen `install` commands to get started. It’s intended to be used as an interactive cloud automation shell, a base image, or in CI/CD workflows to ensure that all systems are running the same set of versioned, easily accessible tools.
 
 ### Vendoring
+
 Vendoring is a strategy of importing external dependencies into a local source tree or VCS. Many languages (e.g. NodeJS, Golang) natively support the concept. However, there are many other tools which do not address how to do vendoring, namely `terraform`.
 
 There are a few reasons to do vendoring. Sometimes the tools we use do not support importing external sources. Other times, we need to make sure to have full-control over the lifecycle or versioning of some code in case the external dependencies go away.
@@ -188,6 +196,7 @@ Example use-cases for Vendoring:
 2. GitHub Actions do not currently support importing remote workflows. Using `vendir` we can easily import remote workflows.
 
 ### Generators
+
 Generators in SweetOps are the pattern of producing code or configuration when existing tools have shortcomings that cannot be addressed through standard IaC. This is best explained through our use-cases for generators today:
 
 1. In order to deploy AWS Config rules to every region enabled in an AWS Account, we need to specify a provider block and consume a compliance child module for each region. Unfortunately, [Terraform does not currently support the ability loop over providers](https://github.com/hashicorp/terraform/issues/19932), which results in needing to manually create these provider blocks for each region that we’re targeting. On top of that, not every organization uses the same types of accounts so a hardcoded solution is not easily shared. Therefore, to avoid tedious manual work we use the generator pattern to create the `.tf` files which specify a provider block for each module and the corresponding AWS Config child module.
@@ -197,6 +206,7 @@ Generators in SweetOps are the pattern of producing code or configuration when e
 3. Terraform backends do not support interpolation. Therefore, we define the backend configuration in our YAML stack configuration and use `atmos` as our generator to build the backend configuration files for all components.
 
 ### The 4-Layers of Infrastructure
+
 We believe that infrastructure fundamentally consists of 4-layers of infrastructure. We build infrastructure starting from the bottom layer and work our way up.
 
 <a href="https://lucid.app/publicSegments/view/612ad71e-3a0a-4dcb-872a-f9b0bbd0f65d/image.png" target="_blank"><img src="https://lucid.app/publicSegments/view/612ad71e-3a0a-4dcb-872a-f9b0bbd0f65d/image.png" width="960px"/></a>
@@ -212,6 +222,7 @@ Each layer builds on the previous one and our structure is only as solid as our 
 ## Terraform
 
 ### Mixins
+
 Terraform does not natively support the object-oriented concepts of multiple inheritances or [mixins](https://en.wikipedia.org/wiki/Mixin), but we can simulate by using convention. For our purposes, we define a mixin in terraform as a controlled way of adding functionality to modules. When a mixin file is dropped into a folder of a module, the code in the mixin starts to interact with the code in the module. A module can have as many mixins as needed. Since terraform does not directly, we instead use a convention of exporting what we want to reuse.
 
 We achieve this currently using something we call an `export` in our terraform modules, which publish some reusable terraform code that we copy verbatim into modules as needed. We use this pattern with our `terraform-null-label` using the `context.tf` file pattern (See below). We also use this pattern in our `terraform-aws-security-group` module with the [https://github.com/cloudposse/terraform-aws-security-group/blob/main/exports/security-group-variables.tf](https://github.com/cloudposse/terraform-aws-security-group/blob/main/exports/security-group-variables.tf).
@@ -219,6 +230,7 @@ We achieve this currently using something we call an `export` in our terraform m
 To follow this convention, create an `export/` folder with the mixin files you wish to export to other modules. Then simply copy them over (E.g. with `curl`). We recommend calling the installed files something `.mixin.tf` so it’s clear it's an external asset.
 
 ### Resource Factories
+
 Resource Factories provide a custom declarative interface for defining multiple resources using YAML and then terraform for implementing the business logic. Most of our new modules are developed using this pattern so we can decouple the architecture requirements from the implementation.
 
 See [https://medium.com/google-cloud/resource-factories-a-descriptive-approach-to-terraform-581b3ebb59c](https://medium.com/google-cloud/resource-factories-a-descriptive-approach-to-terraform-581b3ebb59c) for a related discussion.
@@ -238,6 +250,7 @@ Examples of modules using Resource Factory convention:
 - [https://github.com/cloudposse/terraform-aws-config](https://github.com/cloudposse/terraform-aws-config)
 
 ### Naming Conventions (and the `terraform-null-label` Module)
+
 Naming things is hard. We’ve made it easier by defining a programmatically consistent naming convention, which we use in everything we provision.  It is designed to generate consistent human-friendly names and tags for resources. We implement this using a terraform module which accepts a number of standardized inputs and produces an output with the fully disambiguate ID. This module establishes the common interface we use in all of our terraform modules in the Cloud Posse ecosystem. Use `terraform-null-label` to implement a strict naming convention. We use it in all of our [Components](/components) and export something we call the `context.tf` pattern.
 
 [https://github.com/cloudposse/terraform-null-label](https://github.com/cloudposse/terraform-null-label)
@@ -267,11 +280,13 @@ There are 6 inputs considered "labels" or "ID elements" (because the labels are 
 This module generates IDs using the following convention by default: `{namespace}-{environment}-{stage}-{name}-{attributes}`. However, it is highly configurable. The delimiter (e.g. `-`) is configurable. Each label item is optional (although you must provide at least one).
 
 #### Tenants
+
 `tenants` are a Cloud Posse construct used to describe a collection of accounts within an Organizational Unit (OU). An OU may have multiple tenants, and each tenant may have multiple AWS accounts.  For example, the `platform` OU might have two tenants named `dev` and `prod`. The `dev` tenant can contain accounts for the `staging`, `dev`, `qa`, and `sandbox` environments, while the `prod` tenant only has one account for the `prod` environment.
 
 By separating accounts into these logical groupings, we can organize accounts at a higher level, follow AWS Well-Architected Framework recommendations, and enforce environment boundaries easily.
 
 ### The `context.tf` Mixin Pattern
+
 Cloud Posse Terraform modules all share a common `context` object that is meant to be passed from module to module. A `context` object is a single object that contains all the input values for `terraform-null-label` and every `cloudposse/terraform-*` module uses it to ensure a common interface to all of our modules. By convention, we install this file as `context.tf` which is why we call it the `context.tf` pattern. By default, we always provide an instance of it accessible via `module.this`, which makes it always easy to get your _context._ 🙂
 
 Every input value can also be specified individually by name as a standard Terraform variable, and the value of those variables, when set to something other than `null`, will override the value in the context object. In order to allow chaining of these objects, where the context object input to one module is transformed and passed on to the next module, all the variables default to `null` or empty collections.
@@ -283,6 +298,7 @@ Every input value can also be specified individually by name as a standard Terra
     controls={true} />
 
 ### Atmos CLI
+
 We predominantly call `terraform` from `atmos`, however, by design all of our infrastructure code runs without any task runners. This is in contrast to tools like `terragrunt` that manipulate the state of infrastructure code at run time.
 
 See [How to use Atmos](/reference-architecture/how-to-guides/tutorials/how-to-use-atmos)
