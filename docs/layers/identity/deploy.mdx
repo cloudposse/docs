@@ -6,6 +6,10 @@ description: Provision AWS teams, integrate SSO, generate role configurations.
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
 
 <Intro>
 Learn how to provision AWS teams and team roles across an AWS Organization using Atmos workflows, integrate them with AWS SSO, and generate AWS configuration files for role assumption with profiles.
@@ -24,31 +28,48 @@ Learn how to provision AWS teams and team roles across an AWS Organization using
 The identity components are designed to provision all primary user and system roles into a centralized identity account.
 These components are expected to be used together to provide fine-grained role delegation across the account hierarchy.
 
-Deploy these components across all accounts by running the following command. Note that if any users or groups are
-missing, `aws-sso` will fail.
+<Steps>
 
-```bash
-atmos workflow deploy/all -f identity
-```
+  <Step>
+  ### <StepNumber/> Deploy Identity Components
+  Deploy these components across all accounts by running the following command. Note that if any users or groups are
+  missing, `aws-sso` will fail.
 
-Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.
-Apply those changes to Terraform State Backend by running the following:
+  ```bash
+  atmos workflow deploy/all -f identity
+  ```
 
-```bash
-atmos workflow deploy/tfstate -f baseline
-```
+  <Note title="IMPORTANT">Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.</Note>
+  </Step>
 
-## Generate AWS Config
+  <Step>
+  ### <StepNumber/> Reconfigure Terraform State Backend
+  Apply the changes from the previous statep to the Terraform State Backend by running the following:
 
-Once the identity components have been deployed, we will need to create local AWS configuration for these new roles and
-profiles. Generate those files now by running the following command from within Geodesic.
+  ```bash
+  atmos workflow deploy/tfstate -f baseline
+  ```
+  </Step>
 
-```bash
-atmos workflow update-aws-config -f identity
-```
+  <Step>
+  ### <StepNumber/>  Generate AWS Config
 
-This will generate AWS configuration to the `rootfs` directory locally. In order to apply these updates to your Geodesic
-image, exit the image and rerun `make all`.
+  Once the identity components have been deployed, we will need to create local AWS configuration for these new roles and
+  profiles. Generate those files now by running the following command from within Geodesic.
+
+  ```bash
+  atmos workflow update-aws-config -f identity
+  ```
+
+  This will generate AWS configuration to the `rootfs` directory locally.
+  </Step>
+
+  <Step>
+  ### <StepNumber/> Apply Changes to Geodesic
+  In order to apply these updates to your Geodesic
+  image, exit the image and rerun `make all`.
+  </Step>
+</Steps>
 
 One of these configuration files will be named `aws-config-teams`. This file holds local configuration for all local
 user authentication to AWS. This file will be the same for both SAML and SSO users, as well as for all teams. This file

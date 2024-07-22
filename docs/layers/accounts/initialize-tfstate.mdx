@@ -5,6 +5,8 @@ sidebar_position: 2
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
 Follow these steps to configure and initialize the Terraform state backend using Atmos, ensuring proper setup of the infrastructure components and state management.
@@ -23,25 +25,24 @@ be found in the `atmos.yaml`.
 
 If you're unfamiliar with atmos, you can read more about it [here](https://atmos.tools).
 
-If you look at `components/terraform/`, you'll see a bunch of directories. These contain Terraform "root modules" that
-are provisioned with Atmos. At first they'll only have their vendor files, such as
-`components/terraform/tfstate-backend/component.yaml`.
+If you look at `components/terraform/`, you'll see a bunch of directories. These contain Terraform "root modules" that are provisioned with Atmos. At first they'll only have their vendor files, such as `components/terraform/tfstate-backend/component.yaml`.
 
-You can use `atmos workflow vendor -f baseline` to vendor all the `baseline` modules, if the Terraform files are not
+<Steps>
+1. You can use `atmos workflow vendor -f baseline` to vendor all the `baseline` modules, if the Terraform files are not
 present. You'll want to at least see Terraform files in `tfstate-backend` and `account-map`.
 
-Once you've done that, you can run `atmos workflow init/tfstate -f baseline` to deploy the Terraform Backend.
+2. Once you've done that, you can run `atmos workflow init/tfstate -f baseline` to deploy the Terraform Backend.
+   <Note>it can take a minute for the S3 buckets you created to become available. The workflow will attempt to wait until the bucket is created and available, with a 5-second delay between each check.</Note>
 
-Note that it can take a minute for the S3 buckets you created to become available. The workflow will attempt to wait
-until the bucket is created and available, with a 5-second delay between each check. Eventually, you should see this
-prompt:
+3. Wait until you see the following prompt
 
-```shell
-Initializing the backend...
-Do you want to migrate all workspaces to "s3"?
-```
+    ```shell
+    Initializing the backend...
+    Do you want to migrate all workspaces to "s3"?
+    ```
 
-Type `yes` to continue. This will migrate the state from the local backend to the s3 backend.
+4. Type `yes` to continue. This will migrate the state from the local backend to the s3 backend.
+</Steps>
 
 :::info Granting SuperAdmin Access to Terraform State
 

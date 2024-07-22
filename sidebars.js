@@ -105,7 +105,7 @@ module.exports = {
 
         {
           type: 'category',
-          label: 'Lay Your Foundation',
+          label: 'Build Your Foundation',
           className: 'sidebar-title',
           collapsible: false,
           collapsed: false,
@@ -178,7 +178,7 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Build Your Platform',
+          label: 'Set Up Your Platform',
           className: 'sidebar-title',
           collapsible: false,
           collapsed: false,
@@ -225,7 +225,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Setup GitHub Actions',
+              label: 'Configure GitHub Actions',
               collapsible: true,
               collapsed: true,
               link: {

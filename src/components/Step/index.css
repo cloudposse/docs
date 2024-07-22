@@ -14,12 +14,24 @@ div > .step:first-child {
     padding-left: 1.5em;
 }
 
-.step .content > ul, .step .content > ol {
+.step .content > ul, .step .content > ol, .step .tabs-container ol {
     padding-left: 2.5em;
+    border-left: none;
+}
+
+.step .content ol li::before {
+  background: #ccc;
+  color: #000 !important;
+}
+
+html[data-theme='dark'] .step .content ol li::before {
+  background: #666;
+  color: #000 !important;
 }
 
 .step h2 {
   margin-top: 0;
+  color: #3578e5;
 }
 
 .step .content > h3, .step .content > h2 {

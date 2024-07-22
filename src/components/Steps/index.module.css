@@ -1,3 +1,59 @@
 .steps {
   margin-left: 1em;
 }
+
+.steps li::before {
+  content: counter(list-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  border-radius: 50%;
+  background-color: #000; /* Background color for the circle */
+  color: #fff; /* Text color */
+  border: 1px solid #000; /* Border color */
+  text-align: center;
+  font-weight: bold; /* Optional: make the number bold */
+  font-size: 1em; /* Font size for the number */
+}
+
+.steps :global(li.task-list-item) {
+  list-style-type: none;
+}
+
+.steps :global(li.task-list-item) > input {
+  transform: scale(1.5);
+}
+
+.steps ul :global(li.task-list-item::before) {
+  content: "";
+  background: transparent !important;
+  border: none;
+}
+
+.steps :global(ul.contains-task-list) {
+  margin-left: 1.5em;
+  margin-top: 1em;
+}
+
+html[data-theme='dark'] .steps li::before {
+  background: #fff;
+  color: #000 !important;
+}
+
+.steps ol {
+  counter-reset: list-counter;
+  list-style: none; /* Remove default list styling */
+  padding-left: 0; /* Remove default padding */
+  border-left: 1px solid #ccc;
+}
+
+.steps ol > li {
+  counter-increment: list-counter;
+  position: relative;
+  left: -0.8em;
+  padding-left: 2em; /* Adjust space for the custom counter */
+  margin-bottom: 1em; /* Space between list items */
+}
