@@ -305,8 +305,15 @@ ol ::marker {
   font-style: initial;
 }
 
+figure {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .youtube figcaption {
   font-style: initial;
   font-weight: normal !important;
   font-size: 1em;
 }
+

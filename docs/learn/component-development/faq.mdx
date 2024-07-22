@@ -1,0 +1,51 @@
+## FAQ
+
+### When should we write a new component?
+
+Developing a new component may be necessary when:
+
+1. Existing components do not provide the required functionality and the existing component cannot be easily extended.
+2. [Cloud Posse's Library of Terraform Components](https://github.com/cloudposse/terraform-aws-components) does not
+   already provide the component. We recommend asking Cloud Posse in your shared Slack channel with us if we happen to
+   have the component not yet upstreamed.
+3. You have some existing Terraform code that you would like to import into the Atmos framework.
+
+### Can components include other components?
+
+Components should not include other components but instead can refer to another component's Terraform Output with
+`remote-state`. Components can however refer to any Terraform module
+
+### What is the purpose of context.tf?
+
+Cloud Posse uses [`context.tf`](/reference-architecture/reference/learning-resources/#the-contexttf-pattern) to
+consistently set metadata across all modules and resources.
+
+### Where should the context.tf file be copied from?
+
+The `context.tf` file should be copied exactly from
+https://raw.githubusercontent.com/cloudposse/terraform-null-label/master/exports/context.tf.
+
+### How can Terraform modules or resources be added to a component?
+
+Terraform modules or resources can be added directly to the `main.tf` file or other files of your choosing.
+
+**Please be advised** that modifying any of the vendored components may break the ability to pull down upstream changes.
+If modifying an existing component to preserve vendoring capabilities, name your files something like
+`customizations.extended.tf`, so that it won't collide with upstream files (e.g. using `.extended.tf` as the extension).
+Similarly, if needing to modify core functionality, consider using
+[Terraform overrides](https://developer.hashicorp.com/terraform/language/files/override).
+
+### What is an abstract component?
+
+An [abstract component](https://atmos.tools/core-concepts/components#types-of-components) is a component configuration
+that cannot be instantiated directly.
+
+### Does Cloud Posse have automated testing for components?
+
+We do not have automated testing for our components per se at this time. However, GitOps pipelines with Spacelift can
+automate component deployment into lower environments, so that we can validate any code changes in each stage before
+reaching production.
+
+Also, we do have automated tested for all Terraform modules the components built off of
+([rds-cluster example](https://github.com/cloudposse/terraform-aws-rds-cluster/tree/master/test)) and static code
+linting for Terraform and Atmos (with a local `.github/workflows/pre-commit.yml`).

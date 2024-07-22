@@ -5,6 +5,7 @@ description: Add Organizational Units to AWS Organization in the `account` catal
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
 
 <Intro>
 Learn how to add a new Organizational Unit (OU) to an existing AWS Organization set up to Cloud Posse standards. The process involves updating the `account` catalog with the new OU details and reapplying the `account` component using the `SuperAdmin` user, ensuring all planned changes by Terraform are carefully reviewed before applying.
@@ -16,11 +17,8 @@ We want to create a new Organizational Unit with an existing AWS Organization se
 
 ## Solution
 
-:::tip
+<Note title="TL;DR">Update the `account` catalog</Note>
 
-TL;DR Update the `account` catalog
-
-:::
 
 Add the new OU to the `account` catalog and reapply the component.
 

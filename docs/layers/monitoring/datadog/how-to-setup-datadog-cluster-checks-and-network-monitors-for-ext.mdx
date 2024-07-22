@@ -5,6 +5,7 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
 
 ## Problem
 
@@ -12,10 +13,7 @@ We often want a lightweight way to ensure our endpoints remain healthy. In kuber
 
 ## Solution
 
-:::tip
-TL;DR Use **Cluster Network Checks** to test your endpoints. These will test external URLs which helps ensure endpoints are healthy.
-
-:::
+<Note title="TL;DR">Use **Cluster Network Checks** to test your endpoints. These will test external URLs which helps ensure endpoints are healthy.</Note>
 
 Cluster Checks are configured on the datadog agent, by specifying agent configuration you can set these checks to run once per cluster instead of once per node agent. These Checks test the validity of externally accessible URLs hosted in Kubernetes.
 
