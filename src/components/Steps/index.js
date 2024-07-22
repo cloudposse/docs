@@ -1,6 +1,7 @@
-// src/components/Step.js
+// src/components/Steps.js
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import './index.css';
+import clsx from 'clsx';
+import styles from './index.module.css';
 
 let stepCounter = 0;
 
@@ -10,7 +11,7 @@ export const resetStepCounter = () => {
   stepCounter = 0;
 };
 
-const Step = ({ title, children }) => {
+const Steps = ({ title, children }) => {
   const [stepNumber, setStepNumber] = useState(stepCounter);
 
   useEffect(() => {
@@ -20,12 +21,9 @@ const Step = ({ title, children }) => {
 
   return (
     <StepContext.Provider value={stepNumber}>
-      <div className="step">
-        {title && <h2><i className="step-number">{`Step ${stepNumber}: ${title}`}</i></h2>}
-        <div className="content">{children}</div>
-      </div>
+      <div className={clsx(styles.steps)}>{children}</div>
     </StepContext.Provider>
   );
 };
 
-export default Step;
+export default Steps;

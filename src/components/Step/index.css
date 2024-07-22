@@ -1,10 +1,30 @@
-.step {
+div > .step:first-child {
+  padding-top: 0;
   margin-top: 4em;
-  margin-bottom: 1em;
+}
+
+.step {
+  padding-top: 3em;
+  padding-bottom: 1em;
+  border-left: 1px solid #666;
+  padding-left: 1em;
+}
+
+.step .content > p {
+    padding-left: 1.5em;
+}
+
+.step .content > ul, .step .content > ol {
+    padding-left: 2.5em;
 }
 
 .step h2 {
   margin-top: 0;
+}
+
+.step .content > h3, .step .content > h2 {
+  position: relative;
+  left: -1.75em;
 }
 
 .step h3 > i, html[data-theme='dark'] .step h2 > i {
