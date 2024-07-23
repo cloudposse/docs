@@ -11,7 +11,8 @@ import SecondaryCTA from '@site/src/components/SecondaryCTA';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
-import DocCardListForCategory from '@site/src/components/DocCardListForCategory';
+import CategoryList from '@site/src/components/CategoryList';
+import TaskList from '@site/src/components/TaskList';
 
 ## Problem
 
@@ -64,68 +65,82 @@ If this all sounds a little bit daunting, you may want to start by reviewing the
   <Step>
     ### <StepNumber/> Learn the Cloud Posse Toolchain
 
-    - [ ] Read through the [Introduction to Toolset](#introduction-to-toolset) slides and become familiar with the concepts
-          of [Components](/components), [Stacks](/fundamentals/stacks), and
-          [Stack Catalogs](https://atmos.tools/core-concepts/stacks/catalogs)
-    - [ ] Review [Geodesic](/fundamentals/geodesic) docker toolbox and
-          [How to Customize the Geodesic Shell](/reference-architecture/how-to-guides/tutorials/how-to-customize-the-geodesic-shell)
-          to your liking.
-    - [ ] Review [atmos.tools](https://atmos.tools/)
-    - [ ] Review our [Conventions](/learn/conventions) (there are a lot of them)
-    - [ ] Review [Fundamentals](/reference-architecture/fundamentals) and each core concept included as a subpage
-    - [ ] Review the Architectural Design Records (ADRs) for your organization; these are typically in `docs/adr` within the
-          infrastructure repository
-    - [ ] Review Cloud Posse’s [Architectural Design Records (ADRs)](/reference-architecture/reference/adrs), which may not
-          be the same as your organizations' practices
-    - [ ] Check out the [Learning Resources](/reference-architecture/reference/learning-resources) that have been curated
-          from our weekly office hours
+    <TaskList>
+      - [ ] Read through the [Introduction to Toolset](#introduction-to-toolset) slides and become familiar with the concepts
+            of [Components](/components), [Stacks](/fundamentals/stacks), and
+            [Stack Catalogs](https://atmos.tools/core-concepts/stacks/catalogs)
+      - [ ] Review [Geodesic](/fundamentals/geodesic) docker toolbox and
+            [How to Customize the Geodesic Shell](/reference-architecture/how-to-guides/tutorials/how-to-customize-the-geodesic-shell)
+            to your liking.
+      - [ ] Review [atmos.tools](https://atmos.tools/)
+      - [ ] Review our [Conventions](/learn/conventions) (there are a lot of them)
+      - [ ] Review [Fundamentals](/reference-architecture/fundamentals) and each core concept included as a subpage
+      - [ ] Review the Architectural Design Records (ADRs) for your organization; these are typically in `docs/adr` within the
+            infrastructure repository
+      - [ ] Review Cloud Posse’s [Architectural Design Records (ADRs)](/reference-architecture/reference/adrs), which may not
+            be the same as your organizations' practices
+      - [ ] Check out the [Learning Resources](/reference-architecture/reference/learning-resources) that have been curated
+            from our weekly office hours
+    </TaskList>
   </Step>
 
   <Step>
     ### <StepNumber/> AWS Toolchain
 
-    - [ ] Review [Leapp](/fundamentals/leapp) and
-          [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp)
-    - [ ] Review why we
-          [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform)
+    <TaskList>
+      - [ ] Review [Leapp](/fundamentals/leapp) and
+            [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp)
+      - [ ] Review why we
+            [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform)
+    </TaskList>
   </Step>
 
   <Step>
     ### <StepNumber/> Kubernetes Toolchain (for EKS users)
 
-    - [ ] [Helm](/reference-architecture/reference/helm)
-    - [ ] [Kubernetes](/reference-architecture/reference/kubernetes)
-    - [ ] [Lens](/reference-architecture/reference/lens)
+    <TaskList>
+      - [ ] [Helm](/reference-architecture/reference/helm)
+      - [ ] [Kubernetes](/reference-architecture/reference/kubernetes)
+      - [ ] [Lens](/reference-architecture/reference/lens)
+    </TaskList>
   </Step>
 
   <Step>
     ### <StepNumber/> Training Exercise
 
-    - [ ] Clone your company’s infrastructure repository
-    - [ ] Review the components in your company’s infrastructure repository (e.g. `infrastructure/components/terraform`)
-    - [ ] Review the stack configurations in your company’s infrastructure repository (e.g. `infrastructure/stacks/`)
-    - [ ] Review the catalog configurations in your company’s infrastructure repository (e.g.
-          `infrastructure/stacks/catalog`)
+    <TaskList>
+      - [ ] Clone your company’s infrastructure repository
+      - [ ] Review the components in your company’s infrastructure repository (e.g. `infrastructure/components/terraform`)
+      - [ ] Review the stack configurations in your company’s infrastructure repository (e.g. `infrastructure/stacks/`)
+      - [ ] Review the catalog configurations in your company’s infrastructure repository (e.g.
+            `infrastructure/stacks/catalog`)
+    </TaskList>
   </Step>
 
   <Step>
     ### <StepNumber/> How we Use Terraform (for developers)
 
-    - [ ] Review [Terraform](/fundamentals/terraform) conventions used by Cloud Posse
-    - [ ] We store all the terraform states in S3. Make sure you understand the
-          [Structure of Terraform S3 State Backend Bucket](/reference-architecture/reference/structure-of-terraform-s3-state-backend-bucket)
-    - [ ] Learn
-          [How to Use Terraform Remote State](/reference-architecture/how-to-guides/tutorials/how-to-use-terraform-remote-state) -
-          we make it really easy to read the state of any component in any account.
-    - [ ] Review [Component Development](reference-architecture/fundamentals/component-development/).
-    - [ ] [How to Switch Versions of Terraform](/reference-architecture/how-to-guides/tutorials/how-to-switch-versions-of-terraform)
-    - [ ] [How to Use Atmos with Existing Terraform](/reference-architecture/how-to-guides/tutorials/how-to-use-atmos-with-existing-terraform)
+    <TaskList>
+      - [ ] Review [Terraform](/fundamentals/terraform) conventions used by Cloud Posse
+      - [ ] We store all the terraform states in S3. Make sure you understand the
+            [Structure of Terraform S3 State Backend Bucket](/reference-architecture/reference/structure-of-terraform-s3-state-backend-bucket)
+      - [ ] Learn
+            [How to Use Terraform Remote State](/reference-architecture/how-to-guides/tutorials/how-to-use-terraform-remote-state) -
+            we make it really easy to read the state of any component in any account.
+      - [ ] Review [Component Development](reference-architecture/fundamentals/component-development/).
+      - [ ] [How to Switch Versions of Terraform](/reference-architecture/how-to-guides/tutorials/how-to-switch-versions-of-terraform)
+      - [ ] [How to Use Atmos with Existing Terraform](/reference-architecture/how-to-guides/tutorials/how-to-use-atmos-with-existing-terraform)
+    </TaskList>
   </Step>
 
   <Step>
     ### <StepNumber/> Review Foundational Design Decisions
 
-    - [ ] [Review Design Decisions](/layers/foundation/design-decisions) and record your decisions now. You will need the results of these decisions going forward.
+    [Review Design Decisions](/layers/foundation/design-decisions) and record your decisions now. You will need the results of these decisions going forward.
+    <TaskList>
+      <CategoryList path="/layers/foundation/design-decisions/" />
+    </TaskList>
+
   </Step>
 </Steps>
 

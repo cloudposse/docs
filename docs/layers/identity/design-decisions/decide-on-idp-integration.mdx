@@ -1,9 +1,14 @@
 ---
 title: Decide on Identity Provider (IdP) Integration Method
 sidebar_label: IdP Integration Method
+description: Choose approach for secure AWS access management
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+Ensure your organization can efficiently and securely manage access to AWS resources. By choosing the appropriate IdP integration method, either AWS Identity Center (SSO) or AWS SAML, you can align your authentication processes with their operational structures, avoiding potential overlaps and inefficiencies.
+</Intro>
 
 ## Problem
 
@@ -24,7 +29,7 @@ preferences.
 Cloud Posse supports both AWS SAML and AWS Identity Center (AWS SSO) for authenticating with AWS. Choose one or both
 options.
 
-**[AWS SAML 2.0 based federation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html)** is
+- **[AWS SAML 2.0 based federation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html)** is
 provisioned in the centralized identity account and then permits roles to assume access roles in other accounts across
 the organization. It works well with multiple IdPs, enabling roles to be programmatically associated with specific
 providers. Aside from the obvious benefit of using AWS SAML to provide a single authentication page for users, is that
@@ -32,7 +37,7 @@ the benefit that the AWS SAML approach enables granular control over all the mec
 control over how it works. Internally, Cloud Posse uses AWS SAML to authenticate with all customers to access many AWS
 Organizations easily.
 
-**[AWS Identity Center (AWS SSO)](https://aws.amazon.com/iam/identity-center/)**, alternatively, is deployed for a
+- **[AWS Identity Center (AWS SSO)](https://aws.amazon.com/iam/identity-center/)**, alternatively, is deployed for a
 single AWS Organization. With AWS Identity Center, we have a single access page for all accounts in the Organization and
 can connect directly to a given account. **AWS Identity Center is the recommended choice for customers**, given that
 most customers manage a single AWS Organization, and the single login page is the most user-friendly option. It's also

@@ -2,24 +2,32 @@
 title: "Using AWS SAML to Access AWS"
 sidebar_label: "AWS SAML"
 sidebar_position: 20
+description: Authenticate with AWS via a federated identity using AWS SAML.
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+  The AWS SAML component allows you to authenticate with AWS via a federated identity. This is an alternative to using AWS SSO, that provides lower-level control over the authentication process and supports multiple concurrent IdPs, but with more complexity and a reduced user experience.
+</Intro>
 
 As an alternative to AWS SSO, the AWS SAML creates an Identity Provider (IdP) to authenticate with AWS via a federated
 identity. You can use this federated identity to connect directly to a given AWS Team.
 
 ## Setting up IdP Metadata for SAML
 
-Export an Identity Provider (IdP) metadata file from the chosen provider. You'll need to place this file inside the
+<Steps>
+- ### Export an Identity Provider (IdP) metadata file from the chosen provider.
+  You'll need to place this file inside the
 `aws-saml` component directory (`components/terraform/aws-saml/`) and commit this to version control. The filename
 should match the variable configured in `stacks/catalog/aws-saml.yaml`.
+</Steps>
 
-The creation of these metadata files will be different for each IdP. Here are some example setup references:
-
-1. [Google Workspace](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/)
-   (Note that
-   [Workspace can now sync users](https://aws.amazon.com/about-aws/whats-new/2023/06/aws-iam-identity-center-automated-user-provisioning-google-workspace/)
-   )
-2. [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
-3. [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
+The creation of metadata files will be different for each IdP. Here are some example setup references:
+  - [Google Workspace](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/)
+    (Note that
+    [Workspace can now sync users](https://aws.amazon.com/about-aws/whats-new/2023/06/aws-iam-identity-center-automated-user-provisioning-google-workspace/)
+    )
+  - [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
+  - [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)

@@ -5,7 +5,7 @@ import styles from './index.module.css';
 
 const StepNumber = () => {
   const stepNumber = useContext(StepContext);
-  return (<i class={clsx(styles.stepNumber)}>{`${stepNumber}`}</i>);
+  return (<i className={clsx(styles.stepNumber)}>{`${stepNumber}`}</i>);
 };
 
 export default StepNumber;

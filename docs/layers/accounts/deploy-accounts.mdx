@@ -33,17 +33,14 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     You should double-check the following:
 
-    1. `stacks/catalog/account.yaml`
+    1. Check that `stacks/catalog/account.yaml` has the values you expect, especially account email format
     2. Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_
       all the mixins have been imported)
     3. Plan the run with `atmos terraform plan account -s core-gbl-root`
+  </Step>
 
-    Now deploy the AWS Organization. To deploy all accounts, we need to request an increase of the Account Quota from AWS
-    support, which requires an AWS Organization to be created first. This process also enables
-    [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html)
-    via a CLI command, which is required for connecting the Organization.
-
-    Deploy the AWS Organization:
+  <Step>
+    ## <StepNumber/> Deploy the AWS Organization:
 
     ```bash
     atmos workflow deploy/organization -f accounts
@@ -51,16 +48,23 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   </Step>
 
   <Step>
-    ## <StepNumber/> Requirements for Deploying Accounts
+    ## <StepNumber/> Configure Root Account as Organization
 
-    Before performing the "Deploying Accounts" step, the root account needs to be configured as an AWS Organization. Once
-    updated, complete the root account setup with the following ClickOps steps.
+    Before performing the "Deploying Accounts" step, the root account needs to be configured as an AWS Organization.
+
+     To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
+
+     This process also enables [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) via a CLI command, which is required for connecting the Organization.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Raise Account Limits
+
+    Complete the root account setup with the following ClickOps steps.
 
     From the `root` account (not `SuperAdmin`):
 
-    1. Increase the
-      [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for
-      the Cloud Posse reference architecture, or more depending on your business use-case
+    1. Increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case
 
   </Step>
 

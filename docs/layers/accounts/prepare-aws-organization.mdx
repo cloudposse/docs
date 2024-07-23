@@ -39,7 +39,7 @@ From the root account:
 
 <Steps>
 1. ### Get Business Class Support
-   [business support](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_support.html) in
+   Enable [business support](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_support.html) in
    the `root` account (in order to expedite requests to raise the AWS member account limits)
 1. ### Set up MFA on Root Account
    Set up up the Virtual MFA device on the root account, following
@@ -54,13 +54,11 @@ From the root account:
    For billing users, you need to enable IAM access. As the root user
    [open up the account settings for AWS Billing](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account),
    then scroll to the section "IAM user and role access to Billing information" and enable it.
+3. ### Enable Regions (Optional)
+   The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to take extra steps. For details, see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/#optional-enable-regions)
 </Steps>
 
 For more details, see
 [the detailed documentation](/layers/accounts/tutorials/manual-configuration/#provision-account-settings-component).
 
-## (Optional) Enable Regions
 
-The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as
-Middle East/Bahrain), you need to take extra steps. For details, see
-[the detailed documentation](/layers/accounts/tutorials/manual-configuration/#optional-enable-regions)

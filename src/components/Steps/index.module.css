@@ -43,17 +43,37 @@ html[data-theme='dark'] .steps li::before {
   color: #000 !important;
 }
 
-.steps ol {
+.steps ol, .steps > ul {
   counter-reset: list-counter;
   list-style: none; /* Remove default list styling */
   padding-left: 0; /* Remove default padding */
   border-left: 1px solid #ccc;
 }
 
-.steps ol > li {
+:global(.content) .steps ol, :global(.content) .steps > ul {
+  border-left: none;
+}
+
+html[data-theme='dark'] :global(.content) .steps li::before {
+  background: #666;
+  color: #000 !important;
+}
+
+:global(.content) .steps li::before {
+  background: transparent;
+  color: #000 !important;
+}
+
+.steps ol > li, .steps > ul > li {
   counter-increment: list-counter;
   position: relative;
   left: -0.8em;
   padding-left: 2em; /* Adjust space for the custom counter */
   margin-bottom: 1em; /* Space between list items */
+}
+
+
+.steps ol > li img, .steps > ul > li img {
+  margin: 2em;
+  max-width: 100%;
 }
