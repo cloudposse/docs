@@ -11,3 +11,8 @@ figure figcaption {
 figure > div  {
   box-shadow: var(--ifm-alert-shadow);
 }
+
+figure {
+  margin-top: 6em;
+  margin-bottom: 6em;
+}

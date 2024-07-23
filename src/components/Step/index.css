@@ -48,6 +48,10 @@ html[data-theme='dark'] .step h3 > i, html[data-theme='dark'] .step h2 > i  {
   color: #fff;
 }
 
+ .step h2 > i {
+  font-size: 0.9em;
+ }
+
 .docusaurus-mermaid-container {
   display: flex;
   justify-content: center;

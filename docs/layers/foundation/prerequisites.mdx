@@ -11,9 +11,10 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
-Before we start provisioning the reference architecture, ensure you have sufficient cloud access to provision the resources and that your local workstation has the necessary software installed.
+  Before we start provisioning the reference architecture, ensure you have sufficient cloud access to provision the resources and that your local workstation has the necessary software installed.
 </Intro>
 
 <Steps>
@@ -21,24 +22,26 @@ Before we start provisioning the reference architecture, ensure you have suffici
     ## <StepNumber/> Obtain Cloud Access
 
     If you're provisioning the infrastructure from scratch, you'll need the AWS root account credentials as part of the bootstrapping process before AWS Single Sign-On is set up. If you're working within an existing organization, ensure you have sufficient access to the accounts you'll be managing.
-
-    - [ ] AWS SSO Access (talk to your AWS administrator)
-    - [ ] Ensure you can log in to AWS. See
-          [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp) to get
-          started.
+    <TaskList>
+      - [ ] AWS SSO Access (talk to your AWS administrator)
+      - [ ] Ensure you can log in to AWS. See
+            [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp) to get
+            started.
+    </TaskList>
   </Step>
 
   <Step>
     ## <StepNumber/> Setup Your Workstation
 
     Prerequisites for your local host computer:
-
-    - [ ] Docker installed (to run our tools)
-    - [ ] Slack installed (to communicate with our team)
-    - [ ] `make` installed, preferably GNU Make
-    - [ ] `git` installed
-    - [ ] [Leapp](/fundamentals/leapp) for authentication
-    - [ ] Infrastructure Git repo cloned
+      <TaskList>
+      - [ ] Docker installed (to run our tools)
+      - [ ] Slack installed (to communicate with our team)
+      - [ ] `make` installed, preferably GNU Make
+      - [ ] `git` installed
+      - [ ] [Leapp](/fundamentals/leapp) for authentication
+      - [ ] Infrastructure Git repo cloned
+    </TaskList>
 
     <Tabs>
       <TabItem value="macos" label="macOS" default>

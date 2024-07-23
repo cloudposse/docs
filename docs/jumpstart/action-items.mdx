@@ -11,7 +11,7 @@ import Admonition from '@theme/Admonition';
 import Note from '@site/src/components/Note';
 
 <Intro>
-Cloud Posse will need a few subscriptions set up from you in order to deploy your infrastructure. Some of these may not apply to all engagements, but please start setting up the relevant subscriptions now.
+  Cloud Posse will need a few subscriptions set up from you in order to deploy your infrastructure. Some of these may not apply to all engagements, but please start setting up the relevant subscriptions now.
 </Intro>
 
 ## Getting Started
@@ -112,18 +112,18 @@ For more on the Atmos Component Updater, see [atmos.tools](https://atmos.tools/i
     ### <StepNumber/> Create and install a GitHub App for Atmos
 
     <Steps>
-    1. Create a new GitHub App
-    2. Name this new app whatever you prefer. For example, `Atmos Component Updater`.
-    3. List a Homepage URL of your choosing. This is required by GitHub, but you can use any URL. For example use our documentation page: `https://atmos.tools/integrations/github-actions/component-updater/`
-    4. (Optional) Add an icon for your new app (example provided below)
-    5. Assign only the following Repository permissions:
-        ```diff
-        + Contents: Read and write
-        + Pull Requests: Read and write
-        + Metadata: Read-only
-        ```
-    6. Generate a new private key [following the GitHub documentation](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps#generating-private-keys).
-    7. Share both the App ID and the new private key with Cloud Posse in 1Password
+      1. Create a new GitHub App
+      2. Name this new app whatever you prefer. For example, `Atmos Component Updater`.
+      3. List a Homepage URL of your choosing. This is required by GitHub, but you can use any URL. For example use our documentation page: `https://atmos.tools/integrations/github-actions/component-updater/`
+      4. (Optional) Add an icon for your new app (example provided below)
+      5. Assign only the following Repository permissions:
+          ```diff
+          + Contents: Read and write
+          + Pull Requests: Read and write
+          + Metadata: Read-only
+          ```
+      6. Generate a new private key [following the GitHub documentation](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps#generating-private-keys).
+      7. Share both the App ID and the new private key with Cloud Posse in 1Password
     </Steps>
 
     <details>
@@ -135,27 +135,29 @@ For more on the Atmos Component Updater, see [atmos.tools](https://atmos.tools/i
   </Step>
 
   <Step>
-  ### <StepNumber/> Allow GitHub Actions to create and approve pull requests
-
-  1. Go to `https://github.com/organizations/YOUR_ORG/settings/actions`
-  2. Check "Allow GitHub Actions to create and approve pull requests"
+    ### <StepNumber/> Allow GitHub Actions to create and approve pull requests
+    <Steps>
+      1. Go to `https://github.com/organizations/YOUR_ORG/settings/actions`
+      2. Check "Allow GitHub Actions to create and approve pull requests"
+    </Steps>
   </Step>
 
   <Step>
-  ### <StepNumber/> Create `atmos` GitHub Environment
+    ### <StepNumber/> Create `atmos` GitHub Environment
 
-  <Note title="Optional">
-    If you grant Cloud Posse `admin` in your new infrastructure repository, we will do this for you.
-  </Note>
+    <Note title="Optional">
+      If you grant Cloud Posse `admin` in your new infrastructure repository, we will do this for you.
+    </Note>
 
-  We recommend creating a new GitHub environment for Atmos. With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the GitHub UI.
-
-  1. Open "Settings" for your repository
-  1. Navigate to "Environments"
-  1. Select "New environment"
-  1. Name the new environment, "atmos".
-  1. In the drop-down next to "Deployment branches and tags", select "Protected branches only"
-  1. In "Environment secrets", create the two required secrets for App ID and App Private Key created above and in 1Password. We will pull these secrets from GitHub Actions with `secrets.ATMOS_APP_ID` and `secrets.ATMOS_PRIVATE_KEY` respectively.
+    We recommend creating a new GitHub environment for Atmos. With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the GitHub UI.
+    <Steps>
+      1. Open "Settings" for your repository
+      1. Navigate to "Environments"
+      1. Select "New environment"
+      1. Name the new environment, "atmos".
+      1. In the drop-down next to "Deployment branches and tags", select "Protected branches only"
+      1. In "Environment secrets", create the two required secrets for App ID and App Private Key created above and in 1Password. We will pull these secrets from GitHub Actions with `secrets.ATMOS_APP_ID` and `secrets.ATMOS_PRIVATE_KEY` respectively.
+    </Steps>
   </Step>
 
 </Steps>

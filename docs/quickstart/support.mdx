@@ -6,37 +6,47 @@ description: Use Customer Workshops to ask questions and get support from Cloud 
 ---
 import Intro from '@site/src/components/Intro';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
 
 <Intro>
-Learn how to access support from Cloud Posse and the various support options available for both paid and free support. We offer support including direct access via Slack, Zoom, and email, as well as participation in Customer Workshops and Office Hours.
+  Learn how to access support from Cloud Posse and the various support options available for both paid and free support. We offer support including direct access via Slack, Zoom, and email, as well as participation in Customer Workshops and Office Hours.
 </Intro>
 
-## Customer Workshops via Zoom
+<Steps>
+  <Step>
+    ## <StepNumber/> Join Weekly Customer Workshops via Zoom
 
-Join our weekly [Customer Workshops](/reference-architecture/fundamentals/kick-off/#shared-customer-workshop) to get any of your questions answered. Customer Workshops are only available exclusively to our Quickstart sponsors and are held twice a week. If your company sponsors Cloud Posse, please reach out to be added to the recurring events.
+    Join our weekly [Customer Workshops](/reference-architecture/fundamentals/kick-off/#shared-customer-workshop) to get any of your questions answered. Customer Workshops are only available exclusively to our Quickstart sponsors and are held twice a week. If your company sponsors Cloud Posse, please reach out to be added to the recurring events.
 
-These are group sessions with multiple customers, similar in format to Office Hours.
+    These are group sessions with multiple customers, similar in format to Office Hours.
 
-Join the [Shared Customer Workshops](/reference-architecture/fundamentals/kick-off/#shared-customer-workshop) and ask our team questions. Customer Workshops are only available to current and previous customers and are held twice weekly. You can still join and ask questions after your engagement has concluded! Please reach out to Cloud Posse PMs if you need to be added to the recurring events.
+    Join the [Shared Customer Workshops](/reference-architecture/fundamentals/kick-off/#shared-customer-workshop) and ask our team questions. Customer Workshops are only available to current and previous customers and are held twice weekly. You can still join and ask questions after your engagement has concluded! Please reach out to Cloud Posse PMs if you need to be added to the recurring events.
+  </Step>
 
-### Community Support via SwetOps Slack
+  <Step>
+    ## <StepNumber/> Get Community Support via SwetOps Slack
 
-Join our free SweetOps Slack community, hosted by Cloud Posse with more than 9,500 members worldwide. While we primarily address questions in channels like `#atmos`, `#aws`, `#cloudposse`, `#geodesic`, `#github-actions`, `#refarch`, `#terraform`, and `#terraform-aws-modules`, feel free to engage in any channel.
+    Join our free SweetOps Slack community, hosted by Cloud Posse with more than 9,500 members worldwide. While we primarily address questions in channels like `#atmos`, `#aws`, `#cloudposse`, `#geodesic`, `#github-actions`, `#refarch`, `#terraform`, and `#terraform-aws-modules`, feel free to engage in any channel.
 
-Sign up here: [https://slack.sweetops.com](https://slack.sweetops.com).
+    Sign up here: [https://slack.sweetops.com](https://slack.sweetops.com).
 
-Archives are searchable at [archive.sweetops.com](https://archive.sweetops.com).
+    Archives are searchable at [archive.sweetops.com](https://archive.sweetops.com).
 
-:::info Tip!
+    <Note title="Tip!">
+      Reach out in the `#refarch` channel with questions specific to Cloud Posse architecture.
+    </Note>
+  </Step>
 
-Reach out in the `#refarch` channel with questions specific to Cloud Posse architecture.
+  <Step>
+    ## <StepNumber/> Attend Weekly Office Hours
 
-:::
+    [Sign up](https://cloudposse.com/office-hours/) for our free public “Office Hours” are held every Wednesday at 11:30am PT (14:30 ET) via Zoom. Past recordings are available on our [YouTube channel](https://youtube.com/cloudposse).
 
-### Weekly Office Hours
+    These public calls are hosted weekly by Cloud Posse. They are a good way to keep up with the latest developments and trends in our DevOps community.
 
-[Sign up](https://cloudposse.com/office-hours/) for our free public “Office Hours” are held every Wednesday at 11:30am PT (14:30 ET) via Zoom. Past recordings are available on our [YouTube channel](https://youtube.com/cloudposse).
-
-These public calls are hosted weekly by Cloud Posse. They are a good way to keep up with the latest developments and trends in our DevOps community.
-
-<PrimaryCTA to="/community/office-hours">Sign Up for Office Hours</PrimaryCTA>
+    <PrimaryCTA to="/community/office-hours">Sign Up for Office Hours</PrimaryCTA>
+  </Step>
+</Steps>

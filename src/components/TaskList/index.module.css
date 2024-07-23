@@ -5,3 +5,7 @@
 .taskList {
   margin-left: 1.5em;
 }
+
+:global(li.task-list-item) > input {
+  transform: scale(1.5);
+}

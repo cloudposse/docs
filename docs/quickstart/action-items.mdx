@@ -6,20 +6,73 @@ sidebar_position: 2
 import Intro from '@site/src/components/Intro';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
+import Admonition from '@theme/Admonition'
 
-The reference architecture supports multiple integrations. Depending on your requirements, you may need a few subscriptions set up. Please subscribe only to the services you plan to use!
+<Steps>
+  <Step>
+    ## <StepNumber/> **AWS** Organization (root account)
 
-## AWS Organization (root account)
+    We recommend that you start with a new AWS Organization (e.g. a new payer account). As part of the provisioning process, you will be terraforming your entire organization, creating 12-plus accounts, and building everything from the ground up. You will be configuring SSO, fine-grained IAM roles, and more, all with Terraform. We recommend a net-new Organization, so you do not jeopardize any of your current production operations.
 
-We recommend that you start with a new AWS Organization (e.g. a new payer account). As part of the provisioning process, you will be terraforming your entire organization, creating 12-plus accounts, and building everything from the ground up. You will be configuring SSO, fine-grained IAM roles, and more, all with Terraform. We recommend a net-new Organization, so you do not jeopardize any of your current production operations.
+    Create a new AWS root account and add the root credentials to 1Password.
+  </Step>
 
-Create a new AWS root account and add the root credentials to 1Password.
+  <Step>
+    ### <StepNumber/> GitHub
 
-## GitHub
+    Create a new repository in your GitHub organization that you will use as your Infrastructure as Code repository.
+  </Step>
 
-Create a new repository in your GitHub organization that you will use as your Infrastructure as Code repository.
+  <Step>
+    ### <StepNumber/> AWS IAM Identity Center (AWS SSO)
+
+    In order connect your chosen IdP to AWS IAM Identity Center (AWS SSO), we will to configure your provider and create a metadata file. Please follow the relevant linked guide and follow the steps for the Identity Provider.
+
+    - [GSuite](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/)
+    - [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-office-365-aws-sso/)
+    - [JumpCloud](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
+    - [Other AWS supported IdPs: Azure AD, CyberArk, Okta, OneLogin, Ping Identity](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html)
+
+    <Admonition type="caution">
+      - GSuite does not automatically sync Users and Groups with AWS Identity Center without additional configuration! If using GSuite as an IdP, considering deploying the [ssosync tool](https://github.com/awslabs/ssosync).
+      - The official AWS documentation for setting up JumpCloud with AWS IAM Identity Center is not accurate. Instead, please refer to the [JumpCloud official documentation](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
+    </Admonition>
+  </Step>
+
+  <Step>
+
+    ### <StepNumber/> AWS SAML
+
+    If deploying AWS SAML as an alternative to AWS SSO, you will need a separate configuration and metadata file. Again, please refer to the relevant linked guide.
+
+    - [GSuite](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/): Follow Steps 1 through 7. This document refers to Appstream, but the process will be the same for AWS.
+    - [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-saml-login-to-aws-from-office-365/)
+    - [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
+    - [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Requirements for Purchasing Domains with Route53
+
+    If you plan to use the `core-dns` account to register domains, make sure to add a credit card directly to that individual account. When the account is ready, please add a credit card to the `core-dns` account following the [AWS documentation](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-cc.html#Add-cc).
+  </Step>
+</Steps>
+
+## GitHub Actions
+
+### Self Hosted Github Runners on EKS
+
+If you are deploying the Actions Runner Controller solution for Self-Hosted Github Runners, please generate the required secrets following the
+[GitHub Action Runner Controller setup docs](/reference-architecture/setup/github-arc/#requirements).
+
+### Self Hosted Github Runners with Philips Labs (ECS)
+
+If you have chosen ECS as a platform, we recommend deploying Philips Labs GitHub Action Runners. Please read through the [Philips Labs GitHub Action Runners Setup Requirements](/reference-architecture/setup/philips-labs-github-runners/#requirements).
+
+In particular, you will need a new GitHub App including a Private Key, an App ID, and an App Installation ID. We recommend that you store these secrets in 1Password.
 
 ### Atmos Component Updater Requirements
 
@@ -29,86 +82,53 @@ If you plan to leverage it, you will need to create and install a GitHub App and
 
 <Steps>
   <Step>
-  ##### <StepNumber/> Create and install a GitHub App for Atmos
+    ### <StepNumber/> Create and install a GitHub App for Atmos
 
-  1. Create a new GitHub App
-  2. Name this new app whatever you prefer. For example, `Atmos Component Updater`.
-  3. List a Homepage URL of your choosing. This is required by GitHub, but you can use any URL. For example use our documentation page: `https://atmos.tools/integrations/github-actions/component-updater/`
-  4. (Optional) Add an icon for your new app (example provided below)
-  5. Assign only the following Repository permissions:
-      ```diff
-      + Contents: Read and write
-      + Pull Requests: Read and write
-      + Metadata: Read-only
-      ```
-  6. Generate a new private key [following the GitHub documentation](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps#generating-private-keys).
-  7. Save both the App ID and the new private key in 1Password
+    1. Create a new GitHub App
+    2. Name this new app whatever you prefer. For example, `Atmos Component Updater`.
+    3. List a Homepage URL of your choosing. This is required by GitHub, but you can use any URL. For example use our documentation page: `https://atmos.tools/integrations/github-actions/component-updater/`
+    4. (Optional) Add an icon for your new app (example provided below)
+    5. Assign only the following Repository permissions:
+        ```diff
+        + Contents: Read and write
+        + Pull Requests: Read and write
+        + Metadata: Read-only
+        ```
+    6. Generate a new private key [following the GitHub documentation](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps#generating-private-keys).
+    7. Save both the App ID and the new private key in 1Password
 
-  <details>
-    <summary>Feel free to download and use our Atmos icon with your GitHub App!</summary>
+    <details>
+      <summary>Feel free to download and use our Atmos icon with your GitHub App!</summary>
 
-    ![App Icon](/assets/refarch/github-app-icon.png)
+      ![App Icon](/assets/refarch/github-app-icon.png)
 
-  </details>
-
-
-  </Step>
-
-
-  <Step>
-  ##### <StepNumber/> Allow GitHub Actions to create and approve pull requests
-
-  1. Go to `https://github.com/organizations/YOUR_ORG/settings/actions`
-  2. Check "Allow GitHub Actions to create and approve pull requests"
+    </details>
   </Step>
 
   <Step>
-  ##### <StepNumber/> Create `atmos` GitHub Environment
+    ### <StepNumber/> Allow GitHub Actions to create and approve pull requests
 
-  We recommend creating a new GitHub environment for Atmos. With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the GitHub UI.
+    1. Go to `https://github.com/organizations/YOUR_ORG/settings/actions`
+    2. Check "Allow GitHub Actions to create and approve pull requests"
+  </Step>
 
-  1. Open "Settings" for your repository
-  1. Navigate to "Environments"
-  1. Select "New environment"
-  1. Name the new environment, "atmos".
-  1. In the drop-down next to "Deployment branches and tags", select "Protected branches only"
-  1. In "Environment secrets", create the two required secrets for App ID and App Private Key created above and in 1Password. This will be accessed from GitHub Actions with `secrets.ATMOS_APP_ID` and `secrets.ATMOS_PRIVATE_KEY` respectively.
+  <Step>
+    ### <StepNumber/> Create `atmos` GitHub Environment
+
+    We recommend creating a new GitHub environment for Atmos. With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the GitHub UI.
+
+    1. Open "Settings" for your repository
+    1. Navigate to "Environments"
+    1. Select "New environment"
+    1. Name the new environment, "atmos".
+    1. In the drop-down next to "Deployment branches and tags", select "Protected branches only"
+    1. In "Environment secrets", create the two required secrets for App ID and App Private Key created above and in 1Password. This will be accessed from GitHub Actions with `secrets.ATMOS_APP_ID` and `secrets.ATMOS_PRIVATE_KEY` respectively.
   </Step>
 </Steps>
 
-### AWS IAM Identity Center (AWS SSO)
+## Optional Integrations
 
-In order connect your chosen IdP to AWS IAM Identity Center (AWS SSO), we will to configure your provider and create a metadata file. Please follow the relevant linked guide and follow the steps for the Identity Provider.
-
-- [GSuite](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/)
-- [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-office-365-aws-sso/)
-- [JumpCloud](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
-- [Other AWS supported IdPs: Azure AD, CyberArk, Okta, OneLogin, Ping Identity](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html)
-
-:::caution
-
-GSuite does not automatically sync Users and Groups with AWS Identity Center without additional configuration! If using GSuite as an IdP, considering deploying the [ssosync tool](https://github.com/awslabs/ssosync).
-
-:::
-
-:::tip Integrating JumpCloud with AWS IAM Identity Center
-
-The official AWS documentation for setting up JumpCloud with AWS IAM Identity Center is not accurate. Instead, please refer to the [JumpCloud official documentation](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
-
-:::
-
-### AWS SAML
-
-If deploying AWS SAML as an alternative to AWS SSO, you will need a separate configuration and metadata file. Again, please refer to the relevant linked guide.
-
-- [GSuite](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/): Follow Steps 1 through 7. This document refers to Appstream, but the process will be the same for AWS.
-- [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-saml-login-to-aws-from-office-365/)
-- [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
-- [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
-
-### Requirements for Purchasing Domains
-
-If you plan to use the `core-dns` account to register domains, make sure to add a credit card directly to that individual account. When the account is ready, please add a credit card to the `core-dns` account following the [AWS documentation](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-cc.html#Add-cc).
+The reference architecture supports multiple integrations. Depending on your requirements, you may need a few subscriptions set up. Please subscribe only to the services you plan to use!
 
 ### Spacelift
 
@@ -121,14 +141,3 @@ Sign up for Datadog following the [How to Sign Up for Datadog?](/reference-archi
 ### OpsGenie
 
 Sign up for OpsGenie following the [How to Sign Up for OpsGenie?](/reference-architecture/how-to-guides/tutorials/how-to-implement-incident-management-with-opsgenie/how-to-sign-up-for-opsgenie/) documentation.
-
-### Self Hosted Github Runners on EKS
-
-If you are deploying the Actions Runner Controller solution for Self-Hosted Github Runners, please generate the required secrets following the
-[GitHub Action Runner Controller setup docs](/reference-architecture/setup/github-arc/#requirements).
-
-### Self Hosted Github Runners with Philips Labs (ECS)
-
-If you have chosen ECS as a platform, we recommend deploying Philips Labs GitHub Action Runners. Please read through the [Philips Labs GitHub Action Runners Setup Requirements](/reference-architecture/setup/philips-labs-github-runners/#requirements).
-
-In particular, you will need a new GitHub App including a Private Key, an App ID, and an App Installation ID. We recommend that you store these secrets in 1Password.

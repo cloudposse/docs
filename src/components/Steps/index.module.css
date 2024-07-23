@@ -48,6 +48,7 @@ html[data-theme='dark'] .steps li::before {
   list-style: none; /* Remove default list styling */
   padding-left: 0; /* Remove default padding */
   border-left: 1px solid #ccc;
+  margin-left: 1em;
 }
 
 :global(.content) .steps ol, :global(.content) .steps > ul {
@@ -76,4 +77,9 @@ html[data-theme='dark'] :global(.content) .steps li::before {
 .steps ol > li img, .steps > ul > li img {
   margin: 2em;
   max-width: 100%;
+}
+
+.steps > h3 {
+  margin-bottom: 2em;
+  margin-top: 3em;
 }
