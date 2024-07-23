@@ -52,3 +52,9 @@ html[data-theme='dark'] .step h3 > i, html[data-theme='dark'] .step h2 > i  {
   display: flex;
   justify-content: center;
 }
+
+.step .content blockquote {
+    background: #4449505e;
+    border-radius: 10px;
+    padding: 1em;
+}
