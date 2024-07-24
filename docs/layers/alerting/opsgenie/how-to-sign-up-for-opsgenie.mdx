@@ -55,17 +55,19 @@ Or...
 ```
 External alert → Opsgenie alert → Opsgenie incident → Team notification → Escalation
 ```
+
 They don’t allow to use of Opsgenie services to create incidents and notify teams in the Standard plan. No `Opsgenie business service` involved, which is
 
 > Opsgenie enables you to map alerts to the business services they impact and have a clear understanding of which teams need to respond and who needs to be kept up to date on the progress towards resolution. Disparate teams are notified simultaneously and presented with the tools they need to collaborate during resolution.
 
 ## Troubleshooting
 
-<img src="/assets/refarch/image-20211124-035525.png" height="1102" width="1188" /><br/>
-
 ### Error: `You do not have the right to use Service API, Took: 0.002000, RequestId: f4550375-efa7-49bc-ac04-3a0d6709f7d1`
+
 This is related to [https://community.atlassian.com/t5/Opsgenie-questions/Using-Incident-API-trial-account/qaq-p/1455015](https://community.atlassian.com/t5/Opsgenie-questions/Using-Incident-API-trial-account/qaq-p/1455015) for the [https://docs.opsgenie.com/docs/service-api](https://docs.opsgenie.com/docs/service-api). Upgrade the Opsgenie trial if your plan is currently on a trial.
 
 > Service API is only available to Standard and Enterprise plans
+
+<img src="/assets/refarch/image-20211124-035525.png" /><br/>
 
 

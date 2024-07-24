@@ -31,43 +31,44 @@ These components are expected to be used together to provide fine-grained role d
 <Steps>
 
   <Step>
-  ### <StepNumber/> Deploy Identity Components
-  Deploy these components across all accounts by running the following command. Note that if any users or groups are
-  missing, `aws-sso` will fail.
+    ### <StepNumber/> Deploy Identity Components
+    Deploy these components across all accounts by running the following command. Note that if any users or groups are
+    missing, `aws-sso` will fail.
 
-  ```bash
-  atmos workflow deploy/all -f identity
-  ```
+    ```bash
+    atmos workflow deploy/all -f identity
+    ```
 
-  <Note title="IMPORTANT">Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.</Note>
+    <Note title="IMPORTANT">Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.</Note>
   </Step>
 
   <Step>
-  ### <StepNumber/> Reconfigure Terraform State Backend
-  Apply the changes from the previous statep to the Terraform State Backend by running the following:
+    ### <StepNumber/> Reconfigure Terraform State Backend
+    Apply the changes from the previous statep to the Terraform State Backend by running the following:
 
-  ```bash
-  atmos workflow deploy/tfstate -f baseline
-  ```
+    ```bash
+    atmos workflow deploy/tfstate -f baseline
+    ```
   </Step>
 
   <Step>
-  ### <StepNumber/>  Generate AWS Config
+    ### <StepNumber/>  Generate AWS Config
 
-  Once the identity components have been deployed, we will need to create local AWS configuration for these new roles and
-  profiles. Generate those files now by running the following command from within Geodesic.
+    Once the identity components have been deployed, we will need to create local AWS configuration for these new roles and
+    profiles. Generate those files now by running the following command from within Geodesic.
 
-  ```bash
-  atmos workflow update-aws-config -f identity
-  ```
+    ```bash
+    atmos workflow update-aws-config -f identity
+    ```
 
-  This will generate AWS configuration to the `rootfs` directory locally.
+    This will generate AWS configuration to the `rootfs` directory locally.
   </Step>
 
   <Step>
-  ### <StepNumber/> Apply Changes to Geodesic
-  In order to apply these updates to your Geodesic
-  image, exit the image and rerun `make all`.
+    ### <StepNumber/> Apply Changes to Geodesic
+
+    In order to apply these updates to your Geodesic
+    image, exit the image and rerun `make all`.
   </Step>
 </Steps>
 

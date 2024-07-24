@@ -18,10 +18,10 @@ identity. You can use this federated identity to connect directly to a given AWS
 ## Setting up IdP Metadata for SAML
 
 <Steps>
-- ### Export an Identity Provider (IdP) metadata file from the chosen provider.
-  You'll need to place this file inside the
-`aws-saml` component directory (`components/terraform/aws-saml/`) and commit this to version control. The filename
-should match the variable configured in `stacks/catalog/aws-saml.yaml`.
+  - ### Export an Identity Provider (IdP) metadata file from the chosen provider.
+    You'll need to place this file inside the
+  `aws-saml` component directory (`components/terraform/aws-saml/`) and commit this to version control. The filename
+  should match the variable configured in `stacks/catalog/aws-saml.yaml`.
 </Steps>
 
 The creation of metadata files will be different for each IdP. Here are some example setup references:

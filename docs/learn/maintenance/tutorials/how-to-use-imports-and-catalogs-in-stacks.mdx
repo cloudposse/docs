@@ -13,6 +13,7 @@ As infrastructure grows, we end up with hundreds or thousands of settings for co
 ## Solution
 
 :::tip
+
 Use the `import` together with the `catalog` convention to write DRY configurations you can re-use any number of times.
 
 :::
@@ -21,7 +22,7 @@ Using a component catalog, you can define the default values for all instances o
 
 It is also important to note that you can provide default values for multiple instances of a component in a single stack using the component inheritance pattern via the `component` attribute.
 
-```
+```yaml
 # stacks/catalog/s3/bucket.yaml
 components:
   terraform:
@@ -36,13 +37,14 @@ components:
 ```
 
 :::info
+
 The `import` works by deep merging all files in the order they are defined using the [Mergo](https://github.com/imdario/mergo) library.
 
 :::
 
 Then inside of a stack configuration (`uw2-dev` for example), we can `import` the `catalog/s3/bucket` component configuration into our stack and use the `s3-bucket` component defined therein.
 
-```
+```yaml
 # stacks/uw2-dev.yaml
 import:
   - catalog/s3/bucket

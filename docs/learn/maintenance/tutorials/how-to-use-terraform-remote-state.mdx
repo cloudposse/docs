@@ -17,6 +17,7 @@ To solve this, Terraform has the concept of “remote state” which can be acce
 Cloud Posse maintains a “remote state” module that is  💯  aware of all [Stacks](/fundamentals/stacks) and is, therefore, able to abstract all this complexity down to a simple module invocation. Using this module, it’s almost as convenient as using the native resources directly.
 
 :::tip
+
 Use the Cloud Posse `remote-state` module to seamlessly access the remote state of any component from any stack in any region or account.
 
 :::
@@ -34,7 +35,7 @@ Our convention is to put all usage of `remote-state` into a single file called `
 
 :::
 
-```
+```hcl
 # remote-state.tf
 module "vpc" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
@@ -56,7 +57,7 @@ When upstream components are updated, dependent components should be replanned. 
 
 The backend type (`s3`) and backend configuration for the components are defined in the stack YAML config files. A global backend configuration is typically defined in the `globals.yaml` file and then overridden in each components' catalog configuration to define the `workspace_key_prefix`.
 
-```
+```yaml
 # globals.yaml
 terraform:
   backend_type: s3 # s3, remote, static, vault, etc.

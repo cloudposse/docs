@@ -32,27 +32,27 @@ The content in this ADR may be out-of-date and needing an update. For questions,
 
 ### Option 1: `globals.yaml` (what we have today)
 
-:minus: easily confused with stacks; globals are intended to only be imported
+:heavy_minus_sign: easily confused with stacks; globals are intended to only be imported
 
 ### Option 2: `_globals.yaml`
 
-:plus: disambiguate easily between globals (or imports) from stacks using a `_` prefix convention
+:heavy_plus_sign: disambiguate easily between globals (or imports) from stacks using a `_` prefix convention
 
-:minus: doesn’t solve the filename disambiguation
+:heavy_minus_sign: doesn’t solve the filename disambiguation
 
 ### Option 3: `$subpath1-$subpath2-globals.yaml` (e.g. `eg-prod-globals.yaml`) - or something like it
 
-:minus: adds to the naming convention overhead. Moving files around requires renaming files.
+:heavy_minus_sign: adds to the naming convention overhead. Moving files around requires renaming files.
 
 ### Option 4: Find alternatives for IDE
 
-:plus: Enable sorting files first over folders, and using `_globals` will place them at the top
+:heavy_plus_sign: Enable sorting files first over folders, and using `_globals` will place them at the top
 
-:plus: Enable the path depth
+:heavy_plus_sign: Enable the path depth
 
-:plus: Rainbow plugin
+:heavy_plus_sign: Rainbow plugin
 
-:plus: Ship a `.vimrc`, `.VSCcode`, `.emacs`, etc file as a baseline
+:heavy_plus_sign: Ship a `.vimrc`, `.VSCcode`, `.emacs`, etc file as a baseline
 
 ## Decision
 

@@ -118,20 +118,21 @@ The following steps are required only for initial setup.
     ### <StepNumber/> (Optional) Pin the new `acme-identity` IAM Role Chained Session
 
     This makes it easier to filter to the primary session we will be used for connecting to AWS
-
-    - Go to All Sessions
-    - Find the new IAM Role Chained Session for `acme-identity` or whatever value you used for `Session Alias`
-    - Click the dots on the IAM Role Chained Session
-    - Select Pin Session
+    <Steps>
+      - Go to All Sessions
+      - Find the new IAM Role Chained Session for `acme-identity` or whatever value you used for `Session Alias`
+      - Click the dots on the IAM Role Chained Session
+      - Select Pin Session
+    </Steps>
   </Step>
 
   <Step>
     ### <StepNumber/> Connect to `acme-identity` IAM Role Chained Session
-
-    - Select the Session
-    - Click Start Session
-
-    ![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+    <Steps>
+      - Select the Session
+      - Click Start Session
+        ![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+    </Steps>
   </Step>
 
   <Step>
@@ -156,16 +157,16 @@ The following steps are required only for initial setup.
 After initial setup, quickly connect to AWS with the following steps:
 
 <Steps>
-1. Launch Leapp
-2. Connect to `acme-identity` IAM Role Chained Session
-    ![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
-3. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
+  1. Launch Leapp
+  2. Connect to `acme-identity` IAM Role Chained Session
+      ![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+  3. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
 
-    ```console
-    make run
-    ```
-4. Done!<br/>
-   ![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)
+      ```console
+      make run
+      ```
+  4. Done!<br/>
+    ![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)
 </Steps>
 
 

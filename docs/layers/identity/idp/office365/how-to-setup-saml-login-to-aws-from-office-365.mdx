@@ -16,23 +16,23 @@ Azure Devops has **Enterprise Apps** that are used to sign into things from your
 ### AWS SAML
 
 <Steps>
-1. Under [https://aad.portal.azure.com/#allservices/category/All](https://aad.portal.azure.com/#allservices/category/All)  go to **Enterprise Applications** <img src="/assets/refarch/screen-shot-2023-01-13-at-8.33.13-am.png" /><br/>
+  1. Under [https://aad.portal.azure.com/#allservices/category/All](https://aad.portal.azure.com/#allservices/category/All)  go to **Enterprise Applications** <img src="/assets/refarch/screen-shot-2023-01-13-at-8.33.13-am.png" /><br/>
 
-2. Click **New Application**
+  2. Click **New Application**
 
-3. Choose the right application, for SAML it’s **AWS Single-Account Access** <img src="/assets/refarch/screen-shot-2023-01-13-at-8.36.16-am.png" /><br/>
+  3. Choose the right application, for SAML it’s **AWS Single-Account Access** <img src="/assets/refarch/screen-shot-2023-01-13-at-8.36.16-am.png" /><br/>
 
-4. Click **Create**, default options are fine
+  4. Click **Create**, default options are fine
 
-5. On the Left Panel Click **Single sign-on**
+  5. On the Left Panel Click **Single sign-on**
 
-6. Choose **SAML** as the Select a single sign-on method.
+  6. Choose **SAML** as the Select a single sign-on method.
 
-7. You may be prompted to change or use the defaults, if you have many aws single account logins you will need to modify the defaults.
+  7. You may be prompted to change or use the defaults, if you have many aws single account logins you will need to modify the defaults.
 
-8. Ensure the Identifier(Entity ID) is set to something valid (Should be `https://signin.aws.amazon.com/saml` optionally add a `#identifier` <img src="/assets/refarch/screen-shot-2023-01-18-at-11.05.51-am.png" /><br/>
+  8. Ensure the Identifier(Entity ID) is set to something valid (Should be `https://signin.aws.amazon.com/saml` optionally add a `#identifier` <img src="/assets/refarch/screen-shot-2023-01-18-at-11.05.51-am.png" /><br/>
 
-9. Download the XML File by Pressing the Button on **Step** **5** **Setup &lt;App Name&gt;**. This should download an XML File, please send this to the CloudPosse Team, this will be placed in your `aws-saml` component to add your login.
+  9. Download the XML File by Pressing the Button on **Step** **5** **Setup &lt;App Name&gt;**. This should download an XML File, please send this to the CloudPosse Team, this will be placed in your `aws-saml` component to add your login.
 </Steps>
 
 ### Setting up Login Role
