@@ -67,7 +67,8 @@ runs:
     - name: Install terraform-docs
       shell: bash
       run: |
-        go install github.com/terraform-docs/terraform-docs@latest
+        export GO111MODULE=on
+        go install github.com/terraform-docs/terraform-docs@v0.18.0
         echo "$HOME/go/bin" >> $GITHUB_PATH
 
     - name: "Render Documentation for Terraform Components"
