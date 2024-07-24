@@ -28,27 +28,29 @@ Learn how to create a GitHub repository to host infrastructure tools and configu
     ## <StepNumber/> Setup basic repository settings
 
     We recommend the following GitHub repository settings.
-
-    1. Under "Features", ensure "Issues" are enabled. We will use Issues with Atmos GitHub Actions for Terraform.
-    1. Under "Pull Requests", disable both "Allow merge commits" and "Allow rebase merging". We do this to create a clean
-      commit history. Otherwise, the git history on the main branch will contain individual commits from each feature
-      branch, which will result in a history which may contain _"dirty"_ commits.
-    1. Under "Pull Requests", check "Always suggest updating pull request branches"
-    1. Under "Pull Requests", check "Automatically delete head branches"
+    <Steps>
+      1. Under "Features", ensure "Issues" are enabled. We will use Issues with Atmos GitHub Actions for Terraform.
+      1. Under "Pull Requests", disable both "Allow merge commits" and "Allow rebase merging". We do this to create a clean
+        commit history. Otherwise, the git history on the main branch will contain individual commits from each feature
+        branch, which will result in a history which may contain _"dirty"_ commits.
+      1. Under "Pull Requests", check "Always suggest updating pull request branches"
+      1. Under "Pull Requests", check "Automatically delete head branches"
+    </Steps>
   </Step>
 
   <Step>
     ## <StepNumber/> Enable branch protection
-
-    1. Under branches, select "Add branch ruleset"
-    1. Name this ruleset whatever you'd like. For example, "Protected Branches"
-    1. Under "Bypass list", add your admin team. This team is able to skip the rules were are about to add, so this the
-      bypass list should be sparingly granted
-    1. Under "Target branches", select "Add target" and "Include all default branches"
-    1. Then check the following rules:
-        - [x] Restrict deletions
-        - [x] Require a pull request before merging
-        - [x] Block force pushes
+    <Steps>
+      1. Under branches, select "Add branch ruleset"
+      1. Name this ruleset whatever you'd like. For example, "Protected Branches"
+      1. Under "Bypass list", add your admin team. This team is able to skip the rules were are about to add, so this the
+        bypass list should be sparingly granted
+      1. Under "Target branches", select "Add target" and "Include all default branches"
+      1. Then check the following rules:
+          - [x] Restrict deletions
+          - [x] Require a pull request before merging
+          - [x] Block force pushes
+    </Steps>
   </Step>
 
   <Step>

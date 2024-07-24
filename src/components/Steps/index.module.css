@@ -2,6 +2,10 @@
   margin-left: 1em;
 }
 
+.steps h1 {
+  margin-top: 2em;
+}
+
 .steps li::before {
   content: counter(list-counter);
   position: absolute;
@@ -72,7 +76,6 @@ html[data-theme='dark'] :global(.content) .steps li::before {
   padding-left: 2em; /* Adjust space for the custom counter */
   margin-bottom: 1em; /* Space between list items */
 }
-
 
 .steps ol > li img, .steps > ul > li img {
   padding: 2em;

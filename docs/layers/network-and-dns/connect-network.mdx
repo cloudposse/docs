@@ -5,6 +5,7 @@ sidebar_position: 10
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
 
 ## Deployment
 
@@ -16,9 +17,9 @@ atmos workflow deploy/tgw -f network
 
 ## Known Issues
 
-Please NOTE! At this time you will need to make sure that all EKS VPCs are commented out in the TGW catalog. This is
-because the components currently have a race condition requiring EKS clusters to exist before the TGW can be
-provisioned. This will be fixed in the future, but for now comment out the cluster variable until clusters are created.
+<Note>
+  At this time you will need to make sure that all EKS VPCs are commented out in the TGW catalog. This is because the components currently have a race condition requiring EKS clusters to exist before the TGW can be provisioned. This will be fixed in the future, but for now comment out the cluster variable until clusters are created.
+</Note>
 
 It's worth noting that propagation can fail during provisioning of Transit Gateway spokes. You'll likely see an error
 like this:

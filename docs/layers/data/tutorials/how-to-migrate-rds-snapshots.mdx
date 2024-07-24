@@ -85,43 +85,41 @@ When opening Geodesic, you should see the following with a "green" checkmark:
 
 ### Connect to `legacy-prod`
 
-1. Open Leapp
-2. Create new Integration for the Legacy AWS Organization
+<Steps>
+  1. Open Leapp
+  2. Create new Integration for the Legacy AWS Organization
+      ```yaml
+      Type: AWS Single Sign-On
+      Alias: Legacy
+      Portal URL: https://<LEGACY-ORGANIZATION>.awsapps.com/start/
+      Region: us-west-2
+      Auth. method: In-browser # optional
+      ```
+  3. Log into the new Integration and accept the pop up windows
+  4. Find the `legacy-prod` - `AWSAdministratorAccess` Session or whichever Administrator Permission Set you have access to assume.
+  5. Select the "dots" on the right and click "Change" > "Named Profile"
+  6. Enter `legacy-prod-admin`
+  7. Start the session. You should see `legacy-prod-admin` under "Named Profile"
+  8. Open Geodesic shell
+  9. Assume the new profile:
+      ```bash
+      assume-role legacy-prod-admin
+      ```
 
-```yaml
-Type: AWS Single Sign-On
-Alias: Legacy
-Portal URL: https://<LEGACY-ORGANIZATION>.awsapps.com/start/
-Region: us-west-2
-Auth. method: In-browser # optional
-```
+      You should now be connected to the Legacy Prod account:
 
-3. Log into the new Integration and accept the pop up windows
-4. Find the `legacy-prod` - `AWSAdministratorAccess` Session or whichever Administrator Permission Set you have access
-   to assume.
-5. Select the "dots" on the right and click "Change" > "Named Profile"
-6. Enter `legacy-prod-admin`
-7. Start the session. You should see `legacy-prod-admin` under "Named Profile"
-8. Open Geodesic shell
-9. Assume the new profile:
-
-```bash
-assume-role legacy-prod-admin
-```
-
-You should now be connected to the Legacy Prod account:
-
-```bash
- ✗ . [none] (HOST) infrastructure ⨠ assume-role legacy-prod-admin
-* Found SSH agent config
- ⧉  acme
- √ : [legacy-prod-admin] (HOST) infrastructure ⨠ aws sts get-caller-identity
-{
-    "UserId": "AROXXXXXXXXXXXXXXXXXX:daniel@cloudposse.com",
-    "Account": "111111111111",
-    "Arn": "arn:aws:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_40xxxxxxxxxxxxxx/daniel@cloudposse.com"
-}
-```
+      ```bash
+      ✗ . [none] (HOST) infrastructure ⨠ assume-role legacy-prod-admin
+      * Found SSH agent config
+      ⧉  acme
+      √ : [legacy-prod-admin] (HOST) infrastructure ⨠ aws sts get-caller-identity
+      {
+          "UserId": "AROXXXXXXXXXXXXXXXXXX:daniel@cloudposse.com",
+          "Account": "111111111111",
+          "Arn": "arn:aws:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_40xxxxxxxxxxxxxx/daniel@cloudposse.com"
+      }
+      ```
+</Steps>
 
 ### Apply Initial Terraform
 

@@ -10,19 +10,19 @@ export default function HomeCallouts() {
             title: 'Getting Started',
             subtitle: 'Start with getting familiar with the geodesic, atmos and other tools',
             urlText: 'Get Started',
-            url: useBaseUrl('/intro/'),
+            url: useBaseUrl('/learn'),
         },
         {
             title: 'Start Building',
             subtitle: 'Use our reference architecture to build your own infrastructure',
             urlText: 'Start Building',
-            url: useBaseUrl('/fundamentals/building-blocks/'),
+            url: useBaseUrl('/layers/foundation'),
         },
         {
             title: 'Maintenance',
-            subtitle: 'Lessons on how to utilize SweetOps to implement a project',
+            subtitle: 'Stay up to date with the latest changes and updates',
             urlText: 'Get Started With Our Tools',
-            url: useBaseUrl('/category/tutorials/'),
+            url: useBaseUrl('/learn/maintenance/'),
         },
         {
             title: 'Support',

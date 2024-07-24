@@ -15,8 +15,8 @@ const customCssFiles = fs.readdirSync(cssDirectory)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'The Cloud Posse Developer Hub',
-  tagline: 'Welcome to the Cloud Posse Reference Architecture documentation portal. You\'ll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let\'s jump right in!',
+  title: 'The Cloud Posse Reference Architecture',
+  tagline: 'The open source framework for Terraform, with turnkey architectures for AWS, Datadog & GitHub Actions to get up and running quickly.',
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,

@@ -5,6 +5,9 @@ sidebar_position: 10
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
 
 ## Quick Start
 
@@ -21,63 +24,81 @@ In order to deploy ECS, Networking must be fully deployed and functional. In par
 
 All deployment steps below assume that the environment has been successfully set up with the following steps.
 
-1. Sign into AWS via Leapp
-1. Connect to the VPN
-1. Open Geodesic
+<Steps>
+  1. Sign into AWS via Leapp
+  1. Connect to the VPN
+  1. Open Geodesic
+</Steps>
 
-## How To
+<Steps>
+  # Steps
 
-### Vendor
+  <Step>
+    ## <StepNumber/> Vendor Components
 
-Vendor these components with the included Atmos Workflows.
+    Vendor these components with the included Atmos Workflows.
 
-```bash
-atmos workflow vendor -f ecs
-```
+    ```bash
+    atmos workflow vendor -f ecs
+    ```
 
-or for each component:
+    or for each component:
 
-```bash
-atmos vendor pull --component ecs
-atmos vendor pull --component ecs-service
-```
+    ```bash
+    atmos vendor pull --component ecs
+    atmos vendor pull --component ecs-service
+    ```
 
-### Deploy
+  </Step>
 
-ECS provisioning includes deploying certificate requirements, the default ECS cluster, and Echo Server. Echo Server is a basic service used to validate a successful cluster deployed and is an example of an ECS service. Find ECS Service definitions under `catalog/stacks/ecs-services`.
+  <Step>
+    ## <StepNumber/> Deploy ECS
 
-To provision each cluster, these components need to be deployed in order. The included Atmos Workflows will carry out this deployment in the proper order, but any of these step can be run outside of a workflow if desired.
+    ECS provisioning includes deploying certificate requirements, the default ECS cluster, and Echo Server. Echo Server is a basic service used to validate a successful cluster deployed and is an example of an ECS service. Find ECS Service definitions under `catalog/stacks/ecs-services`.
 
-See the ecs workflow (`stacks/workflows/ecs.yaml`) for each individual deployment step.
+    To provision each cluster, these components need to be deployed in order. The included Atmos Workflows will carry out this deployment in the proper order, but any of these step can be run outside of a workflow if desired.
 
-#### Deploy ACM Certificates
+    See the ecs workflow (`stacks/workflows/ecs.yaml`) for each individual deployment step.
+  </Step>
 
-First deploy all required ACM certificates for each ECS cluster. These certificates validate the given service domain. You can deploy these certificates before associating the given Route 53 Hosted Zone with the purchased domain in your chosen Domain Registrar, but the certificate will not be ISSUED until the registered domain and Hosted Zone are connected.
+  <Step>
+    ## <StepNumber/> Deploy ACM Certificates
 
-Run the following Atmos Workflow to deploy every required ACM certificate for ECS.
+    First deploy all required ACM certificates for each ECS cluster. These certificates validate the given service domain. You can deploy these certificates before associating the given Route 53 Hosted Zone with the purchased domain in your chosen Domain Registrar, but the certificate will not be ISSUED until the registered domain and Hosted Zone are connected.
 
-```bash
-atmos workflow deploy/ecs-acm -f ecs
-```
+    Run the following Atmos Workflow to deploy every required ACM certificate for ECS.
 
-#### Connect to the VPN
+    ```bash
+    atmos workflow deploy/ecs-acm -f ecs
+    ```
 
-In order to complete the following steps, connect to the VPN now. For more on connecting to the VPN, see
-[`ec2-client-vpn`](https://docs.cloudposse.com/components/library/aws/ec2-client-vpn/#testing).
+  </Step>
 
-The OVPN configuration for your VPN can be found in the output of the `ecs-client-vpn` component. For example,
+  <Step>
+    ## <StepNumber/> Connect to the VPN
 
-```bash
-atmos terraform output ec2-client-vpn -s core-use1-network
-```
+    In order to complete the following steps, connect to the VPN now. For more on connecting to the VPN, see
+    [`ec2-client-vpn`](https://docs.cloudposse.com/components/library/aws/ec2-client-vpn/#testing).
 
-#### Deploy All Clusters
+    The OVPN configuration for your VPN can be found in the output of the `ecs-client-vpn` component. For example,
 
-Run the following Atmos Workflow to deploy every ECS cluster. This workflow will deploy every required platform cluster.
+    ```bash
+    atmos terraform output ec2-client-vpn -s core-use1-network
+    ```
 
-```bash
-atmos workflow deploy/clusters -f ecs
-```
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Deploy All Clusters
+
+    Run the following Atmos Workflow to deploy every ECS cluster. This workflow will deploy every required platform cluster.
+
+    ```bash
+    atmos workflow deploy/clusters -f ecs
+    ```
+
+  </Step>
+</Steps>
 
 # Related Topics
 

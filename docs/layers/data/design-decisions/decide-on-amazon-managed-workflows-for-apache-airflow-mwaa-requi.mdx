@@ -1,17 +1,18 @@
 ---
 title: "Decide on Amazon Managed Workflows for Apache Airflow (MWAA) Requirements"
+sidebar_label: "Amazon Managed Workflows for Apache Airflow (MWAA) Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-491
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Amazon Managed Workflows for Apache Airflow (MWAA) Requirements
-
 ## Problem
+
 Requirements for MWAA environments deployed to each active compute environment must be outlined before an MWAA environment is configured and deployed. Customers will likely require integrations with other systems like Redshift or S3. There’s no generic way of handling all these cases, so each will need to be handled separately. Each case may require additional resources like IAM roles to be provisioned, which we cannot anticipate and will rely entirely on information supplied by the customer.
 
 ## Context
+
 Amazon MWAA environments will be used by applications that use Apache Airflow.
 
 ## Considered Options

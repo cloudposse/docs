@@ -49,27 +49,26 @@ import TaskList from '@site/src/components/TaskList';
 
         We typically ship a `Brewfile` with a list of local dependencies. Make sure you have [Homebrew](https://brew.sh) and use
         `brew bundle` to install dependencies from the `Brewfile`
+        <Steps>
+          1. First, make sure you’ve [cloned the `infrastructure` repository](/layers/foundation/create-repository) for your organization.
+          2. Just run `brew bundle install` to install all localhost dependencies. Here's an example `Brewfile`:
 
-        1. First, make sure you’ve [cloned the `infrastructure` repository](/layers/foundation/create-repository) for your organization.
-        2. Just run `brew bundle install` to install all localhost dependencies. Here's an example `Brewfile`:
+              ```shell
+              brew "asdf"
+              brew "gawk"
+              brew "coreutils"
+              brew "pre-commit"
+              brew "terraform-docs"
+              brew "tflint"
 
-            ```shell
-            brew "asdf"
-            brew "gawk"
-            brew "coreutils"
-            brew "pre-commit"
-            brew "terraform-docs"
-            brew "tflint"
+              # Hedge against linuxbrew, `aws-vault` is a cask on MacOS
+              # but a regular formula in linuxbrew.
+              cask "aws-vault" if OS.mac?
+              brew "aws-vault" unless OS.mac?
+              ```
 
-            # Hedge against linuxbrew, `aws-vault` is a cask on MacOS
-            # but a regular formula in linuxbrew.
-            cask "aws-vault" if OS.mac?
-            brew "aws-vault" unless OS.mac?
-            ```
-
-        Next, you'll need docker set up. There are a variety of ways to do this.
-
-        Review the [Docker for Desktop](https://docs.docker.com/desktop/install/mac-install/) installation guide for macOS.
+          3. Next, you'll need docker set up. There are a variety of ways to do this. Review the [Docker for Desktop](https://docs.docker.com/desktop/install/mac-install/) installation guide for macOS.
+        </Steps>
       </TabItem>
 
       <TabItem value="windows" label="Windows">
@@ -77,30 +76,36 @@ import TaskList from '@site/src/components/TaskList';
 
         ##### Setting up containers on Windows
 
-        1. [Install Docker Desktop](https://docs.docker.com/docker-for-windows/install/) or install
-          [Rancher Desktop](https://rancherdesktop.io/) and configure it to use `docker` instead of `nerdctl`.
-        1. If you picked Docker Desktop, follow [instructions on WSL setup](https://docs.docker.com/desktop/wsl/), otherwise
-          follow [Rancher's setup docs](https://docs.rancherdesktop.io/ui/preferences/wsl).
+        <Steps>
+          1. [Install Docker Desktop](https://docs.docker.com/docker-for-windows/install/) or install
+            [Rancher Desktop](https://rancherdesktop.io/) and configure it to use `docker` instead of `nerdctl`.
+          1. If you picked Docker Desktop, follow [instructions on WSL setup](https://docs.docker.com/desktop/wsl/), otherwise
+            follow [Rancher's setup docs](https://docs.rancherdesktop.io/ui/preferences/wsl).
+        </Steps>
 
         ##### Using Ubuntu on Windows
 
-        1. First, [setup WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and then configure WSL to use version
-          2 by default with this command: `wsl --set-default-version 2`
-        1. [Install Ubuntu for Windows](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
-        1. [Install Windows terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)
-        1. Launch Ubuntu shell from Windows Terminal
-        1. [Add user to Docker](https://docs.docker.com/engine/install/linux-postinstall/)
-        1. If you chose to use Rancher, just install `docker`. If you chose to use Docker Desktop, you'll need to go into
-          settings and enable your Ubuntu distro. Once applied, you'll see `docker` available in your Ubuntu shell PATH.
+        <Steps>
+          1. First, [setup WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and then configure WSL to use version
+            2 by default with this command: `wsl --set-default-version 2`
+          1. [Install Ubuntu for Windows](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
+          1. [Install Windows terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)
+          1. Launch Ubuntu shell from Windows Terminal
+          1. [Add user to Docker](https://docs.docker.com/engine/install/linux-postinstall/)
+          1. If you chose to use Rancher, just install `docker`. If you chose to use Docker Desktop, you'll need to go into
+            settings and enable your Ubuntu distro. Once applied, you'll see `docker` available in your Ubuntu shell `PATH`.
+        </Steps>
 
         ##### Running Geodesic on Windows
 
-        1. You'll need an editor that supports WSL2. [VSCode](https://code.visualstudio.com/) and most JetBrains IDEs support
-          WSL2 using remote development plugins.
-        1. Clone this repo into your WSL2 environment
-        1. Install `curl` and `build-essential` with `apt-get`
-        1. Launch your editor's remote development mode and open the repo
-        1. You should now be able to run `make all` and have it build the container and launch a shell inside it
+        <Steps>
+          1. You'll need an editor that supports WSL2. [VSCode](https://code.visualstudio.com/) and most JetBrains IDEs support
+            WSL2 using remote development plugins.
+          1. Clone this repo into your WSL2 environment
+          1. Install `curl` and `build-essential` with `apt-get`
+          1. Launch your editor's remote development mode and open the repo
+          1. You should now be able to run `make all` and have it build the container and launch a shell inside it
+        </Steps>
       </TabItem>
 
       <TabItem value="linux" label="Linux">

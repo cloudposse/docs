@@ -15,7 +15,7 @@ div > .step:first-child {
 }
 
 .step .content > ul, .step .content > ol, .step .tabs-container ol {
-    padding-left: 2.5em;
+    /* padding-left: 2.5em;*/
     border-left: none;
 }
 
