@@ -61,7 +61,6 @@ runs:
 
     - name: "Install terraform-docs"
       uses: lablabs/setup-terraform-docs@v1
-      name: Setup Terraform docs
       with:
         terraform_docs_version: v0.18.0
 
