@@ -1,63 +1,65 @@
 ---
-title: Datadog
-sidebar_label: Datadog
+title: Setup Datadog
+sidebar_label: Setup
+sidebar_position: 1
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Admonition from '@theme/Admonition';
 
 You need to set up monitoring for all of your newly deployed accounts.
-
-## Quick Start
 
 Datadog setup can get started after the accounts have been provisioned, though it won't be incredibly useful until your
 plat is in place, usually EKS or ECS.
 
-### Initializing Datadog
+<Steps>
+  <Step>
+    ## <StepNumber/> Prepare Datadog
 
-You'll need a datadog account and to generate an app key and api key for that datadog account and place them in SSM of
-your `auto` account. These should be placed under `datadog/default/datadog_app_key` and
-`datadog/default/datadog_api_key` respectively.
+    You'll need a datadog account and to generate an app key and api key for that datadog account and place them in SSM of
+    your `auto` account. These should be placed under `datadog/default/datadog_app_key` and
+    `datadog/default/datadog_api_key` respectively.
 
-:::info
+    <Admonition type="info">
+      To generate these keys we recommend using a Datadog Service Account. This allows you to create a service account
+      with limited permissions to your Datadog account. This is useful for security and auditing purposes. This also allows
+      any admins to rotate the keys without having to go through the account owner.
+    </Admonition>
+  </Step>
 
-To generate these keys we recommend using a Datadog Service Account. This allows you to create a service account
-with limited permissions to your Datadog account. This is useful for security and auditing purposes. This also allows
-any admins to rotate the keys without having to go through the account owner.
+  <Step>
+    ## <StepNumber/> Creating a Datadog Service Account
 
-:::
-
-## Creating a Datadog Service Account
-
-1. Go to your Organizations settings page
-2. Click on the `Service Accounts` tab
-3. Click on `New Service Account`
-
-<img src="/assets/refarch/Datadog_CreateServiceAccount.png" style={{width: '300px'}}/><br/>
-
-4. Give the service account a name and an email address
-5. Give the service account the `Datadog Admin Role` (can be refined later)
-6. Click `Create Service Account`
-7. Click the created service account
-8. Under Application Keys, click `New Key`
-9. Give the Application Key a name (we recommend something like `terraform`) and click `Create Key`
-10. Copy the `Application Key` for later. This is your `datadog_app_key`
-
-<img src="/assets/refarch/Datadog_AddAppKey.png" style={{width: '300px'}}/><br/>
-
-11. Under Organization Settings, click `API Keys`
-12. Click `New Key`
-13. Give the API Key a name (we recommend something like `terraform`)
-
-<img src="/assets/refarch/Datadog_CreateAPIKey.png" style={{width: '300px'}}/><br/>
-
-14. Click `Create Key`
-15. Copy the API Key for later. This is your `datadog_api_key`
-
-<img src="/assets/refarch/Datadog_CopyApiKey.png" style={{width: '300px'}}/><br/>
+    <Steps>
+      1. Go to your Organizations settings page
+      2. Click on the `Service Accounts` tab
+      3. Click on `New Service Account`
+         <img src="/assets/refarch/Datadog_CreateServiceAccount.png" /><br/>
+      4. Give the service account a name and an email address
+      5. Give the service account the `Datadog Admin Role` (can be refined later)
+      6. Click `Create Service Account`
+      7. Click the created service account
+      8. Under Application Keys, click `New Key`
+      9. Give the Application Key a name (we recommend something like `terraform`) and click `Create Key`
+      10. Copy the `Application Key` for later. This is your `datadog_app_key`
+          <img src="/assets/refarch/Datadog_AddAppKey.png" /><br/>
+      11. Under Organization Settings, click `API Keys`
+      12. Click `New Key`
+      13. Give the API Key a name (we recommend something like `terraform`)
+          <img src="/assets/refarch/Datadog_CreateAPIKey.png" /><br/>
+      14. Click `Create Key`
+      15. Copy the API Key for later. This is your `datadog_api_key`
+          <img src="/assets/refarch/Datadog_CopyApiKey.png" /><br/>
+    </Steps>
+  </Step>
+</Steps>
 
 ## Short Version
 
-There are two core components to the datadog implementation
+There are two core components to the Datadog implementation
 
 1.  [**datadog-configuration**](https://docs.cloudposse.com/components/library/aws/datadog-configuration)
 
