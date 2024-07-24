@@ -60,9 +60,11 @@ runs:
         pip install -r scripts/docs-collator/requirements.txt
 
     - name: "Install terraform-docs"
-      uses: lablabs/setup-terraform-docs@v1
+      uses: jaxxstorm/action-install-gh-release@v1.12.0
       with:
-        terraform_docs_version: v0.18.0
+        repo: terraform-docs/terraform-docs
+        tag: v0.18.0
+        cache: enable
 
     - name: "Render Documentation for Terraform Components"
       shell: bash
