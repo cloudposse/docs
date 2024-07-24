@@ -4,16 +4,13 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
-# Access Control Architecture
+<Intro>
+This document describes the architecture and design concept of the access control system in the *current* Cloud Posse reference architecture, including the "Dynamic Terraform Roles" feature.
+</Intro>
 
-## Overview
-
-This document describes the architecture and design concept of the access
-control system in the *current* Cloud Posse reference architecture, including
-the "Dynamic Terraform Roles" feature. For information about earlier versions of
-the access control architecture and design,
-See [AWS Access Control Evolution](aws-access-control-evolution.md).
+For information about earlier versions of the access control architecture and design, See [AWS Access Control Evolution](/layers/identity/docs/aws-access-control-evolution).
 
 - A person's access to resources is controlled by IAM policies attached to IAM
   roles in AWS accounts.
@@ -122,12 +119,14 @@ resources that we want to keep restricted.
 Cloud Posse's reference architecture uses a number of accounts to separate out
 resources in this way. Here is a sample of the accounts we use:
 
-- `plat-prod` - Holds the production resources for company, the ones that
-  provide the company's services to its customers.
-- `plat-dev` - Holds the development resources for company, the ones that are
-  used to develop the company's services.
-- `core-audit` - Holds the logs and other resources that are used to audit the
-  other accounts.
+<dl>
+  <dt>plat-prod</dt>
+  <dd>Holds the production resources for the company, the ones that provide the company's services to its customers.</dd>
+  <dt>plat-dev</dt>
+  <dd>Holds the development resources for the company, the ones that are used to develop the company's services.</dd>
+  <dt>core-audit</dt>
+  <dd>Holds the logs and other resources that are used to audit the other accounts.</dd>
+</dl>
 
 Hopefully you can see how this separation allows us to give developers access to
 the resources they need, perhaps giving them full administrative access to
@@ -225,13 +224,15 @@ not being allowed to actually make changes).
 
 One way to do this is for a user named Sandy is:
 
-1. Configure your AWS Organization to use the AWS Identity Center (formerly AWS
-   SSO).
-2. Give Sandy access to Permission Sets in the target accounts with the desired
-   access.
-3. If you want Sandy to be able to run Terraform in the account, give that
-   Permission Set access to the Terraform state via the `tfstate-backend`
-   component.
+<Steps>
+  1. Configure your AWS Organization to use the AWS Identity Center (formerly AWS
+    SSO).
+  2. Give Sandy access to Permission Sets in the target accounts with the desired
+    access.
+  3. If you want Sandy to be able to run Terraform in the account, give that
+    Permission Set access to the Terraform state via the `tfstate-backend`
+    component.
+</Steps>
 
 ##### Option 2: Role chaining
 
@@ -260,14 +261,16 @@ manual role switching.
 
 The `developers` team, and Sandy's access to it, is implemented as follows:
 
-- Deploy the `aws-saml` component to the `core-identity` account.
-- Create the `developers` team in `core-identity` using the `aws-teams`
-  component, and set `aws_saml_login_enabled` to `true`.
-- Configure the `terraform` role in `plat-dev` and the `planner` role
-  in `plat-prod` to allow the `developers` team to assume them by including
-  the `developers` team in the `trusted_teams` list for each role.
-- Configure Sandy's account in the IdP to allow Sandy to assume the `developers`
-  role in the `core-identity` account.
+<Steps>
+  - Deploy the `aws-saml` component to the `core-identity` account.
+  - Create the `developers` team in `core-identity` using the `aws-teams`
+    component, and set `aws_saml_login_enabled` to `true`.
+  - Configure the `terraform` role in `plat-dev` and the `planner` role
+    in `plat-prod` to allow the `developers` team to assume them by including
+    the `developers` team in the `trusted_teams` list for each role.
+  - Configure Sandy's account in the IdP to allow Sandy to assume the `developers`
+    role in the `core-identity` account.
+</Steps>
 
 Sandy can then log into the IdP and select the `developers` team to gain access
 to the `core-identity` account. From there, running any Terraform against any
@@ -325,15 +328,17 @@ identity account. This role also needs explicit access to the Terraform state
 backend, but this is usually enabled in the initial configuration. The teams'
 access to Terraform is implemented as follows:
 
-- The `aws-team-roles` component manages the roles in the AWS accounts.
-- It creates 2 special roles in each account to allow Teams to run Terraform in
-  that account: `terraform` and `planner`.
-- To enable a team to run `terraform plan` and `terraform apply` in an account,
-  add the team to the `trusted_teams` list for the `terraform` role in that
-  account.
-- To enable a team to run `terraform plan` but NOT `terraform apply` in an
-  account, add the team to the `trusted_teams` list for the `planner` role in
-  that account.
+<Steps>
+  - The `aws-team-roles` component manages the roles in the AWS accounts.
+  - It creates 2 special roles in each account to allow Teams to run Terraform in
+    that account: `terraform` and `planner`.
+  - To enable a team to run `terraform plan` and `terraform apply` in an account,
+    add the team to the `trusted_teams` list for the `terraform` role in that
+    account.
+  - To enable a team to run `terraform plan` but NOT `terraform apply` in an
+    account, add the team to the `trusted_teams` list for the `planner` role in
+    that account.
+</Steps>
 
 ### Roles are assumed automatically
 

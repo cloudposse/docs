@@ -1,17 +1,16 @@
 ---
-title: "AWS Region Codes"
+title: "Use Custom AWS Region Codes"
+sidebar_label: "Custom AWS Region Codes"
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# AWS Region Codes
-
 ## Problem
 
 The AWS Public Cloud spans **25 geographic regions** around the world, with announced plans for 8 more AWS Regions in Australia, India, Indonesia, Israel, New Zealand, Spain, Switzerland, and United Arab Emirates (UAE). Regions play a big factor in naming conventions for multi-region infrastructures for disambiguation and resource residency. See [Decide on Regional Naming Scheme](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-regional-naming-scheme), [https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=1176010884](https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=1176010884), [Decide on Namespace Abbreviation](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-namespace-abbreviation) for context. Our [Terraform](/fundamentals/terraform) is used to define programmatically consistent resource names with deterministic fields separated by a common delimiter (typically `-`), including a field for region (which we call `environment`). Since the AWS regions include a `-`, we do not want our region code to include it. Additionally, many AWS resource names are restricted to 32 or 64 characters making it all the more important to conserve characters for disambiguation of resource names.
 
-<img src="/assets/refarch/cleanshot-2021-11-04-at-23.01.23@2x-20211105-040142.png" height="139" width="1282" /><br/>
+<img src="/assets/refarch/cleanshot-2021-11-04-at-23.01.23@2x-20211105-040142.png" /><br/>
 
 ## Solution
 

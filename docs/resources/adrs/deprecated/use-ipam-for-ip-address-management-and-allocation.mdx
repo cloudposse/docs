@@ -1,11 +1,8 @@
 ---
 title: "Use IPAM for IP Address Management and Allocation"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1306296351/Use+IPAM+for+IP+Address+Management+and+Allocation
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/use-ipam-for-ip-address-management-and-allocation.md
+sidebar_label: "IPAM for IP Address Management and Allocation"
 ---
 
-# Use IPAM for IP Address Management and Allocation
 **Date**: **29 Apr 2022**
 
 :::warning Rejected!
@@ -17,11 +14,13 @@ The proposal in this ADR was rejected! For questions, please reach out to Cloud 
 :::
 
 ## Status
+
 **DRAFT**
 
 ## Problem
 
 ## Context
+
 It’s not required to create subpools. Subpools are used when you need a logical grouping.
 
 Management of Subnets of a VPC
@@ -31,6 +30,7 @@ Management of Subnets of a VPC
 Large enterprises want to do as much route aggregation as possible.
 
 ### Today
+
 Today, without IPAM, for existing clients, we manage “pools” in terraform using straight subnet math:
 
 - Pool: One supernet for the AWS organization
@@ -46,6 +46,7 @@ Today, without IPAM, for existing clients, we manage “pools” in terraform us
 - private
 
 ### Future
+
 We propose managing pools in a similar manner, but introducing a pool for the OU.
 
 - One supernet for the AWS organization

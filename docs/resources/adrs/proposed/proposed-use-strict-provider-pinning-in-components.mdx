@@ -1,11 +1,8 @@
 ---
 title: "Proposed: Use Strict Provider Pinning in Components"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1260617729/Proposed%3A+Use+Strict+Provider+Pinning+in+Components
-sidebar_position: 200
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/proposed-use-strict-provider-pinning-in-components.md
+sidebar_label: "Use Strict Provider Pinning in Components"
 ---
 
-# Proposed: Use Strict Provider Pinning in Components
 **Date**: **11 Feb 2022**
 
 :::info Needs Update!
@@ -15,6 +12,7 @@ The content in this ADR may be out-of-date and needing an update. For questions,
 :::
 
 ## Status
+
 **DRAFT**
 
 ## Problem
@@ -26,12 +24,11 @@ While we wait to upgrade broken modules to newer provider versions, we should co
 
 Currently, we set this in both modules and components for most customers
 
-```
+```hcl
 required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 3.0"
-    }
+  aws = {
+    source  = "hashicorp/aws"
+    version = ">= 3.0"
   }
 }
 ```
@@ -44,15 +41,14 @@ required_providers {
 
 - Pin providers to major versions in downstream components for clients
 
-```
-required_providers {
+  ```hcl
+  required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
   }
-}
-```
+  ```
 
 ### Option 2: Pinning Providers in Upstream Modules
 
@@ -83,15 +79,14 @@ Therefore, Cloud Posse today by convention only does lower bound pinning in our 
 
 - Pin providers to major versions in upstream modules
 
-```
-required_providers {
+  ```hcl
+  required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
   }
-}
-```
+  ```
 
 ### Option 3: Pinning Providers in Components to Exact Versions
 
@@ -101,10 +96,9 @@ required_providers {
 
 ```
 required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "= 3.70"
-    }
+  aws = {
+    source  = "hashicorp/aws"
+    version = "= 3.70"
   }
 }
 ```

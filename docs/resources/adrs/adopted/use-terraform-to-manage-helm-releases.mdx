@@ -1,11 +1,8 @@
 ---
 title: "Use Terraform to Manage Helm Releases"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1223360698/Use+Terraform+to+Manage+Helm+Releases
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/use-terraform-to-manage-helm-releases.md
+sidebar_label: "Terraform to Manage Helm Releases"
 ---
 
-# Use Terraform to Manage Helm Releases
 **Date**: **14 Dec 2021**
 
 :::info Needs Update!
@@ -51,12 +48,12 @@ We want to be able to provision helm releases and all dependencies with terrafor
 
 ## Context
 
-|**Architecture** | **Detect Changes to Non-chart YAML Values?** | **Detect Changes to Local Chart Files?** | **Detect Manual Changes to Deployed Resources?**<br/>(e.g. `kubctl edit`)|
-| ----- | ----- | ----- | ----- |
-|`helm_release` with `manifest=true` | Yes | Yes | No|
-|`helm_release` without `manifest=true` | Yes | No | No|
-|`kubernetes_manifest` | Yes | No | No|
-|`helmfile_release` | Yes | No | No|
+| **Architecture**                       | **Detect Changes to Non-chart YAML Values?** | **Detect Changes to Local Chart Files?** | **Detect Manual Changes to Deployed Resources?**<br/>(e.g. `kubctl edit`) |
+| -------------------------------------- | -------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------- |
+| `helm_release` with `manifest=true`    | Yes                                          | Yes                                      | No                                                                        |
+| `helm_release` without `manifest=true` | Yes                                          | No                                       | No                                                                        |
+| `kubernetes_manifest`                  | Yes                                          | No                                       | No                                                                        |
+| `helmfile_release`                     | Yes                                          | No                                       | No                                                                        |
 
 ### Testing Methodology
 

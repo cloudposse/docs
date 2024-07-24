@@ -4,15 +4,11 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
-# Dynamic Terraform Roles
-
-This document describes the Dynamic Terraform Roles feature and its benefits,
-and, for users of the previous architecture, **how to migrate to it**. The
-[AWS Access Control Architecture](./aws-access-control-architecture.md)
-documentation assumes this feature is enabled and describes how to use it. The
-[AWS Access Control Evolution](./aws-access-control-evolution.md#dynamic-terraform-roles-normalization-of-team-roles-better-team-and-team-role-iam-policy-management)
-documentation describes the feature in more detail.
+<Intro>
+This document describes the Dynamic Terraform Roles feature and its benefits, and, for users of the previous architecture, **how to migrate to it**. The [AWS Access Control Architecture](./aws-access-control-architecture.md) documentation assumes this feature is enabled and describes how to use it. The [AWS Access Control Evolution](./aws-access-control-evolution.md#dynamic-terraform-roles-normalization-of-team-roles-better-team-and-team-role-iam-policy-management) documentation describes the feature in more detail.
+</Intro>
 
 :::info More than just Terraform
 
@@ -182,21 +178,25 @@ accounts, and then you would have to reconfigure your IdP to allow people to log
 into the new roles. This is a significant disruption, so we recommend a phased
 approach:
 
+<Steps>
 1. Ensure prerequisites are met
 2. Add the new roles to the `aws-teams` configuration
 3. Migrate users to the new roles
 4. Remove the old roles from the `aws-teams` configuration and
    deploy `aws-team-roles` to the `identity` account
+</Steps>
 
 This phased approach is laid out in the following sections. If you want to do it
 all at once, you can just go through all the phases without doing any commits or
 apply operations until the end, at which point, as SuperAdmin, apply the
 components in the following order:
 
+<Steps>
 1. `tfstate-backend`
 2. `account-map`
 3. `aws-teams`
 4. `aws-team-roles`
+</Steps>
 
 ### Prerequisites
 

@@ -73,8 +73,9 @@ html[data-theme='dark'] :global(.content) .steps li::before {
   counter-increment: list-counter;
   position: relative;
   left: -0.8em;
-  padding-left: 2em; /* Adjust space for the custom counter */
-  margin-bottom: 1em; /* Space between list items */
+  padding-left: 2.3em; /* Adjust space for the custom counter */
+  margin-bottom: 1.2em; /* Space between list items */
+  line-height: 1.6em;
 }
 
 .steps ol > li img, .steps > ul > li img {

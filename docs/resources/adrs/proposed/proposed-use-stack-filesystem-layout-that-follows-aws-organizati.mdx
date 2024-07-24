@@ -1,7 +1,6 @@
 ---
 title: "Proposal: Use Stack Filesystem Layout That Follows AWS Organization Conventions"
 sidebar_label: "Use Stack Filesystem Layout That Follows AWS Organization Conventions"
-sidebar_position: 200
 ---
 
 **Date**: **27 May 2022**
@@ -191,12 +190,12 @@ Use a filesystem hierarchy that mirrors the AWS hierarchy: Organization â†’ OU â
 
 - `stacks/orgs/<namespace>/<ou>/<account>/<region>.yaml`
 
-| |  | |
-| ----- | ----- | ----- |
-|namespace | The namespace for the organization | |
-|ou | Typically the tenant name | |
-|account | The stage within the tenant | |
-|region | The canonical AWS region | |
+|           |                                    |     |
+| --------- | ---------------------------------- | --- |
+| namespace | The namespace for the organization |     |
+| ou        | Typically the tenant name          |     |
+| account   | The stage within the tenant        |     |
+| region    | The canonical AWS region           |     |
 
 Use fully spelled out canonical region name (e.g. `us-east-1`)
 

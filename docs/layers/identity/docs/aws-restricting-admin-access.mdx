@@ -4,19 +4,11 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
-# Restricting Admin Access to Sensitive Accounts
-
-## Overview
-
-The Cloud Posse Reference Architecture provides standard workflows
-(described elsewhere) for managing resources in a multi-account AWS organization
-via Terraform. Those workflows cannot apply to certain very sensitive operations
-due to technical limitations, and by design should require some kind of
-elevated privilege to perform in sensitive accounts. This document
-describes options for how to restrict access and perform those operations.
-In particular, it describes the differing options and configurations
-available with different versions of the Cloud Posse Reference Architecture.
+<Intro>
+  The Cloud Posse Reference Architecture provides standard workflows (described elsewhere) for managing resources in a multi-account AWS organization via Terraform. Those workflows cannot apply to certain very sensitive operations due to technical limitations, and by design should require some kind of elevated privilege to perform in sensitive accounts. This document describes options for how to restrict access and perform those operations.  In particular, it describes the differing options and configurations available with different versions of the Cloud Posse Reference Architecture.
+</Intro>
 
 #### What Are the "Sensitive" Accounts?
 
@@ -145,11 +137,12 @@ Terraform. This team is intended to be used only for special circumstances.
 
 To manage the `identity` and `root` accounts, the most common options are:
 
-1. Do not create an "empowered" team and only use the `SuperAdmin` user to make
-changes in sensitive accounts
-2. Create a separate "empowered" team and limit access to it
-3. Empower the "ops" team, so that there is only one team to manage all accounts
-
+<Steps>
+  1. Do not create an "empowered" team and only use the `SuperAdmin` user to make
+  changes in sensitive accounts
+  2. Create a separate "empowered" team and limit access to it
+  3. Empower the "ops" team, so that there is only one team to manage all accounts
+</Steps>
 
 # TODO:
 

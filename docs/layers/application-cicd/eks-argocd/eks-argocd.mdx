@@ -8,7 +8,54 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+<Intro>
+Argo CD is an open-source declarative, GitOps continuous delivery tool for Kubernetes applications. It enables developers to manage and deploy applications on Kubernetes clusters using Git repositories as the source of truth for configuration and definitions. Argo CD follows the GitOps methodology, which means that the entire application configuration, including manifests, parameters, and even application state, is stored in a Git repository.
+</Intro>
+
+Key features of Argo CD include:
+
+-  **Declarative Configuration:** Argo CD uses declarative YAML manifests to define the desired state of applications. These manifests are stored in a Git repository, making it easy to version control and manage changes.
+
+-  **Automated Synchronization:** Argo CD continuously monitors the Git repository for changes in the application configuration. When changes are detected, it automatically synchronizes the target Kubernetes cluster to match the desired state defined in the Git repository.
+
+-  **Multi-Environment Support:** Argo CD supports the management of applications across multiple environments, such as development, staging, and production, using the same GitOps principles.
+
+- **Rollback and Roll Forward:** Argo CD facilitates rollbacks to previous versions of applications in case of issues. It also supports roll-forward operations to apply newer configurations.
+
+- **User Interface (UI) and Command-Line Interface (CLI):** Argo CD provides a web-based user interface for visualizing and managing applications. Additionally, it offers a command-line interface for automation and integration with CI/CD pipelines.
+
+- **Integration with CI/CD Pipelines:** Argo CD can be integrated with continuous integration and continuous delivery (CI/CD) tools, allowing for automated deployment workflows triggered by changes in the Git repository.
+
+- **Security and RBAC:** Argo CD provides features for managing access control and securing the deployment process through role-based access control (RBAC) mechanisms.
+
+- **Helm Chart Support:** Argo CD supports Helm charts, allowing users to deploy and manage applications that are packaged as Helm packages.
+
+
+## Security Considerations
+
+:::caution SAML Security Considerations
+
+SAML is an industry-standard but security concerns have been raised by Dex, Mastadon, and others, due to the inherent
+difficulty of validating XML documents and inconsistent handling by SAML libraries in various languages. Our ArgoCD
+implementation by default uses SAML authentication with Dex and ArgoCD.
+
+:::
+
+For more information, please see:
+
+- [SAML is insecure by design](https://joonas.fi/2021/08/saml-is-insecure-by-design/)
+- [SAML Raider - SAML2 Burp Extension](https://github.com/CompassSecurity/SAMLRaider)
+- [Proposal: deprecate the SAML connector](https://github.com/dexidp/dex/discussions/1884)
+- [Mattermost blog post of July 28, 2021 where `@jupenur`](https://mattermost.com/blog/securing-xml-implementations-across-the-web/)
+  states:
+  > If you maintain an application in Ruby, JavaScript, .NET, or Java and rely on SAML or other security-critical XML
+  > use-cases, the question burning in the back of your mind should be: “How do I patch this?” The good news is that you
+  > should already be patched if you use Ruby or JavaScript and update your dependencies regularly. And if you use .NET
+  > or Java, there’s probably nothing to worry about.
+
 ### Overview
+
+Argo CD simplifies the deployment and management of applications on Kubernetes by leveraging GitOps principles, providing a clear separation between the desired state of applications and the operational state of the cluster. This approach enhances collaboration, repeatability, and traceability in the deployment process.
 
 ```mermaid
 ---
@@ -327,7 +374,8 @@ runs:
 - [`sso-saml-provider`](/components/library/aws/sso-saml-provider/): This component reads sso credentials from SSM Parameter store and provides them as outputs
 
 ## References
-- [ArgoCD Setup](/reference-architecture/setup/argocd/)
+
+- [ArgoCD Setup](/layers/application-cicd/eks-argocd/setup)
 - [Foundation Release Engineering](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/)
 - [Decide on Pipeline Strategy](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/decide-on-pipeline-strategy/)
 

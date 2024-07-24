@@ -15,19 +15,19 @@ Here's a collection of some nice little hacks for docker. A lot of them are rela
 
 Produce console stats for all running containers (e.g. like `top`):
 
-```
+```shell
 docker stats $(docker ps --format='{{.Names}}'
 ```
 
 # Remove all stopped containers
 
-```
+```shell
 docker rm $(docker ps -a -q)
 ```
 
 # Remove all untagged images
 
-```
+```shell
 docker images -q --filter "dangling=true" | xargs docker rmi
 ```
 
@@ -40,7 +40,7 @@ The docker system prune command is a shortcut that prunes images, containers, an
 - In Docker `17.06.1` and higher, you must specify the `--volumes` flag for docker system prune to prune volumes.
 :::
 
-```
+```shell
 $ docker system prune
 
 WARNING! This will remove:
@@ -53,7 +53,7 @@ Are you sure you want to continue? [y/N] y
 
 If you are on Docker `17.06.1` or higher and want to also prune volumes, add the `--volumes` flag:
 
-```
+```shell
 $ docker system prune --volumes
 
 WARNING! This will remove:

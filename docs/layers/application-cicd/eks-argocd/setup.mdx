@@ -11,29 +11,6 @@ import StepNumber from '@site/src/components/StepNumber'
 import Admonition from '@theme/Admonition'
 import TaskList from '@site/src/components/TaskList'
 
-:::caution SAML Security Considerations
-
-SAML is an industry-standard but security concerns have been raised by Dex, Mastadon, and others, due to the inherent
-difficulty of validating XML documents and inconsistent handling by SAML libraries in various languages. Our ArgoCD
-implementation by default uses SAML authentication with Dex and ArgoCD. For more information, please see:
-
-- [SAML is insecure by design](https://joonas.fi/2021/08/saml-is-insecure-by-design/)
-- [SAML Raider - SAML2 Burp Extension](https://github.com/CompassSecurity/SAMLRaider)
-- [Proposal: deprecate the SAML connector](https://github.com/dexidp/dex/discussions/1884)
-
-:::
-
-:::info
-
-- [Mattermost blog post of July 28, 2021 where `@jupenur`](https://mattermost.com/blog/securing-xml-implementations-across-the-web/)
-  states:
-  > If you maintain an application in Ruby, JavaScript, .NET, or Java and rely on SAML or other security-critical XML
-  > use-cases, the question burning in the back of your mind should be: “How do I patch this?” The good news is that you
-  > should already be patched if you use Ruby or JavaScript and update your dependencies regularly. And if you use .NET
-  > or Java, there’s probably nothing to worry about.
-
-:::
-
 ## Quick Start
 
 | Steps                               | Example                                                                                                                                                 |

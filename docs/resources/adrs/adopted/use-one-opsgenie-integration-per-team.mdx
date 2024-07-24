@@ -1,11 +1,7 @@
 ---
 title: "Use One OpsGenie Integration per Team"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1233453061/Use+One+OpsGenie+Integration+per+Team
-sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/adrs/use-one-opsgenie-integration-per-team.md
+sidebar_label: "One OpsGenie Integration per Team"
 ---
-
-# Use One OpsGenie Integration per Team
 
 :::info Needs Update!
 
@@ -14,6 +10,7 @@ The content in this ADR may be out-of-date and needing an update. For questions,
 :::
 
 ## Context
+
 OpsGenie Integrates with Datadog, on the OpsGenie Platform this creates an API key that when used, sends to that specific Integration. e.g. A Key that is used by datadog to send events to OpsGenie. Many integrations can be setup on OpsGenie, allowing Datadog to specify which integration to use. This is important because an integration on OpsGenie can be specified to handle events differently. This means datadog can send an event to `@OpsGenie-1` and its routed differently in Opsgenie than if the message contained `@OpsGenie-2`. The problem with adding more integrations, is creating them in Opsgenie can be done through terraform, but adding the generated API Key must be added to DataDog manually.
 
 **TL;DR:** We support OpsGenie today and have a considerable investment in supporting it, but are open to implementing PagerDuty.

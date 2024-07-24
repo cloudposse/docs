@@ -4,6 +4,7 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps'
 
 # How to Migrate RDS Snapshots Across AWS Organizations
 
@@ -626,32 +627,30 @@ SSM. This _does not_ require database recreation.
 To validate the new RDS instance in `acme-plat-usw2-prod` connect to the VPN, connect to the instance, and list the
 tables.
 
-1. Connect to the EC2 Client VPN
-2. Open Geodesic
-3. Get the `psql` command from the output of the `rds` component applied above. Take note of this for later
+<Steps>
+  1. Connect to the EC2 Client VPN
+  2. Open Geodesic
+  3. Get the `psql` command from the output of the `rds` component applied above. Take note of this for later
+      ```bash
+      # As a generic RDS component
+      atmos terraform output rds -s plat-usw2-prod
+      ```
+  4. Assume a role that has access to the DB password stored in AWS SSM. For example, we can assume the `admin` role
+      ```bash
+      assume-role acme-plat-gbl-prod-admin
+      ```
+  5. Connect to the RDS instance with `psql` using the command we copied from Terraform output above. For example, this
+    would be similar to the following:
 
-```bash
-# As a generic RDS component
-atmos terraform output rds -s plat-usw2-prod
-```
+      ```bash
+      PGPASSWORD=$(chamber read app/rds/admin db_password -q) psql --host=acme-plat-usw2-prod-rds.xxxxxxxxxxxx.us-west-2.rds.amazonaws.com --port=5432 --username=admin --dbname=foobar
+      ```
 
-4. Assume a role that has access to the DB password stored in AWS SSM. For example, we can assume the `admin` role
+      4. List tables to verify they've been copied over
 
-```bash
-assume-role acme-plat-gbl-prod-admin
-```
-
-5. Connect to the RDS instance with `psql` using the command we copied from Terraform output above. For example, this
-   would be similar to the following:
-
-```bash
-PGPASSWORD=$(chamber read app/rds/admin db_password -q) psql --host=acme-plat-usw2-prod-rds.xxxxxxxxxxxx.us-west-2.rds.amazonaws.com --port=5432 --username=admin --dbname=foobar
-```
-
-4. List tables to verify they've been copied over
-
-```bash
-\dt
-```
+      ```bash
+      \dt
+      ```
+</Steps>
 
 And that's it!
