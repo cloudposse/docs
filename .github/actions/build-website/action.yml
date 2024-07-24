@@ -59,6 +59,16 @@ runs:
         make init
         pip install -r scripts/docs-collator/requirements.txt
 
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.15'
+
+    - name: Install terraform-docs
+      run: |
+        go install github.com/terraform-docs/terraform-docs@latest
+        echo "$HOME/go/bin" >> $GITHUB_PATH
+
     - name: "Render Documentation for Terraform Components"
       shell: bash
       run: |
