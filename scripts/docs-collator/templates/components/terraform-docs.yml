@@ -1,0 +1,45 @@
+# https://pkg.go.dev/github.com/terraform-docs/terraform-docs/terraform#Module
+content: |-
+  <!-- hello terraform-docs -->
+
+formatter: "markdown document" # this is required
+version: ""
+
+recursive:
+  enabled: false
+  path: modules
+
+sections:
+  hide: []
+  show: []
+
+sort:
+  enabled: true
+  by: required
+
+output-values:
+  enabled: false
+  from: ''
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+    {{ .Content }}
+    <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: true
+  escape: true
+  hide-empty: false
+  html: true
+  indent: 2
+  lockfile: false
+  read-comments: true
+  required: true
+  sensitive: true
+  type: true

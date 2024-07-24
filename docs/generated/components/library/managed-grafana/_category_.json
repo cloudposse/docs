@@ -1,0 +1,9 @@
+{
+  "label": "managed-grafana",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "managed-grafana"
+  }
+}

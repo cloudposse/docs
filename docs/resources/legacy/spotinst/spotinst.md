@@ -1,0 +1,118 @@
+---
+title: "Spot by NetApp"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1189773665
+sidebar_position: 100
+custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/how-to-guides/integrations/spotinst/spotinst.md
+---
+
+# How to Sign Up for Spot.io
+
+:::caution
+Before registering for [Spot.io](http://Spot.io) request Cloud Posse initiate the deal registration via our partner portal. This is so we can help manage the account and get credit for the referral.
+
+:::
+
+## Problem
+Cost management on AWS is tricky. There are reserved instances, AWS savings plans, Enterprise Agreements, and the Spot Instance marketplace. To get the best deal on compute, everything needs to be taken into account. It’s possible to roll your own with Spot Fleets, AWS lambdas, but the engineering effort may not be worth it.
+
+Learn more about the differences between[https://spot.io/blog/aws-spot-instances-and-diy/](https://spot.io/blog/aws-spot-instances-and-diy/) .
+
+## Solution
+<img src="/assets/refarch/cleanshot-2021-10-31-at-22.30.28-20211101-033443.png" height="881" width="757" /><br/>
+
+:::tip
+Use the fully managed solution for [http://spot.io](http://spot.io) of EKS clusters (and more)
+
+:::
+
+1. **Deal registration.** Request Cloud Posse initiate the deal registration via our partner portal before registering for an account. This is so we can help
+
+manage the account.
+
+2. **Account Registration.** Go to [https://console.spotinst.com/spt/auth/signUp](https://console.spotinst.com/spt/auth/signUp)  to sign up.
+
+3. **Setup billing.** The way it works is that you set up a paid account on [Spot.io](http://spot.io/). No credit card is required, just enter all the billing details for where to send invoices (person and company name, mailing address, email, phone for who to make invoice out to and who to send it to).
+
+4. **Add users.** Go to your avatar in the top right of the screen, click “Your Organization” → “Users” → “ADD USER”, turn on the "Add existing user" toggle, and add Cloud Posse personnel at their Cloud Posse email addresses (`@cloudposse.com`) with the Organization Role "Admin".
+IMPORTANT: anyone invited must already have a [http://spot.io](http://spot.io)  account. You’ll get an error trying to invite anyone who does not already have an account.
+
+5. **Skip AWS Integration.** <ins>DO NOT</ins> "Finish setting up your account by connecting a cloud provider." Cloud Posse will configure the rest of [Spot.io](http://spot.io/) via Terraform.
+
+6. **Optionally, take a walkthrough.** <ins>DO take</ins> the "Console Walkthrough" if you are interested.
+
+:::info
+**Spot Support**
+While Cloud Posse is available to provide support, [Spot.io](http://spot.io/) has its own support channel available via web chat and email, and they are the best ones to answer questions about how [Spot.io](http://spot.io/) works and what features it does and does not support.
+
+:::
+
+## FAQ
+
+### Why are we signing up for Spot.io?
+
+[Spot.io](http://Spot.io) intelligently manages [Spot.io](http://Spot.io) so you don’t have to. The way we use it is to manage fleets of heterogeneous EC2 instances in EKS node pools. Spot is smarter than the AWS cluster auto-scaler because it schedules workloads based on what is needed. It can mix and match EC2 instance types, on-demand/reserved, and spot. Workloads can target on-demand instances simply by adding an annotation that tells the scheduler where to place the pod.
+
+A much more comprehensive write up is here: [https://spot.io/blog/aws-spot-instances-and-diy/](https://spot.io/blog/aws-spot-instances-and-diy/)
+
+### How much does Spot.io cost?
+
+Technically, [Spot.io](http://Spot.io) is free. They charge a percentage of your estimated savings against on-demand pricing.
+
+[https://spot.io/pricing/](https://spot.io/pricing/)
+
+### Do we have to use Spot.io?
+
+No, this is entirely optional. We recommend using it though because it’s the easiest path to _Continuous Optimization_
+
+### Can we trust Spot.io?
+
+<img src="/assets/refarch/image-20211101-034842.png" height="2300" width="4460" /><br/>
+
+While every company should perform its own vendor evaluation and due diligence, it’s worth noting that [Spot.io](http://Spot.io) was acquired by NetApp.
+
+### What are spot instances?
+
+Spot.io provides the best explanation of [https://spot.io/what-are-ec2-spot-instances/](https://spot.io/what-are-ec2-spot-instances/)
+
+### How should we share access to Spot.io?
+
+Our recommendation is to invite individual users. But if you want, a shared account exchanged via 1Password to log in will suffice to get started. This is of course a reversible decision.
+
+### Do AWS Savings Plans cover Spot Instances?
+
+Spot instances are not covered by [AWS Savings Plans](https://aws.amazon.com/savingsplans/faq/). That said, they are not mutually exclusive, and both provide savings and benefits.
+
+<img src="/assets/refarch/cleanshot-2021-11-09-at-22.30.38@2x-20211110-043051.png" height="314" width="1290" /><br/>
+
+Learn more [https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html](https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html)
+
+### Should we use both AWS Savings Plans and Spot Instances?
+
+AWS Savings Plans provide significant savings up to 72% of the on-demand rates in exchange for a commitment that can't be canceled during the term. AWS Savings plans are much easier to manage than purchasing Reserved Instances, plus you can pay for your commitment using **All Upfront**, **Partial Upfront**, or **No Upfront** payment options.  In order to realize significant cost savings, however, you need to pay everything upfront which can be a lot of money 🤑 .
+
+Spot Instances on the other hand require zero upfront commitments and provide almost identical savings, if not greater, but with the trade-off that they can be preempted in just 2 minutes. [Spot.io](http://Spot.io) however uses a combination of AI and market intelligence to better predict fluctuations in Spot market pricing and can help reschedule workloads well in advance of the 2 minute warning AWS provides.
+
+[https://aws.amazon.com/savingsplans/compute-pricing/](https://aws.amazon.com/savingsplans/compute-pricing/)
+
+### How reliable are Spot Instances?
+
+<img src="/assets/refarch/cleanshot-2021-11-09-at-22.48.13@2x-20211110-044834.png" height="570" width="939" /><br/>
+
+AWS provides extremely short notice of Spot Instance interruption. **A warning that is issued two minutes before Amazon EC2 stops or terminates your Spot Instance**.
+
+[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html)
+
+But this is where the true value of [Spot.io](http://Spot.io) comes out. With [https://spot.io/blog/predictive-rebalancing/](https://spot.io/blog/predictive-rebalancing/), Spot is able to reschedule workloads before market shifts. Additionally, since EKS node pools run on a mixed fleet of instance types, the likelihood of losing bids on more than one instance type at the same time is reduced, and the larger the cluster, the less the impact of losing a few nodes. In our experience, the Spot market volatility is very low.
+
+The [AWS Spot Instance Advisor](https://aws.amazon.com/ec2/spot/instance-advisor/) will help you see just how low that volatility is.
+
+For small, mission-critical clusters with less than 5 nodes, it’s best to run a mixture of on-demand and spot instances.
+
+:::caution
+For services that depend on long-lived connections like WebSockets and do not handle interruptions well, then we recommend either using an [API Gateway with WebSockets](https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/) support or scheduling pods on Reserved Instances.  The AWS API Gateway handles all the long-lived connections between the client and service, so you can focus on building your business logic using plain HTTP-based backends such as AWS Lambda, or any other HTTP endpoint.
+
+:::
+
+Check out [How to Tune SpotInst Parameters for EKS](/reference-architecture/how-to-guides/integrations/spotinst/how-to-tune-spotinst-parameters-for-eks) to ensure pods run On-Demand instances (which would be covered by RI reservations, if available).
+
+

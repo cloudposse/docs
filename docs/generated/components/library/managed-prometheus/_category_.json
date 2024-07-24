@@ -1,0 +1,9 @@
+{
+  "label": "managed-prometheus",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "managed-prometheus"
+  }
+}

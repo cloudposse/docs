@@ -14,14 +14,14 @@ def save_to_file(file, content):
 
 
 def read_file_to_string(file):
-    with open(file, 'r') as file:
+    with open(file, "r") as file:
         content = file.read()
 
     return content
 
 
 def read_file_to_list_of_strings(file):
-    with open(file, 'r') as file:
+    with open(file, "r") as file:
         result = file.read().splitlines()
 
     return result
@@ -37,7 +37,7 @@ def remove_dir(dir):
 
 
 def get_filenames_in_dir(dir, pattern, recursive=False):
-    glob_pattern = f'**/{pattern}' if recursive else pattern
+    glob_pattern = f"**/{pattern}" if recursive else pattern
     return glob.glob(os.path.join(dir, glob_pattern), recursive=recursive)
 
 
