@@ -6,6 +6,13 @@ content: |-
 
   ## Contents
 
+  {{ if ne (len .Module.Requirements) 0 -}}
+  ### Version Requirements
+  {{ range .Module.Providers }}
+  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
+  {{- end }}
+  {{- end }}
+
   {{ if ne (len .Module.Providers) 0 -}}
   ### Providers
   {{ range .Module.Providers }}
@@ -58,40 +65,6 @@ content: |-
   {{- end }}
   {{- end }}
 
-  ### Context Variables
-
-  The following variables are defined in the `context.tf` file of this module and part of the [terraform-null-label](https://registry.terraform.io/modules/cloudposse/label/null) pattern.
-
-  <dl>
-  {{- range .Module.Inputs }}
-  {{- if and (has .Name $context_variables) }}
-    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>{{ ternary .Required "required" "optional" }}</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
-    <dd>
-      {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
-      {{- range $lines }}
-      {{ . }}<br/>
-      {{- end }}
-      **Required:** {{ ternary .Required "Yes" "No" }}<br/>
-      **Type:** {{ if lt (len (split "\n" (tostring .Type))) 2 }}`{{ tostring .Type }}`{{ else }}
-
-      ```hcl
-      {{ .Type.Raw }}
-      ```
-      <br/>
-      {{ end }}
-      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
-      ```hcl
-      {{- $lines := regexSplit "\n" .GetValue -1 -}}
-      {{- range $lines }}
-      {{ . }}
-      {{- end }}
-      ```
-      {{ end }}
-    </dd>
-  {{- end }}
-  {{- end }}
-  </dl>
-
   ### Required Inputs
 
   <dl>
@@ -104,20 +77,12 @@ content: |-
       {{ . }}<br/>
       {{- end }}
 
-      **Type:** {{ if lt (len (split "\n" (tostring .Type))) 2 }}`{{ tostring .Type }}`{{ else }}
-
+      {{ if gt (len (split "\n" (tostring .Type))) 2 }}
+      **Type:**
       ```hcl
       {{ .Type.Raw }}
       ```
-      {{ end }}
       <br/>
-      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
-      ```hcl
-      {{- $lines := regexSplit "\n" .GetValue -1 -}}
-      {{- range $lines }}
-      {{ . }}
-      {{- end }}
-      ```
       {{ end }}
 
     </dd>
@@ -129,6 +94,7 @@ content: |-
   {{ range .Module.Inputs }}{{ if not .Required }}{{ $optional = true -}}{{ end -}}{{ end -}}
 
   {{ if $optional -}}
+
   ### Optional Inputs
 
   <dl>
@@ -141,13 +107,13 @@ content: |-
       {{ . }}<br/>
       {{- end }}
       <br/>
-      **Type:** {{ if lt (len (split "\n" (tostring .Type))) 2 }}`{{ tostring .Type }}`{{ else }}
-
+      {{ if gt (len (split "\n" (tostring .Type))) 2 }}
+      **Type:**
       ```hcl
       {{ tostring .Type }}
       ```
-      {{ end }}
       <br/>
+      {{ end }}
       **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
       ```hcl
       {{- $lines := regexSplit "\n" .GetValue -1 -}}
@@ -161,6 +127,44 @@ content: |-
   {{ end -}}
   </dl>
   {{ end }}
+
+  ### Context Variables
+
+  <details>
+  <summary>
+  The following variables are defined in the `context.tf` file of this module and part of the [terraform-null-label](https://registry.terraform.io/modules/cloudposse/label/null) pattern.
+  </summary>
+
+  <dl>
+  {{- range .Module.Inputs }}
+  {{- if and (has .Name $context_variables) }}
+    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>{{ ternary .Required "required" "optional" }}</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dd>
+      {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
+      {{- range $lines }}
+      {{ . }}<br/>
+      {{- end }}
+      **Required:** {{ ternary .Required "Yes" "No" }}<br/>
+      {{ if gt (len (split "\n" (tostring .Type))) 2 }}
+      **Type:**
+      ```hcl
+      {{ .Type.Raw }}
+      ```
+      <br/>
+      {{ end }}
+      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
+      ```hcl
+      {{- $lines := regexSplit "\n" .GetValue -1 -}}
+      {{- range $lines }}
+      {{ . }}
+      {{- end }}
+      ```
+      {{ end }}
+    </dd>
+  {{- end }}
+  {{- end }}
+  </dl>
+  </details>
 
   {{ if ne (len .Module.Outputs) 0 -}}
   ### Outputs
