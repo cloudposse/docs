@@ -16,7 +16,7 @@ const customCssFiles = fs.readdirSync(cssDirectory)
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'The Cloud Posse Reference Architecture',
-  tagline: 'The open source framework for Terraform, with turnkey architectures for AWS, Datadog & GitHub Actions to get up and running quickly.',
+  tagline: 'The turnkey architecture for AWS, Datadog & GitHub Actions to get up and running quickly using the Atmos open source framework.',
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
@@ -129,6 +129,15 @@ const config = {
             className: 'button button--primary navbar-cta-button'
           },
         ],
+      },
+
+      announcementBar: {
+        id: 'new_docs',
+        content:
+          'We are in the process of updating our documentation. <a href="mailto:docs@cloudposse.com">Please let us know what you think!</a>',
+        backgroundColor: 'var(--announcement-bar-background)',
+        textColor: 'var(--announcement-bar-text-color)',
+        isCloseable: true,
       },
 
       colorMode: {

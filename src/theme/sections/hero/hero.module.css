@@ -1,11 +1,15 @@
 .heroContainer {
   /* background: linear-gradient(134.3deg, #FFFFFF 0%, #000000 40.99%, #000000 100%);*/
   background: transparent;
-  padding: 54px 0 42px;
+  padding: 75px 0 42px;
 }
 
 .button.button--secondary {
   color: #FFFFFF;
+}
+
+.heroContainer :global(.button.button--secondary.button--outline:not(.button--active):not(:hover)) {
+    color: #ccc;
 }
 
 .heroInner {

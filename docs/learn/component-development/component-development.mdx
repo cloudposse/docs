@@ -176,12 +176,16 @@ In order to be able to create a new component, this document assumes the develop
 
       - Atmos supports component types with the `metadata.type` parameter
       - There are two types of components:
-        - `real` - is a "concrete" component instance
-        - `abstract` - a component configuration, which cannot be instantiated directly. The concept is borrowed from
-          [abstract base classes](https://en.wikipedia.org/wiki/Abstract_type) of Object Oriented Programming.
+        <dl>
+          <dt>real</dt>
+          <dd>is a "concrete" component instance</dd>
+          <dt>abstract</dt>
+          <dd>a component configuration, which cannot be instantiated directly. The concept is borrowed from
+            [abstract base classes](https://en.wikipedia.org/wiki/Abstract_type) of Object Oriented Programming.</dd>
+        </dl>
       - By default, all components are `real`
       - Define an `abstract` component by setting `metadata.type` to `abstract`. See the following example
-      - For more details, see [atmos.tools](https://atmos.tools/core-concepts/components/inheritance)
+
         ```yaml
         components:
           terraform:
@@ -193,6 +197,8 @@ In order to be able to create a new component, this document assumes the develop
                 tags:
                   team: devops
         ```
+
+        For more details, see [atmos.tools](https://atmos.tools/core-concepts/components/inheritance)
 
       - With an `abstract` component default, we can inherit default settings for any number of derived components. For
         example:
@@ -208,7 +214,7 @@ In order to be able to create a new component, this document assumes the develop
                 vars:
                   sample_variable_present_in_variables_tf_of_component: "hello-world"
           ```
-        - Now `foobar` will uses the same configuration as `foobar/defaults` but may describe additional variables.
+          Now `foobar` will uses the same configuration as `foobar/defaults` but may describe additional variables.
     </Steps>
   </Step>
 
