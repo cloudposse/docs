@@ -4,34 +4,12 @@ content: |-
 
   {{ .Header }}
 
-  ## Reference
-
-  {{ if ne (len .Module.Requirements) 0 -}}
-  ### Version Requirements
-  {{ range .Module.Requirements }}
-  {{ if .Version }}
-  {{- $baseUrl := "https://registry.terraform.io/modules" -}}
-
-  {{- if contains "//" .Name -}}
-    {{- $moduleParts := split "//" .Name -}}
-    {{- $moduleName := index $moduleParts 0 -}}
-    {{- $submodulePath := index $moduleParts 1 -}}
-  - {{ printf "[`%s`](%s/%s/%s/%s)" .Name $baseUrl $moduleName $submodulePath .Version -}}, version: {{ .Version }}
-  {{- else -}}
-  - {{ printf "[`%s`](%s/%s/%s)" .Name $baseUrl .Name .Version -}}, version: {{ .Version }}
-  {{- end -}}
-  {{ else }}
-  - `{{ .Name }}`
-  {{ end }}
-  {{- end }}
-  {{- end }}
-
-  https://registry.terraform.io/modules/cloudposse/stack-config/yaml//remote-state
+  ## Contents
 
   {{ if ne (len .Module.Providers) 0 -}}
   ### Providers
   {{ range .Module.Providers }}
-  - `{{ .Name }}`{{ if .Version }}, version: {{ .Version }}{{ end }}
+  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 

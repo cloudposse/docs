@@ -15,6 +15,9 @@
 /docs/generated/components/library
 /docs/generated/modules/library
 /docs/generated/github-actions/library
+/docs/components/library
+/docs/modules/library
+/docs/github-actions/library
 
 /static/css
 /static/js
