@@ -319,3 +319,21 @@ figure {
   font-size: 1em;
 }
 
+
+table {
+  margin-bottom: 4em;
+}
+
+table td, th {
+  border: none;
+  border-bottom: 1px solid #eaecef;
+}
+
+table tr {
+  border: none;
+}
+
+table thead th {
+  border-bottom: 2px solid #eaecef;
+  border: none;
+}
