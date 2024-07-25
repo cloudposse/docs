@@ -2,11 +2,11 @@ import os
 
 from AbstractFetcher import AbstractFetcher, MissingReadmeYamlException
 
-DOCS_DIR = 'docs'
-IMAGES_DIR = 'images'
-SUBMODULES_DIR = 'modules'
-README_YAML = 'README.yaml'
-README_MD = 'README.md'
+DOCS_DIR = "docs"
+IMAGES_DIR = "images"
+SUBMODULES_DIR = "modules"
+README_YAML = "README.yaml"
+README_MD = "README.md"
 
 
 class ModuleFetcher(AbstractFetcher):
@@ -54,4 +54,8 @@ class ModuleFetcher(AbstractFetcher):
         for readme_file in readme_files.values():
             self.github_provider.fetch_file(repo, readme_file, module_download_dir)
             if os.path.basename(readme_file) == README_YAML:
-                self._fetch_docs(repo, module_download_dir, submodule_dir=os.path.dirname(readme_file))
+                self._fetch_docs(
+                    repo,
+                    module_download_dir,
+                    submodule_dir=os.path.dirname(readme_file),
+                )

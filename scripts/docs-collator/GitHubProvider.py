@@ -7,9 +7,13 @@ from github import Github, GithubException
 
 from utils import io
 
-GITHUB_ORG = 'cloudposse'
-TERRAFORM_MODULE_NAME_PATTERN = re.compile("^terraform-[a-zA-Z0-9]+-.*")  # convention is terraform-<PROVIDER>-<NAME>
-GITHUB_ACTION_NAME_PATTERN = re.compile("^github-action-.*")  # convention is github-action-<NAME>
+GITHUB_ORG = "cloudposse"
+TERRAFORM_MODULE_NAME_PATTERN = re.compile(
+    "^terraform-[a-zA-Z0-9]+-.*"
+)  # convention is terraform-<PROVIDER>-<NAME>
+GITHUB_ACTION_NAME_PATTERN = re.compile(
+    "^github-action-.*"
+)  # convention is github-action-<NAME>
 
 
 class GitHubProvider:
@@ -17,7 +21,9 @@ class GitHubProvider:
         self.github = Github(github_api_token)
 
     def get_terraform_repos(self, includes_csv, excludes_csv):
-        return self.__get_repos(includes_csv, excludes_csv, TERRAFORM_MODULE_NAME_PATTERN)
+        return self.__get_repos(
+            includes_csv, excludes_csv, TERRAFORM_MODULE_NAME_PATTERN
+        )
 
     def get_github_actions_repos(self, includes_csv, excludes_csv):
         return self.__get_repos(includes_csv, excludes_csv, GITHUB_ACTION_NAME_PATTERN)
@@ -71,7 +77,9 @@ class GitHubProvider:
 
     def fetch_file(self, repo, remote_file, output_dir):
         io.create_dirs(os.path.join(output_dir, os.path.dirname(remote_file)))
-        content_encoded = repo.get_contents(remote_file, ref=repo.default_branch).content
+        content_encoded = repo.get_contents(
+            remote_file, ref=repo.default_branch
+        ).content
         content = base64.b64decode(content_encoded)
         output_file = os.path.join(output_dir, remote_file)
         io.save_to_file(output_file, content)

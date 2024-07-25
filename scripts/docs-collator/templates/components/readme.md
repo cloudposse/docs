@@ -9,7 +9,7 @@ tags: [{{ tags|join(', ') }}]
 {{ content }}
 
 {% if change_log_content|trim != "" %}
-## CHANGELOG
+## Changelog
 
 {{ change_log_content }}
 {% endif %}
