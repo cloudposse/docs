@@ -92,10 +92,13 @@ class ComponentRenderer:
             label = submodule_name
             title = submodule_name
 
-            # renaming final file <module-name>/<module-name>.md
+            # renaming final file <module-name>/<module-name>.mdx
             result_file = os.path.join(
-                os.path.dirname(result_file), f"{submodule_name}.md"
+                os.path.dirname(result_file), f"{submodule_name}.mdx"
             )
+        else:
+            # renaming final file <module-name>/README.mdx
+            result_file = os.path.join(os.path.dirname(result_file), f"{name}.mdx")
 
         io.create_dirs(os.path.dirname(result_file))
 
