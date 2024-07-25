@@ -4,24 +4,24 @@ content: |-
 
   {{ .Header }}
 
-  ## Contents
+  ### Terraform
 
   {{ if ne (len .Module.Requirements) 0 -}}
-  ### Version Requirements
+  #### Version Requirements
   {{ range .Module.Providers }}
   - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 
   {{ if ne (len .Module.Providers) 0 -}}
-  ### Providers
+  #### Providers
   {{ range .Module.Providers }}
   - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 
   {{ if ne (len .Module.ModuleCalls) 0 -}}
-  ### Modules
+  #### Modules
 
   Name | Version | Source | Description
   --- | --- | --- | ---
@@ -40,7 +40,7 @@ content: |-
 
   {{- if ne (len .Module.Resources) 0 }}
 
-  ### Resources
+  #### Resources
 
   The following resources are used by this module:
   {{ range .Module.Resources }}
@@ -53,7 +53,7 @@ content: |-
   {{- end }}
 
   {{ if ne (len .Module.Resources) 0 -}}
-  ### Data Sources
+  #### Data Sources
 
   The following data sources are used by this module:
   {{ range .Module.Resources }}
@@ -65,7 +65,7 @@ content: |-
   {{- end }}
   {{- end }}
 
-  ### Required Inputs
+  #### Required Inputs
 
   <dl>
   {{- range .Module.Inputs }}
@@ -95,7 +95,7 @@ content: |-
 
   {{ if $optional -}}
 
-  ### Optional Inputs
+  #### Optional Inputs
 
   <dl>
   {{- range .Module.Inputs }}
@@ -128,7 +128,7 @@ content: |-
   </dl>
   {{ end }}
 
-  ### Context Variables
+  #### Context Variables
 
   <details>
   <summary>
@@ -167,7 +167,7 @@ content: |-
   </details>
 
   {{ if ne (len .Module.Outputs) 0 -}}
-  ### Outputs
+  #### Outputs
 
   <dl>
   {{- range .Module.Outputs }}
