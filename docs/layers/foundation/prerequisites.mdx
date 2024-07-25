@@ -54,17 +54,12 @@ import TaskList from '@site/src/components/TaskList';
           2. Just run `brew bundle install` to install all localhost dependencies. Here's an example `Brewfile`:
 
               ```shell
-              brew "asdf"
-              brew "gawk"
+              brew "atmos"
               brew "coreutils"
               brew "pre-commit"
               brew "terraform-docs"
+              brew "opentofu"
               brew "tflint"
-
-              # Hedge against linuxbrew, `aws-vault` is a cask on MacOS
-              # but a regular formula in linuxbrew.
-              cask "aws-vault" if OS.mac?
-              brew "aws-vault" unless OS.mac?
               ```
 
           3. Next, you'll need docker set up. There are a variety of ways to do this. Review the [Docker for Desktop](https://docs.docker.com/desktop/install/mac-install/) installation guide for macOS.

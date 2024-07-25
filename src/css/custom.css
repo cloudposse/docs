@@ -48,7 +48,7 @@ body {
     --aa-primary-color-rgb: var(--ifm-toc-border-color) !important;
 
     --mg-bg: rgb(16 36 69 / 27%);
-    --announcement-bar-background: #3578e58f;
+    --announcement-bar-background: #3578e5;
     --announcement-bar-text-color: #fff;
 }
 
@@ -64,6 +64,7 @@ body {
     --ifm-card-background-color: #eeeeee14;
     --ifm-button-color: #ccc;
     --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    --announcement-bar-background: #3578e58f;
 }
 
 [data-theme='dark'] ::selection {
@@ -103,7 +104,7 @@ html[data-theme='dark'] {
     background: transparent;
 }
 
-table tr td {
+.nowrap table tr td {
     white-space: nowrap;
 }
 
