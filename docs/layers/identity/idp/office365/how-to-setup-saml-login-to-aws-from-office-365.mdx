@@ -5,6 +5,7 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
 ## Problem
 Office 365 is a common business suite that has an active director to manage users and permissions. We need to utilize this to login to AWS.
@@ -14,31 +15,25 @@ Azure Devops has **Enterprise Apps** that are used to sign into things from your
 
 ### AWS SAML
 
-1. Under [https://aad.portal.azure.com/#allservices/category/All](https://aad.portal.azure.com/#allservices/category/All)  go to **Enterprise Applications**
+<Steps>
+  1. Under [https://aad.portal.azure.com/#allservices/category/All](https://aad.portal.azure.com/#allservices/category/All)  go to **Enterprise Applications** <img src="/assets/refarch/screen-shot-2023-01-13-at-8.33.13-am.png" /><br/>
 
-<img src="/assets/refarch/screen-shot-2023-01-13-at-8.33.13-am.png" height="783" width="1376" /><br/>
+  2. Click **New Application**
 
-2. Click **New Application**
+  3. Choose the right application, for SAML it’s **AWS Single-Account Access** <img src="/assets/refarch/screen-shot-2023-01-13-at-8.36.16-am.png" /><br/>
 
-3. Choose the right application, for SAML it’s
+  4. Click **Create**, default options are fine
 
-**AWS Single-Account Access**
+  5. On the Left Panel Click **Single sign-on**
 
-<img src="/assets/refarch/screen-shot-2023-01-13-at-8.36.16-am.png" height="565" width="1324" /><br/>
+  6. Choose **SAML** as the Select a single sign-on method.
 
-4. Click **Create**, default options are fine
+  7. You may be prompted to change or use the defaults, if you have many aws single account logins you will need to modify the defaults.
 
-5. On the Left Panel Click **Single sign-on**
+  8. Ensure the Identifier(Entity ID) is set to something valid (Should be `https://signin.aws.amazon.com/saml` optionally add a `#identifier` <img src="/assets/refarch/screen-shot-2023-01-18-at-11.05.51-am.png" /><br/>
 
-6. Choose **SAML** as the Select a single sign-on method.
-
-7. You may be prompted to change or use the defaults, if you have many aws single account logins you will need to modify the defaults.
-
-8. Ensure the Identifier(Entity ID) is set to something valid (Should be `https://signin.aws.amazon.com/saml` optionally add a `#identifier`
-
-<img src="/assets/refarch/screen-shot-2023-01-18-at-11.05.51-am.png" height="192" width="778" /><br/>
-
-9. Download the XML File by Pressing the Button on **Step** **5** **Setup &lt;App Name&gt;**. This should download an XML File, please send this to the CloudPosse Team, this will be placed in your `aws-saml` component to add your login.
+  9. Download the XML File by Pressing the Button on **Step** **5** **Setup &lt;App Name&gt;**. This should download an XML File, please send this to the CloudPosse Team, this will be placed in your `aws-saml` component to add your login.
+</Steps>
 
 ### Setting up Login Role
 
@@ -50,7 +45,7 @@ The next steps determine which role you sign into from the app. By default we re
 
 Under the apps **Single sign-on** configuration (where the last steps left off) **Step 2** has an attribute called Role. this is the Role given to the user to attempt to sign into.
 
-<img src="/assets/refarch/screen-shot-2023-01-18-at-11.14.05-am.png" height="247" width="780" /><br/>
+<img src="/assets/refarch/screen-shot-2023-01-18-at-11.14.05-am.png" /><br/>
 
   The AWS Docs ([https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml_assertions.html#saml_role-attribute](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml_assertions.html#saml_role-attribute)) require this to be of the format:
 
@@ -74,19 +69,13 @@ If you are using the most basic plan you can get around this paywall with a rege
 
 ### Workaround Regex:
 
-Step **2** edit the attributes and claims, edit specifically the **Role**
-
-<img src="/assets/refarch/screen-shot-2023-01-18-at-11.23.24-am.png" height="678" width="934" /><br/>
-
-Set the Source to be a transformation of anything such as `RegexReplace (user.primaryauthoritativeemail)`
-
-Set the `Regex pattern` to be `(.+)$`
-
-Set the `Replacement pattern` to be your value `arn:aws:iam::account-number:role/role-name1,arn:aws:iam::account-number:saml-provider/provider-name`
-
-Test the replacement and ensure you get a value like the `arn:aws:iam::account-number:role/role-name1,arn:aws:iam::account-number:saml-provider/provider-name`.
-
-<img src="/assets/refarch/screen-shot-2023-01-18-at-11.25.37-am.png" height="561" width="1565" /><br/>
+<Steps>
+  - Step **2** edit the attributes and claims, edit specifically the **Role** <img src="/assets/refarch/screen-shot-2023-01-18-at-11.23.24-am.png" /><br/>
+  - Set the Source to be a transformation of anything such as `RegexReplace (user.primaryauthoritativeemail)`
+  - Set the `Regex pattern` to be `(.+)$`
+  - Set the `Replacement pattern` to be your value `arn:aws:iam::account-number:role/role-name1,arn:aws:iam::account-number:saml-provider/provider-name`
+  - Test the replacement and ensure you get a value like the `arn:aws:iam::account-number:role/role-name1,arn:aws:iam::account-number:saml-provider/provider-name`. <img src="/assets/refarch/screen-shot-2023-01-18-at-11.25.37-am.png" /><br/>
+</Steps>
 
 ## Add The app to Specific Users
 

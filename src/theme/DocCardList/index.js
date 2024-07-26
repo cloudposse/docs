@@ -14,6 +14,7 @@ export default function DocCardList(props) {
   if (!items) {
     return <DocCardListForCurrentSidebarCategory {...props} />;
   }
+
   const filteredItems = filterDocCardListItems(items);
   return (
     <section className={clsx('row', className)}>

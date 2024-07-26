@@ -7,6 +7,10 @@ refarch_id: REFARCH-471
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+<Intro>
+When establishing your AWS infrastructure strategy, you need to decide whether to create a new AWS Organization or reuse an existing one. This decision involves evaluating the limitations and capabilities of AWS Control Tower, the special roles within the root account, and the ability to manage organizational configurations. Cloud Posse recommends starting with a new organization to ensure a clear separation between historical and next-gen infrastructure, leveraging transit gateways or VPC peering for integration.
+</Intro>
+
 # Decide on AWS Organization Strategy
 
 :::tip
@@ -19,8 +23,8 @@ Cloud Posse recommends starting with a **Net-New Organization**
 
 - Only one AWS Control Tower can exist in an organization.
 
-- AWS Control Tower cannot be managed with Terraform (as of 2021-10-29). Depending on the Scope of Work, Cloud Posse is
-  usually responsible for provisioning accounts with terraform which requires all the same access as Control Tower.
+- AWS Control Tower only recenlty became managable with Terraform, and full support is not availble.
+  Depending on the Scope of Work, Cloud Posse is usually responsible for provisioning accounts with terraform which requires all the same access as Control Tower.
 
 - Member accounts can only be provisioned from the top-level root “organization” account
 

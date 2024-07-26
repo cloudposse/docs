@@ -1,9 +1,14 @@
 ---
 title: "How to Create `SuperAdmin` user"
 sidebar_label: "Create the `SuperAdmin` user"
+description: Create `SuperAdmin` for secure, controlled AWS root access.
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+The `SuperAdmin` user is necessary for performing administrative functions that IAM roles cannot, ensuring secure and controlled access to the root account while minimizing risks. These are the step-by-step instructions for creating a `SuperAdmin` user in AWS, including setting permissions, enabling MFA, and securely storing credentials in 1Password.
+</Intro>
 
 [REFARCH-73 - Provision SuperAdmin User for Root Level IAM Management](https://cloudposse.atlassian.net/browse/REFARCH-73)
 
@@ -86,16 +91,11 @@ be out of date as the AWS web console interface changes.
 1. Login to the AWS `root` account using the root credentials from 1Password
 
 2. Navigate to the IAM console page
-
-<img src="/assets/refarch/image-20210720-181056.png" height="201" width="1185" /><br/>
+  <img src="/assets/refarch/image-20210720-181056.png" height="201" width="1185" /><br/>
 
 3. In the IAM console, select `Users` on the sidebar
 
-4. <img src="/assets/refarch/image-20210720-181130.png" height="617" width="250" /><br/>
-
-Click `Add users` button
-
-<img src="/assets/refarch/image-20210720-181200.png" height="310" width="1544" /><br/>
+4. <img src="/assets/refarch/image-20210720-181130.png" height="617" width="250" /><br/>Click `Add users` button <img src="/assets/refarch/image-20210720-181200.png" height="310" width="1544" /><br/>
 
 5. Enter "SuperAdmin" for `User name` and check `Programmatic access` and leave `AWS Management Console access`
    unchecked. Click `Next: Permissions` at the bottom right corner of the page

@@ -1,24 +1,27 @@
 ---
 title: "Decide on RDS Technology and Architecture"
+sidebar_label: "RDS Technology and Architecture"
 sidebar_position: 100
 refarch_id: REFARCH-211
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on RDS Technology and Architecture
-
 ## Problem
+
 RDS offers a variety of features and deployment options. A specific RDS deployment option needs to be adopted for the application database solution. Options are not mutually exclusive and multiple types of databases can be deployed depending on your requirements.
 
 ## Context
+
 Amazon’s RDS Relational Database Service (Amazon RDS) is a fully managed Database-as-a-Service that makes it easy to set up, operate, and scale a relational database in the cloud. It provides cost-efficient and resizable capacity while automating time-consuming administration tasks such as hardware provisioning, database setup, patching and backups.
 
 ## Considered Options
+
 There are several ways in which an RDS Cluster can be deployed.
 
 ### **Option 1:** Amazon RDS Instances
-Amazon RDS Instances are the original version of RDS and provide simple master-slave replication with multiple read replicas and multi-AZ fail-over capabilities. RDS Instances are best suited for one-off databases (e.g. for microservices or dev environments) where performance is likely not an issue and the ability to do point-in-time restores for a database is required.  Point in time recovery allows you to create an <ins>additional</ins> RDS instance (e.g. it does replace your running instance), based on the data as it existed on your instance at any specific point in time by restoring and replaying the journal to a specific point in time. This feature is not supported yet by RDS Aurora.
+
+Amazon RDS Instances are the original version of RDS and provide simple master-slave replication with multiple read replicas and multi-AZ fail-over capabilities. RDS Instances are best suited for one-off databases (e.g. for microservices or dev environments) where performance is likely not an issue and the ability to do point-in-time restores for a database is required.  Point in time recovery allows you to create an <i>additional</i> RDS instance (e.g. it does replace your running instance), based on the data as it existed on your instance at any specific point in time by restoring and replaying the journal to a specific point in time. This feature is not supported yet by RDS Aurora.
 
 [https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIT.html](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIT.html)
 
@@ -28,6 +31,7 @@ AWS offers push-button migration to convert existing Amazon RDS MySQL and Postgr
 :::
 
 ### **Option 2:** Amazon Aurora DB Cluster (recommended for most use cases)
+
 An RDS Aurora Cluster can be deployed into each VPC. The Aurora DB Cluster must use a DB Subnet Group that spans at least two availability zones.
 
 For more information, see: [Creating a DB Cluster (Amazon Aurora)](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.CreateInstance.html).
@@ -43,6 +47,7 @@ RDS Aurora does not support Point-in-time Recovery (PITR) like with RDS instance
 :::
 
 ### **Option 3:** Amazon Aurora Global Database
+
 Amazon RDS Aurora can be deployed as a global database, with an Aurora DB cluster existing in a designated primary AWS region, and up to 5 additional Aurora DB clusters in designated secondary AWS Regions.
 
 The Aurora DB clusters in the secondary regions are Aurora replicas, but [write forwarding](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-write-forwarding.html) can be enabled in order to forward write operations to the primary region DB cluster.
@@ -60,6 +65,7 @@ For more information, see: [Getting Started with Amazon Aurora Global Databases]
 [https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1175978124](/reference-architecture/fundamentals/design-decisions/foundational-platform/decide-on-the-backup-aws-region-for-aurora-global-cluster)
 
 ### **Option 4:** Amazon Aurora Serverless
+
 Amazon Aurora is also offered as Aurora Serverless. This is an on-demand autoscaling configuration that scales automatically horizontally based on usage, and shuts down when it is not in use.
 
 The downside to Amazon Aurora Serverless is that there is a warm-up cost that can cause connections to hang for up to 30 seconds. This is potentially mitigated using the [AWS RDS proxy service](https://aws.amazon.com/rds/proxy/).
@@ -78,6 +84,7 @@ Don't use Aurora Serverless v2 (preview) for production databases. All resources
 ## Other Considerations
 
 ### RDS Engine: MySQL or Postgres
+
 This decision is determined based on the stack(s) of the applications being onboarded and their supported databases.
 
 :::caution
@@ -86,6 +93,7 @@ This decision is determined based on the stack(s) of the applications being onbo
 :::
 
 ### RDS Multi-AZ
+
 Lastly, a regular RDS instance can be deployed in a Multi-AZ configuration. A standby instance allows for Multi-AZ redundancy, and [read-replicas](https://aws.amazon.com/rds/features/read-replicas/) can be used to reduce the IO load on the primary RDS instance.
 
 This is a more cost-effective option when compared to the Amazon Aurora offerings, but it is also not as scalable.
@@ -93,6 +101,7 @@ This is a more cost-effective option when compared to the Amazon Aurora offering
 For more information, see: [High availability (Multi-AZ) for Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html).
 
 ### Tenancy: Shared or Dedicated
+
 Once RDS is deployed, services can either use each database in a shared or dedicated tenancy model.
 
 1. In the shared model, multiple application databases are provisioned on one database instance (or cluster):
@@ -111,6 +120,7 @@ slower and more manual.
 - This is the least economical option.
 
 ## Consequences
+
 A component for an Amazon Aurora RDS cluster will be created and provisioned in each VPC as needed.
 
 

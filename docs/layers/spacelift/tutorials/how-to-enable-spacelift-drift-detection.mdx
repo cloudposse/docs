@@ -23,7 +23,7 @@ Spacelift supports automatically detecting drift by re-running any stack on a cr
 
 The configuration can be controlled by updating the stack configuration for a component by toggling the `drift_detection_enabled` and `drift_detection_reconcile` settings.
 
-```
+```yaml
 components:
   terraform:
     your-component:
@@ -39,7 +39,7 @@ components:
 
 The defaults for all components are set in `spacelift` component in `default.auto.tfvars`file.
 
-```
+```ini
 # This will enable the detection of drift. Use with `drift_detection_reconcile` to ensure automatic reconciliation.
 drift_detection_enabled = true
 

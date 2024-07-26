@@ -265,32 +265,32 @@ The token is generated on '_Workflow Run_' initialization. So it is unique per '
 
 By default, the token can have `permissive` or `restricted` scopes granted. The difference between declared in the table below. You can select which of the default scopes would be used. For settings per repo - follow [this documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository), for setting for all repositories in the organization - follow [this documentation](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#setting-the-permissions-of-the-github_token-for-your-organization).
 
-|Scope | Default access<br/>(permissive) | Default access<br/>(restricted)|
-| ----- | ----- | ----- |
-|actions | read/write | none|
-|checks | read/write | none|
-|contents | read/write | read|
-|deployments | read/write | none|
-|id-token | none | none|
-|issues | read/write | none|
-|metadata | read | read|
-|packages | read/write | none|
-|pages | read/write | none|
-|pull-requests | read/write | none|
-|repository-projects | read/write | none|
-|security-events | read/write | none|
-|statuses | read/write | none|
+| Scope               | Default access<br/>(permissive) | Default access<br/>(restricted) |
+| ------------------- | ------------------------------- | ------------------------------- |
+| actions             | read/write                      | none                            |
+| checks              | read/write                      | none                            |
+| contents            | read/write                      | read                            |
+| deployments         | read/write                      | none                            |
+| id-token            | none                            | none                            |
+| issues              | read/write                      | none                            |
+| metadata            | read                            | read                            |
+| packages            | read/write                      | none                            |
+| pages               | read/write                      | none                            |
+| pull-requests       | read/write                      | none                            |
+| repository-projects | read/write                      | none                            |
+| security-events     | read/write                      | none                            |
+| statuses            | read/write                      | none                            |
 
 We recommend using the `restricted` scope by default. GHA workflows can [explicitly escalate permissions](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#how-the-permissions-are-calculated-for-a-workflow-job) if that’s required for the process.
 
 All workflows implemented in POC explicitly request escalation of permission from the `restricted` scope. Please check the following table.
 
-|Scope | Default access<br/>(restricted) | Pull Request Workflow | Bleeding edge Workflow | Release Workflow | Hotfix Pull Request Workflow | Hotfix workflow|
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-|contents | read | read | read/write | read/write | read | read/write|
-|deployments | none | read/write | none | none | read/write | none|
-|metadata | read | read | read | read | read | read|
-|pull-requests | none | read/write | none | none | read/write | read/write|
+| Scope         | Default access<br/>(restricted) | Pull Request Workflow | Bleeding edge Workflow | Release Workflow | Hotfix Pull Request Workflow | Hotfix workflow |
+| ------------- | ------------------------------- | --------------------- | ---------------------- | ---------------- | ---------------------------- | --------------- |
+| contents      | read                            | read                  | read/write             | read/write       | read                         | read/write      |
+| deployments   | none                            | read/write            | none                   | none             | read/write                   | none            |
+| metadata      | read                            | read                  | read                   | read             | read                         | read            |
+| pull-requests | none                            | read/write            | none                   | none             | read/write                   | read/write      |
 
 - [https://docs.github.com/en/actions/security-guides/automatic-token-authentication](https://docs.github.com/en/actions/security-guides/automatic-token-authentication)
 
@@ -354,6 +354,4 @@ That permission can be granted on the same with default scopes for '_Default tok
 
 ### Learn more:
 
-- [https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#stealing-the-jobs-github_token](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#stealing-the-jobs-github_token)
-
-## Change History
+- https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#stealing-the-jobs-github_token

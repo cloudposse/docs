@@ -1,0 +1,31 @@
+---
+title: "Use Custom AWS Region Codes"
+sidebar_label: "Custom AWS Region Codes"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+The AWS Public Cloud spans **25 geographic regions** around the world, with announced plans for 8 more AWS Regions in Australia, India, Indonesia, Israel, New Zealand, Spain, Switzerland, and United Arab Emirates (UAE). Regions play a big factor in naming conventions for multi-region infrastructures for disambiguation and resource residency. See [Decide on Regional Naming Scheme](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-regional-naming-scheme), [https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=1176010884](https://cloudposse.atlassian.net/wiki/pages/resumedraft.action?draftId=1176010884), [Decide on Namespace Abbreviation](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-namespace-abbreviation) for context. Our [Terraform](/fundamentals/terraform) is used to define programmatically consistent resource names with deterministic fields separated by a common delimiter (typically `-`), including a field for region (which we call `environment`). Since the AWS regions include a `-`, we do not want our region code to include it. Additionally, many AWS resource names are restricted to 32 or 64 characters making it all the more important to conserve characters for disambiguation of resource names.
+
+<img src="/assets/refarch/cleanshot-2021-11-04-at-23.01.23@2x-20211105-040142.png" /><br/>
+
+## Solution
+
+Cloud Posse provides two naming conventions to address AWS regions: `fixed` and `short`. They are defined in the `terraform-aws-utils` module, which exposes mapping outputs to use when working in AWS. It provides compact alternative codes for Regions, Availability Zones, and Local Zones that are guaranteed to use only digits and lower case letters: no hyphens. Conversions to and from official codes and alternative codes are handled via lookup maps.
+
+The `short` abbreviations are variable-length (generally 4-6 characters, but length limits not guaranteed) and strictly algorithmically derived so that people can more easily interpret them.
+
+The `fixed` abbreviations are always exactly 3 characters for regions and 4 characters for availability zones and local zones, but have some exceptional cases (China, Africa, Asia-Pacific South, US GovCloud) that have non-obvious abbreviations.
+
+We currently support Local Zones but not Wavelength Zones. If we support Wavelength Zones in the future, it is likely that the fixed-length abbreviations for them will be non-intuitive.
+
+The intention is that existing mapping will never change, and if new regions or zones are created that conflict with existing ones, they will be given non-standard mappings so as not to conflict.
+
+## Region Codes
+
+[https://github.com/cloudposse/terraform-aws-utils/blob/master/main.tf](https://github.com/cloudposse/terraform-aws-utils/blob/master/main.tf)
+
+

@@ -1,0 +1,216 @@
+---
+title: "Proposed: Atmos Workflows v2"
+sidebar_label: "Atmos Workflows v2"
+sidebar_position: 200
+---
+
+**Date**: **26 Jan 2022**
+
+:::info Needs Update!
+
+The content in this ADR may be out-of-date and needing an update. For questions, please reach out to Cloud Posse
+
+- The proposal has been already been adopted, and this ADR needs to be updated to reflect the final decision. Cloud Posse recommends use of Workflows generally with [Atmos Workflows](https://atmos.tools/core-concepts/workflows/) and specifically with [Reference Architecture](/reference-architecture/setup/workflows/).
+
+:::
+
+## Status
+**DRAFT**
+
+## Problem
+In the original `variant` version of `atmos` we had the concept of workflows. These were a simple set of steps that could be executed in order to bring up an environment or execute some kind of operation. When we ported `atmos` to Golang, we didn’t carry over this functionality because it was seldom used as implemented. Updating a workflow with all the steps was cumbersome. If a workflow failed, there was no way to restart back at the last failed step. To define a workflow to build and destroy an environment, would require defining two workflows (E.g. `create-env` and `destroy-env`).
+
+## Context
+
+## Considered Alternatives
+
+- Use `make` (or other task runner) to call `atmos`
+
+- Use shell scripts
+
+## Other examples
+
+- See `astro` by Uber (abandoned) [https://github.com/uber/astro](https://github.com/uber/astro)
+
+- Atlantis workflows: [https://www.runatlantis.io/docs/custom-workflows.html#use-cases](https://www.runatlantis.io/docs/custom-workflows.html#use-cases)
+
+- Terragrunt dependencies [https://terragrunt.gruntwork.io/docs/features/execute-terraform-commands-on-multiple-modules-at-once/](https://terragrunt.gruntwork.io/docs/features/execute-terraform-commands-on-multiple-modules-at-once/)
+
+## Considered Options
+
+### Option 1: Maintain the exact same interface
+
+```
+import: []
+vars: {}
+
+terraform:
+  vars: {}
+
+helmfile:
+  vars: {}
+
+components:
+  terraform:
+    fetch-location:
+      vars: {}
+
+    fetch-weather:
+      vars: {}
+
+    output-results:
+      vars: {}
+        print_users_weather_enabled: true
+
+  helmfile: {}
+
+workflows:
+  deploy-all:
+    description: Deploy terraform projects in order
+    steps:
+      - job: terraform deploy fetch-location
+      - job: terraform deploy fetch-weather
+      - job: terraform deploy output-results
+```
+
+### Option 2: Workflows with parameters
+
+```
+import: []
+vars: {}
+
+terraform:
+  vars: {}
+
+helmfile:
+  vars: {}
+
+components:
+  terraform:
+    fetch-location:
+      vars: {}
+
+    fetch-weather:
+      vars: {}
+
+    output-results:
+      vars: {}
+        print_users_weather_enabled: true
+
+  helmfile: {}
+
+workflows:
+  deploy-all:
+    description: Deploy terraform projects in order
+    steps:
+      - subcommand: terraform apply fetch-location
+        vars:
+          enabled: true
+      - subcommand: terraform apply fetch-weather
+      - subcommand: terraform apply output-results
+
+  destroy-all:
+    description: Destroy terraform projects in order
+    steps:
+      - subcommand: terraform apply output-results
+        vars:
+          enabled: false
+      - subcommand: terraform apply fetch-weather
+        vars:
+          enabled: false
+      - subcommand: terraform apply fetch-location
+        vars:
+          enabled: false
+
+```
+
+### Option 3: Support native dependencies between components and a `--reverse` flag
+
+First, we add an an official `depends-on` field to our stack configuration.
+
+In this configuration `echo` → `vpc` → `eks` → `external-dns` → `cert-manager`
+
+```
+components:
+  terraform:
+    echo:
+      metadata:
+        type: abstract
+      hooks:
+        before:
+        - echo "Hello world!"
+
+    vpc:
+      component: vpc
+      depends-on: echo
+
+    eks:
+      component: eks
+      depends-on: vpc
+
+    external-dns:
+      depends-on: eks
+      hooks:
+        before-deploy:
+        - sleep 100
+
+    cert-manager:
+      depends-on: external-dns
+
+    alb-controller:
+      depends-on: eks
+```
+
+Provision the eks component’s workflow (and everything that depends on `eks`)
+
+```
+atmos workflow terraform apply eks
+```
+
+Decommission the eks component
+
+```
+atmos workflow terraform apply eks --reverse
+```
+
+Provision everything that depends on  `eks` , which will deploy `external-dns` and then `cert-manager`
+
+```
+atmos workflow terraform apply --depends-on external-dns
+```
+
+### Option 4: Leverage Existing Go-based Task Runner Framework
+
+Use something like `gotask` to add rich support into atmos stack configurations, without reinventing the wheel.
+
+gotask: [https://taskfile.dev/#/](https://taskfile.dev/#/)
+
+variant: [https://github.com/mumoshu/variant](https://github.com/mumoshu/variant)
+
+mage: [https://github.com/magefile/mage](https://github.com/magefile/mage)
+
+```
+# Gotask example
+tasks:
+  deploy-all:
+    cmds:
+      - echo 'Hello World from Task!'
+      - atmos terraform apply eks
+      - sleep 100
+      - atmos terraform apply external-dns
+    silent: true
+```
+
+## Decision
+
+**DECIDED**:
+
+## Consequences
+
+-
+
+## References
+
+-
+
+

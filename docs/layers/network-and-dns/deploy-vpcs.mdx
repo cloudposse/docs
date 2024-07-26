@@ -5,27 +5,41 @@ sidebar_position: 0
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
 <Intro>
 The first step in deploying the network is to deploy the VPCs in each region. This will create the necessary foundation for the platform to run and includes the VPC, subnets, route tables, security groups, and VPC endpoints.
 </Intro>
 
-## Deployment
+<Steps>
+  <Step>
+  ## <StepNumber/> Vendor the Networking components
 
-First, vendor the networking components by running the following:
+  First, vendor the networking components by running the following:
 
-```bash
-atmos workflow vendor -f network
-```
+  ```bash
+  atmos workflow vendor -f network
+  ```
+  </Step>
 
-Once this is done, initialize all the VPCs in every configured region by running the following command:
+  <Step>
+  ## <StepNumber/> Initialize all VPCs
 
-```bash
-atmos workflow deploy/vpc -f network
-```
+  Initialize all the VPCs in every configured region by running the following command:
 
-Once all VPCs are deployed, decomission the default VPC in each region by running the following command from within the Geodesic shell:
+  ```bash
+  atmos workflow deploy/vpc -f network
+  ```
+  </Step>
 
-```bash
-wipe-default-vpcs
-```
+  <Step>
+  ## <StepNumber/> Decommission the default VPCs
+  Once all VPCs are deployed, decomission the default VPC in each region by running the following command from within the Geodesic shell:
+
+  ```bash
+  wipe-default-vpcs
+  ```
+  </Step>
+</Steps>

@@ -9,7 +9,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 
 ## Problem
 
-<img src="/assets/refarch/image-20211109-195645.png" height="942" width="1504" /><br/>
+<img src="/assets/refarch/image-20211109-195645.png" /><br/>
 
 When your sites go down, we need to be able to communicate more graciously to customers that you’re having issues than a generic “502 Bad Gateway” message.
 
@@ -49,7 +49,5 @@ Use ALB with [fixed response](https://docs.aws.amazon.com/elasticloadbalancing/l
 - Use `fixed-response` populated with HTML from `file` with inline CSS, SVGs, etc. and no external dependencies (if possible)
 
 - Add GA code for analytics
-
-## Change History
 
 

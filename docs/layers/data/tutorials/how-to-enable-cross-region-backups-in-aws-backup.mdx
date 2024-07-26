@@ -4,6 +4,7 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
 
 
 # How to Enable Cross-Region Backups in AWS-Backup
@@ -14,10 +15,7 @@ AWS Backup is a regional component that can backup a ton of resources. It is oft
 
 ## Solution
 
-:::tip
-TL;DR Create a backup vault and point to it via `destination_vault_arn` variable!
-
-:::
+<Note title="TL;DR">Create a backup vault and point to it via `destination_vault_arn` variable!</Note>
 
 Currently, this requires deploying the component into two different regions. The first is a normal aws-backup component. This includes a `plan`, a `vault`, and an `iam` role. The second aws-backup component should be deployed to the cross-region destination.
 

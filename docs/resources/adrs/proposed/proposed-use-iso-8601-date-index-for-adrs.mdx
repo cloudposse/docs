@@ -1,0 +1,51 @@
+---
+title: "Proposed: Use ISO-8601 Date Index for ADRs"
+sidebar_label: "Use ISO-8601 Date Index for ADRs"
+sidebar_position: 200
+---
+
+**Date**: **19 Oct 2021**
+
+:::warning Rejected!
+
+The proposal in this ADR was rejected! For questions, please reach out to Cloud Posse.
+
+:::
+
+## Status
+
+**PROPOSED**
+
+## Context
+
+Using the auto-incrementing index for ADRs is the conventional way of indexing them. The problem is when we have multiple open PRs, the indexes frequently end up conflicting, forcing team members to update the PRs.
+
+Using ISO-8601 dates will accomplish the same purpose of an incrementing ID, but avoid needing to renumber all ADRs based on PR merge order.
+
+### Pros
+
+- Auto incrementing based on date
+
+- No conflicts, assuming we consider the (date, summary) is the ID.
+
+### Cons
+
+- We can no longer refer to ADRs by a single number (E.g. `ADR 0007`). Maybe we refer to the corresponding `REFARCH` ticket instead.
+
+## Decision
+
+**DECIDED**: Use ISO-8601 dates for ADR index
+
+## Consequences
+
+- Write all new ADRs using date format.
+
+- Recommend updating existing ADRs with date
+
+- Regenerate the table of contents
+
+## References
+
+- [Architectural Design Records (ADRs)](/reference-architecture/reference/adrs)
+
+

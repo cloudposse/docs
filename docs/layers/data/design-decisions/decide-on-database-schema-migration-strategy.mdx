@@ -1,14 +1,14 @@
 ---
 title: "Decide on Database Schema Migration Strategy"
+sidebar_label: "Database Schema Migration Strategy"
 sidebar_position: 100
 refarch_id: REFARCH-422
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-# Decide on Database Schema Migration Strategy
-
 ### Problem and Context
+
 We must decided how and when to run database migrations. The strategy will depend on several factors, including whether or not any automated tools are already in place to handle these migrations and the platform (e.g. ECS or EKS).
 
 ## Considerations
@@ -62,7 +62,5 @@ We must decided how and when to run database migrations. The strategy will depen
 - Works well, when it works. When it fails, it’s hard to regulate what happens with the services.
 
 - Kubernetes will keep re-attempting the migration if the job exit’s non-zero. If we squash the exit code, then we don’t realize it’s failing, unless there’s other monitoring in place.
-
-### Change History
 
 

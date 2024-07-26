@@ -6,6 +6,7 @@ description: Office Hours with Cloud Posse
 id: office-hours
 ---
 import HubspotForm from 'react-hubspot-form'
+import { YouTubePlaylist } from '@codesweetly/react-youtube-playlist';
 
 # Office Hours Registration
 
@@ -17,3 +18,11 @@ import HubspotForm from 'react-hubspot-form'
     onReady={(form) => console.log('Form ready!')}
     loading={<div>Loading...</div>}
 />
+
+## Past Recordings
+
+<div className="youtube">
+  <YouTubePlaylist
+    apiKey="AIzaSyDHVTCXzhWSzqXZhik4BWem6xnzASqS17Y"
+    playlistId="PLhRztDM6Uvne8MUuwXrv2truMl6gVZ0D8" />
+</div>

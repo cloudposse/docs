@@ -5,6 +5,10 @@ sidebar_position: 50
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
 
 We use Leapp to facilitate logging into AWS. Leapp is a tool that allows you to authenticate with your organization's
 Identity Provider (IdP) and then assume an IAM Role in AWS. This allows you to use your organization's SSO to
@@ -12,114 +16,157 @@ authenticate with AWS.
 
 ## Requirements
 
-Install Leapp following [Leapp documentation](https://www.leapp.cloud/download/desktop-app) or with brew:
+<Steps>
+  <Step>
+    ### <StepNumber/> Install Leapp
+    Install Leapp following [Leapp documentation](https://www.leapp.cloud/download/desktop-app) or with brew:
 
-```console
-brew install --cask leapp
-```
+    ```console
+    brew install --cask leapp
+    ```
 
-(If required) Install AWS Session Manager:
+  </Step>
 
-```console
-brew install --cask session-manager-plugin
-```
+  <Step>
+    ### <StepNumber/> Install AWS Session Manager (If required)
 
-Launch Leapp
+    ```console
+    brew install --cask session-manager-plugin
+    ```
 
-![Leapp Search](https://docs.cloudposse.com/assets/refarch/leapp-search.png)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Launch Leapp
+
+    ![Leapp Search](https://docs.cloudposse.com/assets/refarch/leapp-search.png)
+  </Step>
+</Steps>
 
 ## Setup
 
 The following steps are required only for initial setup.
 
-1. Launch Leapp
-2. Create new Integration
+<Steps>
+  <Step>
+    ### <StepNumber/> Launch Leapp
+  </Step>
 
-![Leapp Integration](https://docs.cloudposse.com/assets/refarch/leapp-integration.png)
+  <Step>
+    ### <StepNumber/> Create new Integration
+    ![Leapp Integration](https://docs.cloudposse.com/assets/refarch/leapp-integration.png)
+  </Step>
 
-3. Fill out Single Sign-On configuration
+  <Step>
+    ### <StepNumber/> Fill out Single Sign-On configuration
 
-<!-- prettier-ignore-start -->
-```yaml
-Alias: acme # This can be whatever you would like to label the Integration in Leapp
-Portal URL: https://d-1111aa1a11.awsapps.com/start/ # Set this to your SSO Launch URL)
-AWS Region: us-east-1 # Your primary region
-Auth. Method: In-browser # Optional
-```
-<!-- prettier-ignore-end -->
+    ```yaml
+    Alias: acme # This can be whatever you would like to label the Integration in Leapp
+    Portal URL: https://d-1111aa1a11.awsapps.com/start/ # Set this to your SSO Launch URL)
+    AWS Region: us-east-1 # Your primary region
+    Auth. Method: In-browser # Optional
+    ```
 
-4. Click Integration “dots” and select “Login”. This should launch a tab in your web browser.
+  </Step>
 
-![Leapp Integration Dots](https://docs.cloudposse.com/assets/refarch/leapp-integration-dots.png)
-![Leapp Integration Login](https://docs.cloudposse.com/assets/refarch/leapp-integration-login.png)
+  <Step>
+    ### <StepNumber/> Click Integration “dots” and select “Login”.
 
-5. Log into your IdP for your Organization and “Allow” Authorization request
+    This should launch a tab in your web browser.
 
-6. Create a “Chained Session” from the `core-identity` account with the `IdentityDevopsTeamAccess` Role
+    ![Leapp Integration Dots](https://docs.cloudposse.com/assets/refarch/leapp-integration-dots.png)
+    ![Leapp Integration Login](https://docs.cloudposse.com/assets/refarch/leapp-integration-login.png)
+  </Step>
 
-:::info
+  <Step>
+    ### <StepNumber/> Log into your IdP
 
-This Permission Set will match the given Team name. For example, Developers will use `IdentityDevelopersTeamAccess` and
-DevOps will use `IdentityDevopsTeamAccess`.
+    Log into your IdP for your Organization and “Allow” Authorization request
+  </Step>
 
-:::
+  <Step>
+    ### <StepNumber/> Create a “Chained Session” from `core-identity`
+    Create a “Chained Session” from the `core-identity` account with the `IdentityDevopsTeamAccess` Role
 
-![Leapp Chained Session](https://docs.cloudposse.com/assets/refarch/leapp-chained-session.png)
+    <Note>
+      This Permission Set will match the given Team name. For example, Developers will use `IdentityDevelopersTeamAccess` and
+      DevOps will use `IdentityDevopsTeamAccess`.
+    </Note>
 
-7. Fill out the Chained Session configuration for connecting to `core-identity`
+    ![Leapp Chained Session](https://docs.cloudposse.com/assets/refarch/leapp-chained-session.png)
 
-```yaml
-Named profile: acme-identity # This must match the profile name given in AWS config
-Session Alias: acme-identity # Optional
-AWS Region: us-east-1 # This must be your primary region
-Role ARN: arn:aws:iam::666666666666:role/acme-core-gbl-identity-devops # This ARN depends on the given team. This example uses the "devops" team
-Role Session Name: acme-identity # Optional
-Assumer Session: core-identity # This must match the name of the identity account, almost always "core-identity"
-```
+  </Step>
 
-![Leapp Chained Session Configuration](https://docs.cloudposse.com/assets/refarch/leapp-chained-session-configuration.png)
+  <Step>
+    ### <StepNumber/> Fill out the Chained Session configuration
 
-8. (Optional) Pin the new `acme-identity` IAM Role Chained Session
+    Fill out the Chained Session configuration for connecting to `core-identity`
 
-This makes it easier to filter to the primary session we will be used for connecting to AWS
+    ```yaml
+    Named profile: acme-identity # This must match the profile name given in AWS config
+    Session Alias: acme-identity # Optional
+    AWS Region: us-east-1 # This must be your primary region
+    Role ARN: arn:aws:iam::666666666666:role/acme-core-gbl-identity-devops # This ARN depends on the given team. This example uses the "devops" team
+    Role Session Name: acme-identity # Optional
+    Assumer Session: core-identity # This must match the name of the identity account, almost always "core-identity"
+    ```
 
-- Go to All Sessions
-- Find the new IAM Role Chained Session for `acme-identity` or whatever value you used for `Session Alias`
-- Click the dots on the IAM Role Chained Session
-- Select Pin Session
+    ![Leapp Chained Session Configuration](https://docs.cloudposse.com/assets/refarch/leapp-chained-session-configuration.png)
+  </Step>
 
-9. Connect to `acme-identity` IAM Role Chained Session
+  <Step>
+    ### <StepNumber/> (Optional) Pin the new `acme-identity` IAM Role Chained Session
 
-- Select the Session
-- Click Start Session
+    This makes it easier to filter to the primary session we will be used for connecting to AWS
+    <Steps>
+      - Go to All Sessions
+      - Find the new IAM Role Chained Session for `acme-identity` or whatever value you used for `Session Alias`
+      - Click the dots on the IAM Role Chained Session
+      - Select Pin Session
+    </Steps>
+  </Step>
 
-![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+  <Step>
+    ### <StepNumber/> Connect to `acme-identity` IAM Role Chained Session
+    <Steps>
+      - Select the Session
+      - Click Start Session
+        ![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+    </Steps>
+  </Step>
 
-10. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
+  <Step>
+    ### <StepNumber/> Rebuild Geodesic
+    Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
 
-```console
-make all
-```
+    ```console
+    make all
+    ```
+  </Step>
 
-11. Done!
+  <Step>
+    ### <StepNumber/> Use AWS in Geodesic
+    You're done! You can now use AWS from with in Geodesic.
 
-![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)
+    ![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)
+  </Step>
+</Steps>
 
 ## Use
 
 After initial setup, quickly connect to AWS with the following steps:
 
-1. Launch Leapp
-2. Connect to `acme-identity` IAM Role Chained Session
+<Steps>
+  1. Launch Leapp
+  2. Connect to `acme-identity` IAM Role Chained Session
+      ![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+  3. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
 
-![Leapp Start Session](https://docs.cloudposse.com/assets/refarch/leapp-start-session.png)
+      ```console
+      make run
+      ```
+  4. Done!<br/>
+    ![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)
+</Steps>
 
-3. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
 
-```console
-make run
-```
-
-4. Done!
-
-![Geodesic Check](https://docs.cloudposse.com/assets/refarch/geodesic-check.png)

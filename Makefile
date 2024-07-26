@@ -20,6 +20,9 @@ render:
 build: deps
 	npm run build
 
+clean::
+	npm run clear
+
 build-production: build
 	@exit 0
 

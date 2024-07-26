@@ -6,9 +6,12 @@ sidebar_class_name: hidden
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import ReactPlayer from "react-player";
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import SecondaryCTA from '@site/src/components/SecondaryCTA';
 
 <Intro>
-This chapter presents how Cloud Posse designs and manages AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
+This chapter presents how Cloud Posse designs and manages AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts using Atmos and Terraform, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf).
 </Intro>
 
 <KeyPoints>
@@ -26,7 +29,7 @@ This chapter presents how Cloud Posse designs and manages AWS Account architectu
 
 The [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf) defines AWS architectural best practices and presents a set of foundational questions to enable you to understand how a specific architecture aligns with cloud best practices.
 
-The AWS Well-Architected Framework provides several foundational recommendations, one of which is to distribute workloads across multiple AWS accounts. However, the framework does not prescribe how this should be achieved. AWS offers resources such as Control Tower or Account Factory for provisioning accounts, but these resources have some limitations. The primary issue is that they cannot be managed with Terraform, which means that manual effort is required to use them.
+The AWS Well-Architected Framework provides several foundational recommendations, one of which is to distribute workloads across multiple AWS accounts. However, the framework does not prescribe how this should be achieved. AWS offers resources such as Control Tower or Account Factory for provisioning accounts, but these resources have some limitations. The primary issue is that they cannot be managed sufficiently with Terraform, which means manual effort is required to use them.
 
 ## Our Solution
 
@@ -68,6 +71,8 @@ Multiple AWS accounts are all managed underneath an AWS Organization and organiz
 account-level administrators cannot bypass.
 
 ### Account Architecture
+
+By convention, we prefix each account name with its organizational unit (OU) to distinguish it from other accounts of the same type. For example, if we have an OU called `plat` (short for platform) and an account called "production" (or `prod` for short), we would name the account `plat-prod`.  In practice, there might be multiple production accounts, such as in a `data` OU, a `network` OU, and a `plat` OU. By prefixing each account with its OU, it is sufficiently disambiguated and follows a consistent convention.
 
 <dl>
   <dt>
@@ -267,6 +272,18 @@ Cloud Posse manages this process with the following components.
   <dd>This component is responsible for provisioning a bucket for storing cloudtrail logs for auditing purposes</dd>
 </dl>
 
+
+<ActionCard title="What comes next?">
+  Next, we'll prepare the organization to provision the Terraform State backend, followed by account provisioning.
+  If you're curious about the though that went into this process, please review the design decisions documentation.
+
+  <div>
+    <PrimaryCTA to="/layers/accounts/prepare-aws-organization">Next Step</PrimaryCTA>
+    <SecondaryCTA to="/layers/accounts/design-decisions">Review Design Decisions</SecondaryCTA >
+  </div>
+</ActionCard>
+
+
 ## References
 
 - [Decide on AWS Organization Strategy](/layers/accounts/design-decisions/decide-on-aws-organization-strategy/)
@@ -275,51 +292,6 @@ Cloud Posse manages this process with the following components.
 - [Decide on Email Address Format for AWS Accounts](/layers/accounts/design-decisions/decide-on-email-address-format-for-aws-accounts/)
 - [Structure of Terraform S3 State Backend Bucket](/layers/accounts/tutorials/terraform-s3-state/)
 
-## FAQ
-
-### Why not use Control Tower?
-
-AWS Control Tower cannot be managed with Terraform. Depending on the Scope of Work, Cloud Posse is usually responsible
-for provisioning accounts with terraform which requires all the same access as Control Tower.
-
-### Why are there so many accounts?
-
-Leveraging multiple AWS accounts within an AWS Organization is the only way to satisfy IAM level isolation. Each account
-has a very specific purpose, that all associated resources are isolated in that given account.
-
-### How we can set budgets?
-
-Create budgets with the `account-settings` component. For more, see
-[the `account-settings` component documentation](/components/library/aws/account-settings/)
-
-:::info
-
-Budgets created for the `root` account apply to the AWS Organization as a whole
-
-:::
-
-### How do you add or remove Service Control Policies?
-
-Service Control Policies are managed with the `account` component variable, `service_control_policies_config_paths`. For
-more, see [the `account` component documentation](/components/library/aws/account/)
-
-:::caution
-
-This component manages the state of all AWS accounts, so apply with extreme caution!
-
-:::
-
-### How can you create an Account?
-
-[Follow the documentation for creating and setting up AWS Accounts](/layers/accounts/tutorials/how-to-create-and-setup-aws-accounts/)
-
-### How do you delete an Account?
-
-[Follow the documentation for deleting AWS Accounts](/layers/accounts/tutorials/how-to-delete-aws-accounts/)
-
-### How can you create a Tenant?
-
-[Follow the documentation for creating a new Organizational Unit](/layers/accounts/tutorials/how-to-add-a-new-organizational-unit/)
 
 ### Mixins and Imports with Atmos
 
