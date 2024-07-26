@@ -5,5 +5,257 @@ sidebar_class_name: hidden
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ReactPlayer from 'react-player';
+import CodeBlock from '@theme/CodeBlock';
+import PartialAtmosTerraformPlan from '@site/examples/snippets/.github/workflows/atmos-terraform-plan.yaml';
+import PartialAtmosTerraformApply from '@site/examples/snippets/.github/workflows/atmos-terraform-apply.yaml';
+import PartialAtmosTerraformDispatch from '@site/examples/snippets/.github/workflows/atmos-terraform-dispatch.yaml';
+import PartialAtmosTerraformDriftDetection from '@site/examples/snippets/.github/workflows/atmos-terraform-drift-detection.yaml';
+import PartialAtmosTerraformDriftRemediation from '@site/examples/snippets/.github/workflows/atmos-terraform-drift-remediation.yaml';
+import PartialAtmosTerraformPlanMatrix from '@site/examples/snippets/.github/workflows/atmos-terraform-plan-matrix.yaml';
+import PartialAtmosTerraformApplyMatrix from '@site/examples/snippets/.github/workflows/atmos-terraform-apply-matrix.yaml';
 
-removed this page because it errors out without addition work. copy and fix this page from refarch-scaffold fundamentals
+<Intro>
+GitOps is a cloud-native continuous deployment methodology that uses Git as the single source of truth for declarative infrastructure and applications. Changes to infrastructure or applications are made through Git commits, and the actual state is automatically adjusted to match the desired state expressed in the Git repository. This approach provides an audit trail for changes, simplifies rollback, and enhances collaboration and visibility across teams.
+</Intro>
+
+<ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/gitops.mp4' />
+
+## The Problem
+
+Collaboration with Terraform in team environments is more difficult than traditional [release-engineering](/reference-architecture/fundamentals/release-engineering/) for web applications. Unlike containerized deployments, Terraform deployments are constantly modifying the state of infrastructure and behave a lot more like database migrations, except there are no transactions and therefore no practical way to do automated rollbacks. This means we have to be extra cautious.
+
+When teams start collaborating on infrastructure, the rate of change increases, and the likelihood of collisions as well. We need approval gates to control what changes and when, plus have the ability to review changes prior to deployment to make sure nothing catastrophic happens (e.g. database destroyed). Pull Requests are not enough to restrict what changes, since every Pull Request merged, changes the graph and therefore requires all other open Pull Requests to be re-validated. There's also a need to reconcile the desired state of infrastructure in Git with what is deployed; in busy team environments, a change can accidentally not be deployed or at other times, ClickOps can result in a drift between what's running and what's in code.
+
+Multiple platforms have emerged that solve this problem, under the general category of "Terraform Automation and Collaboration Software" or TACOS for short. Examples include Terraform Cloud, Spacelift, Env0, Scalr, and that's just a start. TACOs can easily cost tens of thousands of dollars a year and can be cost-prohibitive for certain companies.
+
+## Our Solution
+
+We've implemented [GitHub Actions](https://atmos.tools/category/github-actions) designed around our architecture and toolset. These actions run Atmos commands to generate a Terraform planfile, store the planfile in a S3 bucket with metadata in DynamoDB, and generate a plan summary on all pull requests. Then once the pull request is merged, a second workflow runs to pull that same planfile, apply it with Atmos commands, and then generate an apply summary.
+
+While this solution does not offer some of the more fine-grained policy controls of TACOs nor provide a centralized UI, it does provide many of the other benefits that the other solutions offer. But the overwhelming benefit is it's much cheaper and fully integrated with Cloud Posse's architecture and design.
+
+### Features
+
+* **Implements Native GitOps** with Atmos and Terraform
+* **GitHub Actions** can be integrated seamlessly anywhere you need to run Terraform
+* **No hardcoded credentials.** Use GitHub OIDC to assume roles.
+* **Compatible with GitHub Cloud & Self-hosted Runners** for maximum flexibility.
+* **Beautiful Job Summaries** don't clutter up pull requests with noisy GitHub comments
+* **100% Open Source with No Platform Fees** means you can leverage your existing GitHub runners to provision infrastructure
+
+Expect these actions to constantly evolve as we build out these workflows.
+
+### Implementation
+
+Once the required S3 Bucket, DynamoDB table, and two separate roles to access Terraform planfiles and plan/apply Terraform are deployed, simply add your chosen [workflows](#workflows). Read the [Setup Documentation](/reference-architecture/setup/gitops/) for details on deploying the requirements.
+
+## Workflows
+
+The following GitHub Workflows should be used as examples. These are created in a given Infrastructure repository and can be modified however best suites your needs. For example, the labels we've chosen for triggering or skipping workflows are noted here as "Conventions" but can be changed however you would prefer.
+
+### Atmos Terraform Plan
+
+:::info Conventions
+
+Use the `no-plan` label on a Pull Request to skip this workflow.
+
+:::
+
+The Atmos Terraform Plan workflow is triggered for every affected component from the Atmos Describe Affected workflow. This workflow takes a matrix of components and stacks and creates a plan for each, using the [Atmos Terraform Plan composite action](https://github.com/cloudposse/github-action-atmos-terraform-plan). For more on the Atmos Terraform Plan composite action, see [the official atmos.tools documentation](https://atmos.tools/integrations/github-actions/atmos-terraform-plan).
+
+If an affected component is disabled with `terraform.settings.github.actions_enabled`, the component will show up as affected but all Terraform steps will be skipped. See [Enabling or disabling components](#enabling-or-disabling-components).
+
+<details>
+<summary>atmos-terraform-plan</summary>
+
+<CodeBlock language="yaml" title=".github/workflows/atmos-terraform-plan.yaml">{PartialAtmosTerraformPlan}</CodeBlock>
+
+</details>
+
+### Atmos Terraform Apply
+
+:::info Conventions
+
+1. Use the `auto-apply` label on Pull Request to apply all plans on merge
+1. Use the `no-apply` label on a Pull Request to skip _all workflows_ on merge
+1. If a Pull Request has neither label, run drift detection for only the affected components and stacks.
+
+:::
+
+The Atmos Terraform Apply workflow runs on merges into main. There are two different workflows that can be triggered based on the given labels.
+
+If you attach the Apply label (typically `auto-apply`), this workflow will trigger the [Atmos Terraform Apply composite action](https://github.com/cloudposse/github-action-atmos-terraform-apply) for every affected component in this Pull Request. For more on the Atmos Terraform Apply composite action, see [the official atmos.tools documentation](https://atmos.tools/integrations/github-actions/atmos-terraform-apply).
+
+Alternatively, you can choose to merge the Pull Request _without_ labels. If the "apply" label and the "skip" label are not added, this workflow will trigger the [Atmos Drift Detection composite action](https://github.com/cloudposse/github-action-atmos-terraform-drift-detection) for only the affected components in this Pull Request. That action will create a GitHub Issue for every affected component that has unapplied changes.
+
+<details>
+<summary>atmos-terraform-apply</summary>
+
+<CodeBlock language="yaml" title=".github/workflows/atmos-terraform-apply.yaml">{PartialAtmosTerraformApply}</CodeBlock>
+
+</details>
+
+
+### Atmos Terraform Drift Detection
+
+:::info Max Opened Issues
+
+Drift detection is configured to open a set number of Issues at a time. See `max-opened-issues` for the `cloudposse/github-action-atmos-terraform-drift-detection` composite action.
+
+:::
+
+The Atmos Terraform Drift Detection workflow runs on a schedule. This workflow will gather _every component in every stack_ and run the [Atmos Drift Detection composite action](https://github.com/cloudposse/github-action-atmos-terraform-drift-detection) for each.
+
+For every stack and component included with drift detection, the workflow first triggers an Atmos Terraform Plan.
+
+1. If there are changes, the workflow will then create or update a GitHub Issue for the given component and stack.
+2. If there are no changes, the workflow will check if there's an existing Issue. If there's an existing issue, the workflow will then mark that Issue as resolved.
+
+<details>
+<summary>atmos-terraform-drift-detection</summary>
+
+<CodeBlock language="yaml" title=".github/workflows/atmos-terraform-drift-detection.yaml">{PartialAtmosTerraformDriftDetection}</CodeBlock>
+
+</details>
+
+### Atmos Terraform Drift Remediation
+
+:::info Conventions
+
+Use the `apply` label to apply the plan for the given stack and component
+
+:::
+
+The Atmos Terraform Drift Remediation workflow is triggered from an open Github Issue when the remediation label is added to the Issue. This workflow will run the [Atmos Terraform Drift Remediation composite action](https://github.com/cloudposse/github-action-atmos-terraform-drift-remediation) for the given component and stack in the Issue. This composite action will apply Terraform using the [Atmos Terraform Apply composite action](https://github.com/cloudposse/github-action-atmos-terraform-apply) and close out the Issue if the changes are applied successfully.
+
+The `drift` and `remediated` labels are added to Issues by the composite action directly. The `drift` is added to all Issues created by Atmos Terraform Drift Detection. Remediation will only run on Issues that have this label. Whereas the `remediated` label is added to any Issue that has been resolved by Atmos Terraform Drift Remediation.
+
+<details>
+<summary>atmos-terraform-drift-remediation</summary>
+
+<CodeBlock language="yaml" title=".github/workflows/atmos-terraform-drift-remediation.yaml">{PartialAtmosTerraformDriftRemediation}</CodeBlock>
+
+</details>
+
+
+### Atmos Terraform Dispatch
+
+The Atmos Terraform Dispatch workflow is optionally included and is not required for any other workflow. This workflow can be triggered by workflow dispatch, will take a single stack and single component as arguments, and will run Atmos Terraform workflows for planning and applying for only the given target.
+
+This workflow includes a boolean option for both "Terraform Plan" and "Terraform Apply":
+
+1. If only "Terraform Plan" is selected, the workflow will call the [Atmos Terraform Plan Worker](./.github/workflows/atmos-terraform-plan-matrix.yaml) workflow to create a new planfile
+1. If only "Terraform Apply" is selected, the workflow will call the [Atmos Terraform Apply Worker](./.github/workflows/atmos-terraform-apply-matrix.yaml) for the given branch. This action will take the latest planfile for the given stack, component, and branch and apply it.
+1. If both are selected, the workflow will run both actions. This means it will create a new planfile and then immediately apply it.
+1. If neither are selected, the workflow does nothing.
+
+<details>
+<summary>atmos-terraform-dispatch</summary>
+
+<CodeBlock language="yaml" title=".github/workflows/atmos-terraform-dispatch.yaml">{PartialAtmosTerraformDispatch}</CodeBlock>
+
+</details>
+
+### Atmos Terraform Plan Matrix (Reusable)
+
+The Atmos Terraform Plan Matrix is reusable workflow that called by another workflows to create a terraform plan.
+
+<details>
+<summary>atmos-terraform-plan-matrix</summary>
+
+<CodeBlock language="yaml" title=".github/workflows/atmos-terraform-plan-matrix.yaml">{PartialAtmosTerraformPlanMatrix}</CodeBlock>
+
+</details>
+
+
+### Atmos Terraform Apply Matrix (Reusable)
+
+The Atmos Terraform Apply Matrix is reusable workflow called by another workflow to apply an existing plan file.
+
+<details>
+<summary>atmos-terraform-apply-matrix</summary>
+
+<CodeBlock language="yaml" title=".github/workflows/atmos-terraform-apply-matrix.yaml">{PartialAtmosTerraformApplyMatrix}</CodeBlock>
+
+</details>
+
+
+## References
+
+- [Setup Documentation](/reference-architecture/setup/gitops/)
+- [Atmos integration documentation](https://atmos.tools/category/integrations/github-actions).
+- [GitHub OIDC Integration with AWS](/reference-architecture/how-to-guides/integrations/github/github-oidc-with-aws/)
+- [`cloudposse/github-action-atmos-terraform-plan`](https://github.com/cloudposse/github-action-atmos-terraform-plan)
+- [`cloudposse/github-action-atmos-terraform-apply`](https://github.com/cloudposse/github-action-atmos-terraform-apply)
+- [`cloudposse/github-action-atmos-terraform-drift-detection`](https://github.com/cloudposse/github-action-atmos-terraform-drift-detection)
+- [`cloudposse/github-action-atmos-terraform-drift-remediation`](https://github.com/cloudposse/github-action-atmos-terraform-drift-remediation)
+- [`gitops/s3-bucket`](/components/library/aws/s3-bucket/): Deploy a S3 Bucket using the `s3-bucket` component. This bucket holds Terraform planfiles.
+- [`gitops/dynamodb`](/components/library/aws/dynamodb/): Deploy a DynamoDB table using the `dynamodb` component. This table is used to hold metadata for Terraform Plans
+- [`gitops`](/components/library/aws/gitops/): Deploys an IAM Role that GitHub is able to assume via GitHub OIDC. This role has access to the bucket and table for planfiles.
+
+## FAQ
+
+### What are the included labels?
+
+By default, Cloud Posse includes a few labels for common use-cases. These labels are included with the top level workflows, so they can be modified as desired.
+
+On Pull Requests:
+
+1. `auto-apply` - If added, the Atmos Terraform Apply workflow will be triggered for all affected components when the Pull Request is merged.
+1. `no-plan` - If added, the Atmos Terraform Plan workflow will be skipped on commits to the Pull Request, and the Atmos Apply workflow will be skipped when the Pull Request is merged.
+
+On Issues:
+
+1. `apply` - If added, the Atmos Terraform Drift Remediation workflow will be triggered for the given component and stack
+1. `drift` - This label is added to all Issues created by Atmos Terraform Drift Detection. Remediation will only run on Issues that have this label.
+1. `remediated` - This label is added to any Issue that has been resolved by Atmos Terraform Drift Remediation
+
+### Enabling or disabling components
+
+Components are included in the Atmos GitHub Action workflows only if they have actions enabled with the `terraform.settings.github.actions_enabled` option.
+
+If they do not have this setting or the value is `false`, the component may still appear in the list of affected components, but Terraform will not be run against the given component and stack.
+
+:::info Global Defaults
+
+Typically Cloud Posse sets the default value to `true` for all components and disables individual components on a case-by-case basis.
+
+For example in an `acme` organization, the default value could be set with `stacks/orgs/acme/_defaults.yaml`:
+
+```yaml
+terraform:
+  # These settings are applied to ALL components by default but can be overwritten
+  settings:
+    github:
+      actions_enabled: true
+```
+
+And the `account` component could be disabled with `stacks/catalog/account.yaml`:
+
+```yaml
+components:
+  terraform:
+    account:
+      settings:
+        github:
+          actions_enabled: false
+```
+
+:::
+
+### I cannot assume the `gitops` role from GitHub Workflows
+
+The following error commonly occurs when setting up `gitops` roles and permission:
+
+```
+Error: Could not assume role with OIDC: Not authorized to perform sts:AssumeRoleWithWebIdentity
+```
+
+To resolve this error, thoroughly read through each of the [Authentication Prerequisites](/reference-architecture/setup/gitops/#authentication-prerequisites) for GitOps setup. In particular, check the capitalization of `trusted_github_repos` within `aws-teams` and check the `permissions` for the workflow in GitHub.
+
+### How does GitHub OIDC work with AWS?
+
+Please see [How to use GitHub OIDC with AWS](/reference-architecture/how-to-guides/integrations/github/github-oidc-with-aws/)

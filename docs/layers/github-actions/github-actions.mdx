@@ -8,7 +8,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import DocCardList from '@theme/DocCardList';
 
 <Intro>
-GitHub Actions (GHA) are one of the cornerstones of your platform, automating everything from Terraform with Atmos to application build, test and deployment, fully integrated into AWS without any hardcoded, static credentials.
+  GitHub Actions (GHA) are one of the cornerstones of your platform, automating everything from Terraform with Atmos to application build, test and deployment, fully integrated into AWS without any hardcoded, static credentials.
 </Intro>
 
 GitHub Actions offer a convenient way to achieve CI/CD automation directly on GitHub, without additional third-party services (e.g. CircleCI or Jenkins). GitHub doesn't charge extra for self-hosting runners, unlike many other platforms, making them an ideal choice for automation. Using self-hosted runners allows them to reside within your private networks, enabling you to manage resources like databases and Kubernetes clusters in private VPCs without exposing them publicly. We'll show you how to set up self-hosted runners (which are optional but recommended) and configure your IAM architecture to work with GitHub OIDC, so your Actions and workflows can assume AWS roles without relying on static credentials.

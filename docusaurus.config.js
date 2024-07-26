@@ -43,6 +43,23 @@ const config = {
     [
       'docusaurus-plugin-image-zoom', {},
     ],
+    [
+      'custom-loaders', {}
+    ],
+    [
+      "posthog-docusaurus",
+      {
+        apiKey: "phc_G3idXOACKt4vIzgRu2FVP8ORO1D2VlkeEwX9mE2jDvT",
+        appUrl: "https://us.i.posthog.com",
+        enableInDevelopment: false, // optional
+      },
+    ],
+    [
+      'docusaurus-plugin-sentry',
+      {
+        DSN: 'b022344b0e7cc96f803033fff3b377ee@o56155.ingest.us.sentry.io/4507472203087872',
+      },
+    ]
   ],
 
   presets: [

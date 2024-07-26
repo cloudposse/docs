@@ -1,9 +1,12 @@
 ---
-title: "GitOps"
-sidebar_label: "GitOps"
+title: "Setup GitOps with GitHub Actions"
+sidebar_label: "Setup"
+sidebar_position: 1
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import TaskList from '@site/src/components/TaskList';
 
 ## Quick Start
 
@@ -30,14 +33,21 @@ If you do not wish to use Self Hosted runners, simply change the `runs-on` optio
 ### Set Up GitHub Variables
 
 The `gitops` stack config depends on the following GitHub variables:
-* `ATMOS_VERSION` - The version of Atmos to use
-* `ATMOS_CONFIG_PATH` - The path to the Atmos config file
+
+<dl>
+  <dt>`ATMOS_VERSION`</dt>
+  <dd>The version of Atmos to use</dd>
+  <dt>`ATMOS_CONFIG_PATH`</dt>
+  <dd>The path to the Atmos config file</dd>
+</dl>
 
 Please set the following GitHub variables in the repository settings:
 
-1. Open the repository [settings](https://github.com/acme/infra-acme/settings/variables/actions)
-2. Set variable `ATMOS_VERSION` to the `1.63.0` value
-3. Set variable `ATMOS_CONFIG_PATH` to the `./rootfs/usr/local/etc/atmos/` value
+<Steps>
+  1. Open the repository [settings](https://github.com/acme/infra-acme/settings/variables/actions)
+  2. Set variable `ATMOS_VERSION` to the `1.63.0` value
+  3. Set variable `ATMOS_CONFIG_PATH` to the `./rootfs/usr/local/etc/atmos/` value
+</Steps>
 
 ### Authentication Prerequisites
 
@@ -46,22 +56,22 @@ these components should already be deployed with `aws-teams`/`aws-team-roles` an
 but `github-oidc-provider` will likely need to deployed to several additional accounts. Verify the following to complete
 the authentication prerequisites.
 
-1. The `gitops` Team is defined and deployed by `aws-teams`.
-2. The `gitops` team adds a trusted relationship with the given infrastructure repo, via `trusted_github_repos`.
-   _Capitalization matters!_
-
-```yaml
-trusted_github_repos:
-  gitops:
-    - "acme/infra-acme"
-```
-
-3. The `aws-team-roles` default catalog allows the `gitops` team to assume the `terraform` role, including anywhere
-   `aws-team-roles` is overwritten (`plat-dev` and `plat-sandbox`)
-4. `tfstate-backend` allows `gitops` to assume the default access role from the `core-identity` account
-5. `github-oidc-provider` is deployed to every account that GitHub will be able to access. This should be every account
-   except `root`.
-6. The workflows have adequate permission
+<TaskList>
+  - The `gitops` Team is defined and deployed by `aws-teams`.
+  - The `gitops` team adds a trusted relationship with the given infrastructure repo, via `trusted_github_repos`.
+    _Capitalization matters!_
+      ```yaml
+      trusted_github_repos:
+        gitops:
+          - "acme/infra-acme"
+      ```
+  - The `aws-team-roles` default catalog allows the `gitops` team to assume the `terraform` role, including anywhere
+    `aws-team-roles` is overwritten (`plat-dev` and `plat-sandbox`)
+  - `tfstate-backend` allows `gitops` to assume the default access role from the `core-identity` account
+  - `github-oidc-provider` is deployed to every account that GitHub will be able to access. This should be every account
+    except `root`.
+  - The workflows have adequate permission
+</TaskList>
 
 :::info GitHub Workflow Permissions
 

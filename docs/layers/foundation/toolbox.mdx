@@ -8,14 +8,21 @@ import Intro from '@site/src/components/Intro';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import DismissibleDialog from '@site/src/components/DismissibleDialog';
+import Note from '@site/src/components/Note';
 
 <Intro>
 Geodesic is a powerful Linux toolbox container designed to optimize DevOps workflows by providing essential dependencies for a DevOps toolchain, ensuring consistency and efficiency across development environments without additional software installation on your workstation. It can be extended and customized to fit specific needs by creating your own `Dockerfile` based on Geodesic, allowing you to add your favorite tools and share the container with your team for a unified working environment.
 </Intro>
 
+<Note>
+  Geodesic is similar in principle to [devcontainers](https://containers.dev/). However, being a container itself, Geodesic can run anywhere containers are supported—whether on your local workstation, remotely inside clusters, or on bastion hosts. Additionally, you can use Geodesic as the base image for a devcontainer.
+</Note>
+
 <figure>
   <img src="https://github.com/cloudposse/geodesic/blob/main/docs/demo.gif?raw=true"/>
-  <figcaption>Geodesic in action</figcaption>
+  <figcaption>
+    Geodesic in action.
+  </figcaption>
 </figure>
 
 <DismissibleDialog id="q2" expires="30" className="floating tall wide">
