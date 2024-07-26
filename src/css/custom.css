@@ -104,6 +104,10 @@ html[data-theme='dark'] {
     background: transparent;
 }
 
+li.divider {
+  border-bottom: 1px solid #6666663b
+}
+
 .nowrap table tr td {
     white-space: nowrap;
 }

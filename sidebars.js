@@ -449,7 +449,7 @@ module.exports = {
             collapsed: false,
             link: {
               type: 'doc',
-              id: 'components/index'
+              id: 'components/components'
             },
             items: [
                 {
@@ -466,7 +466,7 @@ module.exports = {
             collapsed: false,
             link: {
               type: 'doc',
-              id: 'modules/index'
+              id: 'modules/modules'
             },
             items: [
                 {
@@ -483,7 +483,7 @@ module.exports = {
             collapsed: true,
             link: {
               type: 'doc',
-              id: 'github-actions/index'
+              id: 'github-actions/github-actions'
             },
             items: [
                 {
