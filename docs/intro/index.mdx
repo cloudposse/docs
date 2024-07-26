@@ -10,13 +10,15 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import DocCardList from '@theme/DocCardList';
-
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
 <Intro>
 Cloud Posse's reference architecture offers a unique, open-source approach to infrastructure, fostering a collaborative ecosystem with the industry's largest library of Terraform modules and a comprehensive framework using [Atmos](https://atmos.tools). Whether you're an experienced developer or a Terraform newbie, our tools and community are here to help you succeed without sacrificing customization.
 </Intro>
 
-Before you jump into the Cloud Posse reference architecture, let’s review what makes it tick. Cloud Posse has been helping companies—from scrappy startups to massive enterprises—win big with Terraform. But here’s the kicker: we do things differently. Everything is based on Open Source that your team owns and operates. We're not another enterprise platform you have to pay for. We’re a community that’s here to help you succeed.
+Before you jump into the Cloud Posse reference architecture, let’s review what makes it tick. Cloud Posse has been helping companies—from scrappy startups to massive enterprises—win big with Terraform. But here’s the kicker: we do things differently. Everything is based on Open Source that your team owns and operates. We're not another enterprise platform you _have_ to pay for (but [we do accept sponsorships](/community/support) and [offer support](/support)). We’re a part of a community that’s here to help you succeed.
 
 Our goal? To create a collaborative ecosystem where everyone, regardless of the company, can work together on infrastructure, so we stop reinventing the wheel.
 
@@ -31,6 +33,56 @@ Here's why our reference architecture will work you!
 
 <DocCardList/>
 
+## Documentation Structure
+
+This documentation site breaks down SweetOps into the following sections to help you get up and running:
+
+<Steps>
+
+  <Step>
+    ### <StepNumber/> Learn
+
+    This is section where you go to [**learn our framework**](/learn) for AWS and follow the structured guide to get it set up.
+
+    Each section of our "Learn" journey is designed to help you get up and running with SweetOps and the Cloud Posse Reference Architecture.
+
+    <Steps>
+    - **Build your foundation** (Organization, OUs Accounts, Network & VPCs, IAM & Single Sign-On)
+    - **Set up your platform** (Kubernetes, ECS, EKS, etc.)
+    - **Deploy your apps** (CI/CD, GitHub Actions, GitOps.)
+    - **Monitor everything** (Datadog, Prometheus, Grafana, etc. Also, monitoring for Security & Compliance)
+    - **Upgrade & Maintain** (Day-2 operations including upgrades, backups, disaster recovery, etc.)
+    </Steps>
+
+    Inside of each of these sections, you'll find:
+    - [**Design Decisions**](/tags/design-decision): Up-to-date context on the decisions for implementing well-built infrastructure
+    - [**Setup**](/tags/setup): show how to step up a specific layer or resource in easy-to-follow steps.
+    - [**How-To Guides & Tutorials**](/tags/tutorial): show how to solve specific problems with SweetOps via a series of easy-to-follow steps.
+
+    Then we include some of our [Best Practices](/best-practices) and [Architectural Design Decisions](/adrs) to help you understand the reasoning behind our choices.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Reference
+
+    The [reference documentation](/reference) is where you find the the underlying building blocks such as Terraform modules & components, GitHub Actions, and more.
+
+    This is where you go when you need to look up the documentation for how a particular component or module works, or when you're trying to build something, this is the first place to look to see if we already support it. It's the nuts and bolts of the SweetOps framework for AWS.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Community
+
+    The [**Community**](/community) section is for those who want to engage with the SweetOps community and get support.
+
+    <Steps>
+      - Join our Slack community
+      - Attend our weekly office hours
+      - Contribute back to the project
+    </Steps>
+  </Step>
+
+</Steps>
 
 ## Who is this documentation for?
 
@@ -61,17 +113,6 @@ How does it differentiate from these solutions?
 2. **It’s comprehensive**: SweetOps is not only about Terraform. It provides patterns and conventions for building cloud-native platforms that are security-focused, Kubernetes or ECS-based, with comprehensive monitoring and incident management, and driven by continuous delivery.
 3. **It’s community-focused**: SweetOps has [over 9500 users in Slack](https://sweetops.com/slack/), well-attended weekly [office hours](https://cloudposse.com/office-hours/), and a [budding community forum](https://ask.sweetops.com/).
 
-## How is this documentation structured?
-
-This documentation site breaks down SweetOps into the following sections to help you get up and running:
-
-- [**Reference Architecture**](/reference-architecture/): Explains what SweetOps and this Reference Architecture are, what they can do, and what comprises the methodology.
-- [**Fundamentals**](/reference-architecture/fundamentals/): Fundamentals for Cloud Posse Reference Architecture, including quick start documentation for each layer of infrastructure.
-- [**Design Decisions**](/reference-architecture/fundamentals/design-decisions): Up-to-date context on the decisions for implementing well-built infrastructure
-- [**Setup**](/reference-architecture/setup): show how to step up a specific layer or resource in easy-to-follow steps.
-- [**How-To Guides**](/reference-architecture/how-to-guides): show how to solve specific problems with SweetOps via a series of easy-to-follow steps.
-- [**Reference**](/reference-architecture/category/reference/): Informative materials on specific tools and patterns within SweetOps.
-- [**Components**](/components): Details on our vast library of opinionated root modules
 
 
 
