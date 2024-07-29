@@ -1,0 +1,382 @@
+acm:
+  description: AWS Certificate Manager.
+  label: ACM
+
+agreement:
+  description: Agreements and policies.
+  label: Agreement
+
+ami:
+  description: Amazon Machine Image.
+  label: AMI
+
+argocd:
+  description: Argo CD tool.
+  label: Argo CD
+
+atmos:
+  description: Atmos Framework
+  label: Atmos
+
+aws:
+  label: Amazon Web Services (AWS)
+
+aws-cli:
+  description: AWS Command Line Interface.
+  label: AWS CLI
+
+aws-vault:
+  description: AWS Vault tool.
+  label: AWS Vault
+
+az:
+  description: Availability Zone.
+  label: Availability Zone
+
+bastion:
+  description: Bastion hosts.
+  label: Bastion
+
+best-practices:
+  description: Best practices for development and deployment.
+  label: Best Practices
+
+beyondcorp:
+  description: BeyondCorp security model.
+  label: BeyondCorp
+
+build-harness:
+  description: Build harness tools and scripts.
+  label: Build Harness
+
+business-logic:
+  description: Business logic topics.
+  label: Business Logic
+
+cdn:
+  description: Content Delivery Network.
+  label: CDN
+
+chamber:
+  description: Chamber secrets management.
+  label: Chamber
+
+change-control:
+  description: Change control processes.
+  label: Change Control
+
+change-management:
+  description: Change management practices.
+  label: Change Management
+
+chart-registry:
+  description: Helm chart registries.
+  label: Chart Registry
+
+chartmuseum:
+  description: ChartMuseum tool.
+  label: ChartMuseum
+
+circleci:
+  description: CircleCI platform.
+  label: CircleCI
+
+cli:
+  description: Command Line Interface.
+  label: CLI
+
+clickops:
+  description: ClickOps practices.
+  label: ClickOps
+
+cloud-native:
+  description: Cloud native applications and practices.
+  label: Cloud Native
+
+cloudfront:
+  description: AWS CloudFront service.
+  label: CloudFront
+
+code:
+  description: Code and coding practices.
+  label: Code
+
+code-style:
+  description: Code style guidelines.
+  label: Code Style
+
+codebuild:
+  description: AWS CodeBuild service.
+  label: CodeBuild
+
+codefresh:
+  description: Codefresh CI/CD platform.
+  label: Codefresh
+
+codepipeline:
+  description: AWS CodePipeline service.
+  label: CodePipeline
+
+community:
+  description: Community related topics.
+  label: Community
+
+compliance:
+  description: Compliance topics.
+  label: Compliance
+
+component:
+  description: Atmos Component
+  label: Component
+
+concept:
+  description: Conceptual topics and explanations.
+  label: Concept
+
+configuration:
+  description: Configuration management.
+  label: Configuration
+
+database:
+  description: Database topics.
+  label: Database
+
+datadog:
+  description: Datadog monitoring platform.
+  label: Datadog
+
+developer:
+  description: Developer-related topics.
+  label: Developer
+
+development:
+  description: Development practices and methodologies.
+  label: Development
+
+docker:
+  description: Docker related topics.
+  label: Docker
+
+ec2:
+  description: Amazon EC2 service.
+  label: EC2
+
+ecs:
+  description: Amazon ECS service.
+  label: ECS
+
+editorconfig:
+  description: EditorConfig configuration files.
+  label: .EditorConfig
+
+formatting:
+  description: Code formatting practices.
+  label: Formatting
+
+geodesic:
+  description: Geodesic framework.
+  label: Geodesic
+
+git:
+  description: Git version control system.
+  label: Git
+
+gnumakefile:
+  description: GNU Makefile topics.
+  label: GNUMakefile
+
+grafana:
+  description: Grafana monitoring platform.
+  label: Grafana
+
+helm:
+  description: Helm package manager.
+  label: Helm
+
+helm-chart:
+  description: Helm chart related topics.
+  label: Helm Chart
+
+helmfile:
+  description: Helmfile topics.
+  label: Helmfile
+
+heroku:
+  description: Heroku platform.
+  label: Heroku
+
+iac:
+  description: Infrastructure as Code.
+  label: IaC
+
+iam:
+  description: Identity and Access Management.
+  label: IAM
+
+iap:
+  description: Identity Aware Proxy.
+  label: IAP
+
+installer:
+  description: Installation guides and topics.
+  label: Installer
+
+jenkins:
+  description: Jenkins automation server.
+  label: Jenkins
+
+jumphost:
+  description: Jumphosts.
+  label: JumpHost
+
+k8s:
+  description: Kubernetes related topics.
+  label: Kubernetes
+
+kms:
+  description: Key Management Service.
+  label: KMS
+
+kops:
+  description: Kubernetes Operations tool.
+  label: Kops
+
+kubectl:
+  description: Kubernetes command line tool.
+  label: Kubectl
+
+kubernetes:
+  description: Kubernetes related topics.
+  label: Kubernetes
+
+layer:
+  description: Architecture Layer
+  label: Layer
+
+layer/network-and-dns:
+  description: Network and DNS Layer
+  label: Network and DNS
+
+license:
+  description: Licensing information.
+  label: License
+
+loki:
+  description: Loki logging platform.
+  label: Loki
+
+make:
+  description: Make and Makefile related topics.
+  label: Make
+
+makefile:
+  description: Makefile related topics.
+  label: Makefile
+
+module:
+  description: Terraform Module
+  label: Terraform Module
+
+multi-az:
+  description: Multi Availability Zones.
+  label: Multi AZ
+
+open-publication-license:
+  description: Open Publication License.
+  label: Open Publication License
+
+open-source:
+  description: Open-source projects and contributions.
+  label: Open Source
+
+opl:
+  description: Open Publication License.
+  label: OPL
+
+password-management:
+  description: Password management tools and practices.
+  label: Password Management
+
+pki:
+  description: Public Key Infrastructure.
+  label: PKI
+
+prometheus:
+  description: Prometheus monitoring platform.
+  label: Prometheus
+
+s3:
+  description: Amazon S3 related topics.
+  label: S3
+
+secrets:
+  description: Secrets management.
+  label: Secrets
+
+security:
+  description: Security related topics.
+  label: Security
+
+semver:
+  description: Semantic Versioning.
+  label: SemVer
+
+spacelift:
+  description: Spacelift platform.
+  label: Spacelift
+
+ssh:
+  description: Secure Shell.
+  label: SSH
+
+ssm:
+  description: Systems Manager.
+  label: SSM
+
+startups:
+  description: Topics related to startups.
+  label: Startups
+
+task-runner:
+  description: Task runners and automation tools.
+  label: Task Runner
+
+terraform:
+  description: Terraform related topics.
+  label: Terraform
+
+tips-and-tricks:
+  description: Tips and tricks for various tools and practices.
+  label: Tips and Tricks
+
+tls:
+  description: TLS (Transport Layer Security).
+  label: TLS
+
+tool:
+  description: Tools and utilities.
+  label: Tool
+
+tools:
+  description: Tools and utilities.
+  label: Tools
+
+travisci:
+  description: Travis CI platform.
+  label: Travis CI
+
+tutorial:
+  description: Tutorials, How-Tos, and Guides.
+  label: Tutorial
+
+twelve-factor:
+  description: 12-factor application methodology.
+  label: 12 Factor
+
+virtual-machine-image:
+  description: Virtual Machine Image topics.
+  label: Virtual Machine Image
+
+yaml:
+  description: YAML configuration language.
+  label: YAML

@@ -12,6 +12,25 @@ const customCssFiles = fs.readdirSync(cssDirectory)
   .filter(file => file.endsWith('.css'))
   .map(file => require.resolve(path.join(cssDirectory, file)));
 
+//https://github.com/saucelabs/elemental-next/blob/b1a325631243a13a4f3beee58a295b7b36f6574d/frontend/docusaurus.config.js#L105
+function metadataPlugin(context, options) {
+  return {
+      name: 'metadata',
+      async allContentLoaded({actions, allContent}) {
+          const {setGlobalData} = actions;
+          let docs = []
+          allContent['docusaurus-plugin-content-docs']
+              .default
+              .loadedVersions[0]
+              .docs
+              .filter(doc => doc.id !== undefined)
+              .map((doc) => docs.push(doc));
+          //console.log(JSON.stringify(allContent['docusaurus-plugin-content-docs'], 2, 2, null));
+          //console.log(tempFrontMatter);
+          setGlobalData({aggregateMetadata: docs});
+      }
+  }
+}
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -46,6 +65,7 @@ const config = {
     [
       'custom-loaders', {}
     ],
+    metadataPlugin,
     [
       "posthog-docusaurus",
       {
@@ -75,7 +95,9 @@ const config = {
               },
               exclude: ['README.md'],
               showLastUpdateTime: true,
-              showLastUpdateAuthor: true
+              showLastUpdateAuthor: true,
+              onInlineTags: 'warn',
+              tags: 'tags.yml'
           },
           theme: {
               customCss: customCssFiles,
