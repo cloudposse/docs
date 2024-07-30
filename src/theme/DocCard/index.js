@@ -83,7 +83,7 @@ function CardCategory({item}) {
   const globalData = useGlobalData();
   const globalMetadata = globalData.metadata.default.aggregateMetadata;
   const category = findPermalink(globalMetadata, href);
-  console.log(category);
+  //console.log(category);
 
   // Doc description is not used
   // https://github.com/facebook/docusaurus/issues/7598
