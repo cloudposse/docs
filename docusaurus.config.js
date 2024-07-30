@@ -217,16 +217,12 @@ const config = {
           title: 'Community',
           items: [
             {
-              label: 'Github Discussions',
-              href: 'https://ask.sweetops.com/',
+              label: 'GitHub Discussions',
+              href: 'https://github.com/orgs/cloudposse/discussions',
             },
             {
-              label: 'Community',
-              href: 'https://sweetops.com/',
-            },
-            {
-              label: 'Slack',
-              href: 'https://slack.sweetops.com/',
+              label: 'Slack Community',
+              to: '/community/slack',
             },
             {
               label: 'Slack Archives',
@@ -234,7 +230,7 @@ const config = {
             },
             {
               label: 'Office Hours',
-              href: 'https://cloudposse.com/office-hours/',
+              to: '/community/office-hours/',
             },
           ],
         }, {
@@ -242,7 +238,7 @@ const config = {
           items: [
             {
               label: 'Support',
-              href: 'https://cloudposse.com/accelerate',
+              to: '/support',
             },
             {
               label: 'Our GitHub',
@@ -250,7 +246,7 @@ const config = {
             },
             {
               label: 'Contact Us',
-              to: '/contact-us/',
+              to: '/community/contact-us/',
             }],
         }],
         logo: {
