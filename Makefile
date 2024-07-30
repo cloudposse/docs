@@ -19,6 +19,7 @@ render:
 
 build: deps
 	find . -name _category_.json
+	ls -l ./docs/components/library/aws/managed-grafana/
 	npm run build
 
 clean::
