@@ -12,13 +12,13 @@ const findItemsByTags = (items, tags) => {
 const findItemsFromGlobalMetadataByTags = (tags) => {
   const globalData = useGlobalData();
   let globalMetadata = globalData.metadata.default.aggregateMetadata;
-  console.log(globalMetadata);
+  //console.log(globalMetadata);
   return findItemsByTags(globalMetadata, tags);
 }
 
 const TagList = ({ tags }) => {
   const items = findItemsFromGlobalMetadataByTags(tags);
-  console.log(items);
+  //console.log(items);
   return (
     <ul>
       {items.map(item => (
