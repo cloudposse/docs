@@ -85,8 +85,9 @@ html[data-theme='dark'] :global(.content) .steps li::before {
 }
 
 .steps ol > li img, .steps > ul > li img {
-  padding: 2em;
+  margin: 2em;
   max-width: 100%;
+  border-radius: 6px;
 }
 
 .steps > h3 {
