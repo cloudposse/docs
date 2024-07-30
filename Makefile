@@ -18,8 +18,6 @@ render:
 	./scripts/render-docs-for-github-actions.sh
 
 build: deps
-	find . -name _category_.json
-	find . -name _category_.json -exec rm -f {} \;
 	npm run build
 
 clean::

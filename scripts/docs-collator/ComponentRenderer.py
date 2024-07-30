@@ -116,7 +116,8 @@ class ComponentRenderer:
 
         io.save_string_to_file(result_file, doc_content)
 
-        self.__create_indexes_for_subfolder(component)
+        # Breaking builds, not sure why and not adding value. Disabling.
+        #self.__create_indexes_for_subfolder(component)
 
     def __create_indexes_for_subfolder(self, component):
         for root, dirs, files in os.walk(os.path.join(self.docs_dir, component)):
