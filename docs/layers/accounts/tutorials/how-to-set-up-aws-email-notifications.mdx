@@ -5,6 +5,7 @@ description: Set up AWS email notifications to Slack channel
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
 Learn how to setup AWS account email notifications by routing emails from AWS accounts to a dedicated Slack channel. It covers using plus addressing for efficient email management and provides detailed steps for creating the Slack channel, generating its email address, and configuring email forwarding.
@@ -30,15 +31,18 @@ address can be created.
 
 The following is an example of how to set up this channel and configure email routing to the dedicated Slack channel's
 email address:
+<Steps>
+  1. ## Create the shared Slack channel (under Slack Connect):
+     (see also: [How to Provision Shared Slack Channels](/reference/how-to-provision-shared-slack-channels/) )
+     <img src="/assets/refarch/image-20211016-221505.png" />
 
-1. **Create the shared Slack channel (under Slack Connect):** (see also:
-   [How to Provision Shared Slack Channels](/reference/how-to-provision-shared-slack-channels/) )
-   <img src="/assets/refarch/image-20211016-221505.png" height="496" width="500" /><br/>
+  2. ## Generate the Slack channel's email address (at the top of the newly-created Slack channel):
+     <img src="/assets/refarch/image-20211016-221515.png" /><br/>
 
-2. **Generate the Slack channel's email address (at the top of the newly-created Slack channel):**
-  <img src="/assets/refarch/image-20211016-221515.png" height="176" width="500" /><br/>
+  3. ## Set up email forwarding (example: G Suite / Google Workspace)
+     in **`Google Workspace -> Settings for Gmail -> Routing -> Recipient address map`:**
+     <img src="/assets/refarch/image-20211016-221527.png" /><br/>
 
-3. **Set up email forwarding (example: G Suite / Google Workspace) in **`Google Workspace -> Settings for Gmail -> Routing -> Recipient address map`:**
-  <img src="/assets/refarch/image-20211016-221527.png" height="637" width="500" /><br/>
-
-4. Depending on your current Slack Workspace permissions, you may need to [manage incoming emails for your Slack workspace or organization](https://slack.com/help/articles/360053335433-Manage-incoming-emails-for-your-workspace-or-organization) and allow incoming email
+  4. ## Manage Incoming Emails
+     Depending on your current Slack Workspace permissions, you may need to [manage incoming emails for your Slack workspace or organization](https://slack.com/help/articles/360053335433-Manage-incoming-emails-for-your-workspace-or-organization) and allow incoming email
+</Steps>

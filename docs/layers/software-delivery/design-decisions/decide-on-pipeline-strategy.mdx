@@ -227,9 +227,9 @@ Links to any supporting documentation or pages, if any
 
 ## **Security Risk Assessment**
 
-<img src="/assets/refarch/cleanshot-2022-07-07-at-14.00.26@2x-20220707-110033.png" height="740" width="1707" /><br/>
+<img src="/assets/refarch/cleanshot-2022-07-07-at-14.00.26@2x-20220707-110033.png" /><br/>
 
-<img src="/assets/refarch/cleanshot-2022-07-07-at-14.01.02@2x-20220707-110106.png" height="237" width="570" /><br/>
+<img src="/assets/refarch/cleanshot-2022-07-07-at-14.01.02@2x-20220707-110106.png" /><br/>
 
 The release engineering system consists of two main components - _Github Action Cloud_ (a.k. _GHA_) and _Github Action Runners_ (a.k. _GHA-Runners_).
 
@@ -314,11 +314,11 @@ To get this PAT with minimal required permissions follows these steps:
 
 2. Added the user to the `Private Actions` repository with 'read-only' permissions (`https://github.com/{organization}/{repository}/settings/access`)
 
-3. <img src="/assets/refarch/cleanshot-2022-07-07-at-16.26.48@2x-20220707-132652.png" height="74" width="768" /><br/>
+3. <img src="/assets/refarch/cleanshot-2022-07-07-at-16.26.48@2x-20220707-132652.png" /><br/>
 
 Generate a PAT for the technical user with that level of permissions  [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new)
 
-<img src="/assets/refarch/cleanshot-2022-07-07-at-16.30.35@2x-20220707-133043.png" height="218" width="548" /><br/>
+<img src="/assets/refarch/cleanshot-2022-07-07-at-16.30.35@2x-20220707-133043.png" /><br/>
 
 4. Save the PAT as organization secret with name `GITHUB_PRIVATE_ACTIONS_PAT` (`https://github.com/organizations/{organization}/settings/secrets/actions`)
 
