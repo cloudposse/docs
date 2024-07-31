@@ -38,6 +38,7 @@ class AbstractRenderer:
         content = rendering.replace_relative_links_with_github_links(
             repo, content, submodule_dir
         )
+        content = rendering.fix_mdx_format(content)
         io.save_string_to_file(readme_md_file, content)
 
     def _copy_extra_resources_for_docs(self, module_download_dir, module_docs_dir):
