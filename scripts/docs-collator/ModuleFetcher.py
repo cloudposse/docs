@@ -32,8 +32,7 @@ class ModuleFetcher(AbstractFetcher):
         if SUBMODULES_DIR in remote_files:
             self.__fetch_submodules(repo, module_download_dir)
 
-        if any(file.endswith(".tf") for file in remote_files):
-            self.__fetch_terraform_files(repo, module_download_dir)
+        self.__fetch_terraform_files(repo, module_download_dir, remote_files)
 
     def __fetch_images(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, IMAGES_DIR)
@@ -63,9 +62,10 @@ class ModuleFetcher(AbstractFetcher):
                     submodule_dir=os.path.dirname(readme_file),
                 )
 
-    def __fetch_terraform_files(self, repo, module_download_dir):
-        remote_files = self.github_provider.list_repo_dir(repo, "")
-
+    def __fetch_terraform_files(self, repo, module_download_dir, remote_files):
         for remote_file in remote_files:
-            if remote_file.endswith(".tf"):
+            # We only need variables and output files to render terraform-docs.
+            # _Hopefully_ the module follows the convention of having these files with all varialbes and outputs,
+            # but that is an assumption we're making here for the sake of deployment speed.
+            if remote_file in ["variables.tf", "outputs.tf"]:
                 self.github_provider.fetch_file(repo, remote_file, module_download_dir)
