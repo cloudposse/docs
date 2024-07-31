@@ -1,6 +1,7 @@
 ---
 title: "Access Control Architecture"
 sidebar_position: 100
+description: Explanation dynamic terraform roles and access control
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -120,11 +121,11 @@ Cloud Posse's reference architecture uses a number of accounts to separate out
 resources in this way. Here is a sample of the accounts we use:
 
 <dl>
-  <dt>plat-prod</dt>
+  <dt>`plat-prod`</dt>
   <dd>Holds the production resources for the company, the ones that provide the company's services to its customers.</dd>
-  <dt>plat-dev</dt>
+  <dt>`plat-dev`</dt>
   <dd>Holds the development resources for the company, the ones that are used to develop the company's services.</dd>
-  <dt>core-audit</dt>
+  <dt>`core-audit`</dt>
   <dd>Holds the logs and other resources that are used to audit the other accounts.</dd>
 </dl>
 

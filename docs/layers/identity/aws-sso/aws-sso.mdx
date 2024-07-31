@@ -1,12 +1,13 @@
 ---
 title: "AWS Identity Center (SSO) ClickOps"
-sidebar_label: "Integrate AWS Identity Center"
-sidebar_position: 10
+sidebar_label: "Setup Identity Center"
+sidebar_position: 7
 description: Setup AWS SSO with external IdPs
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
+import DocCardList from '@theme/DocCardList';
 
 <Intro>
 This guide provides an overview of setting up AWS Identity Center (SSO) with ClickOps, detailing prerequisites and supported external identity providers. It explains how to integrate AWS SSO with providers like Azure AD, JumpCloud, Okta, and Google Workspace, including specific steps for configuring each.
@@ -21,10 +22,17 @@ This guide provides an overview of setting up AWS Identity Center (SSO) with Cli
   4. Enable AWS SSO
 </Steps>
 
+
+## Common Identity Providers
+
+These are the instructions for the most common Identity Providers. For other providers, see the next section.
+
+<DocCardList/>
+
+
 ## Supported External Identity Providers
 
-[Follow the AWS documentation for setting up an IdP integration with AWS](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html).
-This list includes Azure AD, CyberArk, JumpCloud, Okta, OneLogin, and Ping Identity. For other providers, see the next
+[Follow the AWS documentation for setting up an IdP integration with AWS](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html). This list includes Azure AD, CyberArk, JumpCloud, Okta, OneLogin, and Ping Identity. For other providers, see the next
 section.
 
 :::caution Integrating JumpCloud with AWS IAM Identity Center
