@@ -1,10 +1,42 @@
-.step {
+div > .step:first-child {
+  padding-top: 0;
   margin-top: 4em;
-  margin-bottom: 1em;
+}
+
+.step {
+  padding-top: 3em;
+  padding-bottom: 1em;
+  border-left: 1px solid #666;
+  padding-left: 1em;
+}
+
+.step .content > p {
+    padding-left: 1.5em;
+}
+
+.step .content > ul, .step .content > ol, .step .tabs-container ol {
+    /* padding-left: 2.5em;*/
+    border-left: none;
+}
+
+.step .content ol li::before {
+  background: #ccc;
+  color: #000 !important;
+}
+
+html[data-theme='dark'] .step .content ol li::before {
+  background: #666;
+  color: #000 !important;
 }
 
 .step h2 {
   margin-top: 0;
+  color: #3578e5;
+}
+
+.step .content > h3, .step .content > h2 {
+  position: relative;
+  left: -1.75em;
 }
 
 .step h3 > i, html[data-theme='dark'] .step h2 > i {
@@ -16,7 +48,17 @@ html[data-theme='dark'] .step h3 > i, html[data-theme='dark'] .step h2 > i  {
   color: #fff;
 }
 
+ .step h2 > i {
+  font-size: 0.9em;
+ }
+
 .docusaurus-mermaid-container {
   display: flex;
   justify-content: center;
+}
+
+.step .content blockquote {
+    background: #4449505e;
+    border-radius: 10px;
+    padding: 1em;
 }

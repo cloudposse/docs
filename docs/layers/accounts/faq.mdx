@@ -1,0 +1,54 @@
+---
+title: FAQ
+sidebar_label: FAQ
+sidebar_position: 10
+---
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+Frequently asked questions about managing AWS accounts with Cloud Posse's reference architecture.
+</Intro>
+
+### Why not use Control Tower?
+
+AWS Control Tower cannot be managed with Terraform. Depending on the Scope of Work, Cloud Posse is usually responsible
+for provisioning accounts with terraform which requires all the same access as Control Tower.
+
+### Why are there so many accounts?
+
+Leveraging multiple AWS accounts within an AWS Organization is the only way to satisfy IAM level isolation. Each account
+has a very specific purpose, that all associated resources are isolated in that given account.
+
+### How we can set budgets?
+
+Create budgets with the `account-settings` component. For more, see
+[the `account-settings` component documentation](/components/library/aws/account-settings/)
+
+:::info
+
+Budgets created for the `root` account apply to the AWS Organization as a whole
+
+:::
+
+### How do you add or remove Service Control Policies?
+
+Service Control Policies are managed with the `account` component variable, `service_control_policies_config_paths`. For
+more, see [the `account` component documentation](/components/library/aws/account/)
+
+:::caution
+
+This component manages the state of all AWS accounts, so apply with extreme caution!
+
+:::
+
+### How can you create an Account?
+
+[Follow the documentation for creating and setting up AWS Accounts](/layers/accounts/tutorials/how-to-create-and-setup-aws-accounts/)
+
+### How do you delete an Account?
+
+[Follow the documentation for deleting AWS Accounts](/layers/accounts/tutorials/how-to-delete-aws-accounts/)
+
+### How can you create a Tenant?
+
+[Follow the documentation for creating a new Organizational Unit](/layers/accounts/tutorials/how-to-add-a-new-organizational-unit/)

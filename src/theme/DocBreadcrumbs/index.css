@@ -1,0 +1,8 @@
+.breadcrumbs-container .buttons {
+  float: right;
+}
+
+.breadcrumbs__link {
+  vertical-align: middle;
+  line-height: 1.7em;
+}

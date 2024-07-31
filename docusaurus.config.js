@@ -15,8 +15,8 @@ const customCssFiles = fs.readdirSync(cssDirectory)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'The Cloud Posse Developer Hub',
-  tagline: 'Welcome to the Cloud Posse Reference Architecture documentation portal. You\'ll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let\'s jump right in!',
+  title: 'The Cloud Posse Reference Architecture',
+  tagline: 'The turnkey architecture for AWS, Datadog & GitHub Actions to get up and running quickly using the Atmos open source framework.',
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
@@ -57,6 +57,8 @@ const config = {
                 return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
               },
               exclude: ['README.md'],
+              showLastUpdateTime: true,
+              showLastUpdateAuthor: true
           },
           theme: {
               customCss: customCssFiles,
@@ -127,6 +129,15 @@ const config = {
             className: 'button button--primary navbar-cta-button'
           },
         ],
+      },
+
+      announcementBar: {
+        id: 'new_docs',
+        content:
+          'We are in the process of updating our documentation. <a href="mailto:docs@cloudposse.com">Please let us know what you think!</a>',
+        backgroundColor: 'var(--announcement-bar-background)',
+        textColor: 'var(--announcement-bar-text-color)',
+        isCloseable: true,
       },
 
       colorMode: {

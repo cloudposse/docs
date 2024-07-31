@@ -4,6 +4,12 @@ sidebar_label: Identity Provider (IdP)
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import TaskList from '@site/src/components/TaskList';
+
+<Intro>
+Simplify AWS authentication by leveraging existing email providers or Identity Providers (IdPs), ensuring streamlined access management and ease of use for your team.
+</Intro>
 
 ## Problem
 
@@ -20,11 +26,16 @@ Verified working IdPs:
 - Auth0
 
 Cloud Posse recommends using your existing email provider (e.g. Google, Microsoft, etc) as the IdP, unless you
-explicitly need to use a specialized one, such as Okta or JumpCloud.
+already have a specialized one, such as Okta, Auth0, or JumpCloud.
 
 ## Consequences
 
-Cloud Posse requires this information for your team to sign in to the new AWS Accounts.
+Follow the steps below to integrate your IdP of choice with AWS.
 
-- [ ] Please create a User in your IdP for the Cloud Posse Team. The Cloud Posse Team will use this account to verify
+<Note title="Jumpstart">
+Cloud Posse requires this information for your team to sign in to the new AWS Accounts.
+<TaskList>
+- [ ] Please create a temporary User in your IdP for the Cloud Posse Team. The Cloud Posse Team will use this account to verify
       access to several resources. For example `cloudposse@acme.com`.
+</TaskList>
+</Note>

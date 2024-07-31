@@ -36,7 +36,7 @@ runs:
         fetch-depth: 0
 
     - name: Setup Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
 
@@ -49,7 +49,7 @@ runs:
         path: tmp/components/terraform-aws-components
 
     - name: "Setup Python"
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 

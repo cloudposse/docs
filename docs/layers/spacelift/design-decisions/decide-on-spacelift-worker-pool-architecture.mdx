@@ -3,9 +3,14 @@ title: "Decide on Spacelift Worker Pool Architecture"
 sidebar_label: "Spacelift Worker Pool Architecture"
 sidebar_position: 100
 refarch_id: REFARCH-475
+description: Scope Spacelift Workers for secure automation
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+Spacelift Workers are deployed in VPCs with scoped IAM permissions to ensure robust automation capabilities while minimizing security risks. By default, we avoid automating certain core system accounts, but this can be adjusted as needed. Review these considerations to determine the best approach for your organization.
+</Intro>
 
 ## Problem
 

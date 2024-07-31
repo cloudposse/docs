@@ -1,9 +1,10 @@
 ---
-title: Automated Testing
+title: Terraform Automated Testing
+sidebar_label: Automated Testing
 description: 'Our automated testing strategy and resources'
 ---
-
-## Terraform Testing
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
 
 All of our Terraform modules have automated tests. We have two sets of checks:
 
@@ -31,9 +32,9 @@ In addition to automatic triggers, tests can be run on demand via "ChatOps". (Yo
 
 Tests are initiated by posting GitHub comments on the PR. Currently supported commands are the following:
 
-| Command                                             | Description                                                                        |
-|-----------------------------------------------------|------------------------------------------------------------------------------------|
-| `/terratest`                                        | Run the `terratest` integration tests in `test/src`                                |
+| Command      | Description                                         |
+| ------------ | --------------------------------------------------- |
+| `/terratest` | Run the `terratest` integration tests in `test/src` |
 
 
 Terraform tests run against our [testing infrastructure](https://github.com/cloudposse/testing.cloudposse.co) that we host in an isolated account on AWS, strictly for the purposes of testing infrastructure.
@@ -55,11 +56,13 @@ If you're a contributor who wants to intialize one of our terraform modules, thi
 
 To initialize one of our modules with chatops, run the following commands:
 
-1. `git clone` the terraform module repository
-1. `cd $repo` to enter the repository directory
-1. `make init` to initialize the build-harness
-1. `git add *` to add the changes
-1. Add the build badge to the `README.yaml` under the `badges` section.
-1. `make readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
-1. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/atmos/pull/555).
-1. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)
+<Steps>
+  1. `git clone` the terraform module repository
+  1. `cd $repo` to enter the repository directory
+  1. `make init` to initialize the build-harness
+  1. `git add *` to add the changes
+  1. Add the build badge to the `README.yaml` under the `badges` section.
+  1. `make readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
+  1. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/atmos/pull/555).
+  1. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)
+</Steps>

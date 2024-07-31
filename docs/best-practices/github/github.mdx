@@ -1,0 +1,41 @@
+---
+title: "GitHub Best Practices"
+sidebar_label: "GitHub"
+---
+
+## Use `.gitignore`
+
+Use a `.gitignore` file in the root of every repo to exclude files that should never be committed.
+
+Here's an example of the [`.gitignore`](https://github.com/cloudposse/docs/blob/master/.gitignore) from our documentation repository.
+
+```txt title=".gitignore example"
+.DS_Store
+.envrc
+.env
+deploy.toml
+deploy.yaml
+test
+test.toml
+test.yaml
+.htmltest.*.yaml
+node_modules
+.build-harness
+build-harness/
+public/*
+algolia/*
+tmp/*
+.gitkeep
+*.swp
+.idea
+*.iml
+package-lock.json
+static/components/*
+static/styleguide/*
+
+themes/cloudposse/static/css/*
+themes/cloudposse/static/js/*
+static/webfonts/*
+static/css/*
+static/js/*
+```

@@ -1,9 +1,13 @@
 ---
-title: "How to Adopt/Import Legacy AWS Accounts for Use With the Infrastructure Monorepo"
+title: "How to Adopt/Import Legacy AWS Accounts for Management with Atmos"
 sidebar_label: "Adopt/Import Legacy AWS Accounts"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+Sometimes provisioning a new account and migrating resources isn’t an option. Adopting a legacy account into your new organization allows you to manage new resources using Atmos and Terraform while leaving old ones unmanaged. This guide provides step-by-step instructions for importing legacy AWS accounts into the Infrastructure Monorepo, updating account configurations, and integrating with Atmos and Spacelift for automation.
+</Intro>
 
 ## Problem
 
@@ -19,9 +23,7 @@ When you remove a member account from an Organization, the member account’s ac
 with the Organization are lost. In some cases, resources in the member account might be deleted. For example, when an
 account leaves the Organization, the AWS CloudFormation stacks created using StackSets are removed from the management
 of StackSets. You can choose to either delete or retain the resources managed by the stack. For a list of AWS services
-that can be integrated with Organizations, see
-[AWS services that you can use with AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html).
-([source](https://aws.amazon.com/premiumsupport/knowledge-center/organizations-move-accounts/))
+that can be integrated with Organizations, see [AWS services that you can use with AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html). ([source](https://aws.amazon.com/premiumsupport/knowledge-center/organizations-move-accounts/))
 
 :::
 
@@ -49,7 +51,7 @@ be done via an assumed role provisioned by `iam-delegated-roles` that has the `o
 The email address of the management account must be verified, if not already done so. Otherwise, the invitation cannot
 be sent.
 
-<img src="/assets/refarch/cleanshot-2022-01-11-at-14.21.39@2x-20220111-122144.png" height="1011" width="1189" /><br/>
+<img src="/assets/refarch/cleanshot-2022-01-11-at-14.21.39@2x-20220111-122144.png" /><br/>
 
 An email will be sent to the email address(es) associated with the AWS account(s) in question. The link leads to the AWS
 console where the invitation can be accepted or denied. Once again, this step does **not** have to be done (and in terms
@@ -70,7 +72,7 @@ the organization, and legacy AWS accounts will live alongside current AWS accoun
 
 Your existing `account` component configuration should look something like this:
 
-```
+```yaml
 components:
   terraform:
     account:
@@ -334,19 +336,19 @@ The workaround for this is to edit the `iam_user_access_to_billing` attribute ma
    `DENY`, depending on whether or not IAM access to billing is enabled for the account in question. Ensure that the
    value inputted into the state manually reflects the actual state of the AWS account in question.
 
-<img src="/assets/refarch/cleanshot-2022-01-23-at-17.34.32@2x-20220123-154819.png" height="261" width="941" /><br/>
+<img src="/assets/refarch/cleanshot-2022-01-23-at-17.34.32@2x-20220123-154819.png" /><br/>
 
 Overwrite the Terraform state via
 `assume-role aws s3 cp --sse AES256 ./terraform.tfstate s3://eg-mgmt-ue1-root-admin-tfstate/account/mgmt-root/terraform.tfstate`.
 
 1. Run the same Terraform plan and copy the expected MD5 digest for the Terraform state.
 
-<img src="/assets/refarch/cleanshot-2022-01-23-at-17.52.48@2x-20220123-155328.png" height="285" width="807" /><br/>
+<img src="/assets/refarch/cleanshot-2022-01-23-at-17.52.48@2x-20220123-155328.png" /><br/>
 
 2. In DynamoDB, find the MD5 digest item for the Terraform state for the workspace in question (e.g. `mgmt-root` in
    `eg-mgmt-ue1-root`) and overwrite the current digest value with the expected digest value.
 
-<img src="/assets/refarch/cleanshot-2022-01-23-at-17.54.50@2x-20220123-155507.png" height="470" width="1379" /><br/>
+<img src="/assets/refarch/cleanshot-2022-01-23-at-17.54.50@2x-20220123-155507.png" /><br/>
 
 ### Import Legacy AWS Account(s) Into the `account` Component Workspace and Update Legacy Account Attributes
 

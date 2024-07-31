@@ -1,0 +1,175 @@
+---
+title: "Kick Off with Cloud Posse"
+sidebar_label: "Kick Off"
+sidebar_position: 1
+describe: Set project expectations for Jumpstarts with Cloud Posse
+---
+import Link from '@docusaurus/Link'
+import KeyPoints from '@site/src/components/KeyPoints'
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
+import Intro from '@site/src/components/Intro'
+import ActionCard from '@site/src/components/ActionCard'
+import PrimaryCTA from '@site/src/components/PrimaryCTA'
+import TaskList from '@site/src/components/TaskList'
+import Admonition from '@theme/Admonition';
+
+<Intro>
+The kickoff process for Quickstart engagements with Cloud Posse ensures a smooth start with clear communication for a successful project delivery. During the call, we will confirm your design decisions and set project expectations. We also cover how you will deploy your infrastructure in layers using our reference architecture and introduce various support options, including community support channels, customer workshops, and office hours.
+</Intro>
+
+<KeyPoints title="We Will Review">
+- **Kickoff Process:** Establish roles, confirm requirements, and set project expectations for a smooth start
+- **Implementation Phase:** Understand how you will go about provisioning infrastructure in layers using the reference architecture, including comprehensive handoffs with documentation
+- **Support and Communication:** Review the available support options, including customer workshops, office hours, and detailed documentation to ensure successful engagement
+</KeyPoints>
+
+## Preparing for the Kickoff Meeting
+
+This document outlines what to expect from your first call with Cloud Posse. In order to make the most of this meeting, please read through this document and come prepared with questions. In particular, please review the following:
+<Steps>
+1. Decide who will lead the project in your organization
+2. Ensure everyone who needs to be on the call is added to the invitation
+2. Read through the [Design Decisions](#review-design-decisions) and prepare questions and decisions
+3. Review the list of [Actions Items](#action-items) following this call
+</Steps>
+
+## Kickoff Meeting Agenda
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Introductions
+
+    Here we will review who is on the call, what their roles are, and identify our technical point of contact at Cloud Posse. We will also review the working timezones of the teams.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Project Overview
+
+    After your kick off call with Cloud Posse and receiving the configurations customized to your design decisions, you will be ready to begin deploying your infrastructure starting with the [foundation](/layers/foundation). The Reference Architecture is a collection of best practices for building a secure, scalable, and highly available infrastructure on AWS. The Reference Architecture is constantly evolving as we learn from our customers and the community.
+
+    You will deploy your infrastructure in _layers_. These layers are designed to manage collections of deliverables and will be a mix of generated content from a private reference, vendored Terraform from open source libraries, and any customization for your Organization. Because we are delivering an entire infrastructure repository, these initial PRs will be massive; a complete infrastructure set up requires dozens of components, each with Terraform modules, configuration, account setup, and documentation. You are absolutely welcome to follow along, but we do not intend for your team to be required to review these massive PRs. Cloud Posse internally reviews these PRs extensively to ensure that the final product works as intended.
+
+    Before you begin provisioning any layer, we recommend watching the video that explains the problems we faced, so you'll be better equiped to understand the solution. These videos go into detail on the subject to explain the problems we faced, the tradeoffs we considered and then at a high level how we solved them.
+
+    <Admonition type="tip">
+      If you come prepared to the Customer Workshops, we can spend more time answering your questions or working through hands-on exercises.
+    </Admonition>
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Introduce Shared Customer Workshops
+
+    #### Option 1
+
+    > **When:** Thursdays, 7:00-7:30A PT/ 9:00-9:30A CT/ 10:00-10:30A ET<br/>
+    > **Where:** Zoom<br/>
+    > **Who:** Customers Only<br/>
+
+    #### Option 2
+
+    > **When:** Wednesdays, 1:00-1:30P PT/ 3:00-3:30P CT/ 4:00-4:30P ET<br/>
+    > **Where:** Zoom<br/>
+    > **Who:** Customers Only<br/>
+
+    This is a great opportunity to get your questions answered and to get help with your project.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Sign up for Community Office Hours
+
+    > **When:** Wednesdays, 11:30a-12:30p PT/ 1:30p-2:30p CT/ 2:30p-3:30p ET<br/>
+    > **Where:** Zoom<br/>
+    > **Who:** Anyone (open to the public!)<br/>
+
+    This is a good way to keep up with the latest developments and trends in the DevOps community.
+
+    Sign up at [cloudposse.com/office-hours](https://cloudposse.com/office-hours/)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Join our SweetOps Slack Community
+
+    If you are looking for a community of like-minded DevOps practitioners, please join the [SweetOps Slack](https://slack.sweetops.com/).
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Review Design Decisions
+
+    Review the foundational [Design Decisions](/reference-architecture/fundamentals/design-decisions).
+
+    <TaskList>
+      - [ ] [Decide on Namespace Abbreviation](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-namespace-abbreviation/)
+      - [ ] [Decide on Infrastructure Repository Name](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-infrastructure-repository-name/)
+      - [ ] [Decide on Email Address Format for AWS Accounts](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-email-address-format-for-aws-accounts/)
+      - [ ] [Decide on IdP](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-idp/)
+      - [ ] [Decide on IdP Integration Method](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-idp-integration)
+      - [ ] [Decide on Primary AWS Region and Secondary AWS Region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region/)
+      - [ ] [Decide on CIDR Allocation Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-cidr-allocation/)
+      - [ ] [Decide on Service Discovery Domain](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-service-discovery-domain/)
+      - [ ] [Decide on Vanity Domain](/reference-architecture/reference/adrs/jumpstart/decide-on-vanity-domain/)
+      - [ ] [Decide on Release Engineering Strategy](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-release-engineering-strategy/)
+    </TaskList>
+  </Step>
+</Steps>
+
+## How to Succeed
+
+Cloud Posse has noticed several patterns that lead to successful projects.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Come to Customer Workshops Prepared
+
+    Review six pagers and documentation before workshops. This will help you to know what questions to ask. Coming unprepared will lead to a lot of questions and back-and-forth. This will slow down material resulting in less time for new material.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Take Initiative
+
+    The most successful customers take initiative to make customizations to their Reference Architecture. This is a great way to make the Reference Architecture your own. It also helps to build a deeper understanding of the Reference Architecture and how it works.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Cameras On
+
+    We recommend that all participants have their cameras on during our Customer Workshops. This helps to build trust and rapport. It also helps to keep everyone engaged and focused. This also lets us gage how everyone is understanding the material. If you are having trouble understanding something, please ask questions.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Ask Questions
+
+    We encourage you to ask questions. We want to make sure that everyone understands the material. We also want to make sure that we are providing the right level of detail. Our meetings are intended to be interactive and encourage conversation. Please feel free to interject at any time if you have a question or a comment to add to the discussion.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Participate in our Slack Community
+
+    We encourage you to participate in our public Slack channels. This is a great way to get help and to learn from others. We have a lot of customers who have been through the same process and can provide valuable insights. We also have a lot of Cloud Posse engineers who are available to help answer questions.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Attend Weekly Office Hours
+
+    Both the [Shared Customer Workshops](#shared-customer-workshop) and [Community Office Hours](#community-office-hours) are great opportunities to ask questions and get help.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Read our Documentation
+
+    You can always find how-to guides, design decisions, and other helpful pages at [docs.cloudposse.com](/)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Take the Next Step
+
+    Don't wait! Keep the momentum going by taking the next step. If you have questions, ask them. If you need help, ask for it. We are here to help you succeed.
+  </Step>
+</Steps>
+
+<ActionCard title="Action Items">
+  After our kick-off call, there are several action items for you to consider based on your goals. Not every item may be relevant, but please review them and take action on the ones that apply to you.
+  <PrimaryCTA to="/quickstart/action-items">Next Step</PrimaryCTA>
+</ActionCard>

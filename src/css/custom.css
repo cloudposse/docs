@@ -1,6 +1,6 @@
 /**
  * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
+ * bundles Infima by default. Infima is a CSS frawork designed to
  * work well for content-centric websites.
  */
 
@@ -48,6 +48,8 @@ body {
     --aa-primary-color-rgb: var(--ifm-toc-border-color) !important;
 
     --mg-bg: rgb(16 36 69 / 27%);
+    --announcement-bar-background: #3578e5;
+    --announcement-bar-text-color: #fff;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -62,6 +64,7 @@ body {
     --ifm-card-background-color: #eeeeee14;
     --ifm-button-color: #ccc;
     --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    --announcement-bar-background: #3578e58f;
 }
 
 [data-theme='dark'] ::selection {
@@ -101,7 +104,11 @@ html[data-theme='dark'] {
     background: transparent;
 }
 
-table tr td {
+li.divider {
+  border-bottom: 1px solid #6666663b
+}
+
+.nowrap table tr td {
     white-space: nowrap;
 }
 
@@ -241,10 +248,9 @@ svg.landingLogo path {
 }
 
 .margin-top--md, .margin-vert--md {
-    margin-top: 1rem!important;
+    margin-top: 1rem !important;
     margin-right: 1em;
     margin-left: 1em;
-    font-weight: bold;
 }
 
 .container.margin-vert--lg {
@@ -273,4 +279,66 @@ div > article {
 
 .hidden {
   display: none;
+}
+
+ul.contains-task-list {
+    margin-left: 2.8em;
+}
+
+ul.contains-task-list [type='checkbox'] {
+  padding: 0;
+  /* width: 0; */
+  margin-right: -1.6em;
+  overflow: visible;
+  position: relative;
+  left: -2em;
+}
+
+
+.license {
+    float: left;
+}
+
+li.menu__list-item.deprecated > a {
+  color: #444950;
+}
+
+ol ::marker {
+    font-weight: bold;
+}
+
+.theme-last-updated {
+  color: #666;
+  font-style: initial;
+}
+
+figure {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.youtube figcaption {
+  font-style: initial;
+  font-weight: normal !important;
+  font-size: 1em;
+}
+
+
+table {
+  margin-bottom: 4em;
+}
+
+table td, th {
+  border: none;
+  border-bottom: 1px solid #eaecef;
+}
+
+table tr {
+  border: none;
+}
+
+table thead th {
+  border-bottom: 2px solid #eaecef;
+  border: none;
 }

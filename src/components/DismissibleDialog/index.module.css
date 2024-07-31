@@ -1,0 +1,57 @@
+.dialog {
+  display: flex;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+  border-radius: 12px;
+  flex-direction: column;
+}
+
+[data-theme='dark'] .dialog {
+  background-color: #00163bab;
+  backdrop-filter: blur(15px);
+  border: 1px solid #cccccc36;
+}
+
+.dialog .nav {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.dialog :global(.button--lg) {
+  margin-bottom: 0;
+}
+
+.floating {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.wide {
+  max-width: 600px;
+}
+
+.tall {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.content {
+  margin-bottom: 10px;
+  padding: 1em;
+  padding-top: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+

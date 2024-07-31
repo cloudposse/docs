@@ -21,8 +21,8 @@ const Step = ({ title, children }) => {
   return (
     <StepContext.Provider value={stepNumber}>
       <div className="step">
-        {title && <h2><i>{`Step ${stepNumber}: ${title}`}</i></h2>}
-        <div>{children}</div>
+        {title && <h2><i className="step-number">{`Step ${stepNumber}: ${title}`}</i></h2>}
+        <div className="content">{children}</div>
       </div>
     </StepContext.Provider>
   );

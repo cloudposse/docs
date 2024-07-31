@@ -2,9 +2,14 @@
 title: "Structure of Terraform S3 State Backend Bucket"
 sidebar_label: "Terraform S3 State"
 sidebar_position: 20
+description: Understand the structure of a Terraform S3 state backend
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+This guide explains the structure of a Terraform S3 state backend bucket, including the use of workspaces, key prefixes, and buckets. It details how the `backend.tf.json` file is used to configure the S3 backend for storing Terraform state, and how DynamoDB is used for state locking and consistency checking. The document provides examples and best practices for managing and accessing the Terraform state backend.
+</Intro>
 
 Understand the anatomy of a Terraform S3 state backend bucket and how workspaces, key prefixes and buckets are used.
 

@@ -1,63 +1,84 @@
 ---
 title: "Creating an Infrastructure repository"
 sidebar_label: "Creating a Repository"
-sidebar_position: 20
+sidebar_position: 1
+description: Create and configure a GitHub repository for infrastructure
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
-Create an empty GitHub repository to host infrastructure tools and configuration, and clone it to your host computer
-into a directory below your `$HOME` directory in the directory tree, for example,`/Users/user/src/infrastructure`.
+<Intro>
+Learn how to create a GitHub repository to host infrastructure tools and configurations. Then configure repository settings, enable branch protection, and add collaborators.
+</Intro>
 
-## Setup basic repository settings
+<Steps>
+  <Step>
+    ## <StepNumber/> Create a GitHub repository
 
-We recommend the following GitHub repository settings.
+    Create an empty GitHub repository to host infrastructure tools and configuration, and clone it to your host computer
+    into a directory below your `$HOME` directory in the directory tree, for example, `/Users/morpheus/src/infrastructure`.
+  </Step>
 
-1. Under "Features", ensure "Issues" are enabled. We will use Issues with Atmos GitHub Actions for Terraform.
-1. Under "Pull Requests", disable both "Allow merge commits" and "Allow rebase merging". We do this to create a clean
-   commit history. Otherwise, the git history on the main branch will contain individual commits from each feature
-   branch, which will result in a history which may contain _"dirty"_ commits.
-1. Under "Pull Requests", check "Always suggest updating pull request branches"
-1. Under "Pull Requests", check "Automatically delete head branches"
+  <Step>
+    ## <StepNumber/> Setup basic repository settings
 
-## Enable branch protection
+    We recommend the following GitHub repository settings.
+    <Steps>
+      1. Under "Features", ensure "Issues" are enabled. We will use Issues with Atmos GitHub Actions for Terraform.
+      1. Under "Pull Requests", disable both "Allow merge commits" and "Allow rebase merging". We do this to create a clean
+        commit history. Otherwise, the git history on the main branch will contain individual commits from each feature
+        branch, which will result in a history which may contain _"dirty"_ commits.
+      1. Under "Pull Requests", check "Always suggest updating pull request branches"
+      1. Under "Pull Requests", check "Automatically delete head branches"
+    </Steps>
+  </Step>
 
-1. Under branches, select "Add branch ruleset"
-1. Name this ruleset whatever you'd like. For example, "Protected Branches"
-1. Under "Bypass list", add your admin team. This team is able to skip the rules were are about to add, so this the
-   bypass list should be sparingly granted
-1. Under "Target branches", select "Add target" and "Include all default branches"
-1. Then check the following rules:
+  <Step>
+    ## <StepNumber/> Enable branch protection
+    <Steps>
+      1. Under branches, select "Add branch ruleset"
+      1. Name this ruleset whatever you'd like. For example, "Protected Branches"
+      1. Under "Bypass list", add your admin team. This team is able to skip the rules were are about to add, so this the
+        bypass list should be sparingly granted
+      1. Under "Target branches", select "Add target" and "Include all default branches"
+      1. Then check the following rules:
+          - [x] Restrict deletions
+          - [x] Require a pull request before merging
+          - [x] Block force pushes
+    </Steps>
+  </Step>
 
-- [x] Restrict deletions
-- [x] Require a pull request before merging
-- [x] Block force pushes
+  <Step>
+    ## <StepNumber/> Add collaborators and teams
 
-## Add collaborators and teams
+    Now add in your collaborators and teams. Under "Collaborators and teams", click "Add Teams". Generally most teams should
+    have "Write" access, and "Admin" access should be granted sparingly.
 
-Now add in your collaborators and teams. Under "Collaborators and teams", click "Add Teams". Generally most teams should
-have "Write" access, and "Admin" access should be granted sparingly.
+    For engagements with Cloud Posse, please grant Cloud Posse "Write" access.
+  </Step>
 
-For engagements with Cloud Posse, please grant Cloud Posse "Write" access.
+  <Step>
+    ## <StepNumber/> Import the Reference Architecture
 
-## Atmos Component Updater
+    With the GitHub repository prepared, we are now ready to import the Cloud Posse reference architecture. Reach out to
+    Cloud Posse for details!
 
-The Atmos Component Updater will automatically suggest pull requests in your new repository. To do so, we need to create
-and install a GitHub App and allow GitHub Actions to create and approve pull requests within your GitHub Organization.
-For more on the Atmos Component Updater, see
-[atmos.tools](https://atmos.tools/integrations/github-actions/component-updater).
+    <details>
+    <summary>Where can I find a copy of the complete reference architecture?</summary>
+      <p>The complete reference architecture is available to via GitHub Sponsorships.</p>
+      <PrimaryCTA to="/quickstart">Learn More</PrimaryCTA>
+    </details>
+  </Step>
+</Steps>
 
-1. Ensure [all requirements are met](https://atmos.tools/integrations/github-actions/component-updater/#requirements).
-1. Set up a [Github App](https://atmos.tools/integrations/github-actions/component-updater/#using-a-github-app) with
-   permission to create Pull Requests. We use a GitHub App because Pull Requests will only trigger other GitHub Action
-   Workflows if the Pull Request is created by a GitHub App or PAT.
-1. Create a
-   [GitHub Environment](https://atmos.tools/integrations/github-actions/component-updater/#using-github-environments).
-   With environments, the Atmos Component Updater workflow will be required to follow any branch protection rules before
-   running or accessing the environment's secrets. Plus, GitHub natively organizes these Deployments separately in the
-   GitHub UI
+<ActionCard title="What comes next?">
+  With your repository set up, we need to address some of the prerequisites for your workstation.
+  This includes setting up your workstation to work with Docker, obtaining cloud access, and more.
 
-## Import the Reference Architecture
-
-With the GitHub repository prepared, we are now ready to import the Cloud Posse reference architecture. Reach out to
-Cloud Posse for details!
+  <PrimaryCTA to="/layers/foundation/prerequisites">Next Step</PrimaryCTA>
+</ActionCard>

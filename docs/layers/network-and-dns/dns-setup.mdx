@@ -6,6 +6,9 @@ sidebar_position: 20
 import Note from '@site/src/components/Note';
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
 ## Requirements
 
@@ -20,53 +23,61 @@ When registering a new domain, we have the option of using Route53’s built-in 
 We recommend checking with your legal department on where they want to consolidate domain ownership. It has larger
 ramifications as to IP/trademark defense.
 
-## Deployment
+<Steps>
+  <Step>
+    ## <StepNumber/> Deploy DNS Components
 
-The DNS stacks are broken up into primary and delegated deployments. Primary DNS zones only start with an `NS` record
-among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console manages the respective domain. Consult the component's README (`components/terraform/dns-primary/README.md`) for more information.
+    The DNS stacks are broken up into primary and delegated deployments. Primary DNS zones only start with an `NS` record
+    among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console manages the respective domain. Consult the component's README (`components/terraform/dns-primary/README.md`) for more information.
 
-The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated. Consult the component's README `components/terraform/dns-delegated/README.md` for more information.
+    The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated. Consult the component's README `components/terraform/dns-delegated/README.md` for more information.
 
-To start the dns setup, run `atmos workflow deploy/dns -f network`. This will go through creating primaries, and then
-follow up with establishing the delegates.
+    To start the dns setup, run `atmos workflow deploy/dns -f network`. This will go through creating primaries, and then
+    follow up with establishing the delegates.
+  </Step>
 
-### Adding `NS` records to the Registered Domain (Click Ops)
+  <Step>
 
-In order to connect the newly provisioned Hosted Zone to the purchased domains, add the `NS` records to the chosen
-Domain Registrar. Retrieve these with the output of `dns-primary`. These will need to be manually added to the
-registered domain.
+    ## <StepNumber/> Configure Registrar `NS` Records for Domain (Click Ops)
 
-Shared Service Domain, acme-svc.com
+    In order to connect the newly provisioned Hosted Zone to the purchased domains, add the `NS` records to the chosen
+    Domain Registrar. Retrieve these with the output of `dns-primary`. These will need to be manually added to the
+    registered domain.
 
-```
-atmos terraform output dns-primary -s core-gbl-dns
-```
+    <Steps>
+    - #### Delegate Shared Service Domain, `acme-svc.com`
 
-Platform Sandbox Vanity Domain, acme-sandbox.com
+      ```shell
+      atmos terraform output dns-primary -s core-gbl-dns
+      ```
 
-```
-atmos terraform output dns-primary -s plat-gbl-sandbox
-```
+    - #### Delegate Platform Sandbox Vanity Domain, `acme-sandbox.com`
 
-Platform Dev Vanity Domain, acme-dev.com
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-sandbox
+      ```
 
-```
-atmos terraform output dns-primary -s plat-gbl-dev
-```
+    - #### Delegate Platform Dev Vanity Domain, `acme-dev.com`
 
-Platform Staging Vanity Domain, acme-stage.com
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-dev
+      ```
 
-```
-atmos terraform output dns-primary -s plat-gbl-staging
-```
+    - #### Delegate Platform Staging Vanity Domain, `acme-stage.com`
 
-Platform Prod Vanity Domain, acme-prod.com
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-staging
+      ```
 
-```
-atmos terraform output dns-primary -s plat-gbl-prod
-```
+    - #### Delegate Platform Prod Vanity Domain, `acme-prod.com`
 
-[For more on `NS` records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html)
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-prod
+      ```
+    </Steps>
+    [For more on `NS` records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html)
+  </Step>
+</Steps>
 
 ### ACM
 

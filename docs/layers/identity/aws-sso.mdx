@@ -1,17 +1,25 @@
 ---
 title: "AWS Identity Center (SSO) ClickOps"
-sidebar_label: "Connect with AWS Identity Center"
+sidebar_label: "Integrate AWS Identity Center"
 sidebar_position: 10
+description: Setup AWS SSO with external IdPs
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+This guide provides an overview of setting up AWS Identity Center (SSO) with ClickOps, detailing prerequisites and supported external identity providers. It explains how to integrate AWS SSO with providers like Azure AD, JumpCloud, Okta, and Google Workspace, including specific steps for configuring each.
+</Intro>
 
 ## Prerequisites
 
-1. Go to the root admin account
-2. Select primary region
-3. Go to AWS SSO
-4. Enable AWS SSO
+<Steps>
+  1. Go to the root admin account
+  2. Select primary region
+  3. Go to AWS SSO
+  4. Enable AWS SSO
+</Steps>
 
 ## Supported External Identity Providers
 
@@ -31,31 +39,33 @@ refer to the [JumpCloud official documentation](https://jumpcloud.com/support/in
 For non-explicitly supported Identity Providers, such as GSuite, set up the app integration with a custom external
 identity provider. The steps may be different for each IdP, but the goal is ultimately the same.
 
-1. Open the Identity account in the AWS Console
-2. On the Dashboard page of the IAM Identity Center console, select Choose your identity source
-3. In the Settings, choose the Identity source tab, select the Actions dropdown in the top right, and then select Change
-   identity source
-4. By default, IAM Identity Center uses its own directory as the IdP. To use another IdP, you have to switch to an
-   external identity provider. Select External identity provider from the available identity sources
-5. Configure the custom SAML application with the Service provider metadata generated from your IdP. Follow the next
-   steps from your IdP, and then complete this AWS configuration afterwards
-6. Open your chosen IdP
-7. Create a new SSO application
-8. Download the new app's IdP metadata and use this to complete step 5 above
-9. Fill in the Service provider details using the data from IAM Identity Center, and then choose Continue. The mapping
-   for the data is as follows:
+<Steps>
+  1. Open the Identity account in the AWS Console
+  2. On the Dashboard page of the IAM Identity Center console, select Choose your identity source
+  3. In the Settings, choose the Identity source tab, select the Actions dropdown in the top right, and then select Change
+    identity source
+  4. By default, IAM Identity Center uses its own directory as the IdP. To use another IdP, you have to switch to an
+    external identity provider. Select External identity provider from the available identity sources
+  5. Configure the custom SAML application with the Service provider metadata generated from your IdP. Follow the next
+    steps from your IdP, and then complete this AWS configuration afterwards
+  6. Open your chosen IdP
+  7. Create a new SSO application
+  8. Download the new app's IdP metadata and use this to complete step 5 above
+  9. Fill in the Service provider details using the data from IAM Identity Center, and then choose Continue. The mapping
+    for the data is as follows:
 
-```
-For ACS URL, enter the IAM Identity Center Assertion Consumer Service (ACS) URL.
-For Entity ID, enter the IAM Identity Center issuer URL.
-Leave the Start URL field empty.
-For Name ID format, select EMAIL.
-```
+      ```
+      For ACS URL, enter the IAM Identity Center Assertion Consumer Service (ACS) URL.
+      For Entity ID, enter the IAM Identity Center issuer URL.
+      Leave the Start URL field empty.
+      For Name ID format, select EMAIL.
+      ```
 
-10. If required for the IdP, enable the application for all users
-11. Finally, define specific Groups to match the given Group names by the aws-sso component
-    (`stacks/catalog/aws-sso.yaml`). In the default catalog, we define four Groups: `DevOps`, `Developers`,
-    `BillingAdmin`, and `Everyone`
+  10. If required for the IdP, enable the application for all users
+  11. Finally, define specific Groups to match the given Group names by the aws-sso component
+      (`stacks/catalog/aws-sso.yaml`). In the default catalog, we define four Groups: `DevOps`, `Developers`,
+      `BillingAdmin`, and `Everyone`
+</Steps>
 
 If set up properly, Users and Groups added to your IdP will automatically populate and update in AWS.
 
@@ -68,4 +78,4 @@ GSuite as an IdP, considering deploying the [ssosync](https://github.com/awslabs
 
 Additional IdP specific setup reference can be found here:
 
-1. [GSuite](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/)
+- [How to use Google Workspace as an external identity provider for AWS IAM Identity Center](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/)

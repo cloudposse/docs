@@ -1,0 +1,39 @@
+---
+title: FAQ
+sidebar_label: FAQ
+sidebar_position: 10
+---
+
+### What is the difference between a Service Discovery Domain and a Vanity Domain?
+
+This is an extremely common question. Please see [What is the difference between a Vanity and a Service Domain?](/reference-architecture/fundamentals/network-and-dns/#what-is-the-difference-between-a-vanity-and-a-service-domain)
+
+### Do we have to use 1Password?
+
+No, you can use whichever password manager you prefer. For Cloud Posse engagements, we use 1Password exclusively to share secrets.
+
+### Do we have to create a new Organization?
+
+Yes! We recommend registering for a new AWS Organization. You will be terraforming your entire organization, creating 12-plus accounts, and doing everything from the ground up. You'll be configuring SSO, fine-grained IAM roles, and more. We recommend a net-new Organization, so you do not jeopardize any of your current productoin operations.
+
+### How many email addresses do we need to create?
+
+Only one email with `+` addressing is required. This email will be used to create your AWS accounts. For example, `aws+%s@acme.com`.
+
+### What is plus email addressing?
+
+Plus email addressing, also known as plus addressing or subaddressing, is a feature offered by some email providers that allows users to create multiple variations of their email address by adding a "+" sign and a unique identifier after their username and before the "@" symbol.
+
+For example, if the email address is "john.doe@example.com", a user can create variations such as "john.doe+newsletter@example.com" or "john.doe+work@example.com". Emails sent to these variations will still be delivered to the original email address, but the unique identifier can be used to filter or organize incoming emails.
+
+### How can we customize our architecture?
+
+Customizations are out of scope typically, but we can assess each on a case-by-case basis.
+You will learn your environment and be confident to make customizations on your own.
+Often we can deploy an example of the customization, but it's up to you to implement the full deployment
+
+### What if we need more help?
+
+For everything else, we provide fanatical support via our Professional Services, exclusive to reference architecture customers. We can help with anything from architecture reviews, security audits, custom development, migrations, and more.
+
+Please book a call to discuss your needs.

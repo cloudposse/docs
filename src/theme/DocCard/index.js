@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {
   findFirstSidebarItemLink,
+  findSidebarCategory,
   useDocById,
 } from '@docusaurus/theme-common/internal';
 import {usePluralForm} from '@docusaurus/theme-common';
@@ -10,6 +11,7 @@ import isInternalUrl from '@docusaurus/isInternalUrl';
 import {translate} from '@docusaurus/Translate';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+
 function useCategoryItemsPlural() {
   const {selectMessage} = usePluralForm();
   return (count) =>
@@ -26,6 +28,7 @@ function useCategoryItemsPlural() {
       ),
     );
 }
+
 function CardContainer({href, children}) {
   return (
 
@@ -36,6 +39,7 @@ function CardContainer({href, children}) {
     </Link>
   );
 }
+
 function CardLayout({href, icon, title, description}) {
   return (
     <CardContainer href={href}>
@@ -55,6 +59,7 @@ function CardLayout({href, icon, title, description}) {
     </CardContainer>
   );
 }
+
 function CardCategory({item}) {
   const href = findFirstSidebarItemLink(item);
   const categoryItemsPlural = useCategoryItemsPlural();
@@ -62,6 +67,8 @@ function CardCategory({item}) {
   if (!href) {
     return null;
   }
+  // Doc description is not used
+  // https://github.com/facebook/docusaurus/issues/7598
   return (
     <CardLayout
       href={href}
@@ -71,6 +78,7 @@ function CardCategory({item}) {
     />
   );
 }
+
 function CardLink({item}) {
   const icon = isInternalUrl(item.href) ? '📄️' : '🔗';
   const doc = useDocById(item.docId ?? undefined);
@@ -83,6 +91,7 @@ function CardLink({item}) {
     />
   );
 }
+
 export default function DocCard({item}) {
   switch (item.type) {
     case 'link':

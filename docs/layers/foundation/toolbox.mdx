@@ -1,0 +1,54 @@
+---
+title: Prepare the Toolbox Image
+sidebar_label: Prepare the Toolbox
+sidebar_position: 3
+description: Prepare the toolbox image for Atmos and Terraform
+---
+import Intro from '@site/src/components/Intro';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import DismissibleDialog from '@site/src/components/DismissibleDialog';
+
+<Intro>
+Geodesic is a powerful Linux toolbox container designed to optimize DevOps workflows by providing essential dependencies for a DevOps toolchain, ensuring consistency and efficiency across development environments without additional software installation on your workstation. It can be extended and customized to fit specific needs by creating your own `Dockerfile` based on Geodesic, allowing you to add your favorite tools and share the container with your team for a unified working environment.
+</Intro>
+
+<figure>
+  <img src="https://github.com/cloudposse/geodesic/blob/main/docs/demo.gif?raw=true"/>
+  <figcaption>Geodesic in action</figcaption>
+</figure>
+
+<DismissibleDialog id="q2" expires="30" className="floating tall wide">
+  <h1>Where are the configs?</h1>
+  <p>The configurations are availble via our Quickstart</p>
+  <PrimaryCTA to="/quickstart">Try Quickstart</PrimaryCTA>
+</DismissibleDialog>
+
+## Building the Toolbox Image
+
+Build the Geodesic infrastructure container. This is a container that has all the tools for building the app. It's built
+from the `Dockerfile` using a `Makefile`.
+
+The standard `Makefile` includes a number of commands. In order to build the initial, complete Geodesic image, run the
+following:
+
+```bash
+make all
+```
+
+On future builds, use `make run` to use the cached image.
+
+Build the toolbox image locally before continuing.
+
+Follow the [toolbox image setup steps in the How-to Get Started guide](/layers/foundation/#building-the-toolbox-image). In short,
+run `make all`.
+
+The container will have the given local home mapped, so you should be able to use aws normally inside it once you set a profile that has valid credentials. For instance, if I log in to the profile `acme` with [leapp](https://github.com/Noovolari/leapp), I can run `aws --profile acme sts get-caller-identity` and get a response.
+
+Once you've verified that the infra container has access to aws resources, we can move on to the next step.
+
+<ActionCard title="What comes next?">
+  With your repository set up, workstation configured and toolbox in hand, you're ready to get to work provisioning your infrastructure with Atmos and Terraform.
+
+  <PrimaryCTA to="/layers/accounts">Next Step</PrimaryCTA>
+</ActionCard>

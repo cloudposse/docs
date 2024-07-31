@@ -1,12 +1,21 @@
 ---
 title: "Deploying AWS Accounts"
 sidebar_label: "Deploy Accounts"
-sidebar_position: 20
+sidebar_position: 3
+description: Deploy AWS accounts with `atmos` workflows and ClickOps.
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
 
-| Steps                     |                                                      |
+<Intro>
+This step-by-step process outlines how to deploy AWS accounts using `atmos` workflows and ClickOps steps. It covers necessary preparations, such as configuring the AWS Organization, increasing account quotas, and verifying account configurations. The guide details the deployment processes and post-deployment configurations, including setting up account settings, enabling AWS RAM for Organizations, and performing certain manual configurations via ClickOps.
+</Intro>
+
+| Steps                     | Actions                                              |
 | ------------------------- | ---------------------------------------------------- |
 | Deploy AWS Organization   | `atmos workflow deploy/organization -f accounts`     |
 | Prepare accounts creation | Click Ops                                            |
@@ -14,88 +23,101 @@ import KeyPoints from '@site/src/components/KeyPoints';
 | Deploy accounts settings  | `atmos workflow deploy/account-settings -f accounts` |
 | Finalize account setup    | Click Ops                                            |
 
-## Prepare Account Deployment
+<Steps>
+  <Step>
+    ## <StepNumber/> Prepare Account Deployment
 
-Review the "account" configuration in the stack catalog. **This is the hardest part to change/fix once the accounts are
-provisioned**. If you aren't confident about the email configuration, account names, or anything else, now is the time
-to make changes or ask for help.
+    Review the "account" configuration in the stack catalog. **This is the hardest part to change/fix once the accounts are
+    provisioned**. If you aren't confident about the email configuration, account names, or anything else, now is the time
+    to make changes or ask for help.
 
-You should double-check the following:
+    You should double-check the following:
 
-1. `stacks/catalog/account.yaml`
-2. Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_
-   all the mixins have been imported)
-3. Plan the run with `atmos terraform plan account -s core-gbl-root`
+    1. Check that `stacks/catalog/account.yaml` has the values you expect, especially account email format
+    2. Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_
+      all the mixins have been imported)
+    3. Plan the run with `atmos terraform plan account -s core-gbl-root`
+  </Step>
 
-Now deploy the AWS Organization. To deploy all accounts, we need to request an increase of the Account Quota from AWS
-support, which requires an AWS Organization to be created first. This process also enables
-[AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html)
-via a CLI command, which is required for connecting the Organization.
+  <Step>
+    ## <StepNumber/> Deploy the AWS Organization:
 
-Deploy the AWS Organization:
+    ```bash
+    atmos workflow deploy/organization -f accounts
+    ```
+  </Step>
 
-```bash
-atmos workflow deploy/organization -f accounts
-```
+  <Step>
+    ## <StepNumber/> Configure Root Account as Organization
 
-## Requirements for Deploying Accounts
+    Before performing the "Deploying Accounts" step, the root account needs to be configured as an AWS Organization.
 
-Before performing the "Deploying Accounts" step, the root account needs to be configured as an AWS Organization. Once
-updated, complete the root account setup with the following ClickOps steps.
+     To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
 
-From the `root` account (not `SuperAdmin`):
+     This process also enables [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) via a CLI command, which is required for connecting the Organization.
+  </Step>
 
-1. Increase the
-   [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for
-   the Cloud Posse reference architecture, or more depending on your business use-case
+  <Step>
+    ## <StepNumber/> Raise Account Limits
 
-## Deploying Accounts
+    Complete the root account setup with the following ClickOps steps.
 
-:::info
+    From the `root` account (not `SuperAdmin`):
 
-With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
-on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
-stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
-uses `account-map` (indirectly) to chose the role to assume.
+    1. Increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case
 
-:::
+  </Step>
 
-Again verify the "account" configuration in `stacks/catalog/account.yaml`.
+  <Step>
+    ## <StepNumber/> Deploying Accounts
 
-Once confident, begin the accounts deployment:
+    <Note title="IMPORTANT">
+      With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
+      on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
+      stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
+      uses `account-map` (indirectly) to chose the role to assume.
+    </Note>
 
-```bash
-atmos workflow deploy/accounts -f accounts
-```
+    Again verify the "account" configuration in `stacks/catalog/account.yaml`.
 
-These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
-outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
-role, we provision a static component `account-map`. **IMPORTANT:** Always run
-`atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
+    Once confident, begin the accounts deployment:
 
-Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves.
-This is accomplished by running `atmos workflow deploy/account-settings -f accounts`.
+    ```bash
+    atmos workflow deploy/accounts -f accounts
+    ```
 
-The workflows will kick off several sequential Terraform runs to provision all the AWS member account settings for
-member accounts in the Organization.
+    These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
+    outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
+    role, we provision a static component `account-map`. **IMPORTANT:** Always run
+    `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
 
-### ClickOps to Complete Account Setup
+    Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves.
+    This is accomplished by running `atmos workflow deploy/account-settings -f accounts`.
 
-For each new account:
+    The workflows will kick off several sequential Terraform runs to provision all the AWS member account settings for
+    member accounts in the Organization.
+  </Step>
 
-1. Perform a password reset by attempting to log in to the AWS console as a "root user", using that account's email
-   address, and then clicking the "Forgot password?" link. You will receive a password reset link via email, which
-   should be forwarded to the shared Slack channel for automated messages. Click the link and enter a new password. (Use
-   1Password or Random.org to create a password 26-38 characters long, including at least 3 of each class of character:
-   lower case, uppercase, digit, and symbol. You may need to manually combine or add to the generated password to ensure
-   3 symbols and digits are present.) Save the email address and generated password as web login credentials in
-   1Password. While you are at it, save the account number in a separate field.
-1. Log in using the new password, choose "My Security Credentials" from the account dropdown menu and set up
-   Multi-Factor Authentication (MFA) to use a Virtual MFA device. Save the MFA TOTP key in 1Password by using
-   1Password's TOTP field and built-in screen scanner. Also, save the Virtual MFA ARN (sometimes shown as "serial
-   number").
-1. While logged in, enable optional regions as described in the next step, if needed.
-1. (Optional, but highly recommended): Unsubscribe the account's email address from all marketing emails.
+  <Step>
+    ### <StepNumber/> ClickOps to Complete Account Setup
 
-For more details, review
-[the detailed "AWS Cold Start" documentation](/layers/accounts/tutorials/manual-configuration/#configure-root-account-credentials-for-each-account).
+    For each new account:
+
+    1. Perform a password reset by attempting to log in to the AWS console as a "root user", using that account's email
+      address, and then clicking the "Forgot password?" link. You will receive a password reset link via email, which
+      should be forwarded to the shared Slack channel for automated messages. Click the link and enter a new password. (Use
+      1Password or Random.org to create a password 26-38 characters long, including at least 3 of each class of character:
+      lower case, uppercase, digit, and symbol. You may need to manually combine or add to the generated password to ensure
+      3 symbols and digits are present.) Save the email address and generated password as web login credentials in
+      1Password. While you are at it, save the account number in a separate field.
+    1. Log in using the new password, choose "My Security Credentials" from the account dropdown menu and set up
+      Multi-Factor Authentication (MFA) to use a Virtual MFA device. Save the MFA TOTP key in 1Password by using
+      1Password's TOTP field and built-in screen scanner. Also, save the Virtual MFA ARN (sometimes shown as "serial
+      number").
+    1. While logged in, enable optional regions as described in the next step, if needed.
+    1. (Optional, but highly recommended): Unsubscribe the account's email address from all marketing emails.
+
+    For more details, review
+    [the detailed "AWS Cold Start" documentation](/layers/accounts/tutorials/manual-configuration/#configure-root-account-credentials-for-each-account).
+  </Step>
+</Steps>
