@@ -48,6 +48,10 @@ def main(
                 logging.warning(e.message)
                 continue
 
+        # Debugging
+        logging.info("Exiting after processing one module")
+        sys.exit(1)
+
 
 @click.command()
 @click.option(

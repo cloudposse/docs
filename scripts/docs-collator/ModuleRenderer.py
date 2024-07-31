@@ -62,6 +62,17 @@ class ModuleRenderer(AbstractRenderer):
 
         io.create_dirs(module_docs_dir)
 
+        # Copy the local terraform-docs configuration file to the module directory
+        # so that make readme uses that configuration
+        #io.copy_file(
+        #    os.path.join(TEMPLATES_DIR, "terraform-docs.yml"),
+        #    os.path.join(module_download_dir, ".terraform-docs.yml"),
+        #)
+        rendering.render_terraform_docs(
+            module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
+        )
+
+        # Run the make readme command in the module directory to compile README.md
         response = subprocess.run(
             [
                 "make",
@@ -185,4 +196,5 @@ class ModuleRenderer(AbstractRenderer):
         content = io.read_file_to_string(readme_md_file)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
+        content = rendering.fix_mdx_format(content)
         io.save_string_to_file(readme_md_file, content)

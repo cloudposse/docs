@@ -15,7 +15,7 @@ description: |-
 tags:
 {{ (ds "config").tags | data.ToYAML | strings.Indent 2 -}}
 {{- end }}
-custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master/README.md
+custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/main/README.md
 ---
 
 # Module: `{{ $shortModuleName }}`
