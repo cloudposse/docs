@@ -32,6 +32,9 @@ class ModuleFetcher(AbstractFetcher):
         if SUBMODULES_DIR in remote_files:
             self.__fetch_submodules(repo, module_download_dir)
 
+        if any(file.endswith(".tf") for file in remote_files):
+            self.__fetch_terraform_files(repo, module_download_dir)
+
     def __fetch_images(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, IMAGES_DIR)
 
@@ -59,3 +62,10 @@ class ModuleFetcher(AbstractFetcher):
                     module_download_dir,
                     submodule_dir=os.path.dirname(readme_file),
                 )
+
+    def __fetch_terraform_files(self, repo, module_download_dir):
+        remote_files = self.github_provider.list_repo_dir(repo, "")
+
+        for remote_file in remote_files:
+            if remote_file.endswith(".tf"):
+                self.github_provider.fetch_file(repo, remote_file, module_download_dir)

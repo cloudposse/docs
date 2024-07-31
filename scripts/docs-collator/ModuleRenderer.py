@@ -64,10 +64,10 @@ class ModuleRenderer(AbstractRenderer):
 
         # Copy the local terraform-docs configuration file to the module directory
         # so that make readme uses that configuration
-        #io.copy_file(
+        # io.copy_file(
         #    os.path.join(TEMPLATES_DIR, "terraform-docs.yml"),
         #    os.path.join(module_download_dir, ".terraform-docs.yml"),
-        #)
+        # )
         rendering.render_terraform_docs(
             module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
