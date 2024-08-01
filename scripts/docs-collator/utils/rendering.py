@@ -83,6 +83,7 @@ def fix_mdx_format(content):
     1. Replace all special characters outside code blocks for MDX support
     2. Fix the formatting for <details><summary> html tags
     3. Remove < and > from URLs
+    4. Replace <= with &lt;= to avoid parsing issues
 
     Even after we re-render all terraform-docs, there are still some issues in our markdown files.
     This function cleans up the remaining issues.
@@ -92,6 +93,7 @@ def fix_mdx_format(content):
         r"}": r"\}",
         r"<details><summary>": r"<details>\n<summary>",  # Fix <details><summary> formatting
         r"<(https?://[^>]+)>": r"\1",  # Remove < and > from URLs
+        r"<=": r"&lt;=",
     }
 
     in_code_block = False
