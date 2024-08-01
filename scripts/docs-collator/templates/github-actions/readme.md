@@ -75,7 +75,7 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullName }}/edit/master/READM
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" $file) }}
+{{ (include "includes" (printf "%s/%s" $fullName $file)) }}
 {{- end }}
 {{- end }}
 {{- end }}
