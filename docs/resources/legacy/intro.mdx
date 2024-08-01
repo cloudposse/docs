@@ -8,7 +8,7 @@ sidebar_position: 0
 
 ## Geodesic
 
-Start with getting familiar with the [geodesic](/reference/tools.mdx#geodesic).
+Start with getting familiar with the [geodesic](/learn/toolchain/#geodesic).
 
 Get intimately familiar with docker inheritance and [multi-stage docker builds](/reference/best-practices/docker-best-practices.md#multi-stage-builds). We use this pattern extensively.
 
@@ -19,32 +19,32 @@ Check out our [terraform-aws-components](https://github.com/cloudposse/terraform
 Tons of tools/clis are used as part of our solution. We distribute these tools in a couple of different ways.
 
 * Geodesic bundles most of these tools as part of the geodesic base image
-* Our [packages repo](/reference/tools.mdx#packages) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`](/reference/tools.mdx#build-harness)). This can also be used for local ("native") development contexts.
+* Our [packages repo](/learn/toolchain/#packages) provides an embeddable `Makefile` system for installing packages in other contexts (e.g. [`build-harness`](/reference/tools.mdx#build-harness)). This can also be used for local ("native") development contexts.
 
 Here are some of the most important tools to be aware of:
 
-- [`make`](/reference/tools.mdx#make)
-- [`chamber`](/reference/tools.mdx#chamber)
-- [`terraform`](/reference/tools.mdx#terraform)
-- [`gomplate`](/reference/tools.mdx#gomplate)
-- [Leapp](/reference/tools.mdx#leapp)
+- [`make`](/learn/toolchain/#make)
+- [`chamber`](/learn/toolchain/#chamber)
+- [`terraform`](/learn/toolchain/#terraform)
+- [`gomplate`](/learn/toolchain/#gomplate)
+- [Leapp](/learn/toolchain/#leapp)
 
 If using kubernetes, then also review these tools:
 
-- [`helm`](/reference/tools.mdx#helm)
-- [`helmfile`](/reference/tools.mdx#helmfile)
+- [`helm`](/learn/toolchain/#helm)
+- [`helmfile`](/learn/toolchain/#helmfile)
 
 ## Kubernetes
 
-Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/cloudposse?q=terraform-aws-eks) and [`helmfile`](reference/tools.mdx#helmfile).
+Kubernetes is a massive part of our solutions. Our Kubernetes documentation is geared towards leveraging our [Terraform EKS modules](https://github.com/cloudposse?q=terraform-aws-eks) and [`helmfile`](/learn/toolchain/#helmfile).
 
 ### Helm
 
 Helm is central to how we deploy all services on kubernetes.
 
-* [helm](/reference/tools.mdx#helm) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
+* [helm](/learn/toolchain/#helm) is essentially the package manager for Kubernetes (like `npm` for Node, `gem` for Ruby, and `rpm` for RHEL)
 * [helm charts](https://helm.sh/docs/topics/charts/) are how kubernetes resources are templatized using Go templates
-* [helmfiles](/reference/tools.mdx#helmfile) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
+* [helmfiles](/learn/toolchain/#helmfile) are used to define a distribution of helm charts. So if you want to install prometheus, grafana, nginx-ingress, kube-lego, etc, we use a `helmfile.yaml` to define how that's done.
 
 ## Terraform
 

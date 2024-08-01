@@ -9,7 +9,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 
 <Intro>
-This document describes the Dynamic Terraform Roles feature and its benefits, and, for users of the previous architecture, **how to migrate to it**. The [AWS Access Control Architecture](./aws-access-control-architecture.md) documentation assumes this feature is enabled and describes how to use it. The [AWS Access Control Evolution](./aws-access-control-evolution.md#dynamic-terraform-roles-normalization-of-team-roles-better-team-and-team-role-iam-policy-management) documentation describes the feature in more detail.
+This document describes the Dynamic Terraform Roles feature and its benefits, and, for users of the previous architecture, **how to migrate to it**. The [AWS Access Control Architecture](/layers/identity/docs/aws-access-control-architecture) documentation assumes this feature is enabled and describes how to use it. The [AWS Access Control Evolution](/layers/identity/docs/aws-access-control-evolution#dynamic-terraform-roles-normalization-of-team-roles-better-team-and-team-role-iam-policy-management) documentation describes the feature in more detail.
 </Intro>
 
 :::info More than just Terraform
@@ -51,7 +51,7 @@ Terraform Roles" addresses these issues.
 
 In this section we describe the features and benefits of the Dynamic Terraform
 Roles feature at a high level. For a more detailed description, see
-[AWS Access Control Evolution -> Dynamic Terraform Roles...](aws-access-control-evolution.md#dynamic-terraform-roles-normalization-of-team-roles-better-team-and-team-role-iam-policy-management).
+[AWS Access Control Evolution -> Dynamic Terraform Roles...](/layers/identity/docs/aws-access-control-evolution#dynamic-terraform-roles-normalization-of-team-roles-better-team-and-team-role-iam-policy-management).
 
 Freed from the requirement that all users use the same, single, static IAM role
 for all Terraform operations, we can now implement a more fine-grained access
@@ -157,8 +157,8 @@ previously required the SuperAdmin role.
 ## Configuration and Usage
 
 To understand how access control works using Dynamic Terraform Roles, see
-[AWS Access Control Architecture](./aws-access-control-architecture.md),
-especially [the section on Terraform Support](./aws-access-control-architecture.md#terraform-support).
+[AWS Access Control Architecture](/layers/identity/docs/aws-access-control-architecture),
+especially [the section on Terraform Support](/layers/identity/docs/aws-access-control-architecture#terraform-support).
 
 The instructions below provide a thorough overview of the migration steps, but
 you should always refer to the latest documentation for each component to see if
@@ -207,7 +207,7 @@ components in the following order:
 This migration guide assumes your current configuration already meets the
 following prerequisites. If it does not, you may be able to find instructions
 adequate to upgrade your configuration to meet the prerequisites in
-the [AWS Access Control Evolution](aws-access-control-evolution.md)
+the [AWS Access Control Evolution](/layers/identity/docs/aws-access-control-evolution)
 documentation and/or the change logs for the individual components. If you
 cannot find the information you need there, please
 contact [Cloud Posse Professional Services](https://cloudposse.com/professional-services/)

@@ -44,7 +44,7 @@ This small script is just a wrapper around running Geodesic via `docker` with a 
 
 ### 2. Authenticate with AWS + aws-vault
 
-Geodesic ships with [`aws-vault`](/reference/tools.mdx#aws-vault) to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
+Geodesic ships with [`aws-vault`](/learn/toolchain/#aws-vault) to help manage our credentials and retrieve access tokens from AWS to provide us with authenticated sessions. To set up a new profile, first [create a new IAM user and programmatic Access Key ID and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) and be sure to copy those values down somewhere. Now, in your Geodesic shell, let's do the following:
 
 ```bash
 # Since our Geodesic shell is on Linux, let's use the file backend which Linux supports.

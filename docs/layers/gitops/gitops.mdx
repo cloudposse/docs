@@ -25,7 +25,7 @@ GitOps is a cloud-native continuous deployment methodology that uses Git as the 
 
 ## The Problem
 
-Collaboration with Terraform in team environments is more difficult than traditional [release-engineering](/layer/software-delivery/software-delivery) for web applications. Unlike containerized deployments, Terraform deployments are constantly modifying the state of infrastructure and behave a lot more like database migrations, except there are no transactions and therefore no practical way to do automated rollbacks. This means we have to be extra cautious.
+Collaboration with Terraform in team environments is more difficult than traditional [release-engineering](/layers/software-delivery/software-delivery) for web applications. Unlike containerized deployments, Terraform deployments are constantly modifying the state of infrastructure and behave a lot more like database migrations, except there are no transactions and therefore no practical way to do automated rollbacks. This means we have to be extra cautious.
 
 When teams start collaborating on infrastructure, the rate of change increases, and the likelihood of collisions as well. We need approval gates to control what changes and when, plus have the ability to review changes prior to deployment to make sure nothing catastrophic happens (e.g. database destroyed). Pull Requests are not enough to restrict what changes, since every Pull Request merged, changes the graph and therefore requires all other open Pull Requests to be re-validated. There's also a need to reconcile the desired state of infrastructure in Git with what is deployed; in busy team environments, a change can accidentally not be deployed or at other times, ClickOps can result in a drift between what's running and what's in code.
 
