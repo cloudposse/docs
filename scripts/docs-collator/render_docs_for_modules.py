@@ -31,6 +31,7 @@ def main(
     logging.info(f"Found {len(repos)} repositories to process")
 
     for repo in repos:
+        # TODO
         logging.info(f"Debugging module: {repo.full_name}")
         if repo.full_name != "cloudposse/terraform-aws-ec2-ami-backup":
             logging.info(f"skipping...")

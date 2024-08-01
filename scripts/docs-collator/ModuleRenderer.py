@@ -73,6 +73,19 @@ class ModuleRenderer(AbstractRenderer):
             module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
 
+        response = subprocess.run(
+                ["ls", "-la", module_download_dir],
+                capture_output=True,
+                )
+        logging.debug(f"ls -la {module_download_dir}")
+        logging.debug(response.stdout.decode("utf-8"))
+        response = subprocess.run(
+                ["ls", "-la", os.path.join(module_download_dir, "docs")],
+                capture_output=True,
+                )
+        logging.debug(f"ls -la {module_download_dir}/docs")
+        logging.debug(response.stdout.decode("utf-8"))
+
         # Run the make readme command in the module directory to compile README.md
         logging.debug(f"Rendering README.md for: {module_download_dir}")
         logging.debug(f"make readme")
