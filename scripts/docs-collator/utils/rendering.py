@@ -82,6 +82,7 @@ def fix_mdx_format(content):
     """
     1. Replace all special characters outside code blocks for MDX support
     2. Fix the formatting for <details><summary> html tags
+    3. Remove < and > from URLs
 
     Even after we re-render all terraform-docs, there are still some issues in our markdown files.
     This function cleans up the remaining issues.
@@ -105,13 +106,15 @@ def fix_mdx_format(content):
 
         # Perform replacements only if not in a code block
         if not in_code_block:
-            for pattern, replacement in replacements.items():
-                line = re.sub(pattern, replacement, line)
-
-            # Strip < and > from URLs
-            # f.e. https://github.com/cloudposse/terraform-aws-ec2-ami-backup/blob/1e3706b662f9f55362c54b90d466d4083b539df4/README.yaml#L67
-            # if "http" in line and line.startswith('<') and line.endswith('>'):
-            #    line = line[1:-1]  # Strip the first and last character
+            # Split the line by inline code blocks (single backticks)
+            parts = re.split(r'(`[^`]*`)', line)
+            for i, part in enumerate(parts):
+                # Only perform replacements on parts that are not inline code blocks
+                if not part.startswith('`') and not part.endswith('`'):
+                    for pattern, replacement in replacements.items():
+                        part = re.sub(pattern, replacement, part)
+                parts[i] = part
+            line = ''.join(parts)
 
         result.append(line)
 

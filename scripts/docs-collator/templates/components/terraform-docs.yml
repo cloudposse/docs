@@ -4,24 +4,24 @@ content: |-
 
   {{ .Header }}
 
-  ### Terraform
+  ## Terraform
 
   {{ if ne (len .Module.Requirements) 0 -}}
-  #### Version Requirements
+  ### Version Requirements
   {{ range .Module.Providers }}
   - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 
   {{ if ne (len .Module.Providers) 0 -}}
-  #### Providers
+  ### Providers
   {{ range .Module.Providers }}
   - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 
   {{ if ne (len .Module.ModuleCalls) 0 -}}
-  #### Modules
+  ### Modules
 
   Name | Version | Source | Description
   --- | --- | --- | ---
@@ -40,7 +40,7 @@ content: |-
 
   {{- if ne (len .Module.Resources) 0 }}
 
-  #### Resources
+  ### Resources
 
   The following resources are used by this module:
   {{ range .Module.Resources }}
@@ -53,7 +53,7 @@ content: |-
   {{- end }}
 
   {{ if ne (len .Module.Resources) 0 -}}
-  #### Data Sources
+  ### Data Sources
 
   The following data sources are used by this module:
   {{ range .Module.Resources }}
@@ -65,12 +65,12 @@ content: |-
   {{- end }}
   {{- end }}
 
-  #### Required Inputs
+  ### Required Inputs
 
   <dl>
   {{- range .Module.Inputs }}
   {{- if and (not (has .Name $context_variables)) .Required }}
-    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>required</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>required</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
@@ -95,12 +95,12 @@ content: |-
 
   {{ if $optional -}}
 
-  #### Optional Inputs
+  ### Optional Inputs
 
   <dl>
   {{- range .Module.Inputs }}
   {{- if and (not (has .Name $context_variables)) (not .Required) }}
-    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>optional</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>optional</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
@@ -114,7 +114,7 @@ content: |-
       ```
       <br/>
       {{ end }}
-      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
+      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue | replace "{}" "{ }" | replace "[]" "[ ]" }}`{{ else }}
       ```hcl
       {{- $lines := regexSplit "\n" .GetValue -1 -}}
       {{- range $lines }}
@@ -128,7 +128,7 @@ content: |-
   </dl>
   {{ end }}
 
-  #### Context Variables
+  ### Context Variables
 
   <details>
   <summary>
@@ -138,7 +138,7 @@ content: |-
   <dl>
   {{- range .Module.Inputs }}
   {{- if and (has .Name $context_variables) }}
-    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>{{ ternary .Required "required" "optional" }}</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>{{ ternary .Required "required" "optional" }}</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
@@ -152,7 +152,7 @@ content: |-
       ```
       <br/>
       {{ end }}
-      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
+      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue | replace "{}" "{ }" | replace "[]" "[ ]" }}`{{ else }}
       ```hcl
       {{- $lines := regexSplit "\n" .GetValue -1 -}}
       {{- range $lines }}
@@ -167,11 +167,11 @@ content: |-
   </details>
 
   {{ if ne (len .Module.Outputs) 0 -}}
-  #### Outputs
+  ### Outputs
 
   <dl>
   {{- range .Module.Outputs }}
-    <dt>`{{ .Name }}`{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "" | default "n/a" ) -1 -}}
       {{- range $lines }}

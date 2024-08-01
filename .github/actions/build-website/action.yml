@@ -53,10 +53,14 @@ runs:
       with:
         python-version: '3.10'
 
-    - name: "Install Python Dependencies"
+    - name: "Initialize Build Harness"
       shell: bash
       run: |
         make init
+
+    - name: "Install Python Dependencies"
+      shell: bash
+      run: |
         pip install -r scripts/docs-collator/requirements.txt
 
     - name: "Install terraform-docs"
@@ -91,5 +95,4 @@ runs:
         GOOGLE_TAG_MANAGER: ${{ inputs.google_tag_manager }}
         GOOGLE_SITE_VERIFICATION_ID: ${{ inputs.google_site_verification_id }}
       run: |
-        make init
         make build-production

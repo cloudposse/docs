@@ -52,8 +52,9 @@ class ModuleRenderer(AbstractRenderer):
             repo, module_download_dir, module_docs_dir
         )
 
-        self.__create_index_for_provider(repo)
-        self.__create_indexes_for_subfolders(repo)
+        # Disable category.json for now
+        # self.__create_index_for_provider(repo)
+        # self.__create_indexes_for_subfolders(repo)
 
     def __render_readme(self, module_download_dir, module_docs_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
