@@ -90,6 +90,7 @@ def fix_mdx_format(content):
         r"{": r"\{",  # Replace curly braces with literal
         r"}": r"\}",
         r"<details><summary>": r"<details>\n<summary>",  # Fix <details><summary> formatting
+        r"<(https?://[^>]+)>": r"\1",  # Remove < and > from URLs
     }
 
     in_code_block = False
@@ -109,8 +110,8 @@ def fix_mdx_format(content):
 
             # Strip < and > from URLs
             # f.e. https://github.com/cloudposse/terraform-aws-ec2-ami-backup/blob/1e3706b662f9f55362c54b90d466d4083b539df4/README.yaml#L67
-            if "http" in line:
-                line = line.strip('<>')
+            # if "http" in line and line.startswith('<') and line.endswith('>'):
+            #    line = line[1:-1]  # Strip the first and last character
 
         result.append(line)
 
