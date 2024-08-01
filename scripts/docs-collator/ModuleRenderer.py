@@ -36,10 +36,10 @@ class ModuleRenderer(AbstractRenderer):
         self._pre_rendering_fixes(repo, module_download_dir)
 
         provider, module_name = rendering.parse_terraform_repo_name(repo.name)
-        logging.info(f"Provider: {provider}, Module: {module_name}")
+        logging.debug(f"Provider: {provider}, Module: {module_name}")
 
         module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
-        logging.info(f"Module docs dir: {module_docs_dir}")
+        logging.debug(f"Module docs dir: {module_docs_dir}")
 
         self.__render_readme(module_download_dir, module_docs_dir)
 
@@ -68,13 +68,19 @@ class ModuleRenderer(AbstractRenderer):
 
         # Re-render terraform docs with this repo's terraform-docs template for modules.
         # This replaces docs/terraform.md for the given module in place
-        logging.info(f"Rendering terraform docs for: {module_download_dir}")
+        logging.debug(f"Rendering terraform docs for: {module_download_dir}")
         rendering.render_terraform_docs(
             module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
 
         # Run the make readme command in the module directory to compile README.md
-        logging.info(f"Rendering README.md for: {module_download_dir}")
+        logging.debug(f"Rendering README.md for: {module_download_dir}")
+        logging.debug(f"make readme")
+        logging.debug(f"README_TEMPLATE_FILE: {readme_tmpl_file}")
+        logging.debug(f"README_FILE: {readme_md_file}")
+        logging.debug(f"README_YAML: {readme_yaml_file}")
+        logging.debug(f"README_TEMPLATE_YAML: {readme_yaml_file}")
+        logging.debug(f"README_INCLUDES: {module_download_dir}")
         response = subprocess.run(
             [
                 "make",
