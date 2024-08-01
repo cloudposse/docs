@@ -9,7 +9,7 @@ usage() {
 
 [ -z "${PUBLIC_REPO_ACCESS_TOKEN}" ] && usage "PUBLIC_REPO_ACCESS_TOKEN"
 
-RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-content/reference/github-actions/library}"
+RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-docs/github-actions/library}"
 DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/github-actions}"
 
 python scripts/docs-collator/render_docs_for_github_actions.py \

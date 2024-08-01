@@ -454,7 +454,7 @@ module.exports = {
             label: 'Terraform Components',
             className: 'sidebar-title',
             collapsible: true,
-            collapsed: false,
+            collapsed: true,
             link: {
               type: 'doc',
               id: 'components/components'
@@ -471,7 +471,7 @@ module.exports = {
             label: 'Terraform Modules',
             className: 'sidebar-title',
             collapsible: true,
-            collapsed: false,
+            collapsed: true,
             link: {
               type: 'doc',
               id: 'modules/modules'
