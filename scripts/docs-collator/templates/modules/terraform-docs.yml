@@ -74,7 +74,7 @@ content: |-
   <dl>
   {{- range .Module.Inputs }}
   {{- if and (not (has .Name $context_variables)) .Required }}
-    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>required</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>required</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
@@ -143,7 +143,7 @@ content: |-
   <dl>
   {{- range .Module.Inputs }}
   {{- if and (has .Name $context_variables) }}
-    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>{{ ternary .Required "required" "optional" }}</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>{{ ternary .Required "required" "optional" }}</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
@@ -176,7 +176,7 @@ content: |-
 
   <dl>
   {{- range .Module.Outputs }}
-    <dt>`{{ .Name }}`{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "" | default "n/a" ) -1 -}}
       {{- range $lines }}
