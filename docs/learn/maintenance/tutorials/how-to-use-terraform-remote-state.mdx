@@ -14,7 +14,7 @@ To solve this, Terraform has the concept of “remote state” which can be acce
 
 ## Solution
 
-Cloud Posse maintains a “remote state” module that is  💯  aware of all [Stacks](/fundamentals/stacks) and is, therefore, able to abstract all this complexity down to a simple module invocation. Using this module, it’s almost as convenient as using the native resources directly.
+Cloud Posse maintains a “remote state” module that is  💯  aware of all [Stacks](/resources/legacy/fundamentals/stacks) and is, therefore, able to abstract all this complexity down to a simple module invocation. Using this module, it’s almost as convenient as using the native resources directly.
 
 :::tip
 
@@ -49,7 +49,7 @@ module "vpc" {
 ```
 
 :::caution
-When upstream components are updated, dependent components should be replanned.  Be sure to read [How to Enable Spacelift Drift Detection](/reference-architecture/how-to-guides/integrations/spacelift/how-to-enable-spacelift-drift-detection) to mitigate this with continuous reconciliation, and[How to Manage Explicit Component Dependencies with Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/how-to-manage-explicit-component-dependencies-with-spacelift) to ensure explicit dependencies are defined.
+When upstream components are updated, dependent components should be replanned.  Be sure to read [How to Enable Spacelift Drift Detection](/layers/spacelift/tutorials/how-to-enable-spacelift-drift-detection) to mitigate this with continuous reconciliation, and[How to Manage Explicit Component Dependencies with Spacelift](/layers/spacelift/tutorials/how-to-manage-explicit-component-dependencies-with-spacelift) to ensure explicit dependencies are defined.
 
 :::
 

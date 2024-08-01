@@ -25,7 +25,7 @@ GitOps is a cloud-native continuous deployment methodology that uses Git as the 
 
 ## The Problem
 
-Collaboration with Terraform in team environments is more difficult than traditional [release-engineering](/reference-architecture/fundamentals/release-engineering/) for web applications. Unlike containerized deployments, Terraform deployments are constantly modifying the state of infrastructure and behave a lot more like database migrations, except there are no transactions and therefore no practical way to do automated rollbacks. This means we have to be extra cautious.
+Collaboration with Terraform in team environments is more difficult than traditional [release-engineering](/layer/software-delivery/software-delivery) for web applications. Unlike containerized deployments, Terraform deployments are constantly modifying the state of infrastructure and behave a lot more like database migrations, except there are no transactions and therefore no practical way to do automated rollbacks. This means we have to be extra cautious.
 
 When teams start collaborating on infrastructure, the rate of change increases, and the likelihood of collisions as well. We need approval gates to control what changes and when, plus have the ability to review changes prior to deployment to make sure nothing catastrophic happens (e.g. database destroyed). Pull Requests are not enough to restrict what changes, since every Pull Request merged, changes the graph and therefore requires all other open Pull Requests to be re-validated. There's also a need to reconcile the desired state of infrastructure in Git with what is deployed; in busy team environments, a change can accidentally not be deployed or at other times, ClickOps can result in a drift between what's running and what's in code.
 
@@ -50,7 +50,7 @@ Expect these actions to constantly evolve as we build out these workflows.
 
 ### Implementation
 
-Once the required S3 Bucket, DynamoDB table, and two separate roles to access Terraform planfiles and plan/apply Terraform are deployed, simply add your chosen [workflows](#workflows). Read the [Setup Documentation](/reference-architecture/setup/gitops/) for details on deploying the requirements.
+Once the required S3 Bucket, DynamoDB table, and two separate roles to access Terraform planfiles and plan/apply Terraform are deployed, simply add your chosen [workflows](#workflows). Read the [Setup Documentation](/layers/gitops/setup) for details on deploying the requirements.
 
 ## Workflows
 
@@ -185,9 +185,9 @@ The Atmos Terraform Apply Matrix is reusable workflow called by another workflow
 
 ## References
 
-- [Setup Documentation](/reference-architecture/setup/gitops/)
+- [Setup Documentation](/layers/gitops/setup)
 - [Atmos integration documentation](https://atmos.tools/category/integrations/github-actions).
-- [GitHub OIDC Integration with AWS](/reference-architecture/how-to-guides/integrations/github/github-oidc-with-aws/)
+- [GitHub OIDC Integration with AWS](/layers/github-actions/github-oidc-with-aws)
 - [`cloudposse/github-action-atmos-terraform-plan`](https://github.com/cloudposse/github-action-atmos-terraform-plan)
 - [`cloudposse/github-action-atmos-terraform-apply`](https://github.com/cloudposse/github-action-atmos-terraform-apply)
 - [`cloudposse/github-action-atmos-terraform-drift-detection`](https://github.com/cloudposse/github-action-atmos-terraform-drift-detection)
@@ -254,8 +254,8 @@ The following error commonly occurs when setting up `gitops` roles and permissio
 Error: Could not assume role with OIDC: Not authorized to perform sts:AssumeRoleWithWebIdentity
 ```
 
-To resolve this error, thoroughly read through each of the [Authentication Prerequisites](/reference-architecture/setup/gitops/#authentication-prerequisites) for GitOps setup. In particular, check the capitalization of `trusted_github_repos` within `aws-teams` and check the `permissions` for the workflow in GitHub.
+To resolve this error, thoroughly read through each of the [Authentication Prerequisites](/layers/gitops/setup#authentication-prerequisites) for GitOps setup. In particular, check the capitalization of `trusted_github_repos` within `aws-teams` and check the `permissions` for the workflow in GitHub.
 
 ### How does GitHub OIDC work with AWS?
 
-Please see [How to use GitHub OIDC with AWS](/reference-architecture/how-to-guides/integrations/github/github-oidc-with-aws/)
+Please see [How to use GitHub OIDC with AWS](/layers/github-actions/github-oidc-with-aws)

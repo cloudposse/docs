@@ -20,13 +20,13 @@ Depending on how the service is exposed we can use cluster checks or synthetics.
 
 If a simple check will suffice we recommend using Cluster Checks:
 
-- [How to Setup Datadog Cluster Checks and Network Monitors for External URLs of Applications](/reference-architecture/how-to-guides/integrations/datadog/how-to-setup-datadog-cluster-checks-and-network-monitors-for-ext)
+- [How to Setup Datadog Cluster Checks and Network Monitors for External URLs of Applications](/layers/monitoring/datadog/tutorials/how-to-setup-datadog-cluster-checks-and-network-monitors-for-ext)
 
 - [Datadog Cluster Checks](/reference-architecture/components/datadog-agent/datadog-cluster-checks)
 
 However if multiple steps (such as login) is required we recommend Datadog Synthetics:
 
-- [How to create a Synthetic and SLO](/reference-architecture/how-to-guides/integrations/datadog/how-to-create-a-synthetic-and-slo)
+- [How to create a Synthetic and SLO](/layers/monitoring/datadog/tutorials/how-to-create-a-synthetic-and-slo)
 
 These Checks are in addition to the default kubernetes checks we have that monitor for crashing pods, imagepullbackoff and other generic kubernetes issues.
 

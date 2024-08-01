@@ -35,7 +35,7 @@ By default, we should know if the new app is deployed and healthy, and its curre
   <Step>
     ## <StepNumber/> Ensure Tags are being sent to Datadog
 
-    Ensure the deployment location is fetching tags to datadog. This is usually in Kubernetes or an AWS Service such as ECS or Elastic Bean Stalk. Follow this guide to ensure tags are being sent to datadog. [Datadog: How to Pass Tags Along to Datadog](/reference-architecture/how-to-guides/integrations/datadog/how-to-pass-tags-along-to-datadog/).
+    Ensure the deployment location is fetching tags to datadog. This is usually in Kubernetes or an AWS Service such as ECS or Elastic Bean Stalk. Follow this guide to ensure tags are being sent to datadog. [Datadog: How to Pass Tags Along to Datadog](/layers/monitoring/datadog/tutorials/how-to-pass-tags-along-to-datadog).
   </Step>
 
   <Step>
@@ -68,13 +68,13 @@ By default, we should know if the new app is deployed and healthy, and its curre
 
     If Tag fetching is setup (#1) and your app is tagged (#2) then the datadog side is complete (excluding additional monitors). The next step would be to ensure that a team exists in opsgenie to receive an alert. We need to ensure an opsgenie-team component instance for `<owning-team>` exists. This would be a team with `name: <owning-team>` to be set.
 
-    **If no team already exists** follow this guide to create a new opsgenie team [How to Create New Teams in OpsGenie](/reference-architecture/how-to-guides/integrations/opsgenie/how-to-create-new-teams-in-opsgenie).
+    **If no team already exists** follow this guide to create a new opsgenie team [How to Create New Teams in OpsGenie](/layers/alerting/opsgenie/how-to-create-new-teams-in-opsgenie).
   </Step>
 
   <Step>
     ## <StepNumber/> Add Users to Teams
 
-    Once a team exists we need people to respond to the alert. Follow [How to Add Users to a Team in OpsGenie](/reference-architecture/how-to-guides/integrations/opsgenie/how-to-add-users-to-a-team-in-opsgenie)  to add people to a team.
+    Once a team exists we need people to respond to the alert. Follow [How to Add Users to a Team in OpsGenie](/layers/alerting/opsgenie/how-to-add-users-to-a-team-in-opsgenie)  to add people to a team.
 
     At this point the default suite of monitors will create a base system of monitoring and alerting for a new service. The default suite of monitors includes:
     - `(k8s) <stage> - ImagePullBackOff detected`
@@ -85,7 +85,7 @@ By default, we should know if the new app is deployed and healthy, and its curre
   <Step>
     ## <StepNumber/> Add Additional Monitors
 
-    This Guide walks through the different ways to monitor a new service [How to Monitor a new Service](/reference-architecture/how-to-guides/integrations/datadog/how-to-monitor-a-new-service)
+    This Guide walks through the different ways to monitor a new service [How to Monitor a new Service](/layers/monitoring/datadog/tutorials/how-to-monitor-a-new-service)
 
     Follow this guide to create new monitors: [datadog-monitor](/components/library/aws/datadog-monitor/)
   </Step>
@@ -93,7 +93,7 @@ By default, we should know if the new app is deployed and healthy, and its curre
   <Step>
     ## <StepNumber/> Add SLOs and Synthetic Checks (Optional)
 
-    [How to create a Synthetic and SLO](/reference-architecture/how-to-guides/integrations/datadog/how-to-create-a-synthetic-and-slo)
+    [How to create a Synthetic and SLO](/layers/monitoring/datadog/tutorials/how-to-create-a-synthetic-and-slo)
   </Step>
 
 </Steps>

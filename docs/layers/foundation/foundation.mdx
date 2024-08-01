@@ -56,10 +56,10 @@ This guide assumes you have the following:
 
 - Terraform experience working with modules, providers, public registry, state backends, etc
 - AWS experience including a firm understanding of IAM, SDK, web-based console, etc
-- Existing AWS environment; See [Implement AWS Cold Start](/reference-architecture/setup/cold-start) for what Cloud
+- Existing AWS environment; See [Implement AWS Cold Start](/layers/accounts/tutorials/cold-start) for what Cloud
   Posse implements as part of our Foundational Infrastructure.
 
-If this all sounds a little bit daunting, you may want to start by reviewing the [Learning Resources](/reference-architecture/reference/learning-resources).
+If this all sounds a little bit daunting, you may want to start by reviewing the [Learning Resources](/resources/legacy/learning-resources).
 
 <Steps>
   <Step>
@@ -67,19 +67,19 @@ If this all sounds a little bit daunting, you may want to start by reviewing the
 
     <TaskList>
       - [ ] Read through the [Introduction to Toolset](#introduction-to-toolset) slides and become familiar with the concepts
-            of [Components](/components), [Stacks](/fundamentals/stacks), and
+            of [Components](/components), [Stacks](/resources/legacy/fundamentals/stacks), and
             [Stack Catalogs](https://atmos.tools/core-concepts/stacks/catalogs)
-      - [ ] Review [Geodesic](/fundamentals/geodesic) docker toolbox and
-            [How to Customize the Geodesic Shell](/reference-architecture/how-to-guides/tutorials/how-to-customize-the-geodesic-shell)
+      - [ ] Review [Geodesic](/resources/legacy/fundamentals/geodesic) docker toolbox and
+            [How to Customize the Geodesic Shell](/learn/maintenance/tutorials/how-to-customize-the-geodesic-shell)
             to your liking.
       - [ ] Review [atmos.tools](https://atmos.tools/)
       - [ ] Review our [Conventions](/learn/conventions) (there are a lot of them)
       - [ ] Review [Fundamentals](/reference-architecture/fundamentals) and each core concept included as a subpage
       - [ ] Review the Architectural Design Records (ADRs) for your organization; these are typically in `docs/adr` within the
             infrastructure repository
-      - [ ] Review Cloud Posse’s [Architectural Design Records (ADRs)](/reference-architecture/reference/adrs), which may not
+      - [ ] Review Cloud Posse’s [Architectural Design Records (ADRs)](/resources/adrs/adrs), which may not
             be the same as your organizations' practices
-      - [ ] Check out the [Learning Resources](/reference-architecture/reference/learning-resources) that have been curated
+      - [ ] Check out the [Learning Resources](/resources/legacy/learning-resources) that have been curated
             from our weekly office hours
     </TaskList>
   </Step>
@@ -88,10 +88,10 @@ If this all sounds a little bit daunting, you may want to start by reviewing the
     ### <StepNumber/> AWS Toolchain
 
     <TaskList>
-      - [ ] Review [Leapp](/fundamentals/leapp) and
-            [How to Use Leapp to Authenticate with AWS](/reference-architecture/how-to-guides/integrations/leapp)
+      - [ ] Review [Leapp](/layers/identity/tutorials/leapp/leapp) and
+            [How to Use Leapp to Authenticate with AWS](/layers/identity/tutorials/leapp/leapp)
       - [ ] Review why we
-            [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform)
+            [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform)
     </TaskList>
   </Step>
 
@@ -99,9 +99,9 @@ If this all sounds a little bit daunting, you may want to start by reviewing the
     ### <StepNumber/> Kubernetes Toolchain (for EKS users)
 
     <TaskList>
-      - [ ] [Helm](/reference-architecture/reference/helm)
-      - [ ] [Kubernetes](/reference-architecture/reference/kubernetes)
-      - [ ] [Lens](/reference-architecture/reference/lens)
+      - [ ] [Helm](/resources/legacy/helm)
+      - [ ] [Kubernetes](/resources/legacy/kubernetes)
+      - [ ] [Lens](/resources/legacy/lens)
     </TaskList>
   </Step>
 
@@ -121,15 +121,15 @@ If this all sounds a little bit daunting, you may want to start by reviewing the
     ### <StepNumber/> How we Use Terraform (for developers)
 
     <TaskList>
-      - [ ] Review [Terraform](/fundamentals/terraform) conventions used by Cloud Posse
+      - [ ] Review [Terraform](/resources/legacy/fundamentals/terraform) conventions used by Cloud Posse
       - [ ] We store all the terraform states in S3. Make sure you understand the
             [Structure of Terraform S3 State Backend Bucket](/reference-architecture/reference/structure-of-terraform-s3-state-backend-bucket)
       - [ ] Learn
-            [How to Use Terraform Remote State](/reference-architecture/how-to-guides/tutorials/how-to-use-terraform-remote-state) -
+            [How to Use Terraform Remote State](/learn/maintenance/tutorials/how-to-use-terraform-remote-state) -
             we make it really easy to read the state of any component in any account.
       - [ ] Review [Component Development](reference-architecture/fundamentals/component-development/).
-      - [ ] [How to Switch Versions of Terraform](/reference-architecture/how-to-guides/tutorials/how-to-switch-versions-of-terraform)
-      - [ ] [How to Use Atmos with Existing Terraform](/reference-architecture/how-to-guides/tutorials/how-to-use-atmos-with-existing-terraform)
+      - [ ] [How to Switch Versions of Terraform](/learn/maintenance/tutorials/how-to-switch-versions-of-terraform)
+      - [ ] [How to Use Atmos with Existing Terraform](/learn/maintenance/tutorials/how-to-use-atmos-with-existing-terraform)
     </TaskList>
   </Step>
 

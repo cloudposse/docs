@@ -37,7 +37,7 @@ Before we can get started, here's the minimum information we need from you.
     <TaskList>
       - [ ] Create a new Slack channel for AWS notifications, for example `#aws-notifications`
       - [ ] Invite Cloud Posse
-      - [ ] [Set Up AWS Email Notifications](/reference-architecture/setup/cold-start/how-to-set-up-aws-email-notifications/) with your chosen email address for each account. If you are using plus-addressing, you will only need to connect the primary email address.
+      - [ ] [Set Up AWS Email Notifications](/layers/accounts/tutorials/how-to-set-up-aws-email-notifications) with your chosen email address for each account. If you are using plus-addressing, you will only need to connect the primary email address.
       - [ ] [Create a Slack Webhook for that same channel](https://api.slack.com/messaging/webhooks). This is required to enable Budget alerts in Slack. Please share the Webhook URL and the final name of the Slack channel with Cloud Posse.
     </TaskList>
   </Step>
@@ -64,7 +64,7 @@ Before we can get started, here's the minimum information we need from you.
     Please also provision a single test user in your IdP for Cloud Posse to use for testing and add those user credentials to 1Password.
 
     - [GSuite](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/): Follow the "Google Workspace SAML application setup" steps only. Cloud Posse will handle the rest.
-    - [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-office-365-aws-sso/)
+    - [Office 365](/layers/identity/aws-sso/office365/how-to-setup-office-365-aws-sso)
     - [JumpCloud](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
     - [Other AWS supported IdPs: Azure AD, CyberArk, Okta, OneLogin, Ping Identity](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html)
 
@@ -80,7 +80,7 @@ Before we can get started, here's the minimum information we need from you.
     If deploying AWS SAML as an alternative to AWS SSO, we will need a separate configuration and metadata file. Again, please refer to the relevant linked guide.
 
     - [GSuite](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/): Follow Steps 1 through 7. This document refers to Appstream, but the process will be the same for AWS.
-    - [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-saml-login-to-aws-from-office-365/)
+    - [Office 365](/layers/identity/aws-saml/how-to-setup-saml-login-to-aws-from-office-365)
     - [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
     - [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
   </Step>
@@ -176,7 +176,7 @@ Confirm if you plan to deploy any of the following integrations. If so, we will 
   <Step>
     ### <StepNumber/> Spacelift Access
 
-    If deploying Spacelift, we will need a Spacelift subscription. Please see [How to Sign Up for Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/). This document answers many common questions and describes the signup process step-by-step.
+    If deploying Spacelift, we will need a Spacelift subscription. Please see [How to Sign Up for Spacelift](/layers/spacelift/spacelift). This document answers many common questions and describes the signup process step-by-step.
 
     Cloud Posse will need "admin" access for Spacelift to deploy all resources.
   </Step>
@@ -184,7 +184,7 @@ Confirm if you plan to deploy any of the following integrations. If so, we will 
   <Step>
     ### <StepNumber/> Datadog Access
 
-    Sign up for Datadog following the [How to Sign Up for Datadog?](/reference-architecture/how-to-guides/integrations/datadog/how-to-sign-up-for-datadog/) documentation.
+    Sign up for Datadog following the [How to Sign Up for Datadog?](/layers/monitoring/datadog/tutorials/how-to-sign-up-for-datadog) documentation.
 
     Cloud Posse will need "admin" access for Datadog as well to complete the Datadog setup.
   </Step>
@@ -192,7 +192,7 @@ Confirm if you plan to deploy any of the following integrations. If so, we will 
   <Step>
     ### <StepNumber/> OpsGenie Access
 
-    Sign up for OpsGenie following the [How to Sign Up for OpsGenie?](/reference-architecture/how-to-guides/tutorials/how-to-implement-incident-management-with-opsgenie/how-to-sign-up-for-opsgenie/) documentation.
+    Sign up for OpsGenie following the [How to Sign Up for OpsGenie?](/layers/alerting/opsgenie/how-to-sign-up-for-opsgenie) documentation.
   </Step>
 </Steps>
 
@@ -241,6 +241,6 @@ If your engagement with Cloud Posse includes Release Engineering, we will also n
   <Step>
     ### <StepNumber/> PATs for EKS with ArgoCD
 
-    ArgoCD requires a number of PATs. Please see [How to set up Authorization for ArgoCD with GitHub PATs](/reference-architecture/how-to-guides/integrations/argocd/pats)
+    ArgoCD requires a number of PATs. Please see [How to set up Authorization for ArgoCD with GitHub PATs](/layers/software-delivery/eks-argocd/tutorials/pats)
   </Step>
 </Steps>

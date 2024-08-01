@@ -42,7 +42,7 @@ If the ADR outcome requires some work to be performed or implemented, make sure 
 
 ## Related Documents
 
-- [How to Document a New Design Decision](/reference-architecture/how-to-guides/tutorials/how-to-document-a-new-design-decision)
+- [How to Document a New Design Decision](/learn/maintenance/tutorials/how-to-document-a-new-design-decision)
 
 ## FAQ
 
@@ -89,7 +89,7 @@ The sequential numbering system is to clearly depicts the order in which the ADR
 ### Why don’t we use ticket numbers as the index?
 
 Ticket numbers do not necessarily connote the order of decisions. We generate tickets programmatically from our Reference Architecture and the ticket numbers are based on that. The order in which we decide issues has nothing to do with the order we created them, but if we used ticket numbers, the order would be of creation and not decisions.
-Note, we’re proposing a change to this: [Proposed: Use ISO-8601 Date Index for ADRs](/reference-architecture/reference/adrs/proposed-use-iso-8601-date-index-for-adrs)
+Note, we’re proposing a change to this: [Proposed: Use ISO-8601 Date Index for ADRs](/resources/adrs/proposed/proposed-use-iso-8601-date-index-for-adrs)
 
 ## RFC
 
@@ -111,7 +111,7 @@ Below are some comments from others on how we can improve the process.
 
 - **Consequences [Text Field]** - This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
 
-- [Proposed: Use ISO-8601 Date Index for ADRs](/reference-architecture/reference/adrs/proposed-use-iso-8601-date-index-for-adrs)
+- [Proposed: Use ISO-8601 Date Index for ADRs](/resources/adrs/proposed/proposed-use-iso-8601-date-index-for-adrs)
 Use date-based indexes (e.g. `2021-09-24-decided-to-use-dates-in-adrs.md`) instead of sequentially incrementing indexes. The combination of date and title should never conflict (even when creating ADR that supersede previous decisions in ADR) and it also gives a better idea of when decisions were made. @Steven Hopkins
 
 - Avoid the use the ADR number in the markdown title. as it's a pain when we need to resolve number sequencing issues when we have to update filename and title.
