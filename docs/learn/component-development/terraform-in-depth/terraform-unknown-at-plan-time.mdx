@@ -1,15 +1,10 @@
 ---
+id: "terraform-unknown-at-plan-time"
 title: "Error: Values Cannot Be Determined Until Apply"
 description: "Details about computed values can cause `terraform plan` to fail"
-slug: "terraform-unknown-at-plan-time"
 tags:
-  - "Best Practices"
-  - "Terraform"
-  - "Terraform in Depth"
-categories:
-  - "Community Resources"
-  - "Terraform"
-  - "Terraform in Depth"
+  - terraform
+  - development
 ---
 import Intro from '@site/src/components/Intro';
 import Note from '@site/src/components/Note';
@@ -199,7 +194,7 @@ Best practice is to either use a separate boolean input (e.g.
 `ebs_volume_enabled`) to condition the resource creation, or to take the
 optional value as an element of a list and use the length of the list to
 determine whether to create the resource. See [Use feature flags or lists to
-control optional behaviors](/reference/best-practices/terraform-best-practices/#use-feature-flags-to-enabledisable-functionality)
+control optional behaviors](best-practices/terrafor/#use-feature-flags-to-enabledisable-functionality)
 for more information.
 :::
 

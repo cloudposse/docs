@@ -70,7 +70,7 @@ The administrative stack must have its runner image set to custom Geodesic image
           stacks             = [for f in local.stack_config_files : trimsuffix(basename(f), ".yaml")]
         }
         ```
-        <img src="/assets/refarch/image-20211216-233728.png" height="560" width="969" /><br/>
+        <img src="/assets/refarch/image-20211216-233728.png" /><br/>
 
   7. Update the file `components/terraform/spacelift/context.tf` to the latest version (take it from [https://github.com/cloudposse/terraform-null-label/blob/master/exports/context.tf](https://github.com/cloudposse/terraform-null-label/blob/master/exports/context.tf))
 

@@ -31,8 +31,8 @@ An organization may choose to leverage all of these components or just the parts
 Geodesic is comprised of a large collection of open-source tools, most of them not created or maintained by Cloud Posse.
 (Most of them and many more can be installed individually using packages from our [`packages` repository](https://github.com/cloudposse/packages).)
 As such, **support for Macs with Apple chips (M1, M2, etc.) is fully not under Cloud Posse's control**, rather it
-depends on each tool author updating each tool for the Apple chips, referred to as the `arm64` architecture. 
-**The Debian-based Geodesic is provided as a multi-architecture Docker image, supporting both Intel chips (`amd64`) and 
+depends on each tool author updating each tool for the Apple chips, referred to as the `arm64` architecture.
+**The Debian-based Geodesic is provided as a multi-architecture Docker image, supporting both Intel chips (`amd64`) and
 Apple chips (`arm64`)**, but the (deprecated) Alpine-based Geodesic is only provided for Intel chips (`amd64`). The image
 built for `arm64` does not include a few tools that the maintainers have not yet updated for `linux/arm64`, but those
 tools are not widely used anymore, so your experience should be good on Apple silicon. (See the current
@@ -79,11 +79,11 @@ Prior to this, all Docker images were based on Alpine only and simply tagged `VE
 
 ## Packages
 
-<img src="/assets/refarch/image-20211027-025252.png" height="140" width="557" /><br/>
+<img src="/assets/refarch/image-20211027-025252.png" /><br/>
 
 Central to `geodesic` is its rich support for the latest version of [the most popular packages](https://github.com/cloudposse/packages/tree/master/vendor) for DevOps. We maintain hundreds of packages that are graciously hosted by Cloud Smith. Our packages are updated nightly as soon as new releases are made available by vendors. As such, we strongly recommend version pinning packages installed via the `Dockerfile`.
 
-Also unique about our packages is that for `kubectl` and `terraform` we distribute all major versions with `dpkg-alternative` support so they can be concurrently installed without the use of version managers. For example, to install the latest version of `kubectl` v1.28 (to match the version of the cluster it is controlling), you can install package `kubectl-1.28`. 
+Also unique about our packages is that for `kubectl` and `terraform` we distribute all major versions with `dpkg-alternative` support so they can be concurrently installed without the use of version managers. For example, to install the latest version of `kubectl` v1.28 (to match the version of the cluster it is controlling), you can install package `kubectl-1.28`.
 
 Package repository hosting is graciously provided by [cloudsmith](https://cloudsmith.io/). Cloudsmith is the only fully hosted, cloud-native, universal package management solution, that enables your organization to create, store and share packages in any format, to any place, with total confidence. We believe there’s a better way to manage software assets and packages, and they’re making it happen!
 
@@ -95,7 +95,7 @@ Here’s a general filesystem layout for an infrastructure repository leveraging
 infrastructure/  # GitHub Repository
 ├── Dockerfile   # Dockerfile uses `cloudposse/geodesic` as base Image
 ├── Makefile     # Makefile to build custom Geodestic-based Docker image and install wrapper script for `geodesic`
-├── README.md  
+├── README.md
 ├── components  # Location for all re-usable component building blocks
 │   └── terraform/  # Location for all terraform (HCL) components
 │       └── foobar/                     # Example `foobar` component
@@ -106,7 +106,7 @@ infrastructure/  # GitHub Repository
 │           │   ├── baz/                # Submodule named `baz/`
 │           │   │   ├── context.tf        # Submodules should use the same standard interface with `context.tf`
 │           │   │   ├── main.tf           # Submodules should also follow HashiCorp best practices for module layout
-│           │   │   ├── outputs.tf        
+│           │   │   ├── outputs.tf
 │           │   │   └── variables.tf      # Submodules should define variables in `variables.tf` and not modify `context.tf`
 │           │   └── bar/                # Example of another submodule named `bar/`
 │           │       ├── context.tf
@@ -155,13 +155,13 @@ infrastructure/  # GitHub Repository
     │   ├── account-map.yaml        # Catalog entry for [account-map](/components/library/aws/account-map/)
     │   ├── account-settings.yaml   # Catalog entry for [account-settings](/components/library/aws/account-settings/)
     │   ├── account.yaml            # ...
-    │   ├── aws-team-roles.yaml      
-    │   ├── aws-teams.yaml           
-    │   ├── cloudtrail.yaml          
-    │   ├── dns-delegated.yaml       
-    │   ├── dns-primary.yaml         
-    │   ├── ecr.yaml                 
-    │   ├── eks                      
+    │   ├── aws-team-roles.yaml
+    │   ├── aws-teams.yaml
+    │   ├── cloudtrail.yaml
+    │   ├── dns-delegated.yaml
+    │   ├── dns-primary.yaml
+    │   ├── ecr.yaml
+    │   ├── eks
     │   │   ├── alb-controller.yaml
     │   │   ├── cert-manager.yaml
     │   │   ├── eks.yaml

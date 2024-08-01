@@ -8,7 +8,7 @@ custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/d
 # How to Tune SpotInst Parameters for EKS
 
 ## Problem
-<img src="/assets/refarch/cleanshot-2022-01-26-at-10.39.03-20220126-163928.png" height="707" width="1107" /><br/>
+<img src="/assets/refarch/cleanshot-2022-01-26-at-10.39.03-20220126-163928.png" /><br/>
 
 SpotInst (SaaS) replaces the need to deploy the [standard kubernetes cluster auto-scaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler), so the mechanisms of tuning the scaling parameters are different than out-of-the-box EKS clusters.  The autoscaling capability is handled by the `ocean-controller` together with the Spot platform, and not by Auto Scale Groups, so there’s no ASG parameters that we can toggle.
 

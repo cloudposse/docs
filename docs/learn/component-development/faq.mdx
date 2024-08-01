@@ -19,12 +19,12 @@ Developing a new component may be necessary when:
 Components should not include other components but instead can refer to another component's Terraform Output with
 `remote-state`. Components can however refer to any Terraform module
 
-### What is the purpose of context.tf?
+### What is the purpose of `context.tf`?
 
 Cloud Posse uses [`context.tf`](/reference-architecture/reference/learning-resources/#the-contexttf-pattern) to
 consistently set metadata across all modules and resources.
 
-### Where should the context.tf file be copied from?
+### Where should the `context.tf` file be copied from?
 
 The `context.tf` file should be copied exactly from
 https://raw.githubusercontent.com/cloudposse/terraform-null-label/master/exports/context.tf.
@@ -46,10 +46,10 @@ that cannot be instantiated directly.
 
 ### Does Cloud Posse have automated testing for components?
 
-We do not have automated testing for our components per se at this time. However, GitOps pipelines with Spacelift can
-automate component deployment into lower environments, so that we can validate any code changes in each stage before
+We do not have automated testing for our components at this time. However, GitOps pipelines with Spacelift can
+automate component deployment into lower environments so that we can validate any code changes in each stage before
 reaching production.
 
-Also, we do have automated tested for all Terraform modules the components built off of
+Also, we do have automated tests for all Terraform modules the components built off of
 ([rds-cluster example](https://github.com/cloudposse/terraform-aws-rds-cluster/tree/master/test)) and static code
 linting for Terraform and Atmos (with a local `.github/workflows/pre-commit.yml`).

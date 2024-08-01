@@ -18,7 +18,7 @@ Cost management on AWS is tricky. There are reserved instances, AWS savings plan
 Learn more about the differences between[https://spot.io/blog/aws-spot-instances-and-diy/](https://spot.io/blog/aws-spot-instances-and-diy/) .
 
 ## Solution
-<img src="/assets/refarch/cleanshot-2021-10-31-at-22.30.28-20211101-033443.png" height="881" width="757" /><br/>
+<img src="/assets/refarch/cleanshot-2021-10-31-at-22.30.28-20211101-033443.png" /><br/>
 
 :::tip
 Use the fully managed solution for [http://spot.io](http://spot.io) of EKS clusters (and more)
@@ -66,7 +66,7 @@ No, this is entirely optional. We recommend using it though because it’s the e
 
 ### Can we trust Spot.io?
 
-<img src="/assets/refarch/image-20211101-034842.png" height="2300" width="4460" /><br/>
+<img src="/assets/refarch/image-20211101-034842.png" /><br/>
 
 While every company should perform its own vendor evaluation and due diligence, it’s worth noting that [Spot.io](http://Spot.io) was acquired by NetApp.
 
@@ -82,7 +82,7 @@ Our recommendation is to invite individual users. But if you want, a shared acco
 
 Spot instances are not covered by [AWS Savings Plans](https://aws.amazon.com/savingsplans/faq/). That said, they are not mutually exclusive, and both provide savings and benefits.
 
-<img src="/assets/refarch/cleanshot-2021-11-09-at-22.30.38@2x-20211110-043051.png" height="314" width="1290" /><br/>
+<img src="/assets/refarch/cleanshot-2021-11-09-at-22.30.38@2x-20211110-043051.png" /><br/>
 
 Learn more [https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html](https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html)
 
@@ -96,7 +96,7 @@ Spot Instances on the other hand require zero upfront commitments and provide al
 
 ### How reliable are Spot Instances?
 
-<img src="/assets/refarch/cleanshot-2021-11-09-at-22.48.13@2x-20211110-044834.png" height="570" width="939" /><br/>
+<img src="/assets/refarch/cleanshot-2021-11-09-at-22.48.13@2x-20211110-044834.png" /><br/>
 
 AWS provides extremely short notice of Spot Instance interruption. **A warning that is issued two minutes before Amazon EC2 stops or terminates your Spot Instance**.
 

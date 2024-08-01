@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import useGlobalData from '@docusaurus/useGlobalData';
 import {
   findFirstSidebarItemLink,
-  findSidebarCategory,
   useDocById,
 } from '@docusaurus/theme-common/internal';
 import {usePluralForm} from '@docusaurus/theme-common';
@@ -60,21 +60,39 @@ function CardLayout({href, icon, title, description}) {
   );
 }
 
+const findPermalink = (items, permalink) => {
+  // Filter documents that have all the specified permalink
+  const filteredItems = items.filter(doc =>
+    doc.permalink === permalink
+  );
+  if (filteredItems.length === 0) {
+    return null;
+  }
+  return filteredItems[0];
+}
+
 function CardCategory({item}) {
   const href = findFirstSidebarItemLink(item);
   const categoryItemsPlural = useCategoryItemsPlural();
+
   // Unexpected: categories that don't have a link have been filtered upfront
   if (!href) {
     return null;
   }
+
+  const globalData = useGlobalData();
+  const globalMetadata = globalData.metadata.default.aggregateMetadata;
+  const category = findPermalink(globalMetadata, href);
+  //console.log(category);
+
   // Doc description is not used
   // https://github.com/facebook/docusaurus/issues/7598
   return (
     <CardLayout
       href={href}
       icon="🗃️"
-      title={item.label}
-      description={item.description ?? categoryItemsPlural(item.items.length)}
+      title={`${item.label} (${item.items.length})`}
+      description={item.description ?? category.description ?? categoryItemsPlural(item.items.length)}
     />
   );
 }

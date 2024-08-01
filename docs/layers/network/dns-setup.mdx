@@ -1,0 +1,87 @@
+---
+title: "Setting up DNS"
+sidebar_label: "Setup DNS"
+sidebar_position: 20
+---
+import Note from '@site/src/components/Note';
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+
+## Requirements
+
+Before deploying DNS, first purchase your chosen vanity and service domains in the `core-dns` account or in your chosen registrar. Refer back to the [Decide on Vanity (Branded) Domain](layers/network/design-decisions/decide-on-vanity-branded-domain/) and [Decide on Service Discovery Domain](/layers/network/design-decisions/decide-on-service-discovery-domain/) design decisions for more information.
+
+When registering a new domain, we have the option of using Route53’s built-in registrar or using an existing registrar. Many enterprise-scale organizations use MarkMonitor to manage their domain portfolio. Our convention is to use the `dns` account as the registrar.
+
+<Note>the AWS Route53 Registrar cannot be automated with Terraform, so ClickOps is still required for domain registration.</Note>
+
+[Registering domain names using Amazon Route 53 - Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html)
+
+We recommend checking with your legal department on where they want to consolidate domain ownership. It has larger
+ramifications as to IP/trademark defense.
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Deploy DNS Components
+
+    The DNS stacks are broken up into primary and delegated deployments. Primary DNS zones only start with an `NS` record
+    among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console manages the respective domain. Consult the component's README (`components/terraform/dns-primary/README.md`) for more information.
+
+    The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated. Consult the component's README `components/terraform/dns-delegated/README.md` for more information.
+
+    To start the dns setup, run `atmos workflow deploy/dns -f network`. This will go through creating primaries, and then
+    follow up with establishing the delegates.
+  </Step>
+
+  <Step>
+
+    ## <StepNumber/> Configure Registrar `NS` Records for Domain (Click Ops)
+
+    In order to connect the newly provisioned Hosted Zone to the purchased domains, add the `NS` records to the chosen
+    Domain Registrar. Retrieve these with the output of `dns-primary`. These will need to be manually added to the
+    registered domain.
+
+    <Steps>
+    - #### Delegate Shared Service Domain, `acme-svc.com`
+
+      ```shell
+      atmos terraform output dns-primary -s core-gbl-dns
+      ```
+
+    - #### Delegate Platform Sandbox Vanity Domain, `acme-sandbox.com`
+
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-sandbox
+      ```
+
+    - #### Delegate Platform Dev Vanity Domain, `acme-dev.com`
+
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-dev
+      ```
+
+    - #### Delegate Platform Staging Vanity Domain, `acme-stage.com`
+
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-staging
+      ```
+
+    - #### Delegate Platform Prod Vanity Domain, `acme-prod.com`
+
+      ```shell
+      atmos terraform output dns-primary -s plat-gbl-prod
+      ```
+    </Steps>
+    [For more on `NS` records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html)
+  </Step>
+</Steps>
+
+### ACM
+
+Note that each `dns-primary` component will already create its own ACM certs. These are only for the vanity domains and won't do the more critical service domain certificates.
+
+We use a separate instance of the `acm` component to provision the service domain certificates, which still rely on the
+`dns-delegated` component. Setting these up can be done quickly by running `atmos workflow deploy/acm -f network`.

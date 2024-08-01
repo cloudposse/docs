@@ -1,0 +1,78 @@
+---
+title: "Decide on VPC NAT Strategy"
+sidebar_label: "VPC NAT Strategy"
+refarch_id: REFARCH-523
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+**DRAFT**
+
+## Context and Problem Statement
+
+## Considered Options
+
+### Option 1 - One VPC per Region, Per Platform Account with Dedicated NAT Gateways per AZ (Recommended)
+
+:::tip Our Recommendation is to use Option 1 because it keeps the separation by stage and ensures all egress per stage
+originates from a specific set of IPs
+
+:::
+
+<img src="/assets/refarch/image-20220712-201801.png" /><br/>
+
+#### Pros
+
+- Easily managed with terraform
+
+- Easier for third parties to restrict IPs for ingress traffic
+
+- Keep accounts symmetrical
+
+#### Cons
+
+- More expensive to operate as more NAT gateways are deployed (mitigated by reducing the number of gateways in lower
+  stages)
+
+### Option 2 - One VPC per Region, Per Platform Account with Centralized NAT Gateways per AZ in Network Account
+
+<img src="/assets/refarch/image-20220712-201801.png" /><br/>
+
+The Compliant Framework for Federal and DoD Workloads in AWS GovCloud (US) advocates for a strategy like this, whereby
+in the Network (transit) account, there will be a DMZ with a Firewall.
+
+<img src="/assets/refarch/image-20220624-172541.png" /><br/>
+
+#### Pros
+
+- Ideally suited for meeting specific compliance frameworks
+
+#### Cons
+
+- All traffic from all accounts egress through the same NAT IPs, making it hard for third-parties to restrict access
+  (e.g. staging accounts can access third-party production endpoints)
+
+- Shared NAT gateways are “singletons” used by the entire organization; changes to these gateways are not be rolled out
+  by stage. Risky to make changes - in the critical path of everything.
+
+### Option 3 - Shared VPCs with Dedicated NAT Gateways
+
+#### Pros
+
+- Less expensive
+
+#### Cons
+
+- All traffic from all accounts egress through the same NAT IPs, making it hard for third-parties to restrict access
+  (e.g. staging accounts can access third-party production endpoints)
+
+- Shared VPCs are “singletons” used by multiple workloads; changes to these VPCs are not be rolled out by stage. Risky
+  to make changes.
+
+## References
+
+- **Compliant Framework for Federal and DoD Workloads in AWS GovCloud (US)**
+  [https://aws.amazon.com/solutions/implementations/compliant-framework-for-federal-and-dod-workloads-in-aws-govcloud-us/](https://aws.amazon.com/solutions/implementations/compliant-framework-for-federal-and-dod-workloads-in-aws-govcloud-us/)
+
+- Relates to
+  [Decide on AWS Account VPC Subnet CIDR Strategy](/learn/network/design-decisions/decide-on-aws-account-vpc-subnet-cidr-strategy)
