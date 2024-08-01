@@ -1,10 +1,12 @@
 ---
-title: Spacelift
-sidebar_label: Spacelift
+title: Setup
+sidebar_label: Setup
+sidebar_position: 1
 description: Spacelift is a continuous delivery platform that allows you to automate your Terraform workflows.
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
 ## Quick Start
 
@@ -25,10 +27,9 @@ import KeyPoints from '@site/src/components/KeyPoints';
 
 ### Sign Up for Spacelift
 
-First, sign up for Spacelift. Follow these steps, and see
-[the detailed documentation](https://docs.cloudposse.com/reference-architecture/how-to-guides/integrations/spacelift/)
-for additional information.
+First, sign up for Spacelift. Follow these steps, and see [the detailed documentation](https://docs.cloudposse.com/reference-architecture/how-to-guides/integrations/spacelift/) for additional information.
 
+<Steps>
 1. Sign up [Get started with Spacelift](https://spacelift.io/free-trial)
 1. Install Spacelift GitHub app into the customer GitHub organization
    1. Once the app is installed into the customer GitHub organization, the GitHub organization admin will receive an
@@ -49,56 +50,56 @@ for additional information.
       team names.
    1. Finally, click `Create Policy`
 
-```rego
-package spacelift
-# See https://docs.spacelift.io/concepts/policy/login-policy for implementation details.
-# Note: Login policies don't affect GitHub organization or SSO admins.
-# Note 2: Enabling SSO requires that all users have an IdP (G Suite) account, so we'll just use
-#          GitHub authentication in the meantime while working with external collaborators.
-# Map session input data to human friendly variables to use in policy evaluation
-username	:= input.session.login
-member_of   := input.session.teams
+      ```rego
+      package spacelift
+      # See https://docs.spacelift.io/concepts/policy/login-policy for implementation details.
+      # Note: Login policies don't affect GitHub organization or SSO admins.
+      # Note 2: Enabling SSO requires that all users have an IdP (G Suite) account, so we'll just use
+      #          GitHub authentication in the meantime while working with external collaborators.
+      # Map session input data to human friendly variables to use in policy evaluation
+      username	:= input.session.login
+      member_of   := input.session.teams
 
-github_org   := input.session.member
+      github_org   := input.session.member
 
-# Define GitHub usernames of non-github_org org external collaborators with admin vs. user access
-admin_collaborators := {} # case sensitive GitHub handles of additional admin collaborators
+      # Define GitHub usernames of non-github_org org external collaborators with admin vs. user access
+      admin_collaborators := {} # case sensitive GitHub handles of additional admin collaborators
 
-user_collaborators  := { "acme" } # case sensitive name of the github org
+      user_collaborators  := { "acme" } # case sensitive name of the github org
 
-# Grant admin access to github_org org members in the non cloud posse case-sensitive team
-# Do not use the slug here, use the name shown in github.com/org/teams
-admin {
-  github_org
-  member_of[_] == "YOUR-CASE-SENSITIVE-TEAM-NAME"
-}
+      # Grant admin access to github_org org members in the non cloud posse case-sensitive team
+      # Do not use the slug here, use the name shown in github.com/org/teams
+      admin {
+        github_org
+        member_of[_] == "YOUR-CASE-SENSITIVE-TEAM-NAME"
+      }
 
-# Grant admin access to github_org org members in the Cloud Posse group
-# Do not use the slug here, use the name shown in github.com/org/teams
-admin {
-  github_org
-  member_of[_] == "CLOUDPOSSE-CASE-SENSITIVE-TEAM-NAME"
-}
+      # Grant admin access to github_org org members in the Cloud Posse group
+      # Do not use the slug here, use the name shown in github.com/org/teams
+      admin {
+        github_org
+        member_of[_] == "CLOUDPOSSE-CASE-SENSITIVE-TEAM-NAME"
+      }
 
-# Grant admin access to non-github_org org accounts in the admin_collaborators set
-admin {
-  # not github_org
-  admin_collaborators[username]
-}
+      # Grant admin access to non-github_org org accounts in the admin_collaborators set
+      admin {
+        # not github_org
+        admin_collaborators[username]
+      }
 
-# Grant user access to accounts in the user_collaborators set
-allow {
-  # not github_org
-  user_collaborators[username]
-}
+      # Grant user access to accounts in the user_collaborators set
+      allow {
+        # not github_org
+        user_collaborators[username]
+      }
 
-# Deny access to any non-github_org org accounts who aren't defined in external collaborators sets
-deny {
-  not github_org
-  not user_collaborators[username]
-  not admin_collaborators[username]
-}
-```
+      # Deny access to any non-github_org org accounts who aren't defined in external collaborators sets
+      deny {
+        not github_org
+        not user_collaborators[username]
+        not admin_collaborators[username]
+      }
+      ```
 
  5. Verify Cloud Posse users have administrative access
 
@@ -113,6 +114,8 @@ deny {
    1. A file will download. Save the contents to our shared 1Password vault. This will give us the `key_secret` and the
       `token`.
    1. Also share the 26 character string next to the name of the key which gives us the `key_id`.
+
+</Steps>
 
 ### Upload the API Key
 
@@ -138,6 +141,7 @@ atmos workflow init -f spacelift
 
 ## How To
 
+<Steps>
 ### Vendor
 
 Spacelift adds three components, `spacelift/worker-pool`, `spacelift/admin-stack`, and `spacelift/spaces`. Vendor these
@@ -250,6 +254,9 @@ atmos workflow deploy/admin-stack -f spacelift
 Note that this is the only manually operation you need to perform in `geodesic` using `atmos` to create the initial
 admin stack. All other infrastructure stacks will be created in Spacelift by this admin stack.
 
+
+</Steps>
+
 # Related Topics
 
 ## Pull Request Workflow
@@ -260,7 +267,7 @@ admin stack. All other infrastructure stacks will be created in Spacelift by thi
 4. View the successful Spacelift checks in the pull request
 5. Merge the pull request and check the Spacelift job
 
-## spacectl
+## How to use `spacectl`?
 
 See docs https://github.com/spacelift-io/spacectl
 

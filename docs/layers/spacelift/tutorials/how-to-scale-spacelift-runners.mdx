@@ -8,16 +8,18 @@ import KeyPoints from '@site/src/components/KeyPoints';
 
 ## Problem
 
-There are hundreds or thousands of proposed runs pending in Spacelift. Autoscaling will eventually scale up to handle capacity, but want faster turn around time.
+There are hundreds or thousands of proposed runs pending in Spacelift. Autoscaling will eventually scale up to handle capacity but want faster turnaround time.
 
 ## Solution
 
 :::note
+
 If there are too many Spacelift runs triggered by PRs that do not require Spacelift to run at the moment. The user can add a label called `spacelift-no-trigger` on the PR to prevent Spacelift stacks from running on each commit. This label should be removed before the last commit (before approval and merge) so the Spacelift stacks can be validated.
 
 :::
 
 :::note
+
 To reduce Spacelift runs triggered by PRs, ensure that the `spacelift` component is using the [latest upstream module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation/releases) or `0.46.0` at the very least. This release has an updated policy that cancels previous commit runs if a new commit is pushed.
 
 :::
@@ -25,6 +27,7 @@ To reduce Spacelift runs triggered by PRs, ensure that the `spacelift` component
 ### Scaling EC2 Runners via Stack Configurations
 
 :::caution
+
 While we always recommend making all changes to IaC via Pull Request, if the desire is to increase the size of the Auto Scale Group and there are hundreds or thousands of pending runs, then the Pull Request will suffer the same fate as the other runs and be blocked from execution until the other runs complete.
 
 :::

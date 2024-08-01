@@ -5,6 +5,7 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
 ## Problem
 
@@ -12,12 +13,8 @@ When Spacelift deploys a component into a particular environment it doesn’t na
 
 ## Solution
 
-:::tip
-Use labels in Spacelift to define the dependencies between components
-
-:::
-
 :::note
+
 Our spacelift module will automatically derive dependencies based on `imports` , which means that and stack configuration (E.g. in `catalog/*`) that is imported by any other stack configuration, is now an implicit (or derived) dependency of that stack. So that means that when that upstream file that is imported is modified, it will also trigger an plan of any stack that imports it.
 
 - For example, if you modify `globals.yaml`, since that file is imported by every single stack, it will trigger every single stack to plan.
@@ -38,7 +35,9 @@ Spacelift can only operate on dependency relationships within a single commit. T
 
 :::
 
-### Ways to Express Dependencies with Labels
+### Confifgure Dependencies Between Components with Labels
+
+Use labels in Spacelift to define the dependencies between components
 
 <img src="/assets/refarch/cleanshot-2021-11-01-at-23.13.11@2x-20211102-041453.png" /><br/>
 
@@ -46,100 +45,103 @@ There are many ways to express dependencies. Which to use depends on what you ne
 
 We support globbing with `*` and `**` so you can express things like `stacks/uw2/**` to match all files recursively in the `stacks/uw2` folder.
 
+
 A component can depend on any folder as part of the VCS. If a change is detected in that folder, then it will trigger a plan. Just prefix the label with `deps:` and add a `/*` at the end to match all files.
 
 ```yaml
 labels:
-- deps:component/aurora-postgres-2/*
-- deps:uw2/dev/*
+  - deps:component/aurora-postgres-2/*
+  - deps:uw2/dev/*
 ```
 
 A component can express explicit dependencies on other files.
 
 ```yaml
 labels:
-- deps:stacks/catalog/rds-defaults.yaml
-- deps:stacks/globals.yaml
-- deps:stacks/uw2-dev.yaml
-- deps:stacks/uw2-globals.yaml
-- deps:config/secrets/dev-internal-secrets.yml
-
+  - deps:stacks/catalog/rds-defaults.yaml
+  - deps:stacks/globals.yaml
+  - deps:stacks/uw2-dev.yaml
+  - deps:stacks/uw2-globals.yaml
+  - deps:config/secrets/dev-internal-secrets.yml
 ```
 
 A component can express explicit dependencies on other components in other stacks (e.g. the `vpc` component in the `uw2-dev` stack)
 
 ```yaml
 labels:
-- depends-on:uw2-dev-vpc
-- depends-on:uw2-dev-dns-delegated
-- depends-on:gbl-dns-dns-primary
+  - depends-on:uw2-dev-vpc
+  - depends-on:uw2-dev-dns-delegated
+  - depends-on:gbl-dns-dns-primary
 ```
 
 A component can express explicit dependencies on the current stack (E.g. the `vpc`) without needing to express the canonical component name.
 
 ```yaml
 labels:
-- depends-on:vpc
-- depends-on:dns-delegated
-- depends-on:dns-primary
+  - depends-on:vpc
+  - depends-on:dns-delegated
+  - depends-on:dns-primary
 ```
 
 ### Step-by-Step Process
 
-1.  You use `depends_on` in YAML like this:
+<Steps>
 
-```yaml
- dms-iam:
-      settings:
-        spacelift:
-          workspace_enabled: true
-          policies_by_name_enabled:
-            - "access.dms"
+  1.  You use `depends_on` in YAML like this:
 
-    dms-replication-instance:
-      settings:
-        spacelift:
-          workspace_enabled: true
-          depends_on:               # Stack dependencies. This stack will be triggered after the parent stack finishes running
-            - "dms-iam"
-```
+      ```yaml
+      dms-iam:
+            settings:
+              spacelift:
+                workspace_enabled: true
+                policies_by_name_enabled:
+                  - "access.dms"
 
-2. When your `spacelift` component (which uses [https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation)) parses the YAML, it adds the label to the Spacelift stacks
+          dms-replication-instance:
+            settings:
+              spacelift:
+                workspace_enabled: true
+                depends_on:               # Stack dependencies. This stack will be triggered after the parent stack finishes running
+                  - "dms-iam"
+      ```
 
-3. Spacelift checks the rego policy `trigger.dependencies.rego` to determine if the label exists on the stack and triggers the dependent stack(s)
+  2. When your `spacelift` component (which uses [https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation)) parses the YAML, it adds the label to the Spacelift stacks
 
-### Example
+  3. Spacelift checks the rego policy `trigger.dependencies.rego` to determine if the label exists on the stack and triggers the dependent stack(s)
 
-```yaml
-    aurora-postgres-2:
-      component: aurora-postgres
-      settings:
-        spacelift:
-          workspace_enabled: true
-          autodeploy: true
-          labels:
-            - "deps:config/secrets/dev-internal-secrets.yml"
-          depends_on:
-            - vpc
-            - dns-delegated
-            - gbl-dns-dns-primary
-```
+      ### Example
 
-Will associate the following labels in Spacelift with the Stack:
+      ```yaml
+          aurora-postgres-2:
+            component: aurora-postgres
+            settings:
+              spacelift:
+                workspace_enabled: true
+                autodeploy: true
+                labels:
+                  - "deps:config/secrets/dev-internal-secrets.yml"
+                depends_on:
+                  - vpc
+                  - dns-delegated
+                  - gbl-dns-dns-primary
+      ```
 
-```yaml
-labels:
-    - deps:stacks/catalog/rds-defaults.yaml
-    - deps:stacks/globals.yaml
-    - deps:stacks/uw2-dev.yaml
-    - deps:stacks/uw2-globals.yaml
-    - deps:config/secrets/dev-internal-secrets.yml
-    - depends-on:uw2-dev-vpc
-    - depends-on:uw2-dev-dns-delegated
-    - depends-on:gbl-dns-dns-primary
-    - folder:component/aurora-postgres-2
-    - folder:uw2/dev
-```
+      Will associate the following labels in Spacelift with the Stack:
+
+      ```yaml
+      labels:
+          - deps:stacks/catalog/rds-defaults.yaml
+          - deps:stacks/globals.yaml
+          - deps:stacks/uw2-dev.yaml
+          - deps:stacks/uw2-globals.yaml
+          - deps:config/secrets/dev-internal-secrets.yml
+          - depends-on:uw2-dev-vpc
+          - depends-on:uw2-dev-dns-delegated
+          - depends-on:gbl-dns-dns-primary
+          - folder:component/aurora-postgres-2
+          - folder:uw2/dev
+      ```
+</Steps>
 
 ## Troubleshooting
 
