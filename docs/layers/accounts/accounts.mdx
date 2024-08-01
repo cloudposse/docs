@@ -9,6 +9,8 @@ import ReactPlayer from "react-player";
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import SecondaryCTA from '@site/src/components/SecondaryCTA';
+import TaskList from '@site/src/components/TaskList';
+import CategoryList from '@site/src/components/CategoryList';
 
 <Intro>
 This chapter presents how Cloud Posse designs and manages AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts using Atmos and Terraform, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf).
@@ -49,10 +51,12 @@ can be be in place to restrict what can happen in an account and by whom.
 We then further organize the flat account structure into organizational units. Organizational units (OUs) can then
 leverage things like Service Control Policies to restrict what can happen inside the accounts.
 
-- **core**: Management accounts, such as the organizational root account or a network hub. This accounts are singletons
-  and will never need to be duplicated.
-- **plat**: Platform accounts, such as sandbox, dev, staging, and prod. These accounts are dynamic and can be specific
-  to the needs of your Organizations.
+<dl>
+  <dt>`core` (OU)</dt>
+  <dd>Responsible for management accounts, such as the organizational root account or a network hub. These accounts are singletons and will never need to be duplicated.</dd>
+  <dt>`plat` (OU)</dt>
+  <dd>Responsible for platform accounts, such as sandbox, dev, staging, and prod. These accounts are dynamic and can be specific to the needs of your Organizations.</dd>
+</dl>
 
 ### Account Boundaries
 
@@ -271,6 +275,16 @@ Cloud Posse manages this process with the following components.
   </dt>
   <dd>This component is responsible for provisioning a bucket for storing cloudtrail logs for auditing purposes</dd>
 </dl>
+
+## Design Decisions
+
+[Review Design Decisions](/layers/foundation/design-decisions) and record your decisions now. You will need the results of these decisions going forward.
+
+<TaskList>
+  <CategoryList path="/layers/accounts/design-decisions/" />
+</TaskList>
+
+
 
 
 <ActionCard title="What comes next?">

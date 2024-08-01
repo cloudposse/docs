@@ -12,6 +12,25 @@ const customCssFiles = fs.readdirSync(cssDirectory)
   .filter(file => file.endsWith('.css'))
   .map(file => require.resolve(path.join(cssDirectory, file)));
 
+//https://github.com/saucelabs/elemental-next/blob/b1a325631243a13a4f3beee58a295b7b36f6574d/frontend/docusaurus.config.js#L105
+function metadataPlugin(context, options) {
+  return {
+      name: 'metadata',
+      async allContentLoaded({actions, allContent}) {
+          const {setGlobalData} = actions;
+          let docs = []
+          allContent['docusaurus-plugin-content-docs']
+              .default
+              .loadedVersions[0]
+              .docs
+              .filter(doc => doc.id !== undefined)
+              .map((doc) => docs.push(doc));
+          //console.log(JSON.stringify(allContent['docusaurus-plugin-content-docs'], 2, 2, null));
+          //console.log(tempFrontMatter);
+          setGlobalData({aggregateMetadata: docs});
+      }
+  }
+}
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -43,6 +62,34 @@ const config = {
     [
       'docusaurus-plugin-image-zoom', {},
     ],
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 90,
+        max: 1030, // max resized image's size.
+        min: 640, // min resized image's size. if original is lower, use that size.
+        steps: 2, // the max number of images generated between min and max (inclusive)
+        disableInDev: false,
+      }
+    ],
+    [
+      'custom-loaders', {}
+    ],
+    metadataPlugin,
+    [
+      "posthog-docusaurus",
+      {
+        apiKey: "phc_G3idXOACKt4vIzgRu2FVP8ORO1D2VlkeEwX9mE2jDvT",
+        appUrl: "https://us.i.posthog.com",
+        enableInDevelopment: false, // optional
+      },
+    ],
+    [
+      'docusaurus-plugin-sentry',
+      {
+        DSN: 'b022344b0e7cc96f803033fff3b377ee@o56155.ingest.us.sentry.io/4507472203087872',
+      },
+    ]
   ],
 
   presets: [
@@ -58,7 +105,9 @@ const config = {
               },
               exclude: ['README.md'],
               showLastUpdateTime: true,
-              showLastUpdateAuthor: true
+              showLastUpdateAuthor: true,
+              onInlineTags: 'warn',
+              tags: 'tags.yml'
           },
           theme: {
               customCss: customCssFiles,
@@ -178,16 +227,12 @@ const config = {
           title: 'Community',
           items: [
             {
-              label: 'Github Discussions',
-              href: 'https://ask.sweetops.com/',
+              label: 'GitHub Discussions',
+              href: 'https://github.com/orgs/cloudposse/discussions',
             },
             {
-              label: 'Community',
-              href: 'https://sweetops.com/',
-            },
-            {
-              label: 'Slack',
-              href: 'https://slack.sweetops.com/',
+              label: 'Slack Community',
+              to: '/community/slack',
             },
             {
               label: 'Slack Archives',
@@ -195,7 +240,7 @@ const config = {
             },
             {
               label: 'Office Hours',
-              href: 'https://cloudposse.com/office-hours/',
+              to: '/community/office-hours/',
             },
           ],
         }, {
@@ -203,7 +248,7 @@ const config = {
           items: [
             {
               label: 'Support',
-              href: 'https://cloudposse.com/accelerate',
+              to: '/support',
             },
             {
               label: 'Our GitHub',
@@ -211,7 +256,7 @@ const config = {
             },
             {
               label: 'Contact Us',
-              to: '/contact-us/',
+              to: '/community/contact-us/',
             }],
         }],
         logo: {

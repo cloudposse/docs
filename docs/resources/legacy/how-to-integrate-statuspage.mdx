@@ -24,7 +24,7 @@ In order for these Datadog alerts to affect Statuspage components, a `cmp_[Compo
 
 For Datadog Synthetics, the component status should be either `partial_outage` or `major_outage`. It’s safer to choose the former when in doubt, because usually these components are part of larger system, and hence their outage is only a partial outage. The Major Outage status in Statuspage can be set for a component by an operator manually, at their discretion, whenever it is necessary to convey a major service disruption.
 
-<img src="/assets/refarch/cleanshot-2022-03-02-at-14.53.52@2x-20220302-125417.png" height="211" width="1477" /><br/>
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.53.52@2x-20220302-125417.png" /><br/>
 
 For example, within `datadog-synthetics/catalog/example-api.yaml`:
 
@@ -44,22 +44,22 @@ example-api:
 ### Integrate OpsGenie with Statuspage
 Follow the official [documentation for integrating OpsGenie and Statuspage](https://support.atlassian.com/opsgenie/docs/integrate-opsgenie-with-statuspage/). This enables bi-directional communication between OpsGenie and Statuspage. Once the two are integrated, configure the Statuspage Integration as follows:
 
-<img src="/assets/refarch/cleanshot-2022-03-02-at-14.11.32@2x-20220302-121138.png" height="631" width="1128" /><br/>
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.11.32@2x-20220302-121138.png" /><br/>
 
 This step is done via “ClickOps”, because there is no Terraform resource for managing the Statuspage integration.
 
 The aforementioned settings allow for the Statuspage incident to be updated when the alert is modified on the OpsGenie side.
 
-<img src="/assets/refarch/cleanshot-2022-03-02-at-14.03.29@2x-20220302-123033.png" height="687" width="1019" /><br/>
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.03.29@2x-20220302-123033.png" /><br/>
 
 Once the alert is closed in OpsGenie, the corresponding event is resolved in Statuspage.
 
-<img src="/assets/refarch/cleanshot-2022-03-02-at-14.03.45@2x-20220302-121407.png" height="497" width="926" /><br/>
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.03.45@2x-20220302-121407.png" /><br/>
 
 ### Create OpsGenie Integration Actions for Datadog Synthetics Alerts
 In order for the Statuspage integration to function correctly, Integration Actions must be in place to clean up the alert message and description, and also prevent Datadog from inserting a large number of tags (in particular, since we are ) into the alert that will cause the tag count limit to be exceeded and preventing the Statuspage integration
 
-<img src="/assets/refarch/cleanshot-2022-03-02-at-14.15.18@2x-20220302-121525.png" height="864" width="586" /><br/>
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.15.18@2x-20220302-121525.png" /><br/>
 
 This should not be manually configured via “ClickOps”, and is instead configured using the `opsgenie-team` component (`integration` submodule).
 

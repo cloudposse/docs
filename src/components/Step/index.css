@@ -3,6 +3,10 @@ div > .step:first-child {
   margin-top: 4em;
 }
 
+.step img {
+  border-radius: 6px;
+}
+
 .step {
   padding-top: 3em;
   padding-bottom: 1em;

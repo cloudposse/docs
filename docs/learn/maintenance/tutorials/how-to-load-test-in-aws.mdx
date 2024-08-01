@@ -80,7 +80,7 @@ Horizontal Pod Autoscaling requires the `metrics-server` component be deployed
 #### Pre-warming AWS Resources
 Certain resources in AWS need to be pre-warmed. Most notably, [Elastic Load Balancers still require prewarming](https://aws.amazon.com/articles/best-practices-in-evaluating-elastic-load-balancing/#pre-warming).
 
-<img src="/assets/refarch/cleanshot-2022-02-07-at-18.25.34-20220208-002609.png" height="187" width="773" /><br/>
+<img src="/assets/refarch/cleanshot-2022-02-07-at-18.25.34-20220208-002609.png" /><br/>
 
 This includes ALBs, however, we do not have any links to documentation to back that up. Reach out to Amazon to ask them to pre-warm your load balancers. Alternatively, make sure you scale your tests progressively, as ELBs scale best with a gradual increase in traffic load. ELBs do not respond well to spiky loads, and you’ll see 503s if too much traffic is directed their way too quickly.
 
@@ -93,7 +93,7 @@ Also, consider pre-warming all database caches (e.g. RDS and Elasticache).
 #### Scaling AWS Resources
 - Make sure to raise account limits for resources as needed.
 
-<img src="/assets/refarch/cleanshot-2022-02-07-at-18.16.18-20220208-001639.png" height="226" width="754" /><br/>
+<img src="/assets/refarch/cleanshot-2022-02-07-at-18.16.18-20220208-001639.png" /><br/>
 
 - [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-limits.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-limits.html)
 
