@@ -83,7 +83,7 @@ def fix_mdx_format(content):
     1. Replace all special characters outside code blocks for MDX support
     2. Fix the formatting for <details><summary> html tags
     3. Remove < and > from URLs
-    4. Replace <= with &lt;= to avoid parsing issues - docs/modules/library/aws/elasticache-redis/README.md
+    4. Replace <= - docs/modules/library/aws/elasticache-redis/README.md
 
     Even after we re-render all terraform-docs, there are still some issues in our markdown files.
     This function cleans up the remaining issues.
