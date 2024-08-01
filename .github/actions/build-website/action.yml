@@ -52,6 +52,15 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
+        cache: 'pip'
+
+    - name: Cache rendered content
+      uses: actions/cache@v4
+      with:
+        path: |
+          .build-harness
+          ./tmp
+        key: ${{ github.workflow }}
 
     - name: "Initialize Build Harness"
       shell: bash
@@ -69,14 +78,6 @@ runs:
         repo: terraform-docs/terraform-docs
         tag: v0.18.0
         cache: enable
-
-    - name: Cache tmp directory
-      id: cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          ./tmp
-        key: ${{ github.workflow }}
 
     - name: "Render Documentation for Terraform Components"
       shell: bash
