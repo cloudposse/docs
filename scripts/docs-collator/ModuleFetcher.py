@@ -67,5 +67,6 @@ class ModuleFetcher(AbstractFetcher):
             # We only need variables and output files to render terraform-docs.
             # _Hopefully_ the module follows the convention of having these files with all varialbes and outputs,
             # but that is an assumption we're making here for the sake of deployment speed.
-            if remote_file in ["variables.tf", "outputs.tf"]:
+            #if remote_file in ["variables.tf", "outputs.tf"]:
+            if remote_file.endswith(".tf"):
                 self.github_provider.fetch_file(repo, remote_file, module_download_dir)
