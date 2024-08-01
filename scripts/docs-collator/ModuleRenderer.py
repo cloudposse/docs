@@ -36,7 +36,10 @@ class ModuleRenderer(AbstractRenderer):
         self._pre_rendering_fixes(repo, module_download_dir)
 
         provider, module_name = rendering.parse_terraform_repo_name(repo.name)
+        logging.info(f"Provider: {provider}, Module: {module_name}")
+
         module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
+        logging.info(f"Module docs dir: {module_docs_dir}")
 
         self.__render_readme(module_download_dir, module_docs_dir)
 
