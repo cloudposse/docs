@@ -68,11 +68,13 @@ class ModuleRenderer(AbstractRenderer):
 
         # Re-render terraform docs with this repo's terraform-docs template for modules.
         # This replaces docs/terraform.md for the given module in place
+        logging.info(f"Rendering terraform docs for: {module_download_dir}")
         rendering.render_terraform_docs(
             module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
 
         # Run the make readme command in the module directory to compile README.md
+        logging.info(f"Rendering README.md for: {module_download_dir}")
         response = subprocess.run(
             [
                 "make",
