@@ -4,24 +4,17 @@ content: |-
 
   {{ .Header }}
 
-  ### Terraform
-
-  {{ if ne (len .Module.Requirements) 0 -}}
-  #### Version Requirements
-  {{ range .Module.Providers }}
-  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
-  {{- end }}
-  {{- end }}
+  ## Terraform
 
   {{ if ne (len .Module.Providers) 0 -}}
-  #### Providers
+  ### Providers
   {{ range .Module.Providers }}
   - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 
   {{ if ne (len .Module.ModuleCalls) 0 -}}
-  #### Modules
+  ### Modules
 
   Name | Version | Source | Description
   --- | --- | --- | ---
@@ -40,7 +33,7 @@ content: |-
 
   {{- if ne (len .Module.Resources) 0 }}
 
-  #### Resources
+  ### Resources
 
   The following resources are used by this module:
   {{ range .Module.Resources }}
@@ -53,7 +46,7 @@ content: |-
   {{- end }}
 
   {{ if ne (len .Module.Resources) 0 -}}
-  #### Data Sources
+  ### Data Sources
 
   The following data sources are used by this module:
   {{ range .Module.Resources }}
@@ -105,7 +98,7 @@ content: |-
   <dl>
   {{- range .Module.Inputs }}
   {{- if and (not (has .Name $context_variables)) (not .Required) }}
-    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>optional</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>optional</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}

@@ -6,13 +6,6 @@ content: |-
 
   ## Terraform
 
-  {{ if ne (len .Module.Requirements) 0 -}}
-  ### Version Requirements
-  {{ range .Module.Providers }}
-  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
-  {{- end }}
-  {{- end }}
-
   {{ if ne (len .Module.Providers) 0 -}}
   ### Providers
   {{ range .Module.Providers }}
