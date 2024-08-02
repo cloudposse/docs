@@ -125,12 +125,9 @@ content: |-
 
   ## Dependencies
 
-  {{ if ne (len .Module.Requirements) 0 -}}
+  {{/* TODO This is temporary, hard-coded value. We need to write a function to pull the terraform version since it isnt natively supported by terraform-docs */}}
   ### Terraform Version
-  {{ range .Module.Providers }}
-  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
-  {{- end }}
-  {{- end }}
+  - version: `1.0.0`
 
   {{ if ne (len .Module.Providers) 0 -}}
   ### Providers

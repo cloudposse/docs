@@ -253,10 +253,6 @@ layer:
   description: Architecture Layer
   label: Layer
 
-layer/network-and-dns:
-  description: Network and DNS Layer
-  label: Network and DNS
-
 license:
   description: Licensing information.
   label: License
@@ -389,8 +385,8 @@ layer/accounts:
   description: Accounts layer.
   label: layer/accounts
 
-layer/network:
-  description: Network layer.
+layer/network-and-dns:
+  description: Network and DNS layer.
   label: layer/network
 
 layer/data:
@@ -420,6 +416,10 @@ layer/spacelift:
 layer/security-and-compliance:
   description: The security-and-compliance Layer.
   label: layer/security-and-compliance
+
+layer/unassigned:
+  description: The unassigned Layer.
+  label: layer/unassigned
 
 ######################################################################
 # Providers
