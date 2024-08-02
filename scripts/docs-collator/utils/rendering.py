@@ -80,7 +80,10 @@ def fix_github_edit_url(content, repo, submodule_dir=""):
 
 def fix_mdx_format(content):
     """
-    Replace all special characters outside code blocks for MDX support
+    1. Replace all special characters outside code blocks for MDX support
+    2. Fix the formatting for <details><summary> html tags
+    3. Remove < and > from URLs
+    4. Replace <= - docs/modules/library/aws/elasticache-redis/README.md
 
     Even after we re-render all terraform-docs, there are still some issues in our markdown files.
     This function cleans up the remaining issues.
@@ -88,6 +91,9 @@ def fix_mdx_format(content):
     replacements = {
         r"{": r"\{",  # Replace curly braces with literal
         r"}": r"\}",
+        r"<details><summary>": r"<details>\n<summary>",  # Fix <details><summary> formatting
+        r"<(https?://[^>]+)>": r"\1",  # Remove < and > from URLs
+        r"<=": r"\<=",
     }
 
     in_code_block = False
@@ -102,8 +108,15 @@ def fix_mdx_format(content):
 
         # Perform replacements only if not in a code block
         if not in_code_block:
-            for pattern, replacement in replacements.items():
-                line = re.sub(pattern, replacement, line)
+            # Split the line by inline code blocks (single backticks)
+            parts = re.split(r"(`[^`]*`)", line)
+            for i, part in enumerate(parts):
+                # Only perform replacements on parts that are not inline code blocks
+                if not part.startswith("`") and not part.endswith("`"):
+                    for pattern, replacement in replacements.items():
+                        part = re.sub(pattern, replacement, part)
+                parts[i] = part
+            line = "".join(parts)
 
         result.append(line)
 

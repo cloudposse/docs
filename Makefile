@@ -10,7 +10,7 @@ all: real-clean build
 deps:
 	npm install
 
-.PHONY: build
+.PHONY: init build
 
 render:
 	./scripts/render-docs-for-components.sh

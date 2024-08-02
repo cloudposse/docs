@@ -36,7 +36,10 @@ class ModuleRenderer(AbstractRenderer):
         self._pre_rendering_fixes(repo, module_download_dir)
 
         provider, module_name = rendering.parse_terraform_repo_name(repo.name)
+        logging.debug(f"Provider: {provider}, Module: {module_name}")
+
         module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
+        logging.debug(f"Module docs dir: {module_docs_dir}")
 
         self.__render_readme(module_download_dir, module_docs_dir)
 
@@ -52,8 +55,9 @@ class ModuleRenderer(AbstractRenderer):
             repo, module_download_dir, module_docs_dir
         )
 
-        self.__create_index_for_provider(repo)
-        self.__create_indexes_for_subfolders(repo)
+        # Disable category.json for now
+        # self.__create_index_for_provider(repo)
+        # self.__create_indexes_for_subfolders(repo)
 
     def __render_readme(self, module_download_dir, module_docs_dir):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
@@ -62,6 +66,21 @@ class ModuleRenderer(AbstractRenderer):
 
         io.create_dirs(module_docs_dir)
 
+        # Re-render terraform docs with this repo's terraform-docs template for modules.
+        # This replaces docs/terraform.md for the given module in place
+        logging.debug(f"Rendering terraform docs for: {module_download_dir}")
+        rendering.render_terraform_docs(
+            module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
+        )
+
+        # Run the make readme command in the module directory to compile README.md
+        logging.debug(f"Rendering README.md for: {module_download_dir}")
+        logging.debug(f"make readme")
+        logging.debug(f"README_TEMPLATE_FILE: {readme_tmpl_file}")
+        logging.debug(f"README_FILE: {readme_md_file}")
+        logging.debug(f"README_YAML: {readme_yaml_file}")
+        logging.debug(f"README_TEMPLATE_YAML: {readme_yaml_file}")
+        logging.debug(f"README_INCLUDES: {module_download_dir}")
         response = subprocess.run(
             [
                 "make",
@@ -185,4 +204,5 @@ class ModuleRenderer(AbstractRenderer):
         content = io.read_file_to_string(readme_md_file)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
+        content = rendering.fix_mdx_format(content)
         io.save_string_to_file(readme_md_file, content)

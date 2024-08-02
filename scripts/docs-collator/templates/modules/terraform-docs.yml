@@ -4,24 +4,24 @@ content: |-
 
   {{ .Header }}
 
-  ## Terraform
+  ### Terraform
 
   {{ if ne (len .Module.Requirements) 0 -}}
-  ### Version Requirements
+  #### Version Requirements
   {{ range .Module.Providers }}
   - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 
   {{ if ne (len .Module.Providers) 0 -}}
-  ### Providers
+  #### Providers
   {{ range .Module.Providers }}
   - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
   {{- end }}
   {{- end }}
 
   {{ if ne (len .Module.ModuleCalls) 0 -}}
-  ### Modules
+  #### Modules
 
   Name | Version | Source | Description
   --- | --- | --- | ---
@@ -40,7 +40,7 @@ content: |-
 
   {{- if ne (len .Module.Resources) 0 }}
 
-  ### Resources
+  #### Resources
 
   The following resources are used by this module:
   {{ range .Module.Resources }}
@@ -53,7 +53,7 @@ content: |-
   {{- end }}
 
   {{ if ne (len .Module.Resources) 0 -}}
-  ### Data Sources
+  #### Data Sources
 
   The following data sources are used by this module:
   {{ range .Module.Resources }}
@@ -65,7 +65,11 @@ content: |-
   {{- end }}
   {{- end }}
 
-  ### Required Inputs
+  {{ $required := false -}}
+  {{ range .Module.Inputs }}{{ if .Required }}{{ $required = true -}}{{ end -}}{{ end -}}
+
+  {{ if $required -}}
+  #### Required Inputs
 
   <dl>
   {{- range .Module.Inputs }}
@@ -89,18 +93,19 @@ content: |-
   {{- end }}
   {{- end }}
   </dl>
+  {{- end }}
 
   {{ $optional := false -}}
   {{ range .Module.Inputs }}{{ if not .Required }}{{ $optional = true -}}{{ end -}}{{ end -}}
 
   {{ if $optional -}}
 
-  ### Optional Inputs
+  #### Optional Inputs
 
   <dl>
   {{- range .Module.Inputs }}
   {{- if and (not (has .Name $context_variables)) (not .Required) }}
-    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>optional</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dt>`{{ .Name }}`{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>optional</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
@@ -114,7 +119,7 @@ content: |-
       ```
       <br/>
       {{ end }}
-      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue | replace "{}" "{ }" | replace "[]" "[ ]" }}`{{ else }}
+      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
       ```hcl
       {{- $lines := regexSplit "\n" .GetValue -1 -}}
       {{- range $lines }}
@@ -128,7 +133,7 @@ content: |-
   </dl>
   {{ end }}
 
-  ### Context Variables
+  #### Context Variables
 
   <details>
   <summary>
@@ -152,7 +157,7 @@ content: |-
       ```
       <br/>
       {{ end }}
-      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue | replace "{}" "{ }" | replace "[]" "[ ]" }}`{{ else }}
+      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue }}`{{ else }}
       ```hcl
       {{- $lines := regexSplit "\n" .GetValue -1 -}}
       {{- range $lines }}
@@ -167,7 +172,7 @@ content: |-
   </details>
 
   {{ if ne (len .Module.Outputs) 0 -}}
-  ### Outputs
+  #### Outputs
 
   <dl>
   {{- range .Module.Outputs }}
@@ -202,12 +207,17 @@ output-values:
   from: ''
 
 output:
-  file: README.md
-  mode: inject
-  template: |-
-    <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-    {{ .Content }}
-    <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+  file: docs/terraform.md
+  mode: replace
+#output:
+#  file: README.md
+#  mode: inject
+#  # Intentionally use existing anchors in module READMEs to inject terraform-docs
+#  # This is easier than changing all the READMEs to use the same anchor or changing build-harness
+#  template: |-
+#    <!-- markdownlint-disable -->
+#    {{ .Content }}
+#    <!-- markdownlint-restore -->
 
 settings:
   anchor: true
