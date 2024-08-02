@@ -740,3 +740,211 @@ component/rds:
 component/redshift:
   description: The redshift Component.
   label: component/redshift
+
+component/dms/iam:
+  description: The dms/iam Component.
+  label: component/dms/iam
+
+component/dms/replication-instance:
+  description: The dms/replication-instance Component.
+  label: component/dms/replication-instance
+
+component/dms/endpoint:
+  description: The dms/endpoint Component.
+  label: component/dms/endpoint
+
+component/dms/replication-task:
+  description: The dms/replication-task Component.
+  label: component/dms/replication-task
+
+component/eks/alb-controller:
+  description: The eks/alb-controller Component.
+  label: component/eks/alb-controller
+
+component/eks/actions-runner-controller:
+  description: The eks/actions-runner-controller Component.
+  label: component/eks/actions-runner-controller
+
+component/eks/alb-controller-ingress-class:
+  description: The eks/alb-controller-ingress-class Component.
+  label: component/eks/alb-controller-ingress-class
+
+component/eks/alb-controller-ingress-group:
+  description: The eks/alb-controller-ingress-group Component.
+  label: component/eks/alb-controller-ingress-group
+
+component/eks/argocd:
+  description: The eks/argocd Component.
+  label: component/eks/argocd
+
+component/eks/cert-manager:
+  description: The eks/cert-manager Component.
+  label: component/eks/cert-manager
+
+component/eks/aws-node-termination-handler:
+  description: The eks/aws-node-termination-handler Component.
+  label: component/eks/aws-node-termination-handler
+
+component/eks/cluster:
+  description: The eks/cluster Component.
+  label: component/eks/cluster
+
+component/eks/datadog-agent:
+  description: The eks/datadog-agent Component.
+  label: component/eks/datadog-agent
+
+component/eks/echo-server:
+  description: The eks/echo-server Component.
+  label: component/eks/echo-server
+
+component/eks/external-secrets-operator:
+  description: The eks/external-secrets-operator Component.
+  label: component/eks/external-secrets-operator
+
+component/eks/external-dns:
+  description: The eks/external-dns Component.
+  label: component/eks/external-dns
+
+component/eks/github-actions-runner:
+  description: The eks/github-actions-runner Component.
+  label: component/eks/github-actions-runner
+
+component/eks/idp-roles:
+  description: The eks/idp-roles Component.
+  label: component/eks/idp-roles
+
+component/eks/karpenter:
+  description: The eks/karpenter Component.
+  label: component/eks/karpenter
+
+component/eks/keda:
+  description: The eks/keda Component.
+  label: component/eks/keda
+
+component/eks/karpenter-node-pool:
+  description: The eks/karpenter-node-pool Component.
+  label: component/eks/karpenter-node-pool
+
+component/eks/loki:
+  description: The eks/loki Component.
+  label: component/eks/loki
+
+component/eks/metrics-server:
+  description: The eks/metrics-server Component.
+  label: component/eks/metrics-server
+
+component/eks/prometheus-scraper:
+  description: The eks/prometheus-scraper Component.
+  label: component/eks/prometheus-scraper
+
+component/eks/redis:
+  description: The eks/redis Component.
+  label: component/eks/redis
+
+component/eks/promtail:
+  description: The eks/promtail Component.
+  label: component/eks/promtail
+
+component/eks/redis-operator:
+  description: The eks/redis-operator Component.
+  label: component/eks/redis-operator
+
+component/eks/reloader:
+  description: The eks/reloader Component.
+  label: component/eks/reloader
+
+component/eks/storage-class:
+  description: The eks/storage-class Component.
+  label: component/eks/storage-class
+
+component/glue/catalog-database:
+  description: The glue/catalog-database Component.
+  label: component/glue/catalog-database
+
+component/glue/catalog-table:
+  description: The glue/catalog-table Component.
+  label: component/glue/catalog-table
+
+component/glue/connection:
+  description: The glue/connection Component.
+  label: component/glue/connection
+
+component/glue/crawler:
+  description: The glue/crawler Component.
+  label: component/glue/crawler
+
+component/glue/job:
+  description: The glue/job Component.
+  label: component/glue/job
+
+component/glue/iam:
+  description: The glue/iam Component.
+  label: component/glue/iam
+
+component/glue/registry:
+  description: The glue/registry Component.
+  label: component/glue/registry
+
+component/glue/schema:
+  description: The glue/schema Component.
+  label: component/glue/schema
+
+component/glue/trigger:
+  description: The glue/trigger Component.
+  label: component/glue/trigger
+
+component/glue/workflow:
+  description: The glue/workflow Component.
+  label: component/glue/workflow
+
+component/managed-grafana/api-key:
+  description: The managed-grafana/api-key Component.
+  label: component/managed-grafana/api-key
+
+component/managed-grafana/dashboard:
+  description: The managed-grafana/dashboard Component.
+  label: component/managed-grafana/dashboard
+
+component/managed-grafana/workspace:
+  description: The managed-grafana/workspace Component.
+  label: component/managed-grafana/workspace
+
+component/managed-prometheus/workspace:
+  description: The managed-prometheus/workspace Component.
+  label: component/managed-prometheus/workspace
+
+component/spacelift/admin-stack:
+  description: The spacelift/admin-stack Component.
+  label: component/spacelift/admin-stack
+
+component/spacelift/spaces:
+  description: The spacelift/spaces Component.
+  label: component/spacelift/spaces
+
+component/spacelift/worker-pool:
+  description: The spacelift/worker-pool Component.
+  label: component/spacelift/worker-pool
+
+component/tgw/cross-region-hub-connector:
+  description: The tgw/cross-region-hub-connector Component.
+  label: component/tgw/cross-region-hub-connector
+
+component/tgw/hub:
+  description: The tgw/hub Component.
+  label: component/tgw/hub
+
+component/tgw/spoke:
+  description: The tgw/spoke Component.
+  label: component/tgw/spoke
+
+component/datadog_keys:
+  description: The datadog_keys Component.
+  label: component/datadog_keys
+
+component/managed-grafana/data-source/loki:
+  description: The managed-grafana/data-source/loki Component.
+  label: component/managed-grafana/data-source/loki
+
+component/managed-grafana/data-source/managed-prometheus:
+  description: The managed-grafana/data-source/managed-prometheus Component.
+  label: component/managed-grafana/data-source/managed-prometheus
