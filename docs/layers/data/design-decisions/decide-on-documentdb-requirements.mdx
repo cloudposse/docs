@@ -40,7 +40,7 @@ backup that can be rolled back for the duration of the retention period.
 
 The [Amazon DocumentDB Service](https://docs.aws.amazon.com/documentdb/latest/developerguide/replication.html) recommends deploying at least one additional DocumentDB instance in a different availability zones to ensure High Availability. This instance is automatically designated a read-replica by DocumentDB. During a disaster scenario when the primary instance becomes unavailable, DocumentDB automatically designates one of the other instances as the primary instance.
 
-The primary AWS region [uses three availability zones](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region), therefore it is recommended that
+The primary AWS region [uses three availability zones](/layers/network/design-decisions/decide-on-primary-aws-region), therefore it is recommended that
 DocumentDB is deployed across three availability zones when possible.
 
 The [Amazon DocumentDB Service](https://docs.aws.amazon.com/documentdb/latest/developerguide/replication.html) recommends that read replicas are of the same instance family as the primary instance:
@@ -78,6 +78,6 @@ Create a DocumentDB component and tune it to the requirements outlined above.
 
 - [https://docs.aws.amazon.com/documentdb/latest/developerguide/replication.html](https://docs.aws.amazon.com/documentdb/latest/developerguide/replication.html)
 
-- [Primary AWS Region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region)
+- [Primary AWS Region](/layers/network/design-decisions/decide-on-primary-aws-region)
 
 

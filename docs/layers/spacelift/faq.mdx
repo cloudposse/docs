@@ -6,7 +6,7 @@ import Note from '@site/src/components/Note';
 
 ## Why do we need Spacelift?
 
-See [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform) to learn why.
+See [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform) to learn why.
 
 ### Can we still use Spacelift despite Terraform licensing changes?
 
@@ -55,17 +55,17 @@ Reach out to Pawel Hawtry [pawelh@spacelift.io](mailto:pawelh@spacelift.io) and 
 
 ## What if Spacelift is too expensive?
 
-First, make sure you understand why we chose to [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform).
+First, make sure you understand why we chose to [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform).
 
 Spacelift wants to earn your business and they only want happy customers. Work with them to reach a middle ground that makes everyone happy.
 
 <Note title="Tip">
-  Alternatively, you can use our [free GitHub Actions for Atmos with Terraform](/layer/gitops). This is a great way to get started with GitOps and Terraform without any additional cost.
+  Alternatively, you can use our [free GitHub Actions for Atmos with Terraform](/layers/gitops). This is a great way to get started with GitOps and Terraform without any additional cost.
 </Note>
 
 ## Why can’t we start with an entry-level plan?
 
-(See [How to Sign Up for Spacelift](/reference-architecture/how-to-guides/integrations/spacelift) )
+(See [How to Sign Up for Spacelift](/layers/spacelift) )
 
 - Only enterprise plans support self-hosted workers which are required in order to manage any infrastructure provisioned inside of VPCs (E.g. Databases, non-public EKS clusters, terraform provisioners, etc). Additionally, using EC2 Instance Profiles we’re able to grant the precise roles we want to give Spacelift without any hardcoded credentials.
 

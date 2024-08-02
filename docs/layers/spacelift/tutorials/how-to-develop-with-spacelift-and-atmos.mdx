@@ -20,15 +20,15 @@ import KeyPoints from '@site/src/components/KeyPoints';
 
 - If operations are performed in `atmos` on the command line, those changes are unavailable to Spacelift; concurrent development in both Spacelift and `atmos` will lead to conflicts in terraform state and rolling back to one or the other. Spacelift is always watching the `main` branch and drift detection will automatically propose a plan to remediate the drift. Changes made by atmos (e.g. from other branches) will appear as drift.
 
-- Dependencies between components are enforced by a _best-effort_ using labels, but not guaranteed and don’t work in all situations and are not enforced in `atmos` (only Spacelift). See [How to Manage Explicit Component Dependencies with Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/how-to-manage-explicit-component-dependencies-with-spacelift)
+- Dependencies between components are enforced by a _best-effort_ using labels, but not guaranteed and don’t work in all situations and are not enforced in `atmos` (only Spacelift). See [How to Manage Explicit Component Dependencies with Spacelift](/layers/spacelift/tutorials/how-to-manage-explicit-component-dependencies-with-spacelift)
 
-- Destroying a component is not always easy (for good and bad reasons). See [How to Destroy a Component using `atmos` or Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/how-to-destroy-a-component-using-atmos-or-spacelift) for details.
+- Destroying a component is not always easy (for good and bad reasons). See [How to Destroy a Component using `atmos` or Spacelift](/layers/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift) for details.
 
 - Spacelift doesn’t have a visual way of releasing/promoting a change across environments; the user must confirm the plan for each stack in the order they must be applied
 
 ## Prerequisites
 
-Review why we [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform) and [Atmos](/fundamentals/atmos) documentation.
+Review why we [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform) and [Atmos](/resources/legacy/fundamentals/atmos) documentation.
 
 ## Workflow
 
@@ -70,7 +70,7 @@ Document: how to debug with Spacelift when things go wrong
 
 ### Use-case #2: Destroying Components
 
-[How to Destroy a Component using `atmos` or Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/how-to-destroy-a-component-using-atmos-or-spacelift)
+[How to Destroy a Component using `atmos` or Spacelift](/layers/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift)
 
 How to use `spacelift_stack_destructor` with Spacelift. @Andriy Knysh
 
@@ -92,12 +92,12 @@ Alternatively, for companies using SSO together with Spacelift, the Developer ne
 
 ## How to set up Spacelift?
 
-If you haven’t yet signed up for Spacelift, see [How to Sign Up for Spacelift](/reference-architecture/how-to-guides/integrations/spacelift).
+If you haven’t yet signed up for Spacelift, see [How to Sign Up for Spacelift](/layers/spacelift).
 
 Once the Spacelift account is set up, follow the
 
 ## How to Destroy a Spacelift stack and the components?
 
-See [How to Destroy a Component using `atmos` or Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/how-to-destroy-a-component-using-atmos-or-spacelift)
+See [How to Destroy a Component using `atmos` or Spacelift](/layers/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift)
 
 

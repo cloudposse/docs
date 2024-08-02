@@ -27,12 +27,12 @@ Alternatively, we have a simplified [Automated Cold Start Implementation](layers
 - This first set of steps can be done in any order. The remaining steps need to be done in the order listed.
 
 - Decide on a "namespace" for your organization in consultation with Cloud Posse.
-  [Decide on Namespace Abbreviation](/learn/foundation/design-decisions/decide-on-namespace-abbreviation)
+  [Decide on Namespace Abbreviation](/layers/foundation/design-decisions/decide-on-namespace-abbreviation)
 
 - Decide on a default AWS Region to deploy the initial set of resources. Optionally, decide on a failover Region for
   backup resources. Decide on the [Region abbreviation scheme](/learn/reference/aws/aws-region-codes) you want to use:
   `short` or `fixed`. Cloud Posse slightly favors `fixed` to keep IDs and labels shorter.
-  [Decide on Primary AWS Region](/learn/foundation/design-decisions/decide-on-primary-aws-region)
+  [Decide on Primary AWS Region](/layers/network/design-decisions/decide-on-primary-aws-region)
 
 - Decide on whether or not you are going to use Spot Instances. Decide on your desired default quota for Spot Instance
   and On-Demand Instance vCPUs. Also, decide on default quotas for any special instance types such as GPU-enabled
@@ -53,7 +53,7 @@ Alternatively, we have a simplified [Automated Cold Start Implementation](layers
 - Choose, provision, and share with Cloud Posse a mechanism for securely storing and sharing secrets, including MFA TOTP
   keys. Cloud Posse uses [1Password](https://1password.com/) and can provide a 1Password `vault` if needed. In this
   document, we will refer to this storage as 1Password, but you can substitute any other system you want.
-  [Decide on 1Password Strategy](/learn/foundation/design-decisions/decide-on-1password-strategy)
+  [Decide on 1Password Strategy](/layers/foundation/design-decisions/decide-on-1password-strategy)
 
 - Identify a credit card for AWS to bill charges to and provide the details to whomever is going to set up the initial
   AWS account.
@@ -75,13 +75,13 @@ Alternatively, we have a simplified [Automated Cold Start Implementation](layers
   company.
 
 - Decide on your account, organization names, and organization structure.
-  [Decide on AWS Account Flavors and Organizational Units](/learn/foundation/design-decisions/decide-on-aws-account-flavors-and-organizational-units)
-  [Decide on AWS Organization Strategy](/learn/foundation/design-decisions/decide-on-aws-organization-strategy)
+  [Decide on AWS Account Flavors and Organizational Units](/layers/accounts/design-decisions/decide-on-aws-account-flavors-and-organizational-units)
+  [Decide on AWS Organization Strategy](/layers/accounts/design-decisions/decide-on-aws-organization-strategy)
 
 - Decide on and set up email addresses for all accounts. We recommend using a single email address/account with "+"
   addressing for each AWS account, and forwarding all emails to a single shared Slack channel. **Ensure that the email
   addresses are set up and forwarded to a shared Slack channel that Cloud Posse has access to before continuing.**
-  [Decide on Email Address Format for AWS Accounts](/learn/foundation/design-decisions/decide-on-email-address-format-for-aws-accounts)
+  [Decide on Email Address Format for AWS Accounts](/layers/accounts/design-decisions/decide-on-email-address-format-for-aws-accounts)
 
 - [Sign up with AWS](/layers/accounts/tutorials/how-to-register-pristine-aws-root-account), create the `root` account
   (you may want to call it `main`, `master`, `management`, or something else, but we will refer to it in this document
@@ -337,7 +337,7 @@ Make sure your support plan for the _root_ account was upgraded to the "Business
 to expedite the quota increase requests, which could take several days on a basic support plan. Without it, AWS support
 will claim that since we’re not currently utilizing any of the resources, so they do not want to approve the requests.
 AWS support is not aware of your other organization. If AWS still gives you problems, please escalate to your AWS TAM.
-See [AWS](/learn/reference/aws).
+See [AWS](/resources/glossary/aws).
 
 :::
 
@@ -476,7 +476,7 @@ configuration in the `gbl-root` stack.
 In the rare case where you will need to be enabling non-default AWS Regions, temporarily comment out the
 `DenyRootAccountAccess` service control policy setting in `gbl-root.yaml`. You will restore it later, after enabling the
 optional Regions. See related:
-[Decide on Opting Into Non-default Regions](/learn/foundation/design-decisions/decide-on-opting-into-non-default-regions)
+[Decide on Opting Into Non-default Regions](/layers/network/design-decisions/decide-on-opting-into-non-default-regions)
 
 :::
 

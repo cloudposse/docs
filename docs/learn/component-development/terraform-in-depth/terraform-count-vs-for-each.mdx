@@ -84,7 +84,7 @@ phase to compare it to the desired state of the resource and compute the
 necessary changes.
 
 If some address cannot be determined at plan time, `terraform plan` will
-fail with an error. This issue is discussed in greater detail in [Error: Values Cannot Be Determined Until Apply](/reference/terraform-in-depth/terraform-unknown-at-plan-time.md).
+fail with an error. This issue is discussed in greater detail in [Error: Values Cannot Be Determined Until Apply](/learn/component-development/terraform-in-depth/terraform-unknown-at-plan-time).
 The main reason not to use `for_each` is that the values supplied to it
 would not be known until apply time.
 :::
@@ -445,5 +445,5 @@ introduces.
 
 ### Further Reading
 
-- [Error: Values Cannot Be Determined Until Apply](/reference/terraform-in-depth/terraform-unknown-at-plan-time).
+- [Error: Values Cannot Be Determined Until Apply](/learn/component-development/terraform-in-depth/terraform-unknown-at-plan-time).
 - [Terraform Best Practices](/best-practices/terraform)

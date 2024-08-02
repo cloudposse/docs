@@ -191,7 +191,7 @@ Use `unset` to delete each of the above variables from your environment and ensu
 
 ## Build Harness
 
-The `build-harness` is a collection of [Makefiles](/reference/tools.mdx#make) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
+The `build-harness` is a collection of [Makefiles](/learn/toolchain/#make) to facilitate building stuff. It supports Golang projects, Dockerfiles, Helm charts, and much more.
 
 |              |                                                                                                                                        |
 | :----------- | :------------------------------------------------------------------------------------------------------------------------------------- |
@@ -201,7 +201,7 @@ The `build-harness` is a collection of [Makefiles](/reference/tools.mdx#make) to
 
 It's designed to work with CI/CD systems such as GitHub Action, Codefresh, Jenkins, and others.
 
-It's 100% Open Source and licensed under [APACHE2](LICENSE.md).
+It's 100% Open Source and licensed under APACHE2.
 
 ### Usage
 
@@ -223,7 +223,7 @@ The `/` in target names is interchangeable with the `:` in target names
 
 ### Real World Examples
 
-We leverage the `build-harness` in nearly every project on our [GitHub](/our-github.md).
+We leverage the `build-harness` in nearly every project on our [GitHub](/community/contribute/our-github).
 
 | Example Repo                                                                  | Usage                                                                      |
 | :---------------------------------------------------------------------------- | :------------------------------------------------------------------------- |
@@ -240,7 +240,7 @@ In the article [The Right Way to Store Secrets using Parameter Store](https://aw
 
 ### Usage
 
-Using chamber you can perform all standard CRUD operations on secrets stored in [AWS SSM](/glossary/ssm.md) and execute commands with environment variables populated from the secrets.
+Using chamber you can perform all standard CRUD operations on secrets stored in [AWS SSM](/resources/glossary/ssm) and execute commands with environment variables populated from the secrets.
 For a complete description, check out the [official documentation](https://github.com/segmentio/chamber#usage).
 
 ## Geodesic
@@ -352,8 +352,8 @@ Another way to think about it is like this:
 
 - **12-Factor Style Configurations** - Parameterize all charts using Environment Variables
 - **Inline `values.yaml`** - Maintain changes to chart configurations in version control
-- **Chamber Compatibility** - Use [`chamber`](/reference/tools.mdx#chamber) to deploy helm charts with secrets pulled from SSM
-- **CI/CD Integration** - Easily integrate `helmfile` with CI/CD pipelines using our [`build-harness`](/reference/tools.mdx#build-harness)
+- **Chamber Compatibility** - Use [`chamber`](/learn/toolchain/#chamber) to deploy helm charts with secrets pulled from SSM
+- **CI/CD Integration** - Easily integrate `helmfile` with CI/CD pipelines using our [`build-harness`](/learn/toolchain/#build-harness)
 - **Synchronize Environments**  - Rapidly deploy or update all services for a cluster
 - **Go Templating** - Configuration is templatized using [Go template](https://godoc.org/text/template) and supports all the [Sprig](https://godoc.org/github.com/Masterminds/sprig) intepolation functions.
 
@@ -366,8 +366,8 @@ Another way to think about it is like this:
 
 Helmfile depends on the following `cli` tools.
 
-- [`helm`](/reference/tools.mdx#helm) - for managing helm packages
-- [`kubectl`](/reference/tools.mdx#kubectl) - for interfacing with the Kubernetes API
+- [`helm`](/learn/toolchain/#helm) - for managing helm packages
+- [`kubectl`](/learn/toolchain/#kubectl) - for interfacing with the Kubernetes API
 
 :::info
 [`geodesic`](#geodesic) shell ships with all dependencies.

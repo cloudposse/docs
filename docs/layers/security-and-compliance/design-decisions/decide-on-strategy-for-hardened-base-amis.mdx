@@ -17,11 +17,11 @@ Many compliance frameworks require host-level hardening and the ability to demon
 
 - CVSS scores of less than 4 must be remediated within two to three months.
 
-See [Decide on Technical Benchmark Framework](/reference-architecture/fundamentals/design-decisions/foundational-benchmark-compliance/decide-on-technical-benchmark-framework)
+See [Decide on Technical Benchmark Framework](/layers/security-and-compliance/design-decisions/decide-on-technical-benchmark-framework)
 
 ## Solution
 
-We need a solution that covers both EKS (for customers using it) and for standalone EC2 instances where applicable. Additionally, regardless of the solution, we’ll also need to instrument the process for rolling out the changes. See [How to Enable Spacelift Drift Detection](/reference-architecture/how-to-guides/integrations/spacelift/how-to-enable-spacelift-drift-detection) for a nice way to automatically update AMIs using data sources.
+We need a solution that covers both EKS (for customers using it) and for standalone EC2 instances where applicable. Additionally, regardless of the solution, we’ll also need to instrument the process for rolling out the changes. See [How to Enable Spacelift Drift Detection](/layers/spacelift/tutorials/how-to-enable-spacelift-drift-detection) for a nice way to automatically update AMIs using data sources.
 
 ### Use CIS or Not?
 
