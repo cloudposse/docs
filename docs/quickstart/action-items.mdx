@@ -32,7 +32,7 @@ import Admonition from '@theme/Admonition'
     In order connect your chosen IdP to AWS IAM Identity Center (AWS SSO), we will to configure your provider and create a metadata file. Please follow the relevant linked guide and follow the steps for the Identity Provider.
 
     - [GSuite](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/)
-    - [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-office-365-aws-sso/)
+    - [Office 365](/layers/identity/aws-sso/office365/how-to-setup-office-365-aws-sso)
     - [JumpCloud](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
     - [Other AWS supported IdPs: Azure AD, CyberArk, Okta, OneLogin, Ping Identity](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html)
 
@@ -49,7 +49,7 @@ import Admonition from '@theme/Admonition'
     If deploying AWS SAML as an alternative to AWS SSO, you will need a separate configuration and metadata file. Again, please refer to the relevant linked guide.
 
     - [GSuite](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/): Follow Steps 1 through 7. This document refers to Appstream, but the process will be the same for AWS.
-    - [Office 365](/reference-architecture/how-to-guides/integrations/how-to-setup-saml-login-to-aws-from-office-365/)
+    - [Office 365](/layers/identity/aws-saml/how-to-setup-saml-login-to-aws-from-office-365)
     - [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
     - [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
   </Step>
@@ -70,7 +70,7 @@ If you are deploying the Actions Runner Controller solution for Self-Hosted Gith
 
 ### Self Hosted Github Runners with Philips Labs (ECS)
 
-If you have chosen ECS as a platform, we recommend deploying Philips Labs GitHub Action Runners. Please read through the [Philips Labs GitHub Action Runners Setup Requirements](/reference-architecture/setup/philips-labs-github-runners/#requirements).
+If you have chosen ECS as a platform, we recommend deploying Philips Labs GitHub Action Runners. Please read through the [Philips Labs GitHub Action Runners Setup Requirements](/layers/github-actions/philips-labs-github-runners#requirements).
 
 In particular, you will need a new GitHub App including a Private Key, an App ID, and an App Installation ID. We recommend that you store these secrets in 1Password.
 
@@ -132,12 +132,12 @@ The reference architecture supports multiple integrations. Depending on your req
 
 ### Spacelift
 
-If deploying Spacelift, you will need a Spacelift subscription. Please see [How to Sign Up for Spacelift](/reference-architecture/how-to-guides/integrations/spacelift/). This document answers many common questions and describes the signup process step-by-step.
+If deploying Spacelift, you will need a Spacelift subscription. Please see [How to Sign Up for Spacelift](/layers/spacelift). This document answers many common questions and describes the signup process step-by-step.
 
 ### Datadog
 
-Sign up for Datadog following the [How to Sign Up for Datadog?](/reference-architecture/how-to-guides/integrations/datadog/how-to-sign-up-for-datadog/) documentation.
+Sign up for Datadog following the [How to Sign Up for Datadog?](/layers/monitoring/datadog/tutorials/how-to-sign-up-for-datadog) documentation.
 
 ### OpsGenie
 
-Sign up for OpsGenie following the [How to Sign Up for OpsGenie?](/reference-architecture/how-to-guides/tutorials/how-to-implement-incident-management-with-opsgenie/how-to-sign-up-for-opsgenie/) documentation.
+Sign up for OpsGenie following the [How to Sign Up for OpsGenie?](/layers/alerting/opsgenie/how-to-sign-up-for-opsgenie) documentation.

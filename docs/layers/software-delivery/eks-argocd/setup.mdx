@@ -17,9 +17,9 @@ import TaskList from '@site/src/components/TaskList'
 | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 1. Vendor ArgoCD components         | `atmos workflow vendor -f argocd`                                                                                                                       |
 | 2. Create ArgoCD repos              | ClickOps                                                                                                                                                |
-| 3. Create GitHub PATs               | [ArgoCD Integrations: How to set up Authorization for ArgoCD with GitHub PATs](/reference-architecture/how-to-guides/integrations/argocd/pats)          |
+| 3. Create GitHub PATs               | [ArgoCD Integrations: How to set up Authorization for ArgoCD with GitHub PATs](/layers/software-delivery/eks-argocd/tutorials/pats)          |
 | 4. Deploy ArgoCD repo configuration | `atmos workflow deploy/argocd-repos -f argocd`                                                                                                          |
-| 5. Create IAM Identity Center Apps  | [ArgoCD Integrations: How to create an AWS Identity Center Application](/reference-architecture/how-to-guides/integrations/argocd/identity-center-apps) |
+| 5. Create IAM Identity Center Apps  | [ArgoCD Integrations: How to create an AWS Identity Center Application](/layers/software-delivery/eks-argocd/tutorials/identity-center-apps) |
 | 6. Deploy ArgoCD                    | `atmos workflow deploy/argocd -f argocd`                                                                                                                |
 | 7. Create `example-app`             | ClickOps                                                                                                                                                |
 
@@ -89,7 +89,7 @@ All deployment steps below assume that the environment has been successfully set
     PATs.
 
     Please see
-    [ArgoCD Integrations: How to set up Authorization for ArgoCD with GitHub PATs](/reference-architecture/how-to-guides/integrations/argocd/pats)
+    [ArgoCD Integrations: How to set up Authorization for ArgoCD with GitHub PATs](/layers/software-delivery/eks-argocd/tutorials/pats)
     and follow all steps.
   </Step>
 
@@ -116,7 +116,7 @@ All deployment steps below assume that the environment has been successfully set
 
     In order to authenticate with ArgoCD, we recommend using an AWS IAM Identity Center SAML Application. These apps can use existing Identity Center groups that we've already setup as part of the [Identity layer](https://docs.cloudposse.com/reference-architecture/setup/identity/).
 
-    Please see [ArgoCD Integrations: How to create an AWS Identity Center Application](/reference-architecture/how-to-guides/integrations/argocd/identity-center-apps) and follow all steps.
+    Please see [ArgoCD Integrations: How to create an AWS Identity Center Application](/layers/software-delivery/eks-argocd/tutorials/identity-center-apps) and follow all steps.
   </Step>
 
   <Step>

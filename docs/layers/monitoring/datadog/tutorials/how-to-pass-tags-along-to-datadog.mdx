@@ -56,7 +56,7 @@ With Kubernetes, we need to make sure that the right tags are fetched from eithe
 
 By default, the datadog agent does not map kubernetes labels and annotations to datadog tags. We recommend setting default tags that you can add to your apps to map to datadog tags. this allows either namespace bound tags or app-specific tags to be set. These [values](https://github.com/DataDog/helm-charts/blob/main/charts/datadog/values.yaml#L147-L167) in the datadog helm chart can be set to create a mapping to your datadog account. Take a look at Datadogs documentation for further details: [https://docs.datadoghq.com/agent/kubernetes/tag/?tab=containerizedagent](https://docs.datadoghq.com/agent/kubernetes/tag/?tab=containerizedagent) .
 
-Once Tags are set we can then send app-specific alerts to specific teams: [How to Implement Incident Management with OpsGenie](/reference-architecture/how-to-guides/integrations/opsgenie)
+Once Tags are set we can then send app-specific alerts to specific teams: [How to Implement Incident Management with OpsGenie](/layers/alerting/opsgenie)
 
 .
 

@@ -17,7 +17,7 @@ Amazon Aurora component is configured and deployed
 
 Amazon RDS provides MySQL and PostgreSQL-compatible relational databases that are built for the cloud with greater performance and availability at 1/10th the cost of traditional enterprise databases with the simplicity and cost-effectiveness of open source databases. RDS Aurora features a distributed, fault-tolerant, self-healing storage system that auto-scales up to 128TB per database instance. It delivers high performance and availability with up to 15 low-latency read replicas, point-in-time recovery, continuous backup to Amazon S3, and replication across three Availability Zones.
 
- Amazon Aurora DB clusters  (See: [Decide on RDS Technology and Architecture](/reference-architecture/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-technology-and-architecture))
+ Amazon Aurora DB clusters  (See: [Decide on RDS Technology and Architecture](/layers/data/design-decisions/decide-on-rds-technology-and-architecture))
 
 ### Known Limitations
 
@@ -52,11 +52,11 @@ Serverless v2 offers multi-AZ, so that DB subnets can be across multiple availab
 
 ### Future Aurora DB Cluster Requirements
 
-Because the [RDS Service documentation on Aurora DB clusters](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) recommends deploying at least one additional Aurora DB cluster instance to an Availability Zone other than where the primary instance is located in order to ensure High Availability, and since [3 AZs are used by the primary AWS region](/reference-architecture/fundamentals/design-decisions/cold-start/decide-on-primary-aws-region), it is recommended that 3 instances are deployed per Aurora DB cluster when High Availability is needed.
+Because the [RDS Service documentation on Aurora DB clusters](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) recommends deploying at least one additional Aurora DB cluster instance to an Availability Zone other than where the primary instance is located in order to ensure High Availability, and since [3 AZs are used by the primary AWS region](/layers/network/design-decisions/decide-on-primary-aws-region), it is recommended that 3 instances are deployed per Aurora DB cluster when High Availability is needed.
 
 - Explain how many instances exist in the cluster (or per region, if this is a global cluster)
 
-- Explain whether the cluster is global or regional, and reference [Decide on RDS Technology and Architecture](/reference-architecture/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-technology-and-architecture)
+- Explain whether the cluster is global or regional, and reference [Decide on RDS Technology and Architecture](/layers/data/design-decisions/decide-on-rds-technology-and-architecture)
 
 - Explain how many secondary DB clusters should exist, if this is a global cluster
 
@@ -91,7 +91,7 @@ Create an Aurora DB Cluster component and tune it to the outlined requirements.
 
 ## References
 
-- [Decide on RDS Technology and Architecture](/reference-architecture/fundamentals/design-decisions/foundational-application-dependencies/decide-on-rds-technology-and-architecture)
+- [Decide on RDS Technology and Architecture](/layers/data/design-decisions/decide-on-rds-technology-and-architecture)
 
 - [https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html)
 

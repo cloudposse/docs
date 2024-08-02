@@ -11,7 +11,7 @@ import ReactPlayer from 'react-player'
 
 For the most part, we assume users have a solid grasp of `terraform`. Cloud Posse has adopted a number of conventions for how we work with `terraform` that we document here. Review [our opinionated public “best practices” as it relates to terraform](/best-practices/terraform).
 
-We use [Atmos](/fundamentals/atmos) together with [Stacks](/fundamentals/stacks) to call [Components](/components) that provision infrastructure with `terraform`.
+We use [Atmos](/resources/legacy/fundamentals/atmos) together with [Stacks](/resources/legacy/fundamentals/stacks) to call [Components](/components) that provision infrastructure with `terraform`.
 
 :::caution
 Be aware of [Terraform Environment Variables](https://www.terraform.io/docs/cli/config/environment-variables.html) that can alter the behavior of `terraform` when run outside of what you see in `atmos` or `geodesic`. These are also helpful to change default behavior as well, such as by setting the `TF_DATA_DIR`.
@@ -20,21 +20,21 @@ Be aware of [Terraform Environment Variables](https://www.terraform.io/docs/cli/
 
 ## How-to Guides
 
-- [How to Upgrade or Install Versions of Terraform](/reference-architecture/how-to-guides/upgrades/how-to-upgrade-or-install-versions-of-terraform)
-- [How to Manage Terraform Dependencies in Micro-service Repositories](/reference-architecture/how-to-guides/tutorials/how-to-manage-terraform-dependencies-in-micro-service-repositori)
-- [How to Keep Everything Up to Date](/reference-architecture/how-to-guides/upgrades/how-to-keep-everything-up-to-date)
-- [How to Use Terraform Remote State](/reference-architecture/how-to-guides/tutorials/how-to-use-terraform-remote-state)
-- [How to Switch Versions of Terraform](/reference-architecture/how-to-guides/tutorials/how-to-switch-versions-of-terraform)
-- [How to support GovCloud and Other AWS Partitions with Terraform](/reference-architecture/how-to-guides/tutorials/how-to-support-govcloud-and-other-aws-partitions-with-terraform)
+- [How to Upgrade or Install Versions of Terraform](/learn/maintenance/upgrades/how-to-upgrade-or-install-versions-of-terraform)
+- [How to Manage Terraform Dependencies in Micro-service Repositories](/learn/maintenance/tutorials/how-to-manage-terraform-dependencies-in-micro-service-repositori)
+- [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date)
+- [How to Use Terraform Remote State](/learn/maintenance/tutorials/how-to-use-terraform-remote-state)
+- [How to Switch Versions of Terraform](/learn/maintenance/tutorials/how-to-switch-versions-of-terraform)
+- [How to support GovCloud and Other AWS Partitions with Terraform](/learn/maintenance/tutorials/how-to-support-govcloud-and-other-aws-partitions-with-terraform)
 
 ## Architectural Design Records
 
-- [Proposed: Use Strict Provider Pinning in Components](/reference-architecture/reference/adrs/proposed-use-strict-provider-pinning-in-components)
-- [Use Basic Provider Block for Root-level Components](/reference-architecture/reference/adrs/use-basic-provider-block-for-root-level-components)
-- [Use Terraform Provider Block with compatibility for Role ARNs and Profiles](/reference-architecture/reference/adrs/use-terraform-provider-block-with-compatibility-for-role-arns-an)
-- [Use Spacelift for GitOps with Terraform](/reference-architecture/reference/adrs/use-spacelift-for-gitops-with-terraform)
-- [Use SSM over ASM for Infrastructure](/reference-architecture/reference/adrs/use-ssm-over-asm-for-infrastructure)
-- [Proposed: Use Defaults for Components](/reference-architecture/reference/adrs/proposed-use-defaults-for-components)
+- [Proposed: Use Strict Provider Pinning in Components](/resources/adrs/proposed/proposed-use-strict-provider-pinning-in-components)
+- [Use Basic Provider Block for Root-level Components](/resources/adrs/adopted/use-basic-provider-block-for-root-level-components)
+- [Use Terraform Provider Block with compatibility for Role ARNs and Profiles](/resources/adrs/adopted/use-terraform-provider-block-with-compatibility-for-role-arns-an)
+- [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform)
+- [Use SSM over ASM for Infrastructure](/resources/adrs/adopted/use-ssm-over-asm-for-infrastructure)
+- [Proposed: Use Defaults for Components](/resources/adrs/proposed/proposed-use-defaults-for-components)
 
 ## Conventions
 
@@ -116,19 +116,19 @@ Every input value can also be specified individually by name as a standard Terra
 
 ### Stacks and Components
 
-We use [Stacks](/fundamentals/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
+We use [Stacks](/resources/legacy/fundamentals/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
 
 ### Atmos CLI
 
 We predominantly call `terraform` from `atmos`, however, by design all of our infrastructure code runs without any task runners. This is in contrast to tools like `terragrunt` that manipulate the state of infrastructure code at run time.
 
-See [How to use Atmos](/reference-architecture/how-to-guides/tutorials/how-to-use-atmos)
+See [How to use Atmos](/learn/maintenance/tutorials/how-to-use-atmos)
 
 ## FAQ
 
 ### How to upgrade Terraform?
 
-See [How to Switch Versions of Terraform](/reference-architecture/how-to-guides/tutorials/how-to-switch-versions-of-terraform) for a more complete guide.
+See [How to Switch Versions of Terraform](/learn/maintenance/tutorials/how-to-switch-versions-of-terraform) for a more complete guide.
 
 TL;DR:
 

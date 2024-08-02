@@ -14,7 +14,7 @@ import PillBox from '@site/src/components/PillBox';
 
 ![Terraform](/assets/08bcd99-terraform.png)
 
-This article is part of our [Terraform in Depth](/category/terraform-in-depth)
+This article is part of our [Terraform in Depth](/learn/component-development/terraform-in-depth/terraform-in-depth)
 series, where we dive into
 advanced details of Terraform that require a deeper understanding of Terraform
 and longer explanation than are required for our other Terraform articles.
@@ -194,7 +194,7 @@ Best practice is to either use a separate boolean input (e.g.
 `ebs_volume_enabled`) to condition the resource creation, or to take the
 optional value as an element of a list and use the length of the list to
 determine whether to create the resource. See [Use feature flags or lists to
-control optional behaviors](best-practices/terrafor/#use-feature-flags-to-enabledisable-functionality)
+control optional behaviors](/best-practices/terraform#use-feature-flags-to-enabledisable-functionality)
 for more information.
 :::
 
@@ -340,7 +340,7 @@ the length of the list to become unknown.
 
 ##### Implicit Transformations of Maps
 
-For reasons detailed in [Terraform Count vs For Each](/reference/terraform-in-depth/terraform-count-vs-for-each.md),
+For reasons detailed in [Terraform Count vs For Each](/learn/component-development/terraform-in-depth/terraform-count-vs-for-each),
 it is usually preferable to use `for_each` rather than `count` to create
 multiple resources. However, when using `for_each`, it is required that all
 of the keys be known at plan time. If you use a list of strings to make the

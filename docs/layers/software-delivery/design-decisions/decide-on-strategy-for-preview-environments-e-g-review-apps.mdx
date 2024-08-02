@@ -79,7 +79,7 @@ Slight improvement over using `helmfile` with the `raw` chart.
 
 ### Use GitHub actions with ArgoCD and helm
 
-For some additional context on ArgoCD [Decide on ArgoCD Architecture](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/decide-on-argocd-architecture)
+For some additional context on ArgoCD [Decide on ArgoCD Architecture](/layers/software-delivery/design-decisions/decide-on-argocd-architecture)
 
 ## Requirements
 
@@ -101,7 +101,7 @@ For some additional context on ArgoCD [Decide on ArgoCD Architecture](/reference
 
 - Do we need to secure these environments? We recommend just locking down the ALB to internal traffic and using VPN
 
-- How will we handle databases for previews? How will we seed data. [Decide on Database Seeding Strategy for Ephemeral Preview Environments](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/decide-on-database-seeding-strategy-for-ephemeral-preview-enviro)
+- How will we handle databases for previews? How will we seed data. [Decide on Database Seeding Strategy for Ephemeral Preview Environments](/layers/software-delivery/design-decisions/decide-on-database-seeding-strategy-for-ephemeral-preview-enviro)
 
 - What is the effort to implement ArgoCD?
 
@@ -139,7 +139,7 @@ This is more of a side note that not all microservices organizations are the sam
 
 ## Related Design Decisions
 
-[Decide on Strategy for Preview Environments (e.g. Review Apps)](/reference-architecture/fundamentals/design-decisions/foundational-release-engineering/decide-on-strategy-for-preview-environments-e-g-review-apps)
+[Decide on Strategy for Preview Environments (e.g. Review Apps)](/layers/software-delivery/design-decisions/decide-on-strategy-for-preview-environments-e-g-review-apps)
 
 :::caution
 Internal preview environments cannot accept webhook callbacks from external services like twilio
