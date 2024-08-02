@@ -130,7 +130,7 @@ def render_terraform_docs(terraform_module_path, terraform_docs_configuration):
     """
 
     # Get the Terraform version from the module's versions.tf file
-    terraform_version = rendering.get_terraform_version(module_path)
+    terraform_version = get_terraform_version(terraform_module_path)
     # TODO pass this version to the terraform-docs command
 
     try:
