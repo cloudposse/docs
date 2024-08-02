@@ -1,5 +1,6 @@
 import re
 import subprocess
+import yaml
 
 TAG_REGEX = re.compile("(<)([0-9a-zA-Z._-]+)(>)", re.IGNORECASE)
 BR_REGEX = re.compile(re.escape("<br>"), re.IGNORECASE)
@@ -208,3 +209,50 @@ def replace_relative_links_with_github_links(repo, content, relative_path=None):
         )
 
     return content
+
+
+def get_tags_from_frontmatter(frontmatter):
+    """
+    Given a string of YAML frontmatter, return the tags.
+    """
+    # if empty, return empty
+    if not frontmatter.strip():
+        return []
+
+    # Parse the YAML
+    parsed_yaml = yaml.safe_load(frontmatter)
+    # Get the tags
+    tags = parsed_yaml.get("tags", [])
+
+    return tags
+
+
+def strip_frontmatter(content):
+    """
+    1. Strip the front matter from the content.
+    2. Return the content and the front matter.
+    """
+    lines = content.splitlines()
+    frontmatter = []
+    content_lines = []
+    in_frontmatter = False
+
+    for index, line in enumerate(lines):
+        if index == 0 and line.startswith("---"):
+            in_frontmatter = True
+            continue
+        if in_frontmatter and line.startswith("---"):
+            in_frontmatter = False
+            continue
+
+        if in_frontmatter:
+            frontmatter.append(line)
+        else:
+            content_lines.append(line)
+
+    # In case the frontmatter is at the beginning but not enclosed correctly
+    if in_frontmatter:
+        content_lines = frontmatter + content_lines
+        frontmatter = []
+
+    return "\n".join(content_lines), "\n".join(frontmatter)
