@@ -128,6 +128,11 @@ def render_terraform_docs(terraform_module_path, terraform_docs_configuration):
     """
     Renders Terraform module documentation using terraform-docs with a provided configuration.
     """
+
+    # Get the Terraform version from the module's versions.tf file
+    terraform_version = rendering.get_terraform_version(module_path)
+    # TODO pass this version to the terraform-docs command
+
     try:
         # Command to run terraform-docs
         command = [
@@ -256,3 +261,18 @@ def strip_frontmatter(content):
         frontmatter = []
 
     return "\n".join(content_lines), "\n".join(frontmatter)
+
+def get_terraform_version(module_path):
+    """
+    Get the Terraform version from the module's versions.tf file.
+    """
+    try:
+        with open(f"{module_path}/versions.tf", "r") as f:
+            content = f.read()
+            match = re.search(r"terraform\s*{\s*required_version\s*=\s*\"(.*)\"\s*}", content)
+            if match:
+                return match.group(1)
+    except FileNotFoundError:
+        pass
+
+    return ""
