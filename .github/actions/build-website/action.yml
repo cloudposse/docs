@@ -60,7 +60,7 @@ runs:
         path: |
           .build-harness
           .cache
-        key: ${{ github.workflow }}
+        key: "build-website-cache" # Set same key to restore cache in all jobs
 
     - name: "Initialize Build Harness"
       shell: bash
