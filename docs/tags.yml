@@ -380,3 +380,64 @@ virtual-machine-image:
 yaml:
   description: YAML configuration language.
   label: YAML
+
+component/account:
+  description: AWS Account component.
+  label: component/account
+component/acm:
+  description: AWS Certificate Manager component.
+  label: component/acm
+component/api-gateway-account-settings:
+  description: The api-gateway-account-settings Component.
+  label: component/api-gateway-account-settings
+component/aurora-mysql:
+  description: AWS Aurora MySQL component.
+  label: component/aurora-mysql
+component/aws-ssosync:
+  description: The aws-ssosync Component.
+  label: component/aws-ssosync
+component/aws-teams:
+  description: The aws-teams Component.
+  label: component/aws-teams
+component/datadog-synthetics-private-location:
+  description: The datadog-synthetics-private-location Component.
+  label: component/datadog-synthetics-private-location
+component/eks:
+  description: Amazon EKS component.
+  label: component/eks
+component/github-oidc-role:
+  description: The github-oidc-role Component.
+  label: component/github-oidc-role
+component/sso-saml-provider:
+  description: The sso-saml-provider Component.
+  label: component/sso-saml-provider
+component/strongdm:
+  description: The strongdm Component.
+  label: component/strongdm
+layer/accounts:
+  description: Accounts layer.
+  label: layer/accounts
+layer/data:
+  description: Data layer.
+  label: layer/data
+layer/foundation:
+  description: The foundation Layer.
+  label: layer/foundation
+layer/network:
+  description: Network layer.
+  label: layer/network
+layer/software-delivery:
+  description: The software-delivery Layer.
+  label: layer/software-delivery
+layer/spacelift:
+  description: The spacelift Layer.
+  label: layer/spacelift
+provider/aws:
+  description: Amazon Web Services provider.
+  label: provider/aws
+provider/datadog:
+  description: Datadog provider.
+  label: provider/datadog
+provider/github:
+  description: GitHub provider.
+  label: provider/github
