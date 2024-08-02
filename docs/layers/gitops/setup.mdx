@@ -21,11 +21,7 @@ import TaskList from '@site/src/components/TaskList';
 
 ### Self-Hosted Runners
 
-Although not required, we recommend first deploying Self-Hosted GitHub runners if you need to manage any resources
-inside of a VPC (e.g. RDS Users). For more information on setting up runners, see the
-[GitHub Action Runner](https://docs.cloudposse.com/reference-architecture/setup/github-runners/) or
-[GitHub Action Runner Controller (EKS)](https://docs.cloudposse.com/reference-architecture/setup/github-arc/) setup
-documentation.
+Although not required, we recommend first deploying Self-Hosted GitHub runners if you need to manage any resources inside of a VPC (e.g. RDS Users). For more information on setting up runners, see the [Philips Labs GitHub Runners](/layers/github-actions/philips-labs-github-runners) or the [GitHub Action Runner Controller (EKS)](/layers/github-actions/eks-github-actions-controller) setup documentation.
 
 If you do not wish to use Self Hosted runners, simply change the `runs-on` option for all included workflows in
 `.github/workflows`
@@ -124,7 +120,3 @@ And that's it!
 1. The roles created by `aws-teams` or `gitops` should already be included in your workflows. Verify these roles match
    the `env` settings in `.github/workflows/atmos-terraform-*`
 1. You do not need to create a GitHub App or complete additional steps to trigger these workflows
-
-# Related Topics
-
-- [Quickstart on GitOps](https://docs.cloudposse.com/reference-architecture/fundamentals/gitops/)

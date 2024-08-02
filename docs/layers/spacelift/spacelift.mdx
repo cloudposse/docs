@@ -12,6 +12,7 @@ import TabItem from '@theme/TabItem';
 import PartialSpaceliftRootStack from '@site/examples/snippets/stacks/orgs/acme/spacelift.yaml';
 import PartialSpaceliftTenantStack from '@site/examples/snippets/stacks/orgs/acme/plat/spacelift.yaml'
 import CodeBlock from '@theme/CodeBlock';
+import CategoryList from '@site/src/components/CategoryList';
 
 GitOps is a cloud-native continuous deployment methodology that uses Git as
 the single source of truth for declarative infrastructure and applications.
@@ -385,18 +386,7 @@ This will add a GitHub comment such as:
 ## References
 
 - [Spacelift Documentation](https://docs.spacelift.io/)
-- [Design decision on how Spacelift will use external private modules](/layers/spacelift/design-decisions/decide-on-how-spacelift-will-use-external-private-modules)
-- [Design decision on Spacelift worker pool architecture](/layers/spacelift/design-decisions/decide-on-spacelift-worker-pool-architecture)
-- [Design decision on Spacelift administrative stack auto-deployment](/layers/spacelift/design-decisions/decide-on-spacelift-administrative-stack-auto-deployment)
-- [Implement Foundational Platform: Spacelift](/reference-architecture/setup/implement-foundational-platform-spacelift/)
-- [Implement Spacelift GitOps](/reference-architecture/setup/implement-spacelift-gitops/)
-- [How to sign up for Spacelift](/layers/spacelift)
-- [How to destroy a component using Atmos or Spacelift](/layers/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift)
-- [How to scale Spacelift runners](/layers/spacelift/tutorials/how-to-scale-spacelift-runners)
-- [How to use spacectl](/layers/spacelift/tutorials/how-to-use-spacectl)
-- [How to manage explicit component dependencies with Spacelift](/layers/spacelift/tutorials/how-to-manage-explicit-component-dependencies-with-spacelift)
-- [How to use multiple infrastructure repositories with Spacelift](/layers/spacelift/tutorials/how-to-use-multiple-infrastructure-repositories-with-spacelift)
-- [How to develop with Spacelift and Atmos](/layers/spacelift/tutorials/how-to-develop-with-spacelift-and-atmos)
-- [How to enable Spacelift drift detection](/layers/spacelift/tutorials/how-to-enable-spacelift-drift-detection)
 - [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform)
 - [Proposed Spacelift admin stack architecture](/resources/adrs/proposed/proposed-spacelift-admin-stack-architecture)
+<CategoryList path="/layers/spacelift/design-decisions/"/>
+<CategoryList path="/layers/spacelift/tutorials/"/>
