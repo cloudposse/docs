@@ -109,14 +109,14 @@ def fix_mdx_format(content):
         # Perform replacements only if not in a code block
         if not in_code_block:
             # Split the line by inline code blocks (single backticks)
-            parts = re.split(r'(`[^`]*`)', line)
+            parts = re.split(r"(`[^`]*`)", line)
             for i, part in enumerate(parts):
                 # Only perform replacements on parts that are not inline code blocks
-                if not part.startswith('`') and not part.endswith('`'):
+                if not part.startswith("`") and not part.endswith("`"):
                     for pattern, replacement in replacements.items():
                         part = re.sub(pattern, replacement, part)
                 parts[i] = part
-            line = ''.join(parts)
+            line = "".join(parts)
 
         result.append(line)
 

@@ -59,7 +59,7 @@ runs:
       with:
         path: |
           .build-harness
-          ./tmp
+          .cache
         key: ${{ github.workflow }}
 
     - name: "Initialize Build Harness"

@@ -2,9 +2,9 @@ import base64
 import logging
 import os
 import re
-
+import pickle
 from github import Github, GithubException
-
+from functools import lru_cache
 from utils import io
 
 GITHUB_ORG = "cloudposse"
@@ -15,15 +15,27 @@ GITHUB_ACTION_NAME_PATTERN = re.compile(
     "^github-action-.*"
 )  # convention is github-action-<NAME>
 
+CACHE_DIR = ".cache"
+CACHE_FILE = os.path.join(CACHE_DIR, "file_contents_cache.pkl")
+REPOS_CACHE_FILE = os.path.join(CACHE_DIR, "repos_cache.pkl")
+
 
 class GitHubProvider:
     def __init__(self, github_api_token):
         self.github = Github(github_api_token)
+        self.cache = self.load_cache(CACHE_FILE)
+        self.repos_cache = self.load_cache(REPOS_CACHE_FILE)
 
     def get_terraform_repos(self, includes_csv, excludes_csv):
-        return self.__get_repos(
+        key = (includes_csv, excludes_csv)
+        if key in self.repos_cache:
+            return self.repos_cache[key]
+        repos = self.__get_repos(
             includes_csv, excludes_csv, TERRAFORM_MODULE_NAME_PATTERN
         )
+        self.repos_cache[key] = repos
+        self.save_cache(REPOS_CACHE_FILE, self.repos_cache)
+        return repos
 
     def get_github_actions_repos(self, includes_csv, excludes_csv):
         return self.__get_repos(includes_csv, excludes_csv, GITHUB_ACTION_NAME_PATTERN)
@@ -75,12 +87,27 @@ class GitHubProvider:
 
         return result
 
-    def fetch_file(self, repo, remote_file, output_dir):
-        io.create_dirs(os.path.join(output_dir, os.path.dirname(remote_file)))
+    def get_file_content(self, repo, remote_file):
+        """
+        Fetches the content of a file from a GitHub repository AND cache the result
+        """
+        key = (repo.full_name, remote_file)
+        if key in self.cache:
+            return self.cache[key]
         content_encoded = repo.get_contents(
             remote_file, ref=repo.default_branch
         ).content
         content = base64.b64decode(content_encoded)
+        self.cache[key] = content
+        self.save_cache(CACHE_FILE, self.cache)
+        return content
+
+    def fetch_file(self, repo, remote_file, output_dir):
+        io.create_dirs(os.path.join(output_dir, os.path.dirname(remote_file)))
+
+        # fetch file content, supported by caching
+        content = self.get_file_content(repo, remote_file)
+
         output_file = os.path.join(output_dir, remote_file)
         io.save_to_file(output_file, content)
         logging.info(f"Fetched file: {remote_file}")
@@ -99,3 +126,14 @@ class GitHubProvider:
             return False
 
         return True
+
+    def load_cache(self, file_path):
+        if os.path.exists(file_path):
+            with open(file_path, "rb") as f:
+                return pickle.load(f)
+        return {}
+
+    def save_cache(self, file_path, cache):
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        with open(file_path, "wb") as f:
+            pickle.dump(cache, f)
