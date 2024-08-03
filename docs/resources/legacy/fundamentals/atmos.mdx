@@ -1,11 +1,7 @@
 ---
 title: "Atmos"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1186234624/Atmos
 sidebar_position: 110
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/fundamentals/tools/atmos.md
 ---
-
-# Atmos
 
 `atmos` is both a command-line tool and Golang module for provisioning, managing and orchestrating workflows across various toolchains including `terraform` and `helmfile`.
 
@@ -22,16 +18,16 @@ We defined a “universal” configuration format that works for all the tools w
 ## Alternatives
 There are a number of alternative tools to atmos, that accomplish some aspect of it.
 
-|**Tool** | **Description** | **Website**|
-| ----- | ----- | ----- |
-|terragrunt |  | [https://github.com/gruntwork-io/terragrunt](https://github.com/gruntwork-io/terragrunt)|
-|astro |  | [https://github.com/uber/astro](https://github.com/uber/astro)|
-|terraspace |  | [https://github.com/boltops-tools/terraspace](https://github.com/boltops-tools/terraspace)|
-|leverage | The Leverage CLI intended to orchestrate Leverage Reference Architecture for AWS | [https://github.com/binbashar/leverage](https://github.com/binbashar/leverage)|
-|opta | The next generation of Infrastructure-as-Code. Work with high-level constructs instead of getting lost in low-level cloud configuration | [https://github.com/run-x/opta](https://github.com/run-x/opta)[https://docs.opta.dev/](https://docs.opta.dev/)|
-|pterradactyl | Pterradactyl is a library developed to abstract Terraform configuration from the Terraform environment setup. | [https://github.com/nike-inc/pterradactyl](https://github.com/nike-inc/pterradactyl)|
-|terramate | Terramate is a tool for managing multiple terraform stacks | [https://github.com/mineiros-io/terramate](https://github.com/mineiros-io/terramate)|
-|`make` (honorable mention) | Many companies (including cloudposse) start by leveraging `make` with `Makefile` and targets to call terraform. This is a tried and true way, but at the scale we help our customer operate didn’t work. We know, because we tried it for ~3 years and suffocated under the weight of environment variables and stink of complexity only a mother could love. | [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)|
+| **Tool**                   | **Description**                                                                                                                                                                                                                                                                                                                                               | **Website**                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| terragrunt                 |                                                                                                                                                                                                                                                                                                                                                               | [https://github.com/gruntwork-io/terragrunt](https://github.com/gruntwork-io/terragrunt)                       |
+| astro                      |                                                                                                                                                                                                                                                                                                                                                               | [https://github.com/uber/astro](https://github.com/uber/astro)                                                 |
+| terraspace                 |                                                                                                                                                                                                                                                                                                                                                               | [https://github.com/boltops-tools/terraspace](https://github.com/boltops-tools/terraspace)                     |
+| leverage                   | The Leverage CLI intended to orchestrate Leverage Reference Architecture for AWS                                                                                                                                                                                                                                                                              | [https://github.com/binbashar/leverage](https://github.com/binbashar/leverage)                                 |
+| opta                       | The next generation of Infrastructure-as-Code. Work with high-level constructs instead of getting lost in low-level cloud configuration                                                                                                                                                                                                                       | [https://github.com/run-x/opta](https://github.com/run-x/opta)[https://docs.opta.dev/](https://docs.opta.dev/) |
+| pterradactyl               | Pterradactyl is a library developed to abstract Terraform configuration from the Terraform environment setup.                                                                                                                                                                                                                                                 | [https://github.com/nike-inc/pterradactyl](https://github.com/nike-inc/pterradactyl)                           |
+| terramate                  | Terramate is a tool for managing multiple terraform stacks                                                                                                                                                                                                                                                                                                    | [https://github.com/mineiros-io/terramate](https://github.com/mineiros-io/terramate)                           |
+| `make` (honorable mention) | Many companies (including cloudposse) start by leveraging `make` with `Makefile` and targets to call terraform. This is a tried and true way, but at the scale we help our customer operate didn’t work. We know, because we tried it for ~3 years and suffocated under the weight of environment variables and stink of complexity only a mother could love. | [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)                                       |
 
 What `atmos` is not:
 
@@ -376,20 +372,20 @@ It supports [POSIX-style Globs for file names/paths](https://en.wikipedia.org/wi
 
 Most YAML settings can be defined also as environment variables. This is helpful while doing local development. For example, setting `ATMOS_STACKS_BASE_PATH` to a path in `/localhost` to your local development folder, will enable you to rapidly iterate.
 
-|**Variable** | **YAML Path** | **Description**|
-| ----- | ----- | ----- |
-|`ATMOS_COMPONENTS_TERRAFORM_BASE_PATH` | `components.terraform.base_path` | |
-|`ATMOS_COMPONENTS_TERRAFORM_APPLY_AUTO_APPROVE` | `components.terraform.apply_auto_approve` | |
-|`ATMOS_COMPONENTS_TERRAFORM_DEPLOY_RUN_INIT` | `components.terraform.deploy_run_init` | |
-|`ATMOS_COMPONENTS_HELMFILE_BASE_PATH` | `components.helmfile.base_path` | |
-|`ATMOS_COMPONENTS_HELMFILE_KUBECONFIG_PATH` | `components.helmfile.aws_profile_pattern` | |
-|`ATMOS_COMPONENTS_HELMFILE_HELM_AWS_PROFILE_PATTERN` | `components.helmfile.helm_aws_profile_pattern` | |
-|`ATMOS_COMPONENTS_HELMFILE_CLUSTER_NAME_PATTERN` | `components.helmfile.cluster_name_pattern` | |
-|`ATMOS_STACKS_BASE_PATH` | `stacks.base_path` | |
-|`ATMOS_STACKS_INCLUDED_PATHS` | `stacks.included_paths` | |
-|`ATMOS_STACKS_EXCLUDED_PATHS` | `stacks.excluded_paths` | |
-|`ATMOS_STACKS_NAME_PATTERN` | `stacks.name_pattern` | |
-|`ATMOS_LOGS_VERBOSE` |  | For more verbose output,  set this environment variable to `true` to see the logs how the CLI finds the configs and performs merges.|
+| **Variable**                                         | **YAML Path**                                  | **Description**                                                                                                                      |
+| ---------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `ATMOS_COMPONENTS_TERRAFORM_BASE_PATH`               | `components.terraform.base_path`               |                                                                                                                                      |
+| `ATMOS_COMPONENTS_TERRAFORM_APPLY_AUTO_APPROVE`      | `components.terraform.apply_auto_approve`      |                                                                                                                                      |
+| `ATMOS_COMPONENTS_TERRAFORM_DEPLOY_RUN_INIT`         | `components.terraform.deploy_run_init`         |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_BASE_PATH`                | `components.helmfile.base_path`                |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_KUBECONFIG_PATH`          | `components.helmfile.aws_profile_pattern`      |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_HELM_AWS_PROFILE_PATTERN` | `components.helmfile.helm_aws_profile_pattern` |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_CLUSTER_NAME_PATTERN`     | `components.helmfile.cluster_name_pattern`     |                                                                                                                                      |
+| `ATMOS_STACKS_BASE_PATH`                             | `stacks.base_path`                             |                                                                                                                                      |
+| `ATMOS_STACKS_INCLUDED_PATHS`                        | `stacks.included_paths`                        |                                                                                                                                      |
+| `ATMOS_STACKS_EXCLUDED_PATHS`                        | `stacks.excluded_paths`                        |                                                                                                                                      |
+| `ATMOS_STACKS_NAME_PATTERN`                          | `stacks.name_pattern`                          |                                                                                                                                      |
+| `ATMOS_LOGS_VERBOSE`                                 |                                                | For more verbose output,  set this environment variable to `true` to see the logs how the CLI finds the configs and performs merges. |
 
 ### Example `atmos.yaml` Configuration File
 

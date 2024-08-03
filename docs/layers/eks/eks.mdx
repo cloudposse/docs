@@ -44,7 +44,6 @@ foundation, your application will be fully secure, scalable, and resilient.
 - [Decide on Kubernetes Ingress Controller(s)](/layers/eks/design-decisions/decide-on-kubernetes-ingress-controller-s)
 - [How to Load Test in AWS](/learn/maintenance/tutorials/how-to-load-test-in-aws)
 - [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date)
-- [How to Tune SpotInst Parameters for EKS](/resources/legacy/spotinst/how-to-tune-spotinst-parameters-for-eks)
 - [How to Upgrade EKS Cluster Addons](/learn/maintenance/upgrades/how-to-upgrade-eks-cluster-addons)
 - [How to Upgrade EKS](/learn/maintenance/upgrades/how-to-upgrade-eks)
 
@@ -72,7 +71,7 @@ ExternalSecret resources which reference the SecretStore to pull secrets from.
 5. Then output that name for future reference.
    [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L36)
 
-### How can we create Self Hosted Runners for GitHub with EKS?
+### How can we create Self-Hosted Runners for GitHub with EKS?
 
 Self-Hosted Runners are a great way to save cost and add customizations with GitHub Actions. Since we've already
 implemented EKS for our platform, we can build off that foundation to create another cluster to manage Self-Hosted

@@ -1,11 +1,8 @@
 ---
 title: "Helm"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1201504352/Helm
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/helm.md
 ---
 
-# Helm
 Helm makes it easy to install `charts` (an application) on kubernetes clusters. Just like `npm` or `apt` make it easy to install NodeJS modules and Debian packages, `helm` makes it easy to deploy a full-fledged application architecture with all of its dependencies on Kubernetes.
 
 It’s one of the original tools to deploy applications to Kubernetes and has the widest support amongst tools. One of the problem though is that something still needs to define the `values` you need to deploy a Helm release. That’s why there are other tools (e.g. terraform, helmfile, and argocd) required in order to integrate helm with your environment.

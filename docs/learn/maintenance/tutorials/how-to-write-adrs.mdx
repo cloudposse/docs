@@ -6,6 +6,7 @@ sidebar_position: 100
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
+import Note from '@site/src/components/Note';
 
 Architectural Design Records (ADRs) are how we capture the decision from our customers and record it in the customer's repository.
 
@@ -84,7 +85,9 @@ The source of truth for ADRs is primarily the corresponding [Design Decisions](/
 
 The sequential numbering system is to clearly depicts the order in which the ADRs were reached. Keep in mind that decisions can be reverted in subsequent ADRs.
 
-- **NOTE**: when many people are contributing ADRs at the same time, the indexes might end up conflicting.  See RFC below.
+<Note>
+  when many people are contributing ADRs at the same time, the indexes might end up conflicting.  See RFC below.
+</Note>
 
 ### Why don’t we use ticket numbers as the index?
 

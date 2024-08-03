@@ -7,12 +7,14 @@ tags:
   - contribute
   - developer
 ---
+import Intro from '@site/src/components/Intro';
 import Steps from '@site/src/components/Steps';
+import Note from '@site/src/components/Note';
 
-## About
 
-This document is intended to describe common and not-so-common processes that the contributor team executes as part of maintaining the 300+ open source projects within the Cloud Posse Organization.
-
+<Intro>
+  This document is intended to describe common and not-so-common processes that the contributor team executes as part of maintaining the 300+ open source projects within the Cloud Posse Organization.
+</Intro>
 
 ## Tips & Tricks
 
@@ -60,8 +62,9 @@ Here is a standard usage pattern that contributors can adopt to specific changes
       -- \
       sh -c $PWD/$YOUR_SCRIPT_NAME.sh
       ```
-
-      __NOTE__ the quotes around the message passing this as an argument to `-m` (message)
+      <Note>
+        the quotes around the message passing this as an argument to `-m` (message)
+      </Note>
   1. Verify one of the repos that you're updating exemplifies the changes you're trying to make:
     1. `cd mp/terraform-aws-tfstate-backend/plan/planned/`
     1. `git show`

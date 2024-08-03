@@ -1,6 +1,7 @@
 ---
 title: Spacelift FAQ
 sidebar_label: FAQ
+sidebar_position: 3
 ---
 import Note from '@site/src/components/Note';
 
@@ -69,7 +70,11 @@ Spacelift wants to earn your business and they only want happy customers. Work w
 
 - Only enterprise plans support self-hosted workers which are required in order to manage any infrastructure provisioned inside of VPCs (E.g. Databases, non-public EKS clusters, terraform provisioners, etc). Additionally, using EC2 Instance Profiles we’re able to grant the precise roles we want to give Spacelift without any hardcoded credentials.
 
-- Only enterprise plans support fixed costs. Cloud is metered billing, which means if we scale up our workers temporarily to flush out a large queue of plans, they will charge for the additional workers on a monthly rate. They do not have the ability to disable this and it happens automatically.  Several customers have accidentally encountered _Bill Shock_ as a result of this (we got it all sorted out for them in the end!)
+- Only enterprise plans support fixed costs. Cloud is metered billing, which means if we scale up our workers temporarily to flush out a large queue of plans, they will charge for the additional workers on a monthly rate. They do not have the ability to disable this and it happens automatically.
+  <Note>
+    Several customers have accidentally encountered _Bill Shock_ as a result of this! <br/>
+    (we got it all sorted out for them in the end)
+  </Note>
 
 <img src="/assets/refarch/cleanshot-2021-11-16-at-00.24.00@2x-20211116-062545.png" /><br/>
 

@@ -8,6 +8,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps'
 import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
+import Note from '@site/src/components/Note'
 
 ## Quick Start
 
@@ -19,7 +20,9 @@ import StepNumber from '@site/src/components/StepNumber'
 | 4. Deploy cluster into each stack   | `atmos workflow deploy/cluster -s plat-use1-dev -f eks`   |
 | 5. Deploy resources into each stack | `atmos workflow deploy/resources -s plat-use1-dev -f eks` |
 
-**Note**: Repeat steps 4 and 5 for each EKS stack, typically `plat-dev`, `plat-staging`, and `plat-prod`
+<Note>
+  Repeat steps 4 and 5 for each EKS stack, typically `plat-dev`, `plat-staging`, and `plat-prod`
+</Note>
 
 ## Requirements
 

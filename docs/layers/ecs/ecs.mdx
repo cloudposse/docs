@@ -94,6 +94,6 @@ map_secrets:
 
 ### How can we create Self Hosted Runners for GitHub with ECS?
 
-If we are not deploying EKS for our platform, it doesnt make much sense to configure EKS solely for self-hosted runners. Instead we deploy an EC2 Autoscaling Group in AWS and connect those instances to GitHub.
+If we are not deploying EKS for our platform, it doesn't make much sense to configure EKS solely for self-hosted runners. Instead, we deploy the [Philips Labs Action Runners](/layers/github-actions/philips-labs-github-runners) and connect those instances to GitHub.
 
-For more on GitHub Runners in an ASG, see [`github-runners`](/components/library/aws/github-runners/).
+For more on self-hosted GitHub Runners, see [`github-runners`](/layers/github-actions).

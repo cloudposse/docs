@@ -5,10 +5,12 @@ sidebar_label: Philips Labs Action Runners
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-If we are not deploying EKS, it's not worth the additional effort to set up Self-Hosted runners on EKS. Instead, we
-deploy Self-Hosted runners on EC2 instances. These are managed by an API Gateway and Lambda function that will
-automatically scale the number of runners based on the number of pending jobs in the queue. The queue is written to by
-the API Gateway from GitHub Events.
+<Intro>
+  If we are not deploying EKS, it's not worth the additional effort to set up Self-Hosted runners on EKS. Instead, we
+  deploy Self-Hosted runners on EC2 instances. These are managed by an API Gateway and Lambda function that will
+  automatically scale the number of runners based on the number of pending jobs in the queue. The queue is written to by
+  the API Gateway from GitHub Events.
+</Intro>
 
 ## Quick Start
 
