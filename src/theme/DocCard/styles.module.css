@@ -9,6 +9,14 @@
   transition-property: border, box-shadow;
 }
 
+.icon {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  line-height: 1.5rem;
+  vertical-align: middle;
+}
+
+
 .cardContainer:hover {
   border-color: var(--ifm-color-primary);
   box-shadow: 0 3px 6px 0 rgb(0 0 0 / 20%);

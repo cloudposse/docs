@@ -21,7 +21,7 @@ export default function HomeCallouts() {
         {
             title: 'Maintenance',
             subtitle: 'Stay up to date with the latest changes and updates',
-            urlText: 'Get Started With Our Tools',
+            urlText: 'Stay Up to Date',
             url: useBaseUrl('/learn/maintenance/'),
         },
         {
@@ -33,7 +33,7 @@ export default function HomeCallouts() {
         {
             title: 'Infrastructure as Code Library',
             subtitle: 'Reference all of our Terraform components, modules, and GitHub Actions',
-            urlText: 'Get Started',
+            urlText: 'Check it out',
             url: useBaseUrl('/reference/'),
         },
         {

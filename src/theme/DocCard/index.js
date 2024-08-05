@@ -11,6 +11,8 @@ import isInternalUrl from '@docusaurus/isInternalUrl';
 import {translate} from '@docusaurus/Translate';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+import { Icon } from '@iconify/react';
+const { Remarkable } = require('remarkable')
 
 function useCategoryItemsPlural() {
   const {selectMessage} = usePluralForm();
@@ -31,7 +33,6 @@ function useCategoryItemsPlural() {
 
 function CardContainer({href, children}) {
   return (
-
     <Link
       href={href}
       className={clsx('card padding--lg', styles.cardContainer)}>
@@ -41,20 +42,26 @@ function CardContainer({href, children}) {
 }
 
 function CardLayout({href, icon, title, description}) {
+  const md = new Remarkable();
+  // Override the paragraph rule to not wrap text in <p> tags
+  md.renderer.rules.paragraph_open = () => '';
+  md.renderer.rules.paragraph_close = () => '';
+
   return (
     <CardContainer href={href}>
       <Heading
         as="h2"
         className={clsx('text--truncate', styles.cardTitle)}
         title={title}>
-        {icon} {title}
+        <span className={clsx(styles.icon)}><Icon icon={icon} height="24" /></span>
+
+        <span dangerouslySetInnerHTML={{__html: md.render(title)}} />
       </Heading>
       {description && (
         <p
           className={clsx('text--truncate', styles.cardDescription)}
-          title={description}>
-          {description}
-        </p>
+          title={description}
+          dangerouslySetInnerHTML={{ __html: md.render(description) }}/>
       )}
     </CardContainer>
   );
@@ -98,8 +105,12 @@ function CardCategory({item}) {
 }
 
 function CardLink({item}) {
-  const icon = isInternalUrl(item.href) ? '📄️' : '🔗';
+  const globalData = useGlobalData();
+  const globalMetadata = globalData.metadata.default.aggregateMetadata;
+  const metadata = findPermalink(globalMetadata, item.href);
+  const icon = isInternalUrl(item.href) ? 'solar:document-line-duotone' : 'solar:link-bold-duotone';
   const doc = useDocById(item.docId ?? undefined);
+  console.log(metadata)
   return (
     <CardLayout
       href={item.href}
