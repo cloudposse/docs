@@ -385,7 +385,7 @@ layer/accounts:
   description: Accounts layer.
   label: layer/accounts
 
-layer/network-and-dns:
+layer/network:
   description: Network and DNS layer.
   label: layer/network
 
@@ -418,7 +418,7 @@ layer/security-and-compliance:
   label: layer/security-and-compliance
 
 layer/unassigned:
-  description: The unassigned Layer.
+  description: Components which are not yet included in any of the layers
   label: layer/unassigned
 
 ######################################################################
