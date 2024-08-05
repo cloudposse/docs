@@ -29,13 +29,15 @@ const DocItemContent = ({ children }) => {
   // Define the hasTopic function
   const hasTopic = (topic) => {
     const tags = metadata?.frontMatter?.tags || [];
-    return tags.includes(topic) || new RegExp(topic).test(href);
+    const class_name = metadata?.frontMatter?.sidebar_class_name || '';
+    return tags.includes(topic) || new RegExp(topic).test(class_name) || new RegExp(topic).test(href);
   };
 
   useEffect(() => {
     var icon;
     // Define a map of topics to icons
     const topicIcons = {
+      'deprecated': 'ph:warning-duotone',
       'terraform': 'devicon:terraform',
       'tutorial': 'arcticons:quicknovel',
       'design-decision': 'carbon:decision-node',
@@ -50,6 +52,7 @@ const DocItemContent = ({ children }) => {
       'makefile': 'vscode-icons:file-type-makefile',
       'markdown': 'skill-icons:markdown-dark',
       'tool': 'entypo:tools',
+      'legacy': 'ph:warning-duotone',
       'docker': 'skill-icons:docker',
       'datadog': 'vscode-icons:file-type-datadog',
       'data': 'solar:database-line-duotone',
@@ -80,7 +83,8 @@ const DocItemContent = ({ children }) => {
       'software-delivery': 'carbon:ai-governance-lifecycle',
       'gitops': 'clarity:deploy-line',
       'glossary': 'material-symbols-light:dictionary-outline',
-      'diagram': 'simple-icons:diagramsdotnet'
+      'diagram': 'simple-icons:diagramsdotnet',
+      '1password': 'mdi:1password'
     };
 
     if( metadata && metadata.frontMatter?.icon ) {
@@ -102,7 +106,7 @@ const DocItemContent = ({ children }) => {
         firstHeader.prepend(iconWrapper);
 
         const iconElement = (
-          <Icon icon={icon} height="200" className="icon" />
+          <Icon icon={icon} height="150" className="icon" />
         );
 
         // Render the icon using React into the created span
