@@ -55,12 +55,13 @@ runs:
         cache: 'pip'
 
     - name: Cache rendered content
+      if: ${{ !contains(github.event.*.labels.*.name, 'no-cache') }}
       uses: actions/cache@v4
       with:
         path: |
           .build-harness
           .cache
-        key: ${{ github.workflow }}
+        key: "build-website-cache" # Set same key to restore cache in all jobs
 
     - name: "Initialize Build Harness"
       shell: bash

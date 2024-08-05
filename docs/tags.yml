@@ -253,10 +253,6 @@ layer:
   description: Architecture Layer
   label: Layer
 
-layer/network-and-dns:
-  description: Network and DNS Layer
-  label: Network and DNS
-
 license:
   description: Licensing information.
   label: License
@@ -380,3 +376,575 @@ virtual-machine-image:
 yaml:
   description: YAML configuration language.
   label: YAML
+
+######################################################################
+# Layers
+######################################################################
+
+layer/accounts:
+  description: Accounts layer.
+  label: layer/accounts
+
+layer/network:
+  description: Network and DNS layer.
+  label: layer/network
+
+layer/data:
+  description: Data layer.
+  label: layer/data
+
+layer/datadog:
+  description: DataDog layer.
+  label: layer/datadog
+
+layer/monitoring:
+  description: Monitoring layer.
+  label: layer/monitoring
+
+layer/foundation:
+  description: The foundation Layer.
+  label: layer/foundation
+
+layer/software-delivery:
+  description: The software-delivery Layer.
+  label: layer/software-delivery
+
+layer/spacelift:
+  description: The spacelift Layer.
+  label: layer/spacelift
+
+layer/security-and-compliance:
+  description: The security-and-compliance Layer.
+  label: layer/security-and-compliance
+
+layer/unassigned:
+  description: Components which are not yet included in any of the layers
+  label: layer/unassigned
+
+######################################################################
+# Providers
+######################################################################
+
+provider/aws:
+  description: Amazon Web Services provider.
+  label: provider/aws
+
+provider/github:
+  description: GitHub provider.
+  label: provider/github
+
+provider/datadog:
+  description: Datadog provider.
+  label: provider/datadog
+
+######################################################################
+# Components
+######################################################################
+
+component/account:
+  description: AWS Account component.
+  label: component/account
+
+component/acm:
+  description: AWS Certificate Manager component.
+  label: component/acm
+
+component/aurora-mysql:
+  description: AWS Aurora MySQL component.
+  label: component/aurora-mysql
+
+component/aws-ssosync:
+  description: The aws-ssosync Component.
+  label: component/aws-ssosync
+
+component/github-oidc-role:
+  description: The github-oidc-role Component.
+  label: component/github-oidc-role
+
+component/aws-teams:
+  description: The aws-teams Component.
+  label: component/aws-teams
+
+component/api-gateway-account-settings:
+  description: The api-gateway-account-settings Component.
+  label: component/api-gateway-account-settings
+
+component/sso-saml-provider:
+  description: The sso-saml-provider Component.
+  label: component/sso-saml-provider
+
+component/datadog-synthetics-private-location:
+  description: The datadog-synthetics-private-location Component.
+  label: component/datadog-synthetics-private-location
+
+component/strongdm:
+  description: The strongdm Component.
+  label: component/strongdm
+
+component/account-map:
+  description: The account-map Component.
+  label: component/account-map
+
+component/account-quotas:
+  description: The account-quotas Component.
+  label: component/account-quotas
+
+component/account-settings:
+  description: The account-settings Component.
+  label: component/account-settings
+
+component/amplify:
+  description: The amplify Component.
+  label: component/amplify
+
+component/argocd-repo:
+  description: The argocd-repo Component.
+  label: component/argocd-repo
+
+component/athena:
+  description: The athena Component.
+  label: component/athena
+
+component/aurora-mysql-resources:
+  description: The aurora-mysql-resources Component.
+  label: component/aurora-mysql-resources
+
+component/aurora-postgres:
+  description: The aurora-postgres Component.
+  label: component/aurora-postgres
+
+component/aurora-postgres-resources:
+  description: The aurora-postgres-resources Component.
+  label: component/aurora-postgres-resources
+
+component/aws-backup:
+  description: The aws-backup Component.
+  label: component/aws-backup
+
+component/aws-config:
+  description: The aws-config Component.
+  label: component/aws-config
+
+component/aws-inspector:
+  description: The aws-inspector Component.
+  label: component/aws-inspector
+
+component/aws-inspector2:
+  description: The aws-inspector2 Component.
+  label: component/aws-inspector2
+
+component/aws-saml:
+  description: The aws-saml Component.
+  label: component/aws-saml
+
+component/aws-shield:
+  description: The aws-shield Component.
+  label: component/aws-shield
+
+component/aws-sso:
+  description: The aws-sso Component.
+  label: component/aws-sso
+
+component/aws-team-roles:
+  description: The aws-team-roles Component.
+  label: component/aws-team-roles
+
+component/bastion:
+  description: The bastion Component.
+  label: component/bastion
+
+component/cloudtrail:
+  description: The cloudtrail Component.
+  label: component/cloudtrail
+
+component/cloudtrail-bucket:
+  description: The cloudtrail-bucket Component.
+  label: component/cloudtrail-bucket
+
+component/cloudwatch-logs:
+  description: The cloudwatch-logs Component.
+  label: component/cloudwatch-logs
+
+component/cognito:
+  description: The cognito Component.
+  label: component/cognito
+
+component/config-bucket:
+  description: The config-bucket Component.
+  label: component/config-bucket
+
+component/datadog-configuration:
+  description: The datadog-configuration Component.
+  label: component/datadog-configuration
+
+component/datadog-integration:
+  description: The datadog-integration Component.
+  label: component/datadog-integration
+
+component/datadog-lambda-forwarder:
+  description: The datadog-lambda-forwarder Component.
+  label: component/datadog-lambda-forwarder
+
+component/datadog-logs-archive:
+  description: The datadog-logs-archive Component.
+  label: component/datadog-logs-archive
+
+component/datadog-monitor:
+  description: The datadog-monitor Component.
+  label: component/datadog-monitor
+
+component/datadog-private-location-ecs:
+  description: The datadog-private-location-ecs Component.
+  label: component/datadog-private-location-ecs
+
+component/datadog-synthetics:
+  description: The datadog-synthetics Component.
+  label: component/datadog-synthetics
+
+component/dns-delegated:
+  description: The dns-delegated Component.
+  label: component/dns-delegated
+
+component/dns-primary:
+  description: The dns-primary Component.
+  label: component/dns-primary
+
+component/documentdb:
+  description: The documentdb Component.
+  label: component/documentdb
+
+component/dynamodb:
+  description: The dynamodb Component.
+  label: component/dynamodb
+
+component/ecr:
+  description: The ecr Component.
+  label: component/ecr
+
+component/ec2-client-vpn:
+  description: The ec2-client-vpn Component.
+  label: component/ec2-client-vpn
+
+component/ec2-instance:
+  description: The ec2-instance Component.
+  label: component/ec2-instance
+
+component/ecs:
+  description: The ecs Component.
+  label: component/ecs
+
+component/ecs-service:
+  description: The ecs-service Component.
+  label: component/ecs-service
+
+component/efs:
+  description: The efs Component.
+  label: component/efs
+
+component/elasticache-redis:
+  description: The elasticache-redis Component.
+  label: component/elasticache-redis
+
+component/elasticsearch:
+  description: The elasticsearch Component.
+  label: component/elasticsearch
+
+component/eventbridge:
+  description: The eventbridge Component.
+  label: component/eventbridge
+
+component/github-action-token-rotator:
+  description: The github-action-token-rotator Component.
+  label: component/github-action-token-rotator
+
+component/github-oidc-provider:
+  description: The github-oidc-provider Component.
+  label: component/github-oidc-provider
+
+component/github-runners:
+  description: The github-runners Component.
+  label: component/github-runners
+
+component/github-webhook:
+  description: The github-webhook Component.
+  label: component/github-webhook
+
+component/global-accelerator:
+  description: The global-accelerator Component.
+  label: component/global-accelerator
+
+component/global-accelerator-endpoint-group:
+  description: The global-accelerator-endpoint-group Component.
+  label: component/global-accelerator-endpoint-group
+
+component/guardduty:
+  description: The guardduty Component.
+  label: component/guardduty
+
+component/iam-role:
+  description: The iam-role Component.
+  label: component/iam-role
+
+component/iam-service-linked-roles:
+  description: The iam-service-linked-roles Component.
+  label: component/iam-service-linked-roles
+
+component/ipam:
+  description: The ipam Component.
+  label: component/ipam
+
+component/kms:
+  description: The kms Component.
+  label: component/kms
+
+component/kinesis-stream:
+  description: The kinesis-stream Component.
+  label: component/kinesis-stream
+
+component/lakeformation:
+  description: The lakeformation Component.
+  label: component/lakeformation
+
+component/macie:
+  description: The macie Component.
+  label: component/macie
+
+component/mq-broker:
+  description: The mq-broker Component.
+  label: component/mq-broker
+
+component/msk:
+  description: The msk Component.
+  label: component/msk
+
+component/mwaa:
+  description: The mwaa Component.
+  label: component/mwaa
+
+component/network-firewall:
+  description: The network-firewall Component.
+  label: component/network-firewall
+
+component/opsgenie-team:
+  description: The opsgenie-team Component.
+  label: component/opsgenie-team
+
+component/philips-labs-github-runners:
+  description: The philips-labs-github-runners Component.
+  label: component/philips-labs-github-runners
+
+component/rds:
+  description: The rds Component.
+  label: component/rds
+
+component/redshift:
+  description: The redshift Component.
+  label: component/redshift
+
+component/dms/iam:
+  description: The dms/iam Component.
+  label: component/dms/iam
+
+component/dms/replication-instance:
+  description: The dms/replication-instance Component.
+  label: component/dms/replication-instance
+
+component/dms/endpoint:
+  description: The dms/endpoint Component.
+  label: component/dms/endpoint
+
+component/dms/replication-task:
+  description: The dms/replication-task Component.
+  label: component/dms/replication-task
+
+component/eks/alb-controller:
+  description: The eks/alb-controller Component.
+  label: component/eks/alb-controller
+
+component/eks/actions-runner-controller:
+  description: The eks/actions-runner-controller Component.
+  label: component/eks/actions-runner-controller
+
+component/eks/alb-controller-ingress-class:
+  description: The eks/alb-controller-ingress-class Component.
+  label: component/eks/alb-controller-ingress-class
+
+component/eks/alb-controller-ingress-group:
+  description: The eks/alb-controller-ingress-group Component.
+  label: component/eks/alb-controller-ingress-group
+
+component/eks/argocd:
+  description: The eks/argocd Component.
+  label: component/eks/argocd
+
+component/eks/cert-manager:
+  description: The eks/cert-manager Component.
+  label: component/eks/cert-manager
+
+component/eks/aws-node-termination-handler:
+  description: The eks/aws-node-termination-handler Component.
+  label: component/eks/aws-node-termination-handler
+
+component/eks/cluster:
+  description: The eks/cluster Component.
+  label: component/eks/cluster
+
+component/eks/datadog-agent:
+  description: The eks/datadog-agent Component.
+  label: component/eks/datadog-agent
+
+component/eks/echo-server:
+  description: The eks/echo-server Component.
+  label: component/eks/echo-server
+
+component/eks/external-secrets-operator:
+  description: The eks/external-secrets-operator Component.
+  label: component/eks/external-secrets-operator
+
+component/eks/external-dns:
+  description: The eks/external-dns Component.
+  label: component/eks/external-dns
+
+component/eks/github-actions-runner:
+  description: The eks/github-actions-runner Component.
+  label: component/eks/github-actions-runner
+
+component/eks/idp-roles:
+  description: The eks/idp-roles Component.
+  label: component/eks/idp-roles
+
+component/eks/karpenter:
+  description: The eks/karpenter Component.
+  label: component/eks/karpenter
+
+component/eks/keda:
+  description: The eks/keda Component.
+  label: component/eks/keda
+
+component/eks/karpenter-node-pool:
+  description: The eks/karpenter-node-pool Component.
+  label: component/eks/karpenter-node-pool
+
+component/eks/loki:
+  description: The eks/loki Component.
+  label: component/eks/loki
+
+component/eks/metrics-server:
+  description: The eks/metrics-server Component.
+  label: component/eks/metrics-server
+
+component/eks/prometheus-scraper:
+  description: The eks/prometheus-scraper Component.
+  label: component/eks/prometheus-scraper
+
+component/eks/redis:
+  description: The eks/redis Component.
+  label: component/eks/redis
+
+component/eks/promtail:
+  description: The eks/promtail Component.
+  label: component/eks/promtail
+
+component/eks/redis-operator:
+  description: The eks/redis-operator Component.
+  label: component/eks/redis-operator
+
+component/eks/reloader:
+  description: The eks/reloader Component.
+  label: component/eks/reloader
+
+component/eks/storage-class:
+  description: The eks/storage-class Component.
+  label: component/eks/storage-class
+
+component/glue/catalog-database:
+  description: The glue/catalog-database Component.
+  label: component/glue/catalog-database
+
+component/glue/catalog-table:
+  description: The glue/catalog-table Component.
+  label: component/glue/catalog-table
+
+component/glue/connection:
+  description: The glue/connection Component.
+  label: component/glue/connection
+
+component/glue/crawler:
+  description: The glue/crawler Component.
+  label: component/glue/crawler
+
+component/glue/job:
+  description: The glue/job Component.
+  label: component/glue/job
+
+component/glue/iam:
+  description: The glue/iam Component.
+  label: component/glue/iam
+
+component/glue/registry:
+  description: The glue/registry Component.
+  label: component/glue/registry
+
+component/glue/schema:
+  description: The glue/schema Component.
+  label: component/glue/schema
+
+component/glue/trigger:
+  description: The glue/trigger Component.
+  label: component/glue/trigger
+
+component/glue/workflow:
+  description: The glue/workflow Component.
+  label: component/glue/workflow
+
+component/managed-grafana/api-key:
+  description: The managed-grafana/api-key Component.
+  label: component/managed-grafana/api-key
+
+component/managed-grafana/dashboard:
+  description: The managed-grafana/dashboard Component.
+  label: component/managed-grafana/dashboard
+
+component/managed-grafana/workspace:
+  description: The managed-grafana/workspace Component.
+  label: component/managed-grafana/workspace
+
+component/managed-prometheus/workspace:
+  description: The managed-prometheus/workspace Component.
+  label: component/managed-prometheus/workspace
+
+component/spacelift/admin-stack:
+  description: The spacelift/admin-stack Component.
+  label: component/spacelift/admin-stack
+
+component/spacelift/spaces:
+  description: The spacelift/spaces Component.
+  label: component/spacelift/spaces
+
+component/spacelift/worker-pool:
+  description: The spacelift/worker-pool Component.
+  label: component/spacelift/worker-pool
+
+component/tgw/cross-region-hub-connector:
+  description: The tgw/cross-region-hub-connector Component.
+  label: component/tgw/cross-region-hub-connector
+
+component/tgw/hub:
+  description: The tgw/hub Component.
+  label: component/tgw/hub
+
+component/tgw/spoke:
+  description: The tgw/spoke Component.
+  label: component/tgw/spoke
+
+component/datadog_keys:
+  description: The datadog_keys Component.
+  label: component/datadog_keys
+
+component/managed-grafana/data-source/loki:
+  description: The managed-grafana/data-source/loki Component.
+  label: component/managed-grafana/data-source/loki
+
+component/managed-grafana/data-source/managed-prometheus:
+  description: The managed-grafana/data-source/managed-prometheus Component.
+  label: component/managed-grafana/data-source/managed-prometheus

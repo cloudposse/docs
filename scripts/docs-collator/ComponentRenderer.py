@@ -53,8 +53,15 @@ class ComponentRenderer:
             module_path, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
 
-        # Static replacement and corrections for docusaurus
         content = io.read_file_to_string(file)
+
+        # Previously we set tags to this short list.
+        # However now we instead use the tags from the given component's frontmatter
+        # tags = ["terraform", "aws", component]
+        content, frontmatter = rendering.strip_frontmatter(content)
+        tags = rendering.get_tags_from_frontmatter(frontmatter)
+
+        # Static replacement and corrections for docusaurus
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
         content = rendering.remove_logo_from_the_bottom(content)
@@ -101,8 +108,6 @@ class ComponentRenderer:
             result_file = os.path.join(os.path.dirname(result_file), f"{name}.mdx")
 
         io.create_dirs(os.path.dirname(result_file))
-
-        tags = ["terraform", "aws", component]
 
         doc_content = DOC_TEMPLATE.render(
             label=label,

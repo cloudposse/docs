@@ -4,68 +4,9 @@ content: |-
 
   {{ .Header }}
 
-  ## Terraform
+  ## Variables
 
-  {{ if ne (len .Module.Requirements) 0 -}}
-  ### Version Requirements
-  {{ range .Module.Providers }}
-  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
-  {{- end }}
-  {{- end }}
-
-  {{ if ne (len .Module.Providers) 0 -}}
-  ### Providers
-  {{ range .Module.Providers }}
-  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
-  {{- end }}
-  {{- end }}
-
-  {{ if ne (len .Module.ModuleCalls) 0 -}}
-  ### Modules
-
-  Name | Version | Source | Description
-  --- | --- | --- | ---
-  {{ range .Module.ModuleCalls }}
-  {{- $baseUrl := "https://registry.terraform.io/modules" -}}
-  {{ if contains "//" .Source -}}
-    {{- $moduleParts := regexSplit "//" .Source 2 -}}
-    {{- $moduleName := first $moduleParts -}}
-    {{- $submodulePath := last $moduleParts -}}
-    `{{ .Name }}` | {{ .Version | default "latest" }} | {{ printf "[`%s`](%s/%s/%s/%s)" .Source $baseUrl $moduleName $submodulePath .Version }} | {{ tostring .Description | default "n/a" }}
-  {{ else -}}
-    `{{ .Name }}` | {{ .Version | default "latest" }} | {{ printf "[`%s`](%s/%s/%s)" .Source $baseUrl .Source .Version }} | {{ tostring .Description | default "n/a" }}
-  {{ end }}
-  {{- end -}}
-  {{- end -}}
-
-  {{- if ne (len .Module.Resources) 0 }}
-
-  ### Resources
-
-  The following resources are used by this module:
-  {{ range .Module.Resources }}
-    {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
-    {{- if $isResource }}
-    {{- $fullspec := ternary .URL (printf "[`%s`](%s)" .Spec .URL) .Spec }}
-    - {{ $fullspec }} {{ printf "(%s)" .GetMode -}}
-    {{- end }}
-  {{- end }}
-  {{- end }}
-
-  {{ if ne (len .Module.Resources) 0 -}}
-  ### Data Sources
-
-  The following data sources are used by this module:
-  {{ range .Module.Resources }}
-    {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
-    {{- if $isDataResource }}
-    {{- $fullspec := ternary .URL (printf "[`%s`](%s)" .Spec .URL) .Spec }}
-    - {{ $fullspec }} {{ printf "(%s)" .GetMode -}}
-    {{- end }}
-  {{- end }}
-  {{- end }}
-
-  ### Required Inputs
+  ### Required Variables
 
   <dl>
   {{- range .Module.Inputs }}
@@ -95,7 +36,7 @@ content: |-
 
   {{ if $optional -}}
 
-  ### Optional Inputs
+  ### Optional Variables
 
   <dl>
   {{- range .Module.Inputs }}
@@ -167,7 +108,7 @@ content: |-
   </details>
 
   {{ if ne (len .Module.Outputs) 0 -}}
-  ### Outputs
+  ## Outputs
 
   <dl>
   {{- range .Module.Outputs }}
@@ -180,6 +121,65 @@ content: |-
     </dd>
   {{- end }}
   </dl>
+  {{- end }}
+
+  ## Dependencies
+
+  {{ if ne (len .Module.Requirements) 0 -}}
+  ### Requirements
+  {{ range .Module.Requirements }}
+  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
+  {{- end }}
+  {{- end }}
+
+  {{ if ne (len .Module.Providers) 0 -}}
+  ### Providers
+  {{ range .Module.Providers }}
+  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
+  {{- end }}
+  {{- end }}
+
+  {{ if ne (len .Module.ModuleCalls) 0 -}}
+  ### Modules
+
+  Name | Version | Source | Description
+  --- | --- | --- | ---
+  {{ range .Module.ModuleCalls }}
+  {{- $baseUrl := "https://registry.terraform.io/modules" -}}
+  {{ if contains "//" .Source -}}
+    {{- $moduleParts := regexSplit "//" .Source 2 -}}
+    {{- $moduleName := first $moduleParts -}}
+    {{- $submodulePath := last $moduleParts -}}
+    `{{ .Name }}` | {{ .Version | default "latest" }} | {{ printf "[`%s`](%s/%s/%s/%s)" .Source $baseUrl $moduleName $submodulePath .Version }} | {{ tostring .Description | default "n/a" }}
+  {{ else -}}
+    `{{ .Name }}` | {{ .Version | default "latest" }} | {{ printf "[`%s`](%s/%s/%s)" .Source $baseUrl .Source .Version }} | {{ tostring .Description | default "n/a" }}
+  {{ end }}
+  {{- end -}}
+  {{- end -}}
+
+  {{- if ne (len .Module.Resources) 0 }}
+
+  ## Resources
+
+  The following resources are used by this module:
+  {{ range .Module.Resources }}
+    {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
+    {{- if $isResource }}
+    {{- $fullspec := ternary .URL (printf "[`%s`](%s)" .Spec .URL) .Spec }}
+    - {{ $fullspec }} {{ printf "(%s)" .GetMode -}}
+    {{- end }}
+  {{- end }}
+
+  ## Data Sources
+
+  The following data sources are used by this module:
+  {{ range .Module.Resources }}
+    {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
+    {{- if $isDataResource }}
+    {{- $fullspec := ternary .URL (printf "[`%s`](%s)" .Spec .URL) .Spec }}
+    - {{ $fullspec }} {{ printf "(%s)" .GetMode -}}
+    {{- end }}
+  {{- end }}
   {{- end }}
 
 formatter: "markdown document" # this is required
