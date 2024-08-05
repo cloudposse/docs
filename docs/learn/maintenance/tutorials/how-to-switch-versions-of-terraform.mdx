@@ -5,6 +5,7 @@ sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
 
 ## Problem
 
@@ -48,7 +49,9 @@ components:
 
 This would then set the spacelift version and local atmos version to use a specific terraform Major.Minor version for that component.
 
-**Note** the `major.minor.patch` versions are defined (and installed) in the Dockerfile of the Project.
+<Note>
+  the `major.minor.patch` versions are defined (and installed) in the Dockerfile of the Project.
+</Note>
 
 :::caution
 Spacelift installs the version of terraform specified in `terraform_version` and does not use the package distributed in the container.  The `terraform_version` must be defined in the `spacelift/default.auto.tfvars` file.

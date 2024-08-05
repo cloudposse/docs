@@ -1,6 +1,6 @@
 ---
 title: "Decide on Argo CD Architecture"
-sidebar_label: "Decide on Argo CD Architecture"
+sidebar_label: "Argo CD Architecture"
 sidebar_position: 100
 refarch_id: REFARCH-420
 description: Considerations for deploying Argo CD
@@ -167,10 +167,10 @@ The scopes outlined in [the provider documentation](https://github.com/integrati
 
 The PAT needs to have the following permissions:
 
-|**Scope(s)** | **Purpose**|
-| ----- | ----- |
-|- repo | Create repository; Manage repository’s settings; Modify repository’s contents|
-|- read:org<br/><br/><br/>- read:discussion | Used to validate teams when setting up branch protections and team access|
+| **Scope(s)**                               | **Purpose**                                                                   |
+| ------------------------------------------ | ----------------------------------------------------------------------------- |
+| - repo                                     | Create repository; Manage repository’s settings; Modify repository’s contents |
+| - read:org<br/><br/><br/>- read:discussion | Used to validate teams when setting up branch protections and team access     |
 
 Once generated, the PAT should be stored in an SSM parameter (by default at `/argo cd/github/api_key`) where it will be retrieved and passed to the [integrations/github](https://registry.terraform.io/providers/integrations/github/latest) Terraform provider.
 
@@ -198,21 +198,21 @@ Argo CD will only deploy from the `main` branch.
 
 Here’s an example layout
 
-|       |       |       |       |
-| ----- | ----- | ----- | ----- |
-|**Repository** | **Cluster**<br/>**(region & stage)** | **Kubernetes Namespace** | **Kubernetes Manifests**|
-|`acme/argo cd-deploy-prd/` | `uw2-prd/*` | `argo cd/` | |
-| |  | `prd/` | `bazle-demo-frontend.yaml`<br/>`bazle-demo-api.yaml`<br/>`bazle-demo-db.yaml` <br/>(output from helmfile template)|
-| | `uw2-tools/*` | `argo cd/` | |
-| |  | `github-action-runners/` | |
-| | `uw2-auto/*` |  | |
-|`acme/argo cd-deploy-non-prd/` | `uw2-stg/*` | `argo cd/` | |
-| |  | `stg/` | `bazle-demo-frontend.yaml`<br/>`bazle-demo-api.yaml`<br/>`bazle-demo-db.yaml` <br/>(output from helmfile template)|
-| |  | `uat/` | |
-| | `uw2-dev/*` |  | |
-| | `uw2-sbx/*` |  | |
-|`acme/argo cd-deploy-preview/` | `uw2-dev/*` |  | |
-| |  | `pr2-example-app/` | `example.yaml`|
+|                                |                                      |                          |                                                                                                                    |
+| ------------------------------ | ------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| **Repository**                 | **Cluster**<br/>**(region & stage)** | **Kubernetes Namespace** | **Kubernetes Manifests**                                                                                           |
+| `acme/argo cd-deploy-prd/`     | `uw2-prd/*`                          | `argo cd/`               |                                                                                                                    |
+|                                |                                      | `prd/`                   | `bazle-demo-frontend.yaml`<br/>`bazle-demo-api.yaml`<br/>`bazle-demo-db.yaml` <br/>(output from helmfile template) |
+|                                | `uw2-tools/*`                        | `argo cd/`               |                                                                                                                    |
+|                                |                                      | `github-action-runners/` |                                                                                                                    |
+|                                | `uw2-auto/*`                         |                          |                                                                                                                    |
+| `acme/argo cd-deploy-non-prd/` | `uw2-stg/*`                          | `argo cd/`               |                                                                                                                    |
+|                                |                                      | `stg/`                   | `bazle-demo-frontend.yaml`<br/>`bazle-demo-api.yaml`<br/>`bazle-demo-db.yaml` <br/>(output from helmfile template) |
+|                                |                                      | `uat/`                   |                                                                                                                    |
+|                                | `uw2-dev/*`                          |                          |                                                                                                                    |
+|                                | `uw2-sbx/*`                          |                          |                                                                                                                    |
+| `acme/argo cd-deploy-preview/` | `uw2-dev/*`                          |                          |                                                                                                                    |
+|                                |                                      | `pr2-example-app/`       | `example.yaml`                                                                                                     |
 
 ### Setup Branch Protections
 
@@ -525,7 +525,7 @@ spec:
       operator: "ne"
       value: "Unsynced"
       Events:
-      - message: "Condition Triggered : Deployment = {{.metadata.name}} replicaset doesnt match. Required Replicas = {{.status.replicas}}, Current Replicas={{.status.readyReplicas}}"
+      - message: "Condition Triggered : Deployment = {{.metadata.name}} replicaset does not match. Required Replicas = {{.status.replicas}}, Current Replicas={{.status.readyReplicas}}"
         emailSubject: "Argo Notification Condition Triggered {{.metadata.name}}"
         notificationLevel: "warning"
         notifierNames:

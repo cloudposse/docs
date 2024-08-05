@@ -8,6 +8,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps'
 import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
+import Note from '@site/src/components/Note'
 
 ## Quick Start
 
@@ -19,13 +20,14 @@ import StepNumber from '@site/src/components/StepNumber'
 | 4. Deploy cluster into each stack   | `atmos workflow deploy/cluster -s plat-use1-dev -f eks`   |
 | 5. Deploy resources into each stack | `atmos workflow deploy/resources -s plat-use1-dev -f eks` |
 
-**Note**: Repeat steps 4 and 5 for each EKS stack, typically `plat-dev`, `plat-staging`, and `plat-prod`
+<Note>
+  Repeat steps 4 and 5 for each EKS stack, typically `plat-dev`, `plat-staging`, and `plat-prod`
+</Note>
 
 ## Requirements
 
 In order to deploy EKS, Networking must be fully deployed and functional. In particular, the user deploying the cluster
-must have a working VPN connection to the targeted account. See
-[the network documentation](https://docs.cloudposse.com/reference-architecture/setup/network/) for details.
+must have a working VPN connection to the targeted account. See [the network documentation](/layers/network) for details.
 
 All deployment steps below assume that the environment has been successfully set up with the following steps.
 
@@ -143,5 +145,5 @@ All deployment steps below assume that the environment has been successfully set
 
 # Related Topics
 
-- [Confluence EKS Documentation](https://docs.cloudposse.com/components/category/eks/)
+- [EKS Documentation](/components/category/eks/)
 - [Karpenter Documentation](https://karpenter.sh/)

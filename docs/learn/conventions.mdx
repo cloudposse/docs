@@ -1,7 +1,7 @@
 ---
 title: "Conventions"
 sidebar_label: "Conventions"
-sidebar_position: 3
+sidebar_position: 4
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -271,17 +271,17 @@ Here’s video from our [https://cloudposse.atlassian.net/wiki/spaces/CP/pages/1
 
 There are 6 inputs considered "labels" or "ID elements" (because the labels are used to construct the ID):
 
-1. `namespace`
+  1. `namespace`
 
-2. `tenant`
+  2. `tenant`
 
-3. `environment`
+  3. `environment`
 
-4. `stage`
+  4. `stage`
 
-5. `name`
+  5. `name`
 
-6. `attributes`
+  6. `attributes`
 
 This module generates IDs using the following convention by default: `{namespace}-{environment}-{stage}-{name}-{attributes}`. However, it is highly configurable. The delimiter (e.g. `-`) is configurable. Each label item is optional (although you must provide at least one).
 
@@ -322,7 +322,7 @@ For proprietary apps deployed by your organization, we recommend taking a differ
 
 **What if we need some backing services?** Good question. You can still use the features of umbrella charts, and even feature flag common things like deploying a database backend for development environments by using a `condition` in the `requirements.yaml` that can be toggled in the `values.yaml`. _Pro-tip:_ Use [https://artifacthub.io/](https://artifacthub.io/) to find ready-made charts you can use.
 
-```
+```yaml
 - name: elasticsearch
   version: ^1.17.0
   repository: https://kubernetes-charts.storage.googleapis.com/

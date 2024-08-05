@@ -3,6 +3,10 @@ title: "Decide on How to Restrict Access to Metrics and Logs in Datadog"
 sidebar_label: "ACLs for Metrics and Logs"
 sidebar_position: 100
 refarch_id: REFARCH-294
+description: Decide on ACLs for logs and metrics
+tags:
+- datadog
+- design-decision
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -33,8 +37,8 @@ By default, Datadog offers three roles,
 
 You can create [custom roles](https://docs.datadoghq.com/account_management/rbac/?tab=datadogapplication#custom-roles) to define a better mapping between your users and their permissions.
 
-:::info
-**NOTE**
+:::note
+
 If you use a SAML identity provider, you can integrate it with Datadog for authentication, and you can map identity attributes to Datadog default and custom roles. For more information, see [Single Sign On With SAML](https://docs.datadoghq.com/account_management/saml/).
 
 :::

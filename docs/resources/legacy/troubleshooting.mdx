@@ -1,8 +1,6 @@
 ---
 title: "Troubleshooting"
-confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1176076862/Troubleshooting
 sidebar_position: 100
-custom_edit_url: https://github.com/cloudposse/refarch-scaffold/tree/main/docs/docs/reference/troubleshooting.md
 ---
 
 # Troubleshooting
@@ -13,10 +11,10 @@ Here are some common errors and fixes.
 
 ### Error: `Could not retrieve the list of available versions for provider`
 
-If you get an error like this one, it’s usually because of the `.terraform.lock.hcl` file. 
+If you get an error like this one, it’s usually because of the `.terraform.lock.hcl` file.
 
 :::tip
-Either run `terraform init -upgrade` to upgrade pinning for all providers or simply run `rm -f .terraform.lock.hcl` to have the file rereated on next run of `terraform init`. 
+Either run `terraform init -upgrade` to upgrade pinning for all providers or simply run `rm -f .terraform.lock.hcl` to have the file rereated on next run of `terraform init`.
 
 :::
 
@@ -35,7 +33,7 @@ Error: 1 error occurred:
 ### Error: `ResourceNotFoundException: Requested resource not found`
 
 :::tip
-This usually happens when the `role_arn: null` still exists in the stack and/or `backend.tf.json` files from the cold start. 
+This usually happens when the `role_arn: null` still exists in the stack and/or `backend.tf.json` files from the cold start.
 
 :::
 
@@ -45,7 +43,7 @@ _If using the_ `aws-sso` _component, then:_
 
 2. replace `"role_arn": null,` with `"profile": "<namespace>-gbl-root-terraform",` in the `backend.tf.json`
 
-_If not using the_ `aws-sso` _component:_ 
+_If not using the_ `aws-sso` _component:_
 
 1. replace `"role_arn": null` with the full role arn of `<namespace>-gbl-root-terraform` in the `backend.tf.json`
 
@@ -54,7 +52,7 @@ _If not using the_ `aws-sso` _component:_
 
 :::
 
-### Error: `The security token included in the request is invalid` 
+### Error: `The security token included in the request is invalid`
 
 :::tip
 If using **Leapp during the cold-start process**, first try settings the environment variables in the shell (e.g. AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) instead of using config file with session token.
@@ -69,7 +67,7 @@ If you see this error during the **cold-start** process. This usually means one 
 
 3. The session token that **Leapp** generates for the AWS config file does not play well with Terraform
 
-Make sure that the **Leapp** credentials are not a problem by using the environment variables (e.g. AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY). If that doesn’t work, **org_role_arn** (returned by account-map.modules.iam-roles) should empty for the **root** account or populated with the **OrganinizationAccountAccessRole** ARN when targeting a **non-root** account. 
+Make sure that the **Leapp** credentials are not a problem by using the environment variables (e.g. AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY). If that doesn’t work, **org_role_arn** (returned by account-map.modules.iam-roles) should empty for the **root** account or populated with the **OrganinizationAccountAccessRole** ARN when targeting a **non-root** account.
 
 ## Kubernetes
 
@@ -90,9 +88,9 @@ An EKS cluster, like any Kubernetes cluster, has its own authentication mechanis
 
 In Terraform, the mainstream way to get this authentication token is by directly calling the API via the `aws_eks_cluster_auth` Data Source. Then Terraform caches the token in its state file. The problem here is that Terraform is a general-purpose resource manager, and is not equipped with a retry mechanism to refresh the token after it expires. The current workaround is to execute some command which causes Terraform to re-read the Data Source rather than use the cached token.
 
-At Cloud Posse, we have developed an alternative mechanism that leverages `kubectl`, but it requires that the `aws` CLI be installed, which is not something we want to require for our open source modules for various reasons. 
+At Cloud Posse, we have developed an alternative mechanism that leverages `kubectl`, but it requires that the `aws` CLI be installed, which is not something we want to require for our open source modules for various reasons.
 
-We are considering making it standard on our closed-source installations where we use Spacelift and can require `aws`. Inquire about it if you run into this problem. 
+We are considering making it standard on our closed-source installations where we use Spacelift and can require `aws`. Inquire about it if you run into this problem.
 
 ### Error: `Kubernetes cluster unreachable: Get "https://xyz.gr7.region.eks.amazonaws.com/version?timeout=32s": dial tcp a.b.c.d:443: i/o timeout`
 
@@ -152,15 +150,15 @@ Try running `precommit autoupdate` to fix the issue.
 
 :::
 
-When `pre-commit` fails, it doesn’t produce much output to `stdout`. 
+When `pre-commit` fails, it doesn’t produce much output to `stdout`.
 
 ```
 Terraform docs...........................................................Failed
 ```
 
-Instead, `pre-commit` will direct the output to a logfile, `$HOME/.cache/pre-commit/pre-commit.log`. 
+Instead, `pre-commit` will direct the output to a logfile, `$HOME/.cache/pre-commit/pre-commit.log`.
 
-To re-run the `terraform-docs` pre-commit hook, run `pre-commit run terraform_docs -a`. 
+To re-run the `terraform-docs` pre-commit hook, run `pre-commit run terraform_docs -a`.
 
 Others have reported that errors were caused by a local version of `terraform-docs` that was ahead of our `pre-commit` version in the infrastructure repository. Running `precommit autoupdate` fixed the issue.
 

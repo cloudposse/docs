@@ -5,11 +5,7 @@ description: "Our opinionated best-practices for Terraform"
 tags:
   - best-practices
   - terraform
-image: /assets/08bcd99-terraform.png
 ---
-
-![Terraform](/assets/08bcd99-terraform.png)
-
 These are the *opinionated* best-practices we follow at Cloud Posse. They are inspired by years of experience writing terraform
 and borrow on the many other helpful resources like those by [HashiCorp](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html).
 
@@ -314,9 +310,7 @@ configuration to a separate template file.
 
 Linting helps to ensure a consistent code formatting, improves code quality and catches common errors with syntax.
 
-Run `terraform fmt` before committing all code. Use a `pre-commit` hook to
-do this automatically. See [Terraform Tips &
-Tricks](/reference/best-practices/terraform-tips-tricks.md)
+Run `terraform fmt` before committing all code. Use a `pre-commit` hook to do this automatically. See [Terraform Tips & Tricks](/learn/tips-and-tricks/terraform).
 
 Consider using [`tflint`](https://github.com/terraform-linters/tflint) with
 the `aws` plugin.

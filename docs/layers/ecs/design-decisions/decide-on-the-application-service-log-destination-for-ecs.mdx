@@ -1,12 +1,14 @@
 ---
 title: "Decide on the Application Service Log Destination for ECS"
-sidebar_label: "Application Service Log Destination"
+sidebar_label: "Service Logs"
+sidebar_position: 2
+description: Decide how to group logs with CloudWatch
 refarch_id: REFARCH-484
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-
-# Decide on the Application Service Log Destination for ECS
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 ## Context and Problem Statement
 
@@ -14,85 +16,95 @@ Should logs be sent to datadog or log only to cloudwatch logs?
 
 ## Considered Options
 
-### Option 1. Fluent Bit sidecar is required for ECS Fargate
+<Tabs>
 
-> In addition to your application container, your task definition needs to specify a Fluent Bit sidecar container that’s
-> responsible for routing logs to Datadog. AWS provides an `aws-for-fluent-bit` Docker image you can use to create the
-> sidecar container.([source](https://www.datadoghq.com/blog/aws-fargate-monitoring-with-datadog/))
+  <TabItem label="Option 1" value="option-1">
+    ### Option 1. Fluent Bit sidecar is required for ECS Fargate
 
-#### Pros
+    > In addition to your application container, your task definition needs to specify a Fluent Bit sidecar container that’s
+    > responsible for routing logs to Datadog. AWS provides an `aws-for-fluent-bit` Docker image you can use to create the
+    > sidecar container.([source](https://www.datadoghq.com/blog/aws-fargate-monitoring-with-datadog/))
 
-- Recommended by Datadog
+    #### Pros
 
-- Works without much configuration
+    - Recommended by Datadog
 
-- Prior art for this
+    - Works without much configuration
 
-#### Cons
+    - Prior art for this
 
-- Sidecar required
+    #### Cons
 
-- Fargate cpu/mem requirements would go up per task
+    - Sidecar required
 
-- More expensive due to fargate pricing is by cpu/mem
+    - Fargate cpu/mem requirements would go up per task
 
-### Option 2. Datadog Lambda Forwarder
+    - More expensive due to fargate pricing is by cpu/memory
+  </TabItem>
 
-Apps log directly to cloudwatch log groups and the Datadog lambda forwarder would then forwards the logs
+  <TabItem label="Option 2" value="option-2">
+    ### Option 2. Datadog Lambda Forwarder
 
-[https://github.com/DataDog/datadog-serverless-functions/tree/master/aws/logs_monitoring](https://github.com/DataDog/datadog-serverless-functions/tree/master/aws/logs_monitoring)
+    Apps log directly to cloudwatch log groups and the Datadog lambda forwarder would then forwards the logs
 
-And we have a module for this
+    [https://github.com/DataDog/datadog-serverless-functions/tree/master/aws/logs_monitoring](https://github.com/DataDog/datadog-serverless-functions/tree/master/aws/logs_monitoring)
 
-[https://github.com/cloudposse/terraform-aws-datadog-lambda-forwarder](https://github.com/cloudposse/terraform-aws-datadog-lambda-forwarder)
+    And we have a module for this
 
-#### Pros
+    [https://github.com/cloudposse/terraform-aws-datadog-lambda-forwarder](https://github.com/cloudposse/terraform-aws-datadog-lambda-forwarder)
 
-- Apps log to cloudwatch log groups
+    #### Pros
 
-- if logging to a single log group per account, we can use `filter_patterns` to filter the events
+    - Apps log to cloudwatch log groups
 
-- if logging to a log group per service, we can give it multiple cloudwatch log group names or deploy a separate lambda
-  per service
+    - if logging to a single log group per account, we can use `filter_patterns` to filter the events
 
-- Module exposes providing your own lambda in case forking the official Datadog one is needed
+    - if logging to a log group per service, we can give it multiple cloudwatch log group names or deploy a separate lambda
+      per service
 
-- Prior art for this
+    - Module exposes providing your own lambda in case forking the official Datadog one is needed
 
-#### Cons
+    - Prior art for this
 
-- Previously recommended by Datadog
+    #### Cons
 
-- Need to log to cloudwatch logs before pushing to Datadog
+    - Previously recommended by Datadog
 
-- Maintaining upgrades for the lambdas
+    - Need to log to cloudwatch logs before pushing to Datadog
 
-- Monitoring lambdas
+    - Maintaining upgrades for the lambdas
 
-### Option 3. Fluentd with CloudWatch Plugin
+    - Monitoring lambdas
+  </TabItem>
 
-In the future, if AWS adds a logdriver for `fluentd` without firelens (like with `splunk`), then we can forward to a
-fluentd aggregator without a sidecar and without logging to cloudwatch.
+  <TabItem label="Option 3" value="option-3">
 
-We could create a single service in each ecs cluster to run fluentd and the cloudwatch plugin would be able to push
-cloudwatch logs to datadog.
+    ### Option 3. Fluentd with CloudWatch Plugin
 
-[https://hub.docker.com/r/fluent/fluentd/](https://hub.docker.com/r/fluent/fluentd/)
+    In the future, if AWS adds a logdriver for `fluentd` without firelens (like with `splunk`), then we can forward to a
+    fluentd aggregator without a sidecar and without logging to cloudwatch.
 
-[https://github.com/fluent-plugins-nursery/fluent-plugin-cloudwatch-logs#in_cloudwatch_logs](https://github.com/fluent-plugins-nursery/fluent-plugin-cloudwatch-logs#in_cloudwatch_logs)
+    We could create a single service in each ecs cluster to run fluentd and the cloudwatch plugin would be able to push
+    cloudwatch logs to datadog.
 
-#### Pros
+    [https://hub.docker.com/r/fluent/fluentd/](https://hub.docker.com/r/fluent/fluentd/)
 
-- More control over parsing logs
+    [https://github.com/fluent-plugins-nursery/fluent-plugin-cloudwatch-logs#in_cloudwatch_logs](https://github.com/fluent-plugins-nursery/fluent-plugin-cloudwatch-logs#in_cloudwatch_logs)
 
-- Can output to multiple SIEMs
+    #### Pros
 
-#### Cons
+    - More control over parsing logs
 
-- Same cons as option 1
+    - Can output to multiple SIEMs
 
-- Maintaining a fluentd cluster
+    #### Cons
 
-- Monitoring a fluentd cluster
+    - Same cons as option 1
 
-- We don’t have prior art for this.
+    - Maintaining a fluentd cluster
+
+    - Monitoring a fluentd cluster
+
+    - We don’t have prior art for this.
+  </TabItem>
+</Tabs>
