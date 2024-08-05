@@ -1,0 +1,40 @@
+name: "Atmos Component Updater"
+
+on:
+  workflow_dispatch: {}
+
+  schedule:
+    - cron: 0 8 * * *
+
+jobs:
+  update:
+    environment: atmos
+    runs-on: ["self-hosted", "default"]
+    steps:
+      - name: "Checkout source code at current commit"
+        uses: actions/checkout@v4
+
+      - name: Generate a token
+        id: github-app
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ATMOS_APP_ID }}
+          private-key: ${{ secrets.ATMOS_PRIVATE_KEY }}
+
+      - name: Update Atmos Components
+        uses: cloudposse/github-action-atmos-component-updater@v2
+        env:
+          ATMOS_CLI_CONFIG_PATH: ${{ github.workspace }}/rootfs/usr/local/etc/atmos/
+        with:
+          github-access-token: ${{ steps.github-app.outputs.token }}
+          log-level: INFO
+          vendoring-enabled: true
+          max-number-of-prs: 5
+
+      - name: Delete abandoned update branches
+        uses: phpdocker-io/github-actions-delete-abandoned-branches@v2
+        with:
+          github_token: ${{ steps.github-app.outputs.token }}
+          last_commit_age_days: 0
+          allowed_prefixes: "component-update/"
+          dry_run: no

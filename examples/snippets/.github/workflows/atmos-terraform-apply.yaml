@@ -1,1 +1,100 @@
-PLACEHOLDER
+name: 👽 Atmos Terraform Apply
+run-name: 👽 Atmos Terraform Apply
+
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  pr:
+    name: PR Context
+    runs-on:
+      - "self-hosted"
+      - "amd64"
+      - "common"
+    steps:
+      - uses: 8BitJonny/gh-get-current-pr@3.0.0
+        id: pr
+
+    outputs:
+      base: ${{ fromJSON(steps.pr.outputs.pr).base.sha }}
+      head: ${{ fromJSON(steps.pr.outputs.pr).head.sha }}
+      auto-apply: ${{ contains( fromJSON(steps.pr.outputs.pr).labels.*.name, 'auto-apply') }}
+      no-apply: ${{ contains( fromJSON(steps.pr.outputs.pr).labels.*.name, 'no-apply') }}
+
+  atmos-affected:
+    name: Determine Affected Stacks
+    if: needs.pr.outputs.no-apply == 'false'
+    needs: ["pr"]
+    runs-on: ["self-hosted", "terraform"]
+    steps:
+      - id: affected
+        uses: cloudposse/github-action-atmos-affected-stacks@v3
+        with:
+          base-ref: ${{ github.event.pull_request.base.sha }}
+          head-ref: ${{ github.event.pull_request.head.sha }}
+          atmos-version: ${{ vars.ATMOS_VERSION }}
+          atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+    outputs:
+      stacks: ${{ steps.affected.outputs.matrix }}
+      has-affected-stacks: ${{ steps.affected.outputs.has-affected-stacks }}
+
+  plan-atmos-components:
+    needs: ["atmos-affected", "pr"]
+    if: |
+      needs.atmos-affected.outputs.has-affected-stacks == 'true' && needs.pr.outputs.auto-apply != 'true'
+    name: Validate plan (${{ matrix.name }})
+    uses: ./.github/workflows/atmos-terraform-plan-matrix.yaml
+    strategy:
+      matrix: ${{ fromJson(needs.atmos-affected.outputs.stacks) }}
+      max-parallel: 1 # This is important to avoid ddos GHA API
+      fail-fast: false # Don't fail fast to avoid locking TF State
+    with:
+      stacks: ${{ matrix.items }}
+      drift-detection-mode-enabled: "true"
+      continue-on-error: 'true'
+      atmos-version: ${{ vars.ATMOS_VERSION }}
+      atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+      sha: ${{ needs.pr.outputs.head }}
+    secrets: inherit
+
+  drift-detection:
+    needs: ["atmos-affected", "plan-atmos-components", "pr"]
+    if: |
+      always() && needs.atmos-affected.outputs.has-affected-stacks == 'true' && needs.pr.outputs.auto-apply != 'true'
+    name: Reconcile issues
+    runs-on:
+      - "self-hosted"
+      - "amd64"
+      - "common"
+    steps:
+      - name: Drift Detection
+        uses: cloudposse/github-action-atmos-terraform-drift-detection@v2
+        with:
+          max-opened-issues: '-1'
+          process-all: 'false'
+
+  auto-apply:
+    needs: ["atmos-affected", "pr"]
+    if: |
+      needs.atmos-affected.outputs.has-affected-stacks == 'true' && needs.pr.outputs.auto-apply == 'true'
+    name: Apply (${{ matrix.name }})
+    uses: ./.github/workflows/atmos-terraform-apply-matrix.yaml
+    strategy:
+      max-parallel: 1
+      fail-fast: false # Don't fail fast to avoid locking TF State
+      matrix: ${{ fromJson(needs.atmos-affected.outputs.stacks) }}
+    with:
+      stacks: ${{ matrix.items }}
+      sha: ${{ needs.pr.outputs.head }}
+      atmos-version: ${{ vars.ATMOS_VERSION }}
+      atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+    secrets: inherit
