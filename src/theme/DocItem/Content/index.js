@@ -40,6 +40,7 @@ const DocItemContent = ({ children }) => {
       'deprecated': 'ph:warning-duotone',
       'terraform': 'devicon:terraform',
       'tutorial': 'arcticons:quicknovel',
+      'how-to': 'arcticons:quicknovel',
       'design-decision': 'carbon:decision-node',
       'faq': 'wpf:faq',
       'eks': 'logos:aws-eks',
@@ -48,8 +49,10 @@ const DocItemContent = ({ children }) => {
       'dns': 'logos:aws-route53',
       'setup': 'ep:set-up',
       'contact': 'streamline:send-email',
+      'discuss': 'octicon:comment-discussion-24',
       'support': 'ic:twotone-contact-support',
       'makefile': 'vscode-icons:file-type-makefile',
+      'editor-?config': 'file-icons:editorconfig',
       'markdown': 'skill-icons:markdown-dark',
       'tool': 'entypo:tools',
       'legacy': 'ph:warning-duotone',
@@ -84,7 +87,9 @@ const DocItemContent = ({ children }) => {
       'gitops': 'clarity:deploy-line',
       'glossary': 'material-symbols-light:dictionary-outline',
       'diagram': 'simple-icons:diagramsdotnet',
-      '1password': 'mdi:1password'
+      '1password': 'mdi:1password',
+      'quickstart': 'ph:lightning-duotone',
+      'jumpstart': 'ic:twotone-speed',
     };
 
     if( metadata && metadata.frontMatter?.icon ) {

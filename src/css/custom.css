@@ -99,6 +99,8 @@ header {
 
 header .icon {
   float: right;
+  margin-left: 1em;
+  margin-bottom: 0.2em;
 }
 
 [data-theme='dark'] .header-github-link::before {
