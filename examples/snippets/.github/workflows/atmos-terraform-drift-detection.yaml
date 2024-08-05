@@ -1,1 +1,61 @@
-PLACEHOLDER
+name: 👽 Atmos Terraform Drift Detection
+run-name: 👽 Atmos Terraform Drift Detection
+
+on:
+  # push:
+  #   branches:
+  #     - main   # this is for debugging only
+  workflow_dispatch: {}
+  schedule:
+  - cron: "0 */12 * * *"
+
+permissions:
+  id-token: write
+  contents: write
+  issues: write
+
+jobs:
+  select-components:
+    name: Select Components
+    runs-on: ["self-hosted", "terraform"]
+    steps:
+      - name: Selected Components
+        id: components
+        uses: cloudposse/github-action-atmos-terraform-select-components@v2
+        with:
+          select-filter: '.settings.github.actions_enabled and .metadata.type != "abstract"'
+          atmos-version: ${{ vars.ATMOS_VERSION }}
+          atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+    outputs:
+      stacks: ${{ steps.components.outputs.matrix }}
+      has-selected-components: ${{ steps.components.outputs.has-selected-components }}
+
+  plan-atmos-components:
+    needs: ["select-components"]
+    if: ${{ needs.select-components.outputs.has-selected-components == 'true' }}
+    name: Detect Drift (${{ matrix.name }})
+    uses: ./.github/workflows/atmos-terraform-plan-matrix.yaml
+    strategy:
+      max-parallel: 1 # This is important to avoid ddos GHA API
+      fail-fast: false # Don't fail fast to avoid locking TF State
+      matrix: ${{ fromJson(needs.select-components.outputs.stacks) }}
+    with:
+      stacks: ${{ matrix.items }}
+      sha: ${{ github.sha }}
+      drift-detection-mode-enabled: "true"
+      continue-on-error: true
+      atmos-version: ${{ vars.ATMOS_VERSION }}
+      atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+    secrets: inherit
+
+  drift-detection:
+    needs: ["plan-atmos-components"]
+    if: always()
+    name: Reconcile issues
+    runs-on: ["self-hosted", "terraform"]
+    steps:
+      - name: Drift Detection
+        uses: cloudposse/github-action-atmos-terraform-drift-detection@v2
+        with:
+          max-opened-issues: '25'
+          process-all: 'true'

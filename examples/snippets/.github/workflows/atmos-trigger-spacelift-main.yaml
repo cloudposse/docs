@@ -1,0 +1,20 @@
+name: "Deploy Affected Spacelift Stacks"
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  run:
+    if: github.event.pull_request.merged == true
+    runs-on: ["self-hosted", "default"]
+    steps:
+      - name: Atmos Affected Stacks Trigger Spacelift
+        uses: cloudposse/github-action-atmos-affected-trigger-spacelift@v2
+        with:
+          atmos-config-path: ./rootfs/usr/local/etc/atmos
+          deploy: true
+          github-token:${{ secrets.GITHUB_TOKEN }}
+          head-ref:${{ github.sha }}~1

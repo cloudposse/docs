@@ -1,11 +1,11 @@
 import:
   - mixins/region/global-region
-  - orgs/acme/plat/_defaults
+  - orgs/acme/core/_defaults
   - catalog/spacelift/admin-stack
 
 # These intentionally overwrite the default values
 vars:
-  tenant: plat
+  tenant: core
   environment: gbl
   stage: spacelift
 
@@ -18,16 +18,16 @@ components:
           - admin-stack/default
       settings:
         spacelift:
-          space_name: plat
+          space_name: core
           labels:
-            - admin-stack-name:plat
+            - admin-stack-name:core
       vars:
         enabled: true
-        # This admin-stack filters for all non-administrative stacks in the plat tenant
+        # This admin-stack filters for all non-administrative stacks in the core tenant
         context_filters:
-          tenants: ["plat"]
+          tenants: ["core"]
           administrative: false # We don't want this stack to also find itself in the config and add itself a second time
         labels:
-          - admin-stack-name:plat
+          - admin-stack-name:core
         child_policy_attachments:
           - TRIGGER Dependencies
