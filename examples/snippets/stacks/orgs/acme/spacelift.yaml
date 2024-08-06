@@ -40,3 +40,7 @@ components:
         child_policy_attachments:
           - TRIGGER Global Administrator
           - GIT_PUSH Global Administrator # Always trigger admin stacks on pushes to main
+
+      # please ignore me...
+      # This is a test change for the sake of validating github actions.
+      # If all goes well, this comment will be removed shortly
