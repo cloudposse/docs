@@ -257,3 +257,36 @@ def strip_frontmatter(content):
         frontmatter = []
 
     return "\n".join(content_lines), "\n".join(frontmatter)
+
+def reformat_admonitions(content):
+    """
+    Reformat admonitions to be compatible with Docusaurus.
+    """
+    # Define a mapping of GitHub to Docusaurus admonitions
+    admonition_map = {
+        'NOTE': 'note',
+        'TIP': 'tip',
+        'WARNING': 'warning',
+        'IMPORTANT': 'important',
+        'CAUTION': 'caution',
+        'DANGER': 'danger'
+    }
+
+    # Regular expression pattern to match GitHub admonitions
+    pattern = re.compile(
+        r'> \[\!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|DANGER)\]\n>\n>([\s\S]*?)(?=\n\n|$)',
+        re.MULTILINE
+    )
+
+    matches = pattern.finditer(content)
+    result = content
+
+    for match in matches:
+        github_admonition = match.group(1)
+        admonition_content = match.group(2).strip()
+        docusaurus_admonition = admonition_map[github_admonition]
+
+        replacement = f":::{docusaurus_admonition}\n\n{admonition_content}\n\n:::"
+        result = result.replace(match.group(0), replacement)
+
+    return result
