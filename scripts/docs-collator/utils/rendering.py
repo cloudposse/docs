@@ -257,3 +257,53 @@ def strip_frontmatter(content):
         frontmatter = []
 
     return "\n".join(content_lines), "\n".join(frontmatter)
+
+def reformat_admonitions(content):
+    """
+    Reformat admonitions to be compatible with Docusaurus.
+    """
+
+    admonition_map = {
+        "NOTE": "note",
+        "TIP": "tip",
+        "IMPORTANT": "important",
+        "WARNING": "warning",
+        "CAUTION": "danger",
+    }
+
+    # Split the content into lines for processing
+    lines = content.split('\n')
+    result = []  # Initialize a list to hold the result
+    in_admonition = False  # Flag to indicate if we're inside an admonition block
+    admonition_type = ""  # Variable to store the current admonition type
+
+    for line in lines:
+        # Check if the line marks the start of an admonition
+        admonition_start = re.match(r'> \[\!(TIP|WARNING|NOTE|IMPORTANT|CAUTION|DANGER)\]', line)
+
+        if admonition_start:
+            # Set the flag to indicate we're inside an admonition
+            in_admonition = True
+            # Get the type of admonition, convert to lowercase, and store it
+            original_admonition_type = admonition_start.group(1)
+            admonition_type = admonition_map.get(original_admonition_type, original_admonition_type.lower())
+            # Add the opening Docusaurus admonition tag with a newline
+            result.append(f":::{admonition_type}")
+            continue
+
+        if in_admonition:
+            # Process lines that are part of the admonition content
+            if line.startswith('>'):
+                # Remove the '>' prefix and add the line to the result
+                # (But keep the second '>' in the case of '> >' for nested blockquotes)
+                result.append(line[1:].strip())
+            else:
+                # Add the closing Docusaurus admonition tag and reset the flag
+                result.append("\n:::")
+                result.append(line)
+                in_admonition = False
+        else:
+            # Add lines outside admonition blocks as they are
+            result.append(line)
+
+    return '\n'.join(result)
