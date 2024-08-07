@@ -318,7 +318,7 @@ module.exports = {
               collapsed: true,
               link: {
                 type: 'doc',
-                id: 'layers/software-delivery/software-delivery'
+                id: 'layers/software-delivery/fundamentals'
               },
               items: [
                 {

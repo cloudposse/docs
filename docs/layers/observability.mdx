@@ -5,6 +5,9 @@ import Intro from '@site/src/components/Intro';
 import Steps from '@site/src/components/Steps';
 import StepNumber from '@site/src/components/StepNumber';
 import Step from '@site/src/components/Step';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
 <Intro>
   With so many moving pieces, it's crucial to monitor what's happening under the hood to understand what's going on. This includes gathering telemetry, in the form of metrics and logs coming from your services and the underlying infrastructure. This data must be shipped somewhere to build dashboards and raise alerts that will escalate to the appropriate personnel. Depending on your business needs, you may also need to monitor for security and compliance against various technical benchmarks like PCI/DSS, CIS, ISO 27001, and others.
@@ -15,9 +18,19 @@ import Step from '@site/src/components/Step';
   <Step>
     ## <StepNumber/> Set up Telemetry
 
-    Choose between Datadog or AWS-managed Prometheus and Grafana with Loki for gathering your telemetry.
+    Choose between Datadog or AWS-managed Prometheus and Grafana with Loki for gathering your telemetry. Datadog offers the most mature implementation, while AWS-managed Grafana and Prometheus provide lower-cost alternatives with various trade-offs, that make them a good fit for many organizations.
 
-    Datadog offers the most mature implementation, while AWS-managed Grafana and Prometheus provide lower-cost alternatives with various trade-offs, that make them a good fit for many organizations.
+    <Tabs>
+      <TabItem value="datadog" label="Datadog">
+        <PrimaryCTA to="/layers/monitoring/datadog">Get Started</PrimaryCTA>
+      </TabItem>
+
+      <TabItem value="aws" label="AWS Managed Grafana and Prometheus">
+        <PrimaryCTA to="/layers/monitoring/grafana">Get Started</PrimaryCTA>
+      </TabItem>
+    </Tabs>
+
+
   </Step>
 
   <Step>
