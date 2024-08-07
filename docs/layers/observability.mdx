@@ -22,10 +22,23 @@ import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
     <Tabs>
       <TabItem value="datadog" label="Datadog">
+
+        Datadog is our most comprehensive observability solution, offering a monitoring-as-code approach using YAML configuration fully managed with Terraform. This includes Datadog monitors, custom RBAC roles, synthetic tests, child organizations, and other resources.
+
+        We show how to define reusable Service Level Indicators (SLIs) and Service Level Objectives (SLOs) for consistent implementation, helping to reduce alert fatigue by focusing on critical business-specific metrics and leveraging Datadog's advanced capabilities.
+        Then integrating this with OpsGenie for incident management.
+
         <PrimaryCTA to="/layers/monitoring/datadog">Get Started</PrimaryCTA>
       </TabItem>
 
       <TabItem value="aws" label="AWS Managed Grafana and Prometheus">
+
+        Amazon Managed Grafana is a fully managed service by AWS in collaboration with Grafana Labs. Although it's significantly less expensive than Datadog, it is also more barebones in comparison.
+        <Steps>
+          - Managed Grafana allows you to query, visualize, and set alerts for your metrics, logs, and traces through a centralized dashboard where you can add multiple data sources.
+          - AWS Managed Prometheus together with `promtail` collects and queries metrics from your containerized applications.
+          - Deploy Loki for efficient log collection from containerized applications (for EKS users)
+        </Steps>
         <PrimaryCTA to="/layers/monitoring/grafana">Get Started</PrimaryCTA>
       </TabItem>
     </Tabs>
