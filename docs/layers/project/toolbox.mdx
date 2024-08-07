@@ -47,7 +47,7 @@ On future builds, use `make run` to use the cached image.
 
 Build the toolbox image locally before continuing.
 
-Follow the [toolbox image setup steps in the How-to Get Started guide](/layers/foundation/#building-the-toolbox-image). In short,
+Follow the [toolbox image setup steps in the How-to Get Started guide](/layers/project/#building-the-toolbox-image). In short,
 run `make all`.
 
 The container will have the given local home mapped, so you should be able to use aws normally inside it once you set a profile that has valid credentials. For instance, if I log in to the profile `acme` with [leapp](https://github.com/Noovolari/leapp), I can run `aws --profile acme sts get-caller-identity` and get a response.
@@ -55,7 +55,7 @@ The container will have the given local home mapped, so you should be able to us
 Once you've verified that the infra container has access to aws resources, we can move on to the next step.
 
 <ActionCard title="What comes next?">
-  With your repository set up, workstation configured and toolbox in hand, you're ready to get to work provisioning your infrastructure with Atmos and Terraform.
+  With your repository set up, workstation configured and toolbox in hand, you're ready to get to work provisioning your infrastructure with Atmos and Terraform. The next step is to learn how to provision AWS accounts.
 
   <PrimaryCTA to="/layers/accounts">Next Step</PrimaryCTA>
 </ActionCard>

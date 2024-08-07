@@ -2,6 +2,7 @@
 title: "How to Keep Everything Up to Date"
 sidebar_label: "Keep Everything Up to Date"
 sidebar_position: 100
+description: "Tricks for keeping your infrastructure up to date"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -40,7 +41,7 @@ FROM public.ecr.aws/cloudposse/geodesic:$GEODESIC_VERSION-$OS
 ```
 Automatically update `ARG` and `ENV` statements for package pinning in Dockerfiles.
 
-```
+```dockerfile
 # renovate: datasource=github-releases depName=cloudposse/atmos versioning="regex:(?<major>0)\\.(?<minor>21)\\.(?<patch>\\d+)"
 ARG ATMOS_VERSION=1.51.0
 
@@ -56,7 +57,7 @@ Automatically update packages based on `cargo` versioning scheme.
 
 [https://docs.renovatebot.com/modules/versioning/#cargo-versioning](https://docs.renovatebot.com/modules/versioning/#cargo-versioning)
 
-```
+```dockerfile
 # Install terraform
 # Install specific versions of Terraform. Must match versions in Spacelift terraform_version_map
 # in components/terraform/spacelift/default.auto.tfvars
@@ -80,7 +81,7 @@ RUN apt-get update && apt-get install -y -u --allow-downgrades \
 
 Automatically update helm charts in terraform var files.
 
-```
+```hcl
 enabled = true
 
 name = "datadog"
@@ -111,7 +112,7 @@ cleanup_on_fail = true
 
 Automatically update docker images.
 
-```
+```yaml
 components:
   terraform:
     metrics-server:
@@ -130,7 +131,7 @@ components:
 ```
 Automatically update the `cluster_kubernetes_version`
 
-```
+```yaml
 components:
   terraform:
     eks:
@@ -154,19 +155,19 @@ Supported conventions:
 
 ### GitHub Releases
 
-```
+```yaml
 # renovate: datasource=github-releases depName=cloudposse/atmos cargo=">=1.2.3 <2.0.0"
 ```
 
 ### Helm Releases
 
-```
+```yaml
 # renovate: datasource=github-releases depName=cloudposse/atmos cargo=">=1.2.3 <2.0.0"
 ```
 
 ### Docker Tags
 
-```
+```yaml
 # renovate: datasource=github-releases depName=cloudposse/atmos cargo=">=1.2.3 <2.0.0"
 ```
 

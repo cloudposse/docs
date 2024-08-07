@@ -6,13 +6,8 @@ sidebar_class_name: hidden
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-Amazon EKS is a managed Kubernetes service to run Kubernetes in the AWS cloud and on-premises data centers. In the
-cloud, Amazon EKS automatically manages the availability and scalability of the Kubernetes control plane nodes
-responsible for scheduling containers, managing application availability, storing cluster data, and other key tasks.
-With Amazon EKS, you can take advantage of all the performance, scale, reliability, and availability of AWS
-infrastructure, as well as integrations with AWS networking and security services. On-premises, EKS provides a
-consistent, fully-supported Kubernetes solution with integrated tooling and simple deployment to AWS Outposts, virtual
-machines, or bare metal servers.
+Amazon EKS is a managed Kubernetes service that allows you to run Kubernetes in AWS cloud and on-premises data centers. AWS handles the availability and scalability of the Kubernetes control plane, which oversees tasks such as scheduling containers, managing application availability, and storing cluster data. While AWS manages control plane upgrades, users are responsible for the worker nodes and the workloads running on them, including operators, controllers, and applications. We use Karpenter for managing node pools and support spot instances to optimize costs. Be aware that you'll need to upgrade the cluster quarterly due to the significant pace of Kubernetes innovation. Although EKS has a steeper learning curve compared to ECS, it offers greater flexibility and control, making it ideal for organizations already utilizing Kubernetes.
+
 
 ## The Problem
 

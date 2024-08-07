@@ -14,15 +14,17 @@ import ActionCard from '@site/src/components/ActionCard'
 import PrimaryCTA from '@site/src/components/PrimaryCTA'
 import TaskList from '@site/src/components/TaskList'
 import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <Intro>
 The kickoff process for Quickstart engagements with Cloud Posse ensures a smooth start with clear communication for a successful project delivery. During the call, we will confirm your design decisions and set project expectations. We also cover how you will deploy your infrastructure in layers using our reference architecture and introduce various support options, including community support channels, customer workshops, and office hours.
 </Intro>
 
 <KeyPoints title="We Will Review">
-- **Kickoff Process:** Establish roles, confirm requirements, and set project expectations for a smooth start
-- **Implementation Phase:** Understand how you will go about provisioning infrastructure in layers using the reference architecture, including comprehensive handoffs with documentation
-- **Support and Communication:** Review the available support options, including customer workshops, office hours, and detailed documentation to ensure successful engagement
+  - **Kickoff Process:** Establish roles, confirm requirements, and set project expectations for a smooth start
+  - **Implementation Phase:** Understand how you will go about provisioning infrastructure in layers using the reference architecture, including comprehensive handoffs with documentation
+  - **Support and Communication:** Review the available support options, including customer workshops, office hours, and detailed documentation to ensure successful engagement
 </KeyPoints>
 
 ## Preparing for the Kickoff Meeting
@@ -62,17 +64,23 @@ This document outlines what to expect from your first call with Cloud Posse. In 
   <Step>
     ### <StepNumber/> Introduce Shared Customer Workshops
 
-    #### Option 1
+    <Tabs>
+      <TabItem label="Option 1" value="option-1">
 
-    > **When:** Thursdays, 7:00-7:30A PT/ 9:00-9:30A CT/ 10:00-10:30A ET<br/>
-    > **Where:** Zoom<br/>
-    > **Who:** Customers Only<br/>
+        > **When:** Thursdays, 7:00-7:30A PT/ 9:00-9:30A CT/ 10:00-10:30A ET<br/>
+        > **Where:** Zoom<br/>
+        > **Who:** Customers Only<br/>
 
-    #### Option 2
+      </TabItem>
 
-    > **When:** Wednesdays, 1:00-1:30P PT/ 3:00-3:30P CT/ 4:00-4:30P ET<br/>
-    > **Where:** Zoom<br/>
-    > **Who:** Customers Only<br/>
+      <TabItem label="Option 2" value="option-2">
+
+        > **When:** Wednesdays, 1:00-1:30P PT/ 3:00-3:30P CT/ 4:00-4:30P ET<br/>
+        > **Where:** Zoom<br/>
+        > **Who:** Customers Only<br/>
+
+      </TabItem>
+    </Tabs>
 
     This is a great opportunity to get your questions answered and to get help with your project.
   </Step>
@@ -92,7 +100,7 @@ This document outlines what to expect from your first call with Cloud Posse. In 
   <Step>
     ### <StepNumber/> Join our SweetOps Slack Community
 
-    If you are looking for a community of like-minded DevOps practitioners, please join the [SweetOps Slack](https://slack.sweetops.com/).
+    If you are looking for a community of like-minded DevOps practitioners, we invite you to join our [SweetOps Slack](https://slack.sweetops.com/).
   </Step>
 
   <Step>
@@ -101,8 +109,8 @@ This document outlines what to expect from your first call with Cloud Posse. In 
     Review the foundational Design Decisions.
 
     <TaskList>
-      - [ ] [Decide on Namespace Abbreviation](/layers/foundation/design-decisions/decide-on-namespace-abbreviation)
-      - [ ] [Decide on Infrastructure Repository Name](/layers/foundation/design-decisions/decide-on-infrastructure-repository-name)
+      - [ ] [Decide on Namespace Abbreviation](/layers/project/design-decisions/decide-on-namespace-abbreviation)
+      - [ ] [Decide on Infrastructure Repository Name](/layers/project/design-decisions/decide-on-infrastructure-repository-name)
       - [ ] [Decide on Email Address Format for AWS Accounts](/layers/accounts/design-decisions/decide-on-email-address-format-for-aws-accounts)
       - [ ] [Decide on IdP](/layers/identity/design-decisions/decide-on-idp)
       - [ ] [Decide on IdP Integration Method](/layers/identity/design-decisions/decide-on-idp-integration)

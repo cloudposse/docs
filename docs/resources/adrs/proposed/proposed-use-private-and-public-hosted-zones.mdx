@@ -65,11 +65,11 @@ This is an “old school” security best practice, which in principle is great 
 
 - Public hosted zone for acm verification which would require a split-view setup
 
-- or Private CA to sign certificates and sign ACM certs and cert-manager.
+- or Private CA to sign certificates and sign ACM certs and `cert-manager`.
 
 - At least 2 Private CAs are recommended (one for prod, one for non-prod). Each private CA is $400/mo. [https://aws.amazon.com/certificate-manager/pricing/](https://aws.amazon.com/certificate-manager/pricing/)
 
-- Troubleshooting DNS lookups would require sshing via SSM to an instance in a VPC that is associated with a private HZ to check if DNS lookups work as expected
+- Troubleshooting DNS lookups would require ssh'ing via SSM to an instance in a VPC that is associated with a private Hosted Zone to check if DNS lookups work as expected
 
 ### Option 3: Hybrid of public and private zones
 

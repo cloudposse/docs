@@ -78,6 +78,7 @@ const DocItemContent = ({ children }) => {
       'community': 'iconoir:community',
       'adr': 'material-symbols-light:notes',
       'startup': 'noto:rocket',
+      'enterprise': 'material-symbols-light:corporate-fare-rounded',
       'exercise': 'streamline:class-lesson',
       'action': 'fluent-mdl2:set-action',
       'onboard': 'fluent-mdl2:onboarding',
@@ -89,7 +90,9 @@ const DocItemContent = ({ children }) => {
       'diagram': 'simple-icons:diagramsdotnet',
       '1password': 'mdi:1password',
       'quickstart': 'ph:lightning-duotone',
-      'jumpstart': 'ic:twotone-speed',
+      'jumpstart': 'file-icons:powerbuilder',
+      'stack': 'ph:stack-duotone',
+      'component': 'icon-park-twotone:puzzle'
     };
 
     if( metadata && metadata.frontMatter?.icon ) {

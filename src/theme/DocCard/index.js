@@ -110,7 +110,7 @@ function CardLink({item}) {
   const metadata = findPermalink(globalMetadata, item.href);
   const icon = isInternalUrl(item.href) ? 'solar:document-line-duotone' : 'solar:link-bold-duotone';
   const doc = useDocById(item.docId ?? undefined);
-  console.log(metadata)
+  //console.log(metadata)
   return (
     <CardLayout
       href={item.href}
