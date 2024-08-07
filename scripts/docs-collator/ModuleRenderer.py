@@ -205,4 +205,5 @@ class ModuleRenderer(AbstractRenderer):
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
         content = rendering.fix_mdx_format(content)
+        content = rendering.reformat_admonitions(content)
         io.save_string_to_file(readme_md_file, content)
