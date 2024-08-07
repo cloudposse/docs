@@ -288,7 +288,7 @@ def reformat_admonitions(content):
             original_admonition_type = admonition_start.group(1)
             admonition_type = admonition_map.get(original_admonition_type, original_admonition_type.lower())
             # Add the opening Docusaurus admonition tag with a newline
-            result.append(f":::{admonition_type}\n")
+            result.append(f":::{admonition_type}")
             continue
 
         if in_admonition:
