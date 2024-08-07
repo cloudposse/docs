@@ -262,6 +262,15 @@ def reformat_admonitions(content):
     """
     Reformat admonitions to be compatible with Docusaurus.
     """
+
+    admonition_map = {
+        "NOTE": "note",
+        "TIP": "tip",
+        "IMPORTANT": "important",
+        "WARNING": "warning",
+        "CAUTION": "danger",
+    }
+
     # Split the content into lines for processing
     lines = content.split('\n')
     result = []  # Initialize a list to hold the result
@@ -276,9 +285,10 @@ def reformat_admonitions(content):
             # Set the flag to indicate we're inside an admonition
             in_admonition = True
             # Get the type of admonition, convert to lowercase, and store it
-            admonition_type = admonition_start.group(1).lower()
+            original_admonition_type = admonition_start.group(1)
+            admonition_type = admonition_map.get(original_admonition_type, original_admonition_type.lower())
             # Add the opening Docusaurus admonition tag with a newline
-            result.append(f":::{admonition_type}")
+            result.append(f":::{admonition_type}\n")
             continue
 
         if in_admonition:
