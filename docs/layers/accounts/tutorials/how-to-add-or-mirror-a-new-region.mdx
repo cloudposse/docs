@@ -25,9 +25,9 @@ The current primary region is `us-west-2` and the new desired region is `us-east
 
 4. Deploy minimal components
 
-5. Optionally deploy `dns-delegated` if a new HZ is required per region
+5. Optionally deploy `dns-delegated` if a new Hosted Zone is required per region
 
-6. This is no longer used going forward as we can use a single HZ for `<stage>.example.com` and create multi domain
+6. This is no longer used going forward as we can use a single Hosted Zone for `<stage>.example.com` and create multi domain
    records within it such as `postgres-example.ue2` without having to create a `ue2.<stage>.example.com` HZ.
 
 7. Optionally deploy `transit-gateway-cross-region` component to peer both regions
@@ -71,7 +71,7 @@ for service in $services; do
 done
 ```
 
-3. Ensure all hostnames use the correct regional endpoints (either by HZ or by record)
+3. Ensure all hostnames use the correct regional endpoints (either by Hosted Zone or by record)
 
 4. Optionally, it’s not recommended, but if the tfstate bucket needs to be migrated
 
