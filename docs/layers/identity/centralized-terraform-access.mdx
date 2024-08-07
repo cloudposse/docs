@@ -48,6 +48,8 @@ Permission Sets other than the Identity Team Access Permission Set are used only
 account. These are redundant with AWS Team Roles but are useful for quickly accessing a given account with limited
 permission.
 
+With AWS IAM Identity Center, you can connect directly to the given account from the single sign on page with the Permission Set you need. That's great for web console usage, but it isn't great for locally applying Terraform! With Terraform, we want to apply across many accounts, where each account has its own role. We don't want to have to assume a new role each time we change accounts. So to solve this, we have a specific Permission Set that can assume an AWS Team in the identity account. When applying Terraform, we assume that "team" via SSO, and when accessing the web console, we use the Permission Set directly.
+
 ### AWS SAML
 
 The `aws-saml` component provides SAML access for Admin users to connect to the Identity account admin role `aws-teams`
@@ -55,3 +57,11 @@ without AWS IAM Identity Center (Successor to AWS Single Sign-On).
 
 This component creates an Identity Provider (IdP) in the Identity account to allow federated access to an identity role.
 Follow the Identity Providers documentation for adding a SAML login.
+
+With AWS SAML, we create a federated SAML login that connects to the "team" in the identity account, and then users can assume other roles from there. We use the [AWS Extend Switch Roles plugin](https://github.com/tilfinltd/aws-extend-switch-roles) that makes this much easier, but it's not as intuitive as Identity Center.
+
+:::tip AWS IAM Identity Center or AWS SAML? Which do I choose?
+
+The vast majority of our customers prefer AWS IAM Identity Center (SSO). The convenience of a web console login is hard to beat. However, some customers prefer SAML for its simplicity and compatibility with existing systems. We support both methods, and you can choose the one that best fits your needs.
+
+:::

@@ -52,19 +52,15 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     Before performing the "Deploying Accounts" step, the root account needs to be configured as an AWS Organization.
 
-     To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
-
-     This process also enables [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) via a CLI command, which is required for connecting the Organization.
+    This process also enables [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) via a CLI command, which is required for connecting the Organization.
   </Step>
 
   <Step>
     ## <StepNumber/> Raise Account Limits
 
-    Complete the root account setup with the following ClickOps steps.
+    To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
 
-    From the `root` account (not `SuperAdmin`):
-
-    1. Increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case
+    From the `root` account (not `SuperAdmin`), increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case
 
   </Step>
 
@@ -75,10 +71,10 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
       With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
       on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
       stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
-      uses `account-map` (indirectly) to chose the role to assume.
+      uses `account-map` (indirectly) to chose the role to assume. However, these components do _not_ need to be deployed yet.
     </Note>
 
-    Again verify the "account" configuration in `stacks/catalog/account.yaml`.
+    Again verify the "account" configuration in `stacks/catalog/account.yaml`. **This is the point of no return!**
 
     Once confident, begin the accounts deployment:
 
@@ -88,8 +84,11 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
     outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
-    role, we provision a static component `account-map`. **IMPORTANT:** Always run
-    `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
+    role, we provision a static component `account-map`.
+
+    <Note title="IMPORTANT">
+    Always run `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
+    </Note>
 
     Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves.
     This is accomplished by running `atmos workflow deploy/account-settings -f accounts`.

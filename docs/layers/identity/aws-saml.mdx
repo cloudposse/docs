@@ -30,18 +30,19 @@ identity. You can use this federated identity to connect directly to a given AWS
     Here are some example setup references:
     <Tabs>
       <TabItem value="google" label="Google Workspace">
-        - [Google Workspace](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/)
-        - (Note that
-        [Workspace can now sync users](https://aws.amazon.com/about-aws/whats-new/2023/06/aws-iam-identity-center-automated-user-provisioning-google-workspace/)
-        )
+        Follow the [AWS documentation for Google Workspace](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/). Once you have completed the setup, download the metadata file.
       </TabItem>
 
       <TabItem value="okta" label="Okta">
-      - [Okta](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
+        Follow the [Okta documentation](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm). Once you have completed the setup, download the metadata file.
       </TabItem>
 
       <TabItem value="jumpcloud" label="Jumpcloud">
-      - [JumpCloud](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2)
+       Follow the [JumpCloud documentation](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2). Once you have completed the setup, download the metadata file.
+      </TabItem>
+
+      <TabItem value="office365" label="Office 365">
+        The setup for Office 365 (or AzureAD) has a few issues that we've encountered. Please follow our [documentation on Office 365](/layers/identity/tutorials/how-to-setup-saml-login-to-aws-from-office-365/) to get the metadata file.
       </TabItem>
     </Tabs>
 
@@ -53,8 +54,25 @@ identity. You can use this federated identity to connect directly to a given AWS
     <Steps>
       1. Place this file inside the `aws-saml` component directory (`components/terraform/aws-saml/`)
       2. Commit this to version control. The filename should match the variable configured in `stacks/catalog/aws-saml.yaml`.
-      3. Deploy it
     </Steps>
   </Step>
-</Steps>
 
+  <Step>
+    ## <StepNumber/> Deploy `aws-saml`
+
+    ```bash
+    atmos terraform apply aws-saml -s core-gbl-identity
+    ```
+  </Step>
+
+  <Step>
+    ## <StepNumber/> (Optional) Download AWS Extend Switch Roles.
+
+    We use the AWS Extend Switch Roles plugin to make it easier to switch roles in the AWS Console. This is optional, but recommended especially if you are not using AWS IAM Identity Center.
+
+    Please see the [AWS Extend Switch Roles plugin](https://github.com/tilfinltd/aws-extend-switch-roles).
+
+    Once you've downloaded the plugin, take the aws-config file from within the `rootfs/etc/aws-config` directory in your infrastructure repository. Paste this into the AWS Extend Switch Roles plugin configuration.
+
+  </Step>
+</Steps>
