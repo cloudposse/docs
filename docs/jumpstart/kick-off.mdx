@@ -14,6 +14,8 @@ import ActionCard from '@site/src/components/ActionCard'
 import PrimaryCTA from '@site/src/components/PrimaryCTA'
 import TaskList from '@site/src/components/TaskList'
 import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <Intro>
 The kickoff process for Jumpstart engagements with Cloud Posse ensures a smooth start with clear communication for a successful project delivery. During the call, we will confirm contract requirements and set project expectations. We also cover how Cloud Posse will deploy your infrastructure in layers using our reference architecture and introduce various support options, including Slack channels, customer workshops, and office hours.
@@ -47,7 +49,7 @@ This document outlines what to expect from your first call with Cloud Posse. In 
   <Step>
     ### <StepNumber/> Project Overview
 
-    Cloud Posse will begin deploying your infrastructure [starting with the foundation](/layers/foundation) based your team's design decisions. The Reference Architecture is a collection of best practices for building a secure, scalable, and highly available infrastructure on AWS. The Reference Architecture is a living document that is constantly evolving as we learn from our customers and the community.
+    Cloud Posse will begin deploying your infrastructure [starting with the foundation](/layers/project) based your team's design decisions. The Reference Architecture is a collection of best practices for building a secure, scalable, and highly available infrastructure on AWS. The Reference Architecture is a living document that is constantly evolving as we learn from our customers and the community.
 
     We will deploy your infrastructure in _layers_. These layers are designed to manage collections of deliverables and will be a mix of generated content from a private reference, vendored Terraform from open-source libraries, and any customization for your Organization. Because we are delivering an entire infrastructure repository, these initial PRs will be massive; a complete infrastructure setup requires dozens of components, each with Terraform modules, configuration, account setup, and documentation. You are absolutely welcome to follow along, but we do not intend for your team to be required to review these massive PRs. Cloud Posse internally reviews these PRs extensively to ensure that the final product works as intended.
 
@@ -61,17 +63,23 @@ This document outlines what to expect from your first call with Cloud Posse. In 
   <Step>
     ### <StepNumber/> Shared Customer Workshop
 
-    #### Option 1
+    <Tabs>
+      <TabItem label="Option 1" value="option-1">
 
-    > **When:** Thursdays, 7:00-7:30A PT/ 9:00-9:30A CT/ 10:00-10:30A ET<br/>
-    > **Where:** Zoom<br/>
-    > **Who:** Customers Only<br/>
+        > **When:** Thursdays, 7:00-7:30A PT/ 9:00-9:30A CT/ 10:00-10:30A ET<br/>
+        > **Where:** Zoom<br/>
+        > **Who:** Customers Only<br/>
 
-    #### Option 2
+      </TabItem>
 
-    > **When:** Wednesdays, 1:00-1:30P PT/ 3:00-3:30P CT/ 4:00-4:30P ET<br/>
-    > **Where:** Zoom<br/>
-    > **Who:** Customers Only<br/>
+      <TabItem label="Option 2" value="option-2">
+
+        > **When:** Wednesdays, 1:00-1:30P PT/ 3:00-3:30P CT/ 4:00-4:30P ET<br/>
+        > **Where:** Zoom<br/>
+        > **Who:** Customers Only<br/>
+
+      </TabItem>
+    </Tabs>
 
     This is a great opportunity to get your questions answered and to get help with your project.
   </Step>
@@ -98,8 +106,8 @@ This document outlines what to expect from your first call with Cloud Posse. In 
     ### <StepNumber/> Review Design Decisions
 
     <TaskList>
-      - [ ] [Decide on Namespace Abbreviation](/layers/foundation/design-decisions/decide-on-namespace-abbreviation)
-      - [ ] [Decide on Infrastructure Repository Name](/layers/foundation/design-decisions/decide-on-infrastructure-repository-name)
+      - [ ] [Decide on Namespace Abbreviation](/layers/project/design-decisions/decide-on-namespace-abbreviation)
+      - [ ] [Decide on Infrastructure Repository Name](/layers/project/design-decisions/decide-on-infrastructure-repository-name)
       - [ ] [Decide on Email Address Format for AWS Accounts](/layers/accounts/design-decisions/decide-on-email-address-format-for-aws-accounts)
       - [ ] [Decide on IdP](/layers/identity/design-decisions/decide-on-idp)
       - [ ] [Decide on IdP Integration Method](/layers/identity/design-decisions/decide-on-idp-integration)
@@ -117,7 +125,7 @@ This document outlines what to expect from your first call with Cloud Posse. In 
     Generally, expect to schedule the following Handoff calls. These are subject to change and should be adaptable to fit your individual engagement.
     <TaskList>
       - [Kick Off](/jumpstart/kick-off)
-      - [Introduction to Toolset](/layers/foundation)
+      - [Introduction to Toolset](/layers/project)
       - [Identity and Authentication](/layers/identity)
       - [Component Development](/learn/component-development)
       - [Account Management](/layers/accounts/)

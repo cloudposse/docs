@@ -35,7 +35,7 @@
 }
 
 .collapsible > .text.expanded {
-  max-height: 1000px; /* A large value to ensure full expansion */
+  max-height: 10000px; /* A large value to ensure full expansion */
 }
 
 .collapsible > .text::after {

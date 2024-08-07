@@ -14,7 +14,7 @@ Choosing the right method to distribute Docker images is crucial for efficient d
 
 #### Use AWS ECR
 
-This is by far the most common approach we see taken. Our typical implementation includes a single ECR in the automation account. Read-only access granted to other accounts as necessary. Push images with commit sha’s and stage tag. Use lifecycle rules on stage tag to avoid eviction. The main downside with ECR, is each image repository in the registry must be explicitly provisioned. If we decide to go with ECR, we’ll also want to [Decide on ECR Strategy](/layers/foundation/design-decisions/decide-on-ecr-strategy) .
+This is by far the most common approach we see taken. Our typical implementation includes a single ECR in the automation account. Read-only access granted to other accounts as necessary. Push images with commit sha’s and stage tag. Use lifecycle rules on stage tag to avoid eviction. The main downside with ECR, is each image repository in the registry must be explicitly provisioned. If we decide to go with ECR, we’ll also want to [Decide on ECR Strategy](/layers/project/design-decisions/decide-on-ecr-strategy) .
 
 #### Use GitHub Container Registry
 

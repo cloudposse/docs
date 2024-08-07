@@ -11,6 +11,8 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import Note from '@site/src/components/Note';
+import Admonition from '@theme/Admonition';
 
 <Intro>
 Learn how to create a GitHub repository to host infrastructure tools and configurations. Then configure repository settings, enable branch protection, and add collaborators.
@@ -20,8 +22,7 @@ Learn how to create a GitHub repository to host infrastructure tools and configu
   <Step>
     ## <StepNumber/> Create a GitHub repository
 
-    Create an empty GitHub repository to host infrastructure tools and configuration, and clone it to your host computer
-    into a directory below your `$HOME` directory in the directory tree, for example, `/Users/morpheus/src/infrastructure`.
+    Create an empty GitHub repository to host infrastructure tools and configuration, and clone it to your host computer into a directory below your `$HOME` directory in the directory tree, for example, `/Users/morpheus/src/infrastructure`.
   </Step>
 
   <Step>
@@ -65,20 +66,19 @@ Learn how to create a GitHub repository to host infrastructure tools and configu
   <Step>
     ## <StepNumber/> Import the Reference Architecture
 
-    With the GitHub repository prepared, we are now ready to import the Cloud Posse reference architecture. Reach out to
-    Cloud Posse for details!
+    With the GitHub repository prepared, we are now ready to import the Cloud Posse reference architecture.
 
-    <details>
-    <summary>Where can I find a copy of the complete reference architecture?</summary>
-      <p>The complete reference architecture is available to via GitHub Sponsorships.</p>
+    <Admonition type="info" title="Where do I get these files?">
+      The contents of this respository are supplied as part of our [Quickstart](/quickstart) or [Jumpstart](/jumpstart) packages. For the remainder of this guide, we will assume you have access to the reference architecture configurations.
       <PrimaryCTA to="/quickstart">Learn More</PrimaryCTA>
-    </details>
+    </Admonition>
+
   </Step>
 </Steps>
 
 <ActionCard title="What comes next?">
   With your repository set up, we need to address some of the prerequisites for your workstation.
-  This includes setting up your workstation to work with Docker, obtaining cloud access, and more.
+  This includes building the toolbox image on your workstation.
 
-  <PrimaryCTA to="/layers/foundation/prerequisites">Next Step</PrimaryCTA>
+  <PrimaryCTA to="/layers/project/toolbox">Next Step</PrimaryCTA>
 </ActionCard>

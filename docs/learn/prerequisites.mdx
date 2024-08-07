@@ -14,14 +14,17 @@ import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import TaskList from '@site/src/components/TaskList';
 
 <Intro>
-  Before we start provisioning the reference architecture, ensure you have sufficient cloud access to provision the resources and that your local workstation has the necessary software installed.
+  Before provisioning infrastructure, make sure you have the necessary cloud access and that your local workstation has the required software installed.
 </Intro>
 
 <Steps>
   <Step>
     ## <StepNumber/> Obtain Cloud Access
 
-    If you're provisioning the infrastructure from scratch, you'll need the AWS root account credentials as part of the bootstrapping process before AWS Single Sign-On is set up. If you're working within an existing organization, ensure you have sufficient access to the accounts you'll be managing.
+    If you're working within an existing organization, ensure you have sufficient access to the accounts you'll be managing.
+
+    If you're provisioning the infrastructure from scratch, you'll need the AWS root account credentials as part of the bootstrapping process before AWS Single Sign-On is set up.
+
     <TaskList>
       - [ ] AWS SSO Access (talk to your AWS administrator)
       - [ ] Ensure you can log in to AWS. See
@@ -40,7 +43,6 @@ import TaskList from '@site/src/components/TaskList';
       - [ ] `make` installed, preferably GNU Make
       - [ ] `git` installed
       - [ ] [Leapp](/layers/identity/tutorials/leapp) for authentication
-      - [ ] Infrastructure Git repo cloned
     </TaskList>
 
     <Tabs>
@@ -50,8 +52,9 @@ import TaskList from '@site/src/components/TaskList';
         We typically ship a `Brewfile` with a list of local dependencies. Make sure you have [Homebrew](https://brew.sh) and use
         `brew bundle` to install dependencies from the `Brewfile`
         <Steps>
-          1. First, make sure you’ve [cloned the `infrastructure` repository](/layers/foundation/create-repository) for your organization.
-          2. Just run `brew bundle install` to install all localhost dependencies. Here's an example `Brewfile`:
+          1. First, make sure you’ve [cloned the `infrastructure` repository](/layers/project/create-repository) for your organization.
+          2. Just run `brew bundle install` to install all localhost dependencies.
+             Here's an example `Brewfile` we typically include in the infrastructure repository.
 
               ```shell
               brew "atmos"
@@ -82,7 +85,7 @@ import TaskList from '@site/src/components/TaskList';
 
         <Steps>
           1. First, [setup WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and then configure WSL to use version
-            2 by default with this command: `wsl --set-default-version 2`
+             `2` by default with this command: `wsl --set-default-version 2`
           1. [Install Ubuntu for Windows](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
           1. [Install Windows terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)
           1. Launch Ubuntu shell from Windows Terminal
@@ -114,10 +117,34 @@ import TaskList from '@site/src/components/TaskList';
       </TabItem>
     </Tabs>
   </Step>
+
+  <Step>
+    ## <StepNumber/> Clone Infrastructure Repository
+
+    The infrastructure is where you'll find all the code to provision the reference architecture. You'll need to clone this repository to your local workstation.
+
+    ```shell
+    git clone https://github.com/$org/$repo.git
+    ```
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Build the Geodesic Toolbox Container
+
+    Geodesic is a toolbox container that provides an interactive and consistent environment for executing infrastructure commands, similar to a devcontainer. It includes essential tools like `terraform`, `atmos`, and AWS CLI.
+
+    Build this container before provisioning infrastructure.
+
+    ```shell
+    make all
+    ```
+
+    This will build the container and launch a shell inside it. You can now start provisioning infrastructure.
+  </Step>
 </Steps>
 
 <ActionCard title="What comes next?">
-  With your repository set up, you’re ready to configure the toolbox container. This container, based on Geodesic, will provide you with an interactive and consistent environment to execute all the necessary commands in the upcoming steps. In the next step, you’ll dive deeper into Geodesic and its powerful features.
+  With your repository set up and toolbox container.
 
-  <PrimaryCTA to="/layers/foundation/toolbox">Next Step</PrimaryCTA>
+  <PrimaryCTA to="/layers/project/toolbox">Next Step</PrimaryCTA>
 </ActionCard>

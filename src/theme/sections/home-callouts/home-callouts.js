@@ -16,7 +16,7 @@ export default function HomeCallouts() {
             title: 'Start Building',
             subtitle: 'Use our reference architecture to build your own infrastructure',
             urlText: 'Start Building',
-            url: useBaseUrl('/layers/foundation'),
+            url: useBaseUrl('/layers/project'),
         },
         {
             title: 'Maintenance',

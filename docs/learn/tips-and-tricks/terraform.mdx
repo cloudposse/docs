@@ -5,15 +5,12 @@ sidebar_position: 20
 description: "Some helpful hints for Terraform"
 tags:
   - terraform
-  - "Tips & Tricks"
-  - git
+  - tips-and-tricks
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-![Terraform](/assets/a1f105a-terraform.png)
-
-# S3 Bucket Lifecycle Rules
+## S3 Bucket Lifecycle Rules
 
 ```hcl title="Example: S3 Bucket Lifecycle Rules"
 module "assets_bucket_label" {
@@ -71,7 +68,7 @@ For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](
 :::
 
 
-# Encrypted S3 Buckets
+## Encrypted S3 Buckets
 
 ```hcl title="Example: Encrypted S3 Bucket"
 module "assets_bucket_label" {
@@ -100,20 +97,20 @@ resource "aws_s3_bucket" "assets" {
 
 For an example of how we use it, check out our [`terraform-aws-s3-log-storage`](https://github.com/cloudposse/terraform-aws-s3-log-storage) module.
 
-# Use Pre Commit Hooks for Linting
+## Use Pre Commit Hooks for Linting
 
 We strongly urge that all code be linted prior to checking into Git. Running `terraform fmt` on the codebase before committing will accomplish this.
 
 To set this up so that it happens automatically prior to any commit, configure `git` pre-commit hooks using the `pre-commit` utility.
 
-##### OSX Installation
+### OSX Installation
 ```shell
 brew install pre-commit
 ```
 
 Then run `pre-commit install` in a given terraform repo to configure the hooks.
 
-##### .pre-commit-config.yaml
+### .pre-commit-config.yaml
 ```yaml
 - repo: git://github.com/antonbabenko/pre-commit-terraform
   sha: v1.45.0
