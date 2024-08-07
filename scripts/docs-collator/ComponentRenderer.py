@@ -74,6 +74,7 @@ class ComponentRenderer:
             if os.path.exists(change_log_file)
             else ""
         )
+        change_log_content = rendering.reformat_admonitions(change_log_content)
         change_log_content = rendering.shift_headings(change_log_content)
 
         relative_path = os.path.relpath(file, module_download_dir)

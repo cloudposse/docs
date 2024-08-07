@@ -262,31 +262,38 @@ def reformat_admonitions(content):
     """
     Reformat admonitions to be compatible with Docusaurus.
     """
-    # Define a mapping of GitHub to Docusaurus admonitions
-    admonition_map = {
-        'NOTE': 'note',
-        'TIP': 'tip',
-        'WARNING': 'warning',
-        'IMPORTANT': 'important',
-        'CAUTION': 'caution',
-        'DANGER': 'danger'
-    }
+    # Split the content into lines for processing
+    lines = content.split('\n')
+    result = []  # Initialize a list to hold the result
+    in_admonition = False  # Flag to indicate if we're inside an admonition block
+    admonition_type = ""  # Variable to store the current admonition type
 
-    # Regular expression pattern to match GitHub admonitions
-    pattern = re.compile(
-        r'> \[\!(NOTE|TIP|WARNING|IMPORTANT|CAUTION|DANGER)\]\n>\n>([\s\S]*?)(?=\n\n|$)',
-        re.MULTILINE
-    )
+    for line in lines:
+        # Check if the line marks the start of an admonition
+        admonition_start = re.match(r'> \[\!(TIP|WARNING|NOTE|IMPORTANT|CAUTION|DANGER)\]', line)
 
-    matches = pattern.finditer(content)
-    result = content
+        if admonition_start:
+            # Set the flag to indicate we're inside an admonition
+            in_admonition = True
+            # Get the type of admonition, convert to lowercase, and store it
+            admonition_type = admonition_start.group(1).lower()
+            # Add the opening Docusaurus admonition tag with a newline
+            result.append(f":::{admonition_type}")
+            continue
 
-    for match in matches:
-        github_admonition = match.group(1)
-        admonition_content = match.group(2).strip()
-        docusaurus_admonition = admonition_map[github_admonition]
+        if in_admonition:
+            # Process lines that are part of the admonition content
+            if line.startswith('>'):
+                # Remove the '>' prefix and add the line to the result
+                # (But keep the second '>' in the case of '> >' for nested blockquotes)
+                result.append(line[1:].strip())
+            else:
+                # Add the closing Docusaurus admonition tag and reset the flag
+                result.append("\n:::")
+                result.append(line)
+                in_admonition = False
+        else:
+            # Add lines outside admonition blocks as they are
+            result.append(line)
 
-        replacement = f":::{docusaurus_admonition}\n\n{admonition_content}\n\n:::"
-        result = result.replace(match.group(0), replacement)
-
-    return result
+    return '\n'.join(result)
