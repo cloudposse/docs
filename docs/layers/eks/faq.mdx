@@ -1,0 +1,43 @@
+---
+title: FAQ
+sidebar_label: FAQ
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+Frequently asked questions about EKS with Cloud Posse's reference architecture.
+</Intro>
+
+## How can I create secrets for an EKS cluster?
+
+Consider deploying the [`external-secrets-operator` component](/components/library/aws/eks/external-secrets-operator).
+
+This component creates an external SecretStore configured to synchronize secrets from AWS SSM Parameter store as
+Kubernetes Secrets within the cluster. Per the operator pattern, the `external-secret-operator` pods will watch for any
+ExternalSecret resources which reference the SecretStore to pull secrets from.
+
+## How does the `alb-controller-ingress-group` determine the name of the ALB?
+
+1. First the component uses null label to generate our intended name. We do this to meet the character length
+   restrictions on ALB names.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L75-L83)
+2. Then we pass that output to the Kubernetes Ingress resource with an annotation intended to define the ALB's name.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L98)
+3. Now the Ingress is created and `alb-controller` creates an ALB using the annotations on that `Ingress`. This ALB name
+   will have a dynamic character sequence at the end of it, so we cannot know what the name will be ahead of time.
+4. Finally, we grab the actual name that is given to the created ALB with the `data.aws_lb` resources.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L169)
+5. Then output that name for future reference.
+   [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L36)
+
+## How can we create Self-Hosted Runners for GitHub with EKS?
+
+Self-Hosted Runners are a great way to save cost and add customizations with GitHub Actions. Since we've already
+implemented EKS for our platform, we can build off that foundation to create another cluster to manage Self-Hosted
+runners in GitHub. We deploy that new EKS cluster to `core-auto` and install the
+[Actions Runner Controller (ARC) chart](https://github.com/actions/actions-runner-controller). This controller will
+launch and scale runners for GitHub automatically.
+
+For more on how to set up ARC, see the
+[GitHub Action Runners setup docs for EKS](/reference-architecture/setup/github-actions-runners/).
