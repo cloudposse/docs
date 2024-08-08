@@ -49,7 +49,7 @@ It's important to note that the specifics of the integration process may be subj
 First, enable the AWS IAM Identity Center (successor to AWS Single Sign-On) service in the `core-root` account. This is the account where the `aws-sso` component will be deployed.
 
 <Steps>
-  1. Go to the `core-root` account
+  1. Navigate to the `core-root` account in the AWS Web Console
   2. Select your primary region
   3. Go to AWS IAM Identity Center (successor to AWS Single Sign-On)
   4. Enable the service
@@ -174,7 +174,7 @@ refer to the [JumpCloud official documentation](https://jumpcloud.com/support/in
       9. Fill in the Service provider details using the data from IAM Identity Center, and then choose Continue. The mapping
         for the data is as follows:
 
-          ```
+          ```console
           For ACS URL, enter the IAM Identity Center Assertion Consumer Service (ACS) URL.
           For Entity ID, enter the IAM Identity Center issuer URL.
           Leave the Start URL field empty.
