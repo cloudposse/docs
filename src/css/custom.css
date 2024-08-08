@@ -339,9 +339,10 @@ table {
   margin-bottom: 4em;
 }
 
-table td, th {
+table td, table th {
   border: none;
   border-bottom: 1px solid #eaecef;
+  width: 1%;
 }
 
 table tr {
