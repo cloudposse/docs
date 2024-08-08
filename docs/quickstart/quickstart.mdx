@@ -1,7 +1,7 @@
 ---
 id: quickstart
-title: "Get a Quickstart"
-sidebar_label: "Get a Quickstart"
+title: "Quickstart"
+sidebar_label: "Quickstart"
 sidebar_position: 1
 sidebar_class_name: "hidden"
 pagination_next: "quickstart/kickoff"
@@ -11,21 +11,59 @@ import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import SecondaryCTA from '@site/src/components/SecondaryCTA';
 import PillBox from '@site/src/components/PillBox';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
 <PillBox>Do it Yourself (DIY)</PillBox>
 
 <Intro>
-  Our Quickstart offers an end-to-end configuration of this reference architecture for your AWS organization, customized to your needs and implemented by you at your own pace. You'll also have access to our weekly Customer Workshops. All you need to get started is to follow the steps below to start your GitHub Sponsorship.
+This documentation will guide you through the end-to-end configuration of our reference architecture for your AWS organization. You can customize everything to suit your needs and implement it at your own pace. Many have completed the process in under a week, and don't forget to join our weekly Customer Workshops for support if you get stuck.
 </Intro>
 
-Cloud Posse offers our complete reference architecture for free as open source, that you can implement at your own pace. The process involves a lot of steps, and it can be challenging to get everything right.
+<Steps>
+  <Step>
+    ## <StepNumber/> Start your GitHub Sponsorship of Cloud Posse
 
-Our reference architecture documentation assumes you've completed our Jumpstart Accelerator or obtained our Quickstart through a Cloud Posse sponsorship. If you're starting from scratch, this documentation will still provide valuable conceptual insights, but some instructions may not be applicable without the referenced configurations.
+    All of the documentation refers to the prebuilt configurations we provide to our GitHub Sponsors, which is how we fund our open source efforts. This is optional. you are welcome to follow along with the documentation and implement your own configurations if you prefer.
 
-<ActionCard title="Get Help with Customer Workshops">
+    <PrimaryCTA to="https://github.com/sponsors/cloudposse/sponsorships?pay_prorated=false&tier_id=402940">Sponsor Cloud Posse</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Schedule your Kickoff Call with Cloud Posse
+
+    This is an opportunity to review your design decisions with Cloud Posse, and ask any questoins before you get started.
+
+    <PrimaryCTA to="/quickstart/kickoff">Review Agenda</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Receive access to the Quickstart Configuration
+
+    After the call, you'll receive all the configurations customized to your requirements in about a day. You'll use this to get started with your first project.
+
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Start Implementing the Reference Architecture
+    <PrimaryCTA to="/layers/foundation">Get Started</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Get Help on Weekly Customer Workshops
+
+    If you need assistance, our Quickstart provides access to weekly Customer Workshops via Zoom to help you out.
+  </Step>
+
+
+
+</Steps>
+
+<ActionCard title="Prepare for your Kick Off Call">
   If you need assistance, our Quickstart service provides access to weekly Customer Workshops via Zoom to help you out.
   <div>
-    <PrimaryCTA to="https://github.com/sponsors/cloudposse/sponsorships?pay_prorated=false&tier_id=402940">Start GitHub Sponsorship</PrimaryCTA>
-    <SecondaryCTA to="https://get.cloudposse.com/meetings/cloudposse/github-sponsorships">Learn More</SecondaryCTA>
+    <PrimaryCTA to="/quickstart/kickoff">Review Agenda</PrimaryCTA>
+    <SecondaryCTA to="/layers/foundation">Read the Documetnation</SecondaryCTA>
   </div>
 </ActionCard>
