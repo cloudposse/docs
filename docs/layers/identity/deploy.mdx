@@ -39,7 +39,7 @@ These components are expected to be used together to provide fine-grained role d
     atmos workflow deploy/all -f identity
     ```
 
-    <Note title="IMPORTANT">Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.</Note>
+    <Note title="important">Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.</Note>
   </Step>
 
   <Step>
@@ -63,7 +63,7 @@ These components are expected to be used together to provide fine-grained role d
 
     This will generate AWS configuration to the `rootfs` directory locally.
 
-    <Note title="IMPORTANT">
+    <Note title="important">
     The script that generates AWS config requires local files that are created when the AWS Team and Team Roles components are deployed.
 
     If you did not run these steps yourself and they are not committed to git, then you will need to rerun those components to generate these local files. For this reason, we recommend committing these generated files to git so that they are available for future use.

@@ -1,6 +1,6 @@
 ---
 title: "Using AWS SAML to Access AWS"
-sidebar_label: "AWS SAML (Optional)"
+sidebar_label: "Setup AWS SAML (Optional)"
 sidebar_position: 8
 description: Authenticate with AWS via a federated identity using AWS SAML.
 ---
@@ -58,7 +58,7 @@ identity. You can use this federated identity to connect directly to a given AWS
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploy `aws-saml`
+    ## <StepNumber/> Deploy the SAML Integration
 
     ```bash
     atmos terraform apply aws-saml -s core-gbl-identity
@@ -66,7 +66,7 @@ identity. You can use this federated identity to connect directly to a given AWS
   </Step>
 
   <Step>
-    ## <StepNumber/> (Optional) Download AWS Extend Switch Roles.
+    ## <StepNumber/> (Optional) Download AWS Extend Switch Roles Browser Extension
 
     We use the AWS Extend Switch Roles plugin to make it easier to switch roles in the AWS Console. This is optional, but recommended especially if you are not using AWS IAM Identity Center.
 
