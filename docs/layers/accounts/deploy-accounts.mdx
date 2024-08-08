@@ -100,21 +100,29 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   <Step>
     ### <StepNumber/> ClickOps to Complete Account Setup
 
-    For each new account:
+    <Steps>
+      1. For each new account:
+         <Steps>
+         1. Perform a password reset by attempting to log in to the AWS console as a "root user", using that account's email address
+         1. Click the "Forgot password?" link.
+         1. You will receive a password reset link via email, which should be forwarded to the shared Slack channel for automated messages. Click the link.
+         1. Enter a new password
 
-    1. Perform a password reset by attempting to log in to the AWS console as a "root user", using that account's email
-      address, and then clicking the "Forgot password?" link. You will receive a password reset link via email, which
-      should be forwarded to the shared Slack channel for automated messages. Click the link and enter a new password. (Use
-      1Password or Random.org to create a password 26-38 characters long, including at least 3 of each class of character:
-      lower case, uppercase, digit, and symbol. You may need to manually combine or add to the generated password to ensure
-      3 symbols and digits are present.) Save the email address and generated password as web login credentials in
-      1Password. While you are at it, save the account number in a separate field.
-    1. Log in using the new password, choose "My Security Credentials" from the account dropdown menu and set up
-      Multi-Factor Authentication (MFA) to use a Virtual MFA device. Save the MFA TOTP key in 1Password by using
-      1Password's TOTP field and built-in screen scanner. Also, save the Virtual MFA ARN (sometimes shown as "serial
-      number").
-    1. While logged in, enable optional regions as described in the next step, if needed.
-    1. (Optional, but highly recommended): Unsubscribe the account's email address from all marketing emails.
+            <Note title="tip">
+             Use 1Password or Random.org to create a password 26-38 characters long, including at least 3 of each class of character: lower case, uppercase, digit, and symbol. You may need to manually combine or add to the generated password to ensure 3 symbols and digits are present.
+            </Note>
+
+         1. Save the email address and generated password as web login credentials in 1Password.
+         1. Finally, save the account number in a separate field.
+         </Steps>
+
+      1. Log in using the new password, choose "My Security Credentials" from the account dropdown menu and set up Multi-Factor Authentication (MFA) to use a Virtual MFA device. Save the MFA TOTP key in 1Password by using 1Password's TOTP field and built-in screen scanner. Also, save the Virtual MFA ARN (sometimes shown as "serial number").
+
+      1. While logged in, enable optional regions as described in the next step, if needed.
+
+      1. (Optional, but highly recommended): Unsubscribe the account's email address from all marketing emails.
+
+    </Steps>
 
     For more details, review
     [the detailed "AWS Cold Start" documentation](/layers/accounts/tutorials/manual-configuration/#configure-root-account-credentials-for-each-account).
