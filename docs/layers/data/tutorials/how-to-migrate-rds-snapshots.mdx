@@ -7,14 +7,13 @@ sidebar_position: 100
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps'
+import Note from '@site/src/components/Note'
 
 ## Context
 
-:::info Namespace Abbreviations
-
+<Note title="note">
 In this document we will refer to the Legacy Organization as `legacy` and refer to the new Organization as `acme`.
-
-:::
+</Note>
 
 At this point we have a populated database in the `legacy-prod` account that we want to migrate to the new organization.
 This database is encrypted with the Amazon Managed KMS key, `aws/rds`. We have already deployed an empty database to the
