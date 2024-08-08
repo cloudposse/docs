@@ -1,6 +1,7 @@
 ---
-title: Configure Ecspresso
-sidebar_label: Setup
+title: "Setting up ecspresso"
+sidebar_label: "Setup"
+sidebar_position: 10
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -14,37 +15,29 @@ import Admonition from '@theme/Admonition'
   This setup guide will help you get started with [ecspresso](https://github.com/kayac/ecspresso). It features an example app, which demonstrates how your GitHub Actions work with your infrastructure repository.
 </Intro>
 
-:::caution Default Workflows Placement
+| Steps                                                | Actions                                                                           |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 1. Create a repository from the Example App template | [cloudposse-examples/app-on-ecs](https://github.com/cloudposse-examples/app-on-ecs) |
+| 2. Update and reapply `ecr`                          | `atmos terraform apply ecr -s core-use1-artifacts`                                |
+| 3. Validate the environment configuration            | Click Ops                                                                         |
+| 4. Create a GitHub PAT                               | Click Ops                                                                         |
+| 5. Set all Example App repository secrets            | Click Ops                                                                         |
+| 6. Deploy the example ECS services                   | `atmos workflow deploy/app-on-ecs -f app-on-ecs`                                  |
+
+<Note title="note">
 
 **All Workflows live in the example app repository**
 
 This is not a D.R.Y. setup. Workflows with `ecspresso` and `workflow` **prefixes** should be moved to a shared workflow
 repository that can be used by the rest of your organization.
 
-<details>
-<summary>We place all workflows inside the example app for a couple of reasons</summary>
+We place all workflows inside the example app for a couple of reasons
 
 1. This makes the example apps self-contained and can be easily forked and tested
 2. The getting started process is significantly faster
 3. Customizations can be done on a single repo before bringing them to your organization's shared workflow repository.
 
-</details>
-
-:::
-
-## Quick Start
-
-| Steps                                                | Actions                                                                           |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------- |
-| 1. Create a repository from the Example App template | [cloudposse/example-app-on-ecs](https://github.com/cloudposse/example-app-on-ecs) |
-| 2. Update and reapply `ecr`                          | `atmos terraform apply ecr -s core-use1-artifacts`                                |
-| 3. Validate the environment configuration            | Click Ops                                                                         |
-| 4. Create a GitHub PAT                               | Click Ops                                                                         |
-| 5. Set all Example App repository secrets            | Click Ops                                                                         |
-| 6. Deploy the example ECS services                   | `atmos workflow deploy/app-on-ecs -f app-on-ecs`                                  |
-| 7. Validate workflows                                | Click Ops                                                                         |
-
-## Deployment
+</Note>
 
 <Steps>
   <Step>
@@ -394,13 +387,13 @@ repository that can be used by the rest of your organization.
 Now that all requirements are in place, validate all workflows.
 
 <Steps>
-  1. ## Clone the Example App locally
+  1. ### Clone the Example App locally
 
       ```bash
       git clone git@github.com:acme/example-app-on-ecs.git
       ```
 
-  2. ## Change the demo color in `main.go`
+  2. ### Change the demo color in `main.go`
 
       ```go
       func main() {
@@ -410,11 +403,11 @@ Now that all requirements are in place, validate all workflows.
         }
       ```
 
-  3. ## Create a Pull Request
+  3. ### Create a Pull Request
 
      Creating a PR will trigger the CI build and test workflows and the QA cleanup workflows. Ensure these all pass successfully.
 
-  4. ## Add the `deploy/qa1` label
+  4. ### Add the `deploy/qa1` label
 
      Adding this label will kick-off a new workflow to build and test once again and then deploy to the `qa1` environment.
      Ensure this workflow passes successfully and then validate the "Deployment URL" returned.
@@ -424,11 +417,11 @@ Now that all requirements are in place, validate all workflows.
        deployment URL.
      </Note>
 
-  5. ## Merge the Pull Request
+  5. ### Merge the Pull Request
 
      Merging the PR will trigger two different workflows. The Feature Branch workflow will be triggered to clean up and release the QA environment, and the Main Branch workflow will be triggered to deploy to `dev` and draft a release. Once both workflows pass, check that the QA environment is no longer active and then validate the dev URL. Finally, make sure a draft release was successfully created.
 
-  6. ## Publish a Release
+  6. ### Publish a Release
 
      Using the draft release created by the Main Branch workflow, click Edit and then Publish. This will kick off the Release workflow and deploy to `staging` and then to `prod`. Once this workflow finishes, validate both endpoints.
 
@@ -455,3 +448,11 @@ To add additional applications:
   3. Create your Example app Configuration file in the new repository.
   4. Ensure your infrastructure is deployed.
 </Steps>
+
+
+## References
+- [Ecspresso](https://github.com/kayac/ecspresso) : Tool repo
+- [example-app-on-ecs](https://github.com/cloudposse/example-app-on-ecs): Example app
+- [github-action-deploy-ecspresso](https://github.com/cloudposse/github-action-deploy-ecspresso): Base action
+- [`cd-ecspresso`](https://github.com/cloudposse/github-actions-workflows/blob/main/.github/workflows/cd-ecspresso.yml): Primary workflow
+- [`cd-preview-ecspresso`](https://github.com/cloudposse/github-actions-workflows/blob/main/.github/workflows/cd-preview-ecspresso.yml): feature branch workflow
