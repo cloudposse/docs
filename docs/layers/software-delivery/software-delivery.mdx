@@ -9,6 +9,7 @@ import Step from '@site/src/components/Step';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ReactPlayer from 'react-player';
 
 <Intro>
   Software delivery is the process of moving your applications from development to production. This involves building, testing, deploying, and promoting them through environments like dev, staging, and production, with approval gates at each stage. Whether you're using EKS, ECS, or Lambdas, the solutions may vary slightly, but we maintain a consistent, reusable pattern across all applications.
@@ -47,6 +48,10 @@ import TabItem from '@theme/TabItem';
       </TabItem>
     </Tabs>
 
+    <figure>
+      <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/release-engineering.mp4' />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
   </Step>
 
 </Steps>

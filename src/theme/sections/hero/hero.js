@@ -25,7 +25,7 @@ export default function Hero() {
                         <div>
                             <h1 className="hero__title">Reference Architecture</h1>
                             <p className="hero__subtitle">
-                              The turnkey architecture for <strong>AWS, Datadog & GitHub Actions</strong> to get up and running quickly using the Atmos open source framework together with Terraform.
+                              Use this documentation to get up and running quickly with <strong>AWS, Datadog & GitHub Actions</strong> by using the Atmos open source framework together with Terraform.
                             </p>
                             <p>Crafted by Cloud Posse, Supported by Our Community and Team.</p>
                         </div>
