@@ -20,6 +20,22 @@
 /docs/modules/library
 /docs/github-actions/library
 !/docs/components/library/aws/aws.mdx
+!/docs/modules/library/artifactory/artifactory.mdx
+!/docs/modules/library/cloudflare/cloudflare.mdx
+!/docs/modules/library/example/example.mdx
+!/docs/modules/library/github/github.mdx
+!/docs/modules/library/null/null.mdx
+!/docs/modules/library/provider/provider.mdx
+!/docs/modules/library/terraform/terraform.mdx
+!/docs/modules/library/yaml/yaml.mdx
+!/docs/modules/library/aws/aws.mdx
+!/docs/modules/library/datadog/datadog.mdx
+!/docs/modules/library/external/external.mdx
+!/docs/modules/library/kubernetes/kubernetes.mdx
+!/docs/modules/library/module/module.mdx
+!/docs/modules/library/opsgenie/opsgenie.mdx
+!/docs/modules/library/spacelift/spacelift.mdx
+!/docs/modules/library/tls/tls.mdx
 
 /static/css
 /static/js
