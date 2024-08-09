@@ -1,12 +1,41 @@
 // @ts-check
-const { redirects } = require("./redirects");
-const lightCodeTheme = require('prism-react-renderer/themes/vsDark');
-const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
+const lightCodeTheme = require('prism-react-renderer').themes.vsDark;
+const darkCodeTheme = require('prism-react-renderer').themes.nightOwl;
+const fs = require('fs');
+const path = require('path');
+
+// Define the directory containing your CSS files
+const cssDirectory = path.resolve(__dirname, './src/css');
+
+// Read all CSS files from the directory
+const customCssFiles = fs.readdirSync(cssDirectory)
+  .filter(file => file.endsWith('.css'))
+  .map(file => require.resolve(path.join(cssDirectory, file)));
+
+//https://github.com/saucelabs/elemental-next/blob/b1a325631243a13a4f3beee58a295b7b36f6574d/frontend/docusaurus.config.js#L105
+function metadataPlugin(context, options) {
+  return {
+      name: 'metadata',
+      async allContentLoaded({actions, allContent}) {
+          const {setGlobalData} = actions;
+          let docs = []
+          allContent['docusaurus-plugin-content-docs']
+              .default
+              .loadedVersions[0]
+              .docs
+              .filter(doc => doc.id !== undefined)
+              .map((doc) => docs.push(doc));
+          //console.log(JSON.stringify(allContent['docusaurus-plugin-content-docs'], 2, 2, null));
+          //console.log(tempFrontMatter);
+          setGlobalData({aggregateMetadata: docs});
+      }
+  }
+}
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'The Cloud Posse Developer Hub',
-  tagline: 'Welcome to the Cloud Posse developer hub. You\'ll find comprehensive guides and documentation to help you start working with the Cloud Posse technology stack as quickly as possible, as well as support if you get stuck. Let\'s jump right in!',
+  title: 'The Cloud Posse Reference Architecture',
+  tagline: 'The turnkey architecture for AWS, Datadog & GitHub Actions to get up and running quickly using the Atmos open source framework.',
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
@@ -14,90 +43,16 @@ const config = {
   onBrokenMarkdownLinks: 'warn',
   onDuplicateRoutes: 'warn',
   favicon: 'img/favicon.png',
+
+  organizationName: 'cloudposse',
+  projectName: 'docs',
+  deploymentBranch: 'staging',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
   plugins: [
-    //['@docusaurus/plugin-debug', {'id': 'debug-docs'}],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'docs',
-        path: 'content/docs',
-        routeBasePath: '/',
-        sidebarPath: require.resolve('./sidebars-docs.js'),
-        editUrl: ({ versionDocsDirPath, docPath, locale }) => {
-          return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
-        }
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'components',
-        path: 'content/components',
-        routeBasePath: 'components/',
-        sidebarPath: require.resolve('./sidebars-components.js')
-      },
-    ],
-    [
-      require.resolve('./src/plugins/changelog/index.js'),
-      {
-        blogTitle: 'Components Changelog',
-        blogDescription: 'Stay informed about new features and breaking changes in every release',
-        blogSidebarCount: 'ALL',
-        blogSidebarTitle: 'Changelog',
-        routeBasePath: '/components/changelog',
-        showReadingTime: false,
-        postsPerPage: 20,
-        archiveBasePath: null,
-        authorsMapPath: 'authors.json',
-        feedOptions: {
-          type: 'all',
-          title: 'Cloud Posse Components Changelog',
-          description: 'Stay informed about new features and breaking changes in every release',
-          copyright: `Copyright © ${new Date().getFullYear()} Cloud Posse, LLC.`
-        },
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'modules',
-        path: 'content/modules',
-        routeBasePath: 'modules/',
-        sidebarPath: require.resolve('./sidebars-modules.js')
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'github_actions',
-        path: 'content/github-actions',
-        routeBasePath: 'github-actions/',
-        sidebarPath: require.resolve('./sidebars-github-actions.js')
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'reference-architecture',
-        path: 'content/reference-architecture',
-        routeBasePath: 'reference-architecture/',
-        sidebarPath: require.resolve('./sidebars-refarch.js')
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-pages',
-      {
-        id: 'account',
-        path: 'content/account/',
-        routeBasePath: 'account/'
-      },
-    ],
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects
-      },
-    ],
     [
       '@docusaurus/plugin-google-tag-manager',
       {
@@ -107,36 +62,73 @@ const config = {
     [
       'docusaurus-plugin-image-zoom', {},
     ],
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 90,
+        max: 1030, // max resized image's size.
+        min: 640, // min resized image's size. if original is lower, use that size.
+        steps: 2, // the max number of images generated between min and max (inclusive)
+        disableInDev: false,
+      }
+    ],
+    [
+      'custom-loaders', {}
+    ],
+    metadataPlugin,
+    [
+      "posthog-docusaurus",
+      {
+        apiKey: "phc_G3idXOACKt4vIzgRu2FVP8ORO1D2VlkeEwX9mE2jDvT",
+        appUrl: "https://us.i.posthog.com",
+        enableInDevelopment: false, // optional
+      },
+    ],
+    [
+      'docusaurus-plugin-sentry',
+      {
+        DSN: 'b022344b0e7cc96f803033fff3b377ee@o56155.ingest.us.sentry.io/4507472203087872',
+      },
+    ]
   ],
-  organizationName: 'cloudposse',
-  projectName: 'docs',
-  deploymentBranch: 'production',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
+
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: false,
-        blog: false,
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
+          docs: {
+              routeBasePath: '/',
+              sidebarPath: require.resolve('./sidebars.js'),
+              editUrl: ({versionDocsDirPath, docPath, locale}) => {
+                return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
+              },
+              exclude: ['README.md'],
+              showLastUpdateTime: true,
+              showLastUpdateAuthor: true,
+              onInlineTags: 'warn',
+              tags: 'tags.yml'
+          },
+          theme: {
+              customCss: customCssFiles,
+          },
+
       }),
     ],
   ],
+
   scripts: [
     {
       src: "https://kit.fontawesome.com/3a9f2eb5b9.js",
     },
   ],
+
   markdown: {
     mermaid: true,
   },
+
   themes: ['@docusaurus/theme-mermaid'],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -156,75 +148,23 @@ const config = {
         },
         items: [
           {
-            to: '/intro',
+            to: '/learn',
             position: 'left',
-            label: 'Fundamentals',
-            activeBaseRegex:
-              'fundamentals/.*|' +
-              'tutorials/.*|' +
-              'howto/.*|' +
-              'how-to/.*|' +
-              'community/.*|' +
-              'glossary/.*|' +
-              'reference/.*|' +
-              '/intro/',
+            label: 'Learn',
           },
           {
-            type: 'dropdown',
-            label: 'Building Blocks',
+            to: '/reference',
             position: 'left',
-            to: '/fundamentals/building-blocks/',
-            items: [
-              {
-                to: '/components/',
-                label: 'Components',
-              },
-              {
-                to: '/modules/',
-                label: 'Modules',
-              },
-              {
-                to: '/github-actions/',
-                label: 'GitHub Actions',
-              },
-              {
-                href: 'https://atmos.tools',
-                label: 'Atmos',
-              },
-            ]
+            label: 'Reference',
           },
           {
-            href: '/reference-architecture/',
-            position: 'left',
-            html: 'Reference Architecture',
-            target: '_self',
-          },
-          {
-            type: 'dropdown',
+            to: '/community',
             label: 'Community',
+            position: 'left',
+          },
+          {
+            type: 'search',
             position: 'right',
-            items: [
-              {
-                label: 'GitHub Discussions',
-                href: 'https://ask.sweetops.com/',
-              },
-              {
-                label: 'Community',
-                href: 'https://sweetops.com/',
-              },
-              {
-                label: 'Slack',
-                href: 'https://slack.sweetops.com/',
-              },
-              {
-                label: 'Slack Archives',
-                href: 'https://archive.sweetops.com/refarch/',
-              },
-              {
-                label: 'Office Hours',
-                href: 'https://cloudposse.com/office-hours/',
-              },
-            ],
           },
           {
             href: 'https://github.com/cloudposse/',
@@ -233,16 +173,35 @@ const config = {
           },
           {
             to: 'https://cloudposse.com/',
-            label: 'Accelerate',
+            label: 'Get a Jumpstart',
             position: 'right',
-            className: 'button button--success header-accelerate-button'
-          },
-          {
-            type: 'search',
-            position: 'right',
+            className: 'button button--primary navbar-cta-button'
           },
         ],
       },
+
+      announcementBar: {
+        id: 'new_docs',
+        content:
+          'We are in the process of updating our documentation. <a href="mailto:docs@cloudposse.com">Please let us know what you think!</a>',
+        backgroundColor: 'var(--announcement-bar-background)',
+        textColor: 'var(--announcement-bar-text-color)',
+        isCloseable: true,
+      },
+
+      colorMode: {
+        // "light" | "dark"
+        defaultMode: 'dark',
+
+        // Hides the switch in the navbar
+        // Useful if you want to force a specific mode
+        disableSwitch: false,
+
+        // Should respect the user's color scheme preference
+        // "light" | "dark" | "system"
+        respectPrefersColorScheme: false,
+      },
+
       algolia: {
         appId: process.env.ALGOLIA_APP_ID || '32YOERUX83',
         apiKey: process.env.ALGOLIA_SEARCH_API_KEY || '557985309adf0e4df9dcf3cb29c61928', // this is SEARCH ONLY API key and is not sensitive information
@@ -254,33 +213,26 @@ const config = {
         style: 'dark',
         links: [{
           title: 'Docs',
-          items: [{
-            label: 'Getting Started',
-            to: '/intro/',
-          }, {
-            label: 'Building Blocks',
-            to: '/fundamentals/building-blocks/',
-          }, {
-            label: 'Tutorials',
-            to: '/category/tutorials/',
-          }, {
-            label: 'How-To',
-            to: '/category/how-to/',
-          }],
+          items: [
+            {
+              label: 'Learn',
+              to: '/learn/',
+            },
+            {
+              label: 'Reference',
+              to: '/reference/',
+            }
+          ],
         }, {
           title: 'Community',
           items: [
             {
-              label: 'Github Discussions',
-              href: 'https://ask.sweetops.com/',
+              label: 'GitHub Discussions',
+              href: 'https://github.com/orgs/cloudposse/discussions',
             },
             {
-              label: 'Community',
-              href: 'https://sweetops.com/',
-            },
-            {
-              label: 'Slack',
-              href: 'https://slack.sweetops.com/',
+              label: 'Slack Community',
+              to: '/community/slack',
             },
             {
               label: 'Slack Archives',
@@ -288,7 +240,7 @@ const config = {
             },
             {
               label: 'Office Hours',
-              href: 'https://cloudposse.com/office-hours/',
+              to: '/community/office-hours/',
             },
           ],
         }, {
@@ -296,7 +248,7 @@ const config = {
           items: [
             {
               label: 'Support',
-              href: 'https://cloudposse.com/accelerate',
+              to: '/support',
             },
             {
               label: 'Our GitHub',
@@ -304,7 +256,7 @@ const config = {
             },
             {
               label: 'Contact Us',
-              to: '/contact-us/',
+              to: '/community/contact-us/',
             }],
         }],
         logo: {
@@ -313,6 +265,12 @@ const config = {
           href: 'https://cloudposse.com/'
         },
         copyright: `© ${new Date().getFullYear()} Cloud Posse, LLC`,
+      },
+      mermaid: {
+        theme: {
+            light: 'neutral',
+            dark: 'dark',
+        },
       },
       prism: {
         theme: lightCodeTheme,

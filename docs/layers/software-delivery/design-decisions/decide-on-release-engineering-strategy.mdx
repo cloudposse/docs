@@ -1,0 +1,40 @@
+---
+title: Decide on Release Engineering Strategy
+sidebar_label: Software Delivery
+description: Decide on how to release software changes to production
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+A consistent branching strategy is needed to ensure that a consistent workflow is shared across all projects.
+
+## Solution
+
+### GitFlow Strategy
+
+Gitflow is a branching strategy that allows for parallel development by creating separate branches for features and releases. This strategy is considered a bit complicated and advanced but can be beneficial for larger, more complex projects.
+
+The Gitflow branching model consists of the following branches:
+
+ - **Master Branch:** Represents the production-ready code and is typically only updated when a new release is made.
+ - **Develop Branch:** Represents the latest development code and serves as a parent branch for feature branches.
+ - **Feature Branches:** Created from the develop branch, feature branches are used to develop new features or functionality. Once the feature is complete, it is merged back into the develop branch.
+ - **Release Branches:** Created from the develop branch, release branches are used to prepare for a new production release. Any bug fixes and final testing are done on this branch before being merged back into both the develop and master branches.
+ - **Hotfix Branches:** Similar to release branches, hotfix branches are created from the master branch to address any critical bugs or issues discovered in the production code. Once the hotfix is complete, it is merged back into both the master and develop branches.
+
+The benefit of Gitflow is that it provides a clear path for changes to be made to the codebase, ensuring that production-ready code is only released from the master branch. It also allows for multiple developers to work on features and bug fixes in parallel without disrupting the development workflow.
+
+<img src="/assets/refarch/gitflow-branching-strategy.png" /><br/>
+
+### Trunk-Based Strategy
+
+Trunk-based development is a branching strategy that allows for continuous integration and deployment. This strategy is considered simpler and more lightweight than Gitflow, but may not be suitable for larger, more complex projects.
+
+The trunk-based branching model consists of the following branches:
+
+ - **Main (_Trunk_) Branch:** Represents the latest development code and serves as a parent branch for feature branches.
+ - **Feature Branches:** Created from the _Trunk_ branch, feature branches are used to develop new features or functionality. Once the feature is complete, it is merged back into the develop branch.
+
+<img src="/assets/refarch/trunk-based-development-branching-strategy.png" /><br/>

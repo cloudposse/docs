@@ -8,16 +8,25 @@ all: real-clean build
 	@exit 0
 
 deps:
-	npm install --only=production
+	npm install
 
-.PHONY: build
+.PHONY: init build
+
+render:
+	./scripts/render-docs-for-components.sh
+	./scripts/render-docs-for-modules.sh
+	./scripts/render-docs-for-github-actions.sh
 
 build: deps
 	npm run build
 
+clean::
+	npm run clear
+
 build-production: build
 	@exit 0
 
+up: start
 start:
 	npm start
 
@@ -28,3 +37,6 @@ real-clean:
 	rm -fr .docusaurus && \
     rm -fr build && \
     rm -fr node_modules
+
+lint:
+	npx docusaurus-mdx-checker --cwd docs

@@ -1,0 +1,77 @@
+---
+title: Monitor Everything
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import StepNumber from '@site/src/components/StepNumber';
+import Step from '@site/src/components/Step';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import ReactPlayer from 'react-player';
+
+<Intro>
+  With so many moving pieces, it's crucial to monitor what's happening under the hood to understand what's going on. This includes gathering telemetry in the form of metrics and logs coming from your services and the underlying infrastructure. This data must be shipped somewhere to build dashboards and raise alerts that will escalate to the appropriate personnel. Depending on your business needs, you may also need to monitor for security and compliance against various technical benchmarks like PCI/DSS, CIS, ISO 27001, and others.
+</Intro>
+
+<Steps>
+
+  <Step>
+    ## <StepNumber/> Set up Telemetry
+
+    Choose between Datadog or AWS-managed Prometheus and Grafana with Loki for gathering your telemetry. Datadog offers the most mature implementation, while AWS-managed Grafana and Prometheus provide lower-cost alternatives with various trade-offs, that make them a good fit for many organizations.
+
+    <Tabs queryString="provider">
+      <TabItem value="datadog" label="Datadog">
+
+        Datadog is our most comprehensive observability solution, offering a monitoring-as-code approach using YAML configuration fully managed with Terraform. This includes Datadog monitors, custom RBAC roles, synthetic tests, child organizations, and other resources.
+
+        We show how to define reusable Service Level Indicators (SLIs) and Service Level Objectives (SLOs) for consistent implementation, helping to reduce alert fatigue by focusing on critical business-specific metrics and leveraging Datadog's advanced capabilities.
+        Then integrating this with OpsGenie for incident management.
+
+        <PrimaryCTA to="/layers/monitoring/datadog">Get Started</PrimaryCTA>
+      </TabItem>
+
+      <TabItem value="aws" label="AWS Managed Grafana and Prometheus">
+
+        Amazon Managed Grafana is a fully managed service by AWS in collaboration with Grafana Labs. Although it's significantly less expensive than Datadog, it is also more barebones in comparison.
+        <Steps>
+          - Managed Grafana allows you to query, visualize, and set alerts for your metrics, logs, and traces through a centralized dashboard where you can add multiple data sources.
+          - AWS Managed Prometheus together with `promtail` collects and queries metrics from your containerized applications.
+          - Deploy Loki for efficient log collection from containerized applications (for EKS users)
+        </Steps>
+        <PrimaryCTA to="/layers/monitoring/grafana">Get Started</PrimaryCTA>
+      </TabItem>
+    </Tabs>
+
+    <figure>
+      <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/monitoring.mp4' />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Manage Incidents
+
+    With monitoring in place and alerts being emitted, it’s crucial to define what qualifies as an incident and escalate it to the appropriate people for action. We support OpsGenie, which will be natively integrated with Datadog.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Monitor for Security & Compliance
+
+    Monitoring for security and compliance is essential for organizations subject to industry regulations like HIPAA or for e-commerce companies aiming for PCI compliance. Our reference architecture includes comprehensive support for AWS's suite of security-oriented services, including:
+
+    - [Security Hub](https://aws.amazon.com/security-hub/): Centralized security view
+    - [GuardDuty](https://aws.amazon.com/guardduty/): Threat detection service
+    - [Inspector](https://aws.amazon.com/inspector/): Automated security assessments
+    - [Macie](https://aws.amazon.com/macie/): Data security and privacy
+    - [AWS Config](https://aws.amazon.com/config/): Resource configuration tracking
+    - [IAM Access Analyzer](https://aws.amazon.com/iam/features/analyze-access/): Policy monitoring and validation
+    - [Shield](https://aws.amazon.com/shield/): DDoS protection
+    - [Audit Manager](https://aws.amazon.com/audit-manager/): Continuous audit and compliance
+    - [CloudTrail](https://aws.amazon.com/cloudtrail/): User activity and API usage
+    - [WAF](https://aws.amazon.com/waf/): Web application firewall
+  </Step>
+
+</Steps>

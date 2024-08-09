@@ -1,0 +1,119 @@
+---
+title: "Proposed: Use AWS Federated IAM over AWS SSO"
+sidebar_label: "Use AWS Federated IAM over AWS SSO"
+---
+
+**Date**: **19 Oct 2021**
+
+:::warning Rejected!
+
+The proposal in this ADR was rejected! For questions, please reach out to Cloud Posse.
+
+- Customers overwhelmingly prefer AWS SSO. We continue to use both AWS Federated IAM with the `aws-saml` component and use AWS SSO with the `aws-sso` component. However, customers typically use AWS SSO themselves and grant Cloud Posse access by AWS Federated IAM.
+
+:::
+
+## Status
+
+**IN PROGRESS** @Jeremy Grodberg working on this one.
+
+## Context
+
+:::info
+AWS Federated IAM and AWS SSO can coexist and are not mutually exclusive.
+
+:::
+
+### AWS SSO
+
+#### Pros
+
+- Native support via the AWS cli (e.g.  `aws sso login` command)
+
+- It is nice that you can define a permission set once and deploy it to all the accounts (but we can do that with Terraform about as easily)
+
+#### Cons
+
+- Must have a profile to log into and use a permission set
+
+- Cannot set IAM permissions boundary
+
+- Cannot attach customer-managed IAM policies
+
+- Cannot set `SourceIdentity`
+
+- Cannot use as a Principal in IAM policies because they are transient (**a particular problem with EKS access**)
+
+- Cannot have more than one IdP
+
+- In our use cases, the IdP is still a SAML app requiring a SAML connector
+
+### AWS Federated IAM with SAML
+
+```
+    # Note that you cannot update the aws-sso component if you are logged in via aws-sso.
+    # Use the SuperAdmin credentials mentioned in docs/cold-start.md (as of now, stored in 1password)
+    aws-saml-sso:
+      settings:
+        spacelift:
+          workspace_enabled: false
+      vars:
+        idps:
+          cloudposse:
+          acme:
+        roles:
+          terraform-prod:
+            policy: ..
+          terraform-nonprod: ..
+
+        account_assignments:
+          artifacts:
+            grants:
+              - cloudposse:
+                - terraform-nonprod
+              - acme
+                - terraform-nonprod
+                - terraform-prod
+         dev:
+            direct_idp:
+              - cloudposse:
+                - terraform-nonprod
+            grants:
+              - acme
+                - terraform-nonprod
+                - terraform-prod
+```
+
+#### Pros
+
+- Full control over the implementation
+
+- No problems working with EKS and terraform
+
+#### Cons
+
+- GSuite does not support mapping group attributes to SAML attributes (But they don't really solve it for AWS SSO either, and if you can script the GSuite API you can achieve the same effect.)
+
+- Our current implementation with [iam-primary-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-primary-roles) and [iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles) is outdated and should be updated to use the interface we developed for AWS [sso](/components/library/aws/aws-sso/).
+
+### When to use AWS SSO?
+
+AWS SSO is ideally suited for business users of AWS that interact with the AWS Web Console. It does work well with the `aws` CLI, but not together with EKS.
+
+### When to use AWS Federated IAM with SAML?
+
+AWS Federated IAM is ideally suited for organizations that need to use multiple Identity Providers (IdP). It’s also better suited for managing the IAM RBAC mapping with EKS due to limitations in AWS managing the `auth` `ConfigMap` which has no AWS API. [https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html)
+
+## Decision
+
+**DECIDED**:
+
+## Consequences
+
+-
+
+## References
+
+-
+
+

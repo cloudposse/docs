@@ -7,11 +7,18 @@
 # Generated files
 .docusaurus
 .cache-loader
+.cache
 /layouts
 /public
 /resources
 /themes
 /tmp
+/docs/generated/components/library
+/docs/generated/modules/library
+/docs/generated/github-actions/library
+/docs/components/library
+/docs/modules/library
+/docs/github-actions/library
 
 /static/css
 /static/js
@@ -69,7 +76,6 @@ content/components/library/aws/**
 content/modules/library/**
 content/github-actions/library/actions/**
 content/reference-architecture/**
-static/assets/refarch/**
 !content/reference-architecture/index.md
 !content/reference-architecture/refarch.json
 !content/reference-architecture/sitemap.xml

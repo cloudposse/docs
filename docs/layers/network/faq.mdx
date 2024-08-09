@@ -1,0 +1,117 @@
+---
+title: FAQ
+sidebar_label: FAQ
+sidebar_position: 10
+---
+
+import Intro from '@site/src/components/Intro';
+import ReactPlayer from "react-player";
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+Frequently asked questions about network and DNS with Cloud Posse's reference architecture.
+</Intro>
+
+## What is the difference between a Vanity and a Service Domain?
+
+Service domains are fully automated constructions of host names without concern for marketing or branding. Although they
+are not secret, the public will never see them. We use these domains for logic driven service discovery of resources
+across the organization.
+
+On the other hand vanity domains are entirely up to the requirements of the business. Marketing may require hundreds or
+thousand of domains to be associated with an application, and these domains may not follow any naming pattern or
+hierarchy. These are the domains used by the customer.
+
+<ReactPlayer
+    url='https://www.youtube.com/watch?v=ao-2mfA5OTE&t=1s'
+    width={"800px"}
+    height={"450px"}
+    controls={true} />
+
+## Other common DNS questions
+
+- [What are examples of vanity domains?](/layers/network/design-decisions/decide-on-vanity-branded-domain#what-are-examples-of-vanity-domains)
+- [Why do we differentiate between vanity domains and service discovery domains?](/layers/network/design-decisions/decide-on-vanity-branded-domain#why-do-we-differentiate-between-vanity-domains-and-service-discovery-domains)
+- [What’s the difference between vanity domains and service discovery domains?](/layers/network/design-decisions/decide-on-vanity-branded-domain#whats-the-difference-between-vanity-domains-and-service-discovery-domains)
+- [Why don’t we just use staging.acme.com and dev.acme.com as our vanity domains?](/layers/network/design-decisions/decide-on-vanity-branded-domain#why-dont-we-just-use-stagingacmecom-and-devacmecom-as-our-vanity-domains)
+
+## Can we add additional VPCs?
+
+Yes you can create additional VPCs, although we recommend against it. By design, we implement account-level separation
+rather than VPC network data separation. So before creating a new VPC, ask yourself if the ultimate objective would be
+better accomplished by a new account.
+
+If you do want to continue with creating a new VPC, simply define a new instance of the `vpc` component in a given
+stack. Give that component a new name, such as `vpc/data-1`, and then inherit the default vpc settings.
+
+## How can we add an additional region?
+
+In order to add a new network region:
+
+<Steps>
+  1. Create a new mixin for the region: `stacks/mixins/{{ region }}/`
+  1. Define a new stack configuration for the region. The regions of any given account are defined by resources in the directories for the given region, `stacks/orgs/{{ namespace }}/{{ tenant }}/{{ stage }}/{{ region }}/`
+  1. Add the required resources to the stack file, `stacks/orgs/{{ namespace }}/{{ tenant }}/{{ stage }}/{{ region }}/network.yaml`. For example for networking, define a new VPC, connect Transit Gateway, and define Client VPN routes to the new regions.
+</Steps>
+
+For more, see [How to Define Stacks for Multiple Regions](/learn/maintenance/tutorials/how-to-define-stacks-for-multiple-regions)
+
+## How can we connect a legacy AWS account to our network?
+
+Connect a legacy AWS account with VPC Peering. For more, see the
+[`vpc-peering` component](/components/library/aws/vpc-peering/)
+
+## Why not use `dns-delegated` for all vanity domains?
+
+The purpose of the `dns` account is to host root domains shared by several accounts (with each account being delegated
+its own subdomain) and to be the owner of domain registrations purchased from Amazon.
+
+The purpose of the `dns-primary` component is to provision AWS Route53 zones for the root domains. These zones, once
+provisioned, must be manually configured into the Domain Name Registrar's records as name servers. A single component
+can provision multiple domains and, optionally, associated ACM (SSL) certificates in a single account.
+
+Cloud Posse's architecture allows/requires that root domains shared by several accounts be provisioned in the `dns`
+account with `dns-primary` and delegated to other accounts with each account getting its own subdomain corresponding to
+a Route 53 zone in the delegated account. Cloud Posse's architecture requires at least one such domain, called "the
+service domain", be provisioned. The service domain is not customer facing and is provisioned to allow fully automated
+construction of host names without any concerns about how they look. Although they are not secret, the public will never
+see them.
+
+Root domains used by a single account are provisioned with the `dns-primary` component directly in that account. Cloud
+Posse calls these "vanity domains". These can be whatever the marketing or PR or other stakeholders want to be.
+
+**There is no support for `dns-primary` to provision root domains outside of the dns account that are to be shared by
+multiple accounts.**
+
+After a domain is provisioned in the `dns` account, the `dns-delegated` component can provision one or more subdomains
+for each account, and, optionally, associated ACM certificates. For the service domain, Cloud Posse recommends using the
+account name as the delegated subdomain (either directly, e.g. "plat-dev", or as multiple subdomains, e.g. "dev.plat")
+because that allows `dns-delegated` to automatically provision any required host name in that zone.
+
+So, the `dns` account gets a single `dns-primary` component deployed. Every other account that needs DNS entries gets a
+single `dns-delegated` component, chaining off the domains in the `dns` account. Optionally, accounts can have a single
+`dns-primary` component of their own, to have apex domains (which Cloud Posse calls "vanity domains"). Typically, these
+domains are configured with CNAME (or apex alias) records to point to service domain entries.
+
+The architecture does not support other configurations, or non-standard component names.
+
+## How is the EKS network configured?
+
+EKS network is designed with this network and DNS architecture in mind, but is another complex topic. For more, see the
+following:
+
+- [EKS Fundamentals](/layers/eks)
+- [EKS - How To Setup Vanity Domains on an ALB](/layers/eks/tutorials/how-to-setup-vanity-domains-on-alb-eks)
+
+:::info
+
+Private subnets are kept large to account for EKS configurations that can consume a significant amount of IP addresses.
+
+:::
+
+## How is the ECS network configured?
+
+ECS connectivity is also designed with this network and DNS architecture in mind. For more, see the following:
+
+- [ECS Fundamentals](/layers/ecs)
+- [ECS - How To Setup Vanity Domains on an ALB](/layers/ecs/tutorials/how-to-setup-vanity-domains-on-alb-ecs)

@@ -1,0 +1,38 @@
+dl dt {
+    font-weight: bold;
+}
+
+dt > em {
+    font-weight: 500;
+}
+
+dl dd {
+    font-style: italic;
+    color: #929292;
+}
+
+dd p {
+    margin: 0;
+}
+
+dd {
+
+    margin-bottom: 1em;
+}
+
+dd.disambiguation label {
+    font-weight: bold;
+}
+
+dd.disambiguation {
+    font-style: normal;
+    display: inline-block;
+    float: right;
+}
+dd.disambiguation > a:not(:last-child)::after {
+    content: ",";
+}
+
+dd.disambiguation a {
+     margin-left: 0.5em;
+}

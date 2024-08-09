@@ -1,0 +1,108 @@
+name: Build Cloud Posse Docs
+inputs:
+  aws_region:
+    description: "AWS Region for credentials"
+    required: true
+  iam_role_arn:
+    description: "IAM Role ARN with access to S3 bucket origin"
+    required: true
+  iam_role_session_name:
+    description: "Session name to use to assume access to S3 bucket origin"
+    default: "cloudposse-docs-ci"
+  google_tag_manager:
+    description: "Google Tag Manager"
+    default: "GTM-ABCD123"
+  google_site_verification_id:
+    description: "Google Site verification ID"
+    default: "preview-github"
+  repo_access_token:
+    description: "GitHub Token used to access private repos"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ inputs.aws_region }}
+        role-to-assume: ${{ inputs.iam_role_arn }}
+        role-session-name: ${{ inputs.iam_role_session_name }}
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+
+    - name: "Checkout 'terraform-aws-components' Repository"
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        repository: cloudposse/terraform-aws-components
+        ref: main
+        path: tmp/components/terraform-aws-components
+
+    - name: "Setup Python"
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Cache rendered content
+      if: ${{ !contains(github.event.*.labels.*.name, 'no-cache') }}
+      uses: actions/cache@v4
+      with:
+        path: |
+          .build-harness
+          .cache
+        key: "build-website-cache" # Set same key to restore cache in all jobs
+
+    - name: "Initialize Build Harness"
+      shell: bash
+      run: |
+        make init
+
+    - name: "Install Python Dependencies"
+      shell: bash
+      run: |
+        pip install -r scripts/docs-collator/requirements.txt
+
+    - name: "Install terraform-docs"
+      uses: jaxxstorm/action-install-gh-release@v1.12.0
+      with:
+        repo: terraform-docs/terraform-docs
+        tag: v0.18.0
+        cache: enable
+
+    - name: "Render Documentation for Terraform Components"
+      shell: bash
+      run: |
+        ./scripts/render-docs-for-components.sh
+
+    - name: "Render Documentation for Terraform Modules"
+      shell: bash
+      env:
+        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
+      run: |
+        ./scripts/render-docs-for-modules.sh
+
+    - name: "Render Documentation for GitHub Actions"
+      shell: bash
+      env:
+        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
+      run: |
+        ./scripts/render-docs-for-github-actions.sh
+
+    - name: Install Dependencies and Build Website
+      shell: bash
+      env:
+        GOOGLE_TAG_MANAGER: ${{ inputs.google_tag_manager }}
+        GOOGLE_SITE_VERIFICATION_ID: ${{ inputs.google_site_verification_id }}
+      run: |
+        make build-production

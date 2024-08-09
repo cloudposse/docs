@@ -1,0 +1,84 @@
+---
+title: "Creating an Infrastructure repository"
+sidebar_label: "Creating a Repository"
+sidebar_position: 2
+description: Create and configure a GitHub repository for infrastructure
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import Note from '@site/src/components/Note';
+import Admonition from '@theme/Admonition';
+
+<Intro>
+Learn how to create a GitHub repository to host infrastructure tools and configurations. Then configure repository settings, enable branch protection, and add collaborators.
+</Intro>
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Create a GitHub repository
+
+    Create an empty GitHub repository to host infrastructure tools and configuration, and clone it to your host computer into a directory below your `$HOME` directory in the directory tree, for example, `/Users/morpheus/src/infrastructure`.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Setup basic repository settings
+
+    We recommend the following GitHub repository settings.
+    <Steps>
+      1. Under "Features", ensure "Issues" are enabled. We will use Issues with Atmos GitHub Actions for Terraform.
+      1. Under "Pull Requests", disable both "Allow merge commits" and "Allow rebase merging". We do this to create a clean
+        commit history. Otherwise, the git history on the main branch will contain individual commits from each feature
+        branch, which will result in a history which may contain _"dirty"_ commits.
+      1. Under "Pull Requests", check "Always suggest updating pull request branches"
+      1. Under "Pull Requests", check "Automatically delete head branches"
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Enable branch protection
+    <Steps>
+      1. Under branches, select "Add branch ruleset"
+      1. Name this ruleset whatever you'd like. For example, "Protected Branches"
+      1. Under "Bypass list", add your admin team. This team is able to skip the rules were are about to add, so this the
+        bypass list should be sparingly granted
+      1. Under "Target branches", select "Add target" and "Include all default branches"
+      1. Then check the following rules:
+          - [x] Restrict deletions
+          - [x] Require a pull request before merging
+          - [x] Block force pushes
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Add collaborators and teams
+
+    Now add in your collaborators and teams. Under "Collaborators and teams", click "Add Teams". Generally most teams should
+    have "Write" access, and "Admin" access should be granted sparingly.
+
+    For engagements with Cloud Posse, please grant Cloud Posse "Write" access.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Import the Reference Architecture
+
+    With the GitHub repository prepared, we are now ready to import the Cloud Posse reference architecture.
+
+    <Admonition type="info" title="Where do I get these files?">
+      The contents of this respository are supplied as part of our [Quickstart](/quickstart) or [Jumpstart](/jumpstart) packages. For the remainder of this guide, we will assume you have access to the reference architecture configurations.
+      <PrimaryCTA to="/quickstart">Learn More</PrimaryCTA>
+    </Admonition>
+
+  </Step>
+</Steps>
+
+<ActionCard title="What comes next?">
+  With your repository set up, we need to address some of the prerequisites for your workstation.
+  This includes building the toolbox image on your workstation.
+
+  <PrimaryCTA to="/layers/project/toolbox">Next Step</PrimaryCTA>
+</ActionCard>

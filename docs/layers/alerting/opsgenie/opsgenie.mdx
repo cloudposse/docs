@@ -1,0 +1,255 @@
+---
+title: "How to Implement Incident Management with OpsGenie"
+sidebar_label: "OpsGenie"
+confluence: https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1192231154/How+to+Implement+Incident+Management+with+OpsGenie
+sidebar_position: 10
+description: Standardize incident management with clear escalations and response processes
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import CategoryList from '@site/src/components/CategoryList';
+
+<Intro>
+Implementing incident management with OpsGenie involves setting up a standardized, reusable method to handle incidents effectively. This guide outlines the strategy used by Cloud Posse to integrate OpsGenie with Datadog for incident management, ensuring rapid response and remediation while minimizing alert fatigue.
+</Intro>
+
+## Introduction
+
+Cloud Posse advises customers with <i>very similar monitoring requirements</i> because we have standardized our delivery model for our customers. This is our strategy for implementing OpsGenie for Incident Management. The actual fine-tuning of any implementation needs to be tailored to the customer’s needs based on the [Design Decisions](#design-decisions).
+
+Our goal with this guide is to define the reusable method for incident management we use with our customers that we can readily implement time and time again.
+
+Also, make sure to review [How to Implement SRE with Datadog](/layers/monitoring/datadog).
+
+## Problem
+
+The number of events and alerts happening in modern systems easily overwhelms the Signal-to-Noise Ratio (SNR) making them generally ineffective as a means to escalate. We can adjust thresholds all day long and still never silence the system. And even if we silence them, it only reduces our visibility but not the fact that they are still happening. All we really care about is what measurably and adversely affects the business. When the business is affected, we need to rapidly respond, triage and remediate the issue. Tools like Datadog, Sentry, NewRelic are primarily concerned with (and very good at!) raising alerts, but not yet mature at handling complex escalations.  [Datadog's Incident Management](https://www.datadoghq.com/blog/incident-response-with-datadog/) is not yet a mature product and [there’s no Terraform support for managing it](https://registry.terraform.io/providers/DataDog/datadog/latest/docs%20).
+
+## Solution
+
+Route all events through Datadog. Leverage the advanced capabilities of Datadog to surface meaningful alerts that are enriched with tags used by OpsGenie to escalate based on a matrix of rules.
+
+This Document describes the OpsGenie side of things and how it works with Datadog, also see, why we [Use OpsGenie for Incident Management](/resources/adrs/adopted/use-opsgenie-for-incident-management) and [How to Implement SRE with Datadog](/layers/monitoring/datadog).
+
+## Terminology
+
+The terms _event, alert_ and _incident_ are frequently used interchangeably, but we need to define them strictly for our purposes.
+
+<dl>
+  <dt>Event</dt>
+  <dd>
+    An **event** is an observed change to the normal behavior of a system, environment, process, workflow or person. All events have tags. See Tag Mapping.
+    <em>Example: AWS Console Login by IAM User</em>
+  </dd>
+
+  <dt>Alert</dt>
+  <dd>
+    An **alert** is a notification that a particular type of event (or series of events) has occurred, which is sent to responsible parties for the purpose of spawning action.
+    <em>Example: AWS Console Login using Root User Credentials</em>
+  </dd>
+
+  <dt>Incident</dt>
+  <dd>
+    An **incident** is a type of event that negatively affects the Confidentiality, Integrity, and/or Availability (CIA) at an organization in a way that <i>impacts the business</i>.
+    Read more [here](https://support.atlassian.com/opsgenie/docs/what-is-an-incident/)
+  </dd>
+
+  <dt>Escalation</dt>
+  <dd>
+    An **escalation** is a means of responding to an event based on schedules, rotations, and routing rules that deliver notifications via multiple mediums (email, phone, SMS, app, webhook, etc)
+    <em>Example: Send a notification event to the mobile device of the on-call engineer, if no acknowledgement after 5 minutes, fallback to the backup on-call engineer</em>
+  </dd>
+
+  <dt>Service</dt>
+  <dd>
+    A **service** is a deployable instance, or part, of an application as a whole. A **service** is deployed to many environments. This is important to understand because it follows the Datadog Service Definition [[1](https://docs.datadoghq.com/tracing/visualization)] [[2](https://docs.datadoghq.com/getting_started/tagging/unified_service_tagging/?tab=kubernetes#overview)], and maps directly to an OpsGenie Service (see below). [OpsGenie Official Service Definition](https://support.atlassian.com/opsgenie/docs/what-are-services-in-opsgenie/)
+    <em>Example: Cert-Manager is a Service, as part of an EKS app, deployed to many environments.</em>
+  </dd>
+
+  <dt>App</dt>
+  <dd>
+    An **App** is a collection of services that represent a group of functionality for the end user. This acts as a logical grouping and is on the roadmap for cascading impact.
+    <em>Example: My-EComm-Store is an app, EKS is an app (end user is developers)</em>
+  </dd>
+
+  <dt>Team</dt>
+  <dd>
+    A **Team** is a group of users that an alert can be routed to. [Opsgenie Team Definition](https://support.atlassian.com/opsgenie/docs/what-are-teams-in-opsgenie/)
+    <em>Example: SRE is a team</em>
+  </dd>
+
+  <dt>Routing Rules</dt>
+  <dd>A team has Routing Rules which controls the logic of where an event goes within a team.</dd>
+
+  <dt>Escalations</dt>
+  <dd>A team has Escalations, as described above.</dd>
+
+  <dt>Schedules</dt>
+  <dd>A team has Schedules which allows users to have times that they are on call.</dd>
+
+  <dt>Owned Services</dt>
+  <dd>A team has owned Services, as described above.</dd>
+
+</dl>
+
+Some definitions borrowed from [Daniel Miessler's Event Alert Incident](https://danielmiessler.com/study/event-alert-incident/)
+
+:::caution
+All incidents are events, but not all events and alerts are incidents.
+
+:::
+
+:::info
+Since SLOs are by definition business-critical, any SLO violation is automatically an incident.
+
+:::
+
+<img src="/assets/refarch/cleanshot-2021-12-08-at-22.39.06-20211209-043932.png" /><br/>
+
+:::info
+An important note here is the **Service** mapping from **Datadog** to **OpsGenie**. It is a 1-1 Mapping, Datadog has a very easy to view graphing and listing of these services. In OpsGenie this requires _explicit_ owning of a service by a team.
+
+:::
+
+## Incidents
+
+An Incident is an escalated alert with a business impact. All SLOs by definition have business impacts and therefore when violated should be considered an incident. We define anything of severity P1 or P2 as an incident and therefor having business impact. An alert is automatically escalated to an incident by its severity as defined in the monitor.
+
+## Component: `opsgenie-team`
+
+### Component Page
+
+[opsgenie-team](/components/library/aws/opsgenie-team/)
+
+### How to Guides
+
+<CategoryList path="/layers/alerting/opsgenie/" />
+
+### Goals
+
+- We want to be able to define a simple DSL in YAML for expressing an opinionated way to define escalations.
+
+- We want to be able to define an opinionated tag-based approach to OpsGenie so that any integration (e.g. Datadog) can send alerts and incidents, by simply adding tags like `team:sre`, `service:eks`.
+
+- We want to define a clear line between a constant alerting ruleset (Opsgenie), and the data being fed to it (Datadog)
+
+- OpsGenie Component shouldn’t need to change unless teams or services change.
+
+- New alerts, monitors, and SLOs do not require any change to the OpsGenie configuration.
+
+- It is the responsibility of the integration (e.g. Datadog) to determine the tags. If the integration cannot enrich its own events with tags, that integration should pass through something like Datadog which can enrich the events.
+
+:::caution
+OpsGenie cannot escalate based on any mathematical expressions (e.g. rate or frequency of alerts). As an alternative, consider using Datadog to determine the rate or frequency of some event and alert on that.
+
+:::
+
+### What does it do
+
+Our **OpsGenie-Team** Component handles the creation of many resources. The component is highly configurable to allow full reference to the underlying resources. However, we also want to have sane defaults that allow short snippets to quickly spin up new fully-fledged teams in OpsGenie.
+
+:::info
+The component follows the **DataDog recommended way for integrating with OpsGenie**. By creating one integration per team. [https://docs.datadoghq.com/integrations/opsgenie/](https://docs.datadoghq.com/integrations/opsgenie/)
+
+:::
+
+### Limitations
+
+##### Cannot Add dependent Services
+
+- Incident Routing cannot add dependent services - in api versions `v1` and `v2` a `service_incident_rule` object has `serviceId` as type string, in `webapp` this becomes `serviceIds` of type `list(string)`
+
+[https://github.com/opsgenie/terraform-provider-opsgenie/issues/282](https://github.com/opsgenie/terraform-provider-opsgenie/issues/282)
+
+##### Cannot Add Stakeholders
+
+[https://github.com/opsgenie/terraform-provider-opsgenie/issues/278](https://github.com/opsgenie/terraform-provider-opsgenie/issues/278)
+
+##### No Resource to create Slack Integration
+
+- [https://github.com/DataDog/terraform-provider-datadog/issues/67](https://github.com/DataDog/terraform-provider-datadog/issues/67)
+
+- Full list of integrations supported [https://docs.opsgenie.com/docs/integration-types-to-use-with-api](https://docs.opsgenie.com/docs/integration-types-to-use-with-api)
+
+- The rules (e.g. match conditions, like priority) for the Slack integration are in the `opsgenie_integration_action` but since there isn’t a data source to pull the integration id, if we wanted to create this resource in terraform, we’d need the user to manually grab the guid integration id in order to create the rule.
+
+##### User management can be cumbersome
+
+- SAML/SSO integration in OpsGenie does not retrieve any specific attributes
+
+- There is no way to map a SAML/SSO user to an OpsGenie team or role
+
+- Creating users at the moment is done manually using yaml which may not be desired
+
+- An alternative is a separate point of truth such as Okta or Github where teams are already managed. If this is the case, we can use the `okta_user` or `github_user` data source, grab a specific attribute from okta or team associated to the gh user, and map that to the same in opsgenie using `opsgenie_user` data source.
+
+
+### How it Works
+
+#### Alerting a Team
+
+A team is alerted by tagging their datadog integration name in the **message** of an alert.
+
+e.g. adding `@opsgenie-<integration_name>`. This can be done automatically by a team tag. In code this looks like `@opsgenie-${team.name}` where datadog fetches the team from the label applied to the resource.
+
+:::caution
+The tag must be fed to a monitor via the data source (like aws integration - and the aws resource), Datadog will not use a monitor tag.
+
+:::
+Thus if a message for datadog is `@opsgenie-${team.name}` datadog looks for the team tag and will change the message to be `@opsgenie-sre` if the team was `sre`. Datadog knows to look at an opsgenie integration because of the `@opsgenie` portion, then under that integration configuration, looks for a `Datadog Integration Name` with the team specified, `sre` in this case. If it’s found then Datadog now knows what integration to use! If it doesn’t find it, datadog looks for a Datadog Integration name called `datadog`, which acts as the default.
+
+Each Monitor has a default Integration to use. Each Integration has a default team associated to it.
+
+A `monitor`s message is the `message` field + the `alert_tag` of the component. Where the alert tag appends the `@opsgenie-${team.name}`
+
+<!-- extension: [lucid_chart, f32e18e3-f8d1-482e-be2e-cd31df649209] -->
+
+<!-- extension: [lucid_chart, a3e98e0e-30bd-459b-9e7f-0cfed8514a5c] -->
+<img src="/assets/refarch/opsgenieintegrations.png" /><br/>
+
+### Incidents Rules
+
+The OpsGenie Abstract component creates the rules that specify when an alert is an incident.
+
+:::tip
+We recommend that all **P1** and **P2** alerts **are Incidents**.
+We recommend all teams use company defaults and only in very special cases do teams override this setting. This helps promote an understanding of how severe a problem is.
+
+:::
+
+### Severity Mapping
+
+The severity levels (P1-P5) should be standardized at an organizational level and documented in an ADR. The severity level determines the escalation path. We recommend for consistency that given any severity, the escalation mechanism is identical, but who it escalates to will vary based on service.
+
+:::tip
+In general, reserving **P1** and **P2** for reactive responses and escalate 24x7. **P3**-**P5** are for proactive responses and only escalate during business hours, if at all.
+
+:::
+It’s up to every organization to define these mappings for their organization as it will form the basis of the escalation matrix. The severity should be scaled based on the impact to the business, not necessarily the impact to the service. For example, if a non-essential microservice is entirely offline, but is does not effect the delivery of core business services, it should still not be a P1.
+
+<img src="/assets/refarch/image-20211101-222346.png" /><br/>
+
+:::info
+Datadog priorities map one-to-one to OpsGenie severity.
+
+:::
+
+#### Recommendations
+
+| **Severity** | **Response** | **Event** | **Description**                                                                                                                                                   | **Examples**                                                                                                                                                                                                                                                            |
+| ------------ | ------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1           | Reactive     | Incident  | SLO violation. Someone’s getting paged 24x7. All hands on deck. Production is down. All customers are affected. <br/><br/>Critical 24x7                           | - Production Backend API has been down for 3 hours this week (Failed SLO)<br/><br/><br/>- Production Backend API is down (Over 5 min) (Synthetic Failed)<br/>→ SLO not broken yet but in violation (SLO Trending to failure)                                            |
+| P2           | Reactive     | Incident  | SLO violation. Error budget in jeopardy of being depleted. Some customers are being severely affected. Someone’s getting paged 24x7. <br/><br/>Important 24x7     | - Production API Down 1 Hour this week (Warning SLO)<br/><br/><br/>- Production API Down 1 Minute This week (SLO Trending to Warning)<br/><br/><br/>- Customers in `us-west-2` Are experiencing significant latency (Breaks SLO on response time but not all customers) |
+| P3           | Proactive    | Alert     | Alert Created Regular Business Hours:<br/>App Failures, Crashes, Minor Downtime(non-critical apps), SLI Violation.<br/>Lesser Violations that could lead to P1/P2 | - Pods of deployment X are crashlooping<br/><br/><br/>- High Response Time Backend Service                                                                                                                                                                              |
+| P4           | Proactive    | Alert     | Things that need to be acknowledged by a team but will not necessarily lead to failures.                                                                          | - Number of Kube nodes reached > 10                                                                                                                                                                                                                                     |
+| P5           | Proactive    | Event     | Informational Alarms that self resolve. Metrics could create be created off number of these.                                                                      | - Feature Flag enabled in environment X                                                                                                                                                                                                                                 |
+
+## References
+
+- [https://support.atlassian.com/opsgenie/](https://support.atlassian.com/opsgenie/)
+
+- [https://en.wikipedia.org/wiki/Incident_management_(ITSM)](https://en.wikipedia.org/wiki/Incident_management_(ITSM))
+
+- [https://sre.google/sre-book/monitoring-distributed-systems/](https://sre.google/sre-book/monitoring-distributed-systems/)
+
+

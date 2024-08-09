@@ -1,0 +1,70 @@
+---
+title: Provision Databases
+sidebar_class_name: hidden
+---
+
+import Intro from '@site/src/components/Intro';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Intro>
+  There are many options for provisioning databases in AWS. The reference architecture provides support for a variety of databases, including Aurora PostgreSQL, Aurora MySQL, DynamoDB, RDS, ElastiCache, DocumentDB, and more.
+
+  Each database has its own unique features and benefits, so you can choose the one that best fits your needs or deploy multiple databases to support different use cases.
+</Intro>
+
+### SQL Database Options
+
+The reference architecture supports several SQL database options, including Aurora PostgreSQL, Aurora MySQL, RDS, and more.
+
+<Tabs queryString="sql">
+  <TabItem value="aurora-postgres" label="Aurora PostgreSQL">
+    Aurora PostgreSQL is a fully managed, PostgreSQL-compatible relational database service that combines the performance and availability of high-end commercial databases with the simplicity and cost-effectiveness of open-source databases. Aurora PostgreSQL is a good choice for applications that require the features and capabilities of PostgreSQL with the scalability, performance, and reliability of a managed service.
+
+    <PrimaryCTA to="/components/library/aws/aurora-postgres/">Get Started</PrimaryCTA>
+  </TabItem>
+
+  <TabItem value="aurora-mysql" label="Aurora MySQL">
+    Aurora MySQL is a fully managed, MySQL-compatible relational database service that combines the performance and availability of high-end commercial databases with the simplicity and cost-effectiveness of open-source databases. Aurora MySQL is a good choice for applications that require the features and capabilities of MySQL with the scalability, performance, and reliability of a managed service.
+
+    <PrimaryCTA to="/components/library/aws/aurora-mysql">Get Started</PrimaryCTA>
+  </TabItem>
+
+  <TabItem value="rds" label="RDS">
+    Amazon RDS is a managed relational database service that supports multiple database engines, including MySQL, PostgreSQL, MariaDB, Oracle, and SQL Server. RDS is a good choice for applications that require the features and capabilities of a relational database with the scalability, performance, and reliability of a managed service.
+
+    <PrimaryCTA to="/components/library/aws/rds">Get Started</PrimaryCTA>
+  </TabItem>
+
+  <TabItem value="redshift" label="RedShift">
+    Amazon Redshift is a fully managed, petabyte-scale data warehouse service that provides fast query performance using SQL and business intelligence tools. Redshift is a good choice for applications that require high-performance analytics and data warehousing with built-in security, backup, and restore capabilities.
+
+    <PrimaryCTA to="/components/library/aws/redshift">Get Started</PrimaryCTA>
+  </TabItem>
+</Tabs>
+
+### NoSQL Database Options
+
+The reference architecture also supports several NoSQL database options, including DynamoDB, DocumentDB, Elasticache Redis, and more. SQL and/or NoSQL databases can always be deployed side by side to support different use cases.
+
+<Tabs queryString="nosql">
+  <TabItem value="dynamodb" label="DynamoDB">
+    DynamoDB is a fully managed NoSQL database service that provides fast and predictable performance with seamless scalability. DynamoDB is a good choice for applications that require low-latency, high-throughput access to data with built-in security, backup, and restore capabilities.
+
+    <PrimaryCTA to="/components/library/aws/dynamodb">Get Started</PrimaryCTA>
+  </TabItem>
+
+  <TabItem value="documentdb" label="DocumentDB">
+    Amazon DocumentDB is a fully managed, MongoDB-compatible document database service that provides fast and scalable performance with built-in security, backup, and restore capabilities. DocumentDB is a good choice for applications that require the features and capabilities of MongoDB with the scalability, performance, and reliability of a managed service.
+
+    <PrimaryCTA to="/components/library/aws/documentdb">Get Started</PrimaryCTA>
+  </TabItem>
+
+  <TabItem value="elasticache-redis" label="ElastiCache Redis">
+    Amazon ElastiCache is a fully managed in-memory data store service that supports Redis and Memcached. ElastiCache Redis is a good choice for applications that require low-latency, high-throughput access to data with built-in security, backup, and restore capabilities.
+
+    <PrimaryCTA to="/components/library/aws/elasticache-redis">Get Started</PrimaryCTA>
+  </TabItem>
+
+</Tabs>

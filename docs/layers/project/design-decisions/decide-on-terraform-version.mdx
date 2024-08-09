@@ -1,0 +1,34 @@
+---
+title: "Decide on Terraform Version"
+sidebar_label: "Terraform Version"
+sidebar_position: 1
+refarch_id: REFARCH-280
+description: "Choose Terraform version for compatibility and consistency"
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+Different versions of Terraform have different features and compatibility, but all 1.x versions are backward compatible. We need to decide on the best Terraform version to use to avoid issues and maintain consistency across modules and components.
+</Intro>
+
+## Problem
+
+Historically, Terraform versions pre-1.x were notoriously backwards incompatible. This changed with Terraform 1.x releases and backwards
+compatibility is assured for all subsequent 1.x releases. Our terraform modules and components strive to be on the latest version,
+but with hundreds of modules and components, there’s sometimes a delay before we get the chance to _verify_ support.
+
+## Considerations
+
+:::tip
+
+Cloud Posse recommends using the latest 1.x version of Terraform
+
+:::
+
+Prior to terraform 1.x, the version of terraform was a big deal due to backward compatibility issues between minor
+releases.
+
+## Latest Releases
+
+- https://github.com/hashicorp/terraform/releases

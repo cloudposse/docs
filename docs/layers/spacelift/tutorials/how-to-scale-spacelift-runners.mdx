@@ -1,0 +1,164 @@
+---
+title: "How to Scale Spacelift Runners"
+sidebar_label: "Scaling Runners"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+There are hundreds or thousands of proposed runs pending in Spacelift. Autoscaling will eventually scale up to handle capacity but want faster turnaround time.
+
+## Solution
+
+:::note
+
+If there are too many Spacelift runs triggered by PRs that do not require Spacelift to run at the moment. The user can add a label called `spacelift-no-trigger` on the PR to prevent Spacelift stacks from running on each commit. This label should be removed before the last commit (before approval and merge) so the Spacelift stacks can be validated.
+
+:::
+
+:::note
+
+To reduce Spacelift runs triggered by PRs, ensure that the `spacelift` component is using the [latest upstream module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation/releases) or `0.46.0` at the very least. This release has an updated policy that cancels previous commit runs if a new commit is pushed.
+
+:::
+
+### Scaling EC2 Runners via Stack Configurations
+
+:::caution
+
+While we always recommend making all changes to IaC via Pull Request, if the desire is to increase the size of the Auto Scale Group and there are hundreds or thousands of pending runs, then the Pull Request will suffer the same fate as the other runs and be blocked from execution until the other runs complete.
+
+:::
+
+The parameters that affect scale up behavior are:
+
+| **Setting**                              | **Description**                                                                                           |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `min_size`                               | The minimum of the instances                                                                              |
+| `max_size`                               | The maximum number of instances                                                                           |
+| `desired_capacity`                       | The number of instances desired online all the time.                                                      |
+| `health_check_grace_period`              |                                                                                                           |
+| `spacelift_agents_per_node`              | The number of Spacelift agents running per EC2 instance. Increase for greater density of agents per node. |
+| `cpu_utilization_high_threshold_percent` | Percent CPU utilization (integer between 0 and 100) required to trigger a scale up event                  |
+| `wait_for_capacity_timeout`              | Before scaling further, wait for this many seconds for capacity requirements to be met.                   |
+
+The parameters that affect scale-down behavior are:
+
+| **Setting**                             | **Description**                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `default_cooldown`                      |                                                                                                                                                                                                                                      |
+| `scale_down_cooldown_seconds`           |                                                                                                                                                                                                                                      |
+| `cpu_utilization_low_threshold_percent` | Percent CPU utilization (integer between 0 and 100) required to trigger a scale down event. The higher this number, the more likely the cluster will be scaled down because nodes are typically not very CPU intensive _on average._ |
+| `max_size`                              |                                                                                                                                                                                                                                      |
+
+Here’s a sample `spacelift-worker-pool` configuration.
+
+```yaml
+components:
+  terraform:
+    spacelift-worker-pool:
+      settings:
+        spacelift:
+          workspace_enabled: true
+      vars:
+        enabled: true
+        ecr_stage_name: artifacts
+        ecr_tenant_name: mgmt
+        ecr_environment_name: uw2
+        ecr_repo_name: infrastructure
+        ecr_region: us-west-2
+        ecr_account_id: "1234567890"
+        spacelift_api_endpoint: https://acme.app.spacelift.io
+        spacelift_runner_image: 1234567890.dkr.ecr.us-west-2.amazonaws.com/infrastructure:latest
+        instance_type: "c5a.xlarge" # cost-effective x86 instance with 4vCPU, 8GB (see: https://aws.amazon.com/ec2/instance-types/)
+        wait_for_capacity_timeout: "10m"
+        spacelift_agents_per_node: 2
+        min_size: 3
+        max_size: 50
+        desired_capacity: null
+        default_cooldown: 300
+        scale_down_cooldown_seconds: 2700
+        # Set a low scaling threshold to ensure new workers are launched as soon as the current one(s) are busy
+        cpu_utilization_high_threshold_percent: 10
+        cpu_utilization_low_threshold_percent: 5
+        health_check_type: EC2
+        health_check_grace_period: 300
+        termination_policies:
+          - OldestLaunchConfiguration
+        ebs_optimized: true
+        block_device_mappings:
+          - device_name: "/dev/xvda"
+            no_device: null
+            virtual_name: null
+            ebs:
+              delete_on_termination: null
+              encrypted: false
+              iops: null
+              kms_key_id: null
+              snapshot_id: null
+              volume_size: 100
+              volume_type: "gp2"
+        iam_attributes:
+          - admin
+        instance_refresh:
+          # https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-instance-refresh.html
+          # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group#instance_refresh
+          strategy: Rolling
+          preferences:
+            # The number of seconds until a newly launched instance is configured and ready to use
+            # Default behavior is to use the Auto Scaling Group's health check grace period
+            instance_warmup: null
+            # The amount of capacity in the Auto Scaling group that must remain healthy during an instance refresh to allow the operation to continue,
+            # as a percentage of the desired capacity of the Auto Scaling group
+            min_healthy_percentage: 50
+          triggers: null
+```
+
+### Scaling EC2 Runners Immediately (via AWS Console)
+
+#### Scaling Up
+
+- Login to the AWS console for the automation account.
+
+- Find the autoscale group under the EC2 menu and increase the autoscaling group size.
+
+#### Scaling Down
+
+:::caution
+**IMPORTANT**
+Before scaling spacelift workers down, check the “**Pending runs**” and “**busy workers**” are both **0.** In other words do not scale down when spacelift is busy. If the worker is terminated in the middle of a job, it will leave a stale terraform state lock and maybe broken state. Stack lock can be fixed using “terraform force-unlock“ as suggested in a command line prompt.
+
+:::
+
+<img src="/assets/refarch/image-20220126-143824.png" /><br/>
+
+- Login to the AWS console for the automation account.
+
+- Find the autoscale group under the EC2 menu decrease the autoscaling group size
+
+### Scaling EC2 Runners Immediately (via `aws` CLI)
+
+Get the name of the ASG
+
+```bash
+AWS_PROFILE=$NAMESPACE-gbl-auto-admin
+
+# Get ASG name
+ASG_NAME=$(aws autoscaling describe-auto-scaling-groups \
+  --query 'AutoScalingGroups | [?contains(AutoScalingGroupName, `spacelift`)] | [0].AutoScalingGroupName' \
+  --output text)
+
+# Set the max of the ASG
+aws autoscaling update-auto-scaling-group --auto-scaling-group-name $ASG_NAME --max-size 10
+
+# Set the desired capacity of the ASG
+aws autoscaling set-desired-capacity --auto-scaling-group-name $ASG_NAME --desired-capacity 10
+```
+
+### k8s (Not Yet Supported)
+
+Cloud Posse has not yet implemented Kubernetes Spacelift runners.
+
+

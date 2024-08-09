@@ -1,0 +1,61 @@
+---
+title: "Lens"
+sidebar_position: 100
+---
+import ReactPlayer from 'react-player'
+
+# Lens
+Download from [k8slens.dev](https://k8slens.dev/) or install the [Homebrew formula](https://formulae.brew.sh/cask/lens#default).
+
+<ReactPlayer
+    url='https://www.youtube.com/watch?v=eeDwdVXattc'
+    width={"800px"}
+    height={"450px"}
+    controls={true} />
+
+### Generating a Cluster’s `kubeconfig`
+Once Lens is downloaded, it needs a `kubeconfig` file to authenticate with a server. Using a Geodesic shell, run `set-cluster [cluster-name]` to generate a `kubeconfig` in `/conf/.kube`. The file will be named after the cluster and current user’s role; e.g. `set-cluster platform-use2-dev` will generate a file named like `/conf/.kube/kubecfg.platform-use2-dev-admin`.
+
+The easiest way to access this cluster from Lens is to copy the `kubeconfig` to the current system user's `~/.kubeconfig` folder which is represented as `/localhost/.kubeconfig` inside of the Geodesic shell.
+
+#### Example
+
+```
+set-cluster platform-use2-dev
+cp /conf/.kube/kubecfg.platform-use2-dev-admin /localhost/.kubeconfig/
+```
+
+:::note
+The filename does not include specific context to the project. They can be renamed on the local user’s system as needed, if naming conflicts arise.
+
+Example:
+
+`mv /localhost/.kubeconfig/kubecfg.platform-use2-dev-admin localhost/.kubeconfig/kubecfg.namespace-platform-use2-dev-admin` where `namespace` is a relevant, distinguishable attribute for that config.
+
+:::
+
+### Importing `kubeconfig`
+On the Catalog view, click the `+` in the bottom corner and select the config file imported in the previous step.
+
+<img src="/assets/refarch/screenshot-2021-12-20-at-16.01.24@2x.png" /><br/>
+
+The configs can also be synced by hovering over the `+` button and clicking “Sync kubeconfig(s)” button.
+
+<img src="/assets/refarch/screenshot-2021-12-20-at-16.06.58@2x.png" /><br/>
+
+### Connecting to a Cluster
+Click cluster within the list on the specific cluster.
+
+<img src="/assets/refarch/screenshot-2021-12-20-at-16.09.30@2x.png" /><br/>
+
+:::note
+Click the pin icon to place the cluster in the sidebar.
+
+:::
+Once the cluster connects, the following screen will be available to use.
+
+<img src="/assets/refarch/screenshot-2021-12-20-at-16.14.10@2x.png" /><br/>
+
+<img src="/assets/refarch/screenshot-2021-12-20-at-16.14.10@2x.png" /><br/>
+
+

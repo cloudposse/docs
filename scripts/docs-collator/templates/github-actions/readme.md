@@ -15,7 +15,7 @@ description: |-
 tags:
 {{ (ds "config").tags | data.ToYAML | strings.Indent 2 -}}
 {{- end }}
-custom_edit_url: https://github.com/cloudposse/{{ $fullName }}/edit/master/README.md
+custom_edit_url: https://github.com/cloudposse/{{ $fullName }}/edit/main/README.md
 ---
 
 # GitHub Action: `{{ $shortName }}`
@@ -75,7 +75,7 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullName }}/edit/master/READM
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" $file) }}
+{{ (include "includes" (printf "%s/%s" $fullName $file)) }}
 {{- end }}
 {{- end }}
 {{- end }}

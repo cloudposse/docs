@@ -1,8 +1,8 @@
 import os
 
-DOCS_DIR = 'docs'
-TARGETS_MD = 'targets.md'
-README_YAML = 'README.yaml'
+DOCS_DIR = "docs"
+TARGETS_MD = "targets.md"
+README_YAML = "README.yaml"
 
 
 class MissingReadmeYamlException(Exception):
@@ -20,7 +20,9 @@ class AbstractFetcher:
         self.github_provider.fetch_file(repo, README_YAML, module_download_dir)
 
     def _fetch_docs(self, repo, module_download_dir, submodule_dir=""):
-        remote_files = self.github_provider.list_repo_dir(repo, os.path.join(submodule_dir, DOCS_DIR))
+        remote_files = self.github_provider.list_repo_dir(
+            repo, os.path.join(submodule_dir, DOCS_DIR)
+        )
 
         for remote_file in remote_files:
             if os.path.basename(remote_file) == TARGETS_MD:  # skip targets.md

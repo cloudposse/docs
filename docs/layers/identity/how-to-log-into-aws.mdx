@@ -1,0 +1,175 @@
+---
+title: "How to Log into AWS"
+sidebar_label: "Log into AWS"
+sidebar_position: 9
+description: Use Leapp to login to AWS
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
+
+<Intro>
+We use Leapp to facilitate logging into AWS. Leapp is a tool that allows you to authenticate with your organization's
+Identity Provider (IdP) and then assume an IAM Role in AWS. This allows you to use your organization's SSO to
+authenticate with AWS.
+</Intro>
+
+## Requirements
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Install Leapp
+    Install Leapp following [Leapp documentation](https://www.leapp.cloud/download/desktop-app) or with brew:
+
+    ```console
+    brew install --cask leapp
+    ```
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Install AWS Session Manager (If required)
+
+    ```console
+    brew install --cask session-manager-plugin
+    ```
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Launch Leapp
+
+    ![Leapp Search](/assets/refarch/leapp-search.png)
+  </Step>
+</Steps>
+
+## Setup
+
+The following steps are required only for initial setup.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Launch Leapp
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Create new Integration
+    ![Leapp Integration](/assets/refarch/leapp-integration.png)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Fill out Single Sign-On configuration
+
+    ```console
+    Alias: acme # This can be whatever you would like to label the Integration in Leapp
+    Portal URL: https://d-1111aa1a11.awsapps.com/start/ # Set this to your SSO Launch URL
+    AWS Region: us-east-1 # Your primary region
+    Auth. Method: In-browser # Optional
+    ```
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Click Integration “dots” and select “Login”.
+
+    This should launch a tab in your web browser.
+
+    ![Leapp Integration Dots](/assets/refarch/leapp-integration-dots.png)
+    ![Leapp Integration Login](/assets/refarch/leapp-integration-login.png)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Log into your IdP
+
+    Log into your IdP for your Organization and “Allow” Authorization request
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Create a “Chained Session” from `core-identity`
+    Create a “Chained Session” from the `core-identity` account with the `IdentityDevopsTeamAccess` Role
+
+    <Note>
+      This Permission Set will match the given Team name. For example, Developers will use `IdentityDevelopersTeamAccess` and
+      DevOps will use `IdentityDevopsTeamAccess`.
+    </Note>
+
+    ![Leapp Chained Session](/assets/refarch/leapp-chained-session.png)
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Fill out the Chained Session configuration
+
+    Fill out the Chained Session configuration for connecting to `core-identity`
+
+    ```yaml
+    Named profile: acme-identity # This must match the profile name given in AWS config
+    Session Alias: acme-identity # Optional
+    AWS Region: us-east-1 # This must be your primary region
+    Role ARN: arn:aws:iam::666666666666:role/acme-core-gbl-identity-devops # This ARN depends on the given team. This example uses the "devops" team
+    Role Session Name: acme-identity # Optional
+    Assumer Session: core-identity # This must match the name of the identity account, almost always "core-identity"
+    ```
+
+    ![Leapp Chained Session Configuration](/assets/refarch/leapp-chained-session-configuration.png)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> (Optional) Pin the new `acme-identity` IAM Role Chained Session
+
+    This makes it easier to filter to the primary session we will be used for connecting to AWS
+    <Steps>
+      - Go to All Sessions
+      - Find the new IAM Role Chained Session for `acme-identity` or whatever value you used for `Session Alias`
+      - Click the dots on the IAM Role Chained Session
+      - Select Pin Session
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Connect to `acme-identity` IAM Role Chained Session
+    <Steps>
+      - Select the Session
+      - Click Start Session
+        ![Leapp Start Session](/assets/refarch/leapp-start-session.png)
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Rebuild Geodesic
+    Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
+
+    ```console
+    make all
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Use AWS in Geodesic
+    You're done! You can now use AWS from with in Geodesic.
+
+    ![Geodesic Check](/assets/refarch/geodesic-check.png)
+  </Step>
+</Steps>
+
+## Usage
+
+After initial setup, quickly connect to AWS with the following steps:
+
+<Steps>
+  1. Launch Leapp
+  2. Connect to `acme-identity` IAM Role Chained Session
+      ![Leapp Start Session](/assets/refarch/leapp-start-session.png)
+  3. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
+
+      ```console
+      make run
+      ```
+  4. Done!<br/>
+    ![Geodesic Check](/assets/refarch/geodesic-check.png)
+</Steps>
+
+

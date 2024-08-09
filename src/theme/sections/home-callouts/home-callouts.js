@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './home-callouts.module.css';
-import CalloutBox from "../../../components/callout-box/callout-box";
-import Container from "../../../components/container/container";
+import CalloutBox from "@site/src/components/callout-box/callout-box";
+import Container from "@site/src/components/container/container";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 export default function HomeCallouts() {
@@ -10,38 +10,37 @@ export default function HomeCallouts() {
             title: 'Getting Started',
             subtitle: 'Start with getting familiar with the geodesic, atmos and other tools',
             urlText: 'Get Started',
-            url: useBaseUrl('/intro/'),
+            url: useBaseUrl('/learn'),
         },
         {
-            title: 'Building Blocks',
-            subtitle: 'Check out our building blocks',
-            urlText: 'Our Building Blocks',
-            url: useBaseUrl('/fundamentals/building-blocks/'),
+            title: 'Start Building',
+            subtitle: 'Use our reference architecture to build your own infrastructure',
+            urlText: 'Start Building',
+            url: useBaseUrl('/layers/project'),
         },
         {
-            title: 'Tutorials',
-            subtitle: 'Lessons on how to utilize SweetOps to implement a project',
-            urlText: 'Get Started With Our Tools',
-            url: useBaseUrl('/category/tutorials/'),
+            title: 'Maintenance',
+            subtitle: 'Stay up to date with the latest changes and updates',
+            urlText: 'Stay Up to Date',
+            url: useBaseUrl('/learn/maintenance/'),
         },
         {
-            title: 'How-To',
-            subtitle: 'Guides on how to solve specific problems with SweetOps via a series of easy to follow steps',
-            urlText: 'Our Guides',
-            url: useBaseUrl('/category/how-to/'),
+            title: 'Support',
+            subtitle: 'We have support options available for you',
+            urlText: 'Get Support',
+            url: useBaseUrl('/support'),
         },
         {
-            title: 'Reference',
-            subtitle: 'Informative materials on specific tools and patterns within SweetOps',
-            urlText: 'Proceed',
-            url: useBaseUrl('/category/reference/'),
-
+            title: 'Infrastructure as Code Library',
+            subtitle: 'Reference all of our Terraform components, modules, and GitHub Actions',
+            urlText: 'Check it out',
+            url: useBaseUrl('/reference/'),
         },
         {
             title: 'Community',
-            subtitle: 'Community Resources',
-            urlText: 'Check Out',
-            url: useBaseUrl('/category/community/'),
+            subtitle: 'Community, Slack, GitHub Discussions, Office Hours, and more',
+            urlText: 'Get Involved',
+            url: useBaseUrl('/community'),
         }
     ]
     return (
@@ -49,7 +48,11 @@ export default function HomeCallouts() {
             <div className={styles.homeCallouts}>
                 {callouts.map((callout, i) => (
                     <div key={i} className={styles.homeCallouts__item}>
-                        <CalloutBox title={callout.title} subtitle={callout.subtitle} url={callout.url} urlText={callout.urlText} />
+                        <CalloutBox title={callout.title}
+                                    subtitle={callout.subtitle}
+                                    url={callout.url}
+                                    urlText={callout.urlText}
+                         />
                     </div>
                 ))}
             </div>

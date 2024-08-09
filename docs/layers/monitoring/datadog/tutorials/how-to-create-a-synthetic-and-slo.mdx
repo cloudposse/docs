@@ -1,0 +1,39 @@
+---
+title: "How to create a Synthetic and SLO"
+sidebar_label: "Create a Synthetic and SLO"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+After adding a service you often have synthetic checks to determine its health and check KPIs. We also might have a business need for a specific uptime or value of a KPI. In order to do that we need to create synthetics and SLOs.
+
+## Solution
+
+:::tip
+[datadog-synthetics](/components/library/aws/datadog-synthetics/) and [datadog-slo](/reference-architecture/components/datadog-slo) Components make it easy to deploy new checks via yaml.
+
+:::
+We can use the [datadog-synthetics](/components/library/aws/datadog-synthetics/) and [datadog-slo](/reference-architecture/components/datadog-slo) components to deploy a synthetic and a SLO (or many) for your new service. To create a new Synthetic or SLO, determine which environments it should be deployed to and add the yaml definition for the test. Refer to the component documentation on how to setup and write the yaml configuration.
+
+### Synthetics
+
+Datadog has 2 types of Synthetic Checks `API` or `browser`, decide which type you need to test your application using this documentation [https://docs.datadoghq.com/synthetics/](https://docs.datadoghq.com/synthetics/).
+
+### SLOs
+
+SLOs should be “monitors” of business impacting KPIs or Events. In datadog they are defined through metrics or a collection of monitors.
+
+If you wish to make an SLO of your Synthetic Checks Datadog exposes a metric `synthetics.test_runs{*}.as_count()` which you can use to check the success rate of synthetic checks.
+
+## References
+
+Datadog SLO Monitor Documentation: [https://docs.datadoghq.com/monitors/service_level_objectives/monitor/#overview](https://docs.datadoghq.com/monitors/service_level_objectives/monitor/#overview)
+
+Datadog SLO Metric Documentation: [https://docs.datadoghq.com/monitors/service_level_objectives/metric/#overview](https://docs.datadoghq.com/monitors/service_level_objectives/metric/#overview)
+
+Datadog Synthetic Documentation: [https://docs.datadoghq.com/synthetics/](https://docs.datadoghq.com/synthetics/)
+
+

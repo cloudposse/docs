@@ -1,0 +1,96 @@
+.steps {
+  margin-left: 1em;
+}
+
+.steps h1 {
+  margin-top: 2em;
+}
+
+.steps > ul > li::before, .steps > ol > li::before  {
+  content: counter(list-counter);
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 0.6em;
+  line-height: 1.5em;
+  border-radius: 50%;
+  background-color: #000; /* Background color for the circle */
+  color: #fff; /* Text color */
+  border: 1px solid #000; /* Border color */
+  text-align: center;
+  font-weight: bold; /* Optional: make the number bold */
+  font-size: 1em; /* Font size for the number */
+}
+
+.steps :global(li.task-list-item) {
+  list-style-type: none;
+}
+
+.steps :global(li.task-list-item) > input {
+  transform: scale(1.5);
+}
+
+.steps ul :global(li.task-list-item::before) {
+  content: "";
+  background: transparent !important;
+  border: none;
+}
+
+.steps :global(ul.contains-task-list) {
+  margin-left: 1.5em;
+  margin-top: 1em;
+}
+
+html[data-theme='dark'] .steps li::before {
+  background: #fff;
+  color: #000 !important;
+}
+
+.steps ol, .steps > ul {
+  counter-reset: list-counter;
+  list-style: none; /* Remove default list styling */
+  padding-left: 0.3em;
+  border-left: 1px solid #ccc;
+  margin-left: 1em;
+}
+
+:global(.content) .steps ol, :global(.content) .steps > ul,  ol .steps > ul {
+  border-left: none;
+  margin-left: 1.3em;
+}
+
+:global(.content) > ul {
+  margin-left: 1.3em;
+}
+
+html[data-theme='dark'] :global(.content) .steps li::before,  html[data-theme='dark']  ol .steps > ul > li::before {
+  background: #666;
+  color: #000 !important;
+}
+
+:global(.content) .steps li::before, ol .steps > ul li::before {
+  background: transparent;
+  color: #000 !important;
+}
+
+.steps ol > li, .steps > ul > li {
+  counter-increment: list-counter;
+  position: relative;
+  left: -1.2em;
+  padding-left: 2.3em; /* Adjust space for the custom counter */
+  margin-bottom: 1.2em; /* Space between list items */
+  line-height: 1.6em;
+}
+
+.steps ol > li img, .steps > ul > li img {
+  margin: 2em;
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+.steps > h3 {
+  margin-bottom: 2em;
+  margin-top: 3em;
+}

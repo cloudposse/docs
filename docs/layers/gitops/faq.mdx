@@ -1,0 +1,67 @@
+---
+title: Frequently Asked Questions
+sidebar_label: FAQ
+sidebar_position: 10
+---
+
+### What are the included labels?
+
+By default, Cloud Posse includes a few labels for common use-cases. These labels are included with the top level workflows, so they can be modified as desired.
+
+On Pull Requests:
+
+1. `auto-apply` - If added, the Atmos Terraform Apply workflow will be triggered for all affected components when the Pull Request is merged.
+1. `no-plan` - If added, the Atmos Terraform Plan workflow will be skipped on commits to the Pull Request, and the Atmos Apply workflow will be skipped when the Pull Request is merged.
+
+On Issues:
+
+1. `apply` - If added, the Atmos Terraform Drift Remediation workflow will be triggered for the given component and stack
+1. `drift` - This label is added to all Issues created by Atmos Terraform Drift Detection. Remediation will only run on Issues that have this label.
+1. `remediated` - This label is added to any Issue that has been resolved by Atmos Terraform Drift Remediation
+
+### Enabling or disabling components
+
+Components are included in the Atmos GitHub Action workflows only if they have actions enabled with the `terraform.settings.github.actions_enabled` option.
+
+If they do not have this setting or the value is `false`, the component may still appear in the list of affected components, but Terraform will not be run against the given component and stack.
+
+:::info Global Defaults
+
+Typically Cloud Posse sets the default value to `true` for all components and disables individual components on a case-by-case basis.
+
+For example in an `acme` organization, the default value could be set with `stacks/orgs/acme/_defaults.yaml`:
+
+```yaml
+terraform:
+  # These settings are applied to ALL components by default but can be overwritten
+  settings:
+    github:
+      actions_enabled: true
+```
+
+And the `account` component could be disabled with `stacks/catalog/account.yaml`:
+
+```yaml
+components:
+  terraform:
+    account:
+      settings:
+        github:
+          actions_enabled: false
+```
+
+:::
+
+### I cannot assume the `gitops` role from GitHub Workflows
+
+The following error commonly occurs when setting up `gitops` roles and permission:
+
+```
+Error: Could not assume role with OIDC: Not authorized to perform sts:AssumeRoleWithWebIdentity
+```
+
+To resolve this error, thoroughly read through each of the [Authentication Prerequisites](/layers/gitops/setup#authentication-prerequisites) for GitOps setup. In particular, check the capitalization of `trusted_github_repos` within `aws-teams` and check the `permissions` for the workflow in GitHub.
+
+### How does GitHub OIDC work with AWS?
+
+Please see [How to use GitHub OIDC with AWS](/layers/github-actions/github-oidc-with-aws)

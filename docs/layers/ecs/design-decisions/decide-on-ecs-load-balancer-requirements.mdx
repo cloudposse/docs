@@ -1,0 +1,19 @@
+---
+title: "Decide on ECS load balancer requirements"
+sidebar_label: "Load Balancer"
+sidebar_position: 1
+description: Decide how many ECS load balancers are needed
+refarch_id: REFARCH-414
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# Decide on ECS load balancer requirements
+
+## Considerations
+
+- Do we need to support internal and external load balancers?
+
+- Can we share the load balancer across applications (our default recommendation)?
+
+- Do you need to support protocols other than HTTP such as raw TCP or UDP?

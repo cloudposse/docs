@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './hero.module.css';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import Container from "../../../components/container/container";
+import Container from "@site/src/components/container/container";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Link from '@docusaurus/Link';
+import PrimaryCTA from '@site/src/components/PrimaryCTA'
+import SecondaryCTA from '@site/src/components/SecondaryCTA'
 
 export default function Hero() {
     const {siteConfig} = useDocusaurusContext();
@@ -23,13 +23,15 @@ export default function Hero() {
                     </div>
                     <div>
                         <div>
-                            <h1 className="hero__title">The Cloud Posse</h1>
-                            <h1 className="hero__title">Developer Hub</h1>
-                            <p className="hero__subtitle">{siteConfig.tagline}</p>
+                            <h1 className="hero__title">Reference Architecture</h1>
+                            <p className="hero__subtitle">
+                              Use this documentation to get up and running quickly with <strong>AWS, Datadog & GitHub Actions</strong> by using the Atmos open source framework together with Terraform.
+                            </p>
+                            <p>Crafted by Cloud Posse, Supported by Our Community and Team.</p>
                         </div>
                         <div className={styles.buttons}>
-                          <Link className="button button--secondary button--lg" to="/intro" style={{ marginRight: 10 }}>Get Started</Link>
-                          <Link className="button button--success button--lg" href="https://cloudposse.com/">Accelerate</Link>
+                          <PrimaryCTA to="/learn">Get Started</PrimaryCTA>
+                          <SecondaryCTA to="https://cloudposse.com/">Get a Jumpstart</SecondaryCTA>
                         </div>
                     </div>
                 </div>

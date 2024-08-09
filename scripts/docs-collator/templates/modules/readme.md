@@ -15,7 +15,7 @@ description: |-
 tags:
 {{ (ds "config").tags | data.ToYAML | strings.Indent 2 -}}
 {{- end }}
-custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master/README.md
+custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/main/README.md
 ---
 
 
@@ -76,7 +76,7 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/master
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "readmeIncludesDir" $file) }}
+{{ (include "includes" (printf "%s/%s" $fullModuleName $file)) }}
 {{- end }}
 {{- end }}
 {{- end }}

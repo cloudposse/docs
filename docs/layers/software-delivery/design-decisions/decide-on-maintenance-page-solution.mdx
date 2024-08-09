@@ -1,0 +1,54 @@
+---
+title: "Decide on Maintenance Page Solution"
+sidebar_label: "Maintenance Page"
+sidebar_position: 100
+refarch_id: REFARCH-112
+description: Decide how to deliver maintenance pages
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+<img src="/assets/refarch/image-20211109-195645.png" /><br/>
+
+When your sites go down, we need to be able to communicate more graciously to customers that you’re having issues than a generic “502 Bad Gateway” message.
+
+:::info
+Specifically, this decision relates to services behind an ALB. CloudFront and S3 are out of scope.
+
+:::
+
+## Solution
+
+We recommend deploying a static maintenance page. The industry best practice is to host the downtime page on a cloud provider that does not share infrastructure with your primary cloud provider. E.g. S3 is not recommended, as even S3 has gone down.  That said, using a separate cloud provider is a micro-optimization for a very narrow set of failure scenarios.
+
+Some related considerations are how the maintenance page will be activated.
+
+### Considered Options
+
+There are a few options:
+
+### Option 1
+
+Use route53 health checks. Cloud Posse does not recommend it because poorly implemented DNS-clients clients may cache the downtime host.
+
+### Option2
+
+Use CloudFront dynamically redirect to downtime page using an Origin Group with fail-over.
+
+Here’s a simple example using `terraform` to provision a maintenance page on Cloud Flare.
+
+- [https://github.com/adinhodovic/terraform-cloudflare-maintenance](https://github.com/adinhodovic/terraform-cloudflare-maintenance)
+
+### Option 3 (Recommended)
+
+Use ALB with [fixed response](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html#fixed-response-actions)
+
+- Use `fixed-response` with iframe (not ideal) to S3 static site
+
+- Use `fixed-response` populated with HTML from `file` with inline CSS, SVGs, etc. and no external dependencies (if possible)
+
+- Add GA code for analytics
+
+

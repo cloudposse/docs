@@ -1,0 +1,66 @@
+---
+title: "Quick Start"
+sidebar_label: "GitOps"
+sidebar_class_name: hidden
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ReactPlayer from 'react-player';
+import CodeBlock from '@theme/CodeBlock';
+
+<Intro>
+  GitOps is a cloud-native continuous deployment methodology that uses Git as the single source of truth for declarative infrastructure and applications. Changes to infrastructure or applications are made through Git commits, and the actual state is automatically adjusted to match the desired state expressed in the Git repository. This approach provides an audit trail for changes, simplifies rollback, and enhances collaboration and visibility across teams.
+</Intro>
+
+<figure>
+  <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/gitops.mp4' />
+  <figcaption>AI generated voice</figcaption>
+</figure>
+
+## The Problem
+
+Collaboration with Terraform in team environments is more difficult than traditional [release-engineering](/layers/software-delivery) for web applications. Unlike containerized deployments, Terraform deployments are constantly modifying the state of infrastructure and behave a lot more like database migrations, except there are no transactions and therefore no practical way to do automated rollbacks. This means we have to be extra cautious.
+
+When teams start collaborating on infrastructure, the rate of change increases, and the likelihood of collisions as well. We need approval gates to control what changes and when, plus have the ability to review changes prior to deployment to make sure nothing catastrophic happens (e.g. database destroyed). Pull Requests are not enough to restrict what changes, since every Pull Request merged, changes the graph and therefore requires all other open Pull Requests to be re-validated. There's also a need to reconcile the desired state of infrastructure in Git with what is deployed; in busy team environments, a change can accidentally not be deployed or at other times, ClickOps can result in a drift between what's running and what's in code.
+
+Multiple platforms have emerged that solve this problem, under the general category of "Terraform Automation and Collaboration Software" or TACOS for short. Examples include Terraform Cloud, Spacelift, Env0, Scalr, and that's just a start. TACOs can easily cost tens of thousands of dollars a year and can be cost-prohibitive for certain companies.
+
+## Our Solution
+
+We've implemented [GitHub Actions](https://atmos.tools/category/github-actions) designed around our architecture and toolset. These actions run Atmos commands to generate a Terraform planfile, store the planfile in a S3 bucket with metadata in DynamoDB, and generate a plan summary on all pull requests. Then once the pull request is merged, a second workflow runs to pull that same planfile, apply it with Atmos commands, and then generate an apply summary.
+
+While this solution does not offer some of the more fine-grained policy controls of TACOs nor provide a centralized UI, it does provide many of the other benefits that the other solutions offer. But the overwhelming benefit is it's much cheaper and fully integrated with Cloud Posse's architecture and design.
+
+### Features
+
+* **Implements Native GitOps** with Atmos and Terraform
+* **GitHub Actions** can be integrated seamlessly anywhere you need to run Terraform
+* **No hardcoded credentials.** Use GitHub OIDC to assume roles.
+* **Compatible with GitHub Cloud & Self-hosted Runners** for maximum flexibility.
+* **Beautiful Job Summaries** don't clutter up pull requests with noisy GitHub comments
+* **100% Open Source with No Platform Fees** means you can leverage your existing GitHub runners to provision infrastructure
+
+Expect these actions to constantly evolve as we build out these workflows.
+
+### Implementation
+
+Once the required S3 Bucket, DynamoDB table, and two separate roles to access Terraform planfiles and plan/apply Terraform are deployed, simply add your chosen [workflows](#workflows). Read the [Setup Documentation](/layers/gitops/setup) for details on deploying the requirements.
+
+## Workflows
+
+
+## References
+
+- [Setup Documentation](/layers/gitops/setup)
+- [Atmos integration documentation](https://atmos.tools/category/integrations/github-actions).
+- [GitHub OIDC Integration with AWS](/layers/github-actions/github-oidc-with-aws)
+- [`cloudposse/github-action-atmos-terraform-plan`](https://github.com/cloudposse/github-action-atmos-terraform-plan)
+- [`cloudposse/github-action-atmos-terraform-apply`](https://github.com/cloudposse/github-action-atmos-terraform-apply)
+- [`cloudposse/github-action-atmos-terraform-drift-detection`](https://github.com/cloudposse/github-action-atmos-terraform-drift-detection)
+- [`cloudposse/github-action-atmos-terraform-drift-remediation`](https://github.com/cloudposse/github-action-atmos-terraform-drift-remediation)
+- [`gitops/s3-bucket`](/components/library/aws/s3-bucket/): Deploy a S3 Bucket using the `s3-bucket` component. This bucket holds Terraform planfiles.
+- [`gitops/dynamodb`](/components/library/aws/dynamodb/): Deploy a DynamoDB table using the `dynamodb` component. This table is used to hold metadata for Terraform Plans
+- [`gitops`](/components/library/aws/gitops/): Deploys an IAM Role that GitHub is able to assume via GitHub OIDC. This role has access to the bucket and table for planfiles.
+

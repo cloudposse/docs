@@ -1,0 +1,118 @@
+---
+title: "Decide on AWS Account VPC Subnet CIDR Strategy"
+sidebar_label: "VPC Subnet CIDR Strategy"
+refarch_id: REFARCH-217
+description: "Decide the VPC CIDR ranges for AWS accounts"
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+We need to devise a subnet allocation scheme tolerant of multiple accounts operating in multiple regions that do not
+conflict with any other ranges which may need to be peered in the future.
+
+## General Considerations
+
+- Having unique, non-overlapping VPC CIDRs makes connecting clusters to each other much easier
+
+- Each VPC must be subdivided into several non-overlapping subnet ranges to provide public and private address spaces
+  across multiple availability zones
+
+- **ALBs need a minimum of 2 subnets allocated**
+
+### EKS Considerations
+
+- Using Amazon’s CNI, each Kubernetes pod gets its own IP in the subnet, and additional IPs are reserved so they are
+  immediately available for new pods when they are launched
+
+- You will need a lot more IPs than you anticipate due to performance optimizations in how CNIs are managed by EKS
+  [https://betterprogramming.pub/amazon-eks-is-eating-my-ips-e18ea057e045](https://betterprogramming.pub/amazon-eks-is-eating-my-ips-e18ea057e045)
+  [https://medium.com/codex/kubernetes-cluster-running-out-of-ip-addresses-on-aws-eks-c7b8e5dd8606](https://medium.com/codex/kubernetes-cluster-running-out-of-ip-addresses-on-aws-eks-c7b8e5dd8606)
+
+- AWS supports the `eksctl` tool (we do not). Their default recommendation is:
+
+  > The default VPC CIDR used by `eksctl` is `192.168.0.0/16`. It is divided into 8 (`/19`) subnets (3 private, 3 public
+  > & 2 reserved).
+
+- EKS clusters limit the number of pods based on the number of
+  [ENIs available per instance type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI).
+
+- [Kubernetes has limits](https://kubernetes.io/docs/setup/best-practices/cluster-large/), but those are pretty high.
+  **The reality is most clusters operate at a much smaller scale.** At v1.18, Kubernetes supports clusters with up to
+  5000 nodes. More specifically, we support configurations that meet _all_ of the following criteria:
+
+- No more than 5000 nodes
+
+- No more than 150000 total pods
+
+- No more than 300000 total containers
+
+- No more than 100 pods per node
+
+- EKS [will use either](https://github.com/aws/containers-roadmap/issues/216#issue-423314258) 10.100.0.0/16 or
+  172.20.0.0/16 for cluster Services, so avoiding those ranges will avoid some problems with inter-cluster routing
+
+:::caution Use CIDR ranges smaller than a `/19` at your own risk.
+
+Cloud Posse does not take responsibility for any EKS cluster issues related to underprovisioning CIDR ranges.
+
+:::
+
+## Our standard recommendation
+
+- Each account gets it's own `/16` (65,534 usable IPs) (or `/15` = 2 x `/16` for more than 4 total regions),
+  consecutively numbered, starting with 10.101.0.0
+
+- Each region in an account gets 1 x `/18` (16,382 usable IPs), usually allocated as 1 or 2 countries/legislative areas
+  per account, each with 2 regions for DR/failover
+
+- Each region allocates 6 x `/21` (2,046 usable IPs) subnets (3 AZ \* (public + private)) for EKS.
+
+- Any additional “single purpose” subnets in a region should be `/24` (254 usable IPs)
+
+Further reading:
+
+- [https://aws.amazon.com/blogs/containers/eks-vpc-routable-ip-address-conservation/](https://aws.amazon.com/blogs/containers/eks-vpc-routable-ip-address-conservation/)
+
+- [https://medium.com/@jeremy.i.cowan/custom-networking-with-the-aws-vpc-cni-plug-in-c6eebb105220](https://medium.com/@jeremy.i.cowan/custom-networking-with-the-aws-vpc-cni-plug-in-c6eebb105220)
+
+- [https://tidalmigrations.com/subnet-builder/](https://tidalmigrations.com/subnet-builder/)
+
+### CIDR Subnet Table
+
+| **Subnet Mask** | **CIDR Prefix** | **Total IP Addresses** | **Usable IP Addresses** | **Number of /24 networks** |
+| --------------- | --------------- | ---------------------- | ----------------------- | -------------------------- |
+| 255.255.255.255 | /32             | 1                      | 1                       | 1/256th                    |
+| 255.255.255.254 | /31             | 2                      | 2\*                     | 1/128th                    |
+| 255.255.255.252 | /30             | 4                      | 2                       | 1/64th                     |
+| 255.255.255.248 | /29             | 8                      | 6                       | 1/32nd                     |
+| 255.255.255.240 | /28             | 16                     | 14                      | 1/16th                     |
+| 255.255.255.224 | /27             | 32                     | 30                      | 1/8th                      |
+| 255.255.255.192 | /26             | 64                     | 62                      | 1/4th                      |
+| 255.255.255.128 | /25             | 128                    | 126                     | 1 half                     |
+| 255.255.255.0   | /24             | 256                    | 254                     | 1                          |
+| 255.255.254.0   | /23             | 512                    | 510                     | 2                          |
+| 255.255.252.0   | /22             | 1,024                  | 1,022                   | 4                          |
+| 255.255.248.0   | /21             | 2,048                  | 2,046                   | 8                          |
+| 255.255.240.0   | /20             | 4,096                  | 4,094                   | 16                         |
+| 255.255.224.0   | /19             | 8,192                  | 8,190                   | 32                         |
+| 255.255.192.0   | /18             | 16,384                 | 16,382                  | 64                         |
+| 255.255.128.0   | /17             | 32,768                 | 32,766                  | 128                        |
+| 255.255.0.0     | /16             | 65,536                 | 65,534                  | 256                        |
+| 255.254.0.0     | /15             | 131,072                | 131,070                 | 512                        |
+| 255.252.0.0     | /14             | 262,144                | 262,142                 | 1024                       |
+| 255.248.0.0     | /13             | 524,288                | 524,286                 | 2048                       |
+| 255.240.0.0     | /12             | 1,048,576              | 1,048,574               | 4096                       |
+| 255.224.0 0     | /11             | 2,097,152              | 2,097,150               | 8192                       |
+| 255.192.0.0     | /10             | 4,194,304              | 4,194,302               | 16,384                     |
+| 255.128.0.0     | /9              | 8,388,608              | 8,388,606               | 32,768                     |
+| 255.0.0.0       | /8              | 16,777,216             | 16,777,214              | 65,536                     |
+| 254.0.0.0       | /7              | 33,554,432             | 33,554,430              | 131,072                    |
+| 252.0.0.0       | /6              | 67,108,864             | 67,108,862              | 262,144                    |
+| 248.0.0.0       | /5              | 134,217,728            | 134,217,726             | 1,048,576                  |
+| 240.0.0.0       | /4              | 268,435,456            | 268,435,454             | 2,097,152                  |
+| 224.0.0.0       | /3              | 536,870,912            | 536,870,910             | 4,194,304                  |
+| 192.0.0.0       | /2              | 1,073,741,824          | 1,073,741,822           | 8,388,608                  |
+| 128.0.0.0       | /1              | 2,147,483,648          | 2,147,483,646           | 16,777,216                 |
+| 0.0.0.0         | /0              | 4,294,967,296          | 4,294,967,294           | 33,554,432                 |

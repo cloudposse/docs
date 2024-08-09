@@ -1,0 +1,23 @@
+---
+title: "Decide on AWS Backup Requirements"
+sidebar_label: "AWS Backup Requirements"
+sidebar_position: 100
+refarch_id: REFARCH-489
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+## Context
+We need a standardized way to implement backup services for AWS resources (S3, databases, EC2 instances, EFS, etc. etc.) to have the ability to restore data from points in time in the event of data loss or corruption.
+
+AWS provides a managed backup service offering called AWS Backup. [https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html)
+
+We need to determine if we are opting in or opting out using AWS Backup.
+
+## References
+
+- [https://www.druva.com/blog/understanding-rpo-and-rto/](https://www.druva.com/blog/understanding-rpo-and-rto/)
+
+

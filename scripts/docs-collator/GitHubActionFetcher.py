@@ -2,10 +2,10 @@ import os
 
 from AbstractFetcher import AbstractFetcher, MissingReadmeYamlException
 
-DOCS_DIR = 'docs'
-ACTIONS_DIR = 'actions'
-README_YAML = 'README.yaml'
-README_MD = 'README.md'
+DOCS_DIR = "docs"
+ACTIONS_DIR = "actions"
+README_YAML = "README.yaml"
+README_MD = "README.md"
 
 
 class GitHubActionFetcher(AbstractFetcher):

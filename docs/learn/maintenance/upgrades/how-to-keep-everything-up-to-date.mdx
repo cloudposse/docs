@@ -1,0 +1,190 @@
+---
+title: "How to Keep Everything Up to Date"
+sidebar_label: "Keep Everything Up to Date"
+sidebar_position: 100
+description: "Tricks for keeping your infrastructure up to date"
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem **DRAFT**
+
+Your infrastructure is composed of dozens, if not hundreds, of components and applications. Their configurations span multiple tools (`docker`, `helm`, `packages`) and configuration file formats (e.g.  `Dockerfile`, `stacks/catalog/cert-manager.yaml` and `default.auto.tfvars`). Industry best practice is to use strict version pinning in order to maintain stable infrastructure. However, this shifts the burden of keeping everything current onto the developer. So, we need some way to automate the update process, in order to reduce the developer’s burden and, as a result, reduce long-term tech debt by staying current.
+
+## Solution
+
+:::tip
+Use [Renovatebot](https://docs.renovatebot.com/) to automatically open Pull Requests when new versions of dependencies are available. Rennovatebot is a free and fully hosted solution that is much more powerful than [https://github.com/dependabot](https://github.com/dependabot) by GitHub.
+
+:::
+
+First, install the `renovate.json` config file into your repo:
+
+[https://github.com/cloudposse/renovatebot-testing-2/blob/review-branch/.github/renovate.json](https://github.com/cloudposse/renovatebot-testing-2/blob/review-branch/.github/renovate.json)
+
+Second, add `# renovate` annotations to your code as detailed below in the `Examples` section. Although annotations may not be necessary for some dependencies (our `renovate.json` file does try to identify common dependency patterns, even in the absence of an annotation), we do recommend that you annotate where possible.
+
+For conventions on keeping packages from specific data sources (e.g., Helm releases, or Docker images) updated, please see the `Data Sources` section below.
+
+For details on pinning package versions to a pre-specified range, see the `Version Pinning` section below.
+
+## Examples
+
+### Dockerfile
+Automatically update base images in Dockerfiles.
+
+```
+# renovate: datasource=docker depName=cloudposse/geodesic registryUrl=public.ecr.aws versioning=docker
+ARG GEODESIC_VERSION=0.146.5
+ARG OS=debian
+FROM public.ecr.aws/cloudposse/geodesic:$GEODESIC_VERSION-$OS
+```
+Automatically update `ARG` and `ENV` statements for package pinning in Dockerfiles.
+
+```dockerfile
+# renovate: datasource=github-releases depName=cloudposse/atmos versioning="regex:(?<major>0)\\.(?<minor>21)\\.(?<patch>\\d+)"
+ARG ATMOS_VERSION=1.51.0
+
+# renovate: datasource=github-releases depName=cloudposse/atmos
+ARG TERRAFORM_VERSION=1.0.4
+# renovate: datasource=docker depName=cloudposse/awesome-image versioning=docker registryUrl=docker.io/images
+ENV DOCKER_VERSION=19.03.1
+# renovate: datasource=helm depName=echo-server registryUrl=https://helm.sh/charts
+ENV ECHO_SERVER_VERSION=1.19.1
+```
+
+Automatically update packages based on `cargo` versioning scheme.
+
+[https://docs.renovatebot.com/modules/versioning/#cargo-versioning](https://docs.renovatebot.com/modules/versioning/#cargo-versioning)
+
+```dockerfile
+# Install terraform
+# Install specific versions of Terraform. Must match versions in Spacelift terraform_version_map
+# in components/terraform/spacelift/default.auto.tfvars
+# renovate: datasource=github-releases depName=hashicorp/terraform versioning="regex:v?(?<major>0)\\.(?<minor>12)\\.(?<patch>\\d+)"
+ARG TF_12_VERSION=0.12.30
+# renovate: datasource=github-releases depName=hashicorp/terraform cargo=">=0.13.0 <0.14.0"
+ARG TF_13_VERSION=0.13.6
+# renovate: datasource=github-releases depName=hashicorp/terraform cargo=">=0.14.0 <0.15.0"
+ARG TF_14_VERSION=0.14.7
+# renovate: datasource=github-releases depName=hashicorp/terraform cargo=">=0.15.0 <0.16.0"
+ARG TF_15_VERSION=0.15.4
+# renovate: datasource=github-releases depName=hashicorp/terraform cargo=">=1.0.0 <1.1.0"
+ARG TF_1_0_VERSION=1.0.2
+RUN apt-get update && apt-get install -y -u --allow-downgrades \
+  terraform-0.12="${TF_12_VERSION}-*" terraform-0.13="${TF_13_VERSION}-*" \
+  terraform-0.14="${TF_14_VERSION}-*" terraform-0.15="${TF_15_VERSION}-*" \
+  terraform-1="${TF_1_0_VERSION}-*"
+```
+
+### Terraform `.tfvars`
+
+Automatically update helm charts in terraform var files.
+
+```hcl
+enabled = true
+
+name = "datadog"
+
+description = "Datadog Kubernetes Agent"
+
+kubernetes_namespace = "monitoring"
+
+create_namespace = true
+
+repository = "https://helm.datadoghq.com"
+
+chart = "datadog"
+
+# renovate: datasource=helm depName=datadog registryUrl=https://helm.datadoghq.com
+chart_version = "2.22.10"
+
+timeout = 180
+
+wait = true
+
+atomic = true
+
+cleanup_on_fail = true
+```
+
+### Stack Configurations
+
+Automatically update docker images.
+
+```yaml
+components:
+  terraform:
+    metrics-server:
+      settings:
+        spacelift:
+          workspace_enabled: true
+      vars:
+        enabled: true
+        values:
+          image:
+            repository: "k8s.gcr.io/metrics-server/metrics-server"
+            # renovate: datasource=docker depName=metrics-server/metrics-server versioning=docker registryUrl=k8s.gcr.io
+            tag: "v0.3.7"
+            pullPolicy: IfNotPresent
+
+```
+Automatically update the `cluster_kubernetes_version`
+
+```yaml
+components:
+  terraform:
+    eks:
+      settings:
+        spacelift:
+          workspace_enabled: true
+      vars:
+        # renovate: datasource=github-releases depName=kubernetes/kubernetes
+        cluster_kubernetes_version: "1.20"
+        node_groups:
+          main:
+            # values of `null` will be replaced with default values
+            # availability_zones = null will create 1 auto scaling group in each availability zone of region
+            availability_zones: null
+
+            desired_group_size: 3 # number of instances to start
+```
+
+## Data Sources
+Supported conventions:
+
+### GitHub Releases
+
+```yaml
+# renovate: datasource=github-releases depName=cloudposse/atmos cargo=">=1.2.3 <2.0.0"
+```
+
+### Helm Releases
+
+```yaml
+# renovate: datasource=github-releases depName=cloudposse/atmos cargo=">=1.2.3 <2.0.0"
+```
+
+### Docker Tags
+
+```yaml
+# renovate: datasource=github-releases depName=cloudposse/atmos cargo=">=1.2.3 <2.0.0"
+```
+
+### Terraform Modules
+(terraform modules are handled automatically without our rules)
+
+### Terraform Components
+
+:::caution
+Terraform components cannot be updated at this time using this strategy; however, the terraform modules referenced in your components will be automatically updated.
+
+:::
+
+### GitHub Actions
+[https://docs.renovatebot.com/modules/manager/github-actions/](https://docs.renovatebot.com/modules/manager/github-actions/)
+
+## Version Pinning
+To pin a package to a given version range, simply add a field of the form `version="regex:v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)"` to that package’s renovate annotation, specifying the desired major/minor versions. For example, to pin a package to the `1.x.x` release range, you would use `version="regex:v?(?<major>1)\\.(?<minor>\\d+)\\.(?<patch>\\d+)"`; similarly, to pin a package to the `2.1` release range, you would use `version="regex:v?(?<major>2)\\.(?<minor>1)\\.(?<patch>\\d+)"`.
+
+
