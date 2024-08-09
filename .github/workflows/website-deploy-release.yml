@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
 
     environment:
-      name: staging
+      name: production
       url: https://${{ env.DEPLOYMENT_HOST }}
 
     steps:
