@@ -1,7 +1,7 @@
 ---
 title: "ECS with ecspresso"
 sidebar_label: "ECS with ecspresso"
-sidebar_position: 100
+sidebar_position: 10
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -9,10 +9,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Intro>
-  We use the `ecspresso` deployment tool for Amazon ECS to manage ECS services using a code-driven approach, alongside reusable GitHub Action workflows. This setup allows tasks to be defined with Terraform within the infrastructure repository, and task definitions to reside alongside the application code. Ecspresso provides extensive configuration options via YAML, JSON, and Jsonnet, and includes plugins for enhanced functionality such as Terraform state lookups.
+  We use the [`ecspresso`](https://github.com/kayac/ecspresso) deployment tool for Amazon ECS to manage ECS services using a code-driven approach, alongside reusable GitHub Action workflows. This setup allows tasks to be defined with Terraform within the infrastructure repository, and task definitions to reside alongside the application code. Ecspresso provides extensive configuration options via YAML, JSON, and Jsonnet, and includes plugins for enhanced functionality such as Terraform state lookups.
 </Intro>
 
-### Overview
 
 ```mermaid
 ---
@@ -56,7 +55,7 @@ sequenceDiagram
     deactivate deployment
 ```
 
-### Deployment
+### Github Action Workflows
 
 The basic deployment flow is for feature branches. You can use the following
 sample workflow to add pull request deploys to your application repository:
@@ -64,7 +63,7 @@ sample workflow to add pull request deploys to your application repository:
 <details>
 <summary>Deploy</summary>
 
-<Tabs>
+<Tabs queryString="workflow">
 
 <TabItem value="feature" label="Feature">
 
@@ -245,13 +244,9 @@ jobs:
 </Tabs>
 </details>
 
-
-### Implementation
-
+## References
+- [Ecspresso](https://github.com/kayac/ecspresso) : Tool repo
 - [example-app-on-ecs](https://github.com/cloudposse/example-app-on-ecs): Example app
 - [github-action-deploy-ecspresso](https://github.com/cloudposse/github-action-deploy-ecspresso): Base action
 - [`cd-ecspresso`](https://github.com/cloudposse/github-actions-workflows/blob/main/.github/workflows/cd-ecspresso.yml): Primary workflow
 - [`cd-preview-ecspresso`](https://github.com/cloudposse/github-actions-workflows/blob/main/.github/workflows/cd-preview-ecspresso.yml): feature branch workflow
-
-## References
-- [Ecspresso](https://github.com/kayac/ecspresso) : Tool repo

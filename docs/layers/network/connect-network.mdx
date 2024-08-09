@@ -9,11 +9,13 @@ import Note from '@site/src/components/Note';
 
 ## Deployment
 
-Next, go ahead and set up the Transit Gateway (TGW) by running the following:
+Next, set up AWS Transit Gateway (TGW) to connect each desired AWS account to the private network by running the following command:
 
 ```bash
 atmos workflow deploy/tgw -f network
 ```
+
+This command will deploy the TGW hub and spokes to connect the network to the AWS accounts. The TGW hub is deployed in the `core-network` account, and the TGW spokes are deployed in each AWS account with a VPC.
 
 ## Known Issues
 

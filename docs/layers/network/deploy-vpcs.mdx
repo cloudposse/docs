@@ -25,9 +25,9 @@ The first step in deploying the network is to deploy the VPCs in each region. Th
   </Step>
 
   <Step>
-  ## <StepNumber/> Initialize all VPCs
+  ## <StepNumber/> Deploy all VPCs
 
-  Initialize all the VPCs in every configured region by running the following command:
+  Deploy all the VPCs in every configured region by running the following command:
 
   ```bash
   atmos workflow deploy/vpc -f network
@@ -36,7 +36,7 @@ The first step in deploying the network is to deploy the VPCs in each region. Th
 
   <Step>
   ## <StepNumber/> Decommission the default VPCs
-  Once all VPCs are deployed, decomission the default VPC in each region by running the following command from within the Geodesic shell:
+  Once all VPCs are deployed, decomission the default VPC in each region by running the following command from within the Geodesic shell and while connected to you `core-identity` AWS profile:
 
   ```bash
   wipe-default-vpcs

@@ -21,7 +21,7 @@ import ReactPlayer from 'react-player';
 
     Choose between Datadog or AWS-managed Prometheus and Grafana with Loki for gathering your telemetry. Datadog offers the most mature implementation, while AWS-managed Grafana and Prometheus provide lower-cost alternatives with various trade-offs, that make them a good fit for many organizations.
 
-    <Tabs>
+    <Tabs queryString="provider">
       <TabItem value="datadog" label="Datadog">
 
         Datadog is our most comprehensive observability solution, offering a monitoring-as-code approach using YAML configuration fully managed with Terraform. This includes Datadog monitors, custom RBAC roles, synthetic tests, child organizations, and other resources.

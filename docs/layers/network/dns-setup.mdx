@@ -12,9 +12,9 @@ import StepNumber from '@site/src/components/StepNumber';
 
 ## Requirements
 
-Before deploying DNS, first purchase your chosen vanity and service domains in the `core-dns` account or in your chosen registrar. Refer back to the [Decide on Vanity (Branded) Domain](layers/network/design-decisions/decide-on-vanity-branded-domain/) and [Decide on Service Discovery Domain](/layers/network/design-decisions/decide-on-service-discovery-domain/) design decisions for more information.
+Before deploying DNS, first purchase your chosen vanity and service domains in the `core-dns` account or in your chosen registrar. Refer back to the [Decide on Vanity (Branded) Domain](/layers/network/design-decisions/decide-on-vanity-branded-domain/) and [Decide on Service Discovery Domain](/layers/network/design-decisions/decide-on-service-discovery-domain/) design decisions for more information.
 
-When registering a new domain, we have the option of using Route53’s built-in registrar or using an existing registrar. Many enterprise-scale organizations use MarkMonitor to manage their domain portfolio. Our convention is to use the `dns` account as the registrar.
+When registering a new domain, we have the option of using Route53’s built-in registrar or using an existing registrar. Many enterprise-scale organizations use MarkMonitor to manage their domain portfolio. Our convention is to use the `core-dns` account as the registrar. This allows us to use AWS IAM roles and policies to manage access to the registered domains and to centralized DNS management.
 
 <Note>the AWS Route53 Registrar cannot be automated with Terraform, so ClickOps is still required for domain registration.</Note>
 
@@ -28,9 +28,11 @@ ramifications as to IP/trademark defense.
     ## <StepNumber/> Deploy DNS Components
 
     The DNS stacks are broken up into primary and delegated deployments. Primary DNS zones only start with an `NS` record
-    among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console manages the respective domain. Consult the component's README (`components/terraform/dns-primary/README.md`) for more information.
+    among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console manages the respective domain.
+    Consult the [dns-primary component documentation](/components/library/aws/dns-primary/) for more information.
 
-    The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated. Consult the component's README `components/terraform/dns-delegated/README.md` for more information.
+    The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated.
+    Consult the [dns-delegated component documentation](/components/library/aws/dns-delegated/) for more information.
 
     To start the dns setup, run `atmos workflow deploy/dns -f network`. This will go through creating primaries, and then
     follow up with establishing the delegates.
@@ -81,7 +83,11 @@ ramifications as to IP/trademark defense.
 
 ### ACM
 
-Note that each `dns-primary` component will already create its own ACM certs. These are only for the vanity domains and won't do the more critical service domain certificates.
+Each domain managed by the `dns-primary` component will create its own ACM certificate. However, we need additional ACM certificates to validate delegated domains.
+We use a separate instance of the `acm` component to provision each service domain certificate.
 
-We use a separate instance of the `acm` component to provision the service domain certificates, which still rely on the
-`dns-delegated` component. Setting these up can be done quickly by running `atmos workflow deploy/acm -f network`.
+We can deploy all required ACM certificates with the following command:
+
+```bash
+atmos workflow deploy/acm -f network
+```
