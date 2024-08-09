@@ -23,7 +23,6 @@
 
 .slide.active {
   opacity: 1;
-  display: flex;
 }
 
 .slider-button {
@@ -37,6 +36,7 @@
   font-size: 1.5em;
   border-radius: 6px;
   border: none;
+  z-index: 1;
 }
 
 .slider-button.left {
