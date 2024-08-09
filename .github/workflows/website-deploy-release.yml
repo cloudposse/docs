@@ -1,4 +1,4 @@
-name: "Website Deploy Release"
+name: "🚀 Docs Release"
 
 on:
   workflow_dispatch:
@@ -10,20 +10,49 @@ on:
     types:
       - published
 
+env:
+  AWS_REGION: us-east-2
+  IAM_ROLE_ARN: arn:aws:iam::557075604627:role/cplive-plat-ue2-prod-cloudposse-docs-gha
+  IAM_ROLE_SESSION_NAME: cloudposse-docs-ci-deploy-release
+  S3_BUCKET_NAME: cplive-plat-ue2-prod-cloudposse-docs-origin
+  DEPLOYMENT_HOST: docs.cloudposse.com
+  ALGOLIA_INDEX_NAME: docs.cloudposse.com
+  ALGOLIA_APP_ID: 32YOERUX83
+  GOOGLE_TAG_MANAGER: GTM-WQWH2XV
+  GOOGLE_SITE_VERIFICATION_ID: uY7FoBLCwsBfMMXefHxUz3lvHjZuWyURCIgpA-ia3_g
+
+# These permissions are needed to interact with the GitHub's OIDC Token endpoint
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  trigger_documentation_deployment:
+  deploy:
     runs-on: ubuntu-latest
 
     environment:
-      name: production
-      url: https://docs.cloudposse.com
+      name: staging
+      url: https://${{ env.DEPLOYMENT_HOST }}
 
     steps:
-      - name: Trigger Documentation Deployment
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Website
+        uses: ./.github/actions/build-website
+        with:
+          aws_region: ${{ env.AWS_REGION }}
+          iam_role_arn: ${{ env.IAM_ROLE_ARN }}
+          iam_role_session_name: ${{ env.IAM_ROLE_SESSION_NAME }}
+          google_tag_manager: ${{ env.GOOGLE_TAG_MANAGER }}
+          google_site_verification_id: ${{ env.GOOGLE_SITE_VERIFICATION_ID }}
+          repo_access_token: ${{ secrets.REPO_ACCESS_TOKEN }}
+
+      - name: Copy Website to S3 Bucket
         run: |
-          curl \
-            -X POST \
-            -H "Authorization: Bearer ${{ secrets.TRIGGER_DOCS_REDEPLOY_WORKFLOW_REFARCH }}" \
-            -H "Accept: application/vnd.github.everest-preview+json" \
-            https://api.github.com/repos/cloudposse/refarch-scaffold/dispatches \
-            -d '{"event_type": "redeploy_documentation"}'
+          cd build
+          aws sts get-caller-identity
+          aws s3 sync . s3://${{ env.S3_BUCKET_NAME }} --delete --exclude "pr-*"
+          aws s3 ls s3://${{ env.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize

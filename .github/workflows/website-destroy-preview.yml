@@ -1,11 +1,14 @@
-name: "Website Destroy Preview"
+name: "🗑️ Docs Preview"
 
 on:
   workflow_dispatch:
 
-  pull_request:
+  pull_request_target:
     types:
       - closed
+    branches:
+      - 'main'
+      - 'master'
 
 env:
   AWS_REGION: us-east-2
@@ -20,7 +23,7 @@ permissions:
   contents: read
 
 jobs:
-  website-destroy-preview:
+  destroy:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
