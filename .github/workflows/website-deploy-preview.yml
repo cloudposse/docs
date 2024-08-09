@@ -30,7 +30,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  deploy-preview:
     runs-on: ubuntu-latest
 
     environment:
