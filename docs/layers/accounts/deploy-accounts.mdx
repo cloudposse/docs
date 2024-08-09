@@ -50,7 +50,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   <Step>
     ## <StepNumber/> Configure Root Account as Organization
 
-    Before performing the "Deploying Accounts" step, the root account needs to be configured as an AWS Organization.
+    Before performing the "Deploy Accounts" step, the root account needs to be configured as an AWS Organization.
 
     This process also enables [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) via a CLI command, which is required for connecting the Organization.
   </Step>
@@ -65,7 +65,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploying Accounts
+    ## <StepNumber/> Deploy Accounts
 
     <Note title="Important">
       With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
@@ -100,8 +100,10 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   <Step>
     ### <StepNumber/> ClickOps to Complete Account Setup
 
+    For each new account, you will need to perform some manual configurations via ClickOps. These configurations include setting up the root account credentials, enabling MFA, and unsubscribing the account's email address from all marketing emails.
+
     <Steps>
-      1. For each new account:
+      1. Reset the root user password:
          <Steps>
          1. Perform a password reset by attempting to log in to the AWS console as a "root user" using that account's email address
          1. Click the "Forgot password?" link
@@ -109,21 +111,32 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
          1. Enter a new password
 
             <Note title="Tip">
-             Use 1Password or Random.org to create a password 26-38 characters long, including at least 3 of each class of character: lower case, uppercase, digit, and symbol. You may need to manually combine or add to the generated password to ensure 3 symbols and digits are present.
+             Use 1Password to create a password 26-38 characters long, including at least 3 of each class of character: lower case, uppercase, digit, and symbol
             </Note>
 
          1. Save the email address and generated password as web login credentials in 1Password
-         1. Finally, save the account number in a separate field
+         1. Finally, record the account number in a separate field of the 1Password item, and save it. This is optional but recommended.
          </Steps>
 
-      1. Log in using the new password, choose "My Security Credentials" from the account dropdown menu and set up Multi-Factor Authentication (MFA) to use a Virtual MFA device.
-
-      1. Save the MFA TOTP key in 1Password by using 1Password's TOTP field and built-in screen scanner, and save the Virtual MFA ARN
+      1. Configure MFA:
+         <Steps>
+         1. Log in to the AWS console using the new password
+         1. Choose "My Security Credentials" from the account dropdown menu
+         1. Set up Multi-Factor Authentication (MFA) to use a Virtual MFA device
+         1. Save the MFA TOTP key in 1Password with 1Password's "One-Time Password" field
+         1. Enter the generated MFA codes in AWS to verify the MFA device
+         1. Save the Virtual MFA ARN in the same 1Password entry. We will need this to set up the MFA device for `SuperAdmin` in Leapp
+         </Steps>
 
       1. Enable any necessary optional regions
 
       1. Optional, but highly recommended - unsubscribe the account's email address from all marketing emails
-
+         <Steps>
+         1. Go to [AWS Marketing Preferences](https://pages.awscloud.com/communication-preferences.html)
+         1. Click "Unsubscribe from Email"
+         1. Enter the account's email address
+         1. Check "Unsubscribe from all AWS marketing emails"
+         </Steps>
     </Steps>
 
     For more details, review

@@ -28,6 +28,12 @@ import Note from '@site/src/components/Note';
 The identity components are designed to provision all primary user and system roles into a centralized identity account.
 These components are expected to be used together to provide fine-grained role delegation across the account hierarchy.
 
+<Note title="Important">
+  All identity components in this guide required elevated permissions to deploy, and in particular require Administrator access in `core-root` and `core-identity`. Assume the SuperAdmin IAM user role before continuing.
+
+  For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+</Note>
+
 <Steps>
 
   <Step>
@@ -61,7 +67,7 @@ These components are expected to be used together to provide fine-grained role d
     atmos workflow update-aws-config -f identity
     ```
 
-    This will generate AWS configuration to the `rootfs` directory locally.
+    This will generate AWS configuration to the `rootfs` directory locally. Everything included in the `rootfs` directory is passed to the Geodesic image when it is built. This will include the AWS configuration files, included with the `aws-config-teams` file, that are needed to assume roles across the AWS Organization. In particular, we recommend setting a common AWS profile, such as `acme-identity`, as the entry-point for all role assumption. That way all users can configure the same AWS profile name and be allowed to assume roles that they can access.
 
     <Note title="Important">
     The script that generates AWS config requires local files that are created when the AWS Team and Team Roles components are deployed.
