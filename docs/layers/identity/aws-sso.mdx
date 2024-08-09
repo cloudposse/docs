@@ -64,13 +64,6 @@ It's important to note that the specifics of the integration process may be subj
 
 For providers not included in the following section, please [follow the AWS documentation for setting up an IdP integration with AWS](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html). This list includes Azure AD, CyberArk, OneLogin, and Ping Identity.
 
-:::caution Integrating JumpCloud with AWS IAM Identity Center
-
-The official AWS documentation for setting up JumpCloud with AWS IAM Identity Center is not accurate. Instead, please
-refer to the [JumpCloud official documentation](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
-
-:::
-
 <Tabs queryString="idp">
   <TabItem value="okta" label="Okta">
     <Intro>
@@ -98,6 +91,24 @@ refer to the [JumpCloud official documentation](https://jumpcloud.com/support/in
       6. Copy the information from Okta into the fields
       7. The Okta App will need to be updated with the **Service provider metadata**
     </Steps>
+
+  </TabItem>
+
+  <TabItem value="jumpcloud" label="JumpCloud">
+    <Intro>
+    JumpCloud is a cloud-based directory service that provides secure, frictionless access to AWS resources. It can be used as an identity provider for AWS (Amazon Web Services) through a feature called AWS Single Sign-On (AWS SSO).
+    </Intro>
+
+    Follow the JumpCloud official documentation for setting up JumpCloud with AWS IAM Identity Center:
+
+    [Integrate with AWS IAM Identity Center](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
+
+    :::caution Integrating JumpCloud with AWS IAM Identity Center
+
+    The official AWS documentation for setting up JumpCloud with AWS IAM Identity Center is not accurate. Instead, please
+    refer to the [JumpCloud official documentation](https://jumpcloud.com/support/integrate-with-aws-iam-identity-center)
+
+    :::
 
   </TabItem>
 
