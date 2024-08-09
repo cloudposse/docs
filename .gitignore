@@ -15,9 +15,6 @@
 /tmp
 
 # Ignore generated content for modules, components, and GitHub Actions
-/docs/generated/components/library/*
-/docs/generated/modules/library/*
-/docs/generated/github-actions/library/*
 /docs/components/library/*
 /docs/modules/library/*
 /docs/github-actions/library/*
@@ -41,6 +38,11 @@
 !/docs/modules/library/opsgenie/opsgenie.mdx
 !/docs/modules/library/spacelift/spacelift.mdx
 !/docs/modules/library/tls/tls.mdx
+
+# Ensure the directories themselves are not ignored
+!/docs/components/library/
+!/docs/modules/library/
+!/docs/github-actions/library/
 
 /static/css
 /static/js
