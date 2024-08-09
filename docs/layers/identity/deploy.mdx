@@ -44,7 +44,7 @@ These components are expected to be used together to provide fine-grained role d
 
   <Step>
     ### <StepNumber/> Reconfigure Terraform State Backend
-    Apply the changes from the previous step to the Terraform State Backend by running the following. This will grant permission for your newly deployed AWS Teams and Team Roles to access the Terraform State Backend.
+    Apply the changes from the previous step to the Terraform State Backend by running the following commands. This will grant permission for your newly deployed AWS Teams and Team Roles to access the Terraform State Backend.
 
     ```bash
     atmos workflow deploy/tfstate -f baseline
@@ -64,7 +64,7 @@ These components are expected to be used together to provide fine-grained role d
     This will generate AWS configuration to the `rootfs` directory locally.
 
     <Note title="important">
-    The script that generates AWS config requires local files that are created when the AWS Team and Team Roles components are deployed.
+    The AWS config script requires local files, which are generated during the deployment of the AWS Team and Team Roles components.
 
     If you did not run these steps yourself and they are not committed to git, then you will need to rerun those components to generate these local files. For this reason, we recommend committing these generated files to git so that they are available for future use.
     </Note>
