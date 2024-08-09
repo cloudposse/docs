@@ -1,0 +1,42 @@
+name: "🚀 Docs Algolia ReIndex"
+
+on:
+  workflow_dispatch:
+
+  repository_dispatch:
+    types: [reindex]
+
+  workflow_run:
+    workflows: [🚀 Docs Release]
+    types:
+      - completed
+
+env:
+  ALGOLIA_INDEX_NAME: docs.cloudposse.com
+  ALGOLIA_APP_ID: 32YOERUX83
+
+jobs:
+  docs-reindex:
+    if: >-
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event_name == 'repository_dispatch') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+
+    runs-on:
+      - "self-hosted"
+      - "amd64"
+      - "large"
+
+    steps:
+      - name: "Checkout 'cloudposse/docs' Repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: ReIndex with Algolia
+        env:
+          ALGOLIA_SCRAPER_API_KEY: ${{ secrets.ALGOLIA_SCRAPER_API_KEY }}
+          ALGOLIA_CRAWLER_USER: ${{ secrets.ALGOLIA_CRAWLER_USER }}
+          ALGOLIA_CRAWLER_PASSWORD: ${{ secrets.ALGOLIA_CRAWLER_PASSWORD }}
+        run: |
+          ./algolia/reindex.sh
