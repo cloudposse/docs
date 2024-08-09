@@ -20,9 +20,9 @@
 /docs/github-actions/library/*
 
 # Ensure the directories themselves are not ignored
-!/docs/components/library/
-!/docs/modules/library/
-!/docs/github-actions/library/
+#!/docs/components/library/
+#!/docs/modules/library/
+#!/docs/github-actions/library/
 
 # Except for these specific files.
 # These are the index files for the components, modules, and GitHub Actions.
