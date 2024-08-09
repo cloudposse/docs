@@ -123,6 +123,7 @@ const Slider = ({ children, loop = false }) => {
   }, [currentSlide, children]);
 
   return (
+
     <div
       className="slider"
       tabIndex={0} // Make the slider focusable
