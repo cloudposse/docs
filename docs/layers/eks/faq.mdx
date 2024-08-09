@@ -17,7 +17,7 @@ Consider deploying the [`external-secrets-operator` component](/components/libra
 
 This component creates an external SecretStore configured to synchronize secrets from AWS SSM Parameter store as
 Kubernetes Secrets within the cluster. Per the operator pattern, the `external-secret-operator` pods will watch for any
-ExternalSecret resources which reference the SecretStore to pull secrets from.
+`ExternalSecret` resources which reference the `SecretStore` to pull secrets from.
 
 ## How does the `alb-controller-ingress-group` determine the name of the ALB?
 

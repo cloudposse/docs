@@ -37,12 +37,12 @@ Override your [`aws-team-roles` component](/components/library/aws/aws-team-role
 
 ## Why not use AWS Control Tower?
 
-AWS Control Tower does not support Terraform. Using Terraform, we have complete control over the Organization,
+AWS Control Tower until recently, did not support Terraform. Additionally, using Terraform, we have complete control over the Organization,
 Organizational Unit, and Account provisioning process.
 
 ## Why not just use AWS SSO?
 
-The primary reason is that cross-account terraform is not supported with AWS SSO Permission Sets. We cannot apply
+The primary reason to not rely solely on AWS SSO, is that cross-account terraform is not supported with AWS SSO Permission Sets. We cannot apply
 Terraform across the account hierarchy with a single Permission Set, so instead we combine AWS SSO with our AWS Teams
 and Team Roles.
 

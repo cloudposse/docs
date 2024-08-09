@@ -48,7 +48,7 @@ Permission Sets other than the Identity Team Access Permission Set are used only
 account. These are redundant with AWS Team Roles but are useful for quickly accessing a given account with limited
 permission.
 
-With AWS IAM Identity Center, you can connect directly to a given account from the single sign-on page with the required `PermissionSet`. This is great for web console usage but not ideal for locally applying Terraform. With Terraform, we need to apply changes across many accounts, where each account has its own role. We don't want to assume a new role each time we change accounts. To solve this, we have a specific Permission Set that can assume an AWS team role in the identity account. When applying Terraform, we assume that "team" role via SSO, and when accessing the web console, we use the Permission Set directly.
+With AWS IAM Identity Center, you can directly access a specific account from the single sign-on page, which will automatically assume the role with the associated `PermissionSet`. This is great for web console usage but not ideal for locally applying Terraform. With Terraform, we need to apply changes across many accounts, where each account has its own role. We don't want to assume a new role each time we change accounts. To solve this, we have a specific Permission Set that can assume an AWS team role in the identity account. When applying Terraform, we assume that "team" role via SSO, and when accessing the web console, we use the Permission Set directly.
 
 ### AWS SAML
 
