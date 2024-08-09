@@ -53,8 +53,9 @@ conflict with any other ranges which may need to be peered in the future.
 - EKS [will use either](https://github.com/aws/containers-roadmap/issues/216#issue-423314258) 10.100.0.0/16 or
   172.20.0.0/16 for cluster Services, so avoiding those ranges will avoid some problems with inter-cluster routing
 
-:::caution **Use CIDR ranges** **smaller** **than a** `/19` **at your own risk.** Cloud Posse does not take
-responsibility for any EKS cluster issues related to underprovisioning CIDR ranges.
+:::caution Use CIDR ranges smaller than a `/19` at your own risk.
+
+Cloud Posse does not take responsibility for any EKS cluster issues related to underprovisioning CIDR ranges.
 
 :::
 

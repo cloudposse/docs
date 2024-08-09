@@ -95,7 +95,8 @@ const DocItemContent = ({ children }) => {
       'component': 'icon-park-twotone:puzzle'
     };
 
-    if( metadata && metadata.frontMatter?.icon ) {
+    if (metadata && metadata.frontMatter && metadata.frontMatter.hasOwnProperty('icon')) {
+      // We do not care about the truthiness of the icon value. Set to null or false to disable.
       icon = metadata.frontMatter.icon;
     } else {
       // Iterate over the topics to icons map

@@ -11,9 +11,13 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Admonition from '@theme/Admonition'
 
+<Intro>
+To get a head start on your infrastructure as code journey, we recommend completing the following action items while you wait on Cloud Posse to deliver your configurations. These steps will help you set up your environment and prepare for the provisioning process.
+</Intro>
+
 <Steps>
   <Step>
-    ## <StepNumber/> **AWS** Organization (root account)
+    ## <StepNumber/> Prepare a New AWS Organization (root account)
 
     We recommend that you start with a new AWS Organization (e.g. a new payer account). As part of the provisioning process, you will be terraforming your entire organization, creating 12-plus accounts, and building everything from the ground up. You will be configuring SSO, fine-grained IAM roles, and more, all with Terraform. We recommend a net-new Organization, so you do not jeopardize any of your current production operations.
 
@@ -21,13 +25,13 @@ import Admonition from '@theme/Admonition'
   </Step>
 
   <Step>
-    ### <StepNumber/> GitHub
+    ## <StepNumber/> Create GitHub Repository
 
     Create a new repository in your GitHub organization that you will use as your Infrastructure as Code repository.
   </Step>
 
   <Step>
-    ### <StepNumber/> AWS IAM Identity Center (AWS SSO)
+    ## <StepNumber/> AWS IAM Identity Center (AWS SSO)
 
     In order connect your chosen IdP to AWS IAM Identity Center (AWS SSO), we will to configure your provider and create a metadata file. Please follow the relevant linked guide and follow the steps for the Identity Provider.
 
@@ -44,7 +48,7 @@ import Admonition from '@theme/Admonition'
 
   <Step>
 
-    ### <StepNumber/> AWS SAML
+    ## <StepNumber/> Configure AWS SAML (Optional)
 
     If deploying AWS SAML as an alternative to AWS SSO, you will need a separate configuration and metadata file. Again, please refer to the relevant linked guide.
 
@@ -55,7 +59,7 @@ import Admonition from '@theme/Admonition'
   </Step>
 
   <Step>
-    ### <StepNumber/> Requirements for Purchasing Domains with Route53
+    ## <StepNumber/> Purchase Domains (Optional)
 
     If you plan to use the `core-dns` account to register domains, make sure to add a credit card directly to that individual account. When the account is ready, please add a credit card to the `core-dns` account following the [AWS documentation](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-cc.html#Add-cc).
   </Step>

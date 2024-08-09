@@ -9,6 +9,13 @@ const KeyboardShortcuts = () => {
         return;
       }
 
+      // Check for the presence of a slider
+      const sliderElements = document.getElementsByClassName('slider');
+      for (let i = 0; i < sliderElements.length; i++) {
+        console.log('Slider detected, skipping keyboard shortcuts');
+        return;
+      }
+
       if (e.key === 'ArrowLeft') {
         const buttons = document.getElementsByClassName('pagination-nav__link');
         if (buttons.length >= 1) {
