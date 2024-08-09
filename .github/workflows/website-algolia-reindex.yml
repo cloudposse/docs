@@ -22,10 +22,7 @@ jobs:
       (github.event_name == 'repository_dispatch') ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
 
-    runs-on:
-      - "self-hosted"
-      - "amd64"
-      - "large"
+    runs-on: ubuntu-latest
 
     steps:
       - name: "Checkout 'cloudposse/docs' Repository"
