@@ -9,8 +9,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Intro>
-  [ecspresso](https://github.com/kayac/ecspresso) is a tool to manage ECS resources with ease. It provides a simple command-line interface to deploy applications to ECS.
+  We use the [`ecspresso`](https://github.com/kayac/ecspresso) deployment tool for Amazon ECS to manage ECS services using a code-driven approach, alongside reusable GitHub Action workflows. This setup allows tasks to be defined with Terraform within the infrastructure repository, and task definitions to reside alongside the application code. Ecspresso provides extensive configuration options via YAML, JSON, and Jsonnet, and includes plugins for enhanced functionality such as Terraform state lookups.
 </Intro>
+
 
 ```mermaid
 ---

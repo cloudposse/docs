@@ -8,6 +8,7 @@ import Step from '@site/src/components/Step';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ReactPlayer from 'react-player';
 
 <Intro>
   Your platform ensures consistent service delivery every time. A well-designed platform seamlessly integrates with your monitoring, security, and compliance systems, building on your established foundation. Automated software delivery pipelines deploy new services quickly and easily. The reference architecture supports AWS EKS, Amazon ECS, and Lambda functions.
@@ -23,6 +24,11 @@ import TabItem from '@theme/TabItem';
     <Tabs queryString="platform">
       <TabItem value="ecs" label="Use ECS">
         Elastic Container Service (ECS) is a fully-managed container orchestration service provided by Amazon Web Services (AWS) that simplifies the process of deploying, managing, and scaling containerized applications. ECS makes it easy to run and manage Docker containers on AWS infrastructure, providing a secure and scalable platform for your applications. One of the major benefits of ECS over EKS, is that there is no need to upgrade the underlying platform. ECS is a managed service that is always up to date. This means that you can focus on your application and not the underlying platform.
+
+        <figure>
+          <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/ecs.mp4" />
+          <figcaption>AI generated voice</figcaption>
+        </figure>
 
         <PrimaryCTA to="/layers/ecs">Get Started</PrimaryCTA>
       </TabItem>
@@ -48,6 +54,12 @@ import TabItem from '@theme/TabItem';
     ## <StepNumber/> Automate Terraform Your Terraform Deployments
 
     Use GitHub Actions to automate your Terraform deployments with Atmos, ensuring consistent infrastructure across your environments.
+
+
+    <figure>
+      <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/gitops.mp4' />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
 
     <PrimaryCTA to="/layers/gitops">Get Started</PrimaryCTA>
   </Step>
