@@ -67,7 +67,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   <Step>
     ## <StepNumber/> Deploying Accounts
 
-    <Note title="important">
+    <Note title="Important">
       With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
       on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
       stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
@@ -86,7 +86,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
     role, we provision a static component `account-map`.
 
-    <Note title="important">
+    <Note title="Important">
     Always run `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
     </Note>
 
@@ -108,7 +108,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
          1. You will receive a password reset link via email, which should be forwarded to the shared Slack channel for automated messages. Click the link
          1. Enter a new password
 
-            <Note title="tip">
+            <Note title="Tip">
              Use 1Password or Random.org to create a password 26-38 characters long, including at least 3 of each class of character: lower case, uppercase, digit, and symbol. You may need to manually combine or add to the generated password to ensure 3 symbols and digits are present.
             </Note>
 

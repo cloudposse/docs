@@ -12,7 +12,7 @@ import StepNumber from '@site/src/components/StepNumber';
 The GitHub Action Runner Controller (ARC) is a Kubernetes operator that automates the management of self-hosted GitHub Actions runners in a Kubernetes cluster, that works very well together with Karpenter for EKS.
 </Intro>
 
-<Note title="IMPORTANT">We recommend using ARC only if your organization uses Kubernetes, otherwise we recommend the [Philips Labs GitHub Runner](/layers/github-actions/philips-labs-github-runners) approach instead.</Note>
+<Note title="Important">We recommend using ARC only if your organization uses Kubernetes, otherwise we recommend the [Philips Labs GitHub Runner](/layers/github-actions/philips-labs-github-runners) approach instead.</Note>
 
 By default, GitHub Actions are run in the cloud on hosted machines, but we can opt to use "Self-Hosted" GitHub Action
 Runners instead. Historically, we've deployed an Auto Scaling Group that gives each run a dedicated and customized
@@ -117,7 +117,7 @@ Automation has an unique set of components from the `plat` clusters and therefor
 `auto` includes the `eks/actions-runner-controller` component, which is used to create the `self-hosted` runners for the
 GitHub Repository or Organization
 
-<Note title="tip">
+<Note title="Tip">
 The first three steps before are all included in the following workflow:
 
 ```bash
