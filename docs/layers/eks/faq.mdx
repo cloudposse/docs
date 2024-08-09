@@ -4,8 +4,7 @@ sidebar_label: FAQ
 sidebar_position: 100
 ---
 import Intro from '@site/src/components/Intro';
-import Step from '@site/src/components/Step';
-import StepNumber from '@site/src/components/StepNumber';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
 Frequently asked questions about EKS with Cloud Posse's reference architecture.
@@ -21,32 +20,13 @@ Kubernetes Secrets within the cluster. Per the operator pattern, the `external-s
 
 ## How does the `alb-controller-ingress-group` determine the name of the ALB?
 
-<Step>
-  <StepNumber/> Null Label ID
-  First the component uses the [null-label](/modules/library/null/label) module to generate our intended name. We do this to meet the character length
-  restrictions on ALB names.
-  [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L75-L83)
-</Step>
-<Step>
-  <StepNumber/> Kubernetes Ingress Annotation
-  Then we pass that output to the Kubernetes Ingress resource with an annotation intended to define the ALB's name.
-  [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L98)
-</Step>
-<Step>
-  <StepNumber/> ALB Creation with Dynamic Suffix
-  Now the Ingress is created and `alb-controller` creates an ALB using the annotations on that `Ingress`. This ALB name
-  will have a dynamic character sequence at the end of it, so we cannot know what the name will be ahead of time.
-</Step>
-<Step>
-  <StepNumber/> Data Resource
-  Finally, we grab the actual name that is given to the created ALB with the `data.aws_lb` resources.
-  [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L169)
-</Step>
-<Step>
-  <StepNumber/> Terraform Output
-  Then output that name for future reference.
-  [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L36)
-</Step>
+<Steps>
+  1. First the component uses the [null-label](/modules/library/null/label) module to generate our intended name. We do this to meet the character length restrictions on ALB names. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L75-L83)
+  1. Then we pass that output to the Kubernetes Ingress resource with an annotation intended to define the ALB's name. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L98)
+  1. Now the Ingress is created and `alb-controller` creates an ALB using the annotations on that `Ingress`. This ALB name will have a dynamic character sequence at the end of it, so we cannot know what the name will be ahead of time.
+  1. Finally, we grab the actual name that is given to the created ALB with the `data.aws_lb` resources. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L169)
+  1. Then output that name for future reference. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L36)
+</Steps>
 
 ## How can we create Self-Hosted Runners for GitHub with EKS?
 

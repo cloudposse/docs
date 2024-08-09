@@ -6,8 +6,7 @@ sidebar_position: 10
 
 import Intro from '@site/src/components/Intro';
 import ReactPlayer from "react-player";
-import Step from '@site/src/components/Step';
-import StepNumber from '@site/src/components/StepNumber';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
 Frequently asked questions about network and DNS with Cloud Posse's reference architecture.
@@ -49,26 +48,11 @@ stack. Give that component a new name, such as `vpc/data-1`, and then inherit th
 
 In order to add a new network region:
 
-<Step>
-  <StepNumber/> Create Mixin
-
-  Create a new mixin for the region: `stacks/mixins/{{ region }}/`
-
-</Step>
-
-<Step>
-  <StepNumber/> Create Stack Configuration
-
-  Define a new stack configuration for the region. The regions of any given account are defined by resources in the directories for the given region, `stacks/orgs/{{ namespace }}/{{ tenant }}/{{ stage }}/{{ region }}/`
-
-</Step>
-
-<Step>
-  <StepNumber/> Add Resources
-
-  Add the required resources to the stack file, `stacks/orgs/{{ namespace }}/{{ tenant }}/{{ stage }}/{{ region }}/network.yaml`. For example for networking, define a new VPC, connect Transit Gateway, and define Client VPN routes to the new regions.
-
-</Step>
+<Steps>
+  1. Create a new mixin for the region: `stacks/mixins/{{ region }}/`
+  1. Define a new stack configuration for the region. The regions of any given account are defined by resources in the directories for the given region, `stacks/orgs/{{ namespace }}/{{ tenant }}/{{ stage }}/{{ region }}/`
+  1. Add the required resources to the stack file, `stacks/orgs/{{ namespace }}/{{ tenant }}/{{ stage }}/{{ region }}/network.yaml`. For example for networking, define a new VPC, connect Transit Gateway, and define Client VPN routes to the new regions.
+</Steps>
 
 For more, see [How to Define Stacks for Multiple Regions](/learn/maintenance/tutorials/how-to-define-stacks-for-multiple-regions)
 
