@@ -19,6 +19,7 @@
 /docs/components/library
 /docs/modules/library
 /docs/github-actions/library
+!/docs/components/library/aws/aws.mdx
 
 /static/css
 /static/js
