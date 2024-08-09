@@ -9,6 +9,9 @@ tags:
 ---
 import Note from '@site/src/components/Note'
 import Intro from '@site/src/components/Intro'
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
 
 ## Problem
 
@@ -24,33 +27,35 @@ The official Slack Connect documentation: [https://slack.com/help/articles/11500
 
 ## Step by Step Instructions
 
+<Steps>
 1. Create a new Slack Channel as you would normally
-
-<img src="/assets/refarch/cleanshot-2021-10-08-at-16.33.32@2x-20211008-213412.png" /><br/>
+    <img src="/assets/refarch/cleanshot-2021-10-08-at-16.33.32@2x-20211008-213412.png" /><br/>
 
 2. Give it a name, usually of the partner, customer or vendor, followed by `-general` since there may be future channels shared down the road. After clicking the “share outside ...” checkbox, the title of the dialg changes to “Slack Connect” which what Slack calls shared channels.
 
-<Note>all members can rename the channel on their end without affecting the local name of the channel. This means you should name the channel following your organization’s conventions.</Note>
+    <Note>all members can rename the channel on their end without affecting the local name of the channel. This means you should name the channel following your organization’s conventions.</Note>
 
-<img src="/assets/refarch/cleanshot-2021-10-08-at-16.34.34@2x-20211008-213501.png" /><br/>
+    <img src="/assets/refarch/cleanshot-2021-10-08-at-16.34.34@2x-20211008-213501.png" /><br/>
 
 3. Proceed by clicking Next. Then you’re prompted to share the channel. There are (2) ways to do this: either by clicking the “copy share link” option or by entering in the email address of _anyone_ from the other organization. The other organization’s admins will then be prompted to accept the invitation.
 
-<img src="/assets/refarch/cleanshot-2021-10-08-at-16.36.32@2x-20211008-213649.png" /><br/>
+    <img src="/assets/refarch/cleanshot-2021-10-08-at-16.36.32@2x-20211008-213649.png" /><br/>
 
-Then you’ll see a notice like this from the Slackbot.
+    Then you’ll see a notice like this from the Slackbot.
 
-<img src="/assets/refarch/cleanshot-2021-10-08-at-16.38.54@2x-20211008-213858.png" /><br/>
+    <img src="/assets/refarch/cleanshot-2021-10-08-at-16.38.54@2x-20211008-213858.png" /><br/>
 
 4. After the invitation is accepted by the other organization, the inviting organization may need to re-confirm the connect request. This may appear as a notice from the `Slackbot` to the slack admins.
 
-<img src="/assets/refarch/cleanshot-2021-10-08-at-16.40.52@2x-20211008-214144.png" /><br/>
+    <img src="/assets/refarch/cleanshot-2021-10-08-at-16.40.52@2x-20211008-214144.png" /><br/>
 
 5. Once the connection is established, any members that exist in the channel can chat publicly or via direct message (DMs).
 
+</Steps>
+
 ## Managing Slack Connections
 
-You can accept/decline slack connections from here.
+You can accept/decline slack connections from the "Slack Connect" sidebar menu.
 
 <img src="/assets/refarch/cleanshot-2021-10-28-at-09.45.23@2x-20211028-144708.png" /><br/>
 

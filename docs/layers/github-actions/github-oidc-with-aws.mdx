@@ -5,6 +5,7 @@ sidebar_position: 10
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 
@@ -82,49 +83,51 @@ sequenceDiagram
 3. Configure the GitHub Actions Workflow to assume the role
 </KeyPoints>
 
-<Step>
-### <StepNumber/> Deploy GitHub OIDC Provider Component
+<Steps>
+  <Step>
+  ### <StepNumber/> Deploy GitHub OIDC Provider Component
 
-After deploying the [GitHub OIDC Provider component](/components/library/aws/github-oidc-provider/) into an account, you should see the Identity Provider in IAM in the AWS Web Console.
-</Step>
+  After deploying the [GitHub OIDC Provider component](/components/library/aws/github-oidc-provider/) into an account, you should see the Identity Provider in IAM in the AWS Web Console.
+  </Step>
 
-<Step>
-### <StepNumber/> Configure GitHub OIDC Mixin Role and Policy
+  <Step>
+  ### <StepNumber/> Configure GitHub OIDC Mixin Role and Policy
 
-Use the mixin to grant GitHub the ability to assume a role for a specific component.
+  Use the mixin to grant GitHub the ability to assume a role for a specific component.
 
-- Add the [GitHub OIDC Mixin](https://github.com/cloudposse/terraform-aws-components/tree/main/mixins/github-actions-iam-role) to any component that needs to generate an IAM Role for GitHub Actions
-- Implement a custom IAM Policy with least privilege for the role. See [example policies here](https://github.com/cloudposse/terraform-aws-components/tree/main/mixins/github-actions-iam-policy)
-</Step>
+  - Add the [GitHub OIDC Mixin](https://github.com/cloudposse/terraform-aws-components/tree/main/mixins/github-actions-iam-role) to any component that needs to generate an IAM Role for GitHub Actions
+  - Implement a custom IAM Policy with least privilege for the role. See [example policies here](https://github.com/cloudposse/terraform-aws-components/tree/main/mixins/github-actions-iam-policy)
+  </Step>
 
-<Step>
-### <StepNumber/> Deploy GitHub OIDC Role Component
+  <Step>
+  ### <StepNumber/> Deploy GitHub OIDC Role Component
 
-Deploy the [GitHub OIDC Role component](/components/library/aws/github-oidc-role/) to create a generalized role for GitHub to access several resources in AWS.
-</Step>
+  Deploy the [GitHub OIDC Role component](/components/library/aws/github-oidc-role/) to create a generalized role for GitHub to access several resources in AWS.
+  </Step>
 
-<Step>
-### <StepNumber/> Configure GitHub Action Workflows
+  <Step>
+  ### <StepNumber/> Configure GitHub Action Workflows
 
-First, give the GitHub Action Workflow the proper permissions
+  First, give the GitHub Action Workflow the proper permissions
 
-```yaml
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
-```
+  ```yaml
+  permissions:
+    id-token: write # This is required for requesting the JWT
+    contents: read  # This is required for actions/checkout
+  ```
 
-Then, use the official [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) action to automatically obtain a token from the GitHub OIDC provider, exchange that token for AWS temporary credentials and set the proper env vars in your GitHub Action Workflow
+  Then, use the official [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) action to automatically obtain a token from the GitHub OIDC provider, exchange that token for AWS temporary credentials and set the proper env vars in your GitHub Action Workflow
 
-```yaml
-- name: Configure AWS credentials
-  uses: aws-actions/configure-aws-credentials@v4
-  with:
-    aws-region: us-east-2
-    role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role
-    role-session-name: my-github-actions-role-session
-```
-</Step>
+  ```yaml
+  - name: Configure AWS credentials
+    uses: aws-actions/configure-aws-credentials@v4
+    with:
+      aws-region: us-east-2
+      role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role
+      role-session-name: my-github-actions-role-session
+  ```
+  </Step>
+</Steps>
 
 ## FAQ
 

@@ -9,17 +9,18 @@ import Step from '@site/src/components/Step';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ReactPlayer from 'react-player';
 
 <Intro>
-
+  Software delivery is the process of moving your applications from development to production. This involves building, testing, deploying, and promoting them through environments like dev, staging, and production, with approval gates at each stage. Whether you're using EKS, ECS, or Lambdas, the solutions may vary slightly, but we maintain a consistent, reusable pattern across all applications.
 </Intro>
 
 <Steps>
 
   <Step>
-    ## <StepNumber/> Deploy all backing services
+    ## <StepNumber/> Deploy all Backing Services & Databases
 
-    Ensure all the backing services that your applications depend on are deployed and running. This includes databases, caches, and message queues.
+    Ensure all the backing services that your applications depend on are deployed and running. This includes databases, caches, and message queues, etc.
 
     <PrimaryCTA to="/layers/data">Get Started</PrimaryCTA>
   </Step>
@@ -30,22 +31,27 @@ import TabItem from '@theme/TabItem';
     Choose a path for delivery of your services with GitHub Actions. The reference architecture supports deployment to AWS EKS, Amazon ECS, and Lambda functions.
 
     <Tabs queryString="app">
-      <TabItem value="ecs-ecspresso" label="Use ECS with `ecspresso`">
-
+      <TabItem value="ecs-ecspresso" label="Use ECS with ecspresso">
+        We use the `ecspresso` deployment tool for Amazon ECS to manage ECS services using a code-driven approach, alongside reusable GitHub Action workflows. This setup allows tasks to be defined with Terraform within the infrastructure repository, and task definitions to reside alongside the application code.
 
         <PrimaryCTA to="/layers/software-delivery/ecs-ecspresso">Get Started</PrimaryCTA>
       </TabItem>
       <TabItem value="eks-argocd" label="Use EKS with Argo CD">
+        Argo CD is an open-source declarative, GitOps continuous delivery tool for Kubernetes applications. It enables developers to manage and deploy applications on Kubernetes clusters using Git repositories as the source of truth for configuration and definitions. Our Argo CD implementation follows the GitOps methodology and integrates with GitHub Actions, ensuring that the entire application configuration, including manifests, parameters, and even application state, is stored in a Git repository.
 
         <PrimaryCTA to="/layers/software-delivery/eks-argocd">Get Started</PrimaryCTA>
       </TabItem>
 
       <TabItem value="lambda" label="Use Lambas">
-
+        Deploy Lambda functions using GitHub Workflows with a code-driven approach. The build process updates S3 with assets and SSM with the new version, requiring a Terraform run for promotion. GitHub Workflows manage the entire lifecycle, from building and packaging Lambda functions to deploying them, with reusable workflows.
         <PrimaryCTA to="/layers/software-delivery/lambda">Get Started</PrimaryCTA>
       </TabItem>
     </Tabs>
 
+    <figure>
+      <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/release-engineering.mp4' />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
   </Step>
 
 </Steps>
