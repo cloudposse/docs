@@ -19,6 +19,11 @@
 /docs/modules/library/*
 /docs/github-actions/library/*
 
+# Ensure the directories themselves are not ignored
+!/docs/components/library/
+!/docs/modules/library/
+!/docs/github-actions/library/
+
 # Except for these specific files.
 # These are the index files for the components, modules, and GitHub Actions.
 !/docs/components/library/aws/aws.mdx
@@ -38,11 +43,6 @@
 !/docs/modules/library/opsgenie/opsgenie.mdx
 !/docs/modules/library/spacelift/spacelift.mdx
 !/docs/modules/library/tls/tls.mdx
-
-# Ensure the directories themselves are not ignored
-!/docs/components/library/
-!/docs/modules/library/
-!/docs/github-actions/library/
 
 /static/css
 /static/js
