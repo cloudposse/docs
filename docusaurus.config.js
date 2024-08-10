@@ -112,7 +112,6 @@ const config = {
           theme: {
               customCss: customCssFiles,
           },
-
       }),
     ],
   ],
