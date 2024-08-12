@@ -9,6 +9,10 @@ nav.navbar {
     order: 1;
 } */
 
+.navbar-sidebar--show {
+  backdrop-filter: none !important;
+}
+
 .navbar__title {
     font-size: 2em;
     backdrop-filter: blur(6px) saturate(180%);

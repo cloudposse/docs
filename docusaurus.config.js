@@ -63,6 +63,16 @@ const config = {
       'docusaurus-plugin-image-zoom', {},
     ],
     [
+      '@docusaurus/plugin-client-redirects', {
+        redirects: [
+          {
+              from: '/reference-architecture',
+              to: '/learn'
+          }
+        ],
+      },
+    ],
+    [
       '@docusaurus/plugin-ideal-image',
       {
         quality: 90,

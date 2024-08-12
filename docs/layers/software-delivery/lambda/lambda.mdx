@@ -1,6 +1,6 @@
 ---
 title: "Lambda with GitHub Workflows"
-sidebar_label: "Lambda with GitHub Workflows"
+sidebar_label: "Lambda with GitHub Actions"
 description: "Deploy a Lambda functions using GitHub Workflows."
 sidebar_position: 100
 ---
@@ -8,15 +8,12 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import MermaidDiagram from '@site/src/components/MermaidDiagram';
 
 <Intro>
-  Deploy Lambda functions using GitHub Workflows with a code-driven approach. The build process updates S3 with assets and SSM with the new version, requiring a Terraform run for promotion. GitHub Workflows manage the entire lifecycle, from building and packaging Lambda functions to deploying them, with reusable workflows.
+  Deploy Lambda functions using GitHub Workflows with a code-driven approach. The build process updates S3 with assets and SSM with the new version, requiring a Terraform run for promotion. GitHub Workflows manage the entire lifecycle, from building and packaging Lambda functions to deploying them with reusable workflows.
 </Intro>
 
 ### Overview
-
-![Lambda Deployment Lifecycle](https://github.com/cloudposse/example-app-on-lambda-with-gha/blob/main/publish_lambda.png?raw=true)
 
 ```mermaid
 flowchart LR
@@ -31,13 +28,13 @@ flowchart LR
 
     subgraph "SSM parameters"
         subgraph "plat-dev"
-            dev_lambda_tag["@ParameterStore /lambda/hello/tag"]
+            dev_lambda_tag["@SystemsManager /lambda/hello/tag"]
         end
         subgraph "plat-staging"
-            staging_lambda_tag["@ParameterStore /lambda/hello/tag"]
+            staging_lambda_tag["@SystemsManager /lambda/hello/tag"]
         end
         subgraph "plat-prod"
-            prod_lambda_tag["@ParameterStore /lambda/hello/tag"]
+            prod_lambda_tag["@SystemsManager /lambda/hello/tag"]
         end
     end
 
@@ -45,8 +42,7 @@ flowchart LR
     publish --> dev_lambda_tag
     push["@GitBranch push → main"] --> publish --> artifacts_bucket
     publish --> staging_lambda_tag
-
-    release["release"] --> promote
+    release["@GitHubRelease release"] --> promote
     promote --> artifacts_bucket
     promote --> prod_lambda_tag
     artifacts_bucket --> staging_lambda_tag

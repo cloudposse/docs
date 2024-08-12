@@ -4,18 +4,21 @@ import * as AWSIcons from 'aws-react-icons';
 import ReactDOMServer from 'react-dom/server';
 import { icons as hugeIcons } from '@iconify-json/hugeicons';
 import { icons as carbonIcons } from '@iconify-json/carbon';
+import { icons as icIcons } from '@iconify-json/ic';
 import { iconToSVG, iconToHTML, replaceIDs, getIconData } from '@iconify/utils';
 
-// Define the replacement map
+// Define the replacement map (optional)
 const replacements = {
   '@PullRequest': 'hugeicons:git-pull-request',
-  '@GitBranch': 'carbon:branch'
+  '@GitBranch': 'carbon:branch',
+  '@GitHubRelease': 'ic:twotone-rocket-launch'
 };
 
 // Icon sets preloaded or to be loaded dynamically
 const iconSets = {
   hugeicons: hugeIcons,
-  carbon: carbonIcons
+  carbon: carbonIcons,
+  ic: icIcons
 };
 
 export default function MermaidWrapper(props) {
@@ -23,8 +26,6 @@ export default function MermaidWrapper(props) {
   // Preprocess the Mermaid diagram text
   const preprocessDiagram = (text) => {
     // Example: Replace @SecurityHub with an image tag
-    //console.log(text);
-    //console.log(AWSIcons);
     return preprocessMermaidDiagram(text);
   };
 

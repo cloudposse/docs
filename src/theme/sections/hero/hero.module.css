@@ -4,6 +4,27 @@
   padding: 75px 0 42px;
 }
 
+.buttons {
+  align-items: center;
+  display: flex;
+}
+
+/** In mobile view, reduce the padding */
+@media screen and (max-width: 996px) {
+  .buttons {
+    flex-direction: column;
+  }
+
+  .buttons :global(.button) {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .buttons :global(.button.button--secondary) {
+    margin-left: 0;
+  }
+}
+
 .button.button--secondary {
   color: #FFFFFF;
 }
