@@ -6,7 +6,8 @@ GITHUB_ORG=${GITHUB_ORG:-"cloudposse"}
 GITHUB_REPO=${GITHUB_REPO:-"terraform-aws-components"}
 #GIT_BRANCH=${GIT_BRANCH:-"main"}
 # until https://github.com/cloudposse/terraform-aws-components/pull/1085 is merged
-GIT_BRANCH=${GIT_BRANCH:-"add-frontmatter"}
+#GIT_BRANCH=${GIT_BRANCH:-"add-frontmatter"}
+GIT_BRANCH=${GIT_BRANCH:-"DEV-2439/broken-links"}
 TMP_CLONE_DIR="${TMP_CLONE_DIR:-tmp/components/${GITHUB_REPO}}"
 RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-docs/components/library/aws/}"
 

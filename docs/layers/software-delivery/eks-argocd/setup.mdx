@@ -220,7 +220,7 @@ public.
       1. Update the `deploy/releases/app.yaml`
       2. Make sure the ingress is not set to `default`. It should likely be `alb-controller-ingress-group`. you can read more
         about this
-        [from our docs on the alb controller component](https://docs.cloudposse.com/reference-architecture/quickstart/eks/#how-does-the-alb-controller-ingress-group-determine-the-name-of-the-alb)
+        [from our docs on the alb controller component](/layers/eks/faq/#how-does-the-alb-controller-ingress-group-determine-the-name-of-the-alb)
       3. Set the domain accordingly. Each environment will need the service domain + environment.stage.tenant (ie.
         `use2.staging.plat.acme-svc.com` )
       4. If your organization has mixed case, you'll need to edit the `organization` parameter to be lowercased in the GitHub
