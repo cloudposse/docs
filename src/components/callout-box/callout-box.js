@@ -10,8 +10,12 @@ export default function CalloutBox(props) {
         urlText
     } = props;
 
+    const handleClick = () => {
+        window.location.href = url;
+    };
+
     return (
-        <div className={styles.calloutBox}>
+        <div className={styles.calloutBox} onClick={handleClick} style={{ cursor: 'pointer' }}>
             <div className={styles.calloutBox__title}>{title}</div>
             <div className={styles.calloutBox__subtitle}>{subtitle}</div>
             <LinkRightArrow url={url} urlText={urlText} />
