@@ -62,10 +62,12 @@ class ComponentRenderer:
         tags = rendering.get_tags_from_frontmatter(frontmatter)
 
         # Static replacement and corrections for docusaurus
+        content = rendering.strip_title(content)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
         content = rendering.remove_logo_from_the_bottom(content)
         content = rendering.reformat_admonitions(content)
+        content = rendering.remove_https_cloudposse_docs(content)
         content = rendering.fix_mdx_format(content)
 
         change_log_file = os.path.join(os.path.dirname(file), CHANGELOG_MD)

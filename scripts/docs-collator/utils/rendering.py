@@ -307,3 +307,19 @@ def reformat_admonitions(content):
             result.append(line)
 
     return '\n'.join(result)
+
+def remove_https_cloudposse_docs(content):
+    """
+    In component readmes, we have links to the cloudposse docs,
+    but in docusaurus, we want to link to the relative path.
+
+    Replace all instances of https://docs.cloudposse.com/ with /
+    """
+    return content.replace("https://docs.cloudposse.com/", "/")
+
+def strip_title(content):
+    """
+    The title is created with frontmatter.
+    Remove the title from the content.
+    """
+    return re.sub(r"# Component:(.*)", "", content).strip()

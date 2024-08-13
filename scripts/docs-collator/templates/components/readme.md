@@ -3,20 +3,20 @@ title: {{ title }}
 sidebar_label: {{ label }}
 sidebar_class_name: command
 custom_edit_url: {{ github_edit_url }}
-{% if tags %}
+{%- if tags %}
 tags:
-{% for tag in tags %}
+{%- for tag in tags %}
   - {{ tag }}
-{% endfor %}
-{% else %}
+{%- endfor %}
+{%- else %}
 tags: []
-{% endif %}
+{%- endif %}
 ---
 
 {{ content }}
 
-{% if change_log_content|trim != "" %}
+{%- if change_log_content|trim != "" %}
 ## Changelog
 
 {{ change_log_content }}
-{% endif %}
+{%- endif %}
