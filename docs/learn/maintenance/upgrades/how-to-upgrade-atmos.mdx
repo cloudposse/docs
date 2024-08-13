@@ -16,7 +16,7 @@ You are running an out-of-date version of atmos and need to upgrade it to levera
 ## Solution
 
 <Note title="TL;DR">
-  Update the `ATMOS_VERSION` in the [Geodesic](/reference/legacy/fundamentals/geodesic) `Dockerfile` of your `infrastructure` repository.
+  Update the `ATMOS_VERSION` in the [Geodesic](/resources/legacy/fundamentals/geodesic) `Dockerfile` of your `infrastructure` repository.
 </Note>
 
 ### Upgrading from 0.x.x → 1.x
@@ -37,11 +37,11 @@ The administrative stack must have its runner image set to custom Geodesic image
 :::
 
 <Steps>
-  1. Update the `ATMOS_VERSION` in the [Geodesic](/reference/legacy/fundamentals/geodesic) `Dockerfile` of your `infrastructure` repository (see “Atmos Versions”)
+  1. Update the `ATMOS_VERSION` in the [Geodesic](/resources/legacy/fundamentals/geodesic) `Dockerfile` of your `infrastructure` repository (see “Atmos Versions”)
   2. Remove `variant` installation from the Dockerfile
 
   3. Add `atmos.yaml` to  `rootfs/usr/local/etc/atmos/atmos.yaml`
-      - See [Atmos](/reference/legacy/fundamentals/atmos)  for example.
+      - See [Atmos](/resources/legacy/fundamentals/atmos)  for example.
 
   4. In `rootfs/usr/local/etc/atmos/atmos.yaml` file, review the following config:
 

@@ -6,7 +6,7 @@ import ReactPlayer from 'react-player'
 
 For the most part, we assume users have a solid grasp of `terraform`. Cloud Posse has adopted a number of conventions for how we work with `terraform` that we document here. Review [our opinionated public “best practices” as it relates to terraform](/best-practices/terraform).
 
-We use [Atmos](/reference/legacy/fundamentals/atmos) together with [Stacks](/reference/legacy/fundamentals/stacks) to call [Components](/components) that provision infrastructure with `terraform`.
+We use [Atmos](/resources/legacy/fundamentals/atmos) together with [Stacks](/resources/legacy/fundamentals/stacks) to call [Components](/components) that provision infrastructure with `terraform`.
 
 :::caution
 Be aware of [Terraform Environment Variables](https://www.terraform.io/docs/cli/config/environment-variables.html) that can alter the behavior of `terraform` when run outside of what you see in `atmos` or `geodesic`. These are also helpful to change default behavior as well, such as by setting the `TF_DATA_DIR`.
@@ -24,12 +24,12 @@ Be aware of [Terraform Environment Variables](https://www.terraform.io/docs/cli/
 
 ## Architectural Design Records
 
-- [Proposed: Use Strict Provider Pinning in Components](/reference/adrs/proposed/proposed-use-strict-provider-pinning-in-components)
-- [Use Basic Provider Block for Root-level Components](/reference/adrs/adopted/use-basic-provider-block-for-root-level-components)
-- [Use Terraform Provider Block with compatibility for Role ARNs and Profiles](/reference/adrs/adopted/use-terraform-provider-block-with-compatibility-for-role-arns-an)
-- [Use Spacelift for GitOps with Terraform](/reference/adrs/adopted/use-spacelift-for-gitops-with-terraform)
-- [Use SSM over ASM for Infrastructure](/reference/adrs/adopted/use-ssm-over-asm-for-infrastructure)
-- [Proposed: Use Defaults for Components](/reference/adrs/proposed/proposed-use-defaults-for-components)
+- [Proposed: Use Strict Provider Pinning in Components](/resources/adrs/proposed/proposed-use-strict-provider-pinning-in-components)
+- [Use Basic Provider Block for Root-level Components](/resources/adrs/adopted/use-basic-provider-block-for-root-level-components)
+- [Use Terraform Provider Block with compatibility for Role ARNs and Profiles](/resources/adrs/adopted/use-terraform-provider-block-with-compatibility-for-role-arns-an)
+- [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform)
+- [Use SSM over ASM for Infrastructure](/resources/adrs/adopted/use-ssm-over-asm-for-infrastructure)
+- [Proposed: Use Defaults for Components](/resources/adrs/proposed/proposed-use-defaults-for-components)
 
 ## Conventions
 
@@ -111,7 +111,7 @@ Every input value can also be specified individually by name as a standard Terra
 
 ### Stacks and Components
 
-We use [Stacks](/reference/legacy/fundamentals/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
+We use [Stacks](/resources/legacy/fundamentals/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
 
 ### Atmos CLI
 
@@ -186,7 +186,7 @@ As far as I know, this shouldn't involve migrating a workspace, since this state
 
 ## Reference
 
-- [AWS Region Codes](/reference/adrs/adopted/use-aws-region-codes/)
+- [AWS Region Codes](/resources/adrs/adopted/use-aws-region-codes/)
 - [Structure of Terraform S3 State Backend Bucket](/layers/accounts/tutorials/terraform-s3-state)
 
 

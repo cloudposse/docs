@@ -39,7 +39,7 @@ We do not recommend consuming one terraform component inside of another as that 
 
 - Components should try to expose the same variables as the upstream child modules unless it would lead to naming conflicts.
 
-- Components should use `context.tf` [Terraform](/reference/legacy/fundamentals/terraform).
+- Components should use `context.tf` [Terraform](/resources/legacy/fundamentals/terraform).
 
   <ReactPlayer
       url='https://www.youtube.com/watch?v=V2b5F6jt6tQ&t=6s'
@@ -55,12 +55,12 @@ We do not recommend consuming one terraform component inside of another as that 
 
 - Components should try to upstream as much business logic as possible to child modules to promote reuse.
 
-- Components should use strict version pinning in components and lower-bound pinning in terraform modules. See [our best practice for this](/best-practices/terraform#use-miminum-version-pinning-on-all-providers). See [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date) after pinning. See [Proposed: Use Strict Provider Pinning in Components](/reference/adrs/proposed/proposed-use-strict-provider-pinning-in-components) for more context.
+- Components should use strict version pinning in components and lower-bound pinning in terraform modules. See [our best practice for this](/best-practices/terraform#use-miminum-version-pinning-on-all-providers). See [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date) after pinning. See [Proposed: Use Strict Provider Pinning in Components](/resources/adrs/proposed/proposed-use-strict-provider-pinning-in-components) for more context.
 
 
 ### Stacks
 
-We use [Stacks](/reference/legacy/fundamentals/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
+We use [Stacks](/resources/legacy/fundamentals/stacks) to define and organize configurations. We place terraform “root” modules in the `components/terraform` directory (e.g. `components/terraform/s3-bucket`). Then we define one or more catalog archetypes for using the component (e.g. `catalog/s3-bucket/logs.yaml` and `catalog/s3-bucket/artifacts`).
 
 Stacks are a way to express the complete infrastructure needed for an environment using a standard YAML configuration format that has been developed by Cloud Posse. Stacks consist of components and the variables inputs into those components. For example, you configure a stack for each AWS account and then reference the components which comprise that stack. The more modular the components, the easier it is to quickly define a stack without writing any new code.
 
@@ -134,7 +134,7 @@ Great, so what can you do with a stack? Stacks are meant to be a language and to
 
 2. [terraform-provider-utils](https://github.com/cloudposse/terraform-provider-utils): is our terraform provider for consuming stack configurations from within HCL/terraform.
 
-3. [Spacelift](https://spacelift.io/): By using the [terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) you can configure Spacelift continuously deliver components. Read up on why we [Use Spacelift for GitOps with Terraform](/reference/adrs/adopted/use-spacelift-for-gitops-with-terraform) .
+3. [Spacelift](https://spacelift.io/): By using the [terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) you can configure Spacelift continuously deliver components. Read up on why we [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform) .
 
 ### Global (Default) Region
 
@@ -149,7 +149,7 @@ However, the AWS provider still needs a region to be defined. We set the global 
 
 ### Catalogs
 
-Catalogs in SweetOps are collections of sharable and reusable configurations. Think of the configurations in catalogs as defining archetypes (a very typical example of a certain thing) of configuration (E.g. `s3/public` and `s3/logs` would be two kinds of archetypes of S3 buckets). They are also convenient for managing [Terraform](/reference/legacy/fundamentals/terraform). These are typically YAML configurations that can be imported and provide solid baselines to configure security, monitoring, or other 3rd party tooling. Catalogs enable an organization to codify its best practices of configuration and share them. We use this pattern both with our public terraform modules as well as with our stack configurations (e.g. in the `stacks/catalog` folder).
+Catalogs in SweetOps are collections of sharable and reusable configurations. Think of the configurations in catalogs as defining archetypes (a very typical example of a certain thing) of configuration (E.g. `s3/public` and `s3/logs` would be two kinds of archetypes of S3 buckets). They are also convenient for managing [Terraform](/resources/legacy/fundamentals/terraform). These are typically YAML configurations that can be imported and provide solid baselines to configure security, monitoring, or other 3rd party tooling. Catalogs enable an organization to codify its best practices of configuration and share them. We use this pattern both with our public terraform modules as well as with our stack configurations (e.g. in the `stacks/catalog` folder).
 
 SweetOps provides many examples of how to use the catalog pattern to get you started.
 
@@ -183,7 +183,7 @@ Live represents something that is actively being used. It differs from stages li
 
 ### Docker Based Toolbox (aka Geodesic)
 
-In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/reference/legacy/fundamentals/geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps tooling.
+In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/resources/legacy/fundamentals/geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps tooling.
 
 Geodesic is a DevOps Linux Distribution packaged as a Docker image that provides users the ability to utilize `atmos`, `terraform`, `kubectl`, `helmfile`, the AWS CLI, and many other popular tools that compromise the SweetOps methodology without having to invoke a dozen `install` commands to get started. It’s intended to be used as an interactive cloud automation shell, a base image, or in CI/CD workflows to ensure that all systems are running the same set of versioned, easily accessible tools.
 

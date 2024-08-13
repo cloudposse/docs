@@ -19,19 +19,19 @@ Applying Atmos to existing infrastructure can be an easy process if broken into 
 
 1. Copy all terraform components to `components/terraform/`. See [Components](/components/)
 
-2. Create each stack under `stacks/`. See [Stacks](/reference/legacy/fundamentals/stacks)
+2. Create each stack under `stacks/`. See [Stacks](/resources/legacy/fundamentals/stacks)
 
 3. Define each component within `stacks/catalog/` and import into stacks. See [How to Use Imports and Catalogs in Stacks](/learn/maintenance/tutorials/how-to-use-imports-and-catalogs-in-stacks)
 
 4. Copy existing Terraform variable definitions into the component defaults, catalog definitions, or stack configuration.
 
-5. Import existing state using Atmos. See [Atmos](/reference/legacy/fundamentals/atmos)
+5. Import existing state using Atmos. See [Atmos](/resources/legacy/fundamentals/atmos)
 
 :::
 
 ### **Part 1**: Organization
 
-The first and foremost key to success with Atmos is organization. Organization of Terraform components, variables, and environment configuration naturally lead to DRY code, easier understanding, and less room for errors. With Atmos, we organize all `components` ([Components](/components)) and variables configuration, referred to as `stacks` ([Stacks](/reference/legacy/fundamentals/stacks)), into respective folders. An example layout would look like the following:
+The first and foremost key to success with Atmos is organization. Organization of Terraform components, variables, and environment configuration naturally lead to DRY code, easier understanding, and less room for errors. With Atmos, we organize all `components` ([Components](/components)) and variables configuration, referred to as `stacks` ([Stacks](/resources/legacy/fundamentals/stacks)), into respective folders. An example layout would look like the following:
 
 ```
 infrastructure/
@@ -53,7 +53,7 @@ infrastructure/
 
 ### **Part 2**: Stacks
 
-Stacks are what Atmos uses to define configuration and variables for each component in any environment. Our standard convention is that each `stack` operates in a given region and environment; for example, `ue1-nonprod.yaml` defines the configuration for `nonprod` operating in the `us-east-1`  region. Anything included in these stacks should be **unique** to that given region and environment or be imported by a global configuration file. Read more about [Stacks](/reference/legacy/fundamentals/stacks)
+Stacks are what Atmos uses to define configuration and variables for each component in any environment. Our standard convention is that each `stack` operates in a given region and environment; for example, `ue1-nonprod.yaml` defines the configuration for `nonprod` operating in the `us-east-1`  region. Anything included in these stacks should be **unique** to that given region and environment or be imported by a global configuration file. Read more about [Stacks](/resources/legacy/fundamentals/stacks)
 
 ```
 infrastructure/
@@ -194,6 +194,6 @@ infrastructure/
 
 #### Next Steps
 
-Now that your environment is properly configured, follow the [Atmos](/reference/legacy/fundamentals/atmos) documentation for running commands.
+Now that your environment is properly configured, follow the [Atmos](/resources/legacy/fundamentals/atmos) documentation for running commands.
 
 
