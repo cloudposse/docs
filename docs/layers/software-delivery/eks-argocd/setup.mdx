@@ -30,7 +30,7 @@ import TaskList from '@site/src/components/TaskList'
 
 In order to deploy ArgoCD, EKS must be fully deployed and functional. In particular, the user deploying the cluster must
 have a working VPN connection to the targeted account. See
-[the EKS documentation](https://docs.cloudposse.com/reference-architecture/setup/eks/) for details.
+[the EKS documentation](/layers/eks/deploy-clusters/) for details.
 
 All deployment steps below assume that the environment has been successfully set up with the following steps.
 
@@ -117,7 +117,7 @@ All deployment steps below assume that the environment has been successfully set
   <Step>
     ## <StepNumber/> Create AWS Identity Center Applications
 
-    In order to authenticate with ArgoCD, we recommend using an AWS IAM Identity Center SAML Application. These apps can use existing Identity Center groups that we've already setup as part of the [Identity layer](https://docs.cloudposse.com/reference-architecture/setup/identity/).
+    In order to authenticate with ArgoCD, we recommend using an AWS IAM Identity Center SAML Application. These apps can use existing Identity Center groups that we've already setup as part of the [Identity layer](/layers/identity/).
 
     Please see [ArgoCD Integrations: How to create an AWS Identity Center Application](/layers/software-delivery/eks-argocd/tutorials/identity-center-apps) and follow all steps.
   </Step>
