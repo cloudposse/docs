@@ -105,7 +105,7 @@ Simply put, SSM Parameter Store is very helpful, but it won't let you know about
 - Consider [using developer automation features in 1Password](https://1password.com/developers/secrets-management) to help with secret rotation
 - You can also use an ADR to document credentials that should expire and when
 - [Atmos workflows](https://atmos.tools/cli/commands/workflow) can be used to rotate secrets
-- [Terraform has the `time_rotating` resource](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating.html)
+- [Terraform has the `time_rotating` resource](https://registry.terraform.io/providers/hashicorp/time/latest/docs/reference/rotating.html)
 - Make sure you are using bot accounts or applications for GitHub secrets.
   If any of the tokens in your 1Password vault are personal, there will be foreseeable problems.
   You can use the `gh auth status` command from the `gh` cli to verify the user of each token.

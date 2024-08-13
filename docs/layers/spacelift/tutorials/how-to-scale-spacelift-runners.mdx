@@ -104,7 +104,7 @@ components:
           - admin
         instance_refresh:
           # https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-instance-refresh.html
-          # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group#instance_refresh
+          # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/reference/autoscaling_group#instance_refresh
           strategy: Rolling
           preferences:
             # The number of seconds until a newly launched instance is configured and ready to use

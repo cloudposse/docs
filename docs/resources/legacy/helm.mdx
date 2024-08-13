@@ -86,7 +86,7 @@ Out-of-the-box the `helm` provider does not detect any changes made to the clust
 This means that changes that are made manually in the cluster are not detected as drift. Unlike with helmfile, which performs a `diff` (using `helm-diff` plugin), the terraform `helm` provider does not.
 
 #### Mitigations
-- Use the `helm_template` data source ([https://registry.terraform.io/providers/hashicorp/helm/latest/docs/data-sources/template](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/data-sources/template)) to render the helm release and deploy it with the new `kubernetes_manifest` resource ([https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest)). Terraform will then be able to detect changes from the desired state. There’s one trade-off, however, and that’s there will no longer be any helm history on the server since the manifests will be managed directly by terraform.
+- Use the `helm_template` data source ([https://registry.terraform.io/providers/hashicorp/helm/latest/docs/data-sources/template](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/data-sources/template)) to render the helm release and deploy it with the new `kubernetes_manifest` resource ([https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/reference/manifest](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/reference/manifest)). Terraform will then be able to detect changes from the desired state. There’s one trade-off, however, and that’s there will no longer be any helm history on the server since the manifests will be managed directly by terraform.
 
 - Use the `repository_file` resource together with ArgoCD to write `Application` Custom Resource manifests for deployment. This has the benefit of coupling all the benefits of terraform’s ability to provision backing services, with ArgoCDs abilities to reconcile kubernetes state.
 
@@ -112,7 +112,7 @@ TL;DR: Even if you use ArgoCD, you’ll still need something that manages ArgoCD
 See [https://cloudposse.atlassian.net/wiki/spaces/CP/pages/1168113701](https://cloudposse.atlassian.net/wiki/spaces/CP/pages/1168113701)
 
 ## Learning Resources
-- [https://helm.sh/docs/intro/quickstart/](https://helm.sh/docs/intro/quickstart/)
+- [https://helm.sh/docs/learn/quickstart/](https://helm.sh/docs/learn/quickstart/)
 
 - [https://kube.academy/courses/helm-101](https://kube.academy/courses/helm-101)
 

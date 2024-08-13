@@ -113,7 +113,7 @@ additional code to supply defaults for missing fields.
 
 Reserve `type = any` for exceptional cases where the input is highly
 variable and/or complex, and the module is designed to handle it. For
-example, the configuration of a [Datadog synthetic test](https://registry.terraform.io/providers/DataDog/datadog/latest/docs/resources/synthetics_test)
+example, the configuration of a [Datadog synthetic test](https://registry.terraform.io/providers/DataDog/datadog/latest/docs/reference/synthetics_test)
 is both highly complex and [the Cloud Posse module](https://github.com/cloudposse/terraform-datadog-platform/tree/main/modules/synthetics)
 accepts both an object derived from the `synthetics_test` resource schema or
 an object derived from the JSON output of the Datadog API. In this rare case,
