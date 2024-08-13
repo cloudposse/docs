@@ -17,4 +17,6 @@ export default {
   ...MDXComponents,
   Icon: Icon, // Make the iconify Icon component available in MDX as <Icon />.
   FAIcon: FontAwesomeIcon, // Make the FontAwesomeIcon component available in MDX as <FAIcon />.
+  // Add custom components
+  CategoryList: CategoryList, // Make the CategoryList component available in MDX as <CategoryList />.
 };
