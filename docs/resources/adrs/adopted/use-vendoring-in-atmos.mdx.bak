@@ -1,0 +1,140 @@
+---
+title: "Use Vendoring in Atmos"
+sidebar_label: "Vendoring in Atmos"
+---
+
+**Date**: **21 Mar 2022**
+
+:::tip Latest!
+
+The content in this ADR is up-to-date! For questions, please reach out to Cloud Posse
+
+:::
+
+## Status
+**DECIDED**
+
+## Problem
+We need a way to centralize cloudposse components for reuse across all customers. We have `cloudposse/terraform-aws-components`, but we do not use it as a source of truth. As a result, maintaining our vast library of components is challenging.
+
+We need some way to discover components to avoid duplication of effort. Additionally, we need some way to easily create new components (e.g. from a template).
+
+Also related to [Proposed: Use Mixins to DRY-up Components](/reference/adrs/proposed/proposed-use-mixins-to-dry-up-components) and [Proposed: Use Atmos Registry](/reference/adrs/proposed/proposed-use-atmos-registry)
+
+## Context
+
+## Considered Options
+
+### Option 1: New configuration spec
+
+In the component directory, place a file like this to specify attribution.
+
+#### Components
+
+```
+# component.yaml — proposed name, up for debate
+# This configuration is deep-merged with the upstream component's configuration (component.yaml).
+source: # this stanza is omitted in the component.yaml of the upstream component
+  type: git
+  uri: github.com/cloudposse/terraform-aws-components.git//modules/argocd
+  version: 1.2.3
+```
+
+Similarly, in the component’s upstream repository (e.g. `cloudposse/terraform-aws-components`), we will distribute a file like this in each component.
+
+```
+# source:
+#  type: git
+#  uri: github.com/cloudposse/terraform-aws-components.git//modules/argocd
+#  version: 1.2.3
+```
+
+#### Mixins
+
+The file can also define any mixins that are to be downloaded and generated as part of this component. See also [Proposed: Use Mixins to DRY-up Components](/reference/adrs/proposed/proposed-use-mixins-to-dry-up-components) for a use-case.
+
+```
+# component.yaml — proposed name, up for debate
+mixins:
+  context.tf:
+    source: github.com/cloudposse/null-label.git//exports/context.tf # also supports local paths
+    version: 0.25.0
+    filename: context.tf
+```
+
+Multiple mixins can be defined and parameterized. The parameterization will be based on Go templates.
+
+```
+
+mixins:
+  infra-state:
+    source: github.com/cloudposse/terraform-aws-components.git//mixins/infra-state.mixin.tf
+    version: 1.2.3
+    filename: mixin.infra-state.tf # we should probably move to the prefix convention as a default
+    parameters: # anything that needs to be interpolated when the file is created
+      monorepo_uri: git::ssh://git@github.com/ACME/infrastructure.git?ref=0.1.0
+  sops:
+    source: github.com/cloudposse/terraform-aws-components.git//mixins/sops.mixin.tf
+    version: 1.2.3
+    filename: mixin.sops.tf
+
+```
+
+ These could also be defined in the component’s upstream repository (e.g. `cloudposse/terraform-aws-components`)
+
+```
+# source:
+#  type: git
+#  uri: github.com/cloudposse/terraform-aws-components.git//modules/argocd
+#  version: 1.2.3
+
+mixins:
+  context.tf:
+    source: github.com/cloudposse/null-label.git//exports/context.tf # also supports local paths
+    version: 0.25.0
+    filename: context.tf
+```
+
+A state file/manifest (not to be confused with a Terraform state file) needs to be created whenever `atmos` pulls down the mixins and components. This state file keeps track of which files were vendored and their checksums. This is so that we can identify which files came from the upstream versus files that already existed locally, and also so that we can determine if someone modifies the files upstream, and so we know when to update the mixins.
+
+### Option 2: Extend the Stack Configuration
+
+This was the direction we thought we would take, but there’s a fundamental flaw with this approach that makes it complicated to implement: inheritance. In configuration, if multiple stacks were to define different sources of the component, which component is used? We would need to download all versions of them and couldn’t have the neat & clean layout in `components/terraform`. Thus we prefer Option 1.
+
+The inheritance issue can be mitigated by using the `metadata` section of the component configuration which is excluded from the inheritance chain.
+
+### Option 3: Git Submodules
+
+- Complicated syntax
+
+- Doesn’t support adding files to the downstream tree (e.g. `backend.tf.json`)
+
+### Option 4: Git Subtrees
+
+- Complicated syntax
+
+- Would be compatible with additional files added to the tree and local modifications
+
+### Option 5: Vendir
+
+[https://github.com/vmware-tanzu/carvel-vendir](https://github.com/vmware-tanzu/carvel-vendir)
+
+Vendir was our original inclination. It’s a powerful tool, but supports too many features we don’t need and it would be hard to add what we want, since we’re not in control of the project.
+
+[https://github.com/vmware-tanzu/carvel-vendir/issues/29](https://github.com/vmware-tanzu/carvel-vendir/issues/29)
+
+[https://github.com/vmware-tanzu/carvel-vendir/pull/64](https://github.com/vmware-tanzu/carvel-vendir/pull/64)
+
+## Decision
+
+**DECIDED**: Use Option 1 - a new configuration specification
+
+## Consequences
+
+- Update atmos to add support for Option 1.
+
+## References
+
+-
+
+

@@ -38,7 +38,7 @@ replace_links() {
         escaped_correct_link=$(printf '%s\n' "$correct_link" | sed 's|[&/]|\\&|g')
 
         # Find files containing the broken link and replace it, excluding certain directories and backup files
-        grep -rl "$broken_link" . --exclude-dir={components,modules,github-actions} --exclude=*.bak | while read -r file; do
+        grep -rl "$broken_link" . --exclude=*.bak | while read -r file; do
             echo "Fixing $broken_link in $file"
             cp "$file" "$file.bak" # Create a backup with a .bak extension
             sed -i '' "s|$escaped_broken_link|$escaped_correct_link|g" "$file"

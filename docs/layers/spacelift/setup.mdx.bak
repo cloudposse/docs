@@ -1,0 +1,308 @@
+---
+title: Setup
+sidebar_label: Setup
+sidebar_position: 2
+description: Spacelift is a continuous delivery platform that allows you to automate your Terraform workflows.
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+
+## Quick Start
+
+| Steps                                  |                                                       |
+| :------------------------------------- | :---------------------------------------------------- |
+| 1. Sign up for Spacelift               |                                                       |
+| 2. Create an API Key                   |                                                       |
+| 3. Vendor Spacelift components         | `atmos workflow vendor -f spacelift`                  |
+| 4. Push API Key to AWS SSM             | `atmos workflow init -f spacelift`                    |
+| 5. Set Spacelift Environment variables | `source $(which set-spacelift-environment)`           |
+| 6. Deploy `spacelift/spaces`           | `atmos workflow deploy/spaces -f spacelift`           |
+| 7. Deploy `spacelift/worker-pool`      | `atmos workflow deploy/worker-pool -f spacelift`      |
+| 8. Deploy Spacelift Root Admin stack   | `atmos workflow deploy/root-admin-stack -f spacelift` |
+| 9. Deploy Spacelift Child Admin stack  | `atmos workflow deploy/admin-stack -f spacelift`      |
+| 10. Open the Spacelift UI              | https://acme.app.spacelift.io                         |
+
+## Requirements
+
+### Sign Up for Spacelift
+
+First, sign up for Spacelift. Follow these steps, and see [the detailed documentation](/layers/spacelift/tutorials/how-to-sign-up/spacelift) for additional information.
+
+<Steps>
+1. Sign up [Get started with Spacelift](https://spacelift.io/free-trial)
+1. Install Spacelift GitHub app into the customer GitHub organization
+   1. Once the app is installed into the customer GitHub organization, the GitHub organization admin will receive an
+      email from Spacelift
+1. Click on the link in the email from Spacelift
+   1. After the Spacelift app has been installed and enabled, only the integration creator (the admin of the customer
+      GitHub org) gets administrative permissions by default, so all other users and administrators must be granted
+      their access using a login policy.
+1. Add the following login policy.
+   1. Click `Policies` at the top
+   1. Click `Add Policies`
+   1. Set a name like `Login Policy`
+   1. Change the policy type to `Login policy`
+   1. Copy and paste the policy below
+   1. Change the `user_collaborators` to the customer github org
+   1. Add any additional `admin_collaborators`, if required
+   1. Add the Cloud Posse team `CLOUDPOSSE-CASE-SENSITIVE-TEAM-NAME` and non cloudposse `YOUR-CASE-SENSITIVE-TEAM-NAME`
+      team names.
+   1. Finally, click `Create Policy`
+
+      ```rego
+      package spacelift
+      # See https://docs.spacelift.io/concepts/policy/login-policy for implementation details.
+      # Note: Login policies don't affect GitHub organization or SSO admins.
+      # Note 2: Enabling SSO requires that all users have an IdP (G Suite) account, so we'll just use
+      #          GitHub authentication in the meantime while working with external collaborators.
+      # Map session input data to human friendly variables to use in policy evaluation
+      username	:= input.session.login
+      member_of   := input.session.teams
+
+      github_org   := input.session.member
+
+      # Define GitHub usernames of non-github_org org external collaborators with admin vs. user access
+      admin_collaborators := {} # case sensitive GitHub handles of additional admin collaborators
+
+      user_collaborators  := { "acme" } # case sensitive name of the github org
+
+      # Grant admin access to github_org org members in the non cloud posse case-sensitive team
+      # Do not use the slug here, use the name shown in github.com/org/teams
+      admin {
+        github_org
+        member_of[_] == "YOUR-CASE-SENSITIVE-TEAM-NAME"
+      }
+
+      # Grant admin access to github_org org members in the Cloud Posse group
+      # Do not use the slug here, use the name shown in github.com/org/teams
+      admin {
+        github_org
+        member_of[_] == "CLOUDPOSSE-CASE-SENSITIVE-TEAM-NAME"
+      }
+
+      # Grant admin access to non-github_org org accounts in the admin_collaborators set
+      admin {
+        # not github_org
+        admin_collaborators[username]
+      }
+
+      # Grant user access to accounts in the user_collaborators set
+      allow {
+        # not github_org
+        user_collaborators[username]
+      }
+
+      # Deny access to any non-github_org org accounts who aren't defined in external collaborators sets
+      deny {
+        not github_org
+        not user_collaborators[username]
+        not admin_collaborators[username]
+      }
+      ```
+
+ 5. Verify Cloud Posse users have administrative access
+
+1. Create an administrative API key
+   1. Click the three horizontal bars on the top right hand corner
+   1. Click `Settings`
+   1. Click `API KEYS`
+   1. Click Add new API Key
+   1. Give it a name like `Spacelift worker pool API admin key`
+   1. Enable `Admin`
+   1. Click `Add Key`
+   1. A file will download. Save the contents to our shared 1Password vault. This will give us the `key_secret` and the
+      `token`.
+   1. Also share the 26 character string next to the name of the key which gives us the `key_id`.
+
+</Steps>
+
+### Upload the API Key
+
+In order for the `spacelift/worker-pool` component to connect to the given Spacelift account, we need to add the
+previously created Spacelift API Key to SSM.
+
+Create the following two parameters in AWS SSM Parameter Store in the same AWS account and region where the Spacelift
+Worker Pool will be deployed. In this case, that is `core-use1-auto`.
+
+| Key     | SSM Path                | Type           |
+| :------ | :---------------------- | :------------- |
+| API ID  | `/spacelift/key_id`     | `SecureString` |
+| API Key | `/spacelift/key_secret` | `SecureString` |
+
+_HINT: The API key ID is displayed as an upper-case, 26-character alphanumeric value next to the key name in the API key
+list._
+
+This step can be executed with an Atmos Workflow! Run the follow and enter the API Key ID and Secret when prompted:
+
+```shell
+atmos workflow init -f spacelift
+```
+
+## How To
+
+<Steps>
+### Vendor
+
+Spacelift adds three components, `spacelift/worker-pool`, `spacelift/admin-stack`, and `spacelift/spaces`. Vendor these
+components either with the included Atmos Workflows or with Atmos Vendor.
+
+```shell
+atmos workflow vendor -f spacelift
+```
+
+or
+
+```shell
+atmos vendor pull --component spacelift
+```
+
+### Deploy
+
+Spacelift can be deployed with Atmos Workflows or by manual steps. If using Workflows, you must first upload the
+Spacelift API Key to AWS SSM, described above. Once the API Key is created in SSM, connected to Geodesic and run:
+
+```shell
+atmos workflow deploy/worker-pool -f spacelift
+set-spacelift-environment
+atmos workflow deploy/admin-stack -f spacelift
+```
+
+All other configuration should be preset, but if you encounter errors, verify the following manual steps have been set
+up correctly.
+
+#### Setting up the Spacelift Worker Pool
+
+The `spacelift/worker-pool` component is responsible for deploying an Auto Scaling Group in AWS that will launch
+instances for Spacelift to attach a number of runners onto. For additional details, see
+[worker-pool](/components/library/aws/spacelift/worker-pool/).
+
+#### Deploy `spacelift/worker-pool`
+
+Deploy the component into the `auto` account in the primary region:
+
+```shell
+atmos terraform apply spacelift/worker-pool -s core-use1-auto
+```
+
+or
+
+```shell
+atmos workflow deploy/worker-pool -f spacelift
+```
+
+After Terraform finishes applying, take note of the Terraform outputs `worker_pool_id`, `worker_pool_name`, and
+`trusted_role_arns`.
+
+##### IAM configuration
+
+**Note:** This step should already be done by the identity automated setup. If you are having trouble with IAM
+permission and access in Spacelift, verify the follow role has been set correctly.
+
+You must give the created instance role permission to assume the Spacelift worker role. This is done by adding
+`iam_role_arn` from the output to the `trusted_role_arns` list for the `spacelift` role in `aws-teams` in
+`stacks/catalog/aws-teams.yaml`.
+
+#### Deploying Spacelift Stacks
+
+The `spacelift` component is responsible for provisioning the Admin Spacelift stacks. These Admin stacks are then
+responsible for deploying _all_ other Spacelift stacks. This is where each component stack is created.
+
+##### Validate the `spacelift` catalog
+
+These configuration settings should be set already, but in case of errors, these are the dynamic variables set for a
+particular customer.
+
+1. `repository` = Name of `infrastructure` repository
+1. `branch` = Name of main/master branch
+1. Set `components.terraform.spacelift.settings.spacelift.worker_pool_name` to the name of the worker pool you want to
+   use for the `spacelift` component. This is typically set with default Spacelift settings at
+   `stacks/orgs/acme/_defaults.yaml`
+
+##### Set the Spacelift Environment
+
+To assume the Spacelift provider, we need to add the Spacelift API Key to our environment. Run the included script from
+Geodesic to assume the proper IAM role and pull the API Key from SSM:
+
+```
+set-spacelift-environment
+```
+
+Or manually set these ENV vars:
+
+```bash
+export SPACELIFT_API_KEY_ENDPOINT=https://acme.app.spacelift.io
+export SPACELIFT_API_KEY_ID=...
+export SPACELIFT_API_KEY_SECRET=...
+```
+
+##### Deploy the admin stacks
+
+```shell
+atmos terraform apply admin-stack --stack root-gbl-spacelift
+atmos terraform apply admin-stack --stack core-gbl-spacelift
+atmos terraform apply admin-stack --stack plat-gbl-spacelift
+```
+
+or
+
+```shell
+atmos workflow deploy/root-admin-stack -f spacelift
+atmos workflow deploy/admin-stack -f spacelift
+```
+
+Note that this is the only manually operation you need to perform in `geodesic` using `atmos` to create the initial
+admin stack. All other infrastructure stacks will be created in Spacelift by this admin stack.
+
+
+</Steps>
+
+# Related Topics
+
+## Pull Request Workflow
+
+1. Create a new branch & make changes
+2. Create a new pull request (targeting the `main` branch)
+3. View the modified resources directly in the pull request
+4. View the successful Spacelift checks in the pull request
+5. Merge the pull request and check the Spacelift job
+
+## How to use `spacectl`?
+
+See docs https://github.com/spacelift-io/spacectl
+
+### Install
+
+```shell
+⨠ apt install -y spacectl -qq
+```
+
+Setup a profile
+
+```shell
+⨠ spacectl profile login gbl-identity
+Enter Spacelift endpoint (eg. https://unicorn.app.spacelift.io/): https://<GITHUB_ORG>.app.spacelift.io
+Select credentials type: 1 for API key, 2 for GitHub access token: 1
+Enter API key ID: 01FKN...
+Enter API key secret:
+```
+
+### Listing stacks
+
+```bash
+spacectl stack list
+```
+
+Grab all the stack ids (use the JSON output to avoid bad chars)
+
+```bash
+spacectl stack list --output json | jq -r '.[].id' > stacks.txt
+```
+
+If the latest commit for each stack is desired, run something like this.
+
+NOTE: remove the `echo` to remove the dry-run functionality
+
+```bash
+cat stacks.txt | while read stack; do echo $stack && echo spacectl stack set-current-commit --sha 25dd359749cfe30c76cce19f58e0a33555256afd --id $stack; done
+```

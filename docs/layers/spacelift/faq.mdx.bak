@@ -1,0 +1,107 @@
+---
+title: Spacelift FAQ
+sidebar_label: FAQ
+sidebar_position: 3
+---
+import Note from '@site/src/components/Note';
+
+## Why do we need Spacelift?
+
+See [Use Spacelift for GitOps with Terraform](/reference/adrs/adopted/use-spacelift-for-gitops-with-terraform) to learn why.
+
+### Can we still use Spacelift despite Terraform licensing changes?
+
+:::important
+
+This is not a technical question.
+
+This is a matter of legal interpretation of the [HashiCorp BSL license (aka BUSL)](https://www.hashicorp.com/bsl) (and [binding FAQ](https://www.hashicorp.com/license-faq)), and we are not lawyers. We recommend consulting with your legal team to understand the implications of using Spacelift with Terraform.
+
+**Cloud Posse cannot provide legal advice on this matter.**
+
+:::
+
+It depends.
+- You can use Spacelift with MPL licensed Terraform (e.g. versions including 1.5.7 and earlier)
+- You can use Spacelift with all versions OpenTofu
+
+But you cannot use Spacelift with BSL licensed versions of Terraform.
+
+
+
+## Why do we need an Enterprise Agreement?
+
+For Cloud Posse engagements, you’ll need to have the **Enterprise-tier** agreement which enables these features.
+- **“Self-hosted private worker pools”** which will execute `terraform plan/apply` on the EC2 instances that we provision and control, not on the Spacelift cloud -- better, or required in many cases, for security and compliance.
+
+- This is deployed to private subnets and its IPs are allowlisted in security groups so it can manage EKS clusters, helm charts, aurora/rds cluster resources (databases, users), and other private resources.
+
+- **“Webhook-based audit logging”** which is used to send notifications from Spacelift to external systems like Datadog or Opsgenie. These notifications include audit login, the status of each stack, each run, etc., which is useful for compliance and stacks’ status visibility.
+
+- For a full breakdown of the differences, check out the [spacelift pricing](https://spacelift.io/pricing).
+
+This is required in order to provision any database users or schemas, manage EKS clusters on a private subnet, or in general manage any resources residing in private subnets in a VPC. The other benefit with an Enterprise Agreement is that it will fix your costs, even if you burst your Spacelift Workers. If you were on a Metered (aka “pay-as-you-go plan”), you will be charged for those bursts and that will add up to thousands per month.
+
+The Spacelift Enterprise 30 day trial (with an option to extend it) should be signed up to take advantage of these features.
+
+:::tip Referrals
+
+Cloud Posse has a partnership with Spacelift that can save you cost! Please reach out to Cloud Posse for a referral.
+
+:::
+
+## Who should you contact regarding Spacelift contracts and pricing?
+
+Reach out to Pawel Hawtry [pawelh@spacelift.io](mailto:pawelh@spacelift.io) and mention you are working with Cloud Posse. Alternatively, we’re happy to facilitate an introduction directly.
+
+## What if Spacelift is too expensive?
+
+First, make sure you understand why we chose to [Use Spacelift for GitOps with Terraform](/reference/adrs/adopted/use-spacelift-for-gitops-with-terraform).
+
+Spacelift wants to earn your business and they only want happy customers. Work with them to reach a middle ground that makes everyone happy.
+
+<Note title="Tip">
+  Alternatively, you can use our [free GitHub Actions for Atmos with Terraform](/layers/gitops). This is a great way to get started with GitOps and Terraform without any additional cost.
+</Note>
+
+## Why can’t we start with an entry-level plan?
+
+(See [How to Sign Up for Spacelift](/layers/spacelift) )
+
+- Only enterprise plans support self-hosted workers which are required in order to manage any infrastructure provisioned inside of VPCs (E.g. Databases, non-public EKS clusters, terraform provisioners, etc). Additionally, using EC2 Instance Profiles we’re able to grant the precise roles we want to give Spacelift without any hardcoded credentials.
+
+- Only enterprise plans support fixed costs. Cloud is metered billing, which means if we scale up our workers temporarily to flush out a large queue of plans, they will charge for the additional workers on a monthly rate. They do not have the ability to disable this and it happens automatically.
+  <Note>
+    Several customers have accidentally encountered _Bill Shock_ as a result of this! <br/>
+    (we got it all sorted out for them in the end)
+  </Note>
+
+<img src="/assets/refarch/cleanshot-2021-11-16-at-00.24.00@2x-20211116-062545.png" /><br/>
+
+<img src="/assets/refarch/cleanshot-2021-11-16-at-00.21.25-20211116-062238.png" /><br/>
+
+## Is Spacelift SOC2 Compliant?
+
+Yes, Spacelift has SOC2 Type II certification performed by an independent external auditor who confirms the effectiveness of internal controls in terms of Spacelift security, availability, processing integrity, confidentiality, and privacy of customer data.
+
+[https://spacelift.io/security](https://spacelift.io/security)
+
+Spacelift’s SOC2 Type 2 report and the pentest report from April 2021 is attached below. If anyone ever has any security-related questions, they can reach out to [@Wojciech Syrkiewicz-Trepiak](mailto:wojciechs@spacelift.io), Spacelift’s security engineer. Spacelift also has D&O and Cyber & Tech Insurance in place.
+
+Please reach out to Spacelift to request a report.
+
+## How many runners will we need?
+
+<Note title="TL;DR">
+  it really varies based on your usage patterns and size of your infrastructure, but start with a minimum of 2-3.
+</Note>
+
+Since Spacelift permits you to scale up for short periods of time without metering, we recommend starting with a commitment of 2-3 runners online at any time. We’ll configure your workers to autoscale up as necessary.
+
+### Can we consolidate multiple Spacelift Organizations under one bill?
+
+Yes! Spacelift can consolidate the billing. For example, if you have multiple GitHub Organizations, each one associated with a different Spacelift Organization, Spacelift can consolidate the invoice.
+
+### Where do we sign up?
+
+How you sign up depends on if you’re using GitHub or GitLab.

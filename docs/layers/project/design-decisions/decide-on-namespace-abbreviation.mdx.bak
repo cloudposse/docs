@@ -1,0 +1,46 @@
+---
+title: "Decide on Namespace Abbreviation"
+sidebar_label: "Namespace Abbreviation"
+sidebar_position: 2
+refarch_id: REFARCH-53
+description: "Pick a concise prefix for all cloud resource names"
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+Using a common prefix for all resource names will help establish a consistent naming convention. Certain resources in
+AWS are globally unique (e.g. for all customers). In order to maintain an (optimistically) unique naming convention,
+prefixing all resources with a namespace goes a long way to ensuring uniqueness.
+
+Shorter the better. Some AWS resource names like S3 bucket names and Elasticache Redis names are restricted to something
+like 65 characters.
+
+We recommend a namespace prefix of 2-4 characters. The longer, the more optimistic we can be about avoiding collisions
+with other global resources in AWS.
+
+Some strategies we’ve seen is removing all vowels from your company name, or taking the initials for longer company
+names.
+
+## Examples
+
+<dl>
+  <dt>Intel</dt>
+  <dd>`intl`</dd>
+
+  <dt>Google</dt>
+  <dd>`ggl`</dd>
+
+  <dt>Cloud Posse</dt>
+  <dd>`cpco`</dd>
+</dl>
+
+:::note
+
+It is advised to keep the namespace as short as possible (< 5 chars) because of resources with low max character limits
+[AWS Resources Limitations](/reference/legacy/aws-feature-requests-and-limitations)
+
+:::
+
+## References
+
+- [https://github.com/cloudposse/terraform-null-label](https://github.com/cloudposse/terraform-null-label)

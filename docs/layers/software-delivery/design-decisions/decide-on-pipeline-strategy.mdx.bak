@@ -1,0 +1,358 @@
+---
+title: "Decide on Pipeline Strategy"
+sidebar_label: "Pipeline Strategy"
+sidebar_position: 100
+refarch_id: REFARCH-253
+description: Decide what CI/CD pipelines are needed to deliver your software
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Context and Problem Statement
+
+## Problem Statement
+
+Teams need a release engineering process to help QA and developer teams operate efficiently. Namely, QA needs a way to validate changes in QA environments before releasing them to staging or production. Changes to production require approval gates, so only authorized persons can release to production. And if changes need to be made to the running production release, those need to be performed via hotfixes that need a special CI/CD and release workflow. The more service you operate, the more important it is that workflows are very DRY and are not copied between all repositories, making maintenance difficult.
+
+## Prerequisites
+
+Before implementation on the pipeline strategy, the following should be in place
+
+- An inventory of the applications for migration to the new pipelines
+
+- Cloud Posse access to the repositories
+
+- All the GitHub Action runners deployed
+
+## High-level Approach
+
+:::info
+The following is our Kubernetes-centric approach with GitHub Actions. Similar strategies can be implemented for other platforms, but would require different techniques for integration testing and deployment.
+
+:::
+Cloud Posse’s turn-key implementation is an approach that provides QA environments, approval gates, release deployments, and hotfixes in a way that applications can utilize with minimal effort and minimal duplication.
+
+Predefined workflows
+
+<dl>
+<dt>Feature branch workflow</dt>
+<dd>Triggered on changes in a pull request that target the `main` branch. It will perform CI (build and test) and CD (deploy into _Preview_ and/or _QA_ environments) jobs.</dd>
+
+<dt>Main branch workflow</dt>
+<dd>Triggered on commit into the `main` branch to integrate the latest changes and create/update the next draft release. It will perform CI (build and test) and CD (deploy into `Dev` environment) jobs.</dd>
+
+<dt>Release workflow</dt>
+<dd>Triggered when a new release is published. The workflow will promote artifacts (docker image) that was built by the “_Feature branch workflow_“ to the release version and deploy them to the `Staging` and `Production` environments with approval gates. In addition, the workflow will create a special `release/{version}` branch that is required for the hotfixes workflow.</dd>
+
+<dt>Hot Fix Branch workflow</dt>
+<dd>Triggered on changes in a pull request that target any `release/{version}` branch. It will perform CI (build and test) and CD (deploy into `Hotfix` environment) jobs.</dd>
+
+<dt>Hot Fix Release workflow</dt>
+<dd>Triggered on commit into the `release/{version}` branch to integrate new hotfix changes. It will perform CI (build and test) and CD (deploy into the `Production` environment with approval gates) jobs. In addition, it will create a new release with incremented patch version and create a regular PR target `main` branch to integrate the hotfix with the latest code.</dd>
+</dl>
+
+The implementation should use custom GitHub actions and reusable workflows to have DRY code and a clear definition for each `workflow/job/step/action`.
+
+Integrate with Github UI to visualize the release workflow in-process and in-state.
+
+## **Goals**
+
+The top 3 goals of our approach is to...
+
+1. Make it very easy for developers to onboard new services
+
+2. Ensure it’s easy for developers to understand the workflow and build failures
+
+3. Leverage GitHub UI, so it’s easy to understand what software is released by an environment
+
+## **Key Features & Use Cases**
+
+What we implement as part of our approach and the specific use cases we address is explained below.
+
+### CI testing based on the Feature branch workflow
+
+- A developer creates a PR target to the `main` branch. GHA will perform build and run test on each commit. The developer should have ability to deploy/undeploy the changes to `Preview` and/or `QA` environment by adding/removing specific labels in PR Gihub UI. When PR merged or closed GHA should undeploy the code from  `Preview`/`QA` environments where it is deployed to.
+
+### CI Preview Environments
+
+- Preview environments are unlimited ephimerial environments running on Kubernetes. When a PR with a target of the `main` branch is labeled with the `deploy` label, it will be deployed into a new preview environment. If developer needs to test the integration between several services they can deploy those apps into the same preview environment by creating PRs using the same named branch (e.g. `feature/add-widgets`).
+- Preview environments by convention expect that all third party services (databases, messaging bus, cache and etc) are deployed from scratch in Kubernetes as a part of the environment and removed on PR close.
+- The developer is responsible for defining third party services and to orchestrate them in Kubernetes (e.g. with [Operators](https://operatorhub.io/)).
+
+### CI QA Environments
+
+- QA environments are a discreet set of static environments running on Kubernetes with preprovisioned third party services. They are similar to preview environments, except that environments are shared by QA engineers to verify PR changes in “close to real live” environment. QA engineer can deploy/undeploy PR changes to one of the QA environments by adding or removing the `deploy/qa{number}` label.
+- If several PRs of one repo have `deploy/qa{number}` label then the latest deployment (commit & push) will override each other.
+- It is responsibility of QA engineers to avoid this conflict. GitHub environments UI is useful for seeing what is deployed.
+
+### Test commits into the main branch
+
+- On each commit into the `main` branch, the “_Main branch workflow_” triggers. It will build and test the latest code from the `main` branch, create or update the latest draft release and deploy the code to `Dev` environment.
+- If the commit was done by merging a PR then the PR title/description would be added to the release changelog.
+
+### Bleeding Edge Environment on Dev
+
+- The “dev” environment is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Staging` and `Production` environments. Developers and QA engineers need it to perform integration testing and validate the interaction between the latest version of applications and services before cutting a release. This is why it’s called the “bleeding edge.”
+
+### Automatic Draft Releases Following Semver Convention
+
+- On commit in the `main` branch GHA should create new draft release or update it. The release should have auto generated changelog based on commit comment messages and PRs title/descriptions.
+- Developer can manage sections of the changelog by adding specific labels to the PR.
+- Also labels are used to define the release major/minor semver increment (minor increments by default)
+
+### Automated Releases with Approval Gates
+
+- When a Developer (or Release Manager) decides to issue a new release they need just to publish the _Draft Release_ that will trigger the “_Release workflow_“. The workflow should create a new “Release branch” `release/{version}`, promote docker image with release version and consequentially deploy it to `Staging` and `Production` environments with approval gates. Developer need to approve deployment on `Staging` environment, wait the deployment would be successfully completed and then repeat the same for `Production` environment.
+
+### Staging Environment
+
+- `Staging` is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Production` environment. Developers and QA engineers use it to perform integration testing, run migrations, test deploy procedures and interactions of the latest released versions. So while the the `Dev` environment operates on the latest commit into `main`, the `Staging` environment operates on the latest release.
+
+### Production Environment
+
+- `Production` is a single environment with provisioned third party services used by real users. It operates on releases that have been promoted from `Staging` after approval.
+
+### Hotfix Pull Request workflow
+
+- In the case when there is a bug in the application that runs in the `Production` environment, the Developer needs to create a Hotfix PR.
+- Hotfix PR should target to “_Release branch_” `release/{version}`.  GHA should perform build and run tests on each commit. The developer should have ability to deploy/undeploy the changes to `Hotfix` environment by adding/removing specific labels in PR Gihub UI. When PR merged or closed GHA should undeploy the code from  `Hotfix` environment.
+
+### Hotfix Environment
+
+- `Hotfix` is a single environment with provisioned third-party services. The environment should be approximately equivalent to `Production` environment. Developers and QA engineers need it to perform integration testing, migrations, deploy procedures and interactions of the hotfix with other services.
+- If there are several `hotfix` PRs in one repo deployments to `Hotfix` environment will be conflicting. The latest deploy will be running on `Hotfix` environment.
+- This is responsibility of Developers and QA engineers to avoid that conflicts.
+
+### Hotfix Release workflow
+
+- On each commit into a  “_Release branch_” `release/{version}` “_Hotfix release workflow_” triggers. It will build and test the latest code from the branch, create a new release with increased patched version and deploy it with approval gate to the `Production` environment.
+- Developer should also take care of the hotfix to the `main` branch, for which a reintegration PR will be created automatically.
+
+### Deployments
+
+- All deployments are by default performed with `helmfile` on Kubernetes clusters.
+
+### Reusable workflows and GHA
+
+- All workflows and custom github actions should be reusable and have not specific repository references.
+- “Reusable workflows in private repo“ pattern
+- Reusable worklows should be stored in separate repo and copied on change across all repositories by special workflow - according to `Reusable workflow in private organization repositories` pattern.
+
+## Considerations
+
+The following considerations are required before we can begin implementing the turnkey GitHub Action workflows.
+
+### Supported Environments
+
+The following key decisions need to be made as part of this design decision:
+
+- Which environments are relevant to your organization? (e.g. do you need the Preview/QA environments or is Dev/Staging/Prod sufficient?)
+
+- Preview environments (not all applications are suitable for this)
+
+- QA environments
+
+- Dev/Staging/Production environments
+
+- Hotfix environment
+
+### Approval Gate Strategy
+
+GitHub Enterprise is required to support native approval gates on deployments to environments. Approval gates support a permissions model to restrict who is allowed to approve a deployment.
+
+Without GitHub Enterprise, we’ll need to use an alternative strategy using [workflow_dispatch](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow) to manually trigger deployments using the GitHub UI.
+
+### GitHub Repo Strategy for Applications
+
+We’ll need to know what strategy you use for your applications: e.g. monorepo, polyrepo, or a hybrid approach involving multiple monorepos.
+
+### GitHub Repo for Shared Workflows
+
+What repo do you want to use to store the shared GitHub action workflows? e.g. we recommend calling it `github-action-workflows`
+
+GitHub Enterprise users will have a native ability to use private-shared workflows.
+
+Non-GitHub Enterprise users will need to use a workaround, which involves cloning the shared workflows repo before using them.
+
+### GitHub Repo for Private GitHub Actions
+
+What repo do you want to use for your private GitHub actions?
+
+For GitHub Enterprise users we recommend using one repo per private GitHub Action so that they can be individually versioned. We’ll need to know what convention to use. Cloud Posse uses `github-action-$name` while we’ve seen some organizations use patterns like `$name.action` and `action-$name`. We like the `github-action-$name` convention because it follows the Terraform convention for modules and providers (e.g. `terraform-provider-aws`)
+
+We recommend a monorepo for non-GitHub enterprise users. If we take this approach, we’ll need to clone the private GitHub Actions repo as part of each workflow. We’ll need to know what this repo is called. We recommend calling it `github-actions`. Alternatively, if your company uses a monorepo strategy for
+
+## **Out of Scope**
+
+<dl>
+  <dt>Automated Rollbacks</dt>
+  <dd>Automated triggering of rollbacks is not supported. Manually initiated, automatic rollbacks are supported, but should be triggered by reverting the pull request and using the aforementioned release process.</dd>
+  <dt>Provision environments</dt>
+  <dd>Provision k8s clusters, third party services for any environments should be performed as separate mile stone. We expect already have K8S credentials for deployments</dd>
+  <dt>Define Docker based third party services</dt>
+  <dd>Third party services running in docker should be declared individually per application. This is Developers field of work.</dd>
+  <dt>Key Metrics & Observability</dt>
+  <dd>
+    Monitoring CI pipelines and tests for visibility (e.g. with with Datadog CI) is not factored in but can be added at a later time.<br/><br/>
+    [https://www.datadoghq.com/blog/datadog-ci-visibility/](https://www.datadoghq.com/blog/datadog-ci-visibility/)
+  </dd>
+</dl>
+
+## **Open Issues & Key Decisions**
+
+[Decide on Database Seeding Strategy for Ephemeral Preview Environments](/layers/software-delivery/design-decisions/decide-on-database-seeding-strategy-for-ephemeral-preview-enviro)
+
+[Decide on Customer Apps for Migration](/layers/software-delivery/design-decisions/decide-on-customer-apps-for-migration)
+
+[Decide on Seeding Strategy for Staging Environments](/layers/software-delivery/design-decisions/decide-on-seeding-strategy-for-staging-environments)
+
+## **Design and Explorations Research**
+
+Links to any supporting documentation or pages, if any
+
+- [Continuous Delivery: Understand your Value Stream - Step 1](https://medium.com/@yaravind/continuous-delivery-understand-your-value-stream-step-1-e2955eaeba95)
+
+- [Value Stream Management: Treat Your Pipeline as Your Most Important Product](https://devops.com/value-stream-management-treat-your-pipeline-as-your-most-important-product/)
+
+- [Deployments approval gates with Github](https://docs.github.com/en/actions/managing-workflow-runs/reviewing-deployments)
+
+- [Release workflow POC (Cloud Posse version)](https://github.com/cloudposse/example-github-action-release-workflow/pull/45)
+
+- [Using environments for deployment on Github](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)
+
+- [https://github.community/t/reusable-workflows-in-private-organization-repositories/215009/43](https://github.community/t/reusable-workflows-in-private-organization-repositories/215009/43)
+
+- [https://medium.com/@er.singh.nitin/how-to-share-the-github-actions-workflow-in-an-organization-privately-c3bb3e0deb3](https://medium.com/@er.singh.nitin/how-to-share-the-github-actions-workflow-in-an-organization-privately-c3bb3e0deb3)
+
+- [GitHub Actions](/learn/tips-and-tricks/github-actions) is Cloud Posse’s own reference documentation which includes a lot of our learnings
+
+## **Security Risk Assessment**
+
+<img src="/assets/refarch/cleanshot-2022-07-07-at-14.00.26@2x-20220707-110033.png" /><br/>
+
+<img src="/assets/refarch/cleanshot-2022-07-07-at-14.01.02@2x-20220707-110106.png" /><br/>
+
+The release engineering system consists of two main components - _Github Action Cloud_ (a.k. _GHA_) and _Github Action Runners_ (a.k. _GHA-Runners_).
+
+The _GHA-Runners_ can be ‘Cloud provided' or 'Self-hosted’.
+
+‘_Self-hosted GHA-Runners_' are executed on EC2 instances under the control of the autoscaling group in the dedicated '_Automation’_ AWS account.
+
+On an EC2 instance, bootstrap GHA-Runner registers itself on Github with a _**Registration token**_ **(1)**. From that moment _GHA_ can run workflows on it.
+
+When a new `_Workflow Run_` is initialized, GHA issues a new unique _**Default token (2)**_. That token is used to authenticate on Github API and interact with it. For example, `_Workflow Run_` uses it to pull source code from a Github repository **(3)**.
+
+_**Default token**_ scoped to a repository (or another Github resource) that was the source of the triggered event. On the provided diagram, it is the _Application Repository._
+
+If a workflow needs to pull source code from another repository, we have to use _Personal Access Token (__**PAT**__),_ which had to be issued preliminarily. On the diagram, this is ‘**PAT PRIVATE GHA' (4)** that we use to pull the organization's private actions used as steps in GHA workflows.
+
+In a moment GHA-Runner pulled the ‘_Application_’ source code and ‘_Private Actions_’ it is ready to perform real work - build docker images, run tests, deploy to specific environments and interact with Github for a better developer experience.
+
+To interact with AWS services `_Workflow Run_` assumes **CICD (5)** **IAM role** that grants permissions to work with ECR and to assume **Helm (5)** **IAM roles** from another account. The **'Helm' IAM role** is useful to **Authenticate (6)** on a specific EKS cluster and to deploy there. Assuming **CICD IAM role** is possible only on '_Self-hosted GHA-_Runners’ as EC2 Instance credentials used for initial interaction with AWS.
+
+_**Default token**_ fits all needs except one - creating a _Hotfix Reintegration Pull Request._ for that functionally we need to implement a workaround. On the diagram provided one of the possible workarounds - using  _**PAT to Create PRs (7)**_ with wider permissions_**.**_
+
+### Registration token
+
+Registration token required only to register/deregister ‘_Self-hosted GHA-Runner_' on Github. The token allows attaching '_Self-hosted GHA-Runner_' to the organization or a single repository scope. If '_Self-hosted GHA-Runner_' scoped to the organization level, any repository in the org can run its workflows on the ‘_Self-hosted GHA-Runner_'.
+
+- [github-runners](/components/library/aws/github-runners/)
+
+- [https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners](https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners)
+
+### Default Github Token
+
+The token is generated on '_Workflow Run_' initialization. So it is unique per '_Workflow Run_'. The token is scoped to the repository, that triggered the '_Workflow Run_'.
+
+By default, the token can have `permissive` or `restricted` scopes granted. The difference between declared in the table below. You can select which of the default scopes would be used. For settings per repo - follow [this documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository), for setting for all repositories in the organization - follow [this documentation](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#setting-the-permissions-of-the-github_token-for-your-organization).
+
+| Scope               | Default access<br/>(permissive) | Default access<br/>(restricted) |
+| ------------------- | ------------------------------- | ------------------------------- |
+| actions             | read/write                      | none                            |
+| checks              | read/write                      | none                            |
+| contents            | read/write                      | read                            |
+| deployments         | read/write                      | none                            |
+| id-token            | none                            | none                            |
+| issues              | read/write                      | none                            |
+| metadata            | read                            | read                            |
+| packages            | read/write                      | none                            |
+| pages               | read/write                      | none                            |
+| pull-requests       | read/write                      | none                            |
+| repository-projects | read/write                      | none                            |
+| security-events     | read/write                      | none                            |
+| statuses            | read/write                      | none                            |
+
+We recommend using the `restricted` scope by default. GHA workflows can [explicitly escalate permissions](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#how-the-permissions-are-calculated-for-a-workflow-job) if that’s required for the process.
+
+All workflows implemented in POC explicitly request escalation of permission from the `restricted` scope. Please check the following table.
+
+| Scope         | Default access<br/>(restricted) | Pull Request Workflow | Bleeding edge Workflow | Release Workflow | Hotfix Pull Request Workflow | Hotfix workflow |
+| ------------- | ------------------------------- | --------------------- | ---------------------- | ---------------- | ---------------------------- | --------------- |
+| contents      | read                            | read                  | read/write             | read/write       | read                         | read/write      |
+| deployments   | none                            | read/write            | none                   | none             | read/write                   | none            |
+| metadata      | read                            | read                  | read                   | read             | read                         | read            |
+| pull-requests | none                            | read/write            | none                   | none             | read/write                   | read/write      |
+
+- [https://docs.github.com/en/actions/security-guides/automatic-token-authentication](https://docs.github.com/en/actions/security-guides/automatic-token-authentication)
+
+- [github-runners](/components/library/aws/github-runners/)
+
+- [https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#setting-the-permissions-of-the-github_token-for-your-organization](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#setting-the-permissions-of-the-github_token-for-your-organization)
+
+- [https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository)
+
+- [https://docs.github.com/en/rest/overview/permissions-required-for-github-apps#permission-on-repository-hooks](https://docs.github.com/en/rest/overview/permissions-required-for-github-apps#permission-on-repository-hooks)
+
+### Private Github Actions PAT
+
+Having additional PAT is a necessary evil to share the Private Github Actions library.
+The only way to use private GitHub action is to pull it from a private repository and reference it with the local path.
+It is impossible to use the _‘Default Github token’_ as it is scoped to one repo - [read more](https://github.com/actions/checkout#checkout-multiple-repos-private)
+
+To get this PAT with minimal required permissions follows these steps:
+
+1. Create a technical user on Github  ( like `bot+private-gha@example.com` )
+
+2. Added the user to the `Private Actions` repository with 'read-only' permissions (`https://github.com/{organization}/{repository}/settings/access`)
+
+3. <img src="/assets/refarch/cleanshot-2022-07-07-at-16.26.48@2x-20220707-132652.png" /><br/>
+
+Generate a PAT for the technical user with that level of permissions  [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new)
+
+<img src="/assets/refarch/cleanshot-2022-07-07-at-16.30.35@2x-20220707-133043.png" /><br/>
+
+4. Save the PAT as organization secret with name `GITHUB_PRIVATE_ACTIONS_PAT` (`https://github.com/organizations/{organization}/settings/secrets/actions`)
+
+- [https://github.com/actions/checkout#checkout-multiple-repos-private](https://github.com/actions/checkout#checkout-multiple-repos-private)
+
+- [https://github.blog/changelog/2022-01-21-share-github-actions-within-your-enterprise/](https://github.blog/changelog/2022-01-21-share-github-actions-within-your-enterprise/)
+
+- [https://github.com/marketplace/actions/private-actions-checkout#github-app](https://github.com/marketplace/actions/private-actions-checkout#github-app)
+
+### AWS Assume Role Sessions
+
+Detailed description interaction with AWS API is out of the scope of this POC. Just want to mention that by default ‘_Self-hosted GHA-Runner_' have the same access to AWS resources as the Instance profile role attached to the ‘GHA-Runners' EC2 instances. The minimal requirement is granted to assume the ‘CICD' role and through it assume any 'Helm’ roles to get access to EKS clusters for deployment.
+
+### Authentication on EKS with IAM
+
+Detailed description authentication on EKS with IAM is out of the scope of this POC. The only thing we’d like to mention is that we will have the same level of permissions on EKS as the 'Helm' role do.
+
+### `Create PR` Problem
+
+The final step in `Hotfix` workflow is to create PR into the `main` branch to reintegrate the hotfix changes with the latest code in the `main`.
+
+The problem is that `Creating and approving PR` is separate permission that is disabled by default. And it seems to be a best practice to leave it as is.
+
+That permission can be granted on the same with default scopes for '_Default token_' pages ([repo](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#preventing-github-actions-from-creating-or-approving-pull-requests) or [org](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#preventing-github-actions-from-creating-or-approving-pull-requests) level).
+
+#### Workarounds:
+
+1. Enabled `Creating and approving PR` on the repo or even org level and used 'Default Github Token' to create a PR
+
+2. Create a new technical GitHub user, permit it to create PRs, issue PAT under the user, and use it for PR creation. This is close to what we did for '_Private Actions_' but with much wider access.
+
+3. Skip the automatic PR creation feature and rely on developers to create PRs from Github UI
+
+### Learn more:
+
+- https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#stealing-the-jobs-github_token

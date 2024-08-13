@@ -1,0 +1,50 @@
+---
+title: "Kubernetes"
+sidebar_position: 100
+---
+
+## Design Decisions
+
+- [Decide on EKS Node Pool Architecture](/layers/eks/design-decisions/decide-on-eks-node-pool-architecture)
+- [Decide on Kubernetes Ingress Controller(s)](/layers/eks/design-decisions/decide-on-kubernetes-ingress-controller-s)
+- [Decide on Host OS Flavor for EKS](/layers/eks/design-decisions/decide-on-host-os-flavor-for-eks)
+- [Decide on Kubernetes Platform Compliance Strategy](/layers/security-and-compliance/design-decisions/decide-on-kubernetes-platform-compliance-strategy)
+- [Decide on Kubernetes Application Artifacts](/layers/software-delivery/design-decisions/decide-on-kubernetes-application-artifacts)
+
+## Related Guides
+
+- [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date)
+- [How to use Datadog Metrics for Horizontal Pod Autoscaling (HPA)](/layers/monitoring/datadog/tutorials/how-to-use-datadog-metrics-for-horizontal-pod-autoscaling-hpa)
+
+## Related Components
+
+- [eks/cluster](/components/library/aws/eks/cluster/)
+
+## Learning Resources
+
+- Start by checking out this long blog post which is the best introduction, summary, and reference cheat sheet on Kubernetes we have yet to find. Reviewing this will shave weeks off the learning curve.
+[http://emprovisetech.blogspot.com/2018/12/kubernetes-container-orchestration-at.html](http://emprovisetech.blogspot.com/2018/12/kubernetes-container-orchestration-at.html)
+
+- [http://kubernetesbyexample.com/](http://kubernetesbyexample.com/)
+
+- [http://learnk8s.io/blog/kubectl-productivity](http://learnk8s.io/blog/kubectl-productivity)
+
+- [https://aws.github.io/aws-eks-best-practices/](https://aws.github.io/aws-eks-best-practices/)
+
+## FAQ
+
+### What’s the difference between Controllers and Operators?
+
+[https://stackoverflow.com/questions/47848258/what-is-the-difference-between-a-kubernetes-controller-and-a-kubernetes-operator](https://stackoverflow.com/questions/47848258/what-is-the-difference-between-a-kubernetes-controller-and-a-kubernetes-operator)
+
+## Managing CRDs
+
+For operators of any Kubernetes platform, it’s critical that you are aware of all the pitfalls of using CRDs. Cloud Posse  💯 supports the use of and loves to use operators (E.g. `external-dns`, `cert-manager`, `alb-load-balancer-controller`, `istio`, etc), they come with a big warning. While [this document is by the Helm community](https://github.com/helm/community/blob/main/hips/hip-0011.md), the problems are not in any way unique to Helm.
+
+## References
+
+- [Demo Applications](/reference/legacy/demo-applications)
+- [Lens](/reference/legacy/lens)
+- [Helm](/reference/legacy/helm)
+
+
