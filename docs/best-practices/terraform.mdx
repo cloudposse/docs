@@ -77,11 +77,11 @@ Optional functionality should be toggled in either of 2 ways:
    input providing configuration. In this case, only use a separate feature
    flag if the list or map input may still cause problems due to relying on
    computed problems during the plan phase. See [Count vs. For Each](/learn/component-development/terraform-in-depth/terraform-count-vs-for-each)
-   and [Terraform Errors When Planning](reference/terraform-in-depth/terraform-unknown-at-plan-time)
+   and [Terraform Errors When Planning](/learn/component-development/terraform-in-depth/terraform-unknown-at-plan-time)
    for more information.
 3. It is never acceptable for an optional feature of the _module_ to be
    toggled by the value of a string or number input variable, due to the
-   issues explained in [Terraform Errors When Planning](reference/terraform-in-depth/terraform-unknown-at-plan-time).
+   issues explained in [Terraform Errors When Planning](/learn/component-development/terraform-in-depth/terraform-unknown-at-plan-time).
    However, if an optional feature of a _resource_ may be toggled by such an
    input if that is the behavior of the resource and the input has the same
    name as the resource argument.

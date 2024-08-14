@@ -97,8 +97,8 @@ The Atmos Terraform Dispatch workflow is optionally included and is not required
 
 This workflow includes a boolean option for both "Terraform Plan" and "Terraform Apply":
 
-1. If only "Terraform Plan" is selected, the workflow will call the [Atmos Terraform Plan Worker](./.github/workflows/atmos-terraform-plan-matrix.yaml) workflow to create a new planfile
-1. If only "Terraform Apply" is selected, the workflow will call the [Atmos Terraform Apply Worker](./.github/workflows/atmos-terraform-apply-matrix.yaml) for the given branch. This action will take the latest planfile for the given stack, component, and branch and apply it.
+1. If only "Terraform Plan" is selected, the workflow will call the Atmos Terraform Plan Worker (`./.github/workflows/atmos-terraform-plan-matrix.yaml`) workflow to create a new planfile
+1. If only "Terraform Apply" is selected, the workflow will call the Atmos Terraform Apply Worker (`./.github/workflows/atmos-terraform-apply-matrix.yaml`) for the given branch. This action will take the latest planfile for the given stack, component, and branch and apply it.
 1. If both are selected, the workflow will run both actions. This means it will create a new planfile and then immediately apply it.
 1. If neither are selected, the workflow does nothing.
 

@@ -323,3 +323,18 @@ def strip_title(content):
     Remove the title from the content.
     """
     return re.sub(r"# Component:(.*)", "", content).strip()
+
+def replace_broken_links(content):
+    """
+    Replace broken links in content.
+    Some components have broken links or local file references
+    """
+    broken_links = {
+        "/LICENSE": "/reference/license/", # aws-ssosync/dist
+        "addons.tf": "/components/library/aws/eks/cluster/#using-addons", # eks/cluster
+        "additional-addon-support.tf": "/components/library/aws/eks/cluster/#adding-and-configuring-a-new-eks-addon", # eks/cluster
+        "/modules/vpc": "/components/library/aws/vpc/" # eks/karpenter
+    }
+    for old_link, new_link in broken_links.items():
+        content = content.replace(old_link, new_link)
+    return content

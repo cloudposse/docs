@@ -45,7 +45,7 @@ and client setup.
     │
     ```
     If this happens, you'll need to [increase the number of routes](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-401D78F7) allowed for the Client VPN endpoint. That said, you should already have a quota increase request ready for this in
-[../../stacks/orgs/acme/core/network/global-region/baseline.yaml](../../stacks/orgs/acme/core/network/global-region/baseline.yaml).
+`stacks/orgs/acme/core/network/global-region/baseline.yaml`.
 You can apply that quota using `atmos terraform apply account-quotas -s core-gbl-network`.
   </Step>
 

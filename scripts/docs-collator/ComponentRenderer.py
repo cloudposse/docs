@@ -68,6 +68,7 @@ class ComponentRenderer:
         content = rendering.remove_logo_from_the_bottom(content)
         content = rendering.reformat_admonitions(content)
         content = rendering.remove_https_cloudposse_docs(content)
+        content = rendering.replace_broken_links(content)
         content = rendering.fix_mdx_format(content)
 
         change_log_file = os.path.join(os.path.dirname(file), CHANGELOG_MD)
