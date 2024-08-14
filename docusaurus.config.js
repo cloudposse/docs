@@ -46,7 +46,7 @@ const config = {
 
   organizationName: 'cloudposse',
   projectName: 'docs',
-  deploymentBranch: 'staging',
+  deploymentBranch: 'master',
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
