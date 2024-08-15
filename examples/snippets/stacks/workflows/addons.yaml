@@ -1,0 +1,127 @@
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow vendor -f addons
+      - command: workflow deploy/all -f addons
+
+  vendor:
+    description: Vendor addon components.
+    steps:
+      - command: workflow vendor -f addons/alb
+      - command: workflow vendor -f addons/cognito
+      - command: workflow vendor -f addons/kms
+      - command: workflow vendor -f addons/lambda
+      - command: workflow vendor -f addons/s3-bucket
+      - command: workflow vendor -f addons/sns-topic
+      - command: workflow vendor -f addons/sqs-queue
+      - command: workflow vendor -f addons/ssm-parameters
+      - command: workflow vendor -f addons/waf
+      - command: workflow vendor -f addons/api-gateway
+      - command: workflow vendor -f addons/kinesis-stream
+      - command: workflow vendor -f addons/ses
+      - command: workflow vendor -f addons/spa-s3-cloudfront
+      - command: workflow vendor -f addons/ec2-instance
+
+  deploy/all:
+    description: run all deploy workflows
+    steps:
+      - command: workflow deploy/alb -f addons
+      - command: workflow deploy/cognito -f addons
+      - command: workflow deploy/kms -f addons
+      - command: workflow deploy/lambda -f addons
+      - command: workflow deploy/s3-bucket -f addons
+      - command: workflow deploy/sns-topic -f addons
+      - command: workflow deploy/sqs-queue -f addons
+      - command: workflow deploy/ssm-parameters -f addons
+      - command: workflow deploy/waf -f addons
+      - command: workflow deploy/api-gateway -f addons
+      - command: workflow deploy/kinesis-stream -f addons
+      - command: workflow deploy/ses -f addons
+      - command: workflow deploy/spa-s3-cloudfront -f addons
+      - command: workflow deploy/ec2-instance -f addons
+    
+  deploy/alb:
+    description: >-
+      Deploy Alb Component.
+      Please modify the stacks/workflows/addons/alb.yaml to customize
+    steps:
+      - command: workflow all -f addons/alb
+  deploy/cognito:
+    description: >-
+      Deploy Cognito Component.
+      Please modify the stacks/workflows/addons/cognito.yaml to customize
+    steps:
+      - command: workflow all -f addons/cognito
+  deploy/kms:
+    description: >-
+      Deploy Kms Component.
+      Please modify the stacks/workflows/addons/kms.yaml to customize
+    steps:
+      - command: workflow all -f addons/kms
+  deploy/lambda:
+    description: >-
+      Deploy Lambda Component.
+      Please modify the stacks/workflows/addons/lambda.yaml to customize
+    steps:
+      - command: workflow all -f addons/lambda
+  deploy/s3-bucket:
+    description: >-
+      Deploy S3-Bucket Component.
+      Please modify the stacks/workflows/addons/s3-bucket.yaml to customize
+    steps:
+      - command: workflow all -f addons/s3-bucket
+  deploy/sns-topic:
+    description: >-
+      Deploy Sns-Topic Component.
+      Please modify the stacks/workflows/addons/sns-topic.yaml to customize
+    steps:
+      - command: workflow all -f addons/sns-topic
+  deploy/sqs-queue:
+    description: >-
+      Deploy Sqs-Queue Component.
+      Please modify the stacks/workflows/addons/sqs-queue.yaml to customize
+    steps:
+      - command: workflow all -f addons/sqs-queue
+  deploy/ssm-parameters:
+    description: >-
+      Deploy Ssm-Parameters Component.
+      Please modify the stacks/workflows/addons/ssm-parameters.yaml to customize
+    steps:
+      - command: workflow all -f addons/ssm-parameters
+  deploy/waf:
+    description: >-
+      Deploy Waf Component.
+      Please modify the stacks/workflows/addons/waf.yaml to customize
+    steps:
+      - command: workflow all -f addons/waf
+  deploy/api-gateway:
+    description: >-
+      Deploy Api-Gateway Component.
+      Please modify the stacks/workflows/addons/api-gateway.yaml to customize
+    steps:
+      - command: workflow all -f addons/api-gateway
+  deploy/kinesis-stream:
+    description: >-
+      Deploy Kinesis-Stream Component.
+      Please modify the stacks/workflows/addons/kinesis-stream.yaml to customize
+    steps:
+      - command: workflow all -f addons/kinesis-stream
+  deploy/ses:
+    description: >-
+      Deploy Ses Component.
+      Please modify the stacks/workflows/addons/ses.yaml to customize
+    steps:
+      - command: workflow all -f addons/ses
+  deploy/spa-s3-cloudfront:
+    description: >-
+      Deploy Spa-S3-Cloudfront Component.
+      Please modify the stacks/workflows/addons/spa-s3-cloudfront.yaml to customize
+    steps:
+      - command: workflow all -f addons/spa-s3-cloudfront
+  deploy/ec2-instance:
+    description: >-
+      Deploy Ec2-Instance Component.
+      Please modify the stacks/workflows/addons/ec2-instance.yaml to customize
+    steps:
+      - command: workflow all -f addons/ec2-instance
