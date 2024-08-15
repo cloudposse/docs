@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Steps from '@site/src/components/Steps';
+
 import * as yaml from 'js-yaml';
 
 // Define constants for the base URL and workflows directory path
@@ -56,6 +59,7 @@ async function GetAtmosTerraformCommands(workflow: string, fileName: string, sta
 
 export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
   const [commands, setCommands] = useState<string[]>([]);
+  const fullFilePath = `${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
 
   useEffect(() => {
     GetAtmosTerraformCommands(workflow, fileName, stack).then((cmds) => {
@@ -68,22 +72,28 @@ export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
   }, [workflow]);
 
   return (
-    <Tabs queryString="command">
-      <TabItem value="expanded" label="Commands">
-        <pre>
-          <code>
-            {commands.length > 0 ? commands.map((cmd, index) => (
-              <div key={index}>{cmd}</div>
-            )) : 'No commands found'}
-          </code>
-        </pre>
+    <Tabs queryString="workflows">
+      <TabItem value="commands" label="Commands">
+        These are the commands included the <code>{workflow}</code> workflow in the <code>{fullFilePath}</code> file:
+        <Steps>
+          <ul>
+          {commands.length > 0 ? commands.map((cmd, index) => (
+            <li key={index}>
+              <CodeBlock language="bash">
+                {cmd}
+              </CodeBlock>
+            </li>
+          )) : 'No commands found'}
+          </ul>
+        </Steps>
+
+        Too many commands? Consider using the Atmos workflow! 🚀
       </TabItem>
-      <TabItem value="workflow" label="Atmos Workflow">
-        <pre>
-          <code>
-            atmos workflow {workflow} -f {fileName} {stack && `-s ${stack}`}
-          </code>
-        </pre>
+      <TabItem value="atmos" label="Atmos Workflow">
+        Run the following from your Geodesic shell using the Atmos workflow:
+        <CodeBlock language="bash">
+          atmos workflow {workflow} -f {fileName} {stack && `-s ${stack}`}
+        </CodeBlock>
       </TabItem>
     </Tabs>
   );
