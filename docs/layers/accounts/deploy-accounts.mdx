@@ -78,9 +78,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     Once confident, begin the accounts deployment:
 
-    ```bash
-    atmos workflow deploy/accounts -f accounts
-    ```
+    <AtmosWorkflow workflow="deploy/accounts" fileName="accounts" />
 
     These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
     outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
@@ -90,8 +88,9 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     Always run `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
     </Note>
 
-    Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves.
-    This is accomplished by running `atmos workflow deploy/account-settings -f accounts`.
+    Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves. Run the following:
+
+    <AtmosWorkflow workflow="deploy/account-settings" fileName="accounts" />
 
     The workflows will kick off several sequential Terraform runs to provision all the AWS member account settings for
     member accounts in the Organization.

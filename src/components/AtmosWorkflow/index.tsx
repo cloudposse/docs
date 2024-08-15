@@ -4,10 +4,13 @@ import TabItem from '@theme/TabItem';
 import * as yaml from 'js-yaml';
 
 // Define constants for the base URL and workflows directory path
-const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/master/';
+// const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/master/';
+// TODO rever to master once this PR is merged:
+// https://github.com/cloudposse/refarch-scaffold/pull/698
+const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/DEV-2485/workflow-snippets/';
 const WORKFLOWS_DIRECTORY_PATH = 'examples/snippets/stacks/workflows/';
 
-async function GetAtmosTerraformCommands(workflow: string, fileName: string): Promise<string[] | undefined> {
+async function GetAtmosTerraformCommands(workflow: string, fileName: string, stack?: string): Promise<string[] | undefined> {
   try {
     // Construct the full URL to the workflow YAML file
     const url = `${CLOUDPOSSE_DOCS_URL}${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
@@ -30,7 +33,13 @@ async function GetAtmosTerraformCommands(workflow: string, fileName: string): Pr
       const workflowDetails = workflows.workflows[workflow];
 
       // Extract the commands under that workflow
-      const commands = workflowDetails.steps.map((step: any) => step.command);
+      const commands = workflowDetails.steps.map((step: any) => {
+        let command = `atmos ${step.command}`;
+        if (stack) {
+          command += ` -s ${stack}`;
+        }
+        return command;
+      });
 
       return commands;
     }
@@ -59,14 +68,20 @@ export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
   return (
     <Tabs queryString="command">
       <TabItem value="terraform" label="Atmos Terraform Commands">
-        <code>
-          {commands.length > 0 ? commands.join('\n') : 'No commands found'}
-        </code>
+        <pre>
+          <code>
+            {commands.length > 0 ? commands.map((cmd, index) => (
+              <div key={index}>{cmd}</div>
+            )) : 'No commands found'}
+          </code>
+        </pre>
       </TabItem>
       <TabItem value="workflow" label="Atmos Workflow Commands">
-        <code>
-          atmos workflow {workflow} -f {fileName} {stack && `-s ${stack}`}
-        </code>
+        <pre>
+          <code>
+            atmos workflow {workflow} -f {fileName} {stack && `-s ${stack}`}
+          </code>
+        </pre>
       </TabItem>
     </Tabs>
   );
