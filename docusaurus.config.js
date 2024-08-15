@@ -39,14 +39,14 @@ const config = {
   url: 'https://docs.cloudposse.com',
   baseUrl: '/',
   trailingSlash: true,
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   onDuplicateRoutes: 'warn',
   favicon: 'img/favicon.png',
 
   organizationName: 'cloudposse',
   projectName: 'docs',
-  deploymentBranch: 'staging',
+  deploymentBranch: 'master',
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],

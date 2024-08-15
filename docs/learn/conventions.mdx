@@ -21,7 +21,7 @@ SweetOps is built on top of a number of high-level concepts and terminology that
 
 2. **Helmfiles**: Stand-alone, applications deployed using `helmfile` to Kubernetes. For example, typical helmfiles might deploy the DataDog agent, cert-manager controller, nginx-ingress controller, etc. Similarly, the [full library of SweetOps Helmfile components is on GitHub](https://github.com/cloudposse/helmfiles). We keep these types of components in the `components/helmfile/` directory within the infrastructure repository.
 
-One important distinction about components that is worth noting: <i>components are opinionated “root” modules that typically call other child modules</i>. Components are the building blocks of your infrastructure. This is where you define all the business logic for how to provision some common piece of infrastructure like ECR repos (with the [ecr](/components/library/aws/ecr/) component) or EKS clusters (with the [eks](/components/category/eks/) component). Our convention is to stick components in the `components/terraform` directory and to use a `modules/` subfolder to provide child modules intended to be called by the components.
+One important distinction about components that is worth noting: <i>components are opinionated “root” modules that typically call other child modules</i>. Components are the building blocks of your infrastructure. This is where you define all the business logic for how to provision some common piece of infrastructure like ECR repos (with the [ecr](/components/library/aws/ecr/) component) or EKS clusters (with the [eks/cluster](/components/library/aws/eks/cluster/) component). Our convention is to stick components in the `components/terraform` directory and to use a `modules/` subfolder to provide child modules intended to be called by the components.
 
 :::caution
 We do not recommend consuming one terraform component inside of another as that would defeat the purpose; each component is intended to be a loosely coupled unit of IaC with its own lifecycle. Further more, since components define a state backend, it’s not supported in terraform to call it from other modules.
@@ -332,37 +332,3 @@ For proprietary apps deployed by your organization, we recommend taking a differ
   repository: https://kubernetes-charts.storage.googleapis.com/
   condition: kibana.enabled
 ```
-
-## Jira
-Every task is tied (or should be tied) to a confluence page. Homework Assignments. Day two operations are tutorials and upgrade guides. Almost FAQ everything can be in [How-to Guides](/reference-architecture/how-to-guides) .
-
-[Implementation](/reference-architecture/how-to-guides/integrations) guides and [Deployment](/reference-architecture/how-to-guides/deployment) guides may coexist or there could be multiple types of similar implementations.
-
-### Implementation Tasks
-
-An implementation includes the step by step instructions to go from [Design Decisions](/reference-architecture/design-decisions) to [Implementation](/reference-architecture/how-to-guides/integrations) and ultimately [Deployment](/reference-architecture/how-to-guides/deployment).
-
-Example: [Implement AWS Cold Start](/layers/accounts/tutorials/cold-start)
-
-### Provisioning Tasks
-Every implementation consists of decisions that result of provisioning something so we can deploy applications or configurations to it.
-
-### Deployment Tasks
-Deployment tasks come after all provisioning tasks because they operate on something which has been previously provisioned.
-
-### Design Decision Tasks
-Design Decisions are the form of requirements gathering that we do with our customers. See [Design Decisions](/reference-architecture/design-decisions).
-
-:::caution
-We used to move decisions to **PENDING REVIEW** after discussing with the customer on our weekly calls. Instead, we should now move them to **READY TO IMPLEMENT** as soon as we have the requirements.
-
-:::
-1. **BACKLOG** decisions that have not yet been reviewed and covered with customers should be in the backlog.
-
-2. **READY TO IMPLEMENT** decisions have requirements and now need to be documented as ADRs. See [How to write ADRs](/learn/maintenance/tutorials/how-to-write-adrs).
-
-3. **PENDING REVIEW** decisions have an associated Pull Request for the ADR and has not yet been merged
-
-4. **DONE** decisions have been decided and codified as an ADR in the main branch.
-
-

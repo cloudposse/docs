@@ -42,7 +42,7 @@ The following steps are required to set up Security and Compliance in your AWS O
     - `securityhub.amazonaws.com`
 
     <Note title="Reminder">
-      The following command requires [SuperAdmin](https://docs.cloudposse.com/reference-architecture/setup/cold-start/manual-configuration/#use-superadmin-credentials). Ensure the `plan` output only touches service principals.
+      The following command requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/). Ensure the `plan` output only touches service principals.
     </Note>
 
     ```bash
@@ -102,7 +102,7 @@ The following steps are required to set up Security and Compliance in your AWS O
     [cloudtrail-bucket](https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket)
 
     <Admonition type="info">
-      This bucket has likely been provisioned by the [Cold Start](https://docs.cloudposse.com/reference-architecture/setup/cold-start/automated-configuration/). Run the following `terraform plan` to ensure the bucket exists. If it doesn't, create it with `terraform apply`.
+      This bucket has likely been provisioned by the [Cold Start](/layers/accounts/account-baseline/). Run the following `terraform plan` to ensure the bucket exists. If it doesn't, create it with `terraform apply`.
     </Admonition>
 
     ```bash
@@ -119,7 +119,7 @@ The following steps are required to set up Security and Compliance in your AWS O
     [CIS Benchmark 1.20](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#securityhub-cis-controls-1.20)
     and [IAM.18](https://docs.aws.amazon.com/securityhub/latest/userguide/iam-controls.html#iam-18).
 
-    These roles are managed from the [Identity Workflow](https://docs.cloudposse.com/reference-architecture/setup/identity/)
+    These roles are managed from the [Identity Workflow](/layers/identity/deploy/)
     using `aws-teams` and `aws-team-roles` components.
   </Step>
 </Steps>
@@ -145,7 +145,7 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
     ```
 
     <Note title="Reminder">
-      This command requires [`SuperAdmin`](https://docs.cloudposse.com/reference-architecture/setup/cold-start/manual-configuration/#use-superadmin-credentials).
+      This command requires [`SuperAdmin`](/layers/accounts/tutorials/how-to-create-superadmin-user/).
     </Note>
   </Step>
 
@@ -171,7 +171,7 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
 
   <Step>
     Next, using
-    [SuperAdmin](https://docs.cloudposse.com/reference-architecture/setup/cold-start/manual-configuration/#use-superadmin-credentials),
+    [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/),
     deploy to the Organization Management (root) account in order to designate the `security` account as the Organization
     Delegated Administrator account.
 

@@ -21,7 +21,7 @@ When looking at a Datadog monitor, anything with `${foo}` is Terraform interpola
 
 First off, we need to figure out where **should** the metrics be coming from.
 
-If you are trying to receive metrics or logs from an EKS deployment or service, check if the [`datadog-agent`](/components/library/aws/eks/Datadog-agent/) is deployed and its logs look healthy.
+If you are trying to receive metrics or logs from an EKS deployment or service, check if the [`datadog-agent`](/components/library/aws/eks/datadog-agent/) is deployed and its logs look healthy.
 
 If you are trying to receive metrics or logs from an ECS service, check the datadog agent sidecar container is deployed to your [`ecs-service`](/components/library/aws/ecs-service/).
 

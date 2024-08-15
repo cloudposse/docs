@@ -7,6 +7,8 @@ import { fab } from '@fortawesome/free-brands-svg-icons'; // Import all brands i
 import { fas } from '@fortawesome/free-solid-svg-icons'; // Import all solid icons.
 import { far } from '@fortawesome/free-regular-svg-icons'; // Import all regular icons.
 import { Icon } from '@iconify/react'; // Import the entire Iconify library.
+// Import custom components
+import CategoryList from '@site/src/components/CategoryList';
 
 library.add(fab, fas, far); // Add all icons to the library so you can use them without importing them individually.
 
@@ -15,4 +17,6 @@ export default {
   ...MDXComponents,
   Icon: Icon, // Make the iconify Icon component available in MDX as <Icon />.
   FAIcon: FontAwesomeIcon, // Make the FontAwesomeIcon component available in MDX as <FAIcon />.
+  // Add custom components
+  CategoryList: CategoryList, // Make the CategoryList component available in MDX as <CategoryList />.
 };

@@ -40,8 +40,8 @@ optionally but often include the `external-secrets-operator` to automatically sy
 
 Monitoring and release engineering are handled separately from the components mentioned here, and we will expand of
 those implementations in follow up topics. For details, see the
-[Monitoring](/reference-architecture/category/quick-start/) and
-[Release Engineering](/reference-architecture/category/quick-start/) quick start documents.
+[Monitoring](/layers/monitoring/) and
+[Release Engineering](/layers/software-delivery/fundamentals/) quick start documents.
 
 #### Foundation
 
@@ -49,7 +49,7 @@ those implementations in follow up topics. For details, see the
   EKS Cluster, including IAM role to Kubernetes Auth Config mapping.
 - [`eks/karpenter`](/components/library/aws/eks/karpenter/): Installs the Karpenter chart on the EKS cluster and
   prepares the environment for provisioners.
-  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-provisioner/): Deploys Karpenter Provisioners
+  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-node-pool/): Deploys Karpenter Provisioners
     using CRDs made available by `eks/karpenter`
   - [`iam-service-linked-roles`](/components/library/aws/iam-service-linked-roles/): Provisions
     [IAM Service-Linked](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html) roles. These
@@ -85,7 +85,7 @@ those implementations in follow up topics. For details, see the
 - [`efs`](/components/library/aws/efs/): Deploys an [EFS](https://aws.amazon.com/efs/) Network File System with KMS
   encryption-at-rest. EFS is an excellent choice as the default block storage for EKS clusters so that volumes are not
   zone-locked.
-  - [`eks/efs-controller`](/components/library/aws/eks/efs-controller/): Deploys
+  - [`eks/efs-controller`](/components/library/aws/eks/storage-class/): Deploys
     [the Amazon Elastic File System Container Storage Interface (CSI) Driver controller](https://github.com/kubernetes-sigs/aws-efs-csi-driver)
     to EKS. The Amazon EFS CSI Driver implements the CSI specification for container orchestrators to manage the
     lifecycle of Amazon EFS file systems.
