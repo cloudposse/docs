@@ -26,7 +26,6 @@ async function GetAtmosTerraformCommands(workflow: string, fileName: string, sta
 
     // Parse the YAML content
     const workflows = yaml.load(fileContent) as any;
-    console.log('Parsed YAML:', workflows);
 
     // Find the specified workflow in the parsed YAML
     if (workflows && workflows.workflows && workflows.workflows[workflow]) {
@@ -69,24 +68,23 @@ export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
         setCommands([]); // Default to an empty array if cmds is undefined or not an array
       }
     });
-  }, [workflow]);
+  }, [workflow, fileName, stack]);
 
   return (
     <Tabs queryString="workflows">
       <TabItem value="commands" label="Commands">
-        These are the commands included the <code>{workflow}</code> workflow in the <code>{fullFilePath}</code> file:
+        These are the commands included in the <code>{workflow}</code> workflow in the <code>{fullFilePath}</code> file:
         <Steps>
           <ul>
-          {commands.length > 0 ? commands.map((cmd, index) => (
-            <li key={index}>
-              <CodeBlock language="bash">
-                {cmd}
-              </CodeBlock>
-            </li>
-          )) : 'No commands found'}
+            {commands.length > 0 ? commands.map((cmd, index) => (
+              <li key={index}>
+                <CodeBlock language="bash">
+                  {cmd}
+                </CodeBlock>
+              </li>
+            )) : 'No commands found'}
           </ul>
         </Steps>
-
         Too many commands? Consider using the Atmos workflow! 🚀
       </TabItem>
       <TabItem value="atmos" label="Atmos Workflow">
