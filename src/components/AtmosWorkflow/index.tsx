@@ -34,9 +34,14 @@ async function GetAtmosTerraformCommands(workflow: string, fileName: string, sta
 
       // Extract the commands under that workflow
       const commands = workflowDetails.steps.map((step: any) => {
-        let command = `atmos ${step.command}`;
-        if (stack) {
-          command += ` -s ${stack}`;
+        let command = step.command;
+        // TODO handle nested Atmos Workflows
+        // For example: https://raw.githubusercontent.com/cloudposse/docs/DEV-2485/workflow-snippets/examples/snippets/stacks/workflows/identity.yaml
+        if (!step.type) {
+          command = `atmos ${command}`;
+          if (stack) {
+            command += ` -s ${stack}`;
+          }
         }
         return command;
       });
@@ -56,7 +61,7 @@ export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
   const [commands, setCommands] = useState<string[]>([]);
 
   useEffect(() => {
-    GetAtmosTerraformCommands(workflow, fileName).then((cmds) => {
+    GetAtmosTerraformCommands(workflow, fileName, stack).then((cmds) => {
       if (Array.isArray(cmds)) {
         setCommands(cmds);
       } else {

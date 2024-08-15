@@ -7,6 +7,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
 The GitHub Action Runner Controller (ARC) is a Kubernetes operator that automates the management of self-hosted GitHub Actions runners in a Kubernetes cluster, that works very well together with Karpenter for EKS.
@@ -120,9 +121,7 @@ GitHub Repository or Organization
 <Note title="Tip">
   The first three steps before are all included in the following workflow:
 
-  ```bash
-  atmos workflow deploy/github-runners -f github
-  ```
+  <AtmosWorkflow workflow="deploy/github-runners" fileName="github" />
 </Note>
 
 <Step>
@@ -141,10 +140,8 @@ GitHub Repository or Organization
 
   Deploy the cluster with the same commands as `plat` cluster deployments:
 
-  ```bash
-  atmos workflow deploy/cluster -f eks -s core-use1-auto
-  atmos workflow deploy/resources -f eks -s core-use1-auto
-  ```
+  <AtmosWorkflow workflow="deploy/cluster" fileName="eks" stack="core-use1-auto"/>
+  <AtmosWorkflow workflow="deploy/resources" fileName="eks" stack="core-use1-auto"/>
 
   Validate the `core-auto` deployment using Echo Server. For example: https://echo.use1.auto.core.acme-svc.com/
 </Step>

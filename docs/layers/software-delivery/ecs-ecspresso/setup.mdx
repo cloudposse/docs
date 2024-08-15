@@ -10,6 +10,7 @@ import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
 import Note from '@site/src/components/Note'
 import Admonition from '@theme/Admonition'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
   This setup guide will help you get started with [ecspresso](https://github.com/kayac/ecspresso). It features an example app, which demonstrates how your GitHub Actions work with your infrastructure repository.
@@ -369,9 +370,7 @@ We do not recommend keeping all shared workflows in the same repository as in th
 
     Apply this component with the following:
 
-    ```console
-    atmos workflow deploy/app-on-ecs -f app-on-ecs
-    ```
+    <AtmosWorkflow workflow="deploy/app-on-ecs" fileName="app-on-ecs" />
   </Step>
 </Steps>
 

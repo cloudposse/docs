@@ -264,7 +264,7 @@ In the CLI, workflows can be defined using two different methods:
 In the first case, we define workflows in the configuration file for the stack (which we specify on the command line). To execute the workflows from [workflows in dev/us-east-2.yaml](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/orgs/cp/tenant1/dev/us-east-2.yaml), run the following commands:
 
 ```
-  atmos workflow deploy-all -s ue2-dev
+atmos workflow deploy-all -s ue2-dev
 ```
 
 Note that workflows defined in the stack config files can be executed only for the particular stack (environment and stage). It's not possible to provision resources for multiple stacks this way.
@@ -274,7 +274,7 @@ In the second case (defining workflows in a separate file), a single workflow ca
 For example, to run `terraform plan` and `helmfile diff` on all terraform and helmfile components in the example, execute the following command:
 
 ```
-  atmos workflow plan-all -f workflows
+atmos workflow plan-all -f workflows
 ```
 
 where the command-line option `-f` (`--file` for long version) instructs the `atmos` CLI to look for the `plan-all` workflow in the file [workflows](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/workflows/workflow1.yaml).
@@ -303,7 +303,7 @@ You can also define a workflow in a separate file without specifying the stack i
 For example, to run the `deploy-all` workflow from the [workflows](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/workflows/workflow1.yaml) file for the `ue2-dev` stack, execute the following command:
 
 ```
-  atmos workflow deploy-all -f workflows -s ue2-dev
+atmos workflow deploy-all -f workflows -s ue2-dev
 ```
 
 ## Recommended Filesystem Layout

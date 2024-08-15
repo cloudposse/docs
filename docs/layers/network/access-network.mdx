@@ -9,6 +9,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 Lastly, configure the VPN. The VPN will be provisioned in the `network` account and will leverage Transit Gateway to
 connect various VPCs to the VPN client. VPN deployment consists of three parts: authentication, component deployment,
@@ -28,7 +29,9 @@ and client setup.
 
   <Step>
     ## <StepNumber/> Deploy the VPN
-    Next, deploy the `ec2-client-vpn` component. This is done by running `atmos workflow deploy/vpn -f network`.
+    Next, deploy the `ec2-client-vpn` component. This is done by running the following:
+
+    <AtmosWorkflow workflow="deploy/vpn" fileName="network" />
 
     Depending on the given network configuration, you may run out of available Client VPN routes.
 
@@ -79,6 +82,8 @@ You can apply that quota using `atmos terraform apply account-quotas -s core-gbl
 
 ### Optional: Bastion hosts
 
-If you'd like to set up bastion hosts, you can do so by running `atmos workflow deploy/bastion -f network`. This would let you further evaluate the VPN.
+If you'd like to set up bastion hosts, you can do so by running the following. This would let you further evaluate the VPN.
+
+<AtmosWorkflow workflow="deploy/bastion" fileName="network" />
 
 By default, we deploy the bastion to all accounts connected to Transit Gateway.
