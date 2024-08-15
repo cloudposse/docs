@@ -1,0 +1,70 @@
+
+workflows:
+
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow vendor -f ecs
+      - command: workflow deploy/ecs-acm -f ecs
+      - command: workflow deploy/clusters -f ecs
+      - command: workflow deploy/echo-server -f ecs
+
+  vendor:
+    description: |
+      This workflow vendors all EKS related components to the latest provided version
+    steps:
+      - command: vendor pull --component ecs
+      - command: vendor pull --component ecs-service
+
+  deploy/ecs-acm:
+    description: |
+      This workflow deploys ACM for platform ECS Cluster ALBs
+    steps:
+      - command: terraform deploy ecs/platform/acm -s plat-use1-sandbox
+      - command: terraform deploy ecs/platform/acm -s plat-use1-dev
+      - command: terraform deploy ecs/platform/acm -s plat-use1-staging
+      - command: terraform deploy ecs/platform/acm -s plat-use1-prod
+
+  deploy/clusters:
+    description: |
+      This workflow deploys ECS Clusters
+    steps:
+      - command: terraform deploy ecs/cluster -s plat-use1-sandbox
+      - command: terraform deploy ecs/cluster -s plat-use1-dev
+      - command: terraform deploy ecs/cluster -s plat-use1-staging
+      - command: terraform deploy ecs/cluster -s plat-use1-prod
+
+  deploy/echo-server:
+    description: |
+      This workflow Deploys the echo server to the clusters
+    steps:
+      - command: terraform deploy ecs/platform/service/echo-server -s plat-use1-sandbox
+      - command: terraform deploy ecs/platform/service/echo-server -s plat-use1-dev
+      - command: terraform deploy ecs/platform/service/echo-server -s plat-use1-staging
+      - command: terraform deploy ecs/platform/service/echo-server -s plat-use1-prod
+      - command: terraform deploy ecs/platform/service/echo-server-private -s plat-use1-sandbox
+      - command: terraform deploy ecs/platform/service/echo-server-private -s plat-use1-dev
+      - command: terraform deploy ecs/platform/service/echo-server-private -s plat-use1-staging
+      - command: terraform deploy ecs/platform/service/echo-server-private -s plat-use1-prod
+
+  destroy/echo-server:
+    description: |
+      This workflow Deploys the echo server to the clusters
+    steps:
+      - command: terraform destroy ecs/platform/service/echo-server -s plat-use1-sandbox -auto-approve
+      - command: terraform destroy ecs/platform/service/echo-server -s plat-use1-dev -auto-approve
+      - command: terraform destroy ecs/platform/service/echo-server -s plat-use1-staging -auto-approve
+      - command: terraform destroy ecs/platform/service/echo-server -s plat-use1-prod -auto-approve
+      - command: terraform destroy ecs/platform/service/echo-server-private -s plat-use1-sandbox -auto-approve
+      - command: terraform destroy ecs/platform/service/echo-server-private -s plat-use1-dev -auto-approve
+      - command: terraform destroy ecs/platform/service/echo-server-private -s plat-use1-staging -auto-approve
+      - command: terraform destroy ecs/platform/service/echo-server-private -s plat-use1-prod -auto-approve
+
+  destroy/clusters:
+    description: |
+      This workflow deploys ECS Clusters
+    steps:
+      - command: terraform destroy ecs/cluster -s plat-use1-sandbox -auto-approve
+      - command: terraform destroy ecs/cluster -s plat-use1-dev -auto-approve
+      - command: terraform destroy ecs/cluster -s plat-use1-staging -auto-approve
+      - command: terraform destroy ecs/cluster -s plat-use1-prod -auto-approve

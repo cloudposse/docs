@@ -1,0 +1,36 @@
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow deploy/accounts -f accounts
+      - command: workflow deploy/account-settings -f accounts
+
+  deploy/organization:
+    description: | 
+      Deploy the AWS Organization. This is required before finishing the root account requirements.
+    steps:
+      - command: terraform deploy account -target=aws_organizations_organization.this[0] -s core-gbl-root
+      - command: aws ram enable-sharing-with-aws-organization
+        type: shell
+
+  deploy/accounts:
+    description: Deploys all AWS Organization accounts
+    steps:
+      - command: terraform apply account -s core-gbl-root
+      - command: terraform deploy account-map -s core-gbl-root
+
+  deploy/account-settings:
+    description: Apply AWS Account settings for best practices.
+    steps:
+      - command: terraform deploy account-settings -s core-gbl-artifacts
+      - command: terraform deploy account-settings -s core-gbl-audit
+      - command: terraform deploy account-settings -s core-gbl-auto
+      - command: terraform deploy account-settings -s core-gbl-dns
+      - command: terraform deploy account-settings -s core-gbl-identity
+      - command: terraform deploy account-settings -s core-gbl-network
+      - command: terraform deploy account-settings -s core-gbl-root
+      - command: terraform deploy account-settings -s core-gbl-security
+      - command: terraform deploy account-settings -s plat-gbl-dev
+      - command: terraform deploy account-settings -s plat-gbl-prod
+      - command: terraform deploy account-settings -s plat-gbl-sandbox
+      - command: terraform deploy account-settings -s plat-gbl-staging
