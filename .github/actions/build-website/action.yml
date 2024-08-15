@@ -93,6 +93,7 @@ runs:
     - name: "Render Documentation for Terraform Components"
       shell: bash
       run: |
+        rm -rf tmp/components/terraform-aws-components
         ./scripts/render-docs-for-components.sh
 
     - name: "Render Documentation for Terraform Modules"
