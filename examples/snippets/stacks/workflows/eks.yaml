@@ -7,6 +7,7 @@ workflows:
       - command: vendor pull --component iam-service-linked-roles
       - command: vendor pull --component eks/cluster
       - command: vendor pull --component efs
+      - command: vendor pull --component eks/storage-class
       - command: vendor pull --component eks/karpenter
       - command: vendor pull --component eks/karpenter-node-pool
       - command: vendor pull --component eks/external-secrets-operator
@@ -16,7 +17,6 @@ workflows:
       - command: vendor pull --component eks/cert-manager
       - command: vendor pull --component eks/alb-controller
       - command: vendor pull --component eks/alb-controller-ingress-group
-      - command: vendor pull --component eks/storage-class
       - command: vendor pull --component eks/echo-server
       - command: vendor pull --component eks/idp-roles
 
