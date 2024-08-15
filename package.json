@@ -48,6 +48,7 @@
     "html-loader": "^5.0.0",
     "iconify-icon": "^2.1.0",
     "js-cookie": "^3.0.5",
+    "js-yaml": "^4.1.0",
     "marked": "^13.0.2",
     "node-fetch": "^3.3.2",
     "posthog-docusaurus": "^2.0.0",

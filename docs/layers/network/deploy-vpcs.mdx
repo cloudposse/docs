@@ -8,6 +8,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
 The first step in deploying the network is to deploy the VPCs in each region. This will create the necessary foundation for the platform to run and includes the VPC, subnets, route tables, security groups, and VPC endpoints.
@@ -19,9 +20,8 @@ The first step in deploying the network is to deploy the VPCs in each region. Th
 
   First, vendor the networking components by running the following:
 
-  ```bash
-  atmos workflow vendor -f network
-  ```
+  <AtmosWorkflow workflow="vendor" fileName="network" />
+
   </Step>
 
   <Step>
@@ -29,9 +29,8 @@ The first step in deploying the network is to deploy the VPCs in each region. Th
 
   Deploy all the VPCs in every configured region by running the following command:
 
-  ```bash
-  atmos workflow deploy/vpc -f network
-  ```
+  <AtmosWorkflow workflow="deploy/vpc" fileName="network" />
+
   </Step>
 
   <Step>

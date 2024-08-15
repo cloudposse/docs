@@ -5,6 +5,7 @@ sidebar_position: 2
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 ## Quick Start
 
@@ -16,9 +17,9 @@ Please follow the sign up steps in [How to Sign Up for OpsGenie](/layers/alertin
 
 ### Vendor
 
-Like most other components we need to vendor in the component. This can be done with
+Like most other components we need to vendor in the component. This can be done with the following:
 
-`atmos workflow vendor -f alerting` or `atmos vendor pull --component opsgenie-team`.
+<AtmosWorkflow workflow="vendor" fileName="alerting" />
 
 ### Deploy
 

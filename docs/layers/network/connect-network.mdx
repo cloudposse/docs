@@ -6,14 +6,13 @@ sidebar_position: 3
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 ## Deployment
 
 Next, set up AWS Transit Gateway (TGW) to connect each desired AWS account to the private network by running the following command:
 
-```bash
-atmos workflow deploy/tgw -f network
-```
+<AtmosWorkflow workflow="deploy/tgw" fileName="network" />
 
 This command will deploy the TGW hub and spokes to connect the network to the AWS accounts. The TGW hub is deployed in the `core-network` account, and the TGW spokes are deployed in each AWS account with a VPC.
 
@@ -42,6 +41,4 @@ If this happens, you can safely wait a minute or two and then re-attempt the pro
 
 The file `stacks/catalog/tgw/hub.yaml` and the separate `tgw/spokes` in each `stacks/org/**/global-region/network.yaml` potentially contain references to EKS Clusters using the `eks_component_names` variable. If you add an EKS Cluster, then you will want to look up the individual `spoke` and `hub` components that are affected. If you are using cross-region `tgw/cross-region-hub-connector` components, you will also want to update `eks_component_names` on the regional connections.
 
-```shell
-atmos workflow deploy/tgw -f network
-```
+<AtmosWorkflow workflow="deploy/tgw" fileName="network" />

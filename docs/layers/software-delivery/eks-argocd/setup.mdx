@@ -11,6 +11,7 @@ import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
 import Admonition from '@theme/Admonition'
 import TaskList from '@site/src/components/TaskList'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
  This setup guide will walk you through the process of setting up ArgoCD in your environment.
@@ -47,9 +48,7 @@ All deployment steps below assume that the environment has been successfully set
 
     First vendor all related components for the ArgoCD layer:
 
-    ```console
-    atmos workflow vendor -f argocd
-    ```
+    <AtmosWorkflow workflow="vendor" fileName="argocd" />
   </Step>
 
   <Step>
@@ -101,9 +100,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy the ArgoCD configuration for the two GitHub repos with the following workflow:
 
-    ```console
-    atmos workflow argocd-repos -f argocd
-    ```
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="argocd" />
 
     Once this finishes, review the two repos in your GitHub Organization. These should both be fully configured at this
     point.
@@ -130,9 +127,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy `eks/argocd` to each cluster with the following workflow:
 
-    ```console
-    atmos workflow deploy/argocd -f argocd
-    ```
+    <AtmosWorkflow workflow="deploy/argocd" fileName="argocd" />
   </Step>
 
   <Step>
@@ -239,9 +234,7 @@ In order to migrate to `1.305.0` from a lesser version, delete the previous SSM 
 
 Or use the following workflow:
 
-```console
-atmos workflow migrate_less_1_305 -f argocd
-```
+<AtmosWorkflow workflow="migrate_less_1_305" fileName="argocd" />
 
 ### About GitHub PATs
 

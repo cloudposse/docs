@@ -10,6 +10,7 @@ import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
 import Admonition from '@theme/Admonition'
 import Note from '@site/src/components/Note'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
 These are the setup instructions for Security and Compliance in your AWS Organization.
@@ -25,9 +26,7 @@ The following steps are required to set up Security and Compliance in your AWS O
 
     Vendor all data components with the following workflow:
 
-    ```bash
-    atmos workflow vendor -f compliance
-    ```
+    <AtmosWorkflow workflow="vendor" fileName="compliance" />
   </Step>
 
   <Step>
@@ -136,13 +135,12 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
 ```
 
 :::
+
 <Steps>
   <Step>
     Deploy AWS Config to each region in order to collect data for global resources such as IAM.
 
-    ```bash
-    atmos workflow deploy/aws-config/global-collector -f compliance
-    ```
+    <AtmosWorkflow workflow="deploy/aws-config/global-collector" fileName="compliance" />
 
     <Note title="Reminder">
       This command requires [`SuperAdmin`](/layers/accounts/tutorials/how-to-create-superadmin-user/).
@@ -152,9 +150,7 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
   <Step>
     Deploy AWS Config into accounts that require superadmin to apply.
 
-    ```bash
-    atmos workflow deploy/aws-config/superadmin -f compliance
-    ```
+    <AtmosWorkflow workflow="deploy/aws-config/superadmin" fileName="compliance" />
   </Step>
 </Steps>
 
@@ -164,9 +160,7 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
   <Step>
     First, deploy to each region of the Delegated Administrator account.
 
-    ```bash
-    atmos workflow deploy/security-hub/step1 -f compliance
-    ```
+    <AtmosWorkflow workflow="deploy/security-hub/step1" fileName="compliance" />
   </Step>
 
   <Step>
@@ -175,9 +169,7 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
     deploy to the Organization Management (root) account in order to designate the `security` account as the Organization
     Delegated Administrator account.
 
-    ```bash
-    atmos workflow deploy/security-hub/step2 -f compliance
-    ```
+    <AtmosWorkflow workflow="deploy/security-hub/step2" fileName="compliance" />
   </Step>
 
   <Step>
@@ -188,9 +180,7 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
     Finally, deploy the `security-hub/org-settings` component to the `security` account in order to enable and configure
     Security Hub in all other accounts and regions.
 
-    ```bash
-    atmos workflow deploy/security-hub/step3 -f compliance
-    ```
+    <AtmosWorkflow workflow="deploy/security-hub/step3" fileName="compliance" />
   </Step>
 </Steps>
 
@@ -198,29 +188,21 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
 
 First, deploy to each region of the Delegated Administrator account.
 
-```bash
-atmos workflow deploy/guardduty/step1 -f compliance
-```
+<AtmosWorkflow workflow="deploy/guardduty/step1" fileName="compliance" />
 
 Next, deploy to the Organization Management (root) account in order to designate the `security` account as the
 Organization Delegated Administrator account.
 
-```bash
-atmos workflow deploy/guardduty/step2 -f compliance
-```
+<AtmosWorkflow workflow="deploy/guardduty/step2" fileName="compliance" />
 
 Finally, deploy to the `security` account in order to enable and configure GuardDuty in all other accounts and regions.
 
-```bash
-atmos workflow deploy/guardduty/step3 -f compliance
-```
+<AtmosWorkflow workflow="deploy/guardduty/step3" fileName="compliance" />
 
 ## Route53 DNS Resolver Firewall
 
-```bash
-atmos workflow deploy/route53-resolver-dns-firewall-buckets -f compliance
-atmos workflow deploy/route53-resolver-dns-firewall -f compliance
-```
+<AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall-buckets" fileName="compliance" />
+<AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall" fileName="compliance" />
 
 ## AWS Shield
 
@@ -231,20 +213,14 @@ required in each `plat` AWS account before running this workflow.
 
 :::
 
-```bash
-atmos workflow deploy/aws-shield -f compliance
-```
+<AtmosWorkflow workflow="deploy/aws-shield" fileName="compliance" />
 
 ## AWS Inspector v2
 
 Delegates Administration account for [AWS Inspector v2](https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html) to `core-security` for all regions.
 
-```bash
-atmos workflow deploy/aws-inspector2/step1 -f compliance
-```
+<AtmosWorkflow workflow="deploy/aws-inspector2/step1" fileName="compliance" />
 
 Enables Inspector in all regions across accounts
 
-```bash
-atmos workflow deploy/aws-inspector2/step2 -f compliance
-```
+<AtmosWorkflow workflow="deploy/aws-inspector2/step2" fileName="compliance" />

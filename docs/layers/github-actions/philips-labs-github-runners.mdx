@@ -4,6 +4,7 @@ sidebar_label: Philips Labs Action Runners
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
   If we are not deploying EKS, it's not worth the additional effort to set up Self-Hosted runners on EKS. Instead, we
@@ -84,9 +85,7 @@ engagements.
 Run the `deploy/pl-github-runners` workflow with `atmos` to write the GitHub App information to the `core-use1-auto`
 SSM account and deploy the component.
 
-```console
-atmos workflow deploy/pl-github-runners -f github
-```
+<AtmosWorkflow workflow="deploy/pl-github-runners" fileName="github" />
 
 This is the same as the following steps:
 
@@ -133,9 +132,7 @@ webhook URL and secret should now be stored in 1Password. If not, you can retrie
 
 Vendor in the necessary components with the following workflow:
 
-```bash
-atmos workflow vendor -f github
-```
+<AtmosWorkflow workflow="vendor" fileName="github" />
 
 ## Deploy
 
@@ -143,9 +140,7 @@ atmos workflow vendor -f github
 
 You can run all workflows at once in the right order with
 
-```bash
-atmos workflow all -f github
-```
+<AtmosWorkflow workflow="all" fileName="github" />
 
 :::
 
@@ -154,18 +149,14 @@ atmos workflow all -f github
 First deploy the GitHub OIDC provider to all accounts where we want to grant GitHub access. The typical list of accounts
 is included with the `deploy/github-oidc-provider` workflow; run the following with `SuperAdmin`:
 
-```bash
-atmos workflow deploy/github-oidc-provider -f github
-```
+<AtmosWorkflow workflow="deploy/github-oidc-provider" fileName="github" />
 
 ### GitHub Runners
 
 To deploy the self-hosted runners themselves, first verify [the GitHub App requirement](#Requirements) is complete
 including both SSM parameters. Next we will deploy the token rotator and then the runners themselves.
 
-```bash
-atmos workflow deploy/github-runners -f github
-```
+<AtmosWorkflow workflow="deploy/github-runners" fileName="github" />
 
 If all goes well, you should now see self-hosted runners registered to your infrastructure repository in GitHub. If not,
 read through the attached [FAQs](#FAQ).

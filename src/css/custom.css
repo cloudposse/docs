@@ -353,3 +353,7 @@ table thead th {
   border-bottom: 2px solid #eaecef;
   border: none;
 }
+
+.tabs-container .theme-code-block {
+  margin-top: 2em;
+}

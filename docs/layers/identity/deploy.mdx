@@ -10,6 +10,7 @@ import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Note from '@site/src/components/Note';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
   Learn how to provision AWS teams and team roles across an AWS Organization using Atmos workflows, integrate them with AWS SSO, and generate AWS configuration files for role assumption with profiles.
@@ -41,9 +42,7 @@ These components are expected to be used together to provide fine-grained role d
     Deploy these components across all accounts by running the following command. Note that if any users or groups are
     missing, `aws-sso` will fail.
 
-    ```bash
-    atmos workflow deploy/all -f identity
-    ```
+    <AtmosWorkflow workflow="deploy/all" fileName="identity" />
 
     <Note title="Important">Once the roles are deployed, the Terraform State Backend should be reconfigured to use the newly provisioned roles.</Note>
   </Step>
@@ -52,9 +51,7 @@ These components are expected to be used together to provide fine-grained role d
     ### <StepNumber/> Reconfigure Terraform State Backend
     Apply the changes from the previous step to the Terraform State Backend by running the following commands. This will grant permission for your newly deployed AWS Teams and Team Roles to access the Terraform State Backend.
 
-    ```bash
-    atmos workflow deploy/tfstate -f baseline
-    ```
+    <AtmosWorkflow workflow="deploy/tfstate" fileName="baseline" />
   </Step>
 
   <Step>
@@ -63,9 +60,7 @@ These components are expected to be used together to provide fine-grained role d
     Once the identity components have been deployed, we will need to create local AWS configuration for these new roles and
     profiles. Generate those files now by running the following command from within Geodesic.
 
-    ```bash
-    atmos workflow update-aws-config -f identity
-    ```
+    <AtmosWorkflow workflow="update-aws-config" fileName="identity" />
 
     This will generate AWS configuration to the `rootfs` directory locally. Everything included in the `rootfs` directory is passed to the Geodesic image when it is built. This will include the AWS configuration files, included with the `aws-config-teams` file, that are needed to assume roles across the AWS Organization. In particular, we recommend setting a common AWS profile, such as `acme-identity`, as the entry-point for all role assumption. That way all users can configure the same AWS profile name and be allowed to assume roles that they can access.
 
@@ -91,9 +86,7 @@ These components are expected to be used together to provide fine-grained role d
     <Note title="Important">
     Anytime that teams or roles are changed, rebuild AWS config
 
-    ```bash
-    atmos workflow update-aws-config -f identity
-    ```
+    <AtmosWorkflow workflow="update-aws-config" fileName="identity" />
     </Note>
 
   </Step>

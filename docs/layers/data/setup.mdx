@@ -8,6 +8,7 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps'
 import Note from '@site/src/components/Note'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 ## Quick Start
 
@@ -49,9 +50,7 @@ At the moment we have support for:
 
 Vendor all data components with the following workflow:
 
-```bash
-atmos workflow vendor -f data
-```
+<AtmosWorkflow workflow="vendor" fileName="data" />
 
 These run several vendor commands for each included component. You can always run these commands individually to update
 any single component. For example:
@@ -67,6 +66,4 @@ atmos vendor pull -c aurora-postgres
 In order to deploy database, deploy both the cluster and the resources component (if applicable). Applying changes to
 the resources component requires a VPN connection. For example,
 
-```bash
-atmos workflow deploy/all -f data
-```
+<AtmosWorkflow workflow="deploy/all" fileName="data" />

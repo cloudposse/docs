@@ -15,6 +15,7 @@ import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
 import Admonition from '@theme/Admonition'
 import Note from '@site/src/components/Note'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
   The deployment process for ArgoCD includes setting up access tokens for a number of responsibilities. We will need to create the desire state repositories with necessary access, create Webhooks for these repos, grant the app in the EKS cluster permission to send notifications, and grant access for GitHub workflows.
@@ -80,9 +81,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
 
           Use the following workflow to upload this PAT to AWS SSM:
 
-          ```console
-          atmos workflow deploy/terraform-argocdrepo-pat -f argocd
-          ```
+          <AtmosWorkflow workflow="deploy/terraform-argocdrepo-pat" fileName="argocd" />
 
           Or manually save this PAT to AWS SSM at `argocd/github/api_key` in the `core-auto` account.
     </Steps>
@@ -93,9 +92,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
 
     Deploy the ArgoCD configuration for the two GitHub repos with the following workflow:
 
-    ```console
-    atmos workflow argocd-repos -f argocd
-    ```
+    <AtmosWorkflow workflow="argocd-repos" fileName="argocd" />
 
     Once this finishes, review the two repos in your GitHub Organization. These should both be fully configured at this point.
 
@@ -132,9 +129,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
           ```
       4. Use the following workflow to upload this PAT to AWS SSM:
 
-          ```console
-          atmos workflow deploy/terraform-webhooks-nonprod-pat -f argocd
-          ```
+          <AtmosWorkflow workflow="deploy/terraform-webhooks-nonprod-pat" fileName="argocd" />
 
           Or manually save this PAT to AWS SSM at `argocd/github/api_key` in the `plat-dev` and `plat-staging` accounts.
     </Steps>
@@ -152,9 +147,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
           ```
       4. Use the following workflow to upload this PAT to AWS SSM:
 
-          ```console
-          atmos workflow deploy/terraform-webhooks-prod-pat -f argocd
-          ```
+          <AtmosWorkflow workflow="deploy/terraform-webhooks-prod-pat" fileName="argocd" />
 
           Or manually save this PAT to AWS SSM at `argocd/github/api_key` in the `plat-prod` account.
     </Steps>
@@ -179,9 +172,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
 
          Use the following workflow to upload this PAT to AWS SSM:
 
-         ```console
-         atmos workflow deploy/app-notifications-pat -f argocd
-         ```
+         <AtmosWorkflow workflow="deploy/app-notifications-pat" fileName="argocd" />
 
          Or manually save this PAT to AWS SSM at `argocd/notifications/notifiers/common/github-token` in the `plat-dev`, `plat-staging`, and `plat-prod` accounts.
     </Steps>

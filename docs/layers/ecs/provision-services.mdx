@@ -8,6 +8,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps'
 import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
   Provision an example service like the Echo server to test your cluster’s functionality. This will ensure you can access the service remotely via the load balancer, both publicly and privately through the VPN.
@@ -25,12 +26,10 @@ Once the cluster is up and running, continue with the first ECS service deployme
   <Step>
     ## <StepNumber/> Deploy Echo Server
 
-    Run the following Atmos Workflow to deploy `ecs/platform/service/echo-server` and
+    Run the following to deploy `ecs/platform/service/echo-server` and
     `ecs/platform/service/echo-server-private` to every cluster.
 
-    ```bash
-    atmos workflow deploy/echo-server -f ecs
-    ```
+    <AtmosWorkflow workflow="deploy/echo-server" fileName="ecs" />
 
   </Step>
 

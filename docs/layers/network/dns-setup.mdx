@@ -9,6 +9,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 ## Requirements
 
@@ -34,8 +35,10 @@ ramifications as to IP/trademark defense.
     The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated.
     Consult the [dns-delegated component documentation](/components/library/aws/dns-delegated/) for more information.
 
-    To start the dns setup, run `atmos workflow deploy/dns -f network`. This will go through creating primaries, and then
+    To start the dns setup, run the following. This will go through creating primaries, and then
     follow up with establishing the delegates.
+
+    <AtmosWorkflow workflow="deploy/dns" fileName="network" />
   </Step>
 
   <Step>
@@ -88,6 +91,4 @@ We use a separate instance of the `acm` component to provision each service doma
 
 We can deploy all required ACM certificates with the following command:
 
-```bash
-atmos workflow deploy/acm -f network
-```
+<AtmosWorkflow workflow="deploy/acm" fileName="network" />

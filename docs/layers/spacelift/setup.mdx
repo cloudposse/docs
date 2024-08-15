@@ -7,6 +7,7 @@ description: Spacelift is a continuous delivery platform that allows you to auto
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 ## Quick Start
 
@@ -135,9 +136,7 @@ list._
 
 This step can be executed with an Atmos Workflow! Run the follow and enter the API Key ID and Secret when prompted:
 
-```shell
-atmos workflow init -f spacelift
-```
+<AtmosWorkflow workflow="init" fileName="spacelift" />
 
 ## How To
 
@@ -147,26 +146,20 @@ atmos workflow init -f spacelift
 Spacelift adds three components, `spacelift/worker-pool`, `spacelift/admin-stack`, and `spacelift/spaces`. Vendor these
 components either with the included Atmos Workflows or with Atmos Vendor.
 
-```shell
-atmos workflow vendor -f spacelift
-```
-
-or
-
-```shell
-atmos vendor pull --component spacelift
-```
+<AtmosWorkflow workflow="vendor" fileName="spacelift" />
 
 ### Deploy
 
 Spacelift can be deployed with Atmos Workflows or by manual steps. If using Workflows, you must first upload the
 Spacelift API Key to AWS SSM, described above. Once the API Key is created in SSM, connected to Geodesic and run:
 
+<AtmosWorkflow workflow="deploy/worker-pool" fileName="spacelift" />
+
 ```shell
-atmos workflow deploy/worker-pool -f spacelift
 set-spacelift-environment
-atmos workflow deploy/admin-stack -f spacelift
 ```
+
+<AtmosWorkflow workflow="deploy/admin-stack" fileName="spacelift" />
 
 All other configuration should be preset, but if you encounter errors, verify the following manual steps have been set
 up correctly.
@@ -181,15 +174,7 @@ instances for Spacelift to attach a number of runners onto. For additional detai
 
 Deploy the component into the `auto` account in the primary region:
 
-```shell
-atmos terraform apply spacelift/worker-pool -s core-use1-auto
-```
-
-or
-
-```shell
-atmos workflow deploy/worker-pool -f spacelift
-```
+<AtmosWorkflow workflow="deploy/worker-pool" fileName="spacelift" />
 
 After Terraform finishes applying, take note of the Terraform outputs `worker_pool_id`, `worker_pool_name`, and
 `trusted_role_arns`.
@@ -238,18 +223,8 @@ export SPACELIFT_API_KEY_SECRET=...
 
 ##### Deploy the admin stacks
 
-```shell
-atmos terraform apply admin-stack --stack root-gbl-spacelift
-atmos terraform apply admin-stack --stack core-gbl-spacelift
-atmos terraform apply admin-stack --stack plat-gbl-spacelift
-```
-
-or
-
-```shell
-atmos workflow deploy/root-admin-stack -f spacelift
-atmos workflow deploy/admin-stack -f spacelift
-```
+<AtmosWorkflow workflow="deploy/root-admin-stack" fileName="spacelift" />
+<AtmosWorkflow workflow="deploy/admin-stack" fileName="spacelift" />
 
 Note that this is the only manually operation you need to perform in `geodesic` using `atmos` to create the initial
 admin stack. All other infrastructure stacks will be created in Spacelift by this admin stack.

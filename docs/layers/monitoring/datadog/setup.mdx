@@ -10,6 +10,7 @@ import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Admonition from '@theme/Admonition';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 You need to set up monitoring for all of your newly deployed accounts.
 
@@ -91,17 +92,9 @@ For **ECS**
 
 ## Step by Step
 
-You should have a workflow to vendor in your components. This workflow can be run with the following command:
+You should have a workflow to vendor in your components. This workflow can be run with the following command. Otherwise vendor in each component individually.
 
-```bash
-atmos workflow vendor -f monitoring
-```
-
-Otherwise vendor in each component individually:
-
-```bash
-atmos vendor pull -c ${component-name}
-```
+<AtmosWorkflow workflow="vendor" fileName="monitoring" />
 
 ## Datadog Configuration
 
