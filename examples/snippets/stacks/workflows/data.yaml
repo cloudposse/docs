@@ -1,0 +1,124 @@
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow vendor -f data
+      - command: workflow deploy/all -f data
+
+  vendor:
+    description: Vendor addon components.
+    steps:
+    - command: vendor pull --component aurora-postgres
+    - command: vendor pull --component aurora-postgres-resources
+    - command: vendor pull --component aurora-mysql
+    - command: vendor pull --component aurora-mysql-resources
+    - command: vendor pull --component aws-backup
+    - command: vendor pull --component documentdb
+    - command: vendor pull --component dynamodb
+    - command: vendor pull --component elasticsearch
+    - command: vendor pull --component rds
+    - command: vendor pull --component redshift
+    - command: vendor pull --component elasticache-redis
+
+  deploy/all:
+    description: run all deploy workflows
+    steps:
+      - command: workflow deploy/aurora-postgres -f data
+      - command: workflow deploy/aurora-postgres-resources -f data
+      - command: workflow deploy/aurora-mysql -f data
+      - command: workflow deploy/aurora-mysql-resources -f data
+      - command: workflow deploy/aws-backup -f data
+      - command: workflow deploy/documentdb -f data
+      - command: workflow deploy/dynamodb -f data
+      - command: workflow deploy/elasticsearch -f data
+      - command: workflow deploy/rds -f data
+      - command: workflow deploy/redshift -f data
+      - command: workflow deploy/elasticache-redis -f data
+
+  deploy/aws-backup:
+    description: >-
+      Deploy Aws Backup Component.
+    steps:
+      - command: terraform deploy aws-backup/common -s plat-use1-dev
+      - command: terraform deploy aws-backup/daily-plan -s plat-use1-dev
+      - command: terraform deploy aws-backup/weekly-plan -s plat-use1-dev
+      - command: terraform deploy aws-backup/monthly-plan -s plat-use1-dev
+      - command: terraform deploy aws-backup/common -s plat-use1-staging
+      - command: terraform deploy aws-backup/daily-plan -s plat-use1-staging
+      - command: terraform deploy aws-backup/weekly-plan -s plat-use1-staging
+      - command: terraform deploy aws-backup/monthly-plan -s plat-use1-staging
+      - command: terraform deploy aws-backup/common -s plat-use1-prod
+      - command: terraform deploy aws-backup/daily-plan -s plat-use1-prod
+      - command: terraform deploy aws-backup/weekly-plan -s plat-use1-prod
+      - command: terraform deploy aws-backup/monthly-plan -s plat-use1-prod
+  
+
+  deploy/aurora-postgres:
+    description: >-
+      Deploy Aurora-Postgres Component.
+    steps:
+      - command: terraform deploy aurora-postgres -s plat-use1-dev
+      - command: terraform deploy aurora-postgres -s plat-use1-staging
+      - command: terraform deploy aurora-postgres -s plat-use1-prod
+
+  deploy/aurora-postgres-resources:
+    description: >-
+      Deploy Aurora-Postgres-Resources Component.
+    steps:
+      - command: terraform deploy aurora-postgres-resources -s plat-use1-dev
+      - command: terraform deploy aurora-postgres-resources -s plat-use1-staging
+      - command: terraform deploy aurora-postgres-resources -s plat-use1-prod
+
+  deploy/aurora-mysql:
+    description: >-
+      Deploy Aurora-Mysql Component.
+    steps:
+      - command: terraform deploy aurora-mysql -s plat-use1-dev
+      - command: terraform deploy aurora-mysql -s plat-use1-staging
+      - command: terraform deploy aurora-mysql -s plat-use1-prod
+
+  deploy/aurora-mysql-resources:
+    description: >-
+      Deploy Aurora-Mysql-Resources Component.
+    steps:
+      - command: terraform deploy aurora-mysql-resources -s plat-use1-dev
+      - command: terraform deploy aurora-mysql-resources -s plat-use1-staging
+      - command: terraform deploy aurora-mysql-resources -s plat-use1-prod
+
+  deploy/documentdb:
+    description: >-
+      Deploy Documentdb Component.
+    steps:
+      - command: terraform deploy documentdb -s plat-use1-sandbox
+
+  deploy/dynamodb:
+    description: >-
+      Deploy Dynamodb Component.
+    steps:
+      - command: terraform deploy dynamodb -s plat-use1-sandbox
+
+  deploy/elasticsearch:
+    description: >-
+      Deploy Elasticsearch Component.
+    steps:
+      - command: terraform deploy elasticsearch -s plat-use1-sandbox
+
+  deploy/rds:
+    description: >-
+      Deploy Rds Component.
+    steps:
+      - command: terraform deploy rds/example -s plat-use1-dev
+      - command: terraform deploy rds/example -s plat-use1-staging
+      - command: terraform deploy rds/example -s plat-use1-prod
+
+  deploy/redshift:
+    description: >-
+      Deploy Redshift Component.
+    steps:
+      - command: terraform deploy redshift -s plat-use1-sandbox
+
+  deploy/elasticache-redis:
+    description: >-
+      Deploy Elasticache-Redis Component.
+    steps:
+      - command: terraform deploy elasticache-redis/sample -s plat-use1-sandbox
