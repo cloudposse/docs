@@ -4,10 +4,7 @@ import TabItem from '@theme/TabItem';
 import * as yaml from 'js-yaml';
 
 // Define constants for the base URL and workflows directory path
-// const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/master/';
-// TODO rever to master once this PR is merged:
-// https://github.com/cloudposse/refarch-scaffold/pull/698
-const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/DEV-2485/workflow-snippets/';
+const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/master/';
 const WORKFLOWS_DIRECTORY_PATH = 'examples/snippets/stacks/workflows/';
 
 async function GetAtmosTerraformCommands(workflow: string, fileName: string, stack?: string): Promise<string[] | undefined> {
@@ -36,7 +33,7 @@ async function GetAtmosTerraformCommands(workflow: string, fileName: string, sta
       const commands = workflowDetails.steps.map((step: any) => {
         let command = step.command;
         // TODO handle nested Atmos Workflows
-        // For example: https://raw.githubusercontent.com/cloudposse/docs/DEV-2485/workflow-snippets/examples/snippets/stacks/workflows/identity.yaml
+        // For example: https://raw.githubusercontent.com/cloudposse/docs/master/examples/snippets/stacks/workflows/identity.yaml
         if (!step.type) {
           command = `atmos ${command}`;
           if (stack) {
