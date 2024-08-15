@@ -1,0 +1,99 @@
+
+workflows:
+  vendor:
+    description: |
+      This workflow vendors all EKS related components to the latest provided version
+    steps:
+      - command: vendor pull --component iam-service-linked-roles
+      - command: vendor pull --component eks/cluster
+      - command: vendor pull --component efs
+      - command: vendor pull --component eks/karpenter
+      - command: vendor pull --component eks/karpenter-node-pool
+      - command: vendor pull --component eks/external-secrets-operator
+      - command: vendor pull --component eks/external-dns
+      - command: vendor pull --component eks/reloader
+      - command: vendor pull --component eks/metrics-server
+      - command: vendor pull --component eks/cert-manager
+      - command: vendor pull --component eks/alb-controller
+      - command: vendor pull --component eks/alb-controller-ingress-group
+      - command: vendor pull --component eks/storage-class
+      - command: vendor pull --component eks/echo-server
+      - command: vendor pull --component eks/idp-roles
+
+  deploy/iam-service-linked-roles:
+    description: |
+      This workflow deploys IAM Service Linked Roles required for EKS and Karpenter
+    steps:
+      - command: terraform deploy iam-service-linked-roles -s plat-gbl-dev
+      - command: terraform deploy iam-service-linked-roles -s plat-gbl-staging
+      - command: terraform deploy iam-service-linked-roles -s plat-gbl-prod
+
+  deploy/cluster:
+    description: |
+      This workflow creates (or updates) an empty EKS cluster with eks and efs
+      ready to go.
+
+      This is stack agnostic, ensure you pass in the `-s plat-${region}-${stage}`
+      argument.
+    steps:
+      - command: terraform deploy eks/cluster
+      - command: terraform deploy efs
+      - command: terraform deploy eks/storage-class
+
+  destroy/cluster:
+    description: |
+      *CAUTION* This workflow destroys an EKS cluster
+
+      This is stack agnostic, ensure you pass in the `-s plat-${region}-${stage}`
+      argument.
+    steps:
+      - type: shell
+        command: |-
+          echo "Destroying Targeted EKS Cluster"
+          echo "Proceed with caution!\n\n"
+
+          read -p "Continue? (yes/no) " -r CONTINUE
+          if [[ "$CONTINUE" != "yes" ]]
+          then
+            echo "Exiting."
+            exit 0
+          fi
+
+          echo "Continuing with EKS destruction..."
+
+      - command: terraform destroy eks/echo-server -auto-approve
+      - command: terraform destroy eks/alb-controller-ingress-group -auto-approve
+      - command: terraform destroy eks/alb-controller-ingress-group/internal -auto-approve
+      - command: terraform destroy eks/alb-controller -auto-approve
+      - command: terraform destroy eks/cert-manager -auto-approve
+      - command: terraform destroy eks/metrics-server -auto-approve
+      - command: terraform destroy eks/reloader -auto-approve
+      - command: terraform destroy eks/external-dns -auto-approve
+      - command: terraform destroy eks/idp-roles -auto-approve
+      - command: terraform destroy eks/external-secrets-operator -auto-approve
+      - command: terraform destroy eks/karpenter-node-pool -auto-approve
+      - command: terraform destroy eks/karpenter -auto-approve
+      - command: terraform destroy eks/storage-class
+      - command: terraform destroy eks/cluster -auto-approve
+
+  deploy/resources:
+    description: |
+      This workflow creates or updates all shared components in an
+      EKS cluster. It is especially useful for (re)creating a cluster
+      in a given stack (e.g. bringing up a cluster in a new region).
+
+      This is stack agnostic, ensure you pass in the `-s ${tenant}-${region}-${stage}`
+      argument.
+    steps:
+      - command: terraform deploy eks/karpenter
+      - command: terraform deploy eks/karpenter-node-pool
+      - command: terraform deploy eks/external-secrets-operator
+      - command: terraform deploy eks/idp-roles
+      - command: terraform deploy eks/external-dns
+      - command: terraform deploy eks/reloader
+      - command: terraform deploy eks/metrics-server
+      - command: terraform deploy eks/cert-manager
+      - command: terraform deploy eks/alb-controller
+      - command: terraform deploy eks/alb-controller-ingress-group
+      - command: terraform deploy eks/alb-controller-ingress-group/internal
+      - command: terraform deploy eks/echo-server
