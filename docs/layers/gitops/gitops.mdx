@@ -62,5 +62,5 @@ Once the required S3 Bucket, DynamoDB table, and two separate roles to access Te
 - [`cloudposse/github-action-atmos-terraform-drift-remediation`](https://github.com/cloudposse/github-action-atmos-terraform-drift-remediation)
 - [`gitops/s3-bucket`](/components/library/aws/s3-bucket/): Deploy a S3 Bucket using the `s3-bucket` component. This bucket holds Terraform planfiles.
 - [`gitops/dynamodb`](/components/library/aws/dynamodb/): Deploy a DynamoDB table using the `dynamodb` component. This table is used to hold metadata for Terraform Plans
-- [`gitops`](/components/library/aws/gitops/): Deploys an IAM Role that GitHub is able to assume via GitHub OIDC. This role has access to the bucket and table for planfiles.
+- [`github-oidc-role`](/components/library/aws/github-oidc-role/): Deploys an IAM Role that GitHub is able to assume via GitHub OIDC. This role has access to the bucket and table for planfiles.
 
