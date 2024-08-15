@@ -72,7 +72,7 @@ export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
 
   return (
     <Tabs queryString="command">
-      <TabItem value="terraform" label="Atmos Terraform Commands">
+      <TabItem value="expanded" label="Commands">
         <pre>
           <code>
             {commands.length > 0 ? commands.map((cmd, index) => (
@@ -81,7 +81,7 @@ export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
           </code>
         </pre>
       </TabItem>
-      <TabItem value="workflow" label="Atmos Workflow Commands">
+      <TabItem value="workflow" label="Atmos Workflow">
         <pre>
           <code>
             atmos workflow {workflow} -f {fileName} {stack && `-s ${stack}`}
