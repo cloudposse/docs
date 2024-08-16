@@ -9,7 +9,7 @@ import { far } from '@fortawesome/free-regular-svg-icons'; // Import all regular
 import { Icon } from '@iconify/react'; // Import the entire Iconify library.
 // Import custom components
 import CategoryList from '@site/src/components/CategoryList';
-
+import DT from '@site/src/components/DT';
 library.add(fab, fas, far); // Add all icons to the library so you can use them without importing them individually.
 
 export default {
@@ -18,5 +18,6 @@ export default {
   Icon: Icon, // Make the iconify Icon component available in MDX as <Icon />.
   FAIcon: FontAwesomeIcon, // Make the FontAwesomeIcon component available in MDX as <FAIcon />.
   // Add custom components
+  DT: DT, // Make the DT component available in MDX as <DT />.
   CategoryList: CategoryList, // Make the CategoryList component available in MDX as <CategoryList />.
 };
