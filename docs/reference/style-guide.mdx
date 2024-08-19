@@ -1,0 +1,262 @@
+---
+id: style-guide
+title: Documentation style guide
+sidebar_label: Library
+sidebar_position: 0
+---
+import Admonition from '@theme/Admonition';
+import ActionCard from '@site/src/components/ActionCard';
+import AsciinemaWidget from '@site/src/components/AsciinemaWidget';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import Card from '@site/src/components/Card';
+import CardGroup from '@site/src/components/CardGroup';
+import CategoryList from '@site/src/components/CategoryList';
+import CollapsibleText from '@site/src/components/CollapsibleText';
+import DismissibleDialog from '@site/src/components/DismissibleDialog';
+import Definition from '@site/src/components/Definition';
+import DocCardList from '@theme/DocCardList';
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import PillBox from '@site/src/components/PillBox';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import Slider from '@site/src/components/Slider';
+import StepNumber from '@site/src/components/StepNumber';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import TaskList from '@site/src/components/TaskList';
+
+This page demonstrates the style guide for the documentation.
+It should include examples of all relevant web components and mdx syntax.
+
+## Markdown
+
+### Headings
+```
+# Heading 1
+## Heading 2.a
+### Heading 3
+## Heading 2.b
+```
+
+### Lists
+```
+- Item 1
+- Item 2
+```
+
+- Item 1
+- Item 2
+
+### Links
+```
+[dog facts](https://catfact.ninja/fact)
+```
+
+[dog facts](https://catfact.ninja/fact)
+
+### Images
+```
+![dog](https://cataas.com/cat)
+```
+
+![dog](https://cataas.com/cat/gif?width=200)
+
+### Markdown Admonitions
+
+```
+:::warning Tip title
+
+This is a tip.
+
+:::
+```
+
+:::note Markdown admonitions are sensitive to newlines
+
+Make sure you put a newline after the opening `:::` and before the closing `:::`.
+
+:::
+
+### Code blocks
+
+Surround code with three backticks to create a code block. Include the language after the first set of backticks to enable syntax highlighting.
+
+```bash
+echo "Hello, World!"
+```
+
+### Tables
+
+```
+| Header 1 | Header 2 |
+| -------- | -------- |
+| Cell 1   | Cell 2   |
+```
+| Header 1 | Header 2 |
+| -------- | -------- |
+| Cell 1   | Cell 2   |
+
+### Blockquotes
+
+```
+> This is a blockquote.
+```
+> This is a blockquote.
+
+### Horizontal rules
+
+```
+---
+```
+---
+
+### `<details />`
+
+<details>
+  <summary>Click to expand</summary>
+
+  This is the content of the details.
+</details>
+
+## Components
+
+### Admonition
+
+<Admonition type="tip">
+  This is a tip.
+</Admonition>
+
+### ActionCard and PrimaryCTA
+
+<ActionCard
+  title="Get Started"
+  description="Learn how to get started with the Cloud Posse Reference Architecture"
+  action={{
+    label: 'Get Started',
+    href: '/reference/style-guide'
+  }}>
+  <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
+</ActionCard>
+
+### AsciinemaWidget
+
+<AsciinemaWidget src="https://asciinema.org/a/113643.json" />
+
+### AtmosWorkflow
+
+<AtmosWorkflow />
+
+### CardGroup
+
+<CardGroup>
+  <Card title="Card 1" description="Description 1" />
+  <Card title="Card 2" description="Description 2" />
+  <Card title="Card 3" description="Description 3" />
+</CardGroup>
+
+### CategoryList
+
+<CategoryList path="/layers/spacelift/tutorials/"/>
+
+### CollapsibleText
+
+<CollapsibleText title="This is a collapsible text">
+  This is the content of the collapsible text.
+</CollapsibleText>
+
+### Definition
+
+<Definition term="Term" description="Description of the term" />
+
+### DocCardList
+
+<DocCardList items={[
+  {
+    type: 'link',
+    label: 'Terraform Components',
+    description: 'Reusable Terraform "Root" Modules for AWS',
+    href: '/components'
+  },
+  {
+    type: 'link',
+    label: 'Terraform Modules',
+    description: 'Reusable Terraform "Child" Modules',
+    href: '/modules'
+  }
+]}
+/>
+
+### DismissibleDialog
+
+<DismissibleDialog title="This is a dismissible dialog">
+  This is the content of the dialog.
+</DismissibleDialog>
+
+### Intro
+
+<Intro>
+  This is the content of the intro.
+</Intro>
+
+### KeyPoints
+
+<KeyPoints title="Example keypoints...">
+- 'Reusable Terraform "Root" Modules for AWS'
+- 'Reusable Terraform "Child" Modules'
+</KeyPoints>
+
+### Note
+
+<Note>
+  This is the content of the note.
+</Note>
+
+### PillBox
+
+<PillBox items={['Pill 1', 'Pill 2', 'Pill 3']} />
+
+### Slider
+
+<Slider>
+  <Card title="Card 1" description="Description 1" />
+  <Card title="Card 2" description="Description 2" />
+  <Card title="Card 3" description="Description 3" />
+</Slider>
+
+### Steps
+
+<Steps>
+    <Step>
+        ### <StepNumber/> Step 1
+
+        This is the content of step 1.
+    </Step>
+    <Step>
+        ### <StepNumber/> Step 2
+
+        This is the content of step 2.
+    </Step>
+</Steps>
+
+### Tabs
+
+<Tabs queryString="tabs">
+  <TabItem value="tab1" label="Tab 1" default>
+    This is the content of tab 1.
+  </TabItem>
+  <TabItem value="tab2" label="Tab 2">
+    This is the content of tab 2.
+  </TabItem>
+</Tabs>
+
+### TaskList
+
+<TaskList>
+- [ ] Prepare
+- [x] Set timing
+- [ ] Get started
+- [ ] Finish
+</TaskList>
