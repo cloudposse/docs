@@ -115,6 +115,14 @@ echo "Hello, World!"
 
 ### `<details />`
 
+```
+<details>
+  <summary>Click to expand</summary>
+
+  This is the content of the details.
+</details>
+```
+
 <details>
   <summary>Click to expand</summary>
 
@@ -125,11 +133,29 @@ echo "Hello, World!"
 
 ### Admonition
 
+```mdx
+<Admonition type="tip">
+  This is a tip.
+</Admonition>
+```
+
 <Admonition type="tip">
   This is a tip.
 </Admonition>
 
 ### ActionCard and PrimaryCTA
+
+```
+<ActionCard
+  title="Get Started"
+  description="Learn how to get started with the Cloud Posse Reference Architecture"
+  action={{
+    label: 'Get Started',
+    href: '/reference/style-guide'
+  }}>
+  <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
+</ActionCard>
+```
 
 <ActionCard
   title="Get Started"
@@ -143,6 +169,10 @@ echo "Hello, World!"
 
 ### AsciinemaWidget
 
+```
+<AsciinemaWidget src="https://asciinema.org/a/113643.json" />
+```
+
 <AsciinemaWidget src="https://asciinema.org/a/113643.json" />
 
 ### AtmosWorkflow
@@ -150,6 +180,14 @@ echo "Hello, World!"
 <AtmosWorkflow />
 
 ### CardGroup
+
+```
+<CardGroup>
+  <Card title="Card 1" description="Description 1" />
+  <Card title="Card 2" description="Description 2" />
+  <Card title="Card 3" description="Description 3" />
+</CardGroup>
+```
 
 <CardGroup>
   <Card title="Card 1" description="Description 1" />
@@ -159,9 +197,19 @@ echo "Hello, World!"
 
 ### CategoryList
 
+```
+<CategoryList path="/layers/spacelift/tutorials/"/>
+```
+
 <CategoryList path="/layers/spacelift/tutorials/"/>
 
 ### CollapsibleText
+
+```
+<CollapsibleText title="This is a collapsible text">
+  This is the content of the collapsible text.
+</CollapsibleText>
+```
 
 <CollapsibleText title="This is a collapsible text">
   This is the content of the collapsible text.
@@ -169,9 +217,31 @@ echo "Hello, World!"
 
 ### Definition
 
+```
+<Definition term="Term" description="Description of the term" />
+```
+
 <Definition term="Term" description="Description of the term" />
 
 ### DocCardList
+
+```
+<DocCardList items={[
+  {
+    type: 'link',
+    label: 'Terraform Components',
+    description: 'Reusable Terraform "Root" Modules for AWS',
+    href: '/components'
+  },
+  {
+    type: 'link',
+    label: 'Terraform Modules',
+    description: 'Reusable Terraform "Child" Modules',
+    href: '/modules'
+  }
+]}
+/>
+```
 
 <DocCardList items={[
   {
@@ -191,17 +261,36 @@ echo "Hello, World!"
 
 ### DismissibleDialog
 
+```
+<DismissibleDialog title="This is a dismissible dialog">
+  This is the content of the dialog.
+</DismissibleDialog>
+```
+
 <DismissibleDialog title="This is a dismissible dialog">
   This is the content of the dialog.
 </DismissibleDialog>
 
 ### Intro
 
+```
+<Intro>
+  This is the content of the intro.
+</Intro>
+```
+
 <Intro>
   This is the content of the intro.
 </Intro>
 
 ### KeyPoints
+
+```
+<KeyPoints title="Example keypoints...">
+- 'Reusable Terraform "Root" Modules for AWS'
+- 'Reusable Terraform "Child" Modules'
+</KeyPoints>
+```
 
 <KeyPoints title="Example keypoints...">
 - 'Reusable Terraform "Root" Modules for AWS'
@@ -210,15 +299,33 @@ echo "Hello, World!"
 
 ### Note
 
+```
+<Note>
+  This is the content of the note.
+</Note>
+```
+
 <Note>
   This is the content of the note.
 </Note>
 
 ### PillBox
 
+```
+<PillBox items={['Pill 1', 'Pill 2', 'Pill 3']} />
+```
+
 <PillBox items={['Pill 1', 'Pill 2', 'Pill 3']} />
 
 ### Slider
+
+```
+<Slider>
+  <Card title="Card 1" description="Description 1" />
+  <Card title="Card 2" description="Description 2" />
+  <Card title="Card 3" description="Description 3" />
+</Slider>
+```
 
 <Slider>
   <Card title="Card 1" description="Description 1" />
@@ -227,6 +334,21 @@ echo "Hello, World!"
 </Slider>
 
 ### Steps
+
+```
+<Steps>
+    <Step>
+        ### <StepNumber/> Step 1
+
+        This is the content of step 1.
+    </Step>
+    <Step>
+        ### <StepNumber/> Step 2
+
+        This is the content of step 2.
+    </Step>
+</Steps>
+```
 
 <Steps>
     <Step>
@@ -243,6 +365,17 @@ echo "Hello, World!"
 
 ### Tabs
 
+```
+<Tabs queryString="tabs">
+  <TabItem value="tab1" label="Tab 1" default>
+    This is the content of tab 1.
+  </TabItem>
+  <TabItem value="tab2" label="Tab 2">
+    This is the content of tab 2.
+  </TabItem>
+</Tabs>
+```
+
 <Tabs queryString="tabs">
   <TabItem value="tab1" label="Tab 1" default>
     This is the content of tab 1.
@@ -253,6 +386,7 @@ echo "Hello, World!"
 </Tabs>
 
 ### TaskList
+```
 
 <TaskList>
 - [ ] Prepare
@@ -260,3 +394,12 @@ echo "Hello, World!"
 - [ ] Get started
 - [ ] Finish
 </TaskList>
+```
+
+<TaskList>
+- [ ] Prepare
+- [x] Set timing
+- [ ] Get started
+- [ ] Finish
+</TaskList>
+
