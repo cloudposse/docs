@@ -8,6 +8,9 @@ import ReactPlayer from "react-player";
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import SecondaryCTA from '@site/src/components/SecondaryCTA';
 
 There are several methods available to sign in to AWS through a browser or terminal, such as AWS SAML or IAM Identity
 Center (successor to AWS Single Sign-On). Various tooling has been tried to support AWS SAML, like "saml2aws," and
@@ -154,12 +157,14 @@ Finally, to get everyone up and running on your Team, we pre-configured a single
 
 We preinstall the AWS config in the Geodesic toolbox, and users will automatically assume the correct access roles in AWS. Users can quickly apply Terraform across accounts and assume roles directly in the accounts they have access.
 
-## References
+## Next Steps
 
-- [extend-roles](https://github.com/tilfinltd/aws-extend-switch-roles)
-- [Leapp](https://docs.leapp.cloud/latest/installation/install-leapp/)
-- [`aws-teams` component](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/aws-teams)
-- [`aws-sso` component](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/aws-sso)
-- [`aws-saml` component](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/aws-saml)
-- [`aws-teams` component](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/aws-teams)
-- [`aws-team-roles` component](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/aws-team-roles)
+<ActionCard title="How is this implemented?">
+  Next, we'll explain how we've implemented this solution in detail.
+
+  If you're curious about the though that went into this process, please review the design decisions documentation.
+  <div>
+    <PrimaryCTA to="/layers/identity/centralized-terraform-access/">Next Step</PrimaryCTA>
+    <SecondaryCTA to="/layers/identity/design-decisions">Review Design Decisions</SecondaryCTA >
+  </div>
+</ActionCard>
