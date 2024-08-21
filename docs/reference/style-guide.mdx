@@ -20,7 +20,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
 import PillBox from '@site/src/components/PillBox';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
-import Slider from '@site/src/components/Slider';
+import Slider, { Slide } from '@site/src/components/Slider'
 import StepNumber from '@site/src/components/StepNumber';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
@@ -50,6 +50,14 @@ It should include examples of all relevant web components and mdx syntax.
 - Item 1
 - Item 2
 
+```
+1. Item 1
+1. Item 2
+```
+
+1. Item 1
+1. Item 2
+
 ### Links
 ```
 [dog facts](https://catfact.ninja/fact)
@@ -65,7 +73,9 @@ It should include examples of all relevant web components and mdx syntax.
 ![dog](https://cataas.com/cat/gif?width=200)
 
 ### Markdown Admonitions
+
 **NOTE:** We prefer to use the custom react component [Admonitions](#Admonition)
+
 ```
 :::warning Tip title
 
@@ -95,6 +105,7 @@ echo "Hello, World!"
 | -------- | -------- |
 | Cell 1   | Cell 2   |
 ```
+
 | Header 1 | Header 2 |
 | -------- | -------- |
 | Cell 1   | Cell 2   |
@@ -214,21 +225,26 @@ echo "Hello, World!"
 
 ```
 <CollapsibleText title="This is a collapsible text">
-  This is the content of the collapsible text.
+  [body of content]
 </CollapsibleText>
 ```
 
 <CollapsibleText title="This is a collapsible text">
-  This is the content of the collapsible text.
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam nec mi sodales lacinia. Vestibulum sit amet orci quam. Etiam tincidunt diam a mi rhoncus, non egestas nisl pellentesque. Pellentesque sed dolor scelerisque felis lacinia pretium ut in purus. In cursus ullamcorper est. In fringilla mollis tincidunt. Duis feugiat feugiat lacus ac varius.
+
+Etiam consectetur arcu vel ipsum vulputate, vitae consectetur ipsum vehicula. Nam ornare nulla massa, quis tincidunt elit fermentum nec. Integer bibendum tristique erat sit amet sollicitudin. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla eget magna sit amet felis pellentesque mattis. Nullam et consectetur neque, id placerat tellus. Donec finibus rutrum felis, sed pellentesque elit sollicitudin nec. Nunc elementum est in molestie tincidunt. Nunc lacinia tempus ex, quis fermentum nisi ornare nec. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed elementum orci neque, nec lacinia nunc molestie sed.
 </CollapsibleText>
 
 ### Definition
 
 ```
-<Definition term="Term" description="Description of the term" />
+<Definition term="bastion"/>
 ```
 
-<Definition term="Term" description="Description of the term" />
+<Definition term="bastion"/>
+
+It's worth noting that the `<Definition>` component uses [the glossary page](/reference/glossary).
+If you need to make a new term, add it to the glossary first.
 
 ### DocCardList
 
@@ -307,38 +323,23 @@ echo "Hello, World!"
 ### Note
 
 ```
-<Note>
+<Note title="optional title">
   This is the content of the note.
 </Note>
 ```
 
-<Note>
+<Note title="optional title">
   This is the content of the note.
 </Note>
 
 ### PillBox
 
 ```
-<PillBox items={['Pill 1', 'Pill 2', 'Pill 3']} />
+<PillBox>Here's a new topic</PillBox>
 ```
 
-<PillBox items={['Pill 1', 'Pill 2', 'Pill 3']} />
+<PillBox>Here's a new topic</PillBox>
 
-### Slider
-
-```
-<Slider>
-  <Card title="Card 1" description="Description 1" />
-  <Card title="Card 2" description="Description 2" />
-  <Card title="Card 3" description="Description 3" />
-</Slider>
-```
-
-<Slider>
-  <Card title="Card 1" description="Description 1" />
-  <Card title="Card 2" description="Description 2" />
-  <Card title="Card 3" description="Description 3" />
-</Slider>
 
 ### Steps
 
@@ -410,3 +411,9 @@ echo "Hello, World!"
 - [ ] Finish
 </TaskList>
 
+
+## Conformance and Best Practices
+
+- Do not use `<br />` for spacing. Instead, update the CSS
+- Prefer to use the `<Admonition />` tag over markdown admonitions
+- Definitions should use `<dl />` and `<dt />` instead of headings 
