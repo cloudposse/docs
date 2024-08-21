@@ -11,12 +11,6 @@ import KeyPoints from '@site/src/components/KeyPoints';
 This is an overview of our approach to centralized access management and the relationships between the components used to implement it. It explains how SAML, SSO, and custom constructs for AWS teams and team roles interact to provide efficient role delegation and authentication across an AWS Organization.
 </Intro>
 
-<img
-  src="https://lucid.app/publicSegments/view/1eac6776-c23f-4b1f-8aec-c7f540470746/image.png"
-  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
-/>
-<br />
-
 The following components are designed to provision all primary user and system roles into a centralized identity
 account. These components are expected to be used together to provide fine-grained role delegation across the account
 hierarchy.
@@ -38,6 +32,57 @@ These roles should be identical in all accounts, such that you can always expect
 be `poweruser`, and `observer` to be `observer`. The only difference between accounts is which AWS Team is able to
 assume the role.
 
+### AWS SAML
+
+The `aws-saml` component provides SAML access for Admin users to connect to the Identity account admin role `aws-teams`
+without AWS IAM Identity Center (Successor to AWS Single Sign-On).
+
+This component creates an Identity Provider (IdP) in the Identity account to allow federated access to an identity role.
+Follow the Identity Providers documentation for adding a SAML login.
+
+With AWS SAML, we create a federated SAML login that connects to the "team" in the identity account, and then users can assume other roles from there. We use the [AWS Extend Switch Roles plugin](https://github.com/tilfinltd/aws-extend-switch-roles) that makes this much easier, but it's not as intuitive as Identity Center.
+
+```mermaid
+flowchart TB
+    subgraph "Human Access Architecture with AWS SAML"
+        subgraph "core-identity"
+            subgraph aws_teams["aws-teams IAM Roles"]
+                devops_teams["devops"]
+                developers_teams["developers"]
+                billing_teams["billing"]
+            end
+        end
+
+        subgraph "plat-prod"
+            subgraph aws_team_roles_prod["aws-team-roles IAM Roles"]
+                admin_prod["admin"]
+                billing_prod["billing"]
+                reader_prod["reader"]
+            end
+        end
+
+        subgraph "plat-sandbox"
+            subgraph aws_team_roles_sandbox["aws-team-roles IAM Roles"]
+                admin_sandbox["admin"]
+                billing_sandbox["billing"]
+                reader_sandbox["reader"]
+            end
+        end
+
+        g_suite["G Suite"] -->|SAML Federated Identity| devops_teams
+        g_suite["G Suite"] --> developers_teams
+        g_suite["G Suite"] --> billing_teams
+
+        developers_teams --> reader_prod
+        devops_teams --> admin_prod
+        billing_teams --> billing_prod
+
+        developers_teams --> admin_sandbox
+        devops_teams --> admin_sandbox
+        billing_teams --> billing_sandbox
+    end
+```
+
 ### AWS IAM Identity Center (SSO)
 
 The `aws-sso` component connects AWS IAM Identity Center (Successor to AWS Single Sign-On) Groups to Permission Sets.
@@ -50,18 +95,96 @@ permission.
 
 With AWS IAM Identity Center, you can directly access a specific account from the single sign-on page, which will automatically assume the role with the associated `PermissionSet`. This is great for web console usage but not ideal for locally applying Terraform. With Terraform, we need to apply changes across many accounts, where each account has its own role. We don't want to assume a new role each time we change accounts. To solve this, we have a specific Permission Set that can assume an AWS team role in the identity account. When applying Terraform, we assume that "team" role via SSO, and when accessing the web console, we use the Permission Set directly.
 
-### AWS SAML
+```mermaid
+flowchart TB
+    subgraph "Human Access Architecture with AWS IAM Identity Center"
+        subgraph "core-root"
+            subgraph sso["Identity Center PermissionSets"]
+                subgraph "core-identity"
+                    developers_identity["IdentityDevelopersTeamAccess"]
+                    devops_identity["IdentityDevopsTeamAccess"]
+                end
 
-The `aws-saml` component provides SAML access for Admin users to connect to the Identity account admin role `aws-teams`
-without AWS IAM Identity Center (Successor to AWS Single Sign-On).
+                subgraph "plat-prod"
+                    poweruser_prod["PowerUserAccess"]
+                    reader_prod["ReadOnlyAccess"]
+                end
 
-This component creates an Identity Provider (IdP) in the Identity account to allow federated access to an identity role.
-Follow the Identity Providers documentation for adding a SAML login.
+                subgraph "plat-sandbox"
+                    poweruser_sandbox["PowerUserAccess"]
+                    reader_sandbox["ReadOnlyAccess"]
+                end
+            end
+        end
 
-With AWS SAML, we create a federated SAML login that connects to the "team" in the identity account, and then users can assume other roles from there. We use the [AWS Extend Switch Roles plugin](https://github.com/tilfinltd/aws-extend-switch-roles) that makes this much easier, but it's not as intuitive as Identity Center.
+        okta["Okta"] --> devops_team
+        okta["Okta"] --> developers_team
+        devops_team["DevOps Team"] --> devops_identity
+        devops_team["DevOps Team"] --> poweruser_prod
+        devops_team["DevOps Team"] --> poweruser_sandbox
+        developers_team["Developer Team"] --> developers_identity
+        developers_team["Developer Team"] --> reader_prod
+        developers_team["Developer Team"] --> poweruser_sandbox
+    end
+```
+
+## Solution
+
+AWS IAM Identity Center and AWS SAML are not mutually exclusive solutions. They can be used together to provide a seamless login experience for users. Cloud Posse frequently deploys both in customer environments - AWS SAML to log in ourselves for the duration of the engagement and AWS IAM Identity Center for the customer to use and support. That way the customer can access AWS via their chosen Identity Provider (IdP), and we can use G-Suite SAML to access the Identity account team directly. When an enagement is complete, we can easily decommission our access by removing the SAML connection.
 
 :::tip AWS IAM Identity Center or AWS SAML? Which do I choose?
 
 The vast majority of our customers prefer AWS IAM Identity Center (SSO). The convenience of a web console login is hard to beat. However, some customers prefer SAML for its simplicity and compatibility with existing systems. We support both methods, and you can choose the one that best fits your needs.
 
 :::
+
+
+```mermaid
+flowchart TB
+    subgraph "Complete Access Architecture"
+        subgraph "core-root"
+            subgraph sso["Identity Center PermissionSets"]
+                developers_team_access["IdentityDevelopersTeamAccess"]
+                devops_team_access["IdentityDevopsTeamAccess"]
+            end
+        end
+
+        subgraph "core-identity"
+            subgraph aws_teams["aws-teams IAM Roles"]
+                devops_teams["devops"]
+                developers_teams["developers"]
+                spacelift_teams["spacelift"]
+            end
+        end
+
+        subgraph "plat-prod"
+            subgraph aws_team_roles_prod["aws-team-roles IAM Roles"]
+                terraform_prod["terraform"]
+                planner_prod["planner"]
+            end
+        end
+
+        subgraph "plat-sandbox"
+            subgraph aws_team_roles_sandbox["aws-team-roles IAM Roles"]
+                terraform_sandbox["terraform"]
+            end
+        end
+
+        developers_team["Developer Team"] --> developers_team_access
+        devops_team["DevOps Team"] --> devops_team_access
+        developers_team_access --> developers_teams
+        devops_team_access --> devops_teams
+
+        g_suite["G Suite"] -->|SAML Federated Identity| devops_teams
+        spacelift["Spacelift"] --> spacelift_teams
+
+        developers_teams --> planner_prod
+        devops_teams --> terraform_prod
+        spacelift_teams --> terraform_prod
+
+        developers_teams --> terraform_sandbox
+        devops_teams --> terraform_sandbox
+        spacelift_teams --> terraform_sandbox
+    end
+```
+
