@@ -15,6 +15,7 @@ import CollapsibleText from '@site/src/components/CollapsibleText';
 import DismissibleDialog from '@site/src/components/DismissibleDialog';
 import Definition from '@site/src/components/Definition';
 import DocCardList from '@theme/DocCardList';
+import EmbedFile from '@site/src/components/EmbedFile';
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
@@ -26,6 +27,7 @@ import Step from '@site/src/components/Step';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TaskList from '@site/src/components/TaskList';
+import Terminal from '@site/src/components/Terminal';
 
 This page demonstrates the style guide for the documentation.
 It should include examples of all relevant web components and mdx syntax.
@@ -169,12 +171,9 @@ echo "Hello, World!"
 
 <ActionCard
   title="Get Started"
-  description="Learn how to get started with the Cloud Posse Reference Architecture"
-  action={{
-    label: 'Get Started',
-    href: '/reference/style-guide'
-  }}>
+  description="Learn how to get started with the Cloud Posse Reference Architecture" >
   <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
+  <SecondaryCTA to="/reference/style-guide">See our style guide</SecondaryCTA>
 </ActionCard>
 
 ### AsciinemaWidget
@@ -245,6 +244,18 @@ Etiam consectetur arcu vel ipsum vulputate, vitae consectetur ipsum vehicula. Na
 It's worth noting that the `<Definition>` component uses [the glossary page](/reference/glossary).
 If you need to make a new term, add it to the glossary first.
 
+### DismissibleDialog
+
+```
+<DismissibleDialog title="This is a dismissible dialog">
+  This is the content of the dialog.
+</DismissibleDialog>
+```
+
+<DismissibleDialog title="This is a dismissible dialog">
+  This is the content of the dialog.
+</DismissibleDialog>
+
 ### DocCardList
 
 ```
@@ -281,17 +292,13 @@ If you need to make a new term, add it to the glossary first.
 ]}
 />
 
-### DismissibleDialog
+### EmbedFile
 
 ```
-<DismissibleDialog title="This is a dismissible dialog">
-  This is the content of the dialog.
-</DismissibleDialog>
+<EmbedFile filePath="docs/quickstart/handoffs.mdx" />
 ```
 
-<DismissibleDialog title="This is a dismissible dialog">
-  This is the content of the dialog.
-</DismissibleDialog>
+<EmbedFile filePath="docs/quickstart/handoffs.mdx" />
 
 ### Intro
 
@@ -344,10 +351,14 @@ If you need to make a new term, add it to the glossary first.
 ```
 <Slider>
   <Slide title="Slide 1">
-    Slideshow content for slide 1.
+    <figure>
+      <figcaption>Slide 1 caption</figcaption>
+    </figure>
   </Slide>
   <Slide title="Slide 2">
-    Slideshow content for slide 2.
+    <figure>
+      <figcaption>Slide 2 caption</figcaption>
+    </figure>
   </Slide>
 </Slider>
 ```
@@ -424,9 +435,24 @@ Slider's can't be demonstrated in a normal page since they take over the table o
 - [ ] Finish
 </TaskList>
 
+### Terminal
+
+```
+<Terminal>
+
+  $ echo "Hello, World!"
+
+</Terminal>
+```
+
+<Terminal>
+
+  $ echo "Hello, World!"
+
+</Terminal>
 
 ## Conformance and Best Practices
 
 - Do not use `<br />` for spacing. Instead, update the CSS
 - Prefer to use the `<Admonition />` tag over markdown admonitions
-- Definitions should use `<dl />` and `<dt />` instead of headings 
+- Definitions should use `<dl />` and `<dt />` instead of headings
