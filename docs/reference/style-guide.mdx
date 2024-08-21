@@ -89,7 +89,7 @@ For when items should follow a sequence.
 
 ### Markdown Admonitions
 
-**NOTE:** We prefer to use the custom react component [Admonitions](#Admonition)
+**NOTE:** While this is the preferred way of doing admonitions, some components will not render markdown. If that happens, use the [Admonition component below.](#Admonition)
 
 ```
 :::warning Tip title
@@ -109,7 +109,7 @@ Make sure you put a newline after the opening `:::` and before the closing `:::`
 
 Surround code with three backticks to create a code block. Include the language after the first set of backticks to enable syntax highlighting.
 
-```bash
+```bash title="Example title"
 echo "Hello, World!"
 ```
 
@@ -174,11 +174,7 @@ echo "Hello, World!"
 ```
 <ActionCard
   title="Get Started"
-  description="Learn how to get started with the Cloud Posse Reference Architecture"
-  action={{
-    label: 'Get Started',
-    href: '/reference/style-guide'
-  }}>
+  description="Learn how to get started with the Cloud Posse Reference Architecture" >
   <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
   <SecondaryCTA to="/reference/style-guide">You can also see the guide</SecondaryCTA>
 </ActionCard>
@@ -465,5 +461,5 @@ Task lists turn any ordered or unordered list into an interactive checklist that
 ## Conformance and Best Practices
 
 - Do not use `<br />` for spacing. Instead, update the CSS
-- Prefer to use the `<Admonition />` tag over markdown admonitions
+- Prefer to use markdown admonitions with `:::` instead of the `<Admonition />` tag. Only use `<Admonition />` when markdown is not rendering correctly.
 - Definitions should use `<dl />` and `<dt />` instead of headings
