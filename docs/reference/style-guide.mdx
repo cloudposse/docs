@@ -21,6 +21,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
 import PillBox from '@site/src/components/PillBox';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import SecondaryCTA from '@site/src/components/SecondaryCTA';
 import StepNumber from '@site/src/components/StepNumber';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
@@ -155,7 +156,7 @@ echo "Hello, World!"
   This is a tip.
 </Admonition>
 
-### ActionCard and PrimaryCTA
+### ActionCard and PrimaryCTA/SecondaryCTA
 
 ```
 <ActionCard
@@ -166,6 +167,7 @@ echo "Hello, World!"
     href: '/reference/style-guide'
   }}>
   <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
+  <SecondaryCTA to="/reference/style-guide">You can also see the guide</SecondaryCTA>
 </ActionCard>
 ```
 
@@ -173,7 +175,7 @@ echo "Hello, World!"
   title="Get Started"
   description="Learn how to get started with the Cloud Posse Reference Architecture" >
   <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
-  <SecondaryCTA to="/reference/style-guide">See our style guide</SecondaryCTA>
+  <SecondaryCTA to="/reference/style-guide">You can also see the guide</SecondaryCTA>
 </ActionCard>
 
 ### AsciinemaWidget
