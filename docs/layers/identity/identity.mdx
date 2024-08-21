@@ -4,9 +4,10 @@ sidebar_label: "Identity and Authentication"
 sidebar_class_name: hidden
 description: Setup fine-grained access control for an entire organization
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
 import ReactPlayer from "react-player";
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
 There are several methods available to sign in to AWS through a browser or terminal, such as AWS SAML or IAM Identity
 Center (successor to AWS Single Sign-On). Various tooling has been tried to support AWS SAML, like "saml2aws," and
@@ -25,103 +26,133 @@ demonstrating how it can be used to establish fine-grained access control for an
   <figcaption>AI generated voice</figcaption>
 </figure>
 
-## The Problem
+## Our Requirements
 
-One problem that many organizations face is choosing whether to use **AWS SAML** or **AWS IAM Identity Center (SSO)**.
+Let’s start by identifying the minimum requirements for an identity and authentication system.
 
-### The Problem with Pure IAM Identity Center Permission Sets
+<Steps>
+  <Step>
+    ### <StepNumber/> Accessing AWS as a human or as a machine user.
 
-While **IAM Identity Center (successor to AWS Single Sign-On)** seems like a best fit for managing a single pane of
-glass of users and their groups, often the downsides are not caught until later. Downsides such as the inability to
-easily switch accounts and difficulty with tooling to ensure a consistent login for different groups while managing an
-AWS configuration file for all these different groups.
+    First we need to implement a system that is easy for both humans and machines to access securely, following the principle of least privilege
+  </Step>
+  <Step>
+    ### <StepNumber/> Centralized management of user permissions
 
-This presents a major problem in Terraform, where we need to be able to access the state bucket in the root account,
-then deploy resources to any given AWS Account. AWS SSO Permission Sets does not grant multi account access and would
-therefor not support any complex Terraform.
+    Plus, all users and permissions must be centrally managed and integrated into an identity platform. We don’t want to copy and paste permissions across accounts or rely on any manual processes
+  </Step>
+  <Step>
+    ### <StepNumber/> Highly precise control of user groups
 
-### The Problem with Pure AWS SAML Team Access Roles
+    Next, we need fine grained access control for user groups. Then assign users to one or more groups depending on what they need access to. It needs to be easy to understand for both users and administrators.
+  </Step>
+  <Step>
+    ### <StepNumber/> Apply Terraform for many accounts across an Organization
 
-**AWS SAML** on the other hand does not provide a central place for managing users, groups, and permissions. But AWS
-SAML does provide an easier login experience via the terminal and allows for multiple Identity Providers (IdP). Users
-and groups are managed by the IdP, while permissions are managed with AWS Teams and Team Roles with Terraform.
+    With Terraform, we need to manage resources concurrently across multiple accounts. We don’t want to put this burden on the operator to constantly switch roles, so Terraform needs to do this for us.
+  </Step>
+  <Step>
+    ### <StepNumber/> Switch roles into other accounts easily both in the UI and locally
 
-### The Problem with Tooling
+    Finally for engineers, we want to quickly jump between accounts, access the “AWS” web console, or run “AWS” “CLI” commands without having to think how to do it every time.
+  </Step>
+</Steps>
 
-Tooling is another issue that plagues the AWS login experience. Switching roles in the UI can be solved via a Google
-Chrome plugin called [extend-roles](https://github.com/tilfinltd/aws-extend-switch-roles), but that requires using
-Chrome, Firefox, or Microsoft Edge (or plug-in compatible browser like Opera) as a web browser.
-[Leapp](https://www.leapp.cloud/) is a great tool for logging in, but can be a bit clumsy for switching roles.
+## Problem We've Encountered
 
-Another common issue is granting the proper permission for a user to sign into any account. AWS SAML signs into a single
-role in the Identity account, and that Identity role should have access to roles in other accounts. On the other hand,
-AWS IAM Identity Center grants a Permission Set for each account requiring the user to sign out and sign in to switch
-accounts.
+Now you may be asking some questions. There are plenty of existing solutions out there for authentication and identity. How did Cloud Posse arrive at their solution? What’s wrong with the alternatives?
+
+<Steps>
+  <Step>
+    ### <StepNumber/> AWS Control Tower lacked APIs
+
+    First off, you might notice we don’t use AWS Control Tower. That’s because until recently, Control Tower didn’t have an API available. So we couldn’t programmatically manage it with Terraform. Of course Cloud Posse does everything with infrastructure as code, so that was a hard stop for us.
+
+    We’re planning to add support for Control Tower now that it’s available, once it matures.
+  </Step>
+  <Step>
+    ### <StepNumber/> AWS IAM Identity Center is only for humans
+
+    The ideal way to access AWS for humans is with Identity Center, formally called “AWS SSO”, and this is included in our reference architecture. But that doesn’t solve how we provide access to machines. For example integrating with GitHub Actions or Spacelift.
+
+    With Identity Center, a user assumes a single role for one account. That’s not going to work for us with Terraform if we’re trying to apply Terraform concurrently across accounts. For example, transit gateway architecture requires provisioning resources and connecting them across accounts. Identity Center is also limited because it only works with a single IdP. For larger enterprises, multiple IdPs might be used.
+
+    Plus for the duration of an engagement, Cloud Posse configures our own IdP to access your infrastructure so that it’s easy for you to revoke our access when we’re done.
+  </Step>
+  <Step>
+    ### <StepNumber/> AWS IAM Roles with SAML is cumbersome
+
+    We needed to find a solution for machine access and to apply Terraform across accounts. To do that, we can use IAM roles with a SAML provider and assume them in Terraform or third party integrations. Such as GitHub Actions.
+
+    The challenge then becomes making it easy for users. AWS SAML provides low level controls and is a little more cumbersome to use, especially when you compare how easy it is for users with Identity Center.
+
+    How can we have a consistent solution that works for both?
+  </Step>
+</Steps>
+<br/>
+
+AWS doesn’t make it easy to log in. Control Tower lacked APIs, until recently. Identity Center doesn’t work with automation. And IAM roles with SAML is cumbersome to use.
+
+It’s gotten a lot better with Identity Center, which is one of the reasons we recommend it, but it still doesn’t solve the problem of how to distribute configurations to developers to easily log in on their workstations or how to use IAM roles with SAML.
 
 ## Our Solution
 
-**Our goals: team oriented, highly accessible, easily configured**
+### Integrated with Single Sign On
 
-Taking into account all the challenges of using AWS SSO and SAML, let's summarize our requirements:
+```mermaid
+flowchart LR
+    user["User"] --> idp["Identity Provider"]
+    idp --> identity_center["AWS IAM\nIdentity Center"]
+    identity_center --> aws_team["AWS Team"]
+    aws_team --> aws_team_role["AWS\nTeam Role"]
+```
 
-- We need the ability to use AWS SAML or AWS IAM Identity Center
-- We need a single tool to manage logins to the AWS Console and CLI
-- We need the ability to switch roles into other accounts easily, with team and account specific permissions.
-- We need to be able to concurrently assume roles into multiple accounts (E.g. with Terraform)
+We use Identity Center to easily manage users and groups. These are connected with your Identity provider, such as Okta or GSuite.
 
-### Team Oriented: Multiple AWS Accounts, One Team, with Exact Permissions
+Users can sign into Identity Center to access any account they have access to with fine grained access controls. Administrators have a single place to manage users and can use Terraform to define those fine grained access controls. Then we’ve bridged the gap between Identity Center and IAM roles
 
-We introduce the concept of a **_Team_**. This Team is a group of users with access to a given set of accounts with
-varying permissions. If using AWS SSO, our convention is to use a one-to-one mapping with a User Group, but this is not
-required.
+### Team Oriented
 
-Every group of users has an identity Team, which the user immediately logs into. This is the purpose of the `identity`
-account. From there, the user has the ability to assume roles, which permit the user to "sign-in" to the different AWS
-accounts that the team has access.
+```mermaid
+flowchart LR
+    subgraph identity_teams["identity Teams"]
+        devops["devops"]
+    end
 
-We introduce the idea of a **_Team Role_**. This is a role in a given account (like `plat-dev`) that a Team is able to
-assume from a Team. Team Roles provide standardized permission for all accounts. These roles are identical in all
-accounts, but the only difference is which Team is able to assume the Team Role in that account.
+    subgraph dev_team_roles["dev Team Roles"]
+        terraform_dev["terraform"]
+    end
 
-For example, the `developers` team might have access to assume the `admin` Team Role in the `plat-sandbox` account but
-only access to assume the `observer` role in the `plat-prod` account.
+    subgraph staging_team_roles["staging Team Roles"]
+        terraform_staging["terraform"]
+    end
 
-### Highly Accessible: No more chrome plugins, no more bash scripts
+    subgraph prod_team_roles["prod Team Roles"]
+        terraform_prod["terraform"]
+    end
 
-Now that we have the roles created with Teams and Team Roles, lets put it to work.
+    devops --> terraform_dev
+    devops --> terraform_staging
+    devops --> terraform_prod
+```
 
-We need a tool that solves many problems listed above while being Multi-OS compatible and ideally programmable. We have
-tried several tools, the one that works very well and appears to be gaining exponential traction is
-[Leapp](https://www.leapp.cloud/).
+To simplify managing IAM access roles, we’ve created two concepts. AWS Teams and AWS Team Roles.
 
-Leapp is a Desktop Application (and has a CLI) that manages your active sessions for your AWS Config. This means it
-handles logging in, and assigning those credentials generated to a given AWS profile.
+All access in AWS is “Team” oriented. A “Team” is a group of users that we deploy into a central “identity” account. Then we deploy a number of “Team Roles” into every single account. A “Team” can assume any “Team Role” across the organization.
 
-Before continuing on all the problems Leapp solves, we need to state that the AWS Configuration file (`~/.aws/config`)
-is usually highly dependent on your sign-in method. Different sign-in methods use different profile configurations. The
-beauty of using Leapp is we can have a single config file regardless of your sign-in method. I will discuss this in the
-next section.
+We’ll explain in detail in the following pages.
 
-So Leapp manages our credentials. It does so in a couple beautiful ways.
+### Highly Accessible
 
-1. It works with any Identity Provider, and since it's an Electron application, it can prompt for sign-in, in the app or
-   in the browser of choice.
-2. It automatically refreshes your AWS credentials before they expire (No mid-terraform apply failures from expired
-   credentials)
-3. If we are using AWS IAM Identity Center (SSO) it will sync the available `PermissionSets` from your login as
-   available sessions.
-4. It's Open Source
+Then to make it incredibly easy for users to log in, we recommend using Leapp to manage local AWS sessions. Leap supports all Identity Providers and can automatically refresh credentials when they expire.
 
-Since we auto-generate an AWS Configuration file and Leapp can use a CLI to create Sessions that manage Profile
-credentials, we can set up automated AWS access for AWS IAM Identity Center or AWS SAML.
+Plus, it’s open source and free to use. It also offers paid options that make it easier for administrators to share configurations. Please note, the Cloud Posse solution does not require any subscription.
 
-### Easily Configured: Identity Provider independent Configuration and Sign-in.
+### Pre-Configured for your Team
 
-AWS Configuration files usually differ from AWS IAM Identity Center to AWS SAML. With Leapp however, we can use the same
-configuration file and use Chained Roles in Leapp. **Chained Roles** in Leapp assume another role by configuration with
-a single user action. For AWS IAM Identity Center this means we can create a Chained Role from our AWS IAM Identity
-Center Permission Sets to our Team Entry Point. In regard to **Teams** this means that we can create a Chained Role
-session for our **Team Roles** to access `dev` or `prod`.
+Finally, to get everyone up and running on your Team, we pre-configured a single, common AWS config for all users.
+
+We preinstall the AWS config in the Geodesic toolbox, and users will automatically assume the correct access roles in AWS. Users can quickly apply Terraform across accounts and assume roles directly in the accounts they have access.
 
 ## References
 
