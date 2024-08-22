@@ -34,7 +34,7 @@ assume the role. We also have a `terraform` role that is used by Terraform to ap
 
 ### Example
 
-Consider this example. We want to enable the “DevOps” to assume Administrator in multiple accounts, such as dev or production. However, “developers” can only assume admin in dev. Here’s how that would work:
+Consider this example. We want to enable the “DevOps” to assume Administrator in multiple accounts, such as `dev` or `prod`. However, “developers” can only assume admin in `dev`. Here’s how that would work:
 
 ```mermaid
 flowchart LR
@@ -68,7 +68,7 @@ Now how does AWS IAM Identity Center fit in? Let’s see how we can connect AWS 
 
 Identity Center has the concept of Permission Sets. Permission Sets determine what a user can or cannot do. We simply connect those Permission Sets to one of our Teams.
 
-We define a special Permission Set for the `core-identity` account, called the `Identity{X}TeamAccess` Permission Set. This Permission Set has access to assume the related AWS Team. For example, The `IdentityDeveloperTeamAccess` permission set can assume the `developers` team and the `IdentityDevopsTeamAccess` permission set can assume the `devops` team.
+We define a special Permission Set for the `core-identity` account, called the `Identity{X}TeamAccess` Permission Set. This Permission Set has access to assume the related AWS Team. For example, the `IdentityDeveloperTeamAccess` permission set can assume the `developers` team and the `IdentityDevopsTeamAccess` permission set can assume the `devops` team.
 
 From their AWS Team, users can apply Terraform wherever they have access
 
@@ -108,7 +108,7 @@ flowchart LR
 
 We still need some method to manage users and groups. AWS Teams and Team roles grant groups of users access, but do not define or manage users. AWS IAM Identity Center ties together Teams and Team roles with a predefined set of users and groups.
 
-Although you may choose to manage users and groups directly in Identity Center, the vast majority of our customers choose to use a SAML IdP as the source of truth for their users and groups. With a SAML IdP, users and groups are not created in AWS. Instead, we connect a third-party Identity Provider, such as GSuite or JumpCloud. Then we manage all Users and Groups in that IdP
+Although you may choose to manage users and groups directly in Identity Center, the vast majority of our customers choose to use a SAML IdP as the source of truth for their users and groups. With a SAML IdP, users and groups are not created in AWS. Instead, we connect a third-party Identity Provider, such as GSuite, JumpCloud or Okta. Then we manage all Users and Groups in that IdP
 
 With “automatic provisioning” in AWS, we can synchronize all users and groups from the IdP into AWS. Then we can create Permission Sets in AWS to assign to those groups. We can assign Permission Sets to Groups for any given account. A Permission Set, such as `AdministratorAccess` or `ReadOnlyAccess`, is granted to a given group for some account. This way, we only need to define the Permission Sets once each
 
@@ -143,12 +143,12 @@ flowchart LR
 
 With Identity Center, it’s very easy to log into the AWS web console. Simply open the Single Sign On Portal link, and select the account and role you want to access.
 
-For example, if I wanted to connect to `plat-prod` with “Read Only” access, then I would select the `ReadOnlyAccess` Permission Set for `plat-prod`. Then AWS will launch a new session with the appropriate permissions in production
+For example, if I wanted to connect to `plat-prod` with “Read Only” access, then I would select the `ReadOnlyAccess` Permission Set for `plat-prod`. AWS then will launch a new session with the appropriate permissions in production
 
 
 ### Deploying both AWS IAM Identity Center and AWS SAML
 
-AWS IAM Identity Center and AWS SAML are not mutually exclusive solutions. They can be used together to provide a seamless login experience for users. Cloud Posse frequently deploys both in customer environments - AWS SAML to log in ourselves for the duration of the engagement and AWS IAM Identity Center for the customer to use and support. That way the customer can access AWS via their chosen Identity Provider (IdP), and we can use G-Suite SAML to access the Identity account team directly. When an enagement is complete, we can easily decommission our access by removing the SAML connection.
+AWS IAM Identity Center and AWS SAML are not mutually exclusive solutions. They can be used together to provide a seamless login experience for users. Cloud Posse frequently deploys both in customer environments - AWS SAML to log in ourselves for the duration of the engagement and AWS IAM Identity Center for the customer to use and support. That way the customer can access AWS via their chosen Identity Provider (IdP), and we can use GSuite SAML to access the Identity account team directly. When an engagement is complete, we can easily decommission our access by removing the SAML connection.
 
 :::tip AWS IAM Identity Center or AWS SAML? Which do I choose?
 
@@ -265,7 +265,7 @@ The `aws-sso` component connects AWS IAM Identity Center (Successor to AWS Singl
 Permission Sets grant access to `aws-teams` in the Identity account or (optional) access to an individual account for
 convenience.
 
-Permission Sets other than the Identity Team Access Permission Set are used only for console and cli access to a single
+Permission Sets other than the Identity Team Access Permission Set are used only for console and CLI access to a single
 account. These are redundant with AWS Team Roles but are useful for quickly accessing a given account with limited
 permission.
 

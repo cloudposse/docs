@@ -76,18 +76,18 @@ Now you may be asking some questions. There are plenty of existing solutions out
   <Step>
     ### <StepNumber/> AWS IAM Identity Center is only for humans
 
-    The ideal way to access AWS for humans is with Identity Center, formally called “AWS SSO”, and this is included in our reference architecture. But that doesn’t solve how we provide access to machines. For example integrating with GitHub Actions or Spacelift.
+    The ideal way to access AWS for humans is with Identity Center, formally called “AWS SSO”, and this is included in our reference architecture. But that doesn’t solve how we provide access to machines. For example, integrating with GitHub Actions or Spacelift.
 
     With Identity Center, a user assumes a single role for one account. That’s not going to work for us with Terraform if we’re trying to apply Terraform concurrently across accounts. For example, transit gateway architecture requires provisioning resources and connecting them across accounts. Identity Center is also limited because it only works with a single IdP. For larger enterprises, multiple IdPs might be used.
 
-    Plus for the duration of an engagement, Cloud Posse configures our own IdP to access your infrastructure so that it’s easy for you to revoke our access when we’re done.
+    In addition, for the duration of an engagement, Cloud Posse configures our own IdP to access your infrastructure so that it’s easy for you to revoke our access when we’re done.
   </Step>
   <Step>
     ### <StepNumber/> AWS IAM Roles with SAML is cumbersome
 
-    We needed to find a solution for machine access and to apply Terraform across accounts. To do that, we can use IAM roles with a SAML provider and assume them in Terraform or third party integrations. Such as GitHub Actions.
+    We needed to find a solution for machine access and to apply Terraform across accounts. To do that, we can use IAM roles with a SAML provider and assume them in Terraform or third party integrations such as GitHub Actions.
 
-    The challenge then becomes making it easy for users. AWS SAML provides low level controls and is a little more cumbersome to use, especially when you compare how easy it is for users with Identity Center.
+    The challenge then becomes making it easy for users. AWS SAML provides low level controls and is a little more cumbersome to use, especially when you compare how easy it is for users to use the IAM Identity Center.
 
     How can we have a consistent solution that works for both?
   </Step>
@@ -160,9 +160,9 @@ We preinstall the AWS config in the Geodesic toolbox, and users will automatical
 ## Next Steps
 
 <ActionCard title="How is this implemented?">
-  Next, we'll explain how we've implemented this solution in detail.
+  Next, we'll explain how we've implemented this solution in details.
 
-  If you're curious about the though that went into this process, please review the design decisions documentation.
+  If you're curious about the thought that went into this process, please review the design decisions documentation.
   <div>
     <PrimaryCTA to="/layers/identity/centralized-terraform-access/">Next Step</PrimaryCTA>
     <SecondaryCTA to="/layers/identity/design-decisions">Review Design Decisions</SecondaryCTA >
