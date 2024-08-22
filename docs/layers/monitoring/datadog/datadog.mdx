@@ -35,34 +35,34 @@ A typical business operating in AWS has literally tens of thousands of data poin
 
 ## Definitions
 <dl>
-  <DT>Service</DT>
+  <dt>Service</dt>
   <dd>Any group of one or more applications (or "components") with a shared purpose for some customer (either internal to some team or other service or external with end-users).</dd>
 
-  <DT>Service Level Indicator (SLI)</DT>
+  <dt>Service Level Indicator (SLI)</dt>
   <dd>A quantitative measurement of a service's performance or reliability (e.g. the amount of time a transaction took). SLIs may or may not be expressed as percentages. In Datadog, the SLI is implemented as a metric, synthetic or aggregation of one or more monitors. There's nothing called an SLI in Datadog.</dd>
 
-  <DT>Service Level Objective (SLO)</DT>
+  <dt>Service Level Objective (SLO)</dt>
   <dd>A target percentage for an SLI over a specific period of time. It's always expressed as a percentage. In Datadog it's a specific resource type defined with a numerator and denominator. A score of 100% is excellent; 0% is dead. Datadog has native support for SLOs as a resource.</dd>
 
-  <DT>Service Level Agreement (SLA)</DT>
+  <dt>Service Level Agreement (SLA)</dt>
   <dd>An explicit (e.g. contractual agreement) or implicit agreement between a client and service provider stipulating the client's reliability expectations and service provider's consequences for not meeting them.</dd>
 
-  <DT>Error Budget</DT>
+  <dt>Error Budget</dt>
   <dd>The allowed amount of unreliability derived from an SLO's target percentage (100% - target percentage) that is meant to be invested into product development. There's a corresponding Burn Rate associated with an Error Budget that is equally important to understand because it's the rate of change. Datadog automates burnrate as part of the widget.</dd>
 
-  <DT>MTTF (mean time to failure)</DT>
+  <dt>MTTF (mean time to failure)</dt>
   <dd>The outage frequency.</dd>
 
-  <DT>MTTR (mean time to restore)</DT>
+  <dt>MTTR (mean time to restore)</dt>
   <dd>The outage duration and is defined as it is experienced by users: lasting from the start of a malfunction until normal behavior resumes.</dd>
 
-  <DT>Availability</DT>
+  <dt>Availability</dt>
   <dd>A percentage defined as (uptime)/(total length of time), using appropriate units (e.g. seconds), or (1 - (MTTR/MTTF)) x 100%.</dd>
 
-  <DT>RED method</DT>
+  <dt>RED method</dt>
   <dd>(Rate, Errors, and Duration) focuses on monitoring your services, leaving their infrastructure aside and giving you an external view of the services themselves—in other words, from the client's point of view.</dd>
 
-  <DT>USE method</DT>
+  <dt>USE method</dt>
   <dd>(Utilization, Saturation, and Errors) focuses on the utilization of resources to quickly identify common bottlenecks; however, this method only uses request errors as an external indicator of problems and is thus unable to identify latency-based issues that can affect your systems as well.</dd>
 </dl>
 
@@ -75,16 +75,16 @@ Some definitions borrowed from Datadog's [Key Terminology](https://docs.datadogh
 Golden Signals are a form of telemetry that applies to anything with throughput. Anything that’s not a golden signal is considered general telemetry.
 
 <dl>
-  <DT>Latency</DT>
+  <dt>Latency</dt>
   <dd>The time it takes to service a request. It’s important to distinguish between the latency of successful requests and the latency of failed requests.</dd>
 
-  <DT>Traffic</DT>
+  <dt>Traffic</dt>
   <dd>A measure of how much demand is being placed on your system, measured in a high-level system-specific metric. For a web service, this measurement is usually HTTP requests per second.</dd>
 
-  <DT>Errors</DT>
+  <dt>Errors</dt>
   <dd>The rate of requests that fail, either explicitly (e.g., HTTP 500s), implicitly (for example, an HTTP 200 success response, but coupled with the wrong content), or by policy (for example, "If you committed to one-second response times, any request over one second is an error").</dd>
 
-  <DT>Saturation</DT>
+  <dt>Saturation</dt>
   <dd>How "full" your service is. A measure of your system fraction, emphasizing the resources that are most constrained (e.g., in a memory-constrained system, show memory; in an I/O-constrained system, show I/O).</dd>
 </dl>
 
@@ -98,22 +98,22 @@ Here are other useful metrics that are examples that don’t necessarily fit int
 
 <div style={{"paddingLeft": "2rem"}}>
   <dl>
-    <DT>Time to Merge</DT>
+    <dt>Time to Merge</dt>
     <dd>The duration between the creation of a pull request and when it's merged. This metric reflects the efficiency of
       the review and merging process.</dd>
-    <DT>Lead Time</DT>
+    <dt>Lead Time</dt>
     <dd>The total time from when work on a pull request starts until it's merged. It measures the overall speed of the
       development process.</dd>
-    <DT>Size (LOC)</DT>
+    <dt>Size (LOC)</dt>
     <dd>The number of lines of code (LOC) changed in a pull request. This metric helps gauge the complexity and potential
       impact of the changes.</dd>
-    <DT>Flow Ratio</DT>
+    <dt>Flow Ratio</dt>
     <dd>The ratio of the total number of pull requests opened to those closed in a day. It indicates whether the team's
       workflow is balanced and sustainable.</dd>
-    <DT>Discussions & Comments</DT>
+    <dt>Discussions & Comments</dt>
     <dd>The number of comments and discussions on a pull request. This metric shows the level of collaboration and code
       review quality.</dd>
-    <DT>Force Merged by Admins (bypassing approvals)</DT>
+    <dt>Force Merged by Admins (bypassing approvals)</dt>
     <dd>The number of pull requests merged by admins without the usual approval process. This metric highlights instances
       where standard review procedures were skipped.</dd>
   </dl>
@@ -125,13 +125,13 @@ Here are other useful metrics that are examples that don’t necessarily fit int
 
   <div style={{"paddingLeft": "2rem"}}>
     <dl>
-      <DT>Code Coverage</DT>
+      <dt>Code Coverage</dt>
       <dd>The percentage of your codebase covered by automated tests. This metric helps ensure that your code is thoroughly
         tested.</dd>
-      <DT>Static Code Analysis</DT>
+      <dt>Static Code Analysis</dt>
       <dd>The number of issues found by static code analysis tools. This metric helps identify potential bugs and security
         vulnerabilities.</dd>
-      <DT>Defect Escape Rate</DT>
+      <dt>Defect Escape Rate</dt>
       <dd>The percentage of defects found in production that weren't caught by automated tests. This metric indicates the
         effectiveness of your testing strategy.</dd>
     </dl>
@@ -144,15 +144,15 @@ Here are other useful metrics that are examples that don’t necessarily fit int
 
 <div style={{"paddingLeft": "2rem"}}>
   <dl>
-    <DT>Page Load Time</DT>
+    <dt>Page Load Time</dt>
     <dd>The time it takes for a web page to load. This metric is crucial for ensuring a positive user experience.</dd>
-    <DT>Browser Interaction Time</DT>
+    <dt>Browser Interaction Time</dt>
     <dd>The time it takes for a user to interact with a web page. This metric helps gauge the responsiveness of your
       application.</dd>
-    <DT>Server Error Rate</DT>
+    <dt>Server Error Rate</dt>
     <dd>The percentage of server errors returned to users. This metric indicates the reliability of your backend
       infrastructure.</dd>
-    <DT>JS Errors</DT>
+    <dt>JS Errors</dt>
     <dd>The number of JavaScript errors encountered by users. This metric helps identify issues that impact the user
       experience.</dd>
   </dl>
