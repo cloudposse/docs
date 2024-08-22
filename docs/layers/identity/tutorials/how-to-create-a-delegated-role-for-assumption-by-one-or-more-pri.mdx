@@ -6,6 +6,7 @@ description: Learn how to delegate a new IAM role
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
 
 ## Status
 
@@ -73,64 +74,66 @@ restricted policy that
 `restrictedModify: allowed`. We will combine this with the AWS managed `ViewOnly` policy so they can look at things.
 (The AWS `ReadOnly` policy is more permissive and would let them read secrets, so we do not want to use that.)
 
-1. Create a new file with the policy name under `iam-delegated-roles` called `restricted-policy`.
+<Steps>
+  1. #### Create a new file with the policy name under `iam-delegated-roles` called `restricted-policy`.
 
-2. Define the policy, something like (this has not been vetted/tested)
+  2. #### Define the policy, something like (this has not been vetted/tested)
 
-```
-data "aws_iam_policy_document" "restricted" {
-  statement {
-    sid     = "PowerWhenTaggedForRestricted"
-    effect  = "Allow"
-    actions = [
-      "cloudwatch:*",
-      "ec2:*",
-      "ecr:*",
-      "eks:*",
-      # Lambda does not support tag based access "lambda:*",
-      "rds:*",
-      "s3:*",
-    ]
-    resources = ["*"]
-    condition {
-      test = "StringEquals"
-      values = ["allowed"]
-      variable = "aws:ResourceTag/restrictedModify"
-    }
-  }
-}
-```
+    ```hcl
+      data "aws_iam_policy_document" "restricted" {
+        statement {
+          sid     = "PowerWhenTaggedForRestricted"
+          effect  = "Allow"
+          actions = [
+            "cloudwatch:*",
+            "ec2:*",
+            "ecr:*",
+            "eks:*",
+            # Lambda does not support tag based access "lambda:*",
+            "rds:*",
+            "s3:*",
+          ]
+          resources = ["*"]
+          condition {
+            test = "StringEquals"
+            values = ["allowed"]
+            variable = "aws:ResourceTag/restrictedModify"
+          }
+        }
+      }
+    ```
 
-3. Create the policy
+  3. #### Create the policy
 
-```
-resource "aws_iam_policy" "restricted" {
-  name        = format("%s-restricted", module.label.id)
-  description = "Allow users to modify specially tagged resources"
-  policy      = data.aws_iam_policy_document.restricted.json
-}
+      ```hcl
+      resource "aws_iam_policy" "restricted" {
+        name        = format("%s-restricted", module.label.id)
+        description = "Allow users to modify specially tagged resources"
+        policy      = data.aws_iam_policy_document.restricted.json
+      }
 
-```
+      ```
 
-4. Add the policy to the `custom_policy_map` in `main.tf`
+  4. #### Add the policy to the `custom_policy_map` in `main.tf`
 
-```
-  custom_policy_map = { "restricted" = aws_iam_policy.restricted.arn }
-```
+     ```hcl
+      custom_policy_map = { "restricted" = aws_iam_policy.restricted.arn }
+     ```
 
-5. Override the default policy assignment for the new role
+  5. #### Override the default policy assignment for the new role
 
-In `iam-delegated-roles/default.auto.tfvars` the `role_policy_arns` map is just that: a map whose keys are role names
-and whose values are lists of policy ARNs (or names in the `custom_policy_map`) to assign to that role, overriding the
-assignments made in `iam-primary-roles`. Add an entry for the new role.
+     In `iam-delegated-roles/default.auto.tfvars` the `role_policy_arns` map is just that: a map whose keys are role names
+      and whose values are lists of policy ARNs (or names in the `custom_policy_map`) to assign to that role, overriding the
+      assignments made in `iam-primary-roles`. Add an entry for the new role.
 
-```
-role_policy_arns = {
-  # Put the ARN first, it will make the Terraform output cleaner
-  restricted = ["arn:aws:iam::aws:policy/job-function/ViewOnlyAccess", "restricted"]
-  ...
-}
-```
+      ```hcl
+      role_policy_arns = {
+        # Put the ARN first, it will make the Terraform output cleaner
+        restricted = ["arn:aws:iam::aws:policy/job-function/ViewOnlyAccess", "restricted"]
+        ...
+      }
+      ```
+</Steps>
 
 ##### Configure custom access to Delegated role
 
@@ -142,7 +145,7 @@ role. Further, let's assume we wish to allow our new intern access to the `restr
 
 In `stacks/gbl-sbx.yaml` add
 
-```
+```yaml
 projects:
   terraform:
     iam-delegated-roles:
@@ -153,7 +156,7 @@ projects:
 
 In `stacks/gbl-dev.yaml` add
 
-```
+```yaml
 projects:
   terraform:
     iam-delegated-roles:
@@ -174,7 +177,7 @@ In `stacks/gbl-root.yaml` and in `stacks/gbl-audit.yaml` add "restricted" to the
 These steps must be run as admin in the `root` account. We must run plan and apply once for each account that uses
 delegated roles. Perform as below for each stage, replacing $stage with the literal stage name.
 
-```
+```console
 assume-role eg-gbl-root-admin bash -l
 
 # Perform the following for each stage
@@ -196,7 +199,7 @@ The admin, ops, poweruser, and observer primary IAM roles and the same delegated
 Edit `stacks/uw2-dev.yaml` and add an entry for the `restricted` role to the
 `projects:terraform:eks:vars:delegated_iam_roles` list:
 
-```
+```yaml
 projects:
   ...
   terraform:
@@ -241,9 +244,9 @@ normally stored as `~/.aws/config` on individual's computers. We keep the shared
 `/aws-config`.
 
 To update the file,
-
-- Add "restricted" to the list of delegated_roles in `/rootfs/usr/local/bin/aws-config-gen`
-
-- Run the modified `aws-config-gen` and save the output in `/aws-config`
+<Steps>
+  - Add "restricted" to the list of delegated_roles in `/rootfs/usr/local/bin/aws-config-gen`
+  - Run the modified `aws-config-gen` and save the output in `/aws-config`
+</Steps>
 
 Let people know to update their configuration files.
