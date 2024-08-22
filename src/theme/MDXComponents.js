@@ -9,6 +9,7 @@ import { far } from '@fortawesome/free-regular-svg-icons'; // Import all regular
 import { Icon } from '@iconify/react'; // Import the entire Iconify library.
 // Import custom components
 import CategoryList from '@site/src/components/CategoryList';
+
 library.add(fab, fas, far); // Add all icons to the library so you can use them without importing them individually.
 
 export default {
