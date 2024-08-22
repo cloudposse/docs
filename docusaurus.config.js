@@ -280,6 +280,31 @@ const config = {
             light: 'neutral',
             dark: 'dark',
         },
+        options: {
+          flowchart: {
+            useMaxWidth: true,
+            curve: 'linear',
+            padding: 15,
+            diagramPadding: 20,
+            nodeSpacing: 40,
+            rankSpacing: 50,
+            ranksep: 100,
+            nodesep: 100,
+            titleTopMargin: 25,
+            titlePadding: 30,
+            labelPadding: 30,
+            subGraphTitleMargin: {
+              top: 5,
+              bottom: 5
+            }
+          },
+
+          themeVariables: {
+            mainBkg: '#6f72723b',
+            background: '#333',
+            clusterBkg: '#6f72723b'
+          }
+        }
       },
       prism: {
         theme: lightCodeTheme,
