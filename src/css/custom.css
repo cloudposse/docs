@@ -236,7 +236,7 @@ img.center {
         display: block;
     }
 
-    .img-small {
+    img.small {
       max-width: 100%;
     }
 
