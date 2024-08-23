@@ -222,7 +222,7 @@ svg.landingLogo path {
 }
 
 img.small {
-    width: 40%;
+    max-width: 40%;
 }
 img.center {
     display: block;
