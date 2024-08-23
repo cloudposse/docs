@@ -221,10 +221,10 @@ svg.landingLogo path {
     display: block;
 }
 
-.img.small {
+img.small {
     width: 40%;
 }
-.img.center {
+img.center {
     display: block;
     margin-left: auto;
     margin-right: auto;
