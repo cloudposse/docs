@@ -237,7 +237,7 @@ img.center {
     }
 
     .img-small {
-      width: 100%;
+      max-width: 100%;
     }
 
   .breadcrumbs-container {
