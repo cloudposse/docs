@@ -21,12 +21,31 @@ const iconSets = {
   ic: icIcons
 };
 
+// Define the default classDef configuration
+const defaults = `
+  classDef default rx:5,ry:5,line-height:1.5;
+`;
+
 export default function MermaidWrapper(props) {
 
   // Preprocess the Mermaid diagram text
   const preprocessDiagram = (text) => {
     // Example: Replace @SecurityHub with an image tag
-    return preprocessMermaidDiagram(text);
+    const processedText = preprocessMermaidDiagram(text);
+
+    const diagramTypeRegex = /(graph|flowchart)\s+[\w-]*/;
+
+    // Find the diagram type in the Mermaid content
+    const match = processedText.match(diagramTypeRegex);
+
+    if (match) {
+      // Insert the classDef after the diagram type
+      const [diagramDeclaration] = match;
+      return processedText.replace(diagramDeclaration, `${diagramDeclaration}\n${defaults}`);
+    } else {
+      console.warn('No diagram type detected. Ensure the diagram starts with a valid type like graph, flowchart, etc.');
+      return processedText;
+    }
   };
 
   // If the value prop exists, preprocess it

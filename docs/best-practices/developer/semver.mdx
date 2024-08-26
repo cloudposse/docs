@@ -10,15 +10,23 @@ tags:
 
 We practice [Semantic Versioning](https://semver.org/) for all projects (e.g. GitHub Tags/Releases, Helm Charts, Terraform Modules, Docker Images). Using this versioning standard helps to reduce the entropy related to [Dependency Hell](https://en.wikipedia.org/wiki/Dependency_hell).
 
-![Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)](/assets/aa35c54-semver.png)Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)
+<figure>
+  <img src="/assets/aa35c54-semver.png" style={{ background: '#fff' }} />
+  <figcaption>Image credit: [Gopher Academy](https://blog.gopheracademy.com/advent-2015/semver/)</figcaption>
+</figure>
 
 ## Semantics
 
 Generally, all of our versions follow this convention: `X.Y.Z` (e.g. `1.2.3`). Sometimes, we'll use this format: `X.Y.Z-branch` when we need to disambiguate between versions existing in multiple branches.
 
-- **Major Releases** - These are releases when `X` changes. These releases will typically have major changes in the interface. These releases may not be backward-compatible.
-- **Minor Releases** - These are releases when `Y` changes. These releases bundle new features, but the interface should be largely the same. Minor releases should be backward-compatible.
-- **Patch Releases** - These are releases when `Z` changes. These releases are typically bug fixes which do not introduce new features. These releases are backward-compatible.
+<dl>
+  <dt>Major Releases</dt>
+  <dd>These are releases when `X` changes. These releases will typically have major changes in the interface. These releases may not be backward-compatible.</dd>
+  <dt>Minor Releases</dt>
+  <dd>These are releases when `Y` changes. These releases bundle new features, but the interface should be largely the same. Minor releases should be backward-compatible.</dd>
+  <dt>Patch Releases</dt>
+  <dd>These are releases when `Z` changes. These releases are typically bug fixes which do not introduce new features. These releases are backward-compatible.</dd>
+</dl>
 
 We use GitHub tags & releases for all versioning. All docker images follow the same convention.
 
