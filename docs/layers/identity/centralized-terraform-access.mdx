@@ -115,20 +115,20 @@ With “automatic provisioning” in AWS, we can synchronize all users and group
 ```mermaid
 flowchart LR
     subgraph external_idp["External Identity Provider"]
-        user1["User 1"]
-        user2["User 2"]
-        user3["User 3"]
-        group1["Group 1"]
+        user1["IdP User: Homer"]
+        user2["IdP User: Lisa"]
+        user3["IdP User: Bart"]
+        group1["IdP Group: DevOps"]
         user1 --> group1
         user2 --> group1
         user3 --> group1
     end
 
     subgraph aws_iam_identity_center["AWS IAM Identity Center"]
-        user1_copy["User 1 Copy"]
-        user2_copy["User 2 Copy"]
-        user3_copy["User 3 Copy"]
-        group1_copy["Group 1 Copy"]
+        user1_copy["Identity Center User: Homer"]
+        user2_copy["Identity Center User: Lisa"]
+        user3_copy["Identity Center User: Bart"]
+        group1_copy["Identity Center Group: DevOps"]
         permissions["Permission Sets"]
         user1_copy -.-> group1_copy
         user2_copy -.-> group1_copy
@@ -210,13 +210,18 @@ flowchart TB
 
 ### Why use AWS SAML?
 
-The `aws-saml` component provides SAML access for Admin users to connect to the Identity account admin role `aws-teams`
-without AWS IAM Identity Center (Successor to AWS Single Sign-On).
+SAML offers granular control over identity management with your IdP in AWS. With our `aws-saml` component, you can integrate multiple IdPs, and we explicitly provision every role, policy, and trust relationship needed. The `aws-saml` component allows users to assume any number of roles to access AWS accounts that are associated with their IdP groups.
 
 This component creates an Identity Provider (IdP) in the Identity account to allow federated access to an identity role.
 Follow the Identity Providers documentation for adding a SAML login.
 
 With AWS SAML, we create a federated SAML login that connects to the "team" in the identity account, and then users can assume other roles from there. We use the [AWS Extend Switch Roles plugin](https://github.com/tilfinltd/aws-extend-switch-roles) that makes this much easier, but it's not as intuitive as Identity Center.
+
+:::info What is a federated login?
+
+A federated login means that instead of managing separate credentials for each AWS account, users authenticate through a centralized identity provider (IdP). This allows them to access multiple AWS accounts or services using a single set of credentials, based on trust relationships established between the IdP and AWS.
+
+:::
 
 ```mermaid
 flowchart TB
@@ -261,7 +266,9 @@ flowchart TB
 
 ### How do I use AWS IAM Identity Center (SSO)?
 
-The `aws-sso` component connects AWS IAM Identity Center (Successor to AWS Single Sign-On) Groups to Permission Sets.
+AWS IAM Identity Center (SSO) is natively integrated with the AWS Web Console and the AWS CLI. You don't need to do anything special to get started with it once it's been properly configured.
+
+Specifically, the `aws-sso` component connects AWS IAM Identity Center (Successor to AWS Single Sign-On) Groups to Permission Sets.
 Permission Sets grant access to `aws-teams` in the Identity account or (optional) access to an individual account for
 convenience.
 
