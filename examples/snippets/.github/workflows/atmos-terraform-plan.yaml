@@ -21,7 +21,7 @@ jobs:
     runs-on: ["self-hosted", "terraform"]
     steps:
       - id: affected
-        uses: cloudposse/github-action-atmos-affected-stacks@v4
+        uses: cloudposse/github-action-atmos-affected-stacks@v3
         with:
           atmos-version: ${{ vars.ATMOS_VERSION }}
           atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
