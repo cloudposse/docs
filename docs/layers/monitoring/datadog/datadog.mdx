@@ -5,11 +5,20 @@ sidebar_position: 10
 description: Monitor everything with Datadog
 ---
 import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Admonition from '@theme/Admonition';
 
-Cloud Posse advises customers that all have <i>very similar monitoring requirements</i> because we filter for customers who match our delivery model. The actual fine-tuning of it will be specific to the customer.
+<Intro>
+  This outlines Cloud Posse's practical approach to monitoring with Datadog, focusing on defining reusable Service Level Indicators (SLIs) and Service Level Objectives (SLOs) for consistent implementation across customer environments. It aims to help businesses streamline monitoring and incident management by aligning technical performance with business goals.
+</Intro>
 
-Our goal with this ADR is to identify the reusable, standard SLI/SLO for our customers that we can readily implement time and time again.
+Our goal with this document is to identify the reusable, standard SLI/SLO for our customers that we can readily implement time and time again.
+
+<Admonition type="tip">
+  This document goes very deep into the theory and practice of monitoring with Datadog.
+  If you are looking for a quick start guide, see [our Setup Guide for DataDog](/layers/monitoring/datadog/setup/).
+  If you are trying to solve a specific problem, checkout [our tutorials for DataDog](/layers/monitoring/datadog/tutorials/).
+</Admonition>
 
 Also, make sure to see [How to Implement Incident Management with OpsGenie](/layers/alerting/opsgenie/)
 
@@ -60,7 +69,7 @@ A typical business operating in AWS has literally tens of thousands of data poin
   <dd>(Utilization, Saturation, and Errors) focuses on the utilization of resources to quickly identify common bottlenecks; however, this method only uses request errors as an external indicator of problems and is thus unable to identify latency-based issues that can affect your systems as well.</dd>
 </dl>
 
-Some definitions borrowed from Datadog's [https://docs.datadoghq.com/monitors/service_level_objectives/#key-terminology](https://docs.datadoghq.com/monitors/service_level_objectives/#key-terminology).
+Some definitions borrowed from Datadog's [Key Terminology](https://docs.datadoghq.com/monitors/service_level_objectives/#key-terminology).
 
 ## Theory
 
@@ -84,118 +93,169 @@ Golden Signals are a form of telemetry that applies to anything with throughput.
 
 These golden signals are closely related to the <i>[RED metrics](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)</i> for microservices: rate, errors, and duration, and the older <i>[USE method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)</i> focusing on utilization, saturation, and errors. These signals are used to calculate the service level objectives (SLOs).
 
-Here are other useful metrics that are examples which don’t necessarily fit into the Golden Signals.
+### Other Signals
 
-- Pull Request: Time to Merge
+Here are other useful metrics that are examples that don’t necessarily fit into the Golden Signals.
 
-- Pull Request: Lead Time
+#### Pull Requests
 
-- Pull Request: Size (LOC)
+  <dl>
+    <dt>Time to Merge</dt>
+    <dd>The duration between the creation of a pull request and when it's merged. This metric reflects the efficiency of
+      the review and merging process.</dd>
+    <dt>Lead Time</dt>
+    <dd>The total time from when work on a pull request starts until it's merged. It measures the overall speed of the
+      development process.</dd>
+    <dt>Size (LOC)</dt>
+    <dd>The number of lines of code (LOC) changed in a pull request. This metric helps gauge the complexity and potential
+      impact of the changes.</dd>
+    <dt>Flow Ratio</dt>
+    <dd>The ratio of the total number of pull requests opened to those closed in a day. It indicates whether the team's
+      workflow is balanced and sustainable.</dd>
+    <dt>Discussions & Comments</dt>
+    <dd>The number of comments and discussions on a pull request. This metric shows the level of collaboration and code
+      review quality.</dd>
+    <dt>Force Merged by Admins (bypassing approvals)</dt>
+    <dd>The number of pull requests merged by admins without the usual approval process. This metric highlights instances
+      where standard review procedures were skipped.</dd>
+  </dl>
+  
+#### Code Quality
 
-- Pull Request: Flow Ratio - the sum of the opened pull request in a day divided by the sum of closed pull requests in that same day. This metric shows whether your team works in a healthy proportion.
+    <dl>
+      <dt>Code Coverage</dt>
+      <dd>The percentage of your codebase covered by automated tests. This metric helps ensure that your code is thoroughly
+        tested.</dd>
+      <dt>Static Code Analysis</dt>
+      <dd>The number of issues found by static code analysis tools. This metric helps identify potential bugs and security
+        vulnerabilities.</dd>
+      <dt>Defect Escape Rate</dt>
+      <dd>The percentage of defects found in production that weren't caught by automated tests. This metric indicates the
+        effectiveness of your testing strategy.</dd>
+    </dl>
 
-- Pull Request: Discussions # Comments
+#### Customer Experience
 
-- Pull Request: Force Merged by Admins (bypassing approvals)
+  <dl>
+    <dt>Page Load Time</dt>
+    <dd>The time it takes for a web page to load. This metric is crucial for ensuring a positive user experience.</dd>
+    <dt>Browser Interaction Time</dt>
+    <dd>The time it takes for a user to interact with a web page. This metric helps gauge the responsiveness of your
+      application.</dd>
+    <dt>Server Error Rate</dt>
+    <dd>The percentage of server errors returned to users. This metric indicates the reliability of your backend
+      infrastructure.</dd>
+    <dt>JS Errors</dt>
+    <dd>The number of JavaScript errors encountered by users. This metric helps identify issues that impact the user
+      experience.</dd>
+  </dl>
 
-- Code Quality
+### Service-Oriented View
 
-- Static Code Analysis :question_mark:
-
-- Defect Escape Rate
-
-- Customer Experience: Page Load Time
-
-- Customer Experience: Browser Interaction Time
-
-- Customer Experience: Server Error Rate
-
-- Customer Experience: JS Errors
-
-- Log Events
-
-### **Service-Oriented View**
+#### What is a Service?
 
 - A service is anything that warrants having an SLO
 
 - A service has a contract with internal parties or external parties to provide a “service” with certain guarantees. Guarantees with a contractual commitment are SLAs.
 
-- Should be able to look at a business service and drill down to the alerts affecting that service
+- We Should be able to look at a business service and drill down to the alerts affecting that service
 
-- **What are the services we provide? e.g. API**
+#### Questions to ask:
+- What are the services we provide? e.g. API
 
-- **Who are the consumers of those services? e.g. internal users or customers**
+- Who are the consumers of those services? e.g. internal users or customers
 
-- **Who is the support team of those services?**
+- Who is the support team of those services?
+
+
+### Error Budget
+
+The Error Budget determines risk tolerance. It is usually a calculation of the remaining time in a given period that the SLO can be violated before the SLA is violated.
+
+<img src="/assets/refarch/image-20211006-041558.png" className="small center" /><br/>
+
+
+When the budget is depleted (nearing 0%), reliability should be prioritized, which often results in:
+
+- freeze feature releases
+- prioritize postmortem items
+- improve automation over human toil
+- improve monitoring and observability
+- consult/collaborate with SRE
+
+When an Error Budget is abundant (remaining error budget > 0%), velocity should be prioritized, which results in:
+
+- release new features
+- expected system changes
+- try risky (but valuable) experiments
+
 
 ## Our Strategy
 
-1. For everything deployed, decide on what qualifies as a “service” for the business
-
-1. Somethings we know what is a service, other things we will need to ask the customer
-
-2. For every service, decide on how to quantify the 4 golden signals, **these are your SLI**s
-
-3. Determine how to create **SLO’s** from these SLIs over time. This should be a simple math formula over time.
-
-4. Incidents are created **ONLY** in response to violations of the SLO for some period of time _t._
-
-1. There should be a 24 hour, 7 day, 30 day and 1 year SLO (for customers).
-
-2. All alerts that relate to some SLO and Incident share same common tag convention.
-
-5. Our SLO Dashboards should be by Service, coalescing into Team Dashboards, which further group into Organization Dashboards.
-
-1. Organization/Team Dashboards should include a list of services (as we can only use DD’s APM Service for things that execute - such as containers, lambdas, and hosts)
-
-2. Each Service Should have Enough Monitors to accurately describe when it is operating **correctly** and when it is not, no more. **Ideally** **1-3 SLIs per User Journey** [[source](https://www.datadoghq.com/videos/solving-reliability-fears-with-service-level-objectives/#focus-on-one-to-three-slis)].
+<Steps>
+  1.  #### Decide on what qualifies as a “service” for the business
 
 
-> **As Simple as Possible, No Simpler** [[source](https://sre.google/sre-book/monitoring-distributed-systems/)] <br/>
-> To avoid an overly complex, and eventually unmaintainable monitoring system we propose avoiding unnecessary complexity, such as:<br/>
-> <ul>
->   <li>Alerts on different latency thresholds, at different percentiles, on all kinds of different metrics</li>
->   <li>Extra code to detect and expose possible causes</li>
->   <li>Associated dashboards for each of these possible causes</li>
-> </ul>
->
-> The sources of potential complexity are never-ending. Like all software systems, monitoring can become so complex that it’s fragile, complicated to change, and a maintenance burden.
-> Therefore, design your monitoring system with an eye toward simplicity. In choosing what to monitor, keep the following guidelines in mind:
-> <ul>
->   <li>The rules that catch real incidents most often should be as simple, predictable, and reliable as possible.</li>
->   <li>Data collection, aggregation, and alerting configuration that is rarely exercised (e.g., less than once a quarter for some SRE teams) should be up for removal. </li>
->   <li>Signals that are collected, but not exposed in any prebaked dashboard nor used by any alert, are candidates for removal.</li>
-> </ul>
-> [https://sre.google/sre-book/monitoring-distributed-systems/](https://sre.google/sre-book/monitoring-distributed-systems/)
+  1.  #### For every service, decide on how to quantify the 4 [_golden signals_](#golden-signals-slis), **these are your SLI**s
+      - [Latency](#latency)
+      - [Traffic](#traffic)
+      - [Errors](#errors)
+      - [Saturation](#saturation)
 
+  1.  #### Determine how to create **SLO’s** from these SLIs over time. This should be a simple math formula over time.
 
-## Datadog - Monitoring Platform
+  1.  #### Incidents are created **ONLY** in response to violations of the SLO for some period of time _t._
+
+  1.  #### There should be a 24 hour, 7 day, 30 day and 1 year SLO (for customers).
+
+  1.  #### All alerts that relate to some SLO and Incident share same common tag convention.
+
+  1.  #### Our SLO Dashboards should be by Service, coalescing into Team Dashboards, which further group into Organization Dashboards.
+
+  1.  #### Organization/Team Dashboards should include a list of services (as we can only use DD’s APM Service for things that execute - such as containers, lambdas, and hosts)
+
+  1.  #### Each service should have enough monitors to accurately describe when it is operating **correctly** and when it is not, no more. **Ideally** **1-3 SLIs per user journey** [[source](https://www.datadoghq.com/videos/solving-reliability-fears-with-service-level-objectives/#focus-on-one-to-three-slis)].
+      <details>
+        <summary>**As Simple as Possible, No Simpler**</summary>
+
+        [From Google's SRE Book](https://sre.google/sre-book/monitoring-distributed-systems/):
+        <blockquote>
+          To avoid an overly complex, and eventually unmaintainable monitoring system we propose avoiding unnecessary complexity, such as:<br/>
+          <ul>
+            <li>Alerts on different latency thresholds, at different percentiles, on all kinds of different metrics</li>
+            <li>Extra code to detect and expose possible causes</li>
+            <li>Associated dashboards for each of these possible causes</li>
+          </ul>
+          The sources of potential complexity are never-ending. Like all software systems, monitoring can become so complex that it’s fragile, complicated to change, and a maintenance burden.
+          Therefore, design your monitoring system with an eye toward simplicity. In choosing what to monitor, keep the following guidelines in mind:
+          <ul>
+            <li>The rules that catch real incidents most often should be as simple, predictable, and reliable as possible.</li>
+            <li>Data collection, aggregation, and alerting configuration that is rarely exercised (e.g., less than once a quarter for some SRE teams) should be up for removal. </li>
+            <li>Signals that are collected, but not exposed in any prebaked dashboard nor used by any alert, are candidates for removal.</li>
+          </ul>
+        </blockquote>
+      </details>
+  </Steps>
+
+## Theory into Practice
 
 ### SLIs
 
-Generally, the SLIs should be the _Golden Signals_ for a given service, with one exception: SLIs can be a composite of other SLOs, and this is how an overall site reliability score is achieved. E.g by aggregating and weighting the SLOs into an SLI.
+We should create monitors for the [_Golden Signals_](#golden-signals-slis) for a given service. These are the SLIs.
 
-SLIs are always a percentage out of 100%. Percentages are easy to understand by the widest audience and they are relative.
+We can make SLIs a percentage out of 100%.
+<img src="/assets/refarch/image-20211006-041301.png" className="small center" /><br/>
 
-SLIs should be derived values (e.g. from KPIs)
+Percentages are easy to understand by the widest audience, for example, 0% is bad, 100% is good.
 
-Every SLI may or may not have an SLO. An SLI may be part of one or more SLOs.
+In Datadog, we can create a monitor for each SLI.
 
-<img src="/assets/refarch/image-20211006-041301.png" /><br/>
+We can also create a Datadog SLO for each SLI.
+Every SLI may or may not be a Datadog SLO.
+An SLI may be part of one or more SLOs (e.g. By Monitor Uptime).
+[See Datadog Docs for details](https://docs.datadoghq.com/service_management/service_level_objectives/metric/#define-queries).
+<img alt={"Datadog SLI and SLO Definitions"} src={"https://datadog-docs.imgix.net/images/service_management/service_level_objectives/metric_slo_creation.72de716b67e579d9c4aa236aab9db3ce.png?auto=format"}/>
 
-Example SLIs:
-
--
-
-We need to figure out what the SLIs for a customer should be based on common services deployed (e.g. our service catalog) and the customer’s own services.
-
-1. Who are the users or customers of your service? ...so we know where to measure
-
-2. Why are they using the service?  ...so we know what’s important
-
-3. What are they trying to do? ...so we know
-
-4. How do they know if it's "working" or "broken"?
 
 ### SLAs
 
@@ -207,111 +267,40 @@ Additionally, SLAs are typically on a calendar year, and not a rolling window of
 
 With well-defined SLOs we can ensure that everyone from the business side to engineering is aligned on what’s important and what the goals are for the business at large.
 
-- There is no one SLO. Each logical instance of a service (for example, a database shard) gets its own SLO.
-
+- There is no one SLO. Each service gets its own SLO.
 - Combine significant SLIs for a given capability into a single SLO for that capability
-
 - A dashboard must exist that aggregates all SLOs in one place.
-
 - Technically, SLOs are not restricted to just what’s in Datadog, however, that’s just what we’re able to monitor.
-
 - Not every SLO is associated with an SLA
 
 SLOs will not necessarily be the same per business.
 
+#### Goals
+
+- As few SLOs as possible, but no fewer
+- Aggregate as much as possible into an SLO, but for the _right_ audience
+
+#### Examples
 | **Business Impact**                                                                                                                                 | **Good examples of SLOs**                                                                                                                                                             | **Bad Examples of SLOs**                                                              |
-| --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | Our SEO experts require that pages respond within 300ms or we will drop in rankings. The website receives most of it’s traffic from natural search. | 99.95% of pages respond with a 200 response code in less than 300ms                                                                                                                   | CPU utilization is less than 95%<br/><br/>SQL Database Read I/O is at 90% utilization |
 | As an e-commerce business, users must be able to add products to their cart and checkout or have no revenue.                                        | 99.99% of cart transactions succeed without error. <br/><br/>99.99% of checkout transactions succeed without error.                                                                   |                                                                                       |
 | As a online store, customers are much more likely to purchase products with images than with placeholder images.                                    | 99.99% of images served are actual product images (e.g.<br/><br/>99.99% of images are served within a latency of 100ms<br/><br/>99.99% of images are served with a status code of 2XX |                                                                                       |
 
-#### Goals
-
-- As few SLOs as possible
-
-- Aggregate as much as possible into an SLO, but for the _right_ audience
-
-#### Erik’s Theory
-
-- SLOs are a simple way to give a team responsible for something know when they aren’t meeting their objectives, as much as they are valuable to provide quality of service to business end-users.
-
-- We can _solve_ the practical implementation of SLOs once for all of our customers, while giving each customer the ability to tailor it to their needs
-
-- SLOs should be thought about like an organization structure, where each node in the org has an SLO
-
-- SLOs where created to support managing SLAs, but nowadays should be valuable to any team. But maybe we should then name them something else, so we don’t trigger a lot of associations with what SLOs are to other people
-
-- SLOs can be valuable to validate our assumptions on how stable some system is (@Jeremy Grodberg 's point on KMS keys)
-
-- SLOs might not have urgent action items, but if they are not urgent, then what should we do? Call them something else?
-
-- SLOs convey the institutional knowledge of what is healthy in a unit everyone understands (percentages) @Jeremy Grodberg
-
-- SLOs convey the health of the system for some period of time @Matt Calhoun
-
-- SLOs should/can also be visualized over time as any other metric
-
-- Bad SLOs can be detrimental, but that only means our objectives were wrong. But having the objectives is what is so valuable, because they can be corrected. We should refine/correct our objectives until they are accurate.
-
-- When SLOs are violated, it might be that the objective was wrong, rather than the systems are failing
-
-- We can boil the ocean with SLOs, but we dont' want to or need to.
-
-- “If a tree falls in a forest and no one was listening does it make a sound?”
-
-- We can have SLOs that are only visible to some, and don’t impact other teams
-
-- It helps us move from “feelings” of why something is violated to concrete explanation
-
-- There are categories, classes or levels of SLOs
-
-- e.g. Capacity Planning SLOs
-
-- e.g. Critical SLOs (or SLA SLOs)
-
-- e.g.  User Journey SLOs [https://cloud.google.com/blog/products/management-tools/practical-guide-to-setting-slos](https://cloud.google.com/blog/products/management-tools/practical-guide-to-setting-slos) - measures a set of interactions a user has with a service to achieve some end result.
-
-- What’s interesting about this kind of SLO, is that it measures an outcome that was influenced by possibly dozens of underlying services
-
-- A system of SLOs should help us identify cascading failures before it’s too late, as the underlying SLOs should fire before higher-level SLOs are affected
-
-- While some might say this is at odds with setting different thresholds on the top-level SLO, I disagree - because the top-level SLOs are/should be the slowest to move as a result of HA/redundancies within the system. It’s when those redundancies are giving out, we need to be very afraid.
-
-### Error Budget
-
-The Error Budget determines risk tolerance. When the budget is depleted (nearing 0%), reliability should be prioritized, which often results in:
-
-- freeze feature releases
-
-- prioritize postmortem items
-
-- improve automation over human toil
-
-- improve monitoring and observability
-
-- consult/collaborate with SRE
-
-When an Error Budget is abundant (remaining error budget > 0%), velocity should be prioritized, which results in:
-
-- release new features
-
-- expected system changes
-
-- try risky (but valuable) experiments
-
-<img src="/assets/refarch/image-20211006-041558.png" /><br/>
 
 #### Implementation
 
-SLOs Datadog Setup Page: [https://app.datadoghq.com/slo](https://app.datadoghq.com/slo?_gl=1*w89f70*_ga*OTkwNTc4OTY1LjE2MjYzMDAyMjI.*_ga_KN80RDFSQK*MTYzMzM3ODc3Mi4yOC4wLjE2MzMzNzg3NzIuMA) and terraform provider: [https://registry.terraform.io/providers/DataDog/datadog/latest/docs/reference/service_level_objective](https://registry.terraform.io/providers/DataDog/datadog/latest/docs/reference/service_level_objective)
+[Datadog's SLO Page](https://app.datadoghq.com/slo/manage) and [Terraform resource](https://registry.terraform.io/providers/DataDog/datadog/latest/docs/reference/service_level_objective)
 
 We should have multiple early indicators (aka thresholds) for when the SLO is in jeopardy: e.g. when 10%, 25%, 50%, 75% of the error budget is exhausted.
 
-- 99.9 = target
+<blockquote>
+  **Target**: 99.9% Uptime<br/>
+  <img src="/assets/refarch/image-20211006-041558.png" width={"40%"}/><br/>
+  **Error Budget**: 0.10 <br/>
+  **“...at this rate, you’ll exhaust the error budget (violate the SLO) in X time.”**
 
-- 1 - 99.9 = error budget = 0.10
-
-- “...at this rate, you’ll exhaust the error budget (violate the SLO) in X time.”
+</blockquote>
 
 Every monitor (SLI) that influences a given SLO should share a common tag value (E.g. `slo:myapp`) with the SLO. In other words, the SLO should be tagged `slo:myapp` and the monitors (SLI) corresponding to that (the _golden signals)_ should also then be tagged `slo:myapp`.
 
@@ -320,7 +309,7 @@ Datadog SLOs are implemented on a rolling window, while SLAs are may be tied to 
 
 :::
 
-```
+```hcl
 # Create a new Datadog service level objective
 resource "datadog_service_level_objective" "foo" {
   name        = "Example Metric SLO"
@@ -362,113 +351,81 @@ resource "datadog_service_level_objective" "foo" {
 }
 ```
 
-Also see: SLO status corrections, SLO replays
-
 Questions:
 
 ### Dashboards
 
 - Only SLOs are on the SLO dashboard
-
 - A dashboard must exist that aggregates all SLOs in one place, group logically by some service
-
 <img src="/assets/refarch/image-20211007-052902.png" /><br/>
-
 - Each widget displays an SLO with the remaining error budget.
 
 ## FAQ
 
 - **Where is the line drawn between OpsGenie and Datadog?**
-
-- Datadog is only responsible for monitoring and raising alerts tagged with appropriate tags (priority, service, severity, etc)
-
-- The OpsGenie configuration should be thought of as mostly static and it only operates on tags. The OpsGenie configuration should only change when Teams and Escalations change, or when new services are added that need to be associated with teams.
-
-- Everything else should be tag-driven, so that behaviors are regulated almost entirely from within Datadog simply by tagging of alerts.
-
-- We should alert in OpsGenie if an alert doesn’t match any rules, as it’s improperly categorized with tags
-
-- **What events would ever go directly into OpsGenie and not Datadog?**
-
-- Datadog SaaS Issues
-
-- :question_mark: Aws Cloudwatch Metric Alarms (Currently CT → CW → SNS ?→ DD Event)
-
+  - Datadog is only responsible for monitoring and raising alerts tagged with appropriate tags (priority, service, severity, etc)
+  - The OpsGenie configuration should be thought of as mostly static and it only operates on tags. The OpsGenie configuration should only change when Teams and Escalations change, or when new services are added that need to be associated with teams.
+  - Everything else should be tag-driven, so that behaviors are regulated almost entirely from within Datadog simply by tagging of alerts.
+  - We should alert in OpsGenie if an alert doesn’t match any rules, as it’s improperly categorized with tags
 
 - **How to visualize error budgets and burn rate?**
-
-- [https://docs.datadoghq.com/dashboards/widgets/slo/#setup](https://docs.datadoghq.com/dashboards/widgets/slo/#setup)
-
-- [https://docs.datadoghq.com/monitors/service_level_objectives/error_budget/#overview](https://docs.datadoghq.com/monitors/service_level_objectives/error_budget/#overview)
-
-- [https://docs.datadoghq.com/monitors/guide/slo-checklist/](https://docs.datadoghq.com/monitors/guide/slo-checklist/)
+  - [Using Datadogs SLO Summary](https://docs.datadoghq.com/dashboards/widgets/slo/#setup)
+  - [Datadog Error Budget Alerts](https://docs.datadoghq.com/monitors/service_level_objectives/error_budget/#overview)
+  - [SLO Checklist](https://docs.datadoghq.com/monitors/guide/slo-checklist/)
 
 ## References
+### Datadog:
+- [Track the status of all your SLOs in Datadog](https://www.datadoghq.com/blog/slo-monitoring-tracking/)
+- [Best practices for managing your SLOs with Datadog](https://www.datadoghq.com/blog/define-and-manage-slos/)
+- [Datadog Picking good SLIs](https://www.datadoghq.com/blog/establishing-service-level-objectives/#picking-good-slis)
+- [DataDog Learning Center](https://learn.datadoghq.com/)
+- Video: [Error budgets for SLOs](https://www.datadoghq.com/videos/solving-reliability-fears-with-service-level-objectives/#error-budgets-for-slos)
 
--  [https://devops.com/sres-stop-asking-your-product-managers-for-slos/?utm_source=pocket_mylist](https://devops.com/sres-stop-asking-your-product-managers-for-slos/?utm_source=pocket_mylist)
+### Google SRE:
+- [Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
+- [Setting SLOs: a step-by-step guide](https://cloud.google.com/blog/products/management-tools/practical-guide-to-setting-slos)
+- [SRE at Google: Our complete list of CRE life lessons](https://cloud.google.com/blog/products/devops-sre/sre-at-google-our-complete-list-of-cre-life-lessons)
 
-- [https://cloudplatform.googleblog.com/2018/07/sre-fundamentals-slis-slas-and-slos.html?utm_source=pocket_mylist](https://cloudplatform.googleblog.com/2018/07/sre-fundamentals-slis-slas-and-slos.html?utm_source=pocket_mylist)
-
-- [https://bravenewgeek.com/microservice-observability-part-1-disambiguating-observability-and-monitoring/](https://bravenewgeek.com/microservice-observability-part-1-disambiguating-observability-and-monitoring/?utm_source=pocket_mylist)
-
-- [https://www.datadoghq.com/blog/slo-monitoring-tracking/](https://www.datadoghq.com/blog/slo-monitoring-tracking/)
-
-- [https://www.datadoghq.com/blog/define-and-manage-slos/](https://www.datadoghq.com/blog/define-and-manage-slos/)
-
-- [https://sre.google/sre-book/monitoring-distributed-systems/](https://sre.google/sre-book/monitoring-distributed-systems/)
-
-- [https://cloud.google.com/blog/products/management-tools/practical-guide-to-setting-slos](https://cloud.google.com/blog/products/management-tools/practical-guide-to-setting-slos)
-
-- [https://learn.datadoghq.com/](https://learn.datadoghq.com/)
-
-- [https://sourcelevel.io/blog/5-metrics-engineering-managers-can-extract-from-pull-requests](https://sourcelevel.io/blog/5-metrics-engineering-managers-can-extract-from-pull-requests)
-
-- [https://harness.io/blog/continuous-integration-performance-metrics/](https://harness.io/blog/continuous-integration-performance-metrics/)
-
-- [https://tanzu.vmware.com/content/blog/slis-and-error-budgets-what-these-terms-mean-and-how-they-apply-to-your-platform-monitoring-strategy](https://tanzu.vmware.com/content/blog/slis-and-error-budgets-what-these-terms-mean-and-how-they-apply-to-your-platform-monitoring-strategy)
-
-- [https://newrelic.com/blog/best-practices/best-practices-for-setting-slos-and-slis-for-modern-complex-systems](https://newrelic.com/blog/best-practices/best-practices-for-setting-slos-and-slis-for-modern-complex-systems)
-
-- [https://cloud.google.com/blog/products/devops-sre/sre-at-google-our-complete-list-of-cre-life-lessons](https://cloud.google.com/blog/products/devops-sre/sre-at-google-our-complete-list-of-cre-life-lessons)
-
-- [https://www.datadoghq.com/blog/establishing-service-level-objectives/#picking-good-slis](https://www.datadoghq.com/blog/establishing-service-level-objectives/#picking-good-slis)
-
-- Video: [https://www.datadoghq.com/videos/solving-reliability-fears-with-service-level-objectives/#error-budgets-for-slos](https://www.datadoghq.com/videos/solving-reliability-fears-with-service-level-objectives/#error-budgets-for-slos)
+### Blogs:
+- [SREs: Stop Asking Your Product Managers for SLOs](https://devops.com/sres-stop-asking-your-product-managers-for-slos/?utm_source=pocket_mylist)
+- [SRE fundamentals: SLIs, SLAs and SLOs](https://cloudplatform.googleblog.com/2018/07/sre-fundamentals-slis-slas-and-slos.html?utm_source=pocket_mylist)
+- [Microservice Observability, Part 1: Disambiguating Observability and Monitoring](https://bravenewgeek.com/microservice-observability-part-1-disambiguating-observability-and-monitoring/?utm_source=pocket_mylist)
+- [5 metrics Engineering Managers can extract from Pull Requests](https://sourcelevel.io/blog/5-metrics-engineering-managers-can-extract-from-pull-requests)
+- [Metrics to Improve Continuous Integration Performance](https://harness.io/blog/continuous-integration-performance-metrics/)
+- [SLIs and Error Budgets: What These Terms Mean and How They Apply to Your Platform Monitoring Strategy](https://tanzu.vmware.com/content/blog/slis-and-error-budgets-what-these-terms-mean-and-how-they-apply-to-your-platform-monitoring-strategy)
+- [SLOs and SLIs best practices for systems](https://newrelic.com/blog/best-practices/best-practices-for-setting-slos-and-slis-for-modern-complex-systems)
 
 ## Appendix
 
 #### Golden Signals Workbook
 
-|                                    | **Golden Signals**                                                       |
-| ---------------------------------- | ------------------------------------------------------------------------ |
-| **Services**                       | **Latency**                                                              | **Traffic** | **Errors** | **Saturation**
-| -----                              | -----                                                                    | ----- | ----- | -----
-| **Platform Owners**                |                                                                          |
-| Kubernetes Cluster: Pod Scheduling |                                                                          |
-| Kubernetes Cluster: Capacity       |                                                                          | Healthy Nodes / <br/><br/>Total Nodes online
-| Application Deployments            | Time to Deploy / <br/>Total time of                                      | Number of Successful Deployments / <br/><br/>Total number of Deployments | 1 - (Unsuccessful Deployments / <br/>       Total Deployments) | Total Time to Deploy in Seconds per Duration / <br/>Seconds in Duration (e.g. 86400 = 1 day)
-| AWS Spend                          |                                                                          |
-| **Security & Compliance**          |                                                                          |
-|                                    | Time to Acknowledge<br/><br/> Time to fix                                |  | False Positives<br/>Number of Security Vulnerabilities
-|                                    |                                                                          |
-| **Development & PM**               |                                                                          |
-| Pull Request Throughput            | Time to Close or Merge PR / <br/>???                                     | 1 - (Number of Open PRs / <br/>       Total Number of PRs) | PRs Open with Tests Passing / <br/>Total PRs Open | 1 - (PRs Open / <br/>       Max Number of PRs Acceptable)
-|                                    |                                                                          |
-|                                    |                                                                          |
-|                                    |                                                                          |
-|                                    |                                                                          |
-| Sprint Throughput                  | Total Number of Sprints to Complete Issues / <br/>Total Number of Issues | Issues Transitioned to Done / <br/>Total Issues in Sprint | Bugs Added to Active Sprint / <br/>Total Issues in Sprint | Total Issues Not Completed / <br/><br/>Total Issues in Sprint
-|                                    |                                                                          |
-| **Microservice / Web Application** |                                                                          |
-| HTTP Requests                      |                                                                          |  |  | Notes: INFO, DEBUG log level alerts relative to all alerts.
-| Transactions                       |                                                                          |
-| Synthetic Requests                 |                                                                          |
-| **Customer Experience**            |                                                                          |
-|                                    |                                                                          |
-|                                    |                                                                          |
-| **CI/CD and Release Management**   |                                                                          |
-| Lead Time To Deploy                |                                                                          |
-| Code Coverage                      |                                                                          |
-| Test Coverage                      |                                                                          |
-| GitHub Action Runs                 | Time to start build                                                      |
+|                                    | **Golden Signals**                                                       |                                                                          |                                                                |                                                                                              |
+|------------------------------------|--------------------------------------------------------------------------|--------------------------------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| **Services**                       | **Latency**                                                              | **Traffic**                                                              | **Errors**                                                     | **Saturation**                                                                               |
+|                                    |                                                                          |                                                                          |                                                                |                                                                                              |
+| **Platform Owners**                |                                                                          |                                                                          |                                                                |                                                                                              |
+| Kubernetes Cluster: Pod Scheduling |                                                                          |                                                                          |                                                                |                                                                                              |
+| Kubernetes Cluster: Capacity       |                                                                          | Healthy Nodes / <br/>Total Nodes online                                  |                                                                |                                                                                              |
+| Application Deployments            | Time to Deploy / <br/>Total time of                                      | Number of Successful Deployments / <br/><br/>Total number of Deployments | 1 - (Unsuccessful Deployments / <br/>       Total Deployments) | Total Time to Deploy in Seconds per Duration / <br/>Seconds in Duration (e.g. 86400 = 1 day) |
+| AWS Spend                          |                                                                          |                                                                          |                                                                |                                                                                              |
+|                                    |                                                                          |                                                                          |                                                                |                                                                                              |
+| **Security & Compliance**          |                                                                          |                                                                          |                                                                |                                                                                              |
+|                                    | Time to Acknowledge<br/><br/> Time to fix                                |                                                                          | False Positives<br/>Number of Security Vulnerabilities         |                                                                                              |
+|                                    |                                                                          |                                                                          |                                                                |                                                                                              |
+| **Development & PM**               |                                                                          |                                                                          |                                                                |                                                                                              |
+| Pull Request Throughput            | 1 - (Time to Close or Merge PR /<br/> 1 Sprint)                          | 1 - (Number of Open PRs / <br/>       Total Number of PRs)               | PRs Open with Tests Passing / <br/>Total PRs Open              | 1 - (PRs Open / <br/>       Max Number of PRs Acceptable)                                    |
+| Sprint Throughput                  | Total Number of Sprints to Complete Issues / <br/>Total Number of Issues | Issues Transitioned to Done / <br/>Total Issues in Sprint                | Bugs Added to Active Sprint / <br/>Total Issues in Sprint      | Total Issues Not Completed / <br/><br/>Total Issues in Sprint                                |
+|                                    |                                                                          |                                                                          |                                                                |                                                                                              |
+| **Microservice / Web Application** |                                                                          |                                                                          |                                                                |                                                                                              |
+| HTTP Requests                      |                                                                          |                                                                          |                                                                | Notes: INFO, DEBUG log level alerts relative to all alerts.                                  |
+| Transactions                       |                                                                          |                                                                          |                                                                |                                                                                              |
+| Synthetic Requests                 |                                                                          |                                                                          |                                                                |                                                                                              |
+|                                    |                                                                          |                                                                          |                                                                |                                                                                              |
+| **Customer Experience**            |                                                                          |                                                                          |                                                                |                                                                                              |
+|                                    |                                                                          |                                                                          |                                                                |                                                                                              |
+| **CI/CD and Release Management**   |                                                                          |                                                                          |                                                                |                                                                                              |
+| Lead Time To Deploy                |                                                                          |                                                                          |                                                                |                                                                                              |
+| Code Coverage                      |                                                                          |                                                                          |                                                                |                                                                                              |
+| Test Coverage                      |                                                                          |                                                                          |                                                                |                                                                                              |
+| GitHub Action Runs                 | Time to start build                                                      |                                                                          |                                                                |                                                                                              |
 

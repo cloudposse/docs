@@ -5,6 +5,9 @@ sidebar_label: Philips Labs Action Runners
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
 <Intro>
   If we are not deploying EKS, it's not worth the additional effort to set up Self-Hosted runners on EKS. Instead, we
@@ -32,134 +35,155 @@ hand the setup back to Cloud Posse. Then Cloud Posse can deploy the component an
 customer will then need to add the webhook to the GitHub App and ensure the App is installed to all relevant GitHub
 repositories.
 
-Follow the guide with the upstream module,
-[philips-labs/terraform-aws-github-runner](https://github.com/philips-labs/terraform-aws-github-runner#setup-github-app-part-1),
-or follow the steps below.
+Follow the guide with the upstream module, [philips-labs/terraform-aws-github-runner](https://github.com/philips-labs/terraform-aws-github-runner#setup-github-app-part-1), or follow the steps below.
 
-### Create the GitHub App
+<Steps>
+  <Step>
+    ### <StepNumber/> Create the GitHub App
 
-:::info Customer Requirement
+    :::info Customer Requirement
 
-This step requires access to the GitHub Organization. Customers will need to create this GitHub App in Jumpstart
-engagements.
+    This step requires access to the GitHub Organization. Customers will need to create this GitHub App in Jumpstart
+    engagements.
 
-:::
+    :::
 
-1. Create a new GitHub App
-1. Choose a name
-1. Choose a website (mandatory, not required for the module).
-1. Disable the webhook for now (we will configure this later or create an alternative webhook).
-1. Add the following permission:
+    <Steps>
+      1. Create a new GitHub App
+      1. Choose a name
+      1. Choose a website (mandatory, not required for the module).
+      1. Disable the webhook for now (we will configure this later or create an alternative webhook).
+      1. Add the following permission:
+          ```diff
+          # Required Permissions for Repository Runners:
+          ## Permissions for all runners:
+          ### Repository:
+          + Actions: Read-only (check for queued jobs)
+          + Checks: Read-only (receive events for new builds)
+          + Metadata: Read-only (default/required)
 
-```diff
-# Required Permissions for Repository Runners:
-## Permissions for all runners:
-### Repository:
-+ Actions: Read-only (check for queued jobs)
-+ Checks: Read-only (receive events for new builds)
-+ Metadata: Read-only (default/required)
+          ## Permissions for repository-level runners only:
+          ### Repository:
+          + Administration: Read & write (to register runner)
 
-## Permissions for repository-level runners only:
-### Repository:
-+ Administration: Read & write (to register runner)
+          ## Permissions for organization-level runners only:
+          ### Organization
+          + Self-hosted runners: Read & write (to register runner)
+          ```
 
-## Permissions for organization-level runners only:
-### Organization
-+ Self-hosted runners: Read & write (to register runner)
-```
+      1. Generate a Private Key
+    </Steps>
 
-6. Generate a Private Key
+    If you are working with Cloud Posse, upload this Private Key and GitHub App ID to 1Password and inform Cloud Posse.
+    Otherwise, continue with the component deployment in `core-use1-auto`.
+  </Step>
 
-If you are working with Cloud Posse, upload this Private Key and GitHub App ID to 1Password and inform Cloud Posse.
-Otherwise, continue with the component deployment in `core-use1-auto`.
+  <Step>
+    ### <StepNumber/> Deploy the `philips-labs-github-runner` Component
 
-### Deploy the `philips-labs-github-runner` Component
+    :::tip
 
-:::tip
+    This step does _not_ require access to the GitHub Organization. Cloud Posse will run this deployment for Jumpstart
+    engagements.
 
-This step does _not_ require access to the GitHub Organization. Cloud Posse will run this deployment for Jumpstart
-engagements.
+    :::
 
-:::
+    Run the `deploy/pl-github-runners` workflow with `atmos` to write the GitHub App information to the `core-use1-auto`
+    SSM account and deploy the component.
 
-Run the `deploy/pl-github-runners` workflow with `atmos` to write the GitHub App information to the `core-use1-auto`
-SSM account and deploy the component.
+    <AtmosWorkflow workflow="deploy/pl-github-runners" fileName="github" />
 
-<AtmosWorkflow workflow="deploy/pl-github-runners" fileName="github" />
+    This is the same as the following steps:
 
-This is the same as the following steps:
+    <Steps>
+      1. Upload the PEM file key to the specified ssm path, `/pl-github-runners/key`, in `core-use1-auto` as a base64
+        encoded string.
+      2. Upload the GitHub App ID to the specified ssm path, `/pl-github-runners/id`, in `core-use1-auto`.
+      3. Deploy the `philips-labs-github-runners` component to `core-use1-auto`. Run this with the following:
 
-1. Upload the PEM file key to the specified ssm path, `/pl-github-runners/key`, in `core-use1-auto` as a base64
-   encoded string.
-2. Upload the GitHub App ID to the specified ssm path, `/pl-github-runners/id`, in `core-use1-auto`.
-3. Deploy the `philips-labs-github-runners` component to `core-use1-auto`. Run this with the following:
+          ```console
+          atmos terraform apply philips-labs-github-runners -s core-use1-auto
+          ```
 
-```console
-atmos terraform apply philips-labs-github-runners -s core-use1-auto
-```
+          Once the component is deployed, save the webhook URL and secret in 1Password. The endpoint can be found with the
+          following:
 
-Once the component is deployed, save the webhook URL and secret in 1Password. The endpoint can be found with the
-following:
+          ```console
+          atmos terraform output philips-labs-github-runners -s core-use1-auto 'webhook'
+          ```
+    </Steps>
+  </Step>
 
-```console
-atmos terraform output philips-labs-github-runners -s core-use1-auto 'webhook'
-```
+  <Step>
+    ### <StepNumber/> Add the Webhook to the GitHub App
 
-### Add the Webhook to the GitHub App
+    :::info Customer Requirement
 
-:::info Customer Requirement
+    This step requires access to the GitHub Organization. Customers will need to finalize the GitHub App in Jumpstart
+    engagements.
 
-This step requires access to the GitHub Organization. Customers will need to finalize the GitHub App in Jumpstart
-engagements.
+    :::
 
-:::
+    Now that the component is deployed and the webhook has been created, add that webhook to the GitHub App. Both the
+    webhook URL and secret should now be stored in 1Password. If not, you can retrieve these values from the output of the
+    `philips-labs-github-runners` component in `core-use1-auto` as described in the previous step.
 
-Now that the component is deployed and the webhook has been created, add that webhook to the GitHub App. Both the
-webhook URL and secret should now be stored in 1Password. If not, you can retrieve these values from the output of the
-`philips-labs-github-runners` component in `core-use1-auto` as described in the previous step.
+    <Steps>
+      1. Open the GitHub App created in
+        [Create the GitHub App above](/layers/github-actions/philips-labs-github-runners/#create-the-github-app)
+      1. Enable the webhook.
+      1. Provide the webhook url, should be part of the output of terraform.
+      1. Provide the webhook secret (`terraform output -raw <NAME_OUTPUT_VAR>`).
+      1. In the _"Permissions & Events"_ section and then _"Subscribe to Events"_ subsection, check _"Workflow Job"_.
 
-1. Open the GitHub App created in
-   [Create the GitHub App above](/layers/github-actions/philips-labs-github-runners/#create-the-github-app)
-1. Enable the webhook.
-1. Provide the webhook url, should be part of the output of terraform.
-1. Provide the webhook secret (`terraform output -raw <NAME_OUTPUT_VAR>`).
-1. In the _"Permissions & Events"_ section and then _"Subscribe to Events"_ subsection, check _"Workflow Job"_.
+      1. Ensure the webhook for the GitHub app is enabled and pointing to the output of the module.
+        - The endpoint can be found from `atmos terraform output philips-labs-github-runners -s core-use1-auto 'webhook'`
+    </Steps>
+  </Step>
 
-1. Ensure the webhook for the GitHub app is enabled and pointing to the output of the module.
-   - The endpoint can be found from `atmos terraform output philips-labs-github-runners -s core-use1-auto 'webhook'`
+  <Step>
+    ## <StepNumber/> Vendor Components
 
-## Vendor
+    Vendor in the necessary components with the following workflow:
 
-Vendor in the necessary components with the following workflow:
+    <AtmosWorkflow workflow="vendor" fileName="github" />
+  </Step>
 
-<AtmosWorkflow workflow="vendor" fileName="github" />
+  <Step>
+    ## <StepNumber/> Deploy the Philips Labs Runners
 
-## Deploy
+    :::info
 
-:::info
+    You can run all workflows at once in the right order with
 
-You can run all workflows at once in the right order with
+    <AtmosWorkflow workflow="all" fileName="github" />
 
-<AtmosWorkflow workflow="all" fileName="github" />
+    :::
+  </Step>
 
-:::
+  <Step>
+    ### <StepNumber/> GitHub OIDC Provider
 
-### GitHub OIDC Provider
+    First deploy the GitHub OIDC provider to all accounts where we want to grant GitHub access. The typical list of accounts
+    is included with the `deploy/github-oidc-provider` workflow; run the following with `SuperAdmin`:
 
-First deploy the GitHub OIDC provider to all accounts where we want to grant GitHub access. The typical list of accounts
-is included with the `deploy/github-oidc-provider` workflow; run the following with `SuperAdmin`:
+    <AtmosWorkflow workflow="deploy/github-oidc-provider" fileName="github" />
+  </Step>
 
-<AtmosWorkflow workflow="deploy/github-oidc-provider" fileName="github" />
+  <Step>
+    ### <StepNumber/> GitHub Runners
 
-### GitHub Runners
+    To deploy the self-hosted runners themselves, first verify [the GitHub App requirement](#Requirements) is complete
+    including both SSM parameters. Next we will deploy the token rotator and then the runners themselves.
 
-To deploy the self-hosted runners themselves, first verify [the GitHub App requirement](#Requirements) is complete
-including both SSM parameters. Next we will deploy the token rotator and then the runners themselves.
+    <AtmosWorkflow workflow="deploy/github-runners" fileName="github" />
 
-<AtmosWorkflow workflow="deploy/github-runners" fileName="github" />
+    If all goes well, you should now see self-hosted runners registered to your infrastructure repository in GitHub. If not,
+    read through the attached [FAQs](#FAQ).
+  </Step>
 
-If all goes well, you should now see self-hosted runners registered to your infrastructure repository in GitHub. If not,
-read through the attached [FAQs](#FAQ).
+
+</Steps>
 
 ## Usage
 
