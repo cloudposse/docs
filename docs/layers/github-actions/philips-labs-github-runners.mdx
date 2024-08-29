@@ -164,7 +164,7 @@ or follow the steps below.
       1. Provide the webhook url, should be part of the output of terraform.
       1. Provide the webhook secret (`terraform output -raw <NAME_OUTPUT_VAR>`).
       1. In the _"Permissions & Events"_ section and then _"Subscribe to Events"_ subsection, check _"Workflow Job"_.
-      1. Ensure the webhook for the GitHub app is enabled and pointing to the output of the module. The endpoint can be found from `atmos terraform output philips-labs-github-runners -s core-use1-auto 'webhook'`
+      1. Ensure the webhook for the GitHub app is enabled and pointing to the output of the module. The endpoint can be found by running `atmos terraform output philips-labs-github-runners -s core-use1-auto 'webhook'`
     </Steps>
 
   </Step>
