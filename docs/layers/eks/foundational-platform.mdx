@@ -16,7 +16,7 @@ We first deploy the foundation for the cluster. The `eks/cluster` component depl
 including Auth Config mapping. We do not deploy any nodes with the cluster initially. Then once EKS is available, we
 connect to the cluster and start deploying resources. First is Karpenter. We deploy the Karpenter chart on a Fargate
 node and the IAM service role to allow Karpenter to purchase Spot Instances. Karpenter is the only resources that will
-be deployed to Fargate. Then we deploy Karpenter Provisioners using the CRD created by the initial Karpenter component.
+be deployed to Fargate. Then we deploy Karpenter Node Pools using the CRD created by the initial Karpenter component.
 These provisioners will automatically launch and scale the cluster to meet our demands. Next we deploy `idp-roles` to
 manage custom roles for the cluster, and deploy `metrics-server` to provide access to resource metrics.
 
@@ -49,7 +49,7 @@ those implementations in follow up topics. For details, see the
   EKS Cluster, including IAM role to Kubernetes Auth Config mapping.
 - [`eks/karpenter`](/components/library/aws/eks/karpenter/): Installs the Karpenter chart on the EKS cluster and
   prepares the environment for provisioners.
-  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-node-pool/): Deploys Karpenter Provisioners
+  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-node-pool/): Deploys Karpenter Node Pools
     using CRDs made available by `eks/karpenter`
   - [`iam-service-linked-roles`](/components/library/aws/iam-service-linked-roles/): Provisions
     [IAM Service-Linked](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html) roles. These
