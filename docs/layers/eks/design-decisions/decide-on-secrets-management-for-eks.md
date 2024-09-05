@@ -6,6 +6,10 @@ description: Decide on the secrets management strategy for EKS.
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+<Intro>
+We need to decide on the secrets management strategy for EKS. We prefer storing secrets in AWS SSM Parameter Store, but we need some way to pull these secrets into Kubernetes.
+</Intro>
+
 ## Problem
 
 We need someway to store and manage secrets for the applications running on EKS clusters. We have a few options to choose from.
@@ -22,13 +26,13 @@ Cloud Posse historically recommends using External Secrets Operator with AWS SSM
 
 Use [AWS Secrets and Configuration Provider (ASCP) for the Kubernetes Secrets Store CSI Driver](https://docs.aws.amazon.com/secretsmanager/latest/userguide/integrating_csi_driver.html). This option allows you to use AWS Secrets Manager secrets as Kubernetes secrets that can be accessed by Pods as environment variables or files mounted in the pods. The ASCP also works with [Parameter Store parameters](https://docs.aws.amazon.com/systems-manager/latest/userguide/integrating_csi_driver.html)
 
-To show secrets from Secrets Manager as files mounted in Amazon EKS pods, you can use the AWS Secrets and Configuration Provider (ASCP) for the Kubernetes Secrets Store CSI Driver. This option is more native to AWS.
-
 However, Cloud Posse does not have existing Terraform modules for this solution. We would need to build this support.
 
 ## Recommendation
 
-We have decided to use AWS Secrets Manager secrets with Kubernetes Secrets Store CSI Driver, since it's the AWS supported option. We will build the required Terraform component to support this solution.
+We recommend using the External Secrets Operator with AWS SSM Parameter Store. This is a well-tested solution that we have used in the past. We have existing Terraform modules to support this solution.
+
+However, we are in the process of evaluating the AWS Secrets Manager secrets with Kubernetes Secrets Store CSI Driver solution. This is the AWS supported option and may be a better long-term solution. We will build the required Terraform component to support this solution.
 
 ## Consquences
 
