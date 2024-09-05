@@ -28,6 +28,10 @@ Use [AWS Secrets and Configuration Provider (ASCP) for the Kubernetes Secrets St
 
 However, Cloud Posse does not have existing Terraform modules for this solution. We would need to build this support.
 
+### Option 3: SOPS Operator
+
+Use [SOPS Operator](https://github.com/isindir/sops-secrets-operator) to manage secrets in Kubernetes. SOPS Operator is a Kubernetes operator that manages and stores sensitive information in Kubernetes secrets. It allows you to use SOPS to encrypt secrets and store them in Kubernetes secrets.
+
 ## Recommendation
 
 We recommend using the External Secrets Operator with AWS SSM Parameter Store. This is a well-tested solution that we have used in the past. We have existing Terraform modules to support this solution.
