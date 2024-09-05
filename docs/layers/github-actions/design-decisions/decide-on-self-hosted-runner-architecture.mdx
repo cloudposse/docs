@@ -13,8 +13,13 @@ Decide on how to operate self-hosted runners that are used to run GitHub Actions
 
 ## Problem
 
-We support multiple options for deploying self-hosted runners. We can deploy runners with EKS, Philips Labs, or with an
-ASG. For this decision, we will focus on the placement of the runners themselves.
+When using GitHub Actions, you have the option of both GitHub Cloud-hosted and self-hosted runners, which can be used together. However, there are cases where self-hosted runners are essential. For example, if you’re using GitOps, private runners are needed to access resources inside a VPC, such as databases, Kubernetes API endpoints, and Kafka servers.
+
+While self-hosted runners work well for private infrastructure, they’re not suitable for public or open-source repositories, as they can expose sensitive resources. If your organization contributes to open source, this must be considered when deciding on a runner strategy.
+
+Your approach to self-hosted runners depends on your infrastructure. If you use Kubernetes, it’s often best to run your runners on Kubernetes. If you rely on ECS or Lambdas, you’ll want to avoid unnecessary Kubernetes dependencies and use a different hosting method for your runners.
+
+For Kubernetes-based setups, proper node pool configuration with Karpenter is key to maintaining stability and ensuring effective auto-scaling with spot and on-demand instances. We offer several options for deploying self-hosted runners, including EKS, Philips Labs’ solution, or using an Auto Scaling Group (ASG). This decision focuses on the type, placement and management of the runners.
 
 ## Considered Options
 
