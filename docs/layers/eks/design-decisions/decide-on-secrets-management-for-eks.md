@@ -12,7 +12,9 @@ We need to decide on the secrets management strategy for EKS. We prefer storing 
 
 ## Problem
 
-We need someway to store and manage secrets for the applications running on EKS clusters. We have a few options to choose from.
+We aim to design our Kubernetes clusters to be disposable and ephemeral, treating them like cattle rather than pets. This influences how we manage secrets. Ideally, Kubernetes should not be the sole source of truth for secrets, though we still want to leverage Kubernetes’ native `Secret` resource. If the cluster experiences a failure, storing secrets exclusively within Kubernetes risks losing access to them. Additionally, keeping secrets only in Kubernetes limits integration with other services.
+
+To address this, several solutions allow secrets to be stored externally (as the source of truth) while still utilizing Kubernetes' `Secret` resources. These solutions, including some open-source tools and recent offerings from Amazon, enhance resilience and interoperability. Any approach must respect IAM permissions and ensure secure secret management for applications running on EKS. We have several options to consider that balance external secret storage with Kubernetes-native functionality.
 
 ### Option 1: External Secrets Operator
 
