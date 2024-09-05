@@ -57,4 +57,4 @@ However, we are in the process of evaluating the AWS Secrets Manager secrets wit
 
 ## Consquences
 
-We will build the `eks/secrets-store-csi-driver` component using the [Secrets Store CSI Driver](https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation)
+We will develop the `eks/secrets-store-csi-driver` component using the [Secrets Store CSI Driver](https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation)
