@@ -1,0 +1,10 @@
+[
+    {
+        "from": "/reference-architecture/REFARCH-313",
+        "to": "/layers/accounts"
+    },
+    {
+        "from": "/reference-architecture/REFARCH-56",
+        "to": "/layers/network/design-decisions/decide-on-primary-aws-region"
+    }
+]
