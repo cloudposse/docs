@@ -88,6 +88,12 @@ If we are not deploying EKS, it's not worth the additional effort to set up Self
 
 For more on this option, see the [Philips Labs GitHub Runner](https://philips-labs.github.io/terraform-aws-github-runner/) documentation.
 
+### Option 5: Managed Runners
+
+There are a number of services that offer managed runners. These still have the advantage over GitHub Cloud hosted runners as the can be managed within you private VPCs.
+
+One option to consider is [runs-on.com](https://runs-on.com/) which provides a very inexpensive option.
+
 ## Recommendation
 
 At this time Cloud Posse recommends the Actions Runner Controller on EKS (`eks/actions-runner-controller`) if you are using EKS and the Philips Labs Runners (`philips-labs-github-runners`) if you are not using EKS.
