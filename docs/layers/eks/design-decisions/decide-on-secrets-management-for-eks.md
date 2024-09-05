@@ -26,7 +26,7 @@ To show secrets from Secrets Manager as files mounted in Amazon EKS pods, you ca
 
 However, Cloud Posse does not have existing Terraform modules for this solution. We would need to build this support.
 
-## Solution
+## Recommendation
 
 We have decided to use AWS Secrets Manager secrets with Kubernetes Secrets Store CSI Driver, since it's the AWS supported option. We will build the required Terraform component to support this solution.
 
