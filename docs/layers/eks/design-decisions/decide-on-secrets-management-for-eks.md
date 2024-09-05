@@ -20,7 +20,7 @@ Cloud Posse historically recommends using External Secrets Operator with AWS SSM
 
 ### Option 2: AWS Secrets Manager secrets with Kubernetes Secrets Store CSI Driver
 
-Use [AWS Secrets Manager secrets with Kubernetes Secrets Store CSI Driver](https://docs.aws.amazon.com/secretsmanager/latest/userguide/integrating_csi_driver.html). This option allows you to use AWS Secrets Manager secrets as Kubernetes secrets, environment variables inside the pods, or files mounted in the pods.
+Use [AWS Secrets and Configuration Provider (ASCP) for the Kubernetes Secrets Store CSI Driver](https://docs.aws.amazon.com/secretsmanager/latest/userguide/integrating_csi_driver.html). This option allows you to use AWS Secrets Manager secrets as Kubernetes secrets that can be accessed by Pods as environment variables or files mounted in the pods. The ASCP also works with [Parameter Store parameters](https://docs.aws.amazon.com/systems-manager/latest/userguide/integrating_csi_driver.html)
 
 To show secrets from Secrets Manager as files mounted in Amazon EKS pods, you can use the AWS Secrets and Configuration Provider (ASCP) for the Kubernetes Secrets Store CSI Driver. This option is more native to AWS.
 
