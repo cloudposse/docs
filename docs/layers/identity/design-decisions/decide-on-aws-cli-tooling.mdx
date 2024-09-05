@@ -1,0 +1,49 @@
+---
+title: "Decide on AWS CLI Login"
+sidebar_label: "AWS CLI Login""
+description: Decide on a CLI tool that enables AWS login and credentials via SAML IDP for CLI and web console access.
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import TaskList from '@site/src/components/TaskList';
+
+<Intro>
+Decide on a CLI tool that enables AWS login and credentials via SAML IDP for CLI and web console access.
+</Intro>
+
+## Problem
+
+Users need some way to login into AWS when using the CLI or applying Terraform changes. We have AWS Identity Center or AWS SAML setup for an AWS organization, but we need a way to login to AWS locally.
+
+There are a number of tools that can help with this, but we need to decide on one.
+
+### Option 1: Use the AWS CLI
+
+First of all, we could use the AWS CLI to login to AWS. This is the most basic way to login to AWS, but it requires a lot of manual steps and is not very user-friendly.
+
+### Option 2: Use Leapp
+
+Alternatively we could use Leapp by Noovolari. This is a tool that allows you to login to AWS using SAML and then automatically generates temporary credentials for you to use in the CLI. Once setup, Leapp makes it very easy to login to AWS and use the CLI, assume roles across your accounts with Role Chaining pre-configured, and even launch directly into the AWS web console.
+
+Leapp historically has been recommended by Cloud Posse and a popular choice for this use case, but recently Noovolari has announced that they are shutting down the service. The [leapp](https://github.com/Noovolari/leapp) project itself will continue to be supported, but the paid option will be shut down. This presents bad optics for the project and may make it less attractive to use for future customers.
+
+Plus Leapp requires several manual steps on initial setup, which has been a pain point for some users. See [How to Login to AWS (with Leapp)](/layers/identity/how-to-log-into-aws/) for more on the required setup and usage.
+
+Futhermore, Leapp requires setup steps outside of our Geodesic containers, which makes it less convenient to use and leads to user configuration errors.
+
+### Option 3: Use `aws-sso-cli`
+
+The most recent option we've come across is [aws-sso-cli](https://github.com/synfinatic/aws-sso-cli). This is a CLI tool that allows you to login to AWS using SAML and then automatically generates temporary credentials for you to use in the CLI. It is similar to Leapp, and is also open source and free to use. It also has a number of features that make it easier to use, such as the ability to login to multiple AWS accounts and roles at the same time.
+
+One potential benefit of `aws-sso-cli` is that it is a CLI tool, which means it could likely be integrated into our Geodesic containers. This would make it easier for users to login to AWS and use the CLI, and would reduce the risk of user configuration errors.
+
+Cloud Posse has not yet used this tool, but it looks promising and may be a good alternative to Leapp. We will need to evaluate it further to see if it meets our needs.
+
+### Option 4: Use a custom solution
+
+Finally we could build our own custom solution for logging into AWS. This would give us complete control over the process, but would require a lot of development effort and ongoing maintenance.
+
+## Solution
+
+Cloud Posse continues to recommend Leapp for now, but we will evaluate `aws-sso-cli` as a potential alternative.
