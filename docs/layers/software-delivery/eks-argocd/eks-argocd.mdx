@@ -8,6 +8,7 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Note from '@site/src/components/Note';
+import CollapsibleText from '@site/src/components/CollapsibleText';
 
 <Intro>
 Argo CD is an open-source declarative, GitOps continuous delivery tool for Kubernetes applications. It enables developers to manage and deploy applications on Kubernetes clusters using Git repositories as the source of truth for configuration and definitions. Argo CD follows the GitOps methodology, which means that the entire application configuration, including manifests, parameters, and even application state, is stored in a Git repository.
@@ -97,106 +98,105 @@ sequenceDiagram
 
 Application repository will create a deployment when a workflow is triggered and call the relevant shared workflow.
 
-<details>
-<summary>Deploy</summary>
+:::tip Latest Examples
+
+Check out our [example-app-on-eks](https://github.com/cloudposse-examples/app-on-eks-with-argocd) for the latest example of how to use ArgoCD with GitHub Actions.
+
+:::
 
 <Tabs queryString="workflow">
+  <TabItem value="feature" label="Feature">
+    <CollapsibleText type="medium">
+      ```yaml
+      # .github/workflows/feature-branch.yaml
+      name: Feature Branch
+      on:
+        pull_request:
+          branches: [ 'main' ]
+          types: [opened, synchronize, reopened, closed, labeled, unlabeled]
 
-<TabItem value="feature" label="Feature">
+      permissions:
+        pull-requests: write
+        deployments: write
+        id-token: write
+        contents: read
 
-```yaml
-# .github/workflows/feature-branch.yaml
-name: Feature Branch
-on:
-  pull_request:
-    branches: [ 'main' ]
-    types: [opened, synchronize, reopened, closed, labeled, unlabeled]
+      jobs:
+        do:
+          uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/feature-branch.yml@main
+          with:
+            organization: "${{ github.event.repository.owner.login }}"
+            repository: "${{ github.event.repository.name }}"
+            open: ${{ github.event.pull_request.state == 'open' }}
+            labels: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+            ref: ${{ github.event.pull_request.head.ref  }}
+          secrets:
+            github-private-actions-pat: "${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}"
+            registry: "${{ secrets.ECR_REGISTRY }}"
+            secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
+            ecr-region: "${{ secrets.ECR_REGION }}"
+            ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
+      ```
+    </CollapsibleText>
+  </TabItem>
+  <TabItem value="main" label="Main">
+    <CollapsibleText type="medium">
+      ```yaml
+      # .github/workflows/main-branch.yaml
+      name: Main Branch
+      on:
+        push:
+          branches: [ main ]
 
-permissions:
-  pull-requests: write
-  deployments: write
-  id-token: write
-  contents: read
+      permissions:
+        contents: write
+        id-token: write
 
-jobs:
-  do:
-    uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/feature-branch.yml@main
-    with:
-      organization: "${{ github.event.repository.owner.login }}"
-      repository: "${{ github.event.repository.name }}"
-      open: ${{ github.event.pull_request.state == 'open' }}
-      labels: ${{ toJSON(github.event.pull_request.labels.*.name) }}
-      ref: ${{ github.event.pull_request.head.ref  }}
-    secrets:
-      github-private-actions-pat: "${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}"
-      registry: "${{ secrets.ECR_REGISTRY }}"
-      secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
-      ecr-region: "${{ secrets.ECR_REGION }}"
-      ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
-```
+      jobs:
+        do:
+          uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/main-branch.yml@main
+          with:
+            organization: "${{ github.event.repository.owner.login }}"
+            repository: "${{ github.event.repository.name }}"
+          secrets:
+            github-private-actions-pat: "${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}"
+            registry: "${{ secrets.ECR_REGISTRY }}"
+            secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
+            ecr-region: "${{ secrets.ECR_REGION }}"
+            ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
+      ```
+    </CollapsibleText>
+  </TabItem>
+  <TabItem value="release" label="Release">
+    <CollapsibleText type="medium">
+      ```yaml
+      # .github/workflows/release.yaml
+      name: Release
+      on:
+        release:
+          types: [published]
 
-</TabItem>
+      permissions:
+        id-token: write
+        contents: write
 
-<TabItem value="main" label="Main">
-
-```yaml
-# .github/workflows/main-branch.yaml
-name: Main Branch
-on:
-  push:
-    branches: [ main ]
-
-permissions:
-  contents: write
-  id-token: write
-
-jobs:
-  do:
-    uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/main-branch.yml@main
-    with:
-      organization: "${{ github.event.repository.owner.login }}"
-      repository: "${{ github.event.repository.name }}"
-    secrets:
-      github-private-actions-pat: "${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}"
-      registry: "${{ secrets.ECR_REGISTRY }}"
-      secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
-      ecr-region: "${{ secrets.ECR_REGION }}"
-      ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
-```
-
-</TabItem>
-
-<TabItem value="release" label="Release">
-
-```yaml
-# .github/workflows/release.yaml
-name: Release
-on:
-  release:
-    types: [published]
-
-permissions:
-  id-token: write
-  contents: write
-
-jobs:
-  perform:
-    uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/release.yml@main
-    with:
-      organization: "${{ github.event.repository.owner.login }}"
-      repository: "${{ github.event.repository.name }}"
-      version: ${{ github.event.release.tag_name }}
-    secrets:
-      github-private-actions-pat: "${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}"
-      registry: "${{ secrets.ECR_REGISTRY }}"
-      secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
-      ecr-region: "${{ secrets.ECR_REGION }}"
-      ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
-```
-
-</TabItem>
+      jobs:
+        perform:
+          uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/release.yml@main
+          with:
+            organization: "${{ github.event.repository.owner.login }}"
+            repository: "${{ github.event.repository.name }}"
+            version: ${{ github.event.release.tag_name }}
+          secrets:
+            github-private-actions-pat: "${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}"
+            registry: "${{ secrets.ECR_REGISTRY }}"
+            secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
+            ecr-region: "${{ secrets.ECR_REGION }}"
+            ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
+      ```
+    </CollapsibleText>
+  </TabItem>
 </Tabs>
-</details>
 
 That workflow calls a Reusable Workflow, `cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd`, that is designed to deploy a
 dockerized application from ECR to EKS using ArgoCD specifically.
@@ -207,114 +207,110 @@ Hotfix workflows are designed to push changes directly to a released version in 
 
 In order to enable hotfix workflows, create two additional workflows and modify the existing release workflow. See each of the following workflows:
 
-<details>
-<summary>Hotfix Workflows</summary>
-
 <Tabs queryString="hotfix">
-<TabItem value="mixin" label="Release Branch">
+  <TabItem value="mixin" label="Release Branch">
+    Before running any hotfix workflows, we must first create release branches with any release. Modify the existing release workflow to include the `hotfix` job below.
+    <CollapsibleText type="medium">
+      ```yaml
+      # .github/workflows/release.yaml
+      name: Release
+      on:
+        release:
+          types: [published]
 
-Before running any hotfix workflows, we must first create release branches with any release. Modify the existing release workflow to include the `hotfix` job below.
+      permissions:
+        id-token: write
+        contents: write
 
-```yaml
-# .github/workflows/release.yaml
-name: Release
-on:
-  release:
-    types: [published]
+      jobs:
+        perform:
+        ...
 
-permissions:
-  id-token: write
-  contents: write
+        hotfix:
+          name: release / branch
+          uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/hotfix-mixin.yml@main
+          with:
+            version: ${{ github.event.release.tag_name }}
+      ```
+    </CollapsibleText>
+  </TabItem>
+  <TabItem value="branch" label="Hotfix Branch">
+    This `hotfix-branch.yaml` workflow will deploy a duplicate app in the _production_ cluster to a new namespace. We need to deploy to production to validate a hotfix directly for production.
 
-jobs:
-  perform:
-  ...
+    Deploy this workflow by creating a Pull Request into the a release branch and adding the `deploy` label.
 
-  hotfix:
-    name: release / branch
-    uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/hotfix-mixin.yml@main
-    with:
-      version: ${{ github.event.release.tag_name }}
-```
+    <CollapsibleText type="medium">
+      ```yaml
+      # .github/workflows/hotfix-branch.yaml
+      name: Hotfix Branch
+      on:
+        pull_request:
+          branches: [ 'release/**' ]
+          types: [opened, synchronize, reopened, closed, labeled, unlabeled]
 
-</TabItem>
-<TabItem value="branch" label="Hotfix Branch">
+      permissions:
+        pull-requests: write
+        deployments: write
+        id-token: write
+        contents: read
 
-This `hotfix-branch.yaml` workflow will deploy a duplicate app in the _production_ cluster to a new namespace. We need to deploy to production to validate a hotfix directly for production.
+      jobs:
+        do:
+          uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/hotfix-branch.yml@main
+          with:
+            organization: "${{ github.event.repository.owner.login }}"
+            repository: "${{ github.event.repository.name }}"
+            open: ${{ github.event.pull_request.state == 'open' }}
+            labels: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+            ref: ${{ github.event.pull_request.head.ref }}
+            path: deploy
+          secrets:
+            github-private-actions-pat: "${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}"
+            registry: "${{ secrets.ECR_REGISTRY }}"
+            secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
+            ecr-region: "${{ secrets.ECR_REGION }}"
+            ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
+      ```
+    </CollapsibleText>
+  </TabItem>
+  <TabItem value="release" label="Hotfix Release">
+    Once we've validated a Pull Request for a given hotfix, we can merge that change into the release branch. When changes are pushed to a release branch, the "Hotfix Release" workflow is triggered. _This workflow will deploy the given change directly to production_.
 
-Deploy this workflow by creating a Pull Request into the a release branch and adding the `deploy` label.
+    Before deploying, the workflow will create a minor version release and test it.
+    After the deployment, it will create a reintegration pull request to bring the hotfix back into the main branch and lower environments.
 
-```yaml
-# .github/workflows/hotfix-branch.yaml
-name: Hotfix Branch
-on:
-  pull_request:
-    branches: [ 'release/**' ]
-    types: [opened, synchronize, reopened, closed, labeled, unlabeled]
+    In order to enable the "Hotfix Release" workflow, add the following:
 
-permissions:
-  pull-requests: write
-  deployments: write
-  id-token: write
-  contents: read
+    <CollapsibleText type="medium">
+      ```yaml
+      # .github/workflows/hotfix-release.yaml
+      name: Hotfix Release
+      on:
+        push:
+          branches: [ 'release/**' ]
 
-jobs:
-  do:
-    uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/hotfix-branch.yml@main
-    with:
-      organization: "${{ github.event.repository.owner.login }}"
-      repository: "${{ github.event.repository.name }}"
-      open: ${{ github.event.pull_request.state == 'open' }}
-      labels: ${{ toJSON(github.event.pull_request.labels.*.name) }}
-      ref: ${{ github.event.pull_request.head.ref }}
-      path: deploy
-    secrets:
-      github-private-actions-pat: "${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}"
-      registry: "${{ secrets.ECR_REGISTRY }}"
-      secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
-      ecr-region: "${{ secrets.ECR_REGION }}"
-      ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
-```
+      permissions:
+        contents: write
+        id-token: write
 
-</TabItem>
-<TabItem value="release" label="Hotfix Release">
+      jobs:
+        do:
+          uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/hotfix-release.yml@main
+          with:
+            organization: "${{ github.event.repository.owner.login }}"
+            repository: "${{ github.event.repository.name }}"
+            path: deploy
+          secrets:
+            github-private-actions-pat: "${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}"
+            registry: "${{ secrets.ECR_REGISTRY }}"
+            secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
+            ecr-region: "${{ secrets.ECR_REGION }}"
+            ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
+      ```
+    </CollapsibleText>
 
-Once we've validated a Pull Request for a given hotfix, we can merge that change into the release branch. When changes are pushed to a release branch, the "Hotfix Release" workflow is triggered. _This workflow will deploy the given change directly to production_.
-
-Before deploying, the workflow will create a minor version release and test it.
-After the deployment, it will create a reintegration pull request to bring the hotfix back into the main branch and lower environments.
-
-In order to enable the "Hotfix Release" workflow, add the following:
-
-```yaml
-# .github/workflows/hotfix-release.yaml
-name: Hotfix Release
-on:
-  push:
-    branches: [ 'release/**' ]
-
-permissions:
-  contents: write
-  id-token: write
-
-jobs:
-  do:
-    uses: cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd/.github/workflows/hotfix-release.yml@main
-    with:
-      organization: "${{ github.event.repository.owner.login }}"
-      repository: "${{ github.event.repository.name }}"
-      path: deploy
-    secrets:
-      github-private-actions-pat: "${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}"
-      registry: "${{ secrets.ECR_REGISTRY }}"
-      secret-outputs-passphrase: "${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}"
-      ecr-region: "${{ secrets.ECR_REGION }}"
-      ecr-iam-role: "${{ secrets.ECR_IAM_ROLE }}"
-```
-
-</TabItem>
+  </TabItem>
 </Tabs>
-</details>
 
 These workflows also call the same Reusuable Workflow repository, `cloudposse/github-actions-workflows-docker-ecr-eks-helm-argocd`, as well as several of the same Reusuable Workflows called from that repository. For example, `cloudposse/github-actions-workflows` and `cloudposse/actions-private`.
 
