@@ -107,8 +107,7 @@ Check out our [example app-on-eks-with-argocd](https://github.com/cloudposse-exa
 <Tabs queryString="workflow">
   <TabItem value="feature" label="Feature">
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/feature-branch.yaml
+      ```yaml title=".github/workflows/feature-branch.yaml"
       name: Feature Branch
       on:
         pull_request:
@@ -141,8 +140,7 @@ Check out our [example app-on-eks-with-argocd](https://github.com/cloudposse-exa
   </TabItem>
   <TabItem value="main" label="Main">
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/main-branch.yaml
+      ```yaml title=".github/workflows/main-branch.yaml"
       name: Main Branch
       on:
         push:
@@ -169,8 +167,7 @@ Check out our [example app-on-eks-with-argocd](https://github.com/cloudposse-exa
   </TabItem>
   <TabItem value="release" label="Release">
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/release.yaml
+      ```yaml title=".github/workflows/release.yaml"
       name: Release
       on:
         release:
@@ -211,8 +208,7 @@ In order to enable hotfix workflows, create two additional workflows and modify 
   <TabItem value="mixin" label="Release Branch">
     Before running any hotfix workflows, we must first create release branches with any release. Modify the existing release workflow to include the `hotfix` job below.
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/release.yaml
+      ```yaml title=".github/workflows/release.yaml"
       name: Release
       on:
         release:
@@ -240,8 +236,7 @@ In order to enable hotfix workflows, create two additional workflows and modify 
     Deploy this workflow by creating a Pull Request into the a release branch and adding the `deploy` label.
 
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/hotfix-branch.yaml
+      ```yaml title=".github/workflows/hotfix-branch.yaml"
       name: Hotfix Branch
       on:
         pull_request:
@@ -282,8 +277,7 @@ In order to enable hotfix workflows, create two additional workflows and modify 
     In order to enable the "Hotfix Release" workflow, add the following:
 
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/hotfix-release.yaml
+      ```yaml title=".github/workflows/hotfix-release.yaml"
       name: Hotfix Release
       on:
         push:

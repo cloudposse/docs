@@ -62,8 +62,7 @@ Each SSM update is basically a promotion, and requires a Terraform run to realiz
 <Tabs queryString="workflow">
   <TabItem value="feature" label="Build and Dev">
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/reusable-publish-lambda-zip.yaml
+      ```yaml title=".github/workflows/reusable-publish-lambda-zip.yaml"
       name: Publish Lambda Function
       on:
         workflow_call:
@@ -113,8 +112,7 @@ Each SSM update is basically a promotion, and requires a Terraform run to realiz
   </TabItem>
   <TabItem value="promote" label="Promote Release">
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/reusable-promote-lambda-zip.yaml
+      ```yaml title=".github/workflows/reusable-promote-lambda-zip.yaml"
       name: Publish Lambda Function
       on:
         workflow_call:
@@ -197,8 +195,7 @@ Each SSM update is basically a promotion, and requires a Terraform run to realiz
 
   <TabItem value="deploy" label="Optional: Deploy with Spacelift">
     <CollapsibleText type="medium">
-      ```yaml
-      # .github/workflows/reusable-promote-lambda-zip.yaml
+      ```yaml title=".github/workflows/reusable-promote-lambda-zip.yaml"
       name: Deploy Lambda via Spacelift
       on:
         workflow_call:

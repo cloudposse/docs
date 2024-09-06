@@ -69,7 +69,7 @@ Check out our [example app-on-ecs](https://github.com/cloudposse-examples/app-on
 <Tabs queryString="workflow">
   <TabItem value="feature" label="Feature">
     <CollapsibleText type="medium">
-      ```yaml
+      ```yaml title=".github/workflows/feature-branch.yaml"
       name: 1 - Feature Branch
       on:
         pull_request:
@@ -132,7 +132,7 @@ Check out our [example app-on-ecs](https://github.com/cloudposse-examples/app-on
 
   <TabItem value="main" label="Main">
     <CollapsibleText type="medium">
-      ```yaml
+      ```yaml title=".github/workflows/main-branch.yaml"
       name: 2 - Main Branch
       on:
         push:
@@ -191,7 +191,7 @@ Check out our [example app-on-ecs](https://github.com/cloudposse-examples/app-on
 
   <TabItem value="release" label="Release">
     <CollapsibleText type="medium">
-      ```yaml
+      ```yaml title=".github/workflows/release.yaml"
       name: 3 - Release
       on:
         release:
