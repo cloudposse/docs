@@ -30,11 +30,6 @@ runs:
         role-to-assume: ${{ inputs.iam_role_arn }}
         role-session-name: ${{ inputs.iam_role_session_name }}
 
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
