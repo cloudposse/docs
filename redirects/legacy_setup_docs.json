@@ -1,0 +1,106 @@
+[
+  {
+    "from": "/reference-architecture/design-decisions/foundational-release-engineering/decide-on-self-hosted-github-runner-strategy/#self-hosted-runners-on-kubernetes",
+    "to": "/layers/software-delivery/design-decisions/decide-on-self-hosted-github-runner-strategy"
+  },
+  {
+    "from": "/reference-architecture/fundamentals/#building-the-toolbox-image",
+    "to": "/learn/prerequisites"
+  },
+  {
+    "from": "/reference-architecture/fundamentals/#prerequisites",
+    "to": "/learn/prerequisites"
+  },
+  {
+    "from": "/reference-architecture/fundamentals/ecs/",
+    "to": "/layers/software-delivery/ecs-ecspresso"
+  },
+  {
+    "from": "/reference-architecture/fundamentals/gitops/",
+    "to": "/layers/gitops/"
+  },
+  {
+    "from": "/reference-architecture/how-to-guides/integrations/opsgenie/",
+    "to": "/layers/alerting/opsgenie/opsgenie"
+  },
+  {
+    "from": "/reference-architecture/how-to-guides/integrations/opsgenie/how-to-create-new-teams-in-opsgenie/",
+    "to": "/layers/alerting/opsgenie/how-to-create-new-teams-in-opsgenie"
+  },
+  {
+    "from": "/reference-architecture/how-to-guides/integrations/opsgenie/how-to-sign-up-for-opsgenie/",
+    "to": "/layers/alerting/opsgenie/how-to-sign-up-for-opsgenie"
+  },
+  {
+    "from": "/reference-architecture/how-to-guides/integrations/spacelift/",
+    "to": "/layers/spacelift"
+  },
+  {
+    "from": "/reference-architecture/how-to-guides/tutorials/how-to-setup-grafana",
+    "to": "/layers/monitoring/grafana/"
+  },
+  {
+    "from": "/reference-architecture/quickstart/eks/#how-does-the-alb-controller-ingress-group-determine-the-name-of-the-alb",
+    "to": "/layers/eks/faq/#how-does-the-alb-controller-ingress-group-determine-the-name-of-the-alb"
+  },
+  {
+    "from": "/reference-architecture/quickstart/iam-identity/",
+    "to": "/layers/identity/"
+  },
+  {
+    "from": "/reference-architecture/reference/adrs/jumpstart/decide-on-vanity-domain/",
+    "to": "/layers/network/design-decisions/decide-on-vanity-branded-domain/"
+  },
+  {
+    "from": "/reference-architecture/setup/cold-start/#configure-root-account-credentials-for-each-account",
+    "to": "/layers/accounts/deploy-accounts/#-clickops-to-complete-account-setup"
+  },
+  {
+    "from": "/reference-architecture/setup/cold-start/#optional-enable-regions",
+    "to": "/layers/accounts/deploy-accounts/#-clickops-to-complete-account-setup"
+  },
+  {
+    "from": "/reference-architecture/setup/cold-start/#provision-account-settings-component",
+    "to": "/layers/accounts/deploy-accounts/#-clickops-to-complete-account-setup"
+  },
+  {
+    "from": "/reference-architecture/setup/cold-start/automated-configuration/",
+    "to": "/layers/accounts/prepare-aws-organization/"
+  },
+  {
+    "from": "/reference-architecture/setup/cold-start/how-to-create-superadmin-user/",
+    "to": "/layers/accounts/tutorials/how-to-create-superadmin-user"
+  },
+  {
+    "from": "/reference-architecture/setup/cold-start/manual-configuration",
+    "to": "/layers/accounts/tutorials/manual-configuration"
+  },
+  {
+    "from": "/reference-architecture/setup/cold-start/manual-configuration/#use-superadmin-credentials",
+    "to": "/layers/accounts/tutorials/manual-configuration"
+  },
+  {
+    "from": "/reference-architecture/setup/eks/",
+    "to": "/learn/maintenance/upgrades/how-to-upgrade-eks"
+  },
+  {
+    "from": "/reference-architecture/setup/github-arc/",
+    "to": "/layers/github-actions/eks-github-actions-controller/"
+  },
+  {
+    "from": "/reference-architecture/setup/github-runners/",
+    "to": "/layers/github-actions/"
+  },
+  {
+    "from": "/reference-architecture/setup/identity/",
+    "to": "/layers/identity/identity"
+  },
+  {
+    "from": "/reference-architecture/setup/network/",
+    "to": "/layers/network/connect-network"
+  },
+  {
+    "from": "/reference-architecture/setup/philips-labs-github-runners/#create-the-github-app",
+    "to": "/layers/github-actions/philips-labs-github-runners"
+  }
+]
