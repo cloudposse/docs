@@ -3,7 +3,10 @@ const lightCodeTheme = require('prism-react-renderer').themes.vsDark;
 const darkCodeTheme = require('prism-react-renderer').themes.nightOwl;
 const fs = require('fs');
 const path = require('path');
-const { redirects } = require("./redirects");
+
+// Redirects handling:
+const { loadRefarchRedirects, getRedirects } = require('./plugins/redirects');
+const allRedirects = getRedirects();
 
 // Define the directory containing your CSS files
 const cssDirectory = path.resolve(__dirname, './src/css');
@@ -91,10 +94,11 @@ const config = {
         DSN: 'b022344b0e7cc96f803033fff3b377ee@o56155.ingest.us.sentry.io/4507472203087872',
       },
     ],
+    loadRefarchRedirects,
     [
       '@docusaurus/plugin-client-redirects',
       {
-        redirects
+        redirects: allRedirects
       },
     ],
   ],
