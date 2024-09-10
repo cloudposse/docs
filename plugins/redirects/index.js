@@ -4,8 +4,8 @@ const path = require('path');
 let redirects = [];
 
 // Load docs and legacy redirects directly within this module
-const docsRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../redirects/docs.json')));
-const legacyRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../redirects/legacy_setup_docs.json')));
+const docsRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'redirects/docs.json')));
+const legacyRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'redirects/legacy_setup_docs.json')));
 
 // Add the loaded redirects to the in-memory store
 redirects = redirects.concat(docsRedirects, legacyRedirects);
