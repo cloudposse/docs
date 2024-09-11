@@ -23,7 +23,8 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 | 3. Validate the environment configuration            | Click Ops                                                                         |
 | 4. Create a GitHub PAT                               | Click Ops                                                                         |
 | 5. Set all Example App repository secrets            | Click Ops                                                                         |
-| 6. Deploy the example ECS services                   | `atmos workflow deploy/app-on-ecs -f app-on-ecs`                                  |
+| 6. Deploy the shared ECS Task Definition S3 Bucket   | `atmos apply s3-bucket/ecs-tasks-mirror -s < YOUR STACK >`                        |
+| 7. Deploy the example ECS services                   | `atmos workflow deploy/app-on-ecs -f app-on-ecs`                                  |
 
 <Note title="Note">
 
@@ -307,6 +308,12 @@ We do not recommend keeping all shared workflows in the same repository as in th
   </Step>
 
   <Step>
+    ### <StepNumber/> Configure the S3 Mirror Bucket, if not already configured
+
+    If you haven't already configured the S3 mirror bucket, deploy and configure the shared S3 bucket for ECS tasks definitions now. Follow the [ECS Partial Task Definitions guide](/layers/software-delivery/ecs-ecspresso/ecs-partial-task-definitions/#steps)
+  </Step>
+
+  <Step>
     ### <StepNumber/> Deploy the Example App ECS Service
 
     Ensure you have stacks configured for the Example App in every stage of your platform.
@@ -368,7 +375,7 @@ We do not recommend keeping all shared workflows in the same repository as in th
 
     </details>
 
-    Apply this component with the following:
+    Finally, apply the `ecs-services/example-app-on-ecs` component to deploy the Example App ECS service.
 
     <AtmosWorkflow workflow="deploy/app-on-ecs" fileName="app-on-ecs" />
   </Step>
