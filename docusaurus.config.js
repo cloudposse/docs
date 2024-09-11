@@ -107,7 +107,7 @@ async function createConfig() {
         '@docusaurus/plugin-client-redirects',
         {
           id: 'refarch-redirects',
-          redirects: await refarchRedirectsPlugin().refarchRedirects,
+          redirects: (await refarchRedirectsPlugin()).globalData.refarchRedirects,
         },
       ],
     ],
