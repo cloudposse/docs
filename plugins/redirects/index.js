@@ -1,20 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 
-let redirects = [];
+function getStaticRedirects() {
+  let redirects = [];
 
-// Load docs and legacy redirects directly within this module
-const docsRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'redirects/docs.json')));
-const legacyRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'redirects/legacy_setup_docs.json')));
+  // Load docs and legacy redirects directly within this module
+  const docsRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'redirects/docs.json')));
+  const legacyRedirects = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'redirects/legacy_setup_docs.json')));
 
-// Add the loaded redirects to the in-memory store
-redirects = redirects.concat(docsRedirects, legacyRedirects);
+  // Add the loaded redirects to the in-memory store
+  redirects = redirects.concat(docsRedirects, legacyRedirects);
 
-function getRedirects() {
   return redirects;
 }
 
-function redirectsPlugin(context, options) {
+function refarchRedirectsPlugin(context, options) {
   return {
     name: 'redirects-plugin',
 
@@ -58,6 +58,6 @@ function redirectsPlugin(context, options) {
 
 // Export the plugin and helper functions
 module.exports = {
-  getRedirects,
-  redirectsPlugin,
+  getStaticRedirects,
+  refarchRedirectsPlugin,
 };
