@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 // Redirects handling:
-const { loadRefarchRedirects, getRedirects } = require('./plugins/redirects');
-const allRedirects = getRedirects();
+const { getRedirects, redirectsPlugin } = require('./plugins/redirects');
+const staticRedirects = getRedirects();
 
 // Define the directory containing your CSS files
 const cssDirectory = path.resolve(__dirname, './src/css');
@@ -36,293 +36,304 @@ function metadataPlugin(context, options) {
   }
 }
 
-/** @type {import('@docusaurus/types').Config} */
-const config = {
-  title: 'The Cloud Posse Reference Architecture',
-  tagline: 'The turnkey architecture for AWS, Datadog & GitHub Actions to get up and running quickly using the Atmos open source framework.',
-  url: 'https://docs.cloudposse.com',
-  baseUrl: '/',
-  trailingSlash: true,
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  onDuplicateRoutes: 'warn',
-  favicon: 'img/favicon.png',
+async function createConfig() {
+  /** @type {import('@docusaurus/types').Config} */
+  const config = {
+    title: 'The Cloud Posse Reference Architecture',
+    tagline: 'The turnkey architecture for AWS, Datadog & GitHub Actions to get up and running quickly using the Atmos open source framework.',
+    url: 'https://docs.cloudposse.com',
+    baseUrl: '/',
+    trailingSlash: true,
+    onBrokenLinks: 'throw',
+    onBrokenMarkdownLinks: 'warn',
+    onDuplicateRoutes: 'warn',
+    favicon: 'img/favicon.png',
 
-  organizationName: 'cloudposse',
-  projectName: 'docs',
-  deploymentBranch: 'master',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
-
-  plugins: [
-    [
-      '@docusaurus/plugin-google-tag-manager',
-      {
-        containerId: process.env.GOOGLE_TAG_MANAGER || 'GTM-ABCD123'
-      },
-    ],
-    [
-      'docusaurus-plugin-image-zoom', {},
-    ],
-    [
-      '@docusaurus/plugin-ideal-image',
-      {
-        quality: 90,
-        max: 1030, // max resized image's size.
-        min: 640, // min resized image's size. if original is lower, use that size.
-        steps: 2, // the max number of images generated between min and max (inclusive)
-        disableInDev: false,
-      }
-    ],
-    [
-      'custom-loaders', {}
-    ],
-    metadataPlugin,
-    [
-      "posthog-docusaurus",
-      {
-        apiKey: "phc_G3idXOACKt4vIzgRu2FVP8ORO1D2VlkeEwX9mE2jDvT",
-        appUrl: "https://us.i.posthog.com",
-        enableInDevelopment: false, // optional
-      },
-    ],
-    [
-      'docusaurus-plugin-sentry',
-      {
-        DSN: 'b022344b0e7cc96f803033fff3b377ee@o56155.ingest.us.sentry.io/4507472203087872',
-      },
-    ],
-    loadRefarchRedirects,
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects: allRedirects
-      },
-    ],
-  ],
-
-  presets: [
-    [
-      'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
-          docs: {
-              routeBasePath: '/',
-              sidebarPath: require.resolve('./sidebars.js'),
-              editUrl: ({versionDocsDirPath, docPath, locale}) => {
-                return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
-              },
-              exclude: ['README.md'],
-              showLastUpdateTime: true,
-              showLastUpdateAuthor: true,
-              onInlineTags: 'warn',
-              tags: 'tags.yml'
-          },
-          theme: {
-              customCss: customCssFiles,
-          },
-      }),
-    ],
-  ],
-
-  scripts: [
-    {
-      src: "https://kit.fontawesome.com/3a9f2eb5b9.js",
+    organizationName: 'cloudposse',
+    projectName: 'docs',
+    deploymentBranch: 'master',
+    i18n: {
+      defaultLocale: 'en',
+      locales: ['en'],
     },
-  ],
 
-  markdown: {
-    mermaid: true,
-  },
-
-  themes: ['@docusaurus/theme-mermaid'],
-
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      metadata: [{ name: 'google-site-verification', content: process.env.GOOGLE_SITE_VERIFICATION_ID || 'preview-local' }],
-      docs: {
-        sidebar: {
-          hideable: true,
-          autoCollapseCategories: true
+    plugins: [
+      [
+        '@docusaurus/plugin-google-tag-manager',
+        {
+          containerId: process.env.GOOGLE_TAG_MANAGER || 'GTM-ABCD123'
         },
-      },
-      navbar: {
-        title: '',
-        logo: {
-          alt: 'Cloud Posse Developer Hub',
-          src: 'img/logo.svg',
-          srcDark: 'img/logo-light.svg',
+      ],
+      [
+        'docusaurus-plugin-image-zoom', {},
+      ],
+      [
+        '@docusaurus/plugin-ideal-image',
+        {
+          quality: 90,
+          max: 1030, // max resized image's size.
+          min: 640, // min resized image's size. if original is lower, use that size.
+          steps: 2, // the max number of images generated between min and max (inclusive)
+          disableInDev: false,
+        }
+      ],
+      [
+        'custom-loaders', {}
+      ],
+      metadataPlugin,
+      [
+        "posthog-docusaurus",
+        {
+          apiKey: "phc_G3idXOACKt4vIzgRu2FVP8ORO1D2VlkeEwX9mE2jDvT",
+          appUrl: "https://us.i.posthog.com",
+          enableInDevelopment: false, // optional
         },
-        items: [
-          {
-            to: '/learn',
-            position: 'left',
-            label: 'Learn',
-          },
-          {
-            to: '/reference',
-            position: 'left',
-            label: 'Reference',
-          },
-          {
-            to: '/community',
-            label: 'Community',
-            position: 'left',
-          },
-          {
-            type: 'search',
-            position: 'right',
-          },
-          {
-            href: 'https://github.com/cloudposse/',
-            className: 'header-github-link',
-            position: 'right',
-          },
-          {
-            to: 'https://cloudposse.com/',
-            label: 'Get a Jumpstart',
-            position: 'right',
-            className: 'button button--primary navbar-cta-button'
-          },
-        ],
+      ],
+      [
+        'docusaurus-plugin-sentry',
+        {
+          DSN: 'b022344b0e7cc96f803033fff3b377ee@o56155.ingest.us.sentry.io/4507472203087872',
+        },
+      ],
+      [
+        '@docusaurus/plugin-client-redirects',
+        {
+          id: 'static-redirects',
+          redirects: staticRedirects,
+        },
+      ],
+      redirectsPlugin,
+      [
+        '@docusaurus/plugin-client-redirects',
+        {
+          id: 'refarch-redirects',
+          redirects: await redirectsPlugin().refarchRedirects,
+        },
+      ],
+    ],
+
+    presets: [
+      [
+        'classic',
+        /** @type {import('@docusaurus/preset-classic').Options} */
+        ({
+            docs: {
+                routeBasePath: '/',
+                sidebarPath: require.resolve('./sidebars.js'),
+                editUrl: ({versionDocsDirPath, docPath, locale}) => {
+                  return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
+                },
+                exclude: ['README.md'],
+                showLastUpdateTime: true,
+                showLastUpdateAuthor: true,
+                onInlineTags: 'warn',
+                tags: 'tags.yml'
+            },
+            theme: {
+                customCss: customCssFiles,
+            },
+        }),
+      ],
+    ],
+
+    scripts: [
+      {
+        src: "https://kit.fontawesome.com/3a9f2eb5b9.js",
       },
+    ],
 
-      announcementBar: {
-        id: 'new_docs',
-        content:
-          'We are in the process of updating our documentation. <a href="mailto:docs@cloudposse.com">Please let us know what you think!</a>',
-        backgroundColor: 'var(--announcement-bar-background)',
-        textColor: 'var(--announcement-bar-text-color)',
-        isCloseable: true,
-      },
+    markdown: {
+      mermaid: true,
+    },
 
-      colorMode: {
-        // "light" | "dark"
-        defaultMode: 'dark',
+    themes: ['@docusaurus/theme-mermaid'],
 
-        // Hides the switch in the navbar
-        // Useful if you want to force a specific mode
-        disableSwitch: false,
-
-        // Should respect the user's color scheme preference
-        // "light" | "dark" | "system"
-        respectPrefersColorScheme: false,
-      },
-
-      algolia: {
-        appId: process.env.ALGOLIA_APP_ID || '32YOERUX83',
-        apiKey: process.env.ALGOLIA_SEARCH_API_KEY || '557985309adf0e4df9dcf3cb29c61928', // this is SEARCH ONLY API key and is not sensitive information
-        indexName: process.env.ALGOLIA_INDEX_NAME || 'docs.cloudposse.com',
-        externalUrlRegex: 'atmos\\.tools',
-        contextualSearch: false
-      },
-      footer: {
-        style: 'dark',
-        links: [{
-          title: 'Docs',
+    themeConfig:
+      /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+      ({
+        metadata: [{ name: 'google-site-verification', content: process.env.GOOGLE_SITE_VERIFICATION_ID || 'preview-local' }],
+        docs: {
+          sidebar: {
+            hideable: true,
+            autoCollapseCategories: true
+          },
+        },
+        navbar: {
+          title: '',
+          logo: {
+            alt: 'Cloud Posse Developer Hub',
+            src: 'img/logo.svg',
+            srcDark: 'img/logo-light.svg',
+          },
           items: [
             {
+              to: '/learn',
+              position: 'left',
               label: 'Learn',
-              to: '/learn/',
             },
             {
+              to: '/reference',
+              position: 'left',
               label: 'Reference',
-              to: '/reference/',
-            }
-          ],
-        }, {
-          title: 'Community',
-          items: [
-            {
-              label: 'GitHub Discussions',
-              href: 'https://github.com/orgs/cloudposse/discussions',
             },
             {
-              label: 'Slack Community',
-              to: '/community/slack',
+              to: '/community',
+              label: 'Community',
+              position: 'left',
             },
             {
-              label: 'Slack Archives',
-              href: 'https://archive.sweetops.com/refarch/',
+              type: 'search',
+              position: 'right',
             },
             {
-              label: 'Office Hours',
-              to: '/community/office-hours/',
-            },
-          ],
-        }, {
-          title: 'Contact Us',
-          items: [
-            {
-              label: 'Support',
-              to: '/support',
-            },
-            {
-              label: 'Our GitHub',
               href: 'https://github.com/cloudposse/',
+              className: 'header-github-link',
+              position: 'right',
             },
             {
-              label: 'Contact Us',
-              to: '/community/contact-us/',
-            }],
-        }],
-        logo: {
-          alt: 'Cloud Posse',
-          src: '/img/logo-light.svg',
-          href: 'https://cloudposse.com/'
+              to: 'https://cloudposse.com/',
+              label: 'Get a Jumpstart',
+              position: 'right',
+              className: 'button button--primary navbar-cta-button'
+            },
+          ],
         },
-        copyright: `© ${new Date().getFullYear()} Cloud Posse, LLC`,
-      },
-      mermaid: {
-        theme: {
-            light: 'neutral',
-            dark: 'dark',
+
+        announcementBar: {
+          id: 'new_docs',
+          content:
+            'We are in the process of updating our documentation. <a href="mailto:docs@cloudposse.com">Please let us know what you think!</a>',
+          backgroundColor: 'var(--announcement-bar-background)',
+          textColor: 'var(--announcement-bar-text-color)',
+          isCloseable: true,
         },
-        options: {
-          flowchart: {
-            useMaxWidth: true,
-            curve: 'linear',
-            padding: 15,
-            diagramPadding: 20,
-            nodeSpacing: 40,
-            rankSpacing: 50,
-            ranksep: 100,
-            nodesep: 100,
-            titleTopMargin: 25,
-            titlePadding: 30,
-            labelPadding: 30,
-            subGraphTitleMargin: {
-              top: 5,
-              bottom: 5
-            }
+
+        colorMode: {
+          // "light" | "dark"
+          defaultMode: 'dark',
+
+          // Hides the switch in the navbar
+          // Useful if you want to force a specific mode
+          disableSwitch: false,
+
+          // Should respect the user's color scheme preference
+          // "light" | "dark" | "system"
+          respectPrefersColorScheme: false,
+        },
+
+        algolia: {
+          appId: process.env.ALGOLIA_APP_ID || '32YOERUX83',
+          apiKey: process.env.ALGOLIA_SEARCH_API_KEY || '557985309adf0e4df9dcf3cb29c61928', // this is SEARCH ONLY API key and is not sensitive information
+          indexName: process.env.ALGOLIA_INDEX_NAME || 'docs.cloudposse.com',
+          externalUrlRegex: 'atmos\\.tools',
+          contextualSearch: false
+        },
+        footer: {
+          style: 'dark',
+          links: [{
+            title: 'Docs',
+            items: [
+              {
+                label: 'Learn',
+                to: '/learn/',
+              },
+              {
+                label: 'Reference',
+                to: '/reference/',
+              }
+            ],
+          }, {
+            title: 'Community',
+            items: [
+              {
+                label: 'GitHub Discussions',
+                href: 'https://github.com/orgs/cloudposse/discussions',
+              },
+              {
+                label: 'Slack Community',
+                to: '/community/slack',
+              },
+              {
+                label: 'Slack Archives',
+                href: 'https://archive.sweetops.com/refarch/',
+              },
+              {
+                label: 'Office Hours',
+                to: '/community/office-hours/',
+              },
+            ],
+          }, {
+            title: 'Contact Us',
+            items: [
+              {
+                label: 'Support',
+                to: '/support',
+              },
+              {
+                label: 'Our GitHub',
+                href: 'https://github.com/cloudposse/',
+              },
+              {
+                label: 'Contact Us',
+                to: '/community/contact-us/',
+              }],
+          }],
+          logo: {
+            alt: 'Cloud Posse',
+            src: '/img/logo-light.svg',
+            href: 'https://cloudposse.com/'
           },
+          copyright: `© ${new Date().getFullYear()} Cloud Posse, LLC`,
+        },
+        mermaid: {
+          theme: {
+              light: 'neutral',
+              dark: 'dark',
+          },
+          options: {
+            flowchart: {
+              useMaxWidth: true,
+              curve: 'linear',
+              padding: 15,
+              diagramPadding: 20,
+              nodeSpacing: 40,
+              rankSpacing: 50,
+              ranksep: 100,
+              nodesep: 100,
+              titleTopMargin: 25,
+              titlePadding: 30,
+              labelPadding: 30,
+              subGraphTitleMargin: {
+                top: 5,
+                bottom: 5
+              }
+            },
 
-          themeVariables: {
-            mainBkg: '#6f72723b',
-            background: '#333',
-            clusterBkg: '#6f72723b'
+            themeVariables: {
+              mainBkg: '#6f72723b',
+              background: '#333',
+              clusterBkg: '#6f72723b'
+            }
+          }
+        },
+        prism: {
+          theme: lightCodeTheme,
+          darkTheme: darkCodeTheme,
+          additionalLanguages: ['hcl', 'bash', 'rego'],
+        },
+        zoom: {
+          selector: '.markdown > img',
+          config: {
+            // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
+            background: {
+              light: 'rgb(255, 255, 255)',
+              dark: 'rgb(50, 50, 50)'
+            }
           }
         }
-      },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
-        additionalLanguages: ['hcl', 'bash', 'rego'],
-      },
-      zoom: {
-        selector: '.markdown > img',
-        config: {
-          // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
-          background: {
-            light: 'rgb(255, 255, 255)',
-            dark: 'rgb(50, 50, 50)'
-          }
-        }
-      }
-    }),
-};
+      }),
+  };
+  return config;
+}
 
-module.exports = config;
+module.exports = createConfig();
