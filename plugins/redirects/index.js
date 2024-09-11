@@ -22,36 +22,30 @@ function refarchRedirectsPlugin(context, options) {
       const { setGlobalData } = actions;
       const refarchRedirects = [];
 
-      try {
-        // Collect redirects from docs content with refarch_id
-        allContent['docusaurus-plugin-content-docs']
-          .default
-          .loadedVersions[0]
-          .docs
-          .forEach((doc) => {
-            if (doc.frontMatter.refarch_id) {
-              refarchRedirects.push({
-                from: `/reference-architecture/${doc.frontMatter.refarch_id}`,
-                to: doc.permalink,
-              });
-              refarchRedirects.push({
-                from: `/${doc.frontMatter.refarch_id}`,
-                to: doc.permalink,
-              });
-            }
-          });
-
-        console.log('Refarch redirects:', refarchRedirects);
-
-        // Set the refarch redirects in global data
-        setGlobalData({
-          refarchRedirects: refarchRedirects
+      // Collect redirects from docs content with refarch_id
+      allContent['docusaurus-plugin-content-docs']
+        .default
+        .loadedVersions[0]
+        .docs
+        .forEach((doc) => {
+          if (doc.frontMatter.refarch_id) {
+            refarchRedirects.push({
+              from: `/reference-architecture/${doc.frontMatter.refarch_id}`,
+              to: doc.permalink,
+            });
+            refarchRedirects.push({
+              from: `/${doc.frontMatter.refarch_id}`,
+              to: doc.permalink,
+            });
+          }
         });
 
-      } catch (error) {
-        // Handle errors by logging them
-        console.error('Error while processing refarch redirects:', error);
-      }
+      console.log('Refarch redirects:', refarchRedirects);
+
+      // Set the refarch redirects in global data
+      setGlobalData({
+        refarchRedirects: refarchRedirects
+      });
     },
   };
 }
