@@ -45,11 +45,9 @@ However, `aws-sso-cli` is designed specifically for AWS SSO, which means it may 
 
 Another option is to use `saml2aws`, which is a CLI tool that allows you to login to AWS using SAML. It is similar to Leapp and `aws-sso-cli`, but is specifically designed for AWS SAML. This means it may not be suitable for users who are using AWS SSO.
 
-Aside from Okta, most of the providers in this project are using screen scraping to log users into SAML, this isn't ideal and hopefully vendors make this easier in the future. These may break integrations with GSuite and others that deploy bot measures. In addition to this there are some things you need to know:
+Most IdPs supported by `aws2saml` with the exception of Okta, depend on screen scraping for SAML logins, which is far from ideal. This approach can lead to issues, especially with services like GSuite that use bot protection, which occasionally disrupts users attempting to log in. Additionally, SAML providers differ in how they handle login processes and multi-factor authentication (MFA), meaning you may need to make specific adjustments to ensure smooth integration with your identity provider.
 
-1. AWS defaults to session tokens being issued with a duration of up to 3600 seconds (1 hour), this can now be configured as per [Enable Federated API Access to your AWS Resources for up to 12 hours Using IAM Roles](https://aws.amazon.com/blogs/security/enable-federated-api-access-to-your-aws-resources-for-up-to-12-hours-using-iam-roles/) and `--session-duration` flag.
-2. Every SAML provider is different, the login process, MFA support is pluggable and therefore some work may be needed to integrate with your identity server
-3. By default, the temporary security credentials returned do not support SigV4A. If you need SigV4A support then you must set the `AWS_STS_REGIONAL_ENDPOINTS` enviornment variable to `regional` when calling `saml2aws` so that [aws-sdk-go](https://github.com/aws/aws-sdk-go) uses a regional STS endpoint instead of the global one. See the note at the bottom of [Signing AWS API requests](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing.html#signature-versions) and [AWS STS Regionalized endpoints](https://docs.aws.amazon.com/sdkref/latest/guide/feature-sts-regionalized-endpoints.html).
+If your organization uses Okta, then `aws2saml` is good option.
 
 ### Option 5: Use a browser plugin
 
