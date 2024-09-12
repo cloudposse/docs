@@ -31,7 +31,7 @@ This might seem like a simplification from a compliance standpoint, but it creat
 
 1. Scaling runners can inadvertently impact IP space available to production workloads
 2. Many accounts do not have a VPC or EKS Cluster (for EKS/ARC solutions). So, we would need to decide how to manage those accounts.
-3. We would need to manage the complexity around choosing dynamically the appropriate runner pool when the workflow starts
+3. We would need to manage the complexity of dynamically selecting the right runner pool when a workflow starts. While this might seem straightforward, it can get tricky in cases like promoting an ECR image from staging to production, where it’s not always clear-cut which runners should be used.
 
 ## Recommendation
 
