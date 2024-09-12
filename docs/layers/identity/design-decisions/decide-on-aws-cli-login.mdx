@@ -26,25 +26,39 @@ First of all, we could use the AWS CLI to login to AWS. This is the most basic w
 
 Alternatively we could use Leapp by Noovolari. This is a tool that allows you to login to AWS using SAML and then automatically generates temporary credentials for you to use in the CLI. Once setup, Leapp makes it very easy to login to AWS and use the CLI, assume roles across your accounts with Role Chaining pre-configured, and even launch directly into the AWS web console.
 
-> ![IMPORTANT]  
+> ![IMPORTANT]
 > Leapp has been a popular choice for this use case, but with Noovolari announcing the shutdown of their paid service, this could raise concerns about the long-term viability of the project. While the [Leapp](https://github.com/Noovolari/leapp) project will continue to be supported, the discontinuation of the paid option might make it less appealing to future users.
 
 Leapp requires several manual steps during the initial setup, which has been a pain point for some users. See [How to Login to AWS (with Leapp)](/layers/identity/how-to-log-into-aws/) for more on the required setup and usage.
 
 Leapp requires setup steps outside of our Geodesic containers, which makes it less convenient for users who primarily work in the shell and increases the likelihood of configuration errors.
 
-### Option 3: Use `aws-sso-cli`
+### Option 3: Use `aws-sso-cli` (AWS SSO Only)
 
 The most recent option we've come across is [aws-sso-cli](https://github.com/synfinatic/aws-sso-cli). This is a CLI tool that allows you to login to AWS using SAML and then automatically generates temporary credentials for you to use in the CLI. It is similar to Leapp, and is also open source and free to use. It also has a number of features that make it easier to use, such as the ability to login to multiple AWS accounts and roles at the same time.
 
 One potential benefit of `aws-sso-cli` is that it is a CLI tool, which means it could likely be integrated into our Geodesic containers. This would make it easier for users to login to AWS and use the CLI, and would reduce the risk of user configuration errors.
 
-Cloud Posse has not yet used this tool, but it looks promising and may be a good alternative to Leapp. We will need to evaluate it further to see if it meets our needs.
+However, `aws-sso-cli` is designed specifically for AWS SSO, which means it may not be suitable for users who are using AWS SAML.
 
-### Option 4: Use a custom solution
+### Option 4: Use `saml2aws` (AWS SAML Only)
+
+Another option is to use `saml2aws`, which is a CLI tool that allows you to login to AWS using SAML. It is similar to Leapp and `aws-sso-cli`, but is specifically designed for AWS SAML. This means it may not be suitable for users who are using AWS SSO.
+
+Aside from Okta, most of the providers in this project are using screen scraping to log users into SAML, this isn't ideal and hopefully vendors make this easier in the future. These may break integrations with GSuite and others that deploy bot measures. In addition to this there are some things you need to know:
+
+1. AWS defaults to session tokens being issued with a duration of up to 3600 seconds (1 hour), this can now be configured as per [Enable Federated API Access to your AWS Resources for up to 12 hours Using IAM Roles](https://aws.amazon.com/blogs/security/enable-federated-api-access-to-your-aws-resources-for-up-to-12-hours-using-iam-roles/) and `--session-duration` flag.
+2. Every SAML provider is different, the login process, MFA support is pluggable and therefore some work may be needed to integrate with your identity server
+3. By default, the temporary security credentials returned do not support SigV4A. If you need SigV4A support then you must set the `AWS_STS_REGIONAL_ENDPOINTS` enviornment variable to `regional` when calling `saml2aws` so that [aws-sdk-go](https://github.com/aws/aws-sdk-go) uses a regional STS endpoint instead of the global one. See the note at the bottom of [Signing AWS API requests](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing.html#signature-versions) and [AWS STS Regionalized endpoints](https://docs.aws.amazon.com/sdkref/latest/guide/feature-sts-regionalized-endpoints.html).
+
+### Option 5: Use a browser plugin
+
+Another option is to use a browser plugin, such as [aws-extend-switch-roles](https://github.com/tilfinltd/aws-extend-switch-roles), that allows you to login to AWS using SAML. This is a simple and user-friendly way to login to AWS, but it requires you to use a browser and is not suitable for users who are working in the CLI.
+
+### Option 6: Use a custom solution
 
 Finally we could build our own custom solution for logging into AWS. This would give us complete control over the process, but would require a lot of development effort and ongoing maintenance.
 
 ## Recommendation
 
-Cloud Posse continues to recommend Leapp for now, but we will evaluate `aws-sso-cli` as a potential alternative.
+Cloud Posse continues to recommend Leapp for now, but we are evaluating alternatives.
