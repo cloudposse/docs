@@ -21,7 +21,7 @@ jobs:
       - "amd64"
       - "common"
     steps:
-      - uses: cloudposse-github-actions/get-pr@v2
+      - uses: cloudposse-github-actions/get-pr@v1
         id: pr
 
     outputs:
