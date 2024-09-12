@@ -36,20 +36,20 @@ Use [SOPS Operator](https://github.com/isindir/sops-secrets-operator) to manage 
 
 1. **Mozilla SOPS Encryption**: Mozilla SOPS (Secrets OPerationS) is a tool that encrypts Kubernetes secret manifests, allowing them to be stored securely in Git repositories. SOPS supports encryption using a variety of key management services. Most importantly, it supports AWS KMS which enables IAM capabilities for native integration with AWS.
 
-2. **GitOps-Compatible Secret Management**: In a GitOps setup, secrets are typically stored in version-controlled repositories. However, storing plain-text secrets in Git is a security risk. With SOPS, sensitive information in Kubernetes secret manifests is encrypted, so only the encrypted version is stored in the Git repo. This ensures that the secrets are kept secure while still benefiting from GitOps practices like version control, auditability, and CI/CD pipelines.
+2. **GitOps-Compatible Secret Management**: In a GitOps setup, storing plain-text secrets in Git poses security risks. Using SOPS, we can encrypt sensitive data in Kubernetes secret manifests while keeping the rest of the manifest in clear text. This allows us to store encrypted secrets in Git, track changes with diffs, and maintain security while benefiting from GitOps practices like version control, auditability, and CI/CD pipelines.
 
-3. **AWS KMS Integration**: If AWS KMS is used, SOPS encrypts the secrets using customer-managed keys (CMKs) in AWS KMS. This ensures that only those with appropriate permissions can decrypt and use the secrets. The encrypted secret manifests can be committed to the Git repository, while the keys used for encryption are securely managed in AWS.
+3. **AWS KMS Integration**: SOPS uses AWS KMS to encrypt secrets with customer-managed keys (CMKs), ensuring only authorized users—based on IAM policies—can decrypt them. The encrypted secret manifests can be safely committed to Git, with AWS securely managing the keys. Since it's IAM-based, it integrates seamlessly with STS tokens, allowing secrets to be decrypted inside the cluster without hardcoded credentials.
 
-4. **Kubernetes Operator**: With the [SOPS Operator](https://github.com/isindir/sops-secrets-operator), decryption and management of Kubernetes secrets is automated. It watches for changes to a `SopsSecret` resource containing encrypted secrets. When it detects a change, the operator decrypts it using AWS KMS and writes a native Kubernetes `Secret`, making them available to applications running in the cluster.
+4. **Kubernetes Operator**: The [SOPS Secrets Operator](https://github.com/isindir/sops-secrets-operator) automates the decryption and management of Kubernetes secrets. It monitors a `SopsSecret` resource containing encrypted secrets. When a change is detected, the operator decrypts the secrets using AWS KMS and generates a native Kubernetes `Secret`, making them available to applications in the cluster. AWS KMS uses envelope encryption to manage the encryption keys, ensuring that secrets remain securely encrypted at rest.
 
-5. **Secure Secret Management**: By keeping the source of truth for secrets outside of Kubernetes (e.g., Git repositories) and only injecting decrypted secrets into the cluster as needed, this setup enhances security. If the Kubernetes cluster is destroyed or compromised, the secrets remain safely encrypted in Git. Additionally, using IAM roles and policies with AWS KMS ensures that only authorized entities can decrypt the secrets.
+5. **Improved Disaster Recovery and Security**: By storing the source of truth for secrets outside of Kubernetes (e.g., in Git), this setup enhances disaster recovery, ensuring secrets remain accessible even if the cluster is compromised or destroyed. While secrets are duplicated across multiple locations, security is maintained by using IAM for encryption and decryption outside Kubernetes, and Kubernetes' native Role-Based Access Control (RBAC) model for managing access within the cluster. This ensures that only authorized entities, both external and internal to Kubernetes, can access the secrets.
 
 The SOPS Operator combines the strengths of Mozilla SOPS and AWS KMS, allowing you to:
 - Encrypt secrets using KMS keys.
 - Store encrypted secrets in Git repositories.
 - Automatically decrypt and manage secrets in Kubernetes using the SOPS Operator.
 
-This solution is ideal for teams following GitOps principles who require secure, external management of sensitive information while leveraging Kubernetes' secret management capabilities. But it's downside is that rotating secrets requires a redeployment, which is a heavy handed approach towards secrets rotation.
+This solution is ideal for teams following GitOps principles, offering secure, external management of sensitive information while utilizing Kubernetes' secret management capabilities. However, the redeployment required for secret rotation can be heavy-handed, potentially leading to a period where services are still using outdated or invalid secrets. This could cause services to fail until the new secrets are fully rolled out.
 
 ## Recommendation
 
