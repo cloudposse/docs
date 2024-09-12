@@ -7,7 +7,7 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
 <Intro>
-We need to decide on the secrets management strategy for EKS. We prefer storing secrets in AWS SSM Parameter Store, but we need some way to pull these secrets into Kubernetes.
+We need to decide on a secrets management strategy for EKS. We prefer storing secrets externally, like in AWS SSM Parameter Store, to keep clusters more disposable. If we decide on this, we'll need a way to pull these secrets into Kubernetes.
 </Intro>
 
 ## Problem
