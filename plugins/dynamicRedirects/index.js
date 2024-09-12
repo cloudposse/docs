@@ -1,3 +1,9 @@
+/*
+ * This plugin is not working yet!
+ * We have these redirects created with a static file in the staticRedirects plugin.
+ * We'll keep this file as reference for future improvements.
+ */
+
 async function loadRedirects(allContent) {
   const redirects = [];
 
