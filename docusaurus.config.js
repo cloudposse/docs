@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 // Redirects handling:
-const { getStaticRedirects, refarchRedirectsPlugin } = require('./plugins/redirects');
-const staticRedirects = getStaticRedirects();
+const { getStaticRedirects } = require('./plugins/staticRedirects');
+const { redirectsPlugin } = require('./plugins/dynamicRedirects');
 
 // Define the directory containing your CSS files
 const cssDirectory = path.resolve(__dirname, './src/css');
@@ -99,17 +99,10 @@ async function createConfig() {
         '@docusaurus/plugin-client-redirects',
         {
           id: 'static-redirects',
-          redirects: staticRedirects,
+          redirects: getStaticRedirects(),
         },
       ],
-      refarchRedirectsPlugin,
-      [
-        '@docusaurus/plugin-client-redirects',
-        {
-          id: 'refarch-redirects',
-          redirects: (await refarchRedirectsPlugin()).globalData.refarchRedirects,
-        },
-      ],
+      redirectsPlugin,
     ],
 
     presets: [
