@@ -11,15 +11,9 @@ import KeyPoints from '@site/src/components/KeyPoints';
 This is an overview of our approach to centralized access management and the relationships between the components used to implement it. It explains how SAML, SSO, and custom constructs for AWS teams and team roles interact to provide efficient role delegation and authentication across an AWS Organization.
 </Intro>
 
-<img
-  src="https://lucid.app/publicSegments/view/1eac6776-c23f-4b1f-8aec-c7f540470746/image.png"
-  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
-/>
-<br />
+## AWS Teams and Team Roles
 
-The following components are designed to provision all primary user and system roles into a centralized identity
-account. These components are expected to be used together to provide fine-grained role delegation across the account
-hierarchy.
+Why do we need Teams and Team Roles when we have the same thing in Identity Center? To explain that, let’s first explain what they do and how we’ve integrated them.
 
 ### AWS Teams
 
@@ -36,32 +30,250 @@ assume the role in any account.
 
 These roles should be identical in all accounts, such that you can always expect `admin` to be `admin`, `poweruser` to
 be `poweruser`, and `observer` to be `observer`. The only difference between accounts is which AWS Team is able to
-assume the role.
+assume the role. We also have a `terraform` role that is used by Terraform to apply changes across all accounts.
 
-### AWS IAM Identity Center (SSO)
+### Example
 
-The `aws-sso` component connects AWS IAM Identity Center (Successor to AWS Single Sign-On) Groups to Permission Sets.
-Permission Sets grant access to `aws-teams` in the Identity account or (optional) access to an individual account for
-convenience.
+Consider this example. We want to enable the “DevOps” to assume Administrator in multiple accounts, such as `dev` or `prod`. However, “developers” can only assume admin in `dev`. Here’s how that would work:
 
-Permission Sets other than the Identity Team Access Permission Set are used only for console and cli access to a single
-account. These are redundant with AWS Team Roles but are useful for quickly accessing a given account with limited
-permission.
+```mermaid
+flowchart LR
+    subgraph core_identity["core-identity Teams"]
+        developers["developers"]
+        devops["devops"]
+    end
 
-With AWS IAM Identity Center, you can directly access a specific account from the single sign-on page, which will automatically assume the role with the associated `PermissionSet`. This is great for web console usage but not ideal for locally applying Terraform. With Terraform, we need to apply changes across many accounts, where each account has its own role. We don't want to assume a new role each time we change accounts. To solve this, we have a specific Permission Set that can assume an AWS team role in the identity account. When applying Terraform, we assume that "team" role via SSO, and when accessing the web console, we use the Permission Set directly.
+    subgraph dev_account_roles["plat-dev Team Roles"]
+        admin_dev["admin"]
+    end
 
-### AWS SAML
+    subgraph prod_account_roles["plat-prod Team Roles"]
+        observer_prod["observer"]
+        admin_prod["admin"]
+    end
 
-The `aws-saml` component provides SAML access for Admin users to connect to the Identity account admin role `aws-teams`
-without AWS IAM Identity Center (Successor to AWS Single Sign-On).
+    developers --> admin_dev
+    developers --> observer_prod
+    devops --> admin_prod
+    devops --> admin_dev
+```
 
-This component creates an Identity Provider (IdP) in the Identity account to allow federated access to an identity role.
-Follow the Identity Providers documentation for adding a SAML login.
+In the `core-identity` account, we have a `developers` team and a `devops` team. Then in the `plat-dev` account, we have an `admin` team role. And in the `plat-staging` account we have an `admin` and an `observer` team role. With our design, the `developers` team can assume `admin` only in `plat-dev`, but the `devops` team can assume `admin` in both `plat-dev` and `plat-staging`.
 
-With AWS SAML, we create a federated SAML login that connects to the "team" in the identity account, and then users can assume other roles from there. We use the [AWS Extend Switch Roles plugin](https://github.com/tilfinltd/aws-extend-switch-roles) that makes this much easier, but it's not as intuitive as Identity Center.
+## Using AWS Identity Center for Single Sign On
+
+Now how does AWS IAM Identity Center fit in? Let’s see how we can connect AWS Teams and Team roles with Identity Center to complete the picture.
+
+### Connecting a Permission Set to an AWS Team
+
+Identity Center has the concept of Permission Sets. Permission Sets determine what a user can or cannot do. We simply connect those Permission Sets to one of our Teams.
+
+We define a special Permission Set for the `core-identity` account, called the `Identity{X}TeamAccess` Permission Set. This Permission Set has access to assume the related AWS Team. For example, the `IdentityDeveloperTeamAccess` permission set can assume the `developers` team and the `IdentityDevopsTeamAccess` permission set can assume the `devops` team.
+
+From their AWS Team, users can apply Terraform wherever they have access
+
+
+```mermaid
+flowchart LR
+    subgraph identity_center_permission_sets["Identity Center Permission Sets"]
+        developer_access["IdentityDeveloperTeamAccess"]
+        devops_access["IdentityDevopsTeamAccess"]
+    end
+
+    subgraph core_identity_teams["core-identity Teams"]
+        developers["developers"]
+        devops["devops"]
+    end
+
+    subgraph plat_sandbox_roles["plat-sandbox Team Roles"]
+        terraform_sandbox["terraform"]
+    end
+
+    subgraph plat_prod_roles["plat-prod Team Roles"]
+        terraform_prod["terraform"]
+        planner_prod["planner"]
+    end
+
+    developer_access --> developers
+    devops_access --> devops
+
+    developers --> terraform_sandbox
+    developers --> planner_prod
+
+    devops --> terraform_sandbox
+    devops --> terraform_prod
+```
+
+### Centrally Manage Users and Groups with an IdP
+
+We still need some method to manage users and groups. AWS Teams and Team roles grant groups of users access, but do not define or manage users. AWS IAM Identity Center ties together Teams and Team roles with a predefined set of users and groups.
+
+Although you may choose to manage users and groups directly in Identity Center, the vast majority of our customers choose to use a SAML IdP as the source of truth for their users and groups. With a SAML IdP, users and groups are not created in AWS. Instead, we connect a third-party Identity Provider, such as GSuite, JumpCloud or Okta. Then we manage all Users and Groups in that IdP
+
+With “automatic provisioning” in AWS, we can synchronize all users and groups from the IdP into AWS. Then we can create Permission Sets in AWS to assign to those groups. We can assign Permission Sets to Groups for any given account. A Permission Set, such as `AdministratorAccess` or `ReadOnlyAccess`, is granted to a given group for some account. This way, we only need to define the Permission Sets once each
+
+```mermaid
+flowchart LR
+    subgraph external_idp["External Identity Provider"]
+        user1["IdP User: Homer"]
+        user2["IdP User: Lisa"]
+        user3["IdP User: Bart"]
+        group1["IdP Group: DevOps"]
+        user1 --> group1
+        user2 --> group1
+        user3 --> group1
+    end
+
+    subgraph aws_iam_identity_center["AWS IAM Identity Center"]
+        user1_copy["Identity Center User: Homer"]
+        user2_copy["Identity Center User: Lisa"]
+        user3_copy["Identity Center User: Bart"]
+        group1_copy["Identity Center Group: DevOps"]
+        permissions["Permission Sets"]
+        user1_copy -.-> group1_copy
+        user2_copy -.-> group1_copy
+        user3_copy -.-> group1_copy
+        group1_copy --> permissions
+    end
+
+    external_idp -->|Automatic Provisioning| aws_iam_identity_center
+```
+
+### Access the AWS Web Console with Identity Center
+
+With Identity Center, it’s very easy to log into the AWS web console. Simply open the Single Sign On Portal link, and select the account and role you want to access.
+
+For example, if I wanted to connect to `plat-prod` with “Read Only” access, then I would select the `ReadOnlyAccess` Permission Set for `plat-prod`. AWS then will launch a new session with the appropriate permissions in production
+
+
+### Deploying both AWS IAM Identity Center and AWS SAML
+
+AWS IAM Identity Center and AWS SAML are not mutually exclusive solutions. They can be used together to provide a seamless login experience for users. Cloud Posse frequently deploys both in customer environments - AWS SAML to log in ourselves for the duration of the engagement and AWS IAM Identity Center for the customer to use and support. That way the customer can access AWS via their chosen Identity Provider (IdP), and we can use GSuite SAML to access the Identity account team directly. When an engagement is complete, we can easily decommission our access by removing the SAML connection.
 
 :::tip AWS IAM Identity Center or AWS SAML? Which do I choose?
 
 The vast majority of our customers prefer AWS IAM Identity Center (SSO). The convenience of a web console login is hard to beat. However, some customers prefer SAML for its simplicity and compatibility with existing systems. We support both methods, and you can choose the one that best fits your needs.
 
 :::
+
+
+```mermaid
+flowchart TB
+    subgraph "Complete Access Architecture"
+        subgraph "core-root"
+            subgraph sso["Identity Center"]
+                developers_team_access["IdentityDevelopersTeamAccess"]
+                devops_team_access["IdentityDevopsTeamAccess"]
+            end
+        end
+
+        subgraph "core-identity"
+            subgraph aws_teams["aws-teams"]
+                devops_teams["devops"]
+                developers_teams["developers"]
+                spacelift_teams["spacelift"]
+            end
+        end
+
+        subgraph "plat-prod"
+            subgraph aws_team_roles_prod["aws-team-roles"]
+                terraform_prod["terraform"]
+                planner_prod["planner"]
+            end
+        end
+
+        subgraph "plat-sandbox"
+            subgraph aws_team_roles_sandbox["aws-team-roles"]
+                terraform_sandbox["terraform"]
+            end
+        end
+
+        developers_team["Developer Team"] --> developers_team_access
+        devops_team["DevOps Team"] --> devops_team_access
+        developers_team_access --> developers_teams
+        devops_team_access --> devops_teams
+
+        g_suite["G Suite"] -->|SAML Federated Identity| devops_teams
+        spacelift["Spacelift"] --> spacelift_teams
+
+        developers_teams --> planner_prod
+        devops_teams --> terraform_prod
+        spacelift_teams --> terraform_prod
+
+        developers_teams --> terraform_sandbox
+        devops_teams --> terraform_sandbox
+        spacelift_teams --> terraform_sandbox
+    end
+```
+
+## FAQ
+
+### Why use AWS SAML?
+
+SAML offers granular control over identity management with your IdP in AWS. With our `aws-saml` component, you can integrate multiple IdPs, and we explicitly provision every role, policy, and trust relationship needed. The `aws-saml` component allows users to assume any number of roles to access AWS accounts that are associated with their IdP groups.
+
+This component creates an Identity Provider (IdP) in the Identity account to allow federated access to an identity role.
+Follow the Identity Providers documentation for adding a SAML login.
+
+With AWS SAML, we create a federated SAML login that connects to the "team" in the identity account, and then users can assume other roles from there. We use the [AWS Extend Switch Roles plugin](https://github.com/tilfinltd/aws-extend-switch-roles) that makes this much easier, but it's not as intuitive as Identity Center.
+
+:::info What is a federated login?
+
+A federated login means that instead of managing separate credentials for each AWS account, users authenticate through a centralized identity provider (IdP). This allows them to access multiple AWS accounts or services using a single set of credentials, based on trust relationships established between the IdP and AWS.
+
+:::
+
+```mermaid
+flowchart TB
+    subgraph "Human Access Architecture with AWS SAML"
+        subgraph "core-identity"
+            subgraph aws_teams["aws-teams"]
+                devops_teams["devops"]
+                developers_teams["developers"]
+                billing_teams["billing"]
+            end
+        end
+
+        subgraph "plat-prod"
+            subgraph aws_team_roles_prod["aws-team-roles"]
+                admin_prod["admin"]
+                billing_prod["billing"]
+                reader_prod["reader"]
+            end
+        end
+
+        subgraph "plat-sandbox"
+            subgraph aws_team_roles_sandbox["aws-team-roles"]
+                admin_sandbox["admin"]
+                billing_sandbox["billing"]
+                reader_sandbox["reader"]
+            end
+        end
+
+        g_suite["GSuite\nFederated Identity"] -->|SAML| devops_teams
+        g_suite -->|SAML| developers_teams
+        g_suite -->|SAML| billing_teams
+
+        developers_teams --> reader_prod
+        devops_teams --> admin_prod
+        billing_teams --> billing_prod
+
+        developers_teams --> admin_sandbox
+        devops_teams --> admin_sandbox
+        billing_teams --> billing_sandbox
+    end
+```
+
+### How do I use AWS IAM Identity Center (SSO)?
+
+AWS IAM Identity Center (SSO) is natively integrated with the AWS Web Console and the AWS CLI. You don't need to do anything special to get started with it once it's been properly configured.
+
+Specifically, the `aws-sso` component connects AWS IAM Identity Center (Successor to AWS Single Sign-On) Groups to Permission Sets.
+Permission Sets grant access to `aws-teams` in the Identity account or (optional) access to an individual account for
+convenience.
+
+Permission Sets other than the Identity Team Access Permission Set are used only for console and CLI access to a single
+account. These are redundant with AWS Team Roles but are useful for quickly accessing a given account with limited
+permission.
+
+With AWS IAM Identity Center, you can directly access a specific account from the single sign-on page, which will automatically assume the role with the associated `PermissionSet`. This is great for web console usage but not ideal for locally applying Terraform. With Terraform, we need to apply changes across many accounts, where each account has its own role. We don't want to assume a new role each time we change accounts. To solve this, we have a specific Permission Set that can assume an AWS team role in the identity account. When applying Terraform, we assume that "team" role via SSO, and when accessing the web console, we use the Permission Set directly.
