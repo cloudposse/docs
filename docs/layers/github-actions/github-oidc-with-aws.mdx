@@ -88,10 +88,18 @@ sequenceDiagram
   ### <StepNumber/> Deploy GitHub OIDC Provider Component
 
   After deploying the [GitHub OIDC Provider component](/components/library/aws/github-oidc-provider/) into an account, you should see the Identity Provider in IAM in the AWS Web Console.
+
+  Deploy this component in each account where GitHub Actions need to assume a role.
+
+  <Steps>
+    - Import `catalog/github-oidc-provider` in the `gbl` stack for the given account
+    - Deploy the `github-oidc-provider` component: `atmos terraform apply github-oidc-provider -s plat-gbl-dev`
+  </Steps>
+
   </Step>
 
   <Step>
-  ### <StepNumber/> Configure GitHub OIDC Mixin Role and Policy
+  ### <StepNumber/> Option 1: Configure GitHub OIDC Mixin Role and Policy
 
   Use the mixin to grant GitHub the ability to assume a role for a specific component.
 
@@ -100,7 +108,7 @@ sequenceDiagram
   </Step>
 
   <Step>
-  ### <StepNumber/> Deploy GitHub OIDC Role Component
+  ### <StepNumber/> Option 2: Deploy GitHub OIDC Role Component
 
   Deploy the [GitHub OIDC Role component](/components/library/aws/github-oidc-role/) to create a generalized role for GitHub to access several resources in AWS.
   </Step>

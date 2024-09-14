@@ -30,7 +30,7 @@ workflows:
         command: |-
           echo "Now update the eks/cluster map_additional_iam_roles and reapply eks/cluster"
 
-  deploy/data-sources:
+  deploy/grafana:
     description: deploys centralized Grafana and all sub components
     steps:
       - command: terraform deploy grafana -s core-use1-auto
