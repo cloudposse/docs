@@ -17,7 +17,7 @@ render:
 	./scripts/render-docs-for-modules.sh
 	./scripts/render-docs-for-github-actions.sh
 	
-containers:
+docker/build:
 	docker build . -t cloudposse/docs
 	docker build scripts -t cloudposse/docs:scripts
 
@@ -26,7 +26,7 @@ docker/render: containers
 	docker run --rm -v -it $(PWD):/app -w /app -e PUBLIC_REPO_ACCESS_TOKEN="$$(gh auth token)" cloudposse/docs:scripts scripts/render-docs-for-modules.sh
 	docker run --rm -v -it $(PWD):/app -w /app -e PUBLIC_REPO_ACCESS_TOKEN="$$(gh auth token)" cloudposse/docs:scripts scripts/render-docs-for-github-actions.sh
 
-docker/build: containers
+build-library: containers
 	docker run --rm -v $(PWD):/app -w /app cloudposse/docs npm run build
 
 build: deps
