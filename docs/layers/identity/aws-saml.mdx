@@ -100,7 +100,7 @@ identity. You can use this federated identity to connect directly to a given AWS
         Follow the steps in the [official Okta documentation](https://help.okta.com/en-us/content/topics/deploymentguides/aws/aws-configure-aws-app.htm) to complete the setup. Please review the following tips, as we've encountered these issues in the past:
 
         - Deploying the `aws-saml` component will create an AWS IAM User, which Okta will be used to discover roles in AWS. This user's access key and secret key are stored in AWS SSM Parameter Store in the same account and (default) region as the `aws-saml` component. This is unique for Okta.
-        - In the "Provisioning" tab, you must check the **"Update User Attributes"** box. This does not appear in documentation but is necessary for the roles to populate in Okta.
+        - In the "Provisioning" tab for the integration in Okta, you must check the **"Update User Attributes"** box. This does not appear in documentation but is necessary for the roles to populate in Okta.
       </TabItem>
     </Tabs>
   </Step>
