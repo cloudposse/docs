@@ -169,7 +169,7 @@ echo "Hello, World!"
 
 ## Components
 
-Components in docusaurus need to be `import`ed before they work. They are arbitrarily stored in either the `themes` or `components` directories of the `src` directory.
+Components in Docusaurus need to be imported before they can be used. Some components are imported by default. You can add components to be imported by default by adding them to the `src/theme/MDXComponents.js` file. Depending on the component, they are stored in either the `src/theme` or `src/components` directories.
 
 ### ActionCard and PrimaryCTA/SecondaryCTA
 
@@ -453,14 +453,18 @@ Task lists turn any ordered or unordered list into an interactive checklist that
 ```
 <Terminal title="script.sh">
 
+\```console
   $ echo "Hello, World!"
+\```
 
 </Terminal>
 ```
 
 <Terminal title="script.sh">
 
+```console
   $ echo "Hello, World!"
+```
 
 </Terminal>
 
