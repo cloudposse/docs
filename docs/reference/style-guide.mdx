@@ -91,8 +91,6 @@ For when items should follow a sequence.
 
 ### Markdown Admonitions
 
-**NOTE:** While this is the preferred way of doing admonitions, some components will not render markdown. If that happens, use the [Admonition component below.](#Admonition)
-
 ```
 :::warning Tip title
 
@@ -106,6 +104,18 @@ This is a tip.
 Make sure you put a newline after the opening `:::` and before the closing `:::`.
 
 :::
+
+**NOTE:** While this is the preferred way of doing admonitions, some components will not render markdown. If that happens, use the [Admonition component below.](#Admonition)
+
+```mdx
+<Admonition type="tip">
+  This is a tip.
+</Admonition>
+```
+
+<Admonition type="tip">
+  This is a tip.
+</Admonition>
 
 ### Code blocks
 
@@ -160,18 +170,6 @@ echo "Hello, World!"
 ## Components
 
 Components in docusaurus need to be `import`ed before they work. They are arbitrarily stored in either the `themes` or `components` directories of the `src` directory.
-
-### Admonition
-
-```mdx
-<Admonition type="tip">
-  This is a tip.
-</Admonition>
-```
-
-<Admonition type="tip">
-  This is a tip.
-</Admonition>
 
 ### ActionCard and PrimaryCTA/SecondaryCTA
 
@@ -453,14 +451,14 @@ Task lists turn any ordered or unordered list into an interactive checklist that
 ### Terminal
 
 ```
-<Terminal>
+<Terminal title="script.sh">
 
   $ echo "Hello, World!"
 
 </Terminal>
 ```
 
-<Terminal>
+<Terminal title="script.sh">
 
   $ echo "Hello, World!"
 
