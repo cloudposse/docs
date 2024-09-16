@@ -1,0 +1,210 @@
+[
+  {
+    "from": "/reference-architecture/REFARCH-34",
+    "to": "/layers/project/design-decisions/decide-on-1password-strategy"
+  },
+  {
+    "from": "/REFARCH-34",
+    "to": "/layers/project/design-decisions/decide-on-1password-strategy"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-46",
+    "to": "/layers/network/design-decisions/decide-on-service-discovery-domain"
+  },
+  {
+    "from": "/REFARCH-46",
+    "to": "/layers/network/design-decisions/decide-on-service-discovery-domain"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-49",
+    "to": "/layers/eks/design-decisions/decide-on-host-os-flavor-for-eks"
+  },
+  {
+    "from": "/REFARCH-49",
+    "to": "/layers/eks/design-decisions/decide-on-host-os-flavor-for-eks"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-50",
+    "to": "/layers/accounts/design-decisions/decide-on-mfa-solution-for-aws-root-accounts"
+  },
+  {
+    "from": "/REFARCH-50",
+    "to": "/layers/accounts/design-decisions/decide-on-mfa-solution-for-aws-root-accounts"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-51",
+    "to": "/layers/accounts/design-decisions/decide-on-email-address-format-for-aws-accounts"
+  },
+  {
+    "from": "/REFARCH-51",
+    "to": "/layers/accounts/design-decisions/decide-on-email-address-format-for-aws-accounts"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-52",
+    "to": "/layers/project/design-decisions/decide-on-infrastructure-repository-name"
+  },
+  {
+    "from": "/REFARCH-52",
+    "to": "/layers/project/design-decisions/decide-on-infrastructure-repository-name"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-53",
+    "to": "/layers/project/design-decisions/decide-on-namespace-abbreviation"
+  },
+  {
+    "from": "/REFARCH-53",
+    "to": "/layers/project/design-decisions/decide-on-namespace-abbreviation"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-54",
+    "to": "/layers/network/design-decisions/decide-on-vanity-branded-domain"
+  },
+  {
+    "from": "/REFARCH-54",
+    "to": "/layers/network/design-decisions/decide-on-vanity-branded-domain"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-55",
+    "to": "/layers/accounts/design-decisions/decide-on-aws-account-flavors-and-organizational-units"
+  },
+  {
+    "from": "/REFARCH-55",
+    "to": "/layers/accounts/design-decisions/decide-on-aws-account-flavors-and-organizational-units"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-56",
+    "to": "/layers/network/design-decisions/decide-on-primary-aws-region"
+  },
+  {
+    "from": "/REFARCH-56",
+    "to": "/layers/network/design-decisions/decide-on-primary-aws-region"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-79",
+    "to": "/resources/legacy/design-decisions/decide-on-transactional-email-smtp-provider-for-operational-email"
+  },
+  {
+    "from": "/REFARCH-79",
+    "to": "/resources/legacy/design-decisions/decide-on-transactional-email-smtp-provider-for-operational-email"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-80",
+    "to": "/layers/network/design-decisions/decide-vpc-peering-requirements-e-g-to-legacy-env"
+  },
+  {
+    "from": "/REFARCH-80",
+    "to": "/layers/network/design-decisions/decide-vpc-peering-requirements-e-g-to-legacy-env"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-81",
+    "to": "/layers/project/design-decisions/decide-on-secrets-management-strategy-for-terraform"
+  },
+  {
+    "from": "/REFARCH-81",
+    "to": "/layers/project/design-decisions/decide-on-secrets-management-strategy-for-terraform"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-91",
+    "to": "/layers/software-delivery/design-decisions/decide-how-to-distribute-docker-images"
+  },
+  {
+    "from": "/REFARCH-91",
+    "to": "/layers/software-delivery/design-decisions/decide-how-to-distribute-docker-images"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-111",
+    "to": "/layers/monitoring/design-decisions/decide-on-external-monitoring-solution"
+  },
+  {
+    "from": "/REFARCH-111",
+    "to": "/layers/monitoring/design-decisions/decide-on-external-monitoring-solution"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-112",
+    "to": "/layers/software-delivery/design-decisions/decide-on-maintenance-page-solution"
+  },
+  {
+    "from": "/REFARCH-112",
+    "to": "/layers/software-delivery/design-decisions/decide-on-maintenance-page-solution"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-144",
+    "to": "/layers/software-delivery/design-decisions/decide-on-database-seeding-strategy-for-ephemeral-preview-enviro"
+  },
+  {
+    "from": "/REFARCH-144",
+    "to": "/layers/software-delivery/design-decisions/decide-on-database-seeding-strategy-for-ephemeral-preview-enviro"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-202",
+    "to": "/layers/eks/design-decisions/decide-on-email-address-for-cert-manager-support-emails"
+  },
+  {
+    "from": "/REFARCH-202",
+    "to": "/layers/eks/design-decisions/decide-on-email-address-for-cert-manager-support-emails"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-207",
+    "to": "/layers/eks/design-decisions/decide-on-helm-chart-repository-strategy"
+  },
+  {
+    "from": "/REFARCH-207",
+    "to": "/layers/eks/design-decisions/decide-on-helm-chart-repository-strategy"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-208",
+    "to": "/layers/network/design-decisions/decide-on-hostname-scheme-for-service-discovery"
+  },
+  {
+    "from": "/REFARCH-208",
+    "to": "/layers/network/design-decisions/decide-on-hostname-scheme-for-service-discovery"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-209",
+    "to": "/layers/project/design-decisions/decide-on-regional-naming-scheme"
+  },
+  {
+    "from": "/REFARCH-209",
+    "to": "/layers/project/design-decisions/decide-on-regional-naming-scheme"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-210",
+    "to": "/layers/data/design-decisions/decide-whether-to-use-rds-iam-authentication"
+  },
+  {
+    "from": "/REFARCH-210",
+    "to": "/layers/data/design-decisions/decide-whether-to-use-rds-iam-authentication"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-211",
+    "to": "/layers/data/design-decisions/decide-on-rds-technology-and-architecture"
+  },
+  {
+    "from": "/REFARCH-211",
+    "to": "/layers/data/design-decisions/decide-on-rds-technology-and-architecture"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-217",
+    "to": "/layers/network/design-decisions/decide-on-aws-account-vpc-subnet-cidr-strategy"
+  },
+  {
+    "from": "/REFARCH-217",
+    "to": "/layers/network/design-decisions/decide-on-aws-account-vpc-subnet-cidr-strategy"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-236",
+    "to": "/layers/eks/design-decisions/decide-on-eks-node-pool-architecture"
+  },
+  {
+    "from": "/REFARCH-236",
+    "to": "/layers/eks/design-decisions/decide-on-eks-node-pool-architecture"
+  },
+  {
+    "from": "/reference-architecture/REFARCH-240",
+    "to": "/layers/network/design-decisions/decide-on-organization-supernet-cidr-ranges"
+  },
+  {
+    "from": "/REFARCH-240",
+    "to": "/layers/network/design-decisions/decide-on-organization-supernet-cidr-ranges"
+  }
+]
