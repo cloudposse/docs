@@ -32,12 +32,18 @@ identity. You can use this federated identity to connect directly to a given AWS
       <TabItem value="google" label="Google Workspace">
         Follow the [AWS documentation for Google Workspace](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/). Once you have completed the setup, download the metadata file.
       </TabItem>
-
       <TabItem value="okta" label="Okta">
-        Follow the [Okta documentation](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm). Once you have completed the setup, download the metadata file.
+
+        <Steps>
+          1. Create an "Amazon Web Services Account Federation" application in Okta.
+          1. Select "SAML 2.0" from the Sign-On Method.
+          1. View and download the identity provider (IdP) metadata file.
+        </Steps>
+
+        For details, please see the official [Okta documentation](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm)
       </TabItem>
 
-      <TabItem value="jumpcloud" label="Jumpcloud">
+      <TabItem value="jumpcloud" label="JumpCloud">
        Follow the [JumpCloud documentation](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2). Once you have completed the setup, download the metadata file.
       </TabItem>
 
@@ -51,18 +57,52 @@ identity. You can use this federated identity to connect directly to a given AWS
   <Step>
     ## <StepNumber/> Import the metadata file from the chosen provider.
 
+    Download and save the metadata file with the `aws-saml` component directory.
+
     <Steps>
       1. Place this file inside the `aws-saml` component directory (`components/terraform/aws-saml/`)
-      2. Commit this to version control. The filename should match the variable configured in `stacks/catalog/aws-saml.yaml`.
+      1. The filename should match the variable configured in the `aws-saml` stack catalog (`stacks/catalog/aws-saml.yaml`).
+      1. Commit this to version control.
     </Steps>
+
+    <Tabs>
+      <TabItem value="okta" label="Okta">
+
+      Make sure the `var.saml_providers` map key ends with `-okta`. We filter by this suffix to determine whether or not to set up a dedicated user for Okta. This is only necessary for Okta.
+
+      ```yaml
+      saml_providers:
+        acme-okta: "OktaIDPMetadata-acme.com.xml"
+      ```
+      </TabItem>
+    </Tabs>
   </Step>
 
   <Step>
     ## <StepNumber/> Deploy the SAML Integration
 
+    Deploy the `aws-saml` component to your Identity account.
+
     ```bash
     atmos terraform apply aws-saml -s core-gbl-identity
     ```
+
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Complete the Identity Provider (IdP) setup
+
+    If necessary, complete the integration setup in your chosen IdP. This will vary depending on the provider.
+
+    <Tabs>
+      <TabItem value="okta" label="Okta">
+
+        Follow the steps in the [official Okta documentation](https://help.okta.com/en-us/content/topics/deploymentguides/aws/aws-configure-aws-app.htm) to complete the setup. Please review the following tips, as we've encountered these issues in the past:
+
+        - Deploying the `aws-saml` component will create an AWS IAM User, which Okta will be used to discover roles in AWS. This user's access key and secret key are stored in AWS SSM Parameter Store in the same account and (default) region as the `aws-saml` component. This is unique for Okta.
+        - In the "Provisioning" tab, you must check the **"Update User Attributes"** box. This does not appear in documentation but is necessary for the roles to populate in Okta.
+      </TabItem>
+    </Tabs>
   </Step>
 
   <Step>
