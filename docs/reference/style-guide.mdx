@@ -173,6 +173,8 @@ Components in Docusaurus need to be imported before they can be used. Some compo
 
 ### ActionCard and PrimaryCTA/SecondaryCTA
 
+ActionCard components are used to display a card with a title, description, and a call to action. These 'actions' are typically anchors that link to other pages.
+
 ```
 <ActionCard
   title="Get Started"
@@ -195,6 +197,8 @@ Components in Docusaurus need to be imported before they can be used. Some compo
 
 ### AsciinemaWidget
 
+The AsciinemaWidget component is used to embed [asciinema](https://asciinema.org) recordings into the documentation. These are recordings of terminal interaction, which you can create for free (note, they are public)
+
 ```
 <AsciinemaWidget src="https://asciinema.org/a/113643.json" />
 ```
@@ -202,6 +206,8 @@ Components in Docusaurus need to be imported before they can be used. Some compo
 <AsciinemaWidget src="https://asciinema.org/a/113643.json" />
 
 ### AtmosWorkflow
+
+The AtmosWorkflow component is used to embed Atmos workflows into the documentation. These are workflows that can be run from the Atmos CLI, but often have important details and could be run as a sequence of steps instead. You can use this component to not only document the workflow, but also expose the sequence of commands it uses for better describing how the workflow works.
 
 ```
 <AtmosWorkflow workflow="deploy/organization" fileName="accounts" />
@@ -213,6 +219,8 @@ Components in Docusaurus need to be imported before they can be used. Some compo
 <AtmosWorkflow workflow="deploy/organization" fileName="accounts" stack="foo"/>
 
 ### CardGroup
+
+CardGroup is used to display a group of cards in a row. Cards are mostly helpful for controlling text flow and mobile presentation where content should reflow rigidly.
 
 ```
 <CardGroup>
@@ -230,13 +238,17 @@ Components in Docusaurus need to be imported before they can be used. Some compo
 
 ### CategoryList
 
+CategoryList is used to display a list of pages in a category. This is useful for showing a list of tutorials or other related pages.
+
 ```
-<CategoryList path="/layers/spacelift/tutorials/"/>
+<CategoryList path="/modules/library"/>
 ```
 
-<CategoryList path="/layers/spacelift/tutorials/"/>
+<CategoryList path="/modules/library"/>
 
 ### CollapsibleText
+
+The collapsible text component can display an excerpt of a large body of text, helping conserve scroll space and allowing a reader to skim over the content. Note: this is really for a large body of text, and will likely not show a significant effect on smaller amounts (i.e. < 3 paragraphs of text).
 
 ```
 <CollapsibleText title="This is a collapsible text">
@@ -252,6 +264,8 @@ Components in Docusaurus need to be imported before they can be used. Some compo
 
 ### Definition
 
+The Definition component can show a term and, when clicked, also its definition.
+
 ```
 <Definition term="bastion"/>
 ```
@@ -262,6 +276,8 @@ It's worth noting that the `<Definition>` component uses [the glossary page](/re
 If you need to make a new term, add it to the glossary first.
 
 ### DismissibleDialog
+
+DismissibleDialog components can be used for showing content that should only be needed once (like a notification during page events).
 
 ```
 <DismissibleDialog title="This is a dismissible dialog">
@@ -274,6 +290,8 @@ If you need to make a new term, add it to the glossary first.
 </DismissibleDialog>
 
 ### DocCardList
+
+DocCardList components are used for listing related content as clickable cards.
 
 ```
 <DocCardList items={[
@@ -313,6 +331,8 @@ It's worth noting that the `<DocCardList>` component can be used without `items`
 
 ### Intro
 
+Intro components are used to introduce a section of content. They create a `div` with the `intro` class. You can use styles to make these stand out more and help draw the reader in to summaries.
+
 ```
 <Intro>
   This is the content of the intro.
@@ -324,6 +344,8 @@ It's worth noting that the `<DocCardList>` component can be used without `items`
 </Intro>
 
 ### KeyPoints
+
+Keypoints components style an unordered list. They'll wrap content in a `key-points` class and create a heading for the title.
 
 ```
 <KeyPoints title="Example keypoints...">
@@ -339,6 +361,8 @@ It's worth noting that the `<DocCardList>` component can be used without `items`
 
 ### Note
 
+Notes are designed to be less distracting than admonitions, but still draw attention to important information. Use them for expressing nuance.
+
 ```
 <Note title="optional title">
   This is the content of the note.
@@ -351,6 +375,8 @@ It's worth noting that the `<DocCardList>` component can be used without `items`
 
 ### PillBox
 
+Pillboxes are purely decorative, wrapping text in a pill-shaped box. They can be used to draw attention to a topic or to create a visual break in the content.
+
 ```
 <PillBox>Here's a new topic</PillBox>
 ```
@@ -358,6 +384,8 @@ It's worth noting that the `<DocCardList>` component can be used without `items`
 <PillBox>Here's a new topic</PillBox>
 
 ### Slider
+
+A Slider will take over the content and sidebar of a page, turning it into a slideshow. Slides are defined by the `<Slide />` component. This component does not play well with any other compnents that affect or consume the sidebar and other navigation data.
 
 ```
 <Slider>
@@ -377,6 +405,8 @@ It's worth noting that the `<DocCardList>` component can be used without `items`
 Slider's can't be demonstrated in a normal page since they take over the table of contents. Therefore, refer to [the jumpstart handoff page](/jumpstart/handoffs) for a working example.
 
 ### Steps
+
+Steps components can style a list of steps. While you should use lists for organizing most content, prefer to use `Steps` when describing an operation or process.
 
 ```
 <Steps>
@@ -408,6 +438,8 @@ Slider's can't be demonstrated in a normal page since they take over the table o
 
 ### Tabs
 
+Tabs are used for hiding content based on a context, such as steps in an install or configuration of a service. They should be used when users can either ignore details that are out of context, or for organizing the scope of information on a topic.
+
 ```
 <Tabs queryString="tabs">
   <TabItem value="tab1" label="Tab 1" default>
@@ -427,10 +459,13 @@ Slider's can't be demonstrated in a normal page since they take over the table o
     This is the content of tab 2.
   </TabItem>
 </Tabs>
+
+**Note**: Setting the `queryString` prop to a unique value will allow the tabs to be bookmarked. This can help with navigation, syncing other tabs on the same page, or linking from other pages.
 
 ### TaskList
 
 Task lists turn any ordered or unordered list into an interactive checklist that saves its state in the local browser cache.
+
 ```
 
 <TaskList>
@@ -450,6 +485,8 @@ Task lists turn any ordered or unordered list into an interactive checklist that
 
 ### Terminal
 
+Terminals are a decoration which streses when a command is being run in a terminal. They are not interactive, but can be used to show a sequence of commands.
+
 ```
 <Terminal title="script.sh">
 
@@ -467,6 +504,8 @@ Task lists turn any ordered or unordered list into an interactive checklist that
 ```
 
 </Terminal>
+
+**Note**: Contents are only wrapped, so they should be in a code block if you want monospace text.
 
 ## Conformance and Best Practices
 
