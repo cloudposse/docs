@@ -1,4 +1,4 @@
-// AtmosWorkflow.tsx
+// index.tsx
 
 import React, { useEffect, useState } from 'react';
 import CodeBlock from '@theme/CodeBlock';
@@ -39,9 +39,9 @@ export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosW
           <code>{fullFilePath}</code> file:
         </Note>
         {workflowData?.description && (
-          <p>
+          <h4 className=".workflow-title">
             {workflowData.description}
-          </p>
+          </h4>
         )}
         <Steps>
           <ul>
@@ -49,7 +49,9 @@ export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosW
               workflowData.steps.map((step, index) => (
                 <li key={index}>
                   {step.type === 'title' ? (
-                    <p>{step.content}</p>
+                    <p className=".workflow-title">
+                      {step.content}
+                    </p>
                   ) : (
                     <CodeBlock language="bash">{step.content}</CodeBlock>
                   )}
