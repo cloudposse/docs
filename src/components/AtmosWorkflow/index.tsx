@@ -10,7 +10,12 @@ import * as yaml from 'js-yaml';
 const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/master/';
 const WORKFLOWS_DIRECTORY_PATH = 'examples/snippets/stacks/workflows/';
 
-async function GetAtmosTerraformCommands(workflow: string, fileName: string, stack?: string): Promise<string[] | undefined> {
+async function GetAtmosTerraformCommands(
+  workflow: string,
+  fileName: string,
+  stack?: string,
+  visitedWorkflows = new Set<string>() // Keep track of visited workflows to avoid infinite loops
+): Promise<string[] | undefined> {
   try {
     // Construct the full URL to the workflow YAML file
     const url = `${CLOUDPOSSE_DOCS_URL}${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
@@ -31,19 +36,68 @@ async function GetAtmosTerraformCommands(workflow: string, fileName: string, sta
     if (workflows && workflows.workflows && workflows.workflows[workflow]) {
       const workflowDetails = workflows.workflows[workflow];
 
-      // Extract the commands under that workflow
-      const commands = workflowDetails.steps.map((step: any) => {
+      // Prevent infinite recursion in case of cyclic dependencies
+      const workflowKey = `${fileName}:${workflow}`;
+      if (visitedWorkflows.has(workflowKey)) {
+        console.warn(`Already visited workflow ${workflow} in file ${fileName}, skipping to prevent infinite loop.`);
+        return [];
+      }
+      visitedWorkflows.add(workflowKey);
+
+      // Accumulate commands
+      let commands: string[] = [];
+
+      for (const step of workflowDetails.steps) {
+        if (step.type && step.type === 'shell') {
+          // If it's a shell command, you might want to handle it differently
+          // For now, we'll skip shell commands
+          continue;
+        }
+
         let command = step.command;
-        // TODO handle nested Atmos Workflows
-        // For example: https://raw.githubusercontent.com/cloudposse/docs/master/examples/snippets/stacks/workflows/identity.yaml
+
         if (!step.type) {
-          command = `atmos ${command}`;
-          if (stack) {
-            command += ` -s ${stack}`;
+          if (command.startsWith('workflow')) {
+            // Extract nested workflow details
+            const commandParts = command.split(' ');
+            const nestedWorkflowIndex = commandParts.findIndex((part) => part === 'workflow') + 1;
+            const nestedWorkflow = commandParts[nestedWorkflowIndex];
+
+            // Extract file name if provided with -f or --file
+            let nestedFileName = fileName; // Default to current file
+            const fileFlagIndex = commandParts.findIndex((part) => part === '-f' || part === '--file');
+            if (fileFlagIndex !== -1) {
+              nestedFileName = commandParts[fileFlagIndex + 1];
+            }
+
+            // Extract stack if provided with -s or --stack
+            let nestedStack = stack; // Default to current stack
+            const stackFlagIndex = commandParts.findIndex((part) => part === '-s' || part === '--stack');
+            if (stackFlagIndex !== -1) {
+              nestedStack = commandParts[stackFlagIndex + 1];
+            }
+
+            // Recursive call for nested workflow
+            const nestedCommands = await GetAtmosTerraformCommands(
+              nestedWorkflow,
+              nestedFileName,
+              nestedStack,
+              visitedWorkflows
+            );
+
+            if (nestedCommands) {
+              commands = commands.concat(nestedCommands);
+            }
+          } else {
+            // It's a regular atmos command
+            command = `atmos ${command}`;
+            if (stack) {
+              command += ` -s ${stack}`;
+            }
+            commands.push(command);
           }
         }
-        return command;
-      });
+      }
 
       return commands;
     }
