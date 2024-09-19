@@ -1,13 +1,14 @@
 // AtmosWorkflow.tsx
 
 import React, { useEffect, useState } from 'react';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Note from '@site/src/components/Note';
 import Steps from '@site/src/components/Steps';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
 
 import { GetAtmosTerraformCommands } from './utils';
-import { WorkflowStep } from './types';
+import { WorkflowStep, WorkflowData } from './types';
 import { WORKFLOWS_DIRECTORY_PATH } from './constants';
 
 interface AtmosWorkflowProps {
@@ -17,15 +18,15 @@ interface AtmosWorkflowProps {
 }
 
 export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosWorkflowProps) {
-  const [steps, setSteps] = useState<WorkflowStep[]>([]);
+  const [workflowData, setWorkflowData] = useState<WorkflowData | null>(null);
   const fullFilePath = `${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
 
   useEffect(() => {
-    GetAtmosTerraformCommands(workflow, fileName, stack).then((cmds) => {
-      if (Array.isArray(cmds)) {
-        setSteps(cmds);
+    GetAtmosTerraformCommands(workflow, fileName, stack).then((data) => {
+      if (data) {
+        setWorkflowData(data);
       } else {
-        setSteps([]); // Default to an empty array if cmds is undefined or not an array
+        setWorkflowData(null);
       }
     });
   }, [workflow, fileName, stack]);
@@ -33,23 +34,30 @@ export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosW
   return (
     <Tabs queryString="workflows">
       <TabItem value="commands" label="Commands">
-        <p>
+        <Note title={workflow}>
           These are the commands included in the <code>{workflow}</code> workflow in the{' '}
           <code>{fullFilePath}</code> file:
-        </p>
+        </Note>
+        {workflowData?.description && (
+          <p>
+            {workflowData.description}
+          </p>
+        )}
         <Steps>
           <ul>
-            {steps.length > 0
-              ? steps.map((step, index) => (
-                  <li key={index}>
-                    {step.type === 'title' ? (
-                      <p>{step.content}</p>
-                    ) : (
-                      <CodeBlock language="bash">{step.content}</CodeBlock>
-                    )}
-                  </li>
-                ))
-              : 'No commands found'}
+            {workflowData?.steps.length ? (
+              workflowData.steps.map((step, index) => (
+                <li key={index}>
+                  {step.type === 'title' ? (
+                    <p>{step.content}</p>
+                  ) : (
+                    <CodeBlock language="bash">{step.content}</CodeBlock>
+                  )}
+                </li>
+              ))
+            ) : (
+              'No commands found'
+            )}
           </ul>
         </Steps>
         <p>Too many commands? Consider using the Atmos workflow! 🚀</p>

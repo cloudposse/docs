@@ -1,7 +1,7 @@
 // utils.ts
 
 import * as yaml from 'js-yaml';
-import { WorkflowStep } from './types';
+import { WorkflowStep, WorkflowData } from './types';
 import { CLOUDPOSSE_DOCS_URL, WORKFLOWS_DIRECTORY_PATH } from './constants';
 
 export async function GetAtmosTerraformCommands(
@@ -9,7 +9,7 @@ export async function GetAtmosTerraformCommands(
   fileName: string,
   stack?: string,
   visitedWorkflows = new Set<string>()
-): Promise<WorkflowStep[] | undefined> {
+): Promise<WorkflowData | undefined> {
   try {
     const url = `${CLOUDPOSSE_DOCS_URL}${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
 
@@ -31,7 +31,7 @@ export async function GetAtmosTerraformCommands(
         console.warn(
           `Already visited workflow ${workflow} in file ${fileName}, skipping to prevent infinite loop.`
         );
-        return [];
+        return { description: workflowDetails.description, steps: [] };
       }
       visitedWorkflows.add(workflowKey);
 
@@ -66,15 +66,15 @@ export async function GetAtmosTerraformCommands(
             nestedStack = commandParts[stackFlagIndex + 1];
           }
 
-          const nestedSteps = await GetAtmosTerraformCommands(
+          const nestedData = await GetAtmosTerraformCommands(
             nestedWorkflow,
             nestedFileName,
             nestedStack,
             visitedWorkflows
           );
 
-          if (nestedSteps) {
-            steps = steps.concat(nestedSteps);
+          if (nestedData && nestedData.steps) {
+            steps = steps.concat(nestedData.steps);
           }
         } else if (step.type === 'shell') {
           const stepName = step.name || 'script';
@@ -97,7 +97,7 @@ export async function GetAtmosTerraformCommands(
         }
       }
 
-      return steps;
+      return { description: workflowDetails.description, steps };
     }
 
     return undefined;
