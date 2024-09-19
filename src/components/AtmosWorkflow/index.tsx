@@ -39,9 +39,9 @@ export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosW
           <code>{fullFilePath}</code> file:
         </Note>
         {workflowData?.description && (
-          <h4 className=".workflow-title">
+          <p className=".workflow-title">
             {workflowData.description}
-          </h4>
+          </p>
         )}
         <Steps>
           <ul>
@@ -49,9 +49,9 @@ export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosW
               workflowData.steps.map((step, index) => (
                 <li key={index}>
                   {step.type === 'title' ? (
-                    <p className=".workflow-title">
+                    <h4 className=".workflow-title">
                       {step.content}
-                    </p>
+                    </h4>
                   ) : (
                     <CodeBlock language="bash">{step.content}</CodeBlock>
                   )}
