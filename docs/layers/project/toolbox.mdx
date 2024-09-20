@@ -8,6 +8,7 @@ import Intro from '@site/src/components/Intro';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import DismissibleDialog from '@site/src/components/DismissibleDialog';
+import PartialDockerfile from '@site/examples/snippets/components/docker/infra-acme/Dockerfile';
 import Note from '@site/src/components/Note';
 
 <Intro>
@@ -33,17 +34,31 @@ Geodesic is a powerful Linux toolbox container designed to optimize DevOps workf
 
 ## Building the Toolbox Image
 
-Build the Geodesic infrastructure container. This is a container that has all the tools for building the app. It's built
-from the `Dockerfile` using a `Makefile`.
+Build the Geodesic infrastructure container. This is a container that has all the tools for building the app. It's built from the `Dockerfile` using a `Makefile`. We customize this `Dockerfile` for your organization, but please see the following example for reference.
 
-The standard `Makefile` includes a number of commands. In order to build the initial, complete Geodesic image, run the
-following:
+<CollapsibleText type="medium">
+  <CodeBlock title="Dockerfile">{PartialDockerfile}</CodeBlock>
+</CollapsibleText>
+
+The standard `Makefile` includes a number of commands. In order to build the initial, complete Geodesic image, run the following:
 
 ```bash
 make all
 ```
 
 On future builds, use `make run` to use the cached image.
+
+:::tip Alias
+
+We install a wrapper script with `make all` to your chosen namespace in the `Makefile`. For example, simply enter for given namespace to start your Geodesic container once built:
+
+```bash
+acme
+```
+
+See the `install` step of the `Makefile` for more details.
+
+:::
 
 Build the toolbox image locally before continuing.
 
