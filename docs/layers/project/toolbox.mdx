@@ -34,7 +34,7 @@ Geodesic is a powerful Linux toolbox container designed to optimize DevOps workf
 
 ## Building the Toolbox Image
 
-Build the Geodesic infrastructure container. This is a container that has all the tools for building the app. It's built from the `Dockerfile` using a `Makefile`. We customize this `Dockerfile` for your organization, but please see the following example for reference.
+Build a Geodesic infrastructure container. This container that has all the tools like terraform and atmos for building infrastructure. It's built from the `Dockerfile` and there are some predefined targets defined in the `Makefile`, to make this easy. Customize this `Dockerfile` for your organization. Here's an example for reference.
 
 <CollapsibleText type="medium">
   <CodeBlock title="Dockerfile">{PartialDockerfile}</CodeBlock>
