@@ -30,7 +30,7 @@ module.exports = function (context, options) {
               use: 'raw-loader',
             },
             {
-              test: /^Dockerfile$/i, // Matches files named exactly 'Dockerfile' (case-insensitive)
+              test: /(?:Dockerfile|Makefile)$/i,
               use: 'raw-loader',
             },
           ],

@@ -35,7 +35,7 @@ async function loadRedirects(allContent) {
     }
   });
 
-  console.debug('Loaded redirects:', redirects);
+  // console.debug('Loaded redirects:', redirects);
   return redirects;
 }
 
@@ -60,7 +60,7 @@ function redirectsPlugin(context, options) {
         redirects,
       });
 
-      console.debug('Global data set with redirects.');
+      // console.debug('Global data set with redirects.');
     },
   };
 }
