@@ -57,6 +57,6 @@ We recommend using the External Secrets Operator with AWS SSM Parameter Store. T
 
 However, we are in the process of evaluating the AWS Secrets Manager secrets with Kubernetes Secrets Store CSI Driver solution. This is the AWS supported option and may be a better long-term solution. We will build the required Terraform component to support this solution.
 
-## Consquences
+## Consequences
 
 We will develop the `eks/secrets-store-csi-driver` component using the [Secrets Store CSI Driver](https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation)
