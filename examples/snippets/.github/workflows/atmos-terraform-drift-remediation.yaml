@@ -18,6 +18,7 @@ jobs:
     name: Remediate Drift
     runs-on: ["self-hosted", "terraform"]
     steps:
+      - uses: unfor19/install-aws-cli-action@v1
       - name: Remediate Drift
         uses: cloudposse/github-action-atmos-terraform-drift-remediation@v2
         with:
@@ -43,3 +44,4 @@ jobs:
           action: discard
           atmos-version: ${{ vars.ATMOS_VERSION }}
           atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+
