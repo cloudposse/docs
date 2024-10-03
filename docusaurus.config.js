@@ -77,9 +77,7 @@ async function createConfig() {
           disableInDev: false,
         }
       ],
-      [
-        'custom-loaders', {}
-      ],
+      path.resolve(__dirname, 'plugins/custom-loaders'),
       metadataPlugin,
       [
         "posthog-docusaurus",
