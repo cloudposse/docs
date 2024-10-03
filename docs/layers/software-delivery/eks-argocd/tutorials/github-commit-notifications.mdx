@@ -80,7 +80,7 @@ Our implementation of Argo CD breaks up notifications into "notifiers", "templat
               "body": "{\"context\":\"continuous-delivery/{{.app.metadata.name}}\",\"description\":\"ArgoCD\",\"state\":\"pending\",\"target_url\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\"}"
               "method": "POST"
               "path": "/repos/{{call .repo.FullNameByRepoURL .app.spec.source.repoURL}}/statuses/{{.app.status.operationState.operation.sync.revision}}"
-        template.app-deploy-succeded: |
+        template.app-deploy-succeeded: |
           "alertmanager": null
           "message": "Application {{ .app.metadata.name }} is now running new version of deployments
             manifests."
@@ -103,7 +103,7 @@ Our implementation of Argo CD breaks up notifications into "notifiers", "templat
         eks/argocd:
           vars:
             notifications_templates:
-              app-deploy-succeded:
+              app-deploy-succeeded:
                 message: "Application {{ .app.metadata.name }} is now running new version of deployments"
                 webhook:
                   foo-repo-github-commit:
@@ -146,15 +146,15 @@ Our implementation of Argo CD breaks up notifications into "notifiers", "templat
             - "app-deploy-started"
             "when": "app.status.operationState.phase in ['Running'] or ( app.status.operationState.phase
               == 'Succeeded' and app.status.health.status == 'Progressing' )"
-        trigger.on-deploy-succeded: |
+        trigger.on-deploy-succeeded: |
           - "oncePer": "app.status.sync.revision"
             "send":
-            - "app-deploy-succeded"
+            - "app-deploy-succeeded"
             "when": "app.status.operationState.phase == 'Succeeded' and app.status.health.status
               == 'Healthy'"
     ```
 
-    These triggers may trigger _multiple templates_. For example `trigger.on-deploy-succeded` triggers both `template.app-deploy-succeded.webhook.app-repo-github-commit-status` and `template.app-deploy-succeded.webhook.argocd-repo-github-commit-status`.
+    These triggers may trigger _multiple templates_. For example `trigger.on-deploy-succeeded` triggers both `template.app-deploy-succeeded.webhook.app-repo-github-commit-status` and `template.app-deploy-succeeded.webhook.argocd-repo-github-commit-status`.
   </Step>
 
 </Steps>
