@@ -21,17 +21,15 @@ class ComponentRenderer:
         self.docs_dir = docs_dir
 
     def render(self, component):
-        module_download_dir = os.path.join(self.download_dir, "modules", component)
+        module_download_dir = os.path.join(self.download_dir, component.name)
 
-        files = io.get_filenames_in_dir(module_download_dir, README_MD, True)
-        files += io.get_filenames_in_dir(module_download_dir, "*.md", True)
+        files = io.get_filenames_in_dir(module_download_dir, "*.md", True)
 
         images = io.get_filenames_in_dir(module_download_dir, "*.png", True)
-
         for file in files:
             if file.endswith(CHANGELOG_MD):
                 continue
-            self.__render_doc(component, file)
+            self.__render_doc(component.name, file)
 
         for image in images:
             io.copy_file(
@@ -44,11 +42,11 @@ class ComponentRenderer:
             )
 
     def __render_doc(self, component, file):
-        module_download_dir = os.path.join(self.download_dir, "modules")
+        module_download_dir = os.path.join(self.download_dir)
 
         # Render Terraform docs using template for website doc format
         # This will update the given README in place
-        module_path = os.path.join(module_download_dir, component)
+        module_path = os.path.join(module_download_dir)
         rendering.render_terraform_docs(
             module_path, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
