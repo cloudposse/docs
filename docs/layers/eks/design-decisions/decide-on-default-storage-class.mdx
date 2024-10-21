@@ -51,11 +51,11 @@ We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS 
 - **Availability Zones:** EBS volumes are confined to a single Availability Zone, which may affect high availability and disaster recovery strategies. Kubernetes has implemented several mitigations for this limitation, and ECS likely has similar solutions.
 - **Scalability:** Requires manual provisioning and management of storage capacity, which can introduce operational complexity.
 
-## Recommendations
+## Recommendation
 
 Use **Amazon EBS** unless there is a good reason not to.
 
-For example, use Amazon EFS when:
+Use **Amazon EFS** when:
 
-- **Multiple Pods need read/write access to the same data at the same time.**
-- **Persistent data needs to be available in multiple Availability Zones and the underlying application does not support replication.**
+- Multiple Pods need read/write access to the same data at the same time.
+- Persistent data needs to be available in multiple Availability Zones and the underlying application does not support replication.
