@@ -1,136 +1,118 @@
+import logging
 import os
+import subprocess
 
-from utils import io, rendering, templating
+from AbstractRenderer import AbstractRenderer, TerraformDocsRenderingError
+from utils import io
+from utils import rendering, templating
 
+DOCS_DIR = "docs"
+IMAGES_DIR = "images"
+TARGETS_MD = "targets.md"
+README_YAML = "README.yaml"
 README_MD = "README.md"
-CHANGELOG_MD = "CHANGELOG.md"
-GITHUB_REPO = "cloudposse/terraform-aws-components"
 INDEX_CATEGORY_JSON = "_category_.json"
+MODULES_README_TEMPLATE = "readme.md"
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMPLATES_DIR = os.path.join(SCRIPT_DIR, "templates/components")
 
 jenv = templating.init_templating(TEMPLATES_DIR)
-DOC_TEMPLATE = jenv.get_template("readme.md")
 INDEX_CATEGORY_TEMPLATE = jenv.get_template("index_category.json")
 
 
-class ComponentRenderer:
+class ComponentRenderer(AbstractRenderer):
     def __init__(self, download_dir, docs_dir):
         self.download_dir = download_dir
         self.docs_dir = docs_dir
 
-    def render(self, component):
-        module_download_dir = os.path.join(self.download_dir, component.name)
+    def render(self, repo):
+        logging.info(f"Rendering doc for: {repo.full_name}")
+        module_download_dir = os.path.join(self.download_dir, repo.name)
 
-        files = io.get_filenames_in_dir(module_download_dir, "*.md", True)
+        self._pre_rendering_fixes(repo, module_download_dir)
 
-        images = io.get_filenames_in_dir(module_download_dir, "*.png", True)
-        for file in files:
-            if file.endswith(CHANGELOG_MD):
-                continue
-            self.__render_doc(component.name, file)
+        def parse_terraform_repo_name(name):
+            name_items = name.split("-")
+            provider = name_items[0]
+            module_name = "-".join(name_items[1:])
+            return provider, module_name
 
-        for image in images:
-            io.copy_file(
-                image,
-                os.path.join(
-                    self.docs_dir,
-                    component,
-                    os.path.relpath(image, module_download_dir),
-                ),
-            )
+        provider, module_name = parse_terraform_repo_name(repo.name)
+        logging.debug(f"Provider: {provider}, Module: {module_name}")
 
-    def __render_doc(self, component, file):
-        module_download_dir = os.path.join(self.download_dir)
+        module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
+        logging.debug(f"Module docs dir: {module_docs_dir}")
 
-        # Render Terraform docs using template for website doc format
-        # This will update the given README in place
-        module_path = os.path.join(module_download_dir)
+        self.__render_readme(module_download_dir, module_docs_dir)
+
+        readme_md_file = os.path.join(module_download_dir, README_MD)
+        io.copy_file(readme_md_file, os.path.join(module_docs_dir, README_MD))
+
+        readme_md_file = os.path.join(module_docs_dir, README_MD)
+        self._post_rendering_fixes(repo, readme_md_file)
+
+        self._copy_extra_resources_for_docs(module_download_dir, module_docs_dir)
+        self.__copy_extra_resources_for_images(module_download_dir, module_docs_dir)
+
+        # Disable category.json for now
+        # self.__create_index_for_provider(repo)
+        # self.__create_indexes_for_subfolders(repo)
+
+    def __render_readme(self, module_download_dir, module_docs_dir):
+        readme_yaml_file = os.path.join(module_download_dir, README_YAML)
+        readme_md_file = os.path.join(module_download_dir, README_MD)
+        readme_tmpl_file = os.path.join(TEMPLATES_DIR, MODULES_README_TEMPLATE)
+
+        io.create_dirs(module_docs_dir)
+
+        # Re-render terraform docs with this repo's terraform-docs template for modules.
+        # This replaces docs/terraform.md for the given module in place
+        logging.debug(f"Rendering terraform docs for: {module_download_dir}")
         rendering.render_terraform_docs(
-            module_path, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
+            module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
 
-        content = io.read_file_to_string(file)
-
-        # Previously we set tags to this short list.
-        # However now we instead use the tags from the given component's frontmatter
-        # tags = ["terraform", "aws", component]
-        content, frontmatter = rendering.strip_frontmatter(content)
-        tags = rendering.get_tags_from_frontmatter(frontmatter)
-
-        # Static replacement and corrections for docusaurus
-        content = rendering.strip_title(content)
-        content = rendering.fix_self_non_closing_br_tags(content)
-        content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
-        content = rendering.remove_logo_from_the_bottom(content)
-        content = rendering.reformat_admonitions(content)
-        content = rendering.remove_https_cloudposse_docs(content)
-        content = rendering.replace_broken_links(content)
-        content = rendering.fix_mdx_format(content)
-
-        change_log_file = os.path.join(os.path.dirname(file), CHANGELOG_MD)
-        change_log_content = (
-            io.read_file_to_string(change_log_file)
-            if os.path.exists(change_log_file)
-            else ""
-        )
-        change_log_content = rendering.reformat_admonitions(change_log_content)
-        change_log_content = rendering.shift_headings(change_log_content)
-
-        relative_path = os.path.relpath(file, module_download_dir)
-        result_file = os.path.join(
-            self.docs_dir, os.path.relpath(file, module_download_dir)
-        )  # <module-name>/README.md
-
-        name = (
-            component
-            if os.path.basename(file) == "README.md"
-            else os.path.basename(file).replace(".md", "")
-        )
-        label = name
-        title = name
-        github_edit_url = (
-            f"https://github.com/{GITHUB_REPO}/blob/main/modules/{relative_path}"
+        # Run the make readme command in the module directory to compile README.md
+        logging.debug(f"Rendering README.md for: {module_download_dir}")
+        logging.debug(f"make readme")
+        logging.debug(f"README_TEMPLATE_FILE: {readme_tmpl_file}")
+        logging.debug(f"README_FILE: {readme_md_file}")
+        logging.debug(f"README_YAML: {readme_yaml_file}")
+        logging.debug(f"README_TEMPLATE_YAML: {readme_yaml_file}")
+        logging.debug(f"README_INCLUDES: {module_download_dir}")
+        response = subprocess.run(
+            [
+                "make",
+                "readme",
+                f"README_TEMPLATE_FILE={readme_tmpl_file}",
+                f"README_FILE={readme_md_file}",
+                f"README_YAML={readme_yaml_file}",
+                f"README_TEMPLATE_YAML={readme_yaml_file}",
+                f"README_INCLUDES={module_download_dir}",
+            ],
+            capture_output=True,
         )
 
-        if (
-            len(relative_path.split("/")) > 2 and relative_path.split("/")[1] != "docs"
-        ):  # this is submodule
-            submodule_name = os.path.basename(os.path.dirname(result_file))
+        if response.returncode != 0:
+            error_message = response.stderr.decode("utf-8")
+            raise TerraformDocsRenderingError(error_message)
 
-            label = submodule_name
-            title = submodule_name
+        logging.info(f"Rendered: {readme_md_file}")
 
-            # renaming final file <module-name>/<module-name>.mdx
-            result_file = os.path.join(
-                os.path.dirname(result_file), f"{submodule_name}.mdx"
+    def __copy_extra_resources_for_images(self, module_download_dir, module_docs_dir):
+        extra_resources_dir = os.path.join(module_download_dir, IMAGES_DIR)
+        files = io.get_filenames_in_dir(extra_resources_dir, "*", True)
+
+        for file in files:
+            if os.path.isdir(file):
+                continue
+
+            dest_file = os.path.join(
+                module_docs_dir, IMAGES_DIR, os.path.relpath(file, extra_resources_dir)
             )
-        else:
-            # renaming final file <module-name>/README.mdx
-            result_file = os.path.join(os.path.dirname(result_file), f"{name}.mdx")
-
-        io.create_dirs(os.path.dirname(result_file))
-
-        doc_content = DOC_TEMPLATE.render(
-            label=label,
-            title=title,
-            content=content,
-            change_log_content=change_log_content,
-            github_repository=GITHUB_REPO,
-            github_edit_url=github_edit_url,
-            tags=tags,
-        )
-
-        io.save_string_to_file(result_file, doc_content)
-
-        # Breaking builds, not sure why and not adding value. Disabling.
-        # self.__create_indexes_for_subfolder(component)
-
-    def __create_indexes_for_subfolder(self, component):
-        for root, dirs, files in os.walk(os.path.join(self.docs_dir, component)):
-            if not files and all(os.path.isdir(os.path.join(root, d)) for d in dirs):
-                self.__render_category_index(root)
+            io.copy_file(file, dest_file)
+            logging.info(f"Copied extra file: {dest_file}")
 
     def __render_category_index(self, dir):
         name = os.path.basename(dir)
@@ -138,3 +120,15 @@ class ComponentRenderer:
         content = INDEX_CATEGORY_TEMPLATE.render(label=name, title=name)
 
         io.save_string_to_file(os.path.join(dir, INDEX_CATEGORY_JSON), content)
+
+    def _post_rendering_fixes(self, repo, readme_md_file, submodule_dir=""):
+        content = io.read_file_to_string(readme_md_file)
+        content = rendering.fix_self_non_closing_br_tags(content)
+        content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
+        content = rendering.fix_github_edit_url(content, repo, submodule_dir)
+        content = rendering.replace_relative_links_with_github_links(
+            repo, content, submodule_dir
+        )
+        content = rendering.fix_mdx_format(content)
+        content = rendering.reformat_admonitions(content)
+        io.save_string_to_file(readme_md_file, content)
