@@ -56,7 +56,7 @@ We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS 
 - **Availability Zones:** EBS volumes are confined to a single Availability Zone, which may affect high availability and disaster recovery strategies. Kubernetes has implemented several mitigations for this limitation, and ECS likely has similar solutions.
 - **Scalability:** Requires manual provisioning and management of storage capacity, which can introduce operational complexity.
 
-## Decision
+## Recommendation
 
 **Both Amazon EFS and Amazon EBS are excellent choices for the default storage class in EKS clusters, depending on specific use cases and requirements.**
 
