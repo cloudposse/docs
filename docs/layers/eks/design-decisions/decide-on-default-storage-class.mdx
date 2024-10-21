@@ -12,18 +12,13 @@ When provisioning EKS (Kubernetes) clusters, selecting the appropriate default s
 
 ## Default Storage Class Options
 
-We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS (Elastic Block Store)** as the default storage class for our EKS clusters. Historically, **EFS** has been the recommended option, but there is a growing preference for **EBS** for customers.
+We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS (Elastic Block Store)** as the default storage class for our EKS clusters.
 
-## Top Considerations
-
-1. **Low Performance:**
-   - **EFS:** Can be mitigated by paying for additional bandwidth, but has routinely caused outages due to throttling even with low-performance applications. Additionally, poor lock performance makes EFS completely unsuitable for high-performance applications like RDBMS.
-
-2. **Cost:**
-   - **EFS:** At least 3x the cost of EBS since the storage is backed by an EBS volume in each of the 3 Availability Zones (AZs).
-
-3. **Integration:**
-   - Both **EFS** and **EBS** are now fully integrated into Kubernetes with CSI (Container Storage Interface) controllers, facilitating seamless provisioning and management.
+<KeyPoints>
+- Availability Zone Lock-in: **EBS:** EBS volumes are locked to a single Availability Zone, which may affect high availability and disaster recovery strategies. This is the primary argument against EBS. However, sharing data across Pods is an uncommon use case.
+- Performance: **EFS:** Can be mitigated by paying for additional bandwidth, but has routinely caused outages due to throttling even with low-performance applications. Additionally, poor lock performance makes EFS completely unsuitable for high-performance applications like RDBMS.
+- Cost: **EFS:** Significantly more expensive than EBS, at least 3x the price per GB and potentially more depending on performance demands, although there may be some savings from not having to reserve size for future growth.
+</KeyPoints>
 
 ## Amazon EFS
 
@@ -36,8 +31,8 @@ We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS 
 - **NFS Protocol Support:** Compatible with applications requiring NFS (Network File System) access.
 
 ### Cons:
-- **Performance:** Generally offers lower performance compared to EBS, with throughput as low as 100 MB/s, which may not meet the demands of high-performance applications.
-- **Cost:** Can be significantly more expensive than EBS, potentially up to 3x the price depending on usage patterns.
+- **Performance:** Generally offers lower performance compared to EBS, with throughput as low as 100 MB/s, which may not meet the demands of even modestly demanding applications.
+- **Cost:** Significantly more expensive than EBS, at least 3x the price per GB and potentially more depending on performance demands, although there may be some savings from not having to reserve size for future growth.
 - **Latency:** Higher latency compared to EBS, which may impact performance-sensitive applications.
 
 ## Amazon EBS
@@ -51,31 +46,16 @@ We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS 
 - **Snapshot and Backup:** Supports snapshotting for data backup, recovery, and cloning.
 
 ### Cons:
-- **Single-Attach Limitation:** EBS volumes are typically attached to a single node at a time, limiting shared access across multiple pods.
+- **Single-Attach Limitation:** EBS volumes may only be attached to a single node at a time, limiting shared access across multiple pods.
 - **Data Sharing:** Data cannot be easily shared across multiple instances, requiring additional configurations or solutions for shared access.
 - **Availability Zones:** EBS volumes are confined to a single Availability Zone, which may affect high availability and disaster recovery strategies. Kubernetes has implemented several mitigations for this limitation, and ECS likely has similar solutions.
 - **Scalability:** Requires manual provisioning and management of storage capacity, which can introduce operational complexity.
 
-## Decision
+## Recommendations
 
-**Both Amazon EFS and Amazon EBS are excellent choices for the default storage class in EKS clusters, depending on specific use cases and requirements.**
+Use **Amazon EBS** unless there is a good reason not to.
 
-- **Choose Amazon EFS** if your applications require:
-  - Shared access to the same file system across multiple pods.
-  - Automatic scaling of storage without manual intervention.
-  - Compatibility with NFS protocols.
+For example, use Amazon EFS when:
 
-- **Choose Amazon EBS** if your applications demand:
-  - High IOPS and low latency for performance-critical workloads.
-  - Cost-effective storage solutions for specific usage patterns.
-  - Advanced features like snapshotting and seamless integration with Kubernetes.
-
-This approach allows teams to select the most appropriate storage option based on the nature of their workloads, performance requirements, and operational considerations.
-
-## Consequences
-
-- **Flexibility:** Offering both EFS and EBS as options provides the flexibility to choose the storage solution that best fits the application's needs.
-- **Complexity:** Managing multiple storage classes may introduce additional complexity in provisioning and maintaining storage resources.
-- **Documentation:** Clear guidelines and best practices will be needed to help teams decide which storage class to use for different scenarios.
-- **Resource Allocation:** Teams may need to allocate resources for evaluating and monitoring both storage options to ensure optimal usage and performance.
-- **Potential Training:** Developers and operations teams might require training to effectively utilize and manage both EFS and EBS within their Kubernetes deployments.
+- **Multiple Pods need read/write access to the same data at the same time.**
+- **Persistent data needs to be available in multiple Availability Zones and the underlying application does not support replication.**
