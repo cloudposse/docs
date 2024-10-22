@@ -95,6 +95,16 @@ domains are configured with CNAME (or apex alias) records to point to service do
 
 The architecture does not support other configurations, or non-standard component names.
 
+## Why should the `dns-delegated` component be deployed globally rather than regionally?
+
+The `dns-delegated` component is designed to manage resources across all regions within an AWS account, such as with Route 53 DNS records. Deploying it at the regional level can lead to conflicts because it implies multiple deployments per account, which would cause Terraform to fight for control over the same resources.
+
+Although the `gbl` (“global”) region is not a real AWS region, it is used as a placeholder to signify that resources are meant to be managed globally, not regionally. Deploying `dns-delegated` globally ensures there is a single source of truth for these DNS records within the account.
+
+Deploying this component regionally can cause issues, especially if multiple regional stacks try to manage the same DNS records. This creates an anti-pattern where resources meant to be global are unintentionally duplicated, leading to configuration drift and unexpected behavior.
+
+Please see the [global (default) region](/learn/conventions/#global-default-region) definition for more on `gbl` as a convention.
+
 ## How is the EKS network configured?
 
 EKS network is designed with this network and DNS architecture in mind, but is another complex topic. For more, see the
