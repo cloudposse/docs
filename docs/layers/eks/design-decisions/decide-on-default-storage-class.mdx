@@ -29,6 +29,7 @@ We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS 
 - **Unlimited Disk Space:** Automatically scales storage capacity as needed without manual intervention.
 - **Shared Access:** Allows multiple pods to access the same file system concurrently, facilitating shared storage scenarios.
 - **Managed Service:** Fully managed by AWS, reducing operational overhead for maintenance and scaling.
+- **Availability Zone Failover**: For workloads that require failover across multiple Availability Zones, EFS is a more suitable option. It provides multi-AZ durability, ensuring that Pods can recover and access persistent storage seamlessly across different AZs.
 
 ### Cons:
 - **Lower Performance:** Generally offers lower performance compared to EBS, with throughput as low as 100 MB/s, which may not meet the demands of even modestly demanding applications.
