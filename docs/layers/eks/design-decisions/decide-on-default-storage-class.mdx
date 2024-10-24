@@ -34,6 +34,7 @@ We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS 
 - **Lower Performance:** Generally offers lower performance compared to EBS, with throughput as low as 100 MB/s, which may not meet the demands of even modestly demanding applications.
 - **Higher Cost:** Significantly more expensive than EBS, at least 3x the price per GB and potentially more depending on performance demands, although there may be some savings from not having to reserve size for future growth.
 - **Higher Latency:** Higher latency compared to EBS, which may impact performance-sensitive applications.
+- **No Native Backup Support:** EFS lacks a built-in, straightforward backup and recovery solution for EKS. Kubernetes-native tools don’t support EFS backups directly, requiring the use of alternatives like AWS Backup. Recovery, however, can be non-trivial and may involve complex configurations to restore data effectively.
 
 ## Amazon EBS
 
