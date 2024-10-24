@@ -30,7 +30,6 @@ workflows:
   vendor:
     description: Vendor identity layer components and scripts.
     steps:
-      - command: workflow check-setup -f identity
       - command: workflow vendor/components -f identity
       - command: workflow vendor/aws-config -f identity
 
