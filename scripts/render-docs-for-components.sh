@@ -5,7 +5,7 @@ set -e
 GITHUB_ORG=${GITHUB_ORG:-"cloudposse"}
 GITHUB_REPO=${GITHUB_REPO:-"terraform-aws-components"}
 GIT_BRANCH=${GIT_BRANCH:-"main"}
-RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-docs/components/library/aws/}"
+RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-docs/components/library}"
 DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/components}"
 
 python scripts/docs-collator/render_docs_for_components.py \

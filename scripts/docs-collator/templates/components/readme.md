@@ -2,14 +2,14 @@
 {{- defineDatasource "includes" .Env.README_INCLUDES | regexp.Replace ".*" "" -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
-{{- $shortModuleName := $fullModuleName -}}
+{{- $shortModuleName := (conv.Join (coll.GoSlice ($fullModuleName | strings.SplitN "-" 3) 1 ) "-") -}}
 ---
 title: {{ $shortModuleName }}
 sidebar_label: {{ $shortModuleName }}
 sidebar_class_name: command
 {{- if has (ds "config") "description" }}
 description: |-
-{{ (ds "config").description | strings.Indent 2 }}
+{{ index ( (ds "config").description | strings.Split "." )  0 | strings.Indent 2 }}
 {{- end }}
 {{- if has (ds "config") "tags" }}
 tags:
@@ -17,8 +17,6 @@ tags:
 {{- end }}
 custom_edit_url: https://github.com/cloudposse-terraform-components/{{ $fullModuleName }}/edit/main/README.md
 ---
-
-# Module: `{{ $shortModuleName }}`
 
 {{- if $deprecated }}
 ## Deprecated

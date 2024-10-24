@@ -36,6 +36,9 @@ class ComponentRenderer(AbstractRenderer):
             name_items = name.split("-")
             provider = name_items[0]
             module_name = "-".join(name_items[1:])
+            if module_name == "":
+                provider = "null"
+                module_name = name
             return provider, module_name
 
         provider, module_name = parse_terraform_repo_name(repo.name)
@@ -47,9 +50,8 @@ class ComponentRenderer(AbstractRenderer):
         self.__render_readme(module_download_dir, module_docs_dir)
 
         readme_md_file = os.path.join(module_download_dir, README_MD)
-        io.copy_file(readme_md_file, os.path.join(module_docs_dir, README_MD))
+        io.copy_file(readme_md_file, os.path.join(module_docs_dir, module_name + ".mdx"))
 
-        readme_md_file = os.path.join(module_docs_dir, README_MD)
         self._post_rendering_fixes(repo, readme_md_file)
 
         self._copy_extra_resources_for_docs(module_download_dir, module_docs_dir)
