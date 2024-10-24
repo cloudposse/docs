@@ -4,6 +4,10 @@ FROM python:3.9-slim
 # Set the working directory
 WORKDIR /
 
+RUN apt-get update && apt-get install -y apt-utils curl
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/cloudposse/packages/cfg/setup/bash.deb.sh' | bash
+RUN apt-get install -y terraform-docs
+
 # Copy the Python requirements file into the container
 COPY ./docs-collator/requirements.txt scripts/docs-collator/requirements.txt
 

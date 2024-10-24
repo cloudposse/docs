@@ -11,6 +11,7 @@ from ModuleRenderer import ModuleRenderer
 DOWNLOAD_TMP_DIR = "tmp/modules"
 OUTPUT_DOC_DIR = "content/modules/library"
 
+GITHUB_ORG = "cloudposse"
 
 def main(
     github_api_token,
@@ -26,7 +27,7 @@ def main(
 
     logging.info(f"Fetching repositories ...")
 
-    repos = github_provider.get_terraform_repos(includes_csv, excludes_csv)
+    repos = github_provider.get_terraform_repos(GITHUB_ORG, includes_csv, excludes_csv)
 
     logging.info(f"Found {len(repos)} repositories to process")
 

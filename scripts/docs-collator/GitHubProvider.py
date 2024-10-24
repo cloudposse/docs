@@ -7,9 +7,11 @@ from github import Github, GithubException
 from functools import lru_cache
 from utils import io
 
-GITHUB_ORG = "cloudposse"
 TERRAFORM_MODULE_NAME_PATTERN = re.compile(
     "^terraform-[a-zA-Z0-9]+-.*"
+)  # convention is terraform-<PROVIDER>-<NAME>
+COMPONENTS_NAME_PATTERN = re.compile(
+    "^[a-zA-Z0-9]+.*"
 )  # convention is terraform-<PROVIDER>-<NAME>
 GITHUB_ACTION_NAME_PATTERN = re.compile(
     "^github-action-.*"
@@ -26,21 +28,32 @@ class GitHubProvider:
         self.cache = self.load_cache(CACHE_FILE)
         self.repos_cache = self.load_cache(REPOS_CACHE_FILE)
 
-    def get_terraform_repos(self, includes_csv, excludes_csv):
+    def get_terraform_repos(self, github_org, includes_csv, excludes_csv):
         key = (includes_csv, excludes_csv)
         if key in self.repos_cache:
             return self.repos_cache[key]
         repos = self.__get_repos(
-            includes_csv, excludes_csv, TERRAFORM_MODULE_NAME_PATTERN
+            github_org, includes_csv, excludes_csv, TERRAFORM_MODULE_NAME_PATTERN
         )
         self.repos_cache[key] = repos
         self.save_cache(REPOS_CACHE_FILE, self.repos_cache)
         return repos
 
-    def get_github_actions_repos(self, includes_csv, excludes_csv):
-        return self.__get_repos(includes_csv, excludes_csv, GITHUB_ACTION_NAME_PATTERN)
+    def get_components_repos(self, github_org, includes_csv, excludes_csv):
+        key = (includes_csv, excludes_csv)
+        if key in self.repos_cache:
+            return self.repos_cache[key]
+        repos = self.__get_repos(
+            github_org, includes_csv, excludes_csv, COMPONENTS_NAME_PATTERN
+        )
+        self.repos_cache[key] = repos
+        self.save_cache(REPOS_CACHE_FILE, self.repos_cache)
+        return repos
 
-    def __get_repos(self, includes_csv, excludes_csv, pattern):
+    def get_github_actions_repos(self, github_org, includes_csv, excludes_csv):
+        return self.__get_repos(github_org, includes_csv, excludes_csv, GITHUB_ACTION_NAME_PATTERN)
+
+    def __get_repos(self, github_org, includes_csv, excludes_csv, pattern):
         repos = []
 
         excludes = self.__csv_to_set(excludes_csv)
@@ -48,14 +61,14 @@ class GitHubProvider:
 
         if len(includes) > 0:
             for include in includes:
-                repo = self.github.get_organization(GITHUB_ORG).get_repo(include)
+                repo = self.github.get_organization(github_org).get_repo(include)
 
                 if not self.__is_valid(repo, pattern):
                     continue
 
                 repos.append(repo)
         else:
-            for repo in self.github.get_organization(GITHUB_ORG).get_repos():
+            for repo in self.github.get_organization(github_org).get_repos():
                 if not self.__is_valid(repo, pattern):
                     continue
 
