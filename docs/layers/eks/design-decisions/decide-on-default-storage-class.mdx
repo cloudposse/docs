@@ -50,8 +50,8 @@ We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS 
 ### Cons:
 - **Single-Attach Limitation:** EBS volumes may only be attached to a single node at a time, limiting shared access across multiple pods.
 - **Data Sharing:** Data cannot be easily shared across multiple instances, requiring additional configurations or solutions for shared access.
-- **Availability Zones:** EBS volumes are confined to a single Availability Zone, which may affect high availability and disaster recovery strategies. Kubernetes has implemented several mitigations for this limitation, and ECS likely has similar solutions.
-- **Scalability:** Requires manual provisioning and management of storage capacity, which can introduce operational complexity.
+- **Availability Zones:** EBS volumes are confined to a single Availability Zone, limiting high availability and disaster recovery across zones. This limitation can be mitigated by configuring a `StatefulSet` with replicas spread across multiple AZs. However, for workloads using EBS-backed Persistent Volume Claims (PVCs), failover to a different AZ requires manual intervention, including provisioning a new volume in the target zone, as EBS volumes cannot be moved between zones.
+- **Non-Elastic Storage:** EBS volumes can be manually resized, but this process is not fully automated in EKS. After resizing an EBS volume, additional manual steps are required to expand the associated Persistent Volume (PV) and Persistent Volume Claim (PVC). This introduces operational complexity, especially for workloads with dynamic storage needs, as EBS lacks automatic scaling like EFS.
 
 ## Recommendation
 
