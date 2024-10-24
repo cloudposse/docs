@@ -69,5 +69,6 @@ Consider **Amazon EFS** when:
 - Elastic, automatically scaling storage is necessary to avoid manual provisioning, especially for workloads with unpredictable growth.
 - You are willing to trade off higher costs and lower performance for multi-AZ durability and easier management of shared storage.
 
-> ![IMPORTANT]
-> EFS should never be used as backend storage for performance-sensitive applications like databases, due to its high latency and poor performance under heavy load.
+:::important
+EFS should never be used as backend storage for performance-sensitive applications like databases, due to its high latency and poor performance under heavy load.
+:::
