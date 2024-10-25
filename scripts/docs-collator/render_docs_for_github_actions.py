@@ -12,6 +12,7 @@ DOWNLOAD_TMP_DIR = "tmp/github-actions"
 OUTPUT_DOC_DIR = "content/github-actions/library"
 REPOS_SKIP_LIST = {"terraform-aws-components"}
 
+GITHUB_ORG = "cloudposse"
 
 def main(
     github_api_token,
@@ -27,7 +28,7 @@ def main(
 
     logging.info(f"Fetching repositories ...")
 
-    repos = github_provider.get_github_actions_repos(includes_csv, excludes_csv)
+    repos = github_provider.get_github_actions_repos(GITHUB_ORG, includes_csv, excludes_csv)
 
     logging.info(f"Found {len(repos)} repositories to process")
 
