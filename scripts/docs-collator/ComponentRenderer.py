@@ -50,7 +50,9 @@ class ComponentRenderer(AbstractRenderer):
         self.__render_readme(module_download_dir, module_docs_dir)
 
         readme_md_file = os.path.join(module_download_dir, README_MD)
-        io.copy_file(readme_md_file, os.path.join(module_docs_dir, module_name + ".mdx"))
+        io.copy_file(readme_md_file, os.path.join(module_docs_dir, README_MD))
+
+        readme_md_file = os.path.join(module_docs_dir, README_MD)
 
         self._post_rendering_fixes(repo, readme_md_file)
 
