@@ -36,15 +36,22 @@ class ComponentRenderer(AbstractRenderer):
             name_items = name.split("-")
             provider = name_items[0]
             module_name = "-".join(name_items[1:])
+            subdirs = None
             if module_name == "":
                 provider = "null"
                 module_name = name
-            return provider, module_name
+            elif module_name.startswith("eks-"):
+                subdirs = "eks"
+                module_name = module_name[len("eks-"):]
+            return provider, subdirs, module_name
 
-        provider, module_name = parse_terraform_repo_name(repo.name)
+        provider, subdirs, module_name = parse_terraform_repo_name(repo.name)
         logging.debug(f"Provider: {provider}, Module: {module_name}")
 
-        module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
+        if subdirs:
+            module_docs_dir = os.path.join(self.docs_dir, provider, subdirs, module_name)
+        else:
+            module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
         logging.debug(f"Module docs dir: {module_docs_dir}")
 
         self.__render_readme(module_download_dir, module_docs_dir)
