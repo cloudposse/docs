@@ -2,7 +2,7 @@
 {{- defineDatasource "includes" .Env.README_INCLUDES | regexp.Replace ".*" "" -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
-{{- $shortModuleName := (conv.Join (coll.GoSlice ($fullModuleName | strings.SplitN "-" 3) 1 ) "-") -}}
+{{- $shortModuleName := ( conv.Default $fullModuleName (conv.Join (coll.GoSlice ($fullModuleName | strings.SplitN "-" 3) 1) "-")) -}}
 ---
 title: {{ $shortModuleName }}
 sidebar_label: {{ $shortModuleName }}
