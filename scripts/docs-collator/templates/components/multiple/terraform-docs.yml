@@ -1,0 +1,225 @@
+# https://pkg.go.dev/github.com/terraform-docs/terraform-docs/terraform#Module
+content: |-
+  {{- $context_variables := list "context" "enabled" "namespace" "tenant" "environment" "stage" "name" "delimiter" "attributes" "tags" "additional_tag_map" "label_order" "regex_replace_chars" "id_length_limit" "label_key_case" "label_value_case" "descriptor_formats" "labels_as_tags" -}}
+
+  {{ .Header }}
+
+  ## Variables
+
+  ### Required Variables
+
+  <dl>
+  {{- range .Module.Inputs }}
+  {{- if and (not (has .Name $context_variables)) .Required }}
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>required</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dd>
+      {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
+      {{- range $lines }}
+      {{ . }}<br/>
+      {{- end }}
+
+      {{ if gt (len (split "\n" (tostring .Type))) 2 }}
+      **Type:**
+      ```hcl
+      {{ .Type.Raw }}
+      ```
+      <br/>
+      {{ end }}
+
+    </dd>
+  {{- end }}
+  {{- end }}
+  </dl>
+
+  {{ $optional := false -}}
+  {{ range .Module.Inputs }}{{ if not .Required }}{{ $optional = true -}}{{ end -}}{{ end -}}
+
+  {{ if $optional -}}
+
+  ### Optional Variables
+
+  <dl>
+  {{- range .Module.Inputs }}
+  {{- if and (not (has .Name $context_variables)) (not .Required) }}
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>optional</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dd>
+      {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
+      {{- range $lines }}
+      {{ . }}<br/>
+      {{- end }}
+      <br/>
+      {{ if gt (len (split "\n" (tostring .Type))) 2 }}
+      **Type:**
+      ```hcl
+      {{ tostring .Type }}
+      ```
+      <br/>
+      {{ end }}
+      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue | replace "{}" "{ }" | replace "[]" "[ ]" }}`{{ else }}
+      ```hcl
+      {{- $lines := regexSplit "\n" .GetValue -1 -}}
+      {{- range $lines }}
+      {{ . }}
+      {{- end }}
+      ```
+      {{ end }}
+    </dd>
+  {{- end -}}
+  {{ end -}}
+  </dl>
+  {{ end }}
+
+  ### Context Variables
+
+  <details>
+  <summary>
+  The following variables are defined in the `context.tf` file of this module and part of the [terraform-null-label](https://registry.terraform.io/modules/cloudposse/label/null) pattern.
+  </summary>
+
+  <dl>
+  {{- range .Module.Inputs }}
+  {{- if and (has .Name $context_variables) }}
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if lt (len (split "\n" (tostring .Type))) 2 }} (`{{ tostring .Type }}`){{end}} <i>{{ ternary .Required "required" "optional" }}</i>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dd>
+      {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
+      {{- range $lines }}
+      {{ . }}<br/>
+      {{- end }}
+      **Required:** {{ ternary .Required "Yes" "No" }}<br/>
+      {{ if gt (len (split "\n" (tostring .Type))) 2 }}
+      **Type:**
+      ```hcl
+      {{ .Type.Raw }}
+      ```
+      <br/>
+      {{ end }}
+      **Default value:** {{ if lt (len (split "\n" .GetValue)) 2 }}`{{ .GetValue | replace "{}" "{ }" | replace "[]" "[ ]" }}`{{ else }}
+      ```hcl
+      {{- $lines := regexSplit "\n" .GetValue -1 -}}
+      {{- range $lines }}
+      {{ . }}
+      {{- end }}
+      ```
+      {{ end }}
+    </dd>
+  {{- end }}
+  {{- end }}
+  </dl>
+  </details>
+
+  {{ if ne (len .Module.Outputs) 0 -}}
+  ## Outputs
+
+  <dl>
+  {{- range .Module.Outputs }}
+    <dt><a id="{{ .Name }}" href="#{{ .Name }}">`{{ .Name }}`</a>{{ if contains "OBSOLETE: " (tostring .Description) }} <strong>OBSOLETE</strong>{{ end }}</dt>
+    <dd>
+      {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "" | default "n/a" ) -1 -}}
+      {{- range $lines }}
+      {{ . }}<br/>
+      {{- end }}
+    </dd>
+  {{- end }}
+  </dl>
+  {{- end }}
+
+  ## Dependencies
+
+  {{ if ne (len .Module.Requirements) 0 -}}
+  ### Requirements
+  {{ range .Module.Requirements }}
+  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
+  {{- end }}
+  {{- end }}
+
+  {{ if ne (len .Module.Providers) 0 -}}
+  ### Providers
+  {{ range .Module.Providers }}
+  - `{{ .Name }}`{{ if .Version }}, version: `{{ .Version }}`{{ end }}
+  {{- end }}
+  {{- end }}
+
+  {{ if ne (len .Module.ModuleCalls) 0 -}}
+  ### Modules
+
+  Name | Version | Source | Description
+  --- | --- | --- | ---
+  {{ range .Module.ModuleCalls }}
+  {{- $baseUrl := "https://registry.terraform.io/modules" -}}
+  {{ if contains "//" .Source -}}
+    {{- $moduleParts := regexSplit "//" .Source 2 -}}
+    {{- $moduleName := first $moduleParts -}}
+    {{- $submodulePath := last $moduleParts -}}
+    `{{ .Name }}` | {{ .Version | default "latest" }} | {{ printf "[`%s`](%s/%s/%s/%s)" .Source $baseUrl $moduleName $submodulePath .Version }} | {{ tostring .Description | default "n/a" }}
+  {{ else -}}
+    `{{ .Name }}` | {{ .Version | default "latest" }} | {{ printf "[`%s`](%s/%s/%s)" .Source $baseUrl .Source .Version }} | {{ tostring .Description | default "n/a" }}
+  {{ end }}
+  {{- end -}}
+  {{- end -}}
+
+  {{- if ne (len .Module.Resources) 0 }}
+
+  ## Resources
+
+  The following resources are used by this module:
+  {{ range .Module.Resources }}
+    {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
+    {{- if $isResource }}
+    {{- $fullspec := ternary .URL (printf "[`%s`](%s)" .Spec .URL) .Spec }}
+    - {{ $fullspec }} {{ printf "(%s)" .GetMode -}}
+    {{- end }}
+  {{- end }}
+
+  ## Data Sources
+
+  The following data sources are used by this module:
+  {{ range .Module.Resources }}
+    {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
+    {{- if $isDataResource }}
+    {{- $fullspec := ternary .URL (printf "[`%s`](%s)" .Spec .URL) .Spec }}
+    - {{ $fullspec }} {{ printf "(%s)" .GetMode -}}
+    {{- end }}
+  {{- end }}
+  {{- end }}
+
+formatter: "markdown document" # this is required
+version: ""
+
+recursive:
+  enabled: false
+  path: modules
+
+sections:
+  hide: []
+  show: []
+
+sort:
+  enabled: true
+  by: required
+
+output-values:
+  enabled: false
+  from: ''
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+    {{ .Content }}
+    <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: true
+  escape: true
+  hide-empty: false
+  html: true
+  indent: 2
+  lockfile: false
+  read-comments: true
+  required: true
+  sensitive: true
+  type: true
