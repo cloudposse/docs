@@ -133,20 +133,6 @@ def render_terraform_docs(terraform_module_path, terraform_docs_configuration):
     try:
         # Command to run terraform-docs
         command = [
-            "mkdir",
-            "-p",
-            os.path.join(terraform_module_path, "docs")
-        ]
-
-        # Run the command and capture the output
-        subprocess.run(command, check=True, capture_output=True, text=True)
-
-    except subprocess.CalledProcessError as e:
-        print(f"An error occurred while running creating docs dir: {e.stderr}")
-
-    try:
-        # Command to run terraform-docs
-        command = [
             "terraform-docs",
             "markdown",
             terraform_module_path,

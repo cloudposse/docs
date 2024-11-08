@@ -202,7 +202,7 @@ output-values:
   from: ''
 
 output:
-  file: docs/terraform.md
+  file: ../docs/terraform.md
   mode: replace
 
 settings:
