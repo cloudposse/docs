@@ -247,13 +247,6 @@ class ComponentRenderer(AbstractRenderer):
 
         io.create_dirs(module_docs_dir)
 
-        # Re-render terraform docs with this repo's terraform-docs template for modules.
-        # This replaces docs/terraform.md for the given module in place
-        logging.debug(f"Rendering terraform docs for: {module_download_dir}")
-        rendering.render_terraform_docs(
-            os.path.join(module_download_dir, "src"), os.path.join(self.templates_dir, "terraform-docs.yml")
-        )
-
         # Run the make readme command in the module directory to compile README.md
         logging.debug(f"Rendering README.md for: {module_download_dir}")
         logging.debug(f"make readme")
@@ -280,6 +273,14 @@ class ComponentRenderer(AbstractRenderer):
             raise TerraformDocsRenderingError(error_message)
 
         logging.info(f"Rendered: {readme_md_file}")
+
+        # Re-render terraform docs with this repo's terraform-docs template for modules.
+        # This replaces docs/terraform.md for the given module in place
+        logging.debug(f"Rendering terraform docs for: {module_download_dir}")
+        rendering.render_terraform_docs(
+            os.path.join(module_download_dir, "src"), os.path.join(self.templates_dir, "terraform-docs.yml")
+        )
+
 
 
     def __copy_extra_resources_for_images(self, module_download_dir, module_docs_dir):

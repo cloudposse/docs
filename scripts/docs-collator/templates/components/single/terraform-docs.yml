@@ -206,6 +206,7 @@ output:
   mode: inject
   template: |-
     <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+    TEST
     {{ .Content }}
     <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
