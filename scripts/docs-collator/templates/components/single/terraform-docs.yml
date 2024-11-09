@@ -202,7 +202,7 @@ output-values:
   from: ''
 
 output:
-  file: README.md
+  file: ../README.md
   mode: inject
   template: |-
     <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
