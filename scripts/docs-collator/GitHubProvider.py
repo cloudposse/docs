@@ -24,7 +24,7 @@ REPOS_CACHE_FILE = os.path.join(CACHE_DIR, "repos_cache.pkl")
 
 class GitHubProvider:
     def __init__(self, github_api_token):
-        self.github = Github(github_api_token)
+        self.github = Github(github_api_token, retry=3)
         self.cache = self.load_cache(CACHE_FILE)
         self.repos_cache = self.load_cache(REPOS_CACHE_FILE)
 
@@ -58,7 +58,6 @@ class GitHubProvider:
 
         excludes = self.__csv_to_set(excludes_csv)
         includes = self.__csv_to_set(includes_csv)
-
         if len(includes) > 0:
             for include in includes:
                 repo = self.github.get_organization(github_org).get_repo(include)
