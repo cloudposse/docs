@@ -202,8 +202,12 @@ output-values:
   from: ''
 
 output:
-  file: ../docs/terraform.md
-  mode: replace
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+    {{ .Content }}
+    <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 settings:
   anchor: true
