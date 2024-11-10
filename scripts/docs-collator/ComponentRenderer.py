@@ -44,9 +44,7 @@ class ComponentRenderer(AbstractRenderer):
             provider, subdirs, module_name = self.parse_terraform_repo_name(repo.name)
             if subdirs and subdirs == module_name:
                 self.templates_dir = os.path.join(SCRIPT_DIR, "templates/components/single")
-                logging.info("========================================================================================")
                 self.render_single(repo, ignore_subdirs=True)
-                logging.info("========================================================================================")
         else:
             self.templates_dir = os.path.join(SCRIPT_DIR, "templates/components/single")
             self.render_single(repo)
