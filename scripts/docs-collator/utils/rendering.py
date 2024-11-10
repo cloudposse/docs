@@ -7,7 +7,7 @@ TAG_REGEX = re.compile("(<)([0-9a-zA-Z._-]+)(>)", re.IGNORECASE)
 BR_REGEX = re.compile(re.escape("<br>"), re.IGNORECASE)
 SIDEBAR_LABEL_REGEX = re.compile("sidebar_label: .*", re.IGNORECASE)
 CUSTOM_EDIT_URL_REGEX = re.compile("custom_edit_url: .*", re.IGNORECASE)
-NAME_REGEX = re.compile("name: .*", re.IGNORECASE)
+NAME_REGEX = re.compile("^name: .*", re.IGNORECASE)
 RELATIVE_LINK_PATTERN = r"\]\((?!http[s]?://)([^)\s]+)\)"
 
 

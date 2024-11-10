@@ -5,6 +5,9 @@ import re
 import pickle
 from github import Github, GithubException
 from functools import lru_cache
+
+from github import Auth
+
 from utils import io
 
 TERRAFORM_MODULE_NAME_PATTERN = re.compile(
@@ -24,7 +27,8 @@ REPOS_CACHE_FILE = os.path.join(CACHE_DIR, "repos_cache.pkl")
 
 class GitHubProvider:
     def __init__(self, github_api_token):
-        self.github = Github(github_api_token, retry=3)
+        auth = Auth.Token(github_api_token)
+        self.github = Github(auth=auth)
         self.cache = self.load_cache(CACHE_FILE)
         self.repos_cache = self.load_cache(REPOS_CACHE_FILE)
 

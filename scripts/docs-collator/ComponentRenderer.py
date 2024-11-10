@@ -31,8 +31,6 @@ class ComponentRenderer(AbstractRenderer):
         logging.info(f"Rendering doc for: {repo.full_name}")
         module_download_dir = os.path.join(self.download_dir, repo.name)
 
-        self._pre_rendering_fixes(repo, module_download_dir)
-
         terraform_files = glob.glob(os.path.join(module_download_dir, 'src', '*.tf'))
         if len(terraform_files) == 0:
             self.templates_dir = os.path.join(SCRIPT_DIR, "templates/components/multiple")
@@ -102,8 +100,8 @@ class ComponentRenderer(AbstractRenderer):
             module_docs_dir = os.path.join(self.docs_dir, provider, module_name)
         logging.info(f"Module docs dir: {module_docs_dir}")
 
-        self.__render_readme(module_download_dir, module_docs_dir)
 
+        self.__render_readme(module_download_dir, module_docs_dir)
         readme_md_file = os.path.join(module_download_dir, README_MD)
         io.copy_file(readme_md_file, os.path.join(module_docs_dir, README_MD))
 
@@ -146,6 +144,28 @@ class ComponentRenderer(AbstractRenderer):
         # Disable category.json for now
         # self.__create_index_for_provider(repo)
         # self.__create_indexes_for_subfolders(repo)
+
+    def _post_rendering_fixes(self, repo, readme_md_file, submodule_dir=""):
+        content = io.read_file_to_string(readme_md_file)
+        content = rendering.fix_self_non_closing_br_tags(content)
+        content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
+        content = rendering.fix_github_edit_url(content, repo, submodule_dir)
+        provider, subdirs, module_name = self.parse_terraform_repo_name(repo.name)
+        if os.path.basename(submodule_dir):
+            content = rendering.fix_sidebar_label(
+                content, module_name, os.path.basename(submodule_dir)
+            )
+        else:
+            content = rendering.fix_sidebar_label(
+                content, module_name, module_name
+            )
+        content = rendering.replace_relative_links_with_github_links(
+            repo, content, submodule_dir
+        )
+        content = rendering.fix_mdx_format(content)
+        content = rendering.reformat_admonitions(content)
+        io.save_string_to_file(readme_md_file, content)
+
 
     def __render_doc(self, repo, component, file):
         module_download_dir = os.path.join(self.download_dir, repo.name, 'src')
@@ -246,7 +266,6 @@ class ComponentRenderer(AbstractRenderer):
         readme_tmpl_file = os.path.join(self.templates_dir, MODULES_README_TEMPLATE)
 
         io.create_dirs(module_docs_dir)
-
         # Run the make readme command in the module directory to compile README.md
         logging.debug(f"Rendering README.md for: {module_download_dir}")
         logging.debug(f"make readme")
@@ -304,7 +323,7 @@ class ComponentRenderer(AbstractRenderer):
 
         io.save_string_to_file(os.path.join(dir, INDEX_CATEGORY_JSON), content)
 
-    def _post_rendering_fixes(self, repo, readme_md_file, submodule_dir=""):
+    def xx_post_rendering_fixes(self, repo, readme_md_file, submodule_dir=""):
         content = io.read_file_to_string(readme_md_file)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
