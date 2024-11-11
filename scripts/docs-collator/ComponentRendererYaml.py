@@ -76,7 +76,7 @@ class ComponentRendererYaml(AbstractRenderer):
         # This replaces docs/terraform.md for the given module in place
         logging.debug(f"Rendering terraform docs for: {module_download_dir}")
         rendering.render_terraform_docs(
-            os.path.join(module_download_dir, "src"), os.path.join(self.templates_dir, "terraform-docs.yml")
+            self.component.terraform_dir, os.path.join(self.templates_dir, "terraform-docs.yml")
         )
 
         readme_md_file = os.path.join(module_download_dir, README_MD)

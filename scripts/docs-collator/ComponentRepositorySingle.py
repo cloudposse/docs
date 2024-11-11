@@ -34,6 +34,10 @@ class Component:
     def dir(self):
         return self._module_download_dir
 
+    @property
+    def terraform_dir(self):
+        return self._terraform_dir
+
     def has_readme_yaml(self):
         return os.path.exists(os.path.join(self._module_download_dir, README_YAML))
 

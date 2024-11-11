@@ -74,9 +74,9 @@ def fix_sidebar_label(content, repo, submodule_name=""):
     return SIDEBAR_LABEL_REGEX.sub(f"sidebar_label: {module_name}", content)
 
 
-def fix_github_edit_url(content, component, submodule_dir=""):
+def fix_github_edit_url(content, repo, submodule_dir=""):
     subdir = f"/{submodule_dir}" if submodule_dir else ""
-    github_edit_url = f"custom_edit_url: https://github.com/{component.repo.full_name}/blob/{component.repo.default_branch}{subdir}/README.yaml"
+    github_edit_url = f"custom_edit_url: https://github.com/{repo.full_name}/blob/{repo.default_branch}{subdir}/README.yaml"
     return CUSTOM_EDIT_URL_REGEX.sub(github_edit_url, content)
 
 

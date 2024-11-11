@@ -32,7 +32,7 @@ class ComponentRendererMD(AbstractRenderer):
         logging.info(f"Module docs dir: {module_docs_dir}")
 
         # self._pre_rendering_fixes(self.component, module_download_dir)
-
+        self.__render_doc()
         content = io.read_file_to_string(os.path.join(module_download_dir, README_MD))
         # content = (
         #     rendering.replace_relative_links_with_github_links(
@@ -51,21 +51,18 @@ class ComponentRendererMD(AbstractRenderer):
             content=content,
         )
 
-
         dest_file = os.path.join(module_docs_dir, README_MD)
         io.create_dirs(os.path.dirname(dest_file))
         io.save_string_to_file(dest_file, content)
 
         # self.__post_rendering_fixes_for_submodule(dest_file)
 
-    def __render_doc(self, repo, component, file):
-        module_download_dir = os.path.join(self.download_dir, repo.name, 'src')
-
+    def __render_doc(self):
+        file = os.path.join(self.component.dir, README_MD)
         # Render Terraform docs using template for website doc format
         # This will update the given README in place
-        module_path = os.path.join(module_download_dir, component)
         rendering.render_terraform_docs(
-            module_path, os.path.join(self.templates_dir, "terraform-docs.yml")
+            self.component.terraform_dir, os.path.join(self.templates_dir, "terraform-docs.yml")
         )
 
         content = io.read_file_to_string(file)
@@ -86,67 +83,67 @@ class ComponentRendererMD(AbstractRenderer):
         content = rendering.replace_broken_links(content)
         content = rendering.fix_mdx_format(content)
 
-        change_log_file = os.path.join(os.path.dirname(file), CHANGELOG_MD)
-        change_log_content = (
-            io.read_file_to_string(change_log_file)
-            if os.path.exists(change_log_file)
-            else ""
-        )
-        change_log_content = rendering.reformat_admonitions(change_log_content)
-        change_log_content = rendering.shift_headings(change_log_content)
-
-        provider, subdirs, _ = self.parse_terraform_repo_name(repo.name)
-
-        if subdirs:
-            module_docs_dir = os.path.join(self.docs_dir, provider, subdirs)
-        else:
-            module_docs_dir = os.path.join(self.docs_dir, provider)
-        relative_path = module_docs_dir
-        result_file = os.path.join(
-            module_docs_dir, os.path.relpath(file, module_download_dir)
-        )  # <module-name>/README.md
-
-        name = (
-            component
-            if os.path.basename(file) == "README.md"
-            else os.path.basename(file).replace(".md", "")
-        )
-        label = name
-        title = name
-        github_edit_url = (
-            f"https://github.com/{repo.full_name}/blob/main/src/{relative_path}"
-        )
-
-        if (
-            len(relative_path.split("/")) > 2 and relative_path.split("/")[1] != "docs"
-        ):  # this is submodule
-            submodule_name = os.path.basename(os.path.dirname(result_file))
-
-            label = submodule_name
-            title = submodule_name
-
-            # renaming final file <module-name>/<module-name>.mdx
-            result_file = os.path.join(
-                os.path.dirname(result_file), f"{submodule_name}.mdx"
-            )
-        else:
-            # renaming final file <module-name>/README.mdx
-            result_file = os.path.join(os.path.dirname(result_file), f"{name}.mdx")
-
-        logging.info(f"Result: {result_file}")
-
-        io.create_dirs(os.path.dirname(result_file))
-
-        doc_content = self.doc_template.render(
-            label=label,
-            title=title,
-            content=content,
-            change_log_content=change_log_content,
-            github_repository=repo.full_name,
-            github_edit_url=github_edit_url,
-            tags=tags,
-        )
-        io.save_string_to_file(result_file, doc_content)
+        # # change_log_file = os.path.join(os.path.dirname(file), CHANGELOG_MD)
+        # # change_log_content = (
+        # #     io.read_file_to_string(change_log_file)
+        # #     if os.path.exists(change_log_file)
+        # #     else ""
+        # # )
+        # # change_log_content = rendering.reformat_admonitions(change_log_content)
+        # # change_log_content = rendering.shift_headings(change_log_content)
+        #
+        # provider, subdirs, _ = self.parse_terraform_repo_name(repo.name)
+        #
+        # if subdirs:
+        #     module_docs_dir = os.path.join(self.docs_dir, provider, subdirs)
+        # else:
+        #     module_docs_dir = os.path.join(self.docs_dir, provider)
+        # relative_path = module_docs_dir
+        # result_file = os.path.join(
+        #     module_docs_dir, os.path.relpath(file, module_download_dir)
+        # )  # <module-name>/README.md
+        #
+        # name = (
+        #     component
+        #     if os.path.basename(file) == "README.md"
+        #     else os.path.basename(file).replace(".md", "")
+        # )
+        # label = name
+        # title = name
+        # github_edit_url = (
+        #     f"https://github.com/{repo.full_name}/blob/main/src/{relative_path}"
+        # )
+        #
+        # if (
+        #     len(relative_path.split("/")) > 2 and relative_path.split("/")[1] != "docs"
+        # ):  # this is submodule
+        #     submodule_name = os.path.basename(os.path.dirname(result_file))
+        #
+        #     label = submodule_name
+        #     title = submodule_name
+        #
+        #     # renaming final file <module-name>/<module-name>.mdx
+        #     result_file = os.path.join(
+        #         os.path.dirname(result_file), f"{submodule_name}.mdx"
+        #     )
+        # else:
+        #     # renaming final file <module-name>/README.mdx
+        #     result_file = os.path.join(os.path.dirname(result_file), f"{name}.mdx")
+        #
+        # logging.info(f"Result: {result_file}")
+        #
+        # io.create_dirs(os.path.dirname(result_file))
+        #
+        # doc_content = self.doc_template.render(
+        #     label=label,
+        #     title=title,
+        #     content=content,
+        #     change_log_content=change_log_content,
+        #     github_repository=repo.full_name,
+        #     github_edit_url=github_edit_url,
+        #     tags=tags,
+        # )
+        io.save_string_to_file(file, content)
 
     def __copy_extra_resources_for_images(self, module_download_dir, module_docs_dir):
         extra_resources_dir = os.path.join(module_download_dir, IMAGES_DIR)

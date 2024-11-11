@@ -40,8 +40,6 @@ def main(
 ):
     github_provider = GitHubProvider(github_api_token)
     fetcher = ComponentFetcher(github_provider, download_dir)
-    renderer = ComponentRenderer(download_dir, output_dir)
-
     logging.info(f"Fetching repositories ...")
 
     repos = github_provider.get_components_repos(GITHUB_ORG, includes_csv, excludes_csv)
