@@ -92,7 +92,7 @@ class ComponentRendererYaml(AbstractRenderer):
             content, repo, repo.name
         )
         content = rendering.replace_relative_links_with_github_links(
-            repo, content, submodule_dir
+            repo, content, repo.name
         )
         content = rendering.fix_mdx_format(content)
         content = rendering.reformat_admonitions(content)
