@@ -1,12 +1,11 @@
-import unittest
-from GitHubProvider import GitHubProvider
-from ComponentFetcher import ComponentFetcher
-from ComponentRepositorySingle import ComponentRepositorySingle
-from ComponentRepositoryMultiple import ComponentRepositoryMultiple
-from ComponentRendererFactory import ComponentRendererFactory
-from ComponentRenderer import ComponentRenderer
 import os
-from unittest.mock import Mock
+import unittest
+
+from GitHubProvider import GitHubProvider
+from component.fetcher import ComponentFetcher
+from component.repository.single import ComponentRepositorySingle
+from component.repository.multiple import ComponentRepositoryMultiple
+from component.renderer.factory import ComponentRendererFactory
 
 
 class TestComponentFetcher(unittest.TestCase):

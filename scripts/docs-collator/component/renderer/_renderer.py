@@ -1,13 +1,10 @@
 import logging
 import os
-import subprocess
-import glob
 
-from AbstractRenderer import AbstractRenderer, TerraformDocsRenderingError
-from ComponentRepositorySingle import ComponentRepositorySingle
-from ComponentRepositoryMultiple import ComponentRepositoryMultiple
-from utils import io
-from utils import rendering, templating
+from ...AbstractRenderer import AbstractRenderer
+from ..repository.single import ComponentRepositorySingle
+from ..repository.multiple import ComponentRepositoryMultiple
+from ...utils import io, rendering, templating
 
 
 DOCS_DIR = "docs"

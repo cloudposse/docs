@@ -1,19 +1,5 @@
-import os
 
-from AbstractFetcher import AbstractFetcher, MissingReadmeYamlException
-from ComponentRepositoryAbstract import ComponentRepositoryAbstract
-from ComponentRepositorySingle import Component
-from utils import io
-
-DOCS_DIR = "docs"
-IMAGES_DIR = "images"
-TERRAFORM_DIR = "src"
-README_YAML = "README.yaml"
-README_MD = "README.md"
-SUBMODULES_DIR = "modules"
-
-
-class ComponentRepositoryMultiple(ComponentRepositoryAbstract):
+class ComponentRepositoryAbstract:
     _full_name = None
     _name = None
     _default_branch = None
@@ -27,32 +13,7 @@ class ComponentRepositoryMultiple(ComponentRepositoryAbstract):
 
     @property
     def components(self):
-        result = []
-        if self.subdirs and len(self.subdirs) == 1 and self.subdirs[0] == self.module_name:
-            result.append(
-                Component(
-                    repo=self,
-                    module_download_dir=self._module_download_dir,
-                    terraform_dir=self._module_download_dir,
-                    name=self.module_name,
-                    subdirs=[]
-                )
-            )
-
-        components_dir = io.get_subfolders(os.path.join(self._module_download_dir, TERRAFORM_DIR))
-        for component_dir in components_dir:
-            path = os.path.join(self._module_download_dir, TERRAFORM_DIR, component_dir)
-            result.append(
-                Component(
-                    repo=self,
-                    module_download_dir=path,
-                    terraform_dir=path,
-                    name=component_dir,
-                    subdirs=self.subdirs
-                )
-            )
-        return result
-
+        raise NotImplementedError()
     @property
     def full_name(self):
         return self._full_name
@@ -114,4 +75,3 @@ class ComponentRepositoryMultiple(ComponentRepositoryAbstract):
         elif module_name == "tgw":
             subdirs = ["tgw"]
         return provider, subdirs, module_name
-

@@ -1,7 +1,7 @@
 import os
 
 from AbstractFetcher import AbstractFetcher, MissingReadmeYamlException
-from ComponentRepositoryFactory import ComponentRepositoryFactory
+from .repository.factory import ComponentRepositoryFactory
 
 DOCS_DIR = "docs"
 IMAGES_DIR = "images"

@@ -1,15 +1,13 @@
 import logging
-import os
 import sys
 
 import click
 
-from ComponentRenderer import ComponentRenderer
 from GitHubProvider import GitHubProvider
-from ComponentFetcher import ComponentFetcher
+from component.fetcher import ComponentFetcher
 from ModuleFetcher import MissingReadmeYamlException
 from AbstractRenderer import TerraformDocsRenderingError
-from ComponentRendererFactory import ComponentRendererFactory
+from component.renderer.factory import ComponentRendererFactory
 
 OUTPUT_DOC_DIR = "content/components/library/aws"
 DOWNLOAD_TMP_DIR = "tmp/components"

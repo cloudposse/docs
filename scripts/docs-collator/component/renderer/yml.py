@@ -2,10 +2,9 @@ import os
 import subprocess
 import logging
 
-from utils import io
-from utils import rendering, templating
+from utils import io, rendering, templating
 from AbstractRenderer import AbstractRenderer, TerraformDocsRenderingError
-from ComponentRepositorySingle import Component
+from component.component import Component
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 README_YAML = "README.yaml"

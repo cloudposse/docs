@@ -1,9 +1,9 @@
 import os
 
 from AbstractRenderer  import AbstractRenderer
-from ComponentRendererYaml import ComponentRendererYaml
-from ComponentRendererMD import ComponentRendererMD
-from ComponentRepositoryAbstract import ComponentRepositoryAbstract
+from .yml import ComponentRendererYaml
+from .md import ComponentRendererMD
+from component.repository.abstract import ComponentRepositoryAbstract
 
 
 class ComponentRendererFactory:
