@@ -83,16 +83,16 @@ class ComponentRendererYaml(AbstractRenderer):
         io.copy_file(readme_md_file, os.path.join(module_docs_dir, README_MD))
         return os.path.join(module_docs_dir, README_MD)
 
-    def _post_rendering_fixes(self, repo, readme_md_file, submodule_dir=""):
+    def _post_rendering_fixes(self, component, readme_md_file, submodule_dir=""):
         content = io.read_file_to_string(readme_md_file)
         content = rendering.fix_self_non_closing_br_tags(content)
         content = rendering.fix_custom_non_self_closing_tags_in_pre(content)
-        content = rendering.fix_github_edit_url(content, repo, submodule_dir)
+        content = rendering.fix_github_edit_url(content, component.repo, submodule_dir)
         content = rendering.fix_sidebar_label(
-            content, repo, repo.name
+            content, component.repo, component.name
         )
         content = rendering.replace_relative_links_with_github_links(
-            repo, content, repo.name
+            component.repo, content, component.name
         )
         content = rendering.fix_mdx_format(content)
         content = rendering.reformat_admonitions(content)
