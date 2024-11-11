@@ -31,15 +31,11 @@ class ComponentRendererMD(AbstractRenderer):
         module_docs_dir = os.path.join(*path_components)
         logging.info(f"Module docs dir: {module_docs_dir}")
 
-        # self._pre_rendering_fixes(self.component, module_download_dir)
         self.__render_doc()
         content = io.read_file_to_string(os.path.join(module_download_dir, README_MD))
-        # content = (
-        #     rendering.replace_relative_links_with_github_links(
-        #         repo, submodule_readme_content, rel_dir
-        #     )
-        # )
-        rel_dir = "Test"
+
+        rel_dir = os.path.relpath(self.component.terraform_dir, self.component.repo.dir)
+
         jenv = templating.init_templating(self.templates_dir)
         self.doc_template = jenv.get_template("readme.md")
 
@@ -47,7 +43,7 @@ class ComponentRendererMD(AbstractRenderer):
             label=self.component.name,
             title=self.component.name,
             description=self.component.name,
-            github_edit_url=f"https://github.com/{self.component.repo.full_name}/blob/{self.component.repo.default_branch}/{rel_dir}",
+            github_edit_url=f"https://github.com/{self.component.repo.full_name}/blob/{self.component.repo.default_branch}/{rel_dir}/README.md",
             content=content,
         )
 

@@ -4,8 +4,8 @@
 {{- $fullModuleName := (ds "config").name -}}
 {{- $shortModuleName := ( conv.Default $fullModuleName (conv.Join (coll.GoSlice ($fullModuleName | strings.SplitN "-" 3) 1) "-")) -}}
 ---
-title: {{ $shortModuleName }}
-sidebar_label: {{ $shortModuleName }}
+title: {{ $fullModuleName }}
+sidebar_label: {{ $fullModuleName }}
 sidebar_class_name: command
 {{- if has (ds "config") "description" }}
 description: |-
