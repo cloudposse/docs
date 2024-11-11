@@ -1,12 +1,14 @@
 import os
 
 from AbstractFetcher import AbstractFetcher, MissingReadmeYamlException
+from ComponentRepositoryFactory import ComponentRepositoryFactory
 
 DOCS_DIR = "docs"
 IMAGES_DIR = "images"
 TERRAFORM_DIR = "src"
 README_YAML = "README.yaml"
 README_MD = "README.md"
+SUBMODULES_DIR = "modules"
 
 
 class ComponentFetcher(AbstractFetcher):
@@ -33,6 +35,11 @@ class ComponentFetcher(AbstractFetcher):
         if TERRAFORM_DIR in remote_files:
             self.__fetch_terraform_files(repo, module_download_dir)
 
+        if SUBMODULES_DIR in remote_files:
+            self.__fetch_submodules(repo, module_download_dir)
+
+        return ComponentRepositoryFactory.produce(repo, module_download_dir=module_download_dir)
+
     def __fetch_images(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, IMAGES_DIR)
 
@@ -46,3 +53,25 @@ class ComponentFetcher(AbstractFetcher):
 
     def _fetch_readme_md(self, repo, module_download_dir):
         self.github_provider.fetch_file(repo, README_MD, module_download_dir)
+
+    def __fetch_submodules(self, repo, module_download_dir):
+        remote_files = self.github_provider.list_repo_dir(repo, SUBMODULES_DIR)
+        readme_files = {}
+
+        for remote_file in remote_files:
+            base_name = os.path.basename(remote_file)
+            dir_name = os.path.dirname(remote_file)
+
+            if base_name == README_YAML:
+                readme_files[dir_name] = remote_file
+            elif base_name == README_MD and dir_name not in readme_files:
+                readme_files[dir_name] = remote_file
+
+        for readme_file in readme_files.values():
+            self.github_provider.fetch_file(repo, readme_file, module_download_dir)
+            if os.path.basename(readme_file) == README_YAML:
+                self._fetch_docs(
+                    repo,
+                    module_download_dir,
+                    submodule_dir=os.path.dirname(readme_file),
+                )

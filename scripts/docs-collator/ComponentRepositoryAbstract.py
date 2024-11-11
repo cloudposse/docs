@@ -1,0 +1,3 @@
+
+class ComponentRepositoryAbstract:
+    pass

@@ -15,6 +15,10 @@ class TerraformDocsRenderingError(Exception):
 
 
 class AbstractRenderer:
+
+    def render(self):
+        raise NotImplementedError
+
     def _pre_rendering_fixes(self, repo, module_download_dir, submodule_dir=""):
         readme_yaml_file = os.path.join(module_download_dir, submodule_dir, README_YAML)
         content = io.read_file_to_string(readme_yaml_file)

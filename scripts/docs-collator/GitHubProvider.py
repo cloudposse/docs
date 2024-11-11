@@ -26,11 +26,18 @@ REPOS_CACHE_FILE = os.path.join(CACHE_DIR, "repos_cache.pkl")
 
 
 class GitHubProvider:
-    def __init__(self, github_api_token):
-        auth = Auth.Token(github_api_token)
+    def __init__(self, github_api_token = None):
+        if github_api_token:
+            auth = Auth.Token(github_api_token)
+        else:
+            logging.info("No GitHub API token provided, using unauthenticated access")
+            auth = None
         self.github = Github(auth=auth)
         self.cache = self.load_cache(CACHE_FILE)
         self.repos_cache = self.load_cache(REPOS_CACHE_FILE)
+
+    def __del__(self):
+        self.github.close()
 
     def get_terraform_repos(self, github_org, includes_csv, excludes_csv):
         key = (includes_csv, excludes_csv)

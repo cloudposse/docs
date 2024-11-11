@@ -7,9 +7,9 @@ import click
 from ComponentRenderer import ComponentRenderer
 from GitHubProvider import GitHubProvider
 from ComponentFetcher import ComponentFetcher
-from ModuleFetcher import ModuleFetcher, MissingReadmeYamlException
+from ModuleFetcher import MissingReadmeYamlException
 from AbstractRenderer import TerraformDocsRenderingError
-from utils import io
+from ComponentRendererFactory import ComponentRendererFactory
 
 OUTPUT_DOC_DIR = "content/components/library/aws"
 DOWNLOAD_TMP_DIR = "tmp/components"
@@ -56,13 +56,14 @@ def main(
 
         try:
             logging.info(f"Fetching files for: {repo.full_name}")
-            fetcher.fetch(repo)
+            component_repo = fetcher.fetch(repo)
         except MissingReadmeYamlException as e:
             logging.warning(e.message)
             continue
 
         try:
-            renderer.render(repo)
+            for renderer in ComponentRendererFactory.produce(component_repo):
+                renderer.render(output_dir)
         except TerraformDocsRenderingError as e:
             if fail_on_rendering_error:
                 logging.error(e.message)
