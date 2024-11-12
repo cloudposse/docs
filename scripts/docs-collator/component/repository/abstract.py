@@ -63,9 +63,6 @@ class ComponentRepositoryAbstract:
             subdirs = ["glue"]
         elif module_name == "managed-grafana":
             subdirs = ["managed-grafana"]
-        elif module_name == "managed-prometheus":
-            subdirs = ["managed-prometheus"]
-            module_name = "workspace"
         elif module_name.startswith("spacelift"):
             subdirs = ["spacelift"]
             module_name = module_name
