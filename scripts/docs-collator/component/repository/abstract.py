@@ -53,6 +53,18 @@ class ComponentRepositoryAbstract:
         elif module_name.startswith("eks-"):
             subdirs = ["eks"]
             module_name = module_name[len("eks-"):]
+        elif module_name == "auth0":
+            subdirs = ["auth0"]
+        elif module_name == "auth0":
+            subdirs = ["auth0"]
+        elif module_name == "dms":
+            subdirs = ["dms"]
+        elif module_name == "glue":
+            subdirs = ["glue"]
+        elif module_name == "managed-grafana":
+            subdirs = ["managed-grafana"]
+        elif module_name == "managed-prometheus":
+            subdirs = ["managed-prometheus"]
         elif module_name.startswith("spacelift"):
             subdirs = ["spacelift"]
             module_name = module_name
