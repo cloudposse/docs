@@ -813,9 +813,9 @@ component/eks/idp-roles:
   description: The eks/idp-roles Component.
   label: component/eks/idp-roles
 
-component/eks/karpenter:
+component/eks/karpenter-controller:
   description: The eks/karpenter Component.
-  label: component/eks/karpenter
+  label: component/eks/karpenter-controller
 
 component/eks/keda:
   description: The eks/keda Component.
