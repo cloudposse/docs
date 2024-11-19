@@ -10,5 +10,5 @@ DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/components}"
 
 python scripts/docs-collator/render_docs_for_components.py \
 	--download-dir "${DOWNLOAD_TMP_DIR}" \
-	--output-dir "${RENDERED_DOCS_DIR}",
+	--output-dir "${RENDERED_DOCS_DIR}" \
 	--excludes "vpc"
