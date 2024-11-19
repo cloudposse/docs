@@ -5,7 +5,7 @@ tags:
   - provider/spacelift
 ---
 
-# Component: `spacelift`
+# spacelift
 
 These components are responsible for setting up Spacelift and include three components: `spacelift/admin-stack`,
 `spacelift/spaces`, and `spacelift/worker-pool`.
