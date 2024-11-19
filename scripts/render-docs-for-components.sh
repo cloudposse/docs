@@ -5,12 +5,10 @@ set -e
 GITHUB_ORG=${GITHUB_ORG:-"cloudposse"}
 GITHUB_REPO=${GITHUB_REPO:-"terraform-aws-components"}
 GIT_BRANCH=${GIT_BRANCH:-"main"}
-TMP_CLONE_DIR="${TMP_CLONE_DIR:-tmp/components/${GITHUB_REPO}}"
-RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-docs/components/library/aws/}"
-
-echo "Cloning repo '${GITHUB_ORG}/${GITHUB_REPO}'"
-git clone --depth 1 --branch "${GIT_BRANCH}" https://github.com/${GITHUB_ORG}/${GITHUB_REPO}.git "${TMP_CLONE_DIR}" || true
+RENDERED_DOCS_DIR="${RENDERED_DOCS_DIR:-docs/components/library}"
+DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/components}"
 
 python scripts/docs-collator/render_docs_for_components.py \
-	--input-dir "${TMP_CLONE_DIR}" \
-	--output-dir "${RENDERED_DOCS_DIR}"
+	--download-dir "${DOWNLOAD_TMP_DIR}" \
+	--output-dir "${RENDERED_DOCS_DIR}" \
+	--excludes "vpc"

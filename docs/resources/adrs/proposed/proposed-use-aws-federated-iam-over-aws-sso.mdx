@@ -94,11 +94,10 @@ AWS Federated IAM and AWS SSO can coexist and are not mutually exclusive.
 
 - GSuite does not support mapping group attributes to SAML attributes (But they don't really solve it for AWS SSO either, and if you can script the GSuite API you can achieve the same effect.)
 
-- Our current implementation with [iam-primary-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-primary-roles) and [iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles) is outdated and should be updated to use the interface we developed for AWS [sso](/components/library/aws/aws-sso/).
+- Our current implementation with [iam-primary-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-primary-roles) and [iam-delegated-roles](https://github.com/cloudposse/terraform-aws-components/tree/main/deprecated/iam-delegated-roles) is outdated and should be updated to use the interface we developed for AWS [sso](/components/library/aws/identity-center/).
 
 ### When to use AWS SSO?
-
-AWS SSO is ideally suited for business users of AWS that interact with the AWS Web Console. It does work well with the `aws` CLI, but not together with EKS.
+lnmgafj/....[;..................................................................................................................................................................................................../PLU5D5YT6FTYUNFVHGT6FHGNU VDYBHBGYBDFR G YGDAWS SSO is ideally suited for business users of AWS that interact with the AWS Web Console. It does work well with the `aws` CLI, but not together with EKS.
 
 ### When to use AWS Federated IAM with SAML?
 
