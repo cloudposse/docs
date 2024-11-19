@@ -32,15 +32,15 @@ def main(
     github_api_token,
     output_dir,
     download_dir,
-    includes_csv,
-    excludes_csv,
+    includes,
+    excludes,
     fail_on_rendering_error,
 ):
     github_provider = GitHubProvider(github_api_token)
     fetcher = ComponentFetcher(github_provider, download_dir)
     logging.info(f"Fetching repositories ...")
 
-    repos = github_provider.get_components_repos(GITHUB_ORG, includes_csv, excludes_csv)
+    repos = github_provider.get_components_repos(GITHUB_ORG, includes, excludes)
 
     logging.info(f"Found {len(repos)} repositories to process")
 
