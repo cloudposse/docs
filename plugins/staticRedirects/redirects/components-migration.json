@@ -1,0 +1,42 @@
+[
+  {
+      "from": "/components/library/aws/argocd-repo",
+      "to": "/components/library/aws/argocd-github-repo"
+  },
+  {
+    "from": "/components/library/aws/argocd-repo/templates",
+    "to": "/components/library/aws/argocd-github-repo"
+  },
+  {
+    "from": "/components/library/aws/aws-sso",
+    "to": "/components/library/aws/identity-center"
+  },
+  {
+    "from": "/components/library/aws/datadog-configuration",
+    "to": "/components/library/aws/datadog-credentials"
+  },
+  {
+    "from": "/components/library/aws/datadog-configuration/modules/datadog_keys",
+    "to": "/components/library/aws/datadog-credentials/modules/datadog_keys"
+  },
+  {
+    "from": "/components/library/aws/eks/aws-node-termination-handler",
+    "to": "/components/library/aws/eks/node-termination-handler"
+  },
+  {
+    "from": "/components/library/aws/eks/karpenter",
+    "to": "/components/library/aws/eks/karpenter-controller"
+  },
+  {
+    "from": "/components/library/aws/eks/karpenter/docs",
+    "to": "/components/library/aws/eks/karpenter-controller/docs"
+  },
+  {
+    "from": "/components/library/aws/spacelift/worker-pool",
+    "to": "/components/library/aws/spacelift/worker-pool-asg"
+  },
+  {
+    "from": "/components/library/aws/tgw/cross-region-hub-connector",
+    "to": "/components/library/aws/tgw/hub-connector"
+  }
+]

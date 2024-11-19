@@ -47,41 +47,31 @@ class ComponentRepositoryAbstract:
         provider = name_items[0]
         module_name = "-".join(name_items[1:])
         subdirs = []
+
+        groups = [
+            "eks", "auth0", "dms", "glue", "managed-grafana-data-source",
+            "managed-grafana", "managed-prometheus", "spacelift", "tgw"
+        ]
+
+        for group in groups:
+            if module_name.startswith(group):
+                subdirs = [group]
+                module_name = module_name[len(f"{group}-"):]
+                break
+
+        preserve_provider_prefix = [
+            "team-roles", "teams", "saml", "shield", "inspector",
+            "inspector2", "backup", "ssosync", "config"
+        ]
+
+        for item in preserve_provider_prefix:
+            if module_name == item:
+                module_name = f"{provider}-{item}"
+                break
+
         if module_name == "":
             provider = "null"
             module_name = self._name
-        elif module_name.startswith("eks-"):
-            subdirs = ["eks"]
-            module_name = module_name[len("eks-"):]
-        elif module_name == "auth0":
-            subdirs = ["auth0"]
-        elif module_name == "auth0":
-            subdirs = ["auth0"]
-        elif module_name == "dms":
-            subdirs = ["dms"]
-        elif module_name == "glue":
-            subdirs = ["glue"]
-        elif module_name == "managed-grafana":
-            subdirs = ["managed-grafana"]
-        elif module_name.startswith("spacelift"):
-            subdirs = ["spacelift"]
-            module_name = module_name
-        elif module_name == "sso":
-            module_name = "aws-sso"
-        elif module_name == "saml":
-            module_name = "aws-saml"
-        elif module_name == "backup":
-            module_name = "aws-backup"
-        elif module_name == "ssosync":
-            module_name = "aws-ssosync"
-        elif module_name == "config":
-            module_name = "aws-config"
-        elif module_name == "config":
-            module_name = "aws-config"
         elif module_name == "argocd":
             subdirs = ["eks"]
-        elif module_name == "datadog":
-            module_name = "datadog-configuration"
-        elif module_name == "tgw":
-            subdirs = ["tgw"]
         return provider, subdirs, module_name

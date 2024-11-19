@@ -30,27 +30,15 @@ class TestComponentFetcher(unittest.TestCase):
         for renderer in renderers:
             renderer.render(self.output_dir)
 
-    def test_multiple(self):
+    def test_single_with_changlelog(self):
         fetcher = ComponentFetcher(self.github_provider, self.download_dir)
 
-        repo = self.github_provider.github.get_repo("cloudposse-terraform-components/aws-dns")
-        self.assertEqual(repo.name, "aws-dns")
+        repo = self.github_provider.github.get_repo("cloudposse-terraform-components/aws-argocd-github-repo")
+        self.assertEqual(repo.name, "aws-argocd-github-repo")
         component_repo = fetcher.fetch(repo)
-        self.assertIsInstance(component_repo, ComponentRepositoryMultiple)
+        self.assertIsInstance(component_repo, ComponentRepositorySingle)
         renderers = ComponentRendererFactory.produce(component_repo)
-        self.assertEqual(len(renderers), 2)
-        for renderer in renderers:
-            renderer.render(self.output_dir)
-
-    def test_multiple_main_page(self):
-        fetcher = ComponentFetcher(self.github_provider, self.download_dir)
-
-        repo = self.github_provider.github.get_repo("cloudposse-terraform-components/aws-spacelift")
-        self.assertEqual(repo.name, "aws-spacelift")
-        component_repo = fetcher.fetch(repo)
-        self.assertIsInstance(component_repo, ComponentRepositoryMultiple)
-        renderers = ComponentRendererFactory.produce(component_repo)
-        self.assertEqual(len(renderers), 4)
+        self.assertEqual(len(renderers), 1)
         for renderer in renderers:
             renderer.render(self.output_dir)
 

@@ -1,7 +1,7 @@
 import os
 
 from AbstractFetcher import AbstractFetcher, MissingReadmeYamlException
-from .repository.factory import ComponentRepositoryFactory
+from .repository.single import ComponentRepositorySingle
 
 DOCS_DIR = "docs"
 IMAGES_DIR = "images"
@@ -9,6 +9,7 @@ TERRAFORM_DIR = "src"
 README_YAML = "README.yaml"
 README_MD = "README.md"
 SUBMODULES_DIR = "modules"
+CHANGELOG_MD = "CHANGELOG.md"
 
 
 class ComponentFetcher(AbstractFetcher):
@@ -26,6 +27,9 @@ class ComponentFetcher(AbstractFetcher):
         self._fetch_readme_yaml(repo, module_download_dir)
         self._fetch_readme_md(repo, module_download_dir)
 
+        if CHANGELOG_MD in remote_files:
+            self._fetch_changelog_md(repo, module_download_dir)
+
         if DOCS_DIR in remote_files:
             self._fetch_docs(repo, module_download_dir)
 
@@ -38,7 +42,7 @@ class ComponentFetcher(AbstractFetcher):
         if SUBMODULES_DIR in remote_files:
             self.__fetch_submodules(repo, module_download_dir)
 
-        return ComponentRepositoryFactory.produce(repo, module_download_dir=module_download_dir)
+        return ComponentRepositorySingle(repo, module_download_dir)
 
     def __fetch_images(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, IMAGES_DIR)
@@ -53,6 +57,9 @@ class ComponentFetcher(AbstractFetcher):
 
     def _fetch_readme_md(self, repo, module_download_dir):
         self.github_provider.fetch_file(repo, README_MD, module_download_dir)
+
+    def _fetch_changelog_md(self, repo, module_download_dir):
+        self.github_provider.fetch_file(repo, CHANGELOG_MD, module_download_dir)
 
     def __fetch_submodules(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, SUBMODULES_DIR)

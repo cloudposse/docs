@@ -1,5 +1,5 @@
 {{- defineDatasource "config" .Env.README_YAML | regexp.Replace ".*" "" -}}
-{{- defineDatasource "includes" .Env.README_INCLUDES | regexp.Replace ".*" "" -}}
+{{- defineDatasource "includes" .Env.README_INCLUDES -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
 {{- $shortModuleName := ( conv.Default $fullModuleName (conv.Join (coll.GoSlice ($fullModuleName | strings.SplitN "-" 3) 1) "-")) -}}
@@ -73,7 +73,7 @@ This module is no longer actively maintained
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" (printf "%s/%s" $fullModuleName $file)) }}
+{{ (include "includes" $file) }}
 {{- end }}
 {{- end }}
 {{- end }}

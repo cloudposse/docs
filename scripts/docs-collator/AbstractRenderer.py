@@ -6,7 +6,7 @@ from utils import rendering
 
 README_YAML = "README.yaml"
 DOCS_DIR = "docs"
-
+CHANGELOG_MD = "CHANGELOG.md"
 
 class TerraformDocsRenderingError(Exception):
     def __init__(self, message):
@@ -30,6 +30,25 @@ class AbstractRenderer:
                 "pre-fix-" + os.path.basename(submodule_dir), content
             )
         io.save_string_to_file(readme_yaml_file, content)
+
+        if os.path.exists(os.path.join(module_download_dir, submodule_dir, CHANGELOG_MD)):
+            import yaml
+
+            with open(readme_yaml_file, 'r') as file:
+                readme_yaml = yaml.safe_load(file)
+                if "include" not in readme_yaml:
+                    readme_yaml["include"] = []
+                readme_yaml["include"].append(CHANGELOG_MD)
+            with open(readme_yaml_file, 'w') as file:
+                yaml.dump(readme_yaml, file)
+
+            change_md_file = os.path.join(module_download_dir, submodule_dir, CHANGELOG_MD)
+            content = io.read_file_to_string(change_md_file)
+            content = rendering.shift_headings(content)
+            lines = content.splitlines()
+            lines.insert(0, "## Changelog")
+            content = "\n".join(lines)
+            io.save_string_to_file(change_md_file, content)
 
     def _post_rendering_fixes(self, repo, readme_md_file, submodule_dir=""):
         content = io.read_file_to_string(readme_md_file)

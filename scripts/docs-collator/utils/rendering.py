@@ -259,6 +259,7 @@ def strip_frontmatter(content):
 
     return "\n".join(content_lines), "\n".join(frontmatter)
 
+
 def reformat_admonitions(content):
     """
     Reformat admonitions to be compatible with Docusaurus.
@@ -309,6 +310,7 @@ def reformat_admonitions(content):
 
     return '\n'.join(result)
 
+
 def remove_https_cloudposse_docs(content):
     """
     In component readmes, we have links to the cloudposse docs,
@@ -318,12 +320,14 @@ def remove_https_cloudposse_docs(content):
     """
     return content.replace("https://docs.cloudposse.com/", "/")
 
+
 def strip_title(content):
     """
     The title is created with frontmatter.
     Remove the title from the content.
     """
     return re.sub(r"# Component:(.*)", "", content).strip()
+
 
 def replace_broken_links(content):
     """
