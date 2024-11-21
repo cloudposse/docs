@@ -145,6 +145,10 @@ datadog:
   description: Datadog monitoring platform.
   label: Datadog
 
+design-decision:
+  description: Design decisions and considerations.
+  label: Design Decision
+
 developer:
   description: Developer-related topics.
   label: Developer

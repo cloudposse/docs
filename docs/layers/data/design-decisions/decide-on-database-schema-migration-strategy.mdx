@@ -3,9 +3,12 @@ title: "Decide on Database Schema Migration Strategy"
 sidebar_label: "Database Schema Migration Strategy"
 sidebar_position: 100
 refarch_id: REFARCH-422
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ### Problem and Context
 
@@ -62,5 +65,3 @@ We must decided how and when to run database migrations. The strategy will depen
 - Works well, when it works. When it fails, it’s hard to regulate what happens with the services.
 
 - Kubernetes will keep re-attempting the migration if the job exit’s non-zero. If we squash the exit code, then we don’t realize it’s failing, unless there’s other monitoring in place.
-
-

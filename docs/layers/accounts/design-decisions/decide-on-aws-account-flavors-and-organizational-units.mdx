@@ -4,12 +4,19 @@ sidebar_label: "AWS Accounts and OUs"
 sidebar_position: 2
 description: "Decide how to organize workloads for isolation and management"
 refarch_id: REFARCH-55
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 <Intro>
-  When setting up your AWS infrastructure, you need to decide how to organize your workloads across multiple AWS accounts to ensure optimal isolation and management. This involves deciding the appropriate account structure and organizational units (OUs) that align with your operational needs and security requirements.
+  When setting up your AWS infrastructure, you need to decide how to organize
+  your workloads across multiple AWS accounts to ensure optimal isolation and
+  management. This involves deciding the appropriate account structure and
+  organizational units (OUs) that align with your operational needs and security
+  requirements.
 </Intro>
 
 ## Context and Problem Statement
@@ -58,16 +65,21 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      The "root" (parent, billing) account creates all child accounts. The root account has special capabilities not
-      found in any other account
+      The "root" (parent, billing) account creates all child accounts. The root
+      account has special capabilities not found in any other account
     </p>
     <ul>
       <li>
-        An administrator in the <code>root</code> account by default has the <code>OrganizationAccountAccessRole</code>{" "}
-        to all other accounts (admin access)
+        An administrator in the <code>root</code> account by default has the{" "}
+        <code>OrganizationAccountAccessRole</code> to all other accounts (admin
+        access)
       </li>
-      <li>Organizational CloudTrails can only be provisioned in this account</li>
-      <li>It’s the only account that can have member accounts associated with it</li>
+      <li>
+        Organizational CloudTrails can only be provisioned in this account
+      </li>
+      <li>
+        It’s the only account that can have member accounts associated with it
+      </li>
       <li>Service Control Policies can only be set in this account</li>
       <li>It’s the only account that can manage the AWS Organization</li>
     </ul>
@@ -76,16 +88,20 @@ It is advised to keep the names of accounts as short as possible because of reso
     <code>plat-prod</code>
   </dt>
   <dd>
-    <p>The "production" is the account where you run your most mission-critical applications</p>
+    <p>
+      The "production" is the account where you run your most mission-critical
+      applications
+    </p>
   </dd>
   <dt>
     <code>plat-staging</code>
   </dt>
   <dd>
     <p>
-      The “staging” account is where QA and integration tests will run for public consumption. This is production for QA
-      engineers and partners doing integration tests. It must be stable for third-parties to test. It runs a kubernetes
-      cluster.
+      The “staging” account is where QA and integration tests will run for
+      public consumption. This is production for QA engineers and partners doing
+      integration tests. It must be stable for third-parties to test. It runs a
+      kubernetes cluster.
     </p>
   </dd>
   <dt>
@@ -93,8 +109,9 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      The "sandbox" account is where you let your developers have fun and break things. Developers get admin. This is
-      where changes happen first. It will be used by developers who need the bleeding edge. Only DevOps work here or
+      The "sandbox" account is where you let your developers have fun and break
+      things. Developers get admin. This is where changes happen first. It will
+      be used by developers who need the bleeding edge. Only DevOps work here or
       developers trying to get net-new applications added to tools like slice.
     </p>
   </dd>
@@ -103,9 +120,10 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      The "dev" account is where to run automated tests, load tests infrastructure code. This is where the entire
-      engineering organization operates daily. It needs to be stable for developers. This environment is Production for
-      developers to develop code.
+      The "dev" account is where to run automated tests, load tests
+      infrastructure code. This is where the entire engineering organization
+      operates daily. It needs to be stable for developers. This environment is
+      Production for developers to develop code.
     </p>
   </dd>
   <dt>
@@ -124,15 +142,19 @@ It is advised to keep the names of accounts as short as possible because of reso
     <code>core-corp</code>
   </dt>
   <dd>
-    <p>The "corp" account is where you run the shared platform services for the company. Google calls it “corp”</p>
+    <p>
+      The "corp" account is where you run the shared platform services for the
+      company. Google calls it “corp”
+    </p>
   </dd>
   <dt>
     <code>core-security</code>
   </dt>
   <dd>
     <p>
-      The "security" account is where to run automated security scanning software that might operate in a read-only
-      fashion against the audit account.
+      The "security" account is where to run automated security scanning
+      software that might operate in a read-only fashion against the audit
+      account.
     </p>
   </dd>
   <dt>
@@ -140,26 +162,32 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      The "identity" account is where to add users and delegate access to the other accounts and is where users log in
+      The "identity" account is where to add users and delegate access to the
+      other accounts and is where users log in
     </p>
   </dd>
   <dt>
     <code>core-network</code>
   </dt>
   <dd>
-    <p>The “network” account is where the transit gateway is managed and all inter-account routing</p>
+    <p>
+      The “network” account is where the transit gateway is managed and all
+      inter-account routing
+    </p>
   </dd>
   <dt>
     <code>core-dns</code>
   </dt>
   <dd>
     <p>
-      The “dns” account is the owner for all zones (may have a legal role with <code>Route53Registrar.* </code>
+      The “dns” account is the owner for all zones (may have a legal role with{" "}
+      <code>Route53Registrar.* </code>
       permissions). Cannot touch zones or anything else. Includes billing.
     </p>
     <p>
-      Example use-case: Legal team needs to manage DNS and it’s easier to give them access to an account specific to DNS
-      rather than multiple set of resources.
+      Example use-case: Legal team needs to manage DNS and it’s easier to give
+      them access to an account specific to DNS rather than multiple set of
+      resources.
     </p>
   </dd>
   <dt>
@@ -167,12 +195,13 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      The “automation” account is where any gitops automation will live. Some automation (like Spacelift) has “god” mode
-      in this account.
+      The “automation” account is where any gitops automation will live. Some
+      automation (like Spacelift) has “god” mode in this account.
     </p>
     <p>
-      The network account will typically have transit gateway access to all other accounts, therefore we want to limit
-      what is deployed in the automation account to only those services which need it.
+      The network account will typically have transit gateway access to all
+      other accounts, therefore we want to limit what is deployed in the
+      automation account to only those services which need it.
     </p>
   </dd>
   <dt>
@@ -180,8 +209,8 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      This “artifacts” account is where we recommend centralizing and storing artifacts (e.g. ECR, assets, etc) for
-      CI/CD
+      This “artifacts” account is where we recommend centralizing and storing
+      artifacts (e.g. ECR, assets, etc) for CI/CD
     </p>
   </dd>
   <dt>
@@ -189,13 +218,15 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      For public S3 buckets, public ECRs, public AMIs, anything public. This will be the only account that doesn’t have
-      a SCP that blocks public s3 buckets.
+      For public S3 buckets, public ECRs, public AMIs, anything public. This
+      will be the only account that doesn’t have a SCP that blocks public s3
+      buckets.
     </p>
     <p>Use-cases</p>
     <ul>
       <li>
-        All s3 buckets are private by default using a SCP in every account except for the <code>public</code> account
+        All s3 buckets are private by default using a SCP in every account
+        except for the <code>public</code> account
       </li>
     </ul>
   </dd>
@@ -204,7 +235,8 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      The "data" account is where the quants live =) Runs systems like Airflow, Jupyterhub, Batch processing, Redshift
+      The "data" account is where the quants live =) Runs systems like Airflow,
+      Jupyterhub, Batch processing, Redshift
     </p>
   </dd>
   <dt>
@@ -212,9 +244,11 @@ It is advised to keep the names of accounts as short as possible because of reso
   </dt>
   <dd>
     <p>
-      The “$tenant” account is a symbolic account representing dedicated account environment. It’s architecture will
-      likely resemble prod. This relates to{" "}
-      <a href="https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171718320">this link</a>
+      The “$tenant” account is a symbolic account representing dedicated account
+      environment. It’s architecture will likely resemble prod. This relates to{" "}
+      <a href="https://cloudposse.atlassian.net/wiki/spaces/REFARCH/pages/1171718320">
+        this link
+      </a>
     </p>
   </dd>
 </dl>

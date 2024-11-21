@@ -4,11 +4,14 @@ sidebar_label: "Service Logs"
 sidebar_position: 2
 description: Decide how to group logs with CloudWatch
 refarch_id: REFARCH-484
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ## Context and Problem Statement
 
@@ -40,6 +43,7 @@ Should logs be sent to datadog or log only to cloudwatch logs?
     - Fargate cpu/mem requirements would go up per task
 
     - More expensive due to fargate pricing is by cpu/memory
+
   </TabItem>
 
   <TabItem label="Option 2" value="option-2">
@@ -75,6 +79,7 @@ Should logs be sent to datadog or log only to cloudwatch logs?
     - Maintaining upgrades for the lambdas
 
     - Monitoring lambdas
+
   </TabItem>
 
   <TabItem label="Option 3" value="option-3">
@@ -106,5 +111,6 @@ Should logs be sent to datadog or log only to cloudwatch logs?
     - Monitoring a fluentd cluster
 
     - We don’t have prior art for this.
+
   </TabItem>
 </Tabs>

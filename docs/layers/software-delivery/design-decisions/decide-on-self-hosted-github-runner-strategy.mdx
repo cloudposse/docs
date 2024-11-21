@@ -4,9 +4,12 @@ sidebar_label: "GitHub Runners"
 sidebar_position: 100
 refarch_id: REFARCH-394
 description: Decide on how to self-host GitHub Runners
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
 
@@ -39,7 +42,7 @@ This is our recommended approach
 
 :::
 
-Deploying these Runners on Kubernetes is possible using [actions-runner-controller](https://github.com/actions-runner-controller/actions-runner-controller). With this controller, a small-to-medium-sized cluster can house a large number of Runners (depending on their requested Memory and CPU resources), and these Runners can scale automatically using the controller’s `HorizontalRunnerAutoscaler` CRD.  This has the benefit that it can scale to zero and leverages all the monitoring we have on the platform. This solution also allows for using a custom runner image without having to rebuild an AMI or modify a user-data script and re-launch instances, which would be necessary when deploying the Runners to EC2.
+Deploying these Runners on Kubernetes is possible using [actions-runner-controller](https://github.com/actions-runner-controller/actions-runner-controller). With this controller, a small-to-medium-sized cluster can house a large number of Runners (depending on their requested Memory and CPU resources), and these Runners can scale automatically using the controller’s `HorizontalRunnerAutoscaler` CRD. This has the benefit that it can scale to zero and leverages all the monitoring we have on the platform. This solution also allows for using a custom runner image without having to rebuild an AMI or modify a user-data script and re-launch instances, which would be necessary when deploying the Runners to EC2.
 
 `actions-runner-controller` also supports several various mechanisms for scaling the number of Runners: `PercentageRunnersBusy` simply scales the Runners up or down based on how many of them are currently busy, without having to maintain a list of repositories used by the Runners, which would be the case in `TotalNumberOfQueuedAndInProgressWorkflowRuns`. The most efficient and recommended option for horizontal auto-scaling using the `actions-runner-controller`, however, is to [enable the controller’s webhook server](https://github.com/actions-runner-controller/actions-runner-controller#webhook-driven-scaling) and configure the `HorizontalRunnerAutoscaler` to scale on GitHub webhook events (for event name: `check_run`, type: `created`, status: `queued`). Note that the `actions-runner-controller` does not have any logic to automatically create the webhook configuration in GitHub, and hence, the webhook server needs to be exposed and configured manually in GitHub or using the GitHub API. If using `aws-load-balancer-controller`, ensure that within `actions-runner-controller` Helm chart, `githubWebhookServer.ingress.enabled` is set to `true`, and if using `external-dns`, set `githubWebhookServer.ingress.annotations` to include an `external-dns.alpha.kubernetes.io/alias`. Finally, configure the webhook in GitHub to match the hostname and port of the endpoint corresponding to the newly-created Ingress object.
 
@@ -79,5 +82,3 @@ The GitHub Actions Runners often need to perform continuous integration tasks su
 - [Decide on Self-Hosted GitHub Runner Strategy](/layers/software-delivery/design-decisions/decide-on-self-hosted-github-runner-strategy)
 - [Decide on Strategy for Continuous Integration](/layers/software-delivery/design-decisions/decide-on-strategy-for-continuous-integration)
 - [Decide on GitHub Actions Workflow Organization Strategy](/layers/software-delivery/design-decisions/decide-on-github-actions-workflow-organization-strategy)
-
-

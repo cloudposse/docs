@@ -3,10 +3,13 @@ title: "Decide on Service Discovery Domain"
 sidebar_label: "Service Discovery Domain"
 refarch_id: REFARCH-46
 description: Decide the TLD to use for service discovery
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
-import ReactPlayer from 'react-player'
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+import ReactPlayer from "react-player";
 
 It's important to distinguish between branded/vanity domains (e.g. `cloudposse.com`, `slack.cloudposse.com`) used by customers and your infrastructure service discovery domains (e.g. `cloudposse.net`) used by services or internal consumers. For example, a product might have dozens of branded domains for SEO and marketing purposes, but you'll only have one infrastructure powering it. The service discovery domain is only for internal consumption. We get to define the conventions for this, not marketing. 😉 The service discovery domain will always be hosted on Route53, while the vanity domain can be hosted anywhere.
 
@@ -145,7 +148,12 @@ We think this is overkill and instead, recommend the dedicated TLD per AWS Organ
 [Decide on Hostname Scheme for Service Discovery](/layers/network/design-decisions/decide-on-hostname-scheme-for-service-discovery)
 leveraging delegated zones by account.
 
-<ReactPlayer url='https://www.youtube.com/watch?v=ao-2mfA5OTE' width={"800px"} height={"450px"} controls={true} />
+<ReactPlayer
+  url="https://www.youtube.com/watch?v=ao-2mfA5OTE"
+  width={"800px"}
+  height={"450px"}
+  controls={true}
+/>
 
 ## Related
 
@@ -154,4 +162,3 @@ leveraging delegated zones by account.
 - [Decide on Vanity (Branded) Domain](/layers/network/design-decisions/decide-on-vanity-branded-domain)
 
 - [https://youtu.be/ao-2mfA5OTE](https://youtu.be/ao-2mfA5OTE)
-

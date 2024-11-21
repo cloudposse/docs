@@ -4,9 +4,12 @@ sidebar_label: "Hot-fixes and Rollbacks"
 sidebar_position: 100
 refarch_id: REFARCH-428
 description: Decide how to revert changes
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 Releasing a change is when it’s made available to a user or subset of users. In an ideal world, deployments should not equal releases.
 
@@ -27,5 +30,3 @@ If release branches are utilized, then any bug-fix commits need to be pushed to 
 ## Related
 
 - [Decide on Release Promotion Strategy](/layers/software-delivery/design-decisions/decide-on-release-promotion-strategy)
-
-

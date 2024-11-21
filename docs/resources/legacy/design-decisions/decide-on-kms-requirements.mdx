@@ -3,9 +3,12 @@ title: "Decide on KMS Requirements"
 sidebar_label: "KMS Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-532
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 AWS Key Management Service (AWS KMS) makes it easy to create and manage cryptographic keys and control their use across various AWS services and in your applications. AWS KMS is a secure and resilient service that uses hardware security modules that have been validated under FIPS 140-2, or are in the process of being validated, to protect your keys. AWS KMS is integrated with AWS CloudTrail to provide you with logs of all key usage to help meet your regulatory and compliance needs.
 
@@ -30,6 +33,7 @@ Nevertheless, because access to data is difficult to control, some certification
 KMS keys reside in AWS-managed hardware security modules that are physically tied to a single region. Each key can only be used in the region in which it was created. This can, in some sense, enforce Data Localization requirements, although it remains possible to decrypt data in the region and then transport the decrypted data anywhere on the internet.
 
 :::info
+
 - **Data residency** refers to where a business, industry body or government specifies that their data is stored in a geographical location of their choice, usually for regulatory or policy reasons.
 
 - **Data sovereignty** refers to who has power over data. For example, data stored in Germany is subject to the laws of both German and the European Union.
@@ -56,7 +60,7 @@ As documented, AWS owned keys are practically invisible to customers, so your on
 
 ### Key Identifiers
 
-KMS keys can have a few different [identifiers](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id), usually called `KeyId`. When created, they are immediately given a _Key ID_ (not what is meant by `KeyId`) which uniquely identifies a KMS key within an account and Region. That Key ID, plus account and region info, constitutes a _Key ARN_, a unique, fully qualified identifier for the KMS key. Additionally, you can create an _Alias Name_ (actually, you can create several) that provides a friendly name for the key. Furthermore, that Alias Name can be associated with different keys at different points in time. More importantly, while you cannot control the Key ID when you create a customer managed key, you can control the value of the Alias Name for the key. This allows you to have the same Alias in every account and region, which then allows you to have the same configuration (referencing the Alias rather than the Key ID or ARN) in every account and every region even though they all point to different keys.  Like a Key ID, an Alias can be used to constitute an Alias ARN, which is also a unique, fully qualified identifier for the alias, and for the KMS key, it represents.
+KMS keys can have a few different [identifiers](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id), usually called `KeyId`. When created, they are immediately given a _Key ID_ (not what is meant by `KeyId`) which uniquely identifies a KMS key within an account and Region. That Key ID, plus account and region info, constitutes a _Key ARN_, a unique, fully qualified identifier for the KMS key. Additionally, you can create an _Alias Name_ (actually, you can create several) that provides a friendly name for the key. Furthermore, that Alias Name can be associated with different keys at different points in time. More importantly, while you cannot control the Key ID when you create a customer managed key, you can control the value of the Alias Name for the key. This allows you to have the same Alias in every account and region, which then allows you to have the same configuration (referencing the Alias rather than the Key ID or ARN) in every account and every region even though they all point to different keys. Like a Key ID, an Alias can be used to constitute an Alias ARN, which is also a unique, fully qualified identifier for the alias, and for the KMS key, it represents.
 
 AWS Managed keys are created automatically and are tied to a specific service, such as S3 or SSM, and are usually used by default when you specify encryption but do not specify a KMS key. They all have Alias Names beginning with `aws/` and are named according to the service or usage. For example `aws/s3` is used to encrypt S3 bucket data, while `aws/ebs` is used to encrypt EBS volumes.
 
@@ -75,7 +79,7 @@ Every encrypted object in an S3 bucket is encrypted with a different data key. T
 
 ## Considered Options
 
-### Option 1: Use AWS Managed Keys  (Recommended where applicable)
+### Option 1: Use AWS Managed Keys (Recommended where applicable)
 
 :::tip
 The simplest solution is to use encryption keys as defense in depth, without attempting to leverage keys as additional access controls or monitoring opportunities.
@@ -180,5 +184,3 @@ To verify data residency and data sovereignty with multi-Region keys, you must i
 - [Reducing the cost of SSE-KMS with Amazon S3 Bucket Keys](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-key.html)
 
 - [Deleting AWS KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html)
-
-

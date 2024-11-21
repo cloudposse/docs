@@ -3,9 +3,12 @@ title: "Decide on DocumentDB Requirements"
 sidebar_label: "DocumentDB Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-479
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Context and Problem Statement
 
@@ -46,10 +49,10 @@ DocumentDB is deployed across three availability zones when possible.
 The [Amazon DocumentDB Service](https://docs.aws.amazon.com/documentdb/latest/developerguide/replication.html) recommends that read replicas are of the same instance family as the primary instance:
 
 > For consistency, these replica instances should be the same instance family, and should be left to be designated as
-replica instances by the DocumentDB service rather than manually designated, in order to simplify management of the
-infrastructure.
-This, in addition to the requirements outlined in _v1 Infrastructure Requirements_, concludes that each DocumentDB
-cluster will have the following requirements:
+> replica instances by the DocumentDB service rather than manually designated, in order to simplify management of the
+> infrastructure.
+> This, in addition to the requirements outlined in _v1 Infrastructure Requirements_, concludes that each DocumentDB
+> cluster will have the following requirements:
 
 - Instance family for DB instances: `[CHANGE ME]` in non-production environments, `[CHANGE ME]` in production environments
 
@@ -58,17 +61,17 @@ cluster will have the following requirements:
 - Whether or not to create DB replica instances: yes, ideally create 3 (one in each of the 3 Availability Zones)
 
 - Instance family for DB replica instances: `[CHANGE ME]` in non-production environments, `[CHANGE ME]` in production
-environments
+  environments
 
 - Backup retention period: 1 day in non-production environments (the minimum retention period), 35 days in production
-environments (the maximum retention period)
+  environments (the maximum retention period)
 
 ## Decision Outcome
 
 Chosen option: "Create a standardized DocumentDB cluster based on current use case", because
 
 - This allows for a standardized DocumentDB cluster that satisfies the requirements required by the application stack in
-each active compute environment.
+  each active compute environment.
 
 ## Consequences
 
@@ -79,5 +82,3 @@ Create a DocumentDB component and tune it to the requirements outlined above.
 - [https://docs.aws.amazon.com/documentdb/latest/developerguide/replication.html](https://docs.aws.amazon.com/documentdb/latest/developerguide/replication.html)
 
 - [Primary AWS Region](/layers/network/design-decisions/decide-on-primary-aws-region)
-
-
