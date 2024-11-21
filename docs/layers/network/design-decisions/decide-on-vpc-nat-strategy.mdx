@@ -3,9 +3,12 @@ title: "Decide on VPC NAT Strategy"
 sidebar_label: "VPC NAT Strategy"
 refarch_id: REFARCH-523
 description: Decide how to NAT traffic in your VPCs
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 **DRAFT**
 
@@ -20,7 +23,8 @@ originates from a specific set of IPs
 
 :::
 
-<img src="/assets/refarch/image-20220712-201801.png" /><br/>
+<img src="/assets/refarch/image-20220712-201801.png" />
+<br />
 
 #### Pros
 
@@ -37,12 +41,14 @@ originates from a specific set of IPs
 
 ### Option 2 - One VPC per Region, Per Platform Account with Centralized NAT Gateways per AZ in Network Account
 
-<img src="/assets/refarch/image-20220712-201801.png" /><br/>
+<img src="/assets/refarch/image-20220712-201801.png" />
+<br />
 
 The Compliant Framework for Federal and DoD Workloads in AWS GovCloud (US) advocates for a strategy like this, whereby
 in the Network (transit) account, there will be a DMZ with a Firewall.
 
-<img src="/assets/refarch/image-20220624-172541.png" /><br/>
+<img src="/assets/refarch/image-20220624-172541.png" />
+<br />
 
 #### Pros
 

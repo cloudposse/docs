@@ -4,12 +4,18 @@ sidebar_label: "Argo CD Architecture"
 sidebar_position: 100
 refarch_id: REFARCH-420
 description: Considerations for deploying Argo CD
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 <Intro>
-Deciding on the architecture for Argo CD involves considering multiple clusters, plugin management, and Kubernetes integration. We present some recommended strategies and considerations for deploying Argo CD, addressing potential risks, and detailing common deployment patterns.
+  Deciding on the architecture for Argo CD involves considering multiple
+  clusters, plugin management, and Kubernetes integration. We present some
+  recommended strategies and considerations for deploying Argo CD, addressing
+  potential risks, and detailing common deployment patterns.
 </Intro>
 
 ## Considerations
@@ -56,49 +62,50 @@ While the Operator Pattern is _ideal_ in theory, the reality is less than ideal:
 
 Here are some of the most <i>common deployment patterns</i> we see, and some ways in which those could be addressed:
 
-<img src="/assets/refarch/iodjbrmutm7dwt1j0ynbbrlenmin0mvzkin285ndlsyoeneozwxoddrfraohaxsh" /><br/>
+<img src="/assets/refarch/iodjbrmutm7dwt1j0ynbbrlenmin0mvzkin285ndlsyoeneozwxoddrfraohaxsh" />
+<br />
 
 1. **Deploy a** **<i>generic application</i>** **to Kubernetes**
 
-  1. Raw manifests are supported natively
+1. Raw manifests are supported natively
 
-  2. Render Helm charts to manifests, then proceed as usual.
+1. Render Helm charts to manifests, then proceed as usual.
 
-  3. (Secrets and Secret Operators) Use ExternalSecrets Operator
+1. (Secrets and Secret Operators) Use ExternalSecrets Operator
 
-2. **Deploy** **<i>generic Lambda</i>**
+1. **Deploy** **<i>generic Lambda</i>**
 
-  1. Convert to Serverless Framework
+1. Convert to Serverless Framework
 
-  2. Convert to Terraform
+1. Convert to Terraform
 
-3. **Deploy** **<i>Serverless Framework Applications</i>**
+1. **Deploy** **<i>Serverless Framework Applications</i>**
 
-  1. Serverless applications render to Cloudformation. See Cloudformation.
+1. Serverless applications render to Cloudformation. See Cloudformation.
 
-  2. Wrap Cloudformation in a Custom Resource
+1. Wrap Cloudformation in a Custom Resource
 
-4. **Deploy Infrastructure with** **<i>Cloudformation</i>**
+1. **Deploy Infrastructure with** **<i>Cloudformation</i>**
 
-  1. [https://github.com/linki/cloudformation-operator](https://github.com/linki/cloudformation-operator)
+1. [https://github.com/linki/cloudformation-operator](https://github.com/linki/cloudformation-operator)
 
-5. **Deploy** **<i>Single Page Application</i>** **to S3**
+1. **Deploy** **<i>Single Page Application</i>** **to S3**
 
-  1. This does not fit well into the
+1. This does not fit well into the
 
-6. **Deploy Infrastructure with** **<i>Terraform</i>**
+1. **Deploy Infrastructure with** **<i>Terraform</i>**
 
-  1. Most operators are alpha. [https://github.com/hashicorp/terraform-k8s](https://github.com/hashicorp/terraform-k8s)
-Something _feels_ wrong about deploying kubernetes with Terraform and then running Terraform inside of Kubernetes?
+1. Most operators are alpha. [https://github.com/hashicorp/terraform-k8s](https://github.com/hashicorp/terraform-k8s)
+   Something _feels_ wrong about deploying kubernetes with Terraform and then running Terraform inside of Kubernetes?
 
-  2. While it works, it’s a bit advanced to express.
+1. While it works, it’s a bit advanced to express.
 
-7. **Deploy** **<i>Database Migrations</i>**
+1. **Deploy** **<i>Database Migrations</i>**
 
-  1. Replicated (enterprise application delivery platform) maintains schemahero. Only supports DDL.
-[https://github.com/schemahero/schemahero](https://github.com/schemahero/schemahero)
+1. Replicated (enterprise application delivery platform) maintains schemahero. Only supports DDL.
+   [https://github.com/schemahero/schemahero](https://github.com/schemahero/schemahero)
 
-  2. Standard kubernetes Jobs calling migration tool
+1. Standard kubernetes Jobs calling migration tool
 
 ## Pros
 
@@ -121,7 +128,7 @@ Something _feels_ wrong about deploying kubernetes with Terraform and then runni
 ## Cons
 
 - Breaks the immediate feedback loop from commit to deployment
-(as deployment with Argo CD are async)
+  (as deployment with Argo CD are async)
 
 - Application CRD should be created in the namespace where argo cd is running
 
@@ -130,7 +137,7 @@ Something _feels_ wrong about deploying kubernetes with Terraform and then runni
 - Custom deployment toolchain (anything except kube resources/helm/kustomize/jsonnet) requires to build a custom docker image for argo cd and redeploy it.
 
 - Redeploying Argo CD is potentially a disruptive operation to running deployments
-(like restarting Jenkins) and therefore must be planned.
+  (like restarting Jenkins) and therefore must be planned.
 
 - Updating plugins requires re-deploying Argo CD since the tools must exist in the Argo CD docker image
 
@@ -150,13 +157,13 @@ Something _feels_ wrong about deploying kubernetes with Terraform and then runni
 
 - Use terraform-helm-provider
 
-- Use projects/terraform/argo cd/  (do not bundle with projects/terraform/eks/)
-In [https://github.com/acme/infrastructure](https://github.com/acme/infrastructure)
+- Use projects/terraform/argo cd/ (do not bundle with projects/terraform/eks/)
+  In [https://github.com/acme/infrastructure](https://github.com/acme/infrastructure)
 
 - Use spacelift to deploy/manage with GitOps
 
 - Use terraform-github-provider to create a deployment (e.g. deploy-prod) repository to manage Argo CD and manage all branch protections
-(confirm with acme)
+  (confirm with acme)
 
 ### Create GitHub PAT for Managing Repos
 
@@ -228,7 +235,8 @@ Required status checks to merge the pull requests:
 
 2. Workflows in the `acme/argo cd-deploy-prd/.github/workflows/` will do linting on the kubernetes manifests (where manifests exists)
 
-<img src="/assets/refarch/ibuhh3gf6dafekjoz7d2i2f0xrgvorppoqdupvh6yrbsnorgsvkn2j349hmy9n15" /><br/>
+<img src="/assets/refarch/ibuhh3gf6dafekjoz7d2i2f0xrgvorppoqdupvh6yrbsnorgsvkn2j349hmy9n15" />
+<br />
 
 Pull Requests will be predominantly machine generated by GitHub Actions. However, anyone can open a Pull Request (e.g for hotfixes), and with appropriate approvals get them deployed.
 
@@ -286,7 +294,7 @@ File is generated by the GitHub Action based on `example1/app.yaml`
 
 File is written to `acme/argo cd-deploy-preview/uw2-stg/argo cd/pr2-example1.yaml`
 
-####### _Example 1: acme/__**argo cd-deploy-preview**__/uw2-stg/argo cd/pr2-example1.yaml (artifact)_
+####### _Example 1: acme/****argo cd-deploy-preview****/uw2-stg/argo cd/pr2-example1.yaml (artifact)_
 
 ```yaml
 # Example Argo CD Application (use built-in Helm) generated from the app.yaml
@@ -297,13 +305,13 @@ metadata:
   # This should always be argo cd (it’s not where the app will run)
   namespace: argo cd
   finalizers:
-  - resources-finalizer.argo cd.argoproj.io
+    - resources-finalizer.argo cd.argoproj.io
 spec:
   source:
     # Example of shared chart in the bazel-monorepo-demo
     path: charts/monochart
     repoURL: acme/bazel-monorepo-demo/
-    targetRevision: {git-sha}
+    targetRevision: { git-sha }
     helm:
       version: v3
       valueFiles:
@@ -352,7 +360,7 @@ metadata:
   # This should always be argo cd (it’s not where the app will run)
   namespace: argo cd
   finalizers:
-  - resources-finalizer.argo cd.argoproj.io
+    - resources-finalizer.argo cd.argoproj.io
 spec:
   destination:
     namespace: pr2-example1
@@ -365,7 +373,6 @@ spec:
 # Deployment
 # Service
 # Ingress
-
 ```
 
 ### Staging Releases
@@ -388,7 +395,8 @@ Production releases are triggered by merging the respective PR, subject to all b
 
 The most notable branch protection is the requirement that the status check for the commit (corresponding to the release) has a passing “`staging deployment`” check.
 
-<img src="/assets/refarch/skcm9r9ztzks7drtb7w-e_uou4glaqjb_kzy3fy_ul1ot2q6fcwz40bumnll84st" /><br/>
+<img src="/assets/refarch/skcm9r9ztzks7drtb7w-e_uou4glaqjb_kzy3fy_ul1ot2q6fcwz40bumnll84st" />
+<br />
 
 ## Demo
 
@@ -410,63 +418,61 @@ Create `acme/argo cd-deploy-non-prd/.github/mergify.yml` for auto-merging PRs
 
 ```yaml title="acme/argo cd-deploy-non-prd/.github/mergify.yml"
 pull_request_rules:
-- name: "approve automated PRs that have passed checks"
-  conditions:
-  - "check-success~=lint/kubernetes"
-  - "check-success~=lint/helm"
-  - "base=main"
-  - "author=acmebot"
-  - "head~=argo cd/.*"
-  actions:
-    review:
-      type: "APPROVE"
-      bot_account: "acmebot"
-      message: "We've automatically approved this PR because the checks from the automated Pull Request have passed."
+  - name: "approve automated PRs that have passed checks"
+    conditions:
+      - "check-success~=lint/kubernetes"
+      - "check-success~=lint/helm"
+      - "base=main"
+      - "author=acmebot"
+      - "head~=argo cd/.*"
+    actions:
+      review:
+        type: "APPROVE"
+        bot_account: "acmebot"
+        message: "We've automatically approved this PR because the checks from the automated Pull Request have passed."
 
-- name: "merge automated PRs when approved and tests pass"
-  conditions:
-  - "check-success~=lint/kubernetes"
-  - "check-success~=lint/helm"
-  - "base=main"
-  - "head~=argo cd/.*"
-  - "#approved-reviews-by>=1"
-  - "#changes-requested-reviews-by=0"
-  - "#commented-reviews-by=0"
-  - "base=master"
-  - "author=acmebot"
-  actions:
-    merge:
-      method: "squash"
+  - name: "merge automated PRs when approved and tests pass"
+    conditions:
+      - "check-success~=lint/kubernetes"
+      - "check-success~=lint/helm"
+      - "base=main"
+      - "head~=argo cd/.*"
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+      - "#commented-reviews-by=0"
+      - "base=master"
+      - "author=acmebot"
+    actions:
+      merge:
+        method: "squash"
 
-- name: "delete the head branch after merge"
-  conditions:
-  - "merged"
-  actions:
-    delete_head_branch: {}
+  - name: "delete the head branch after merge"
+    conditions:
+      - "merged"
+    actions:
+      delete_head_branch: {}
 
-- name: "ask to resolve conflict"
-  conditions:
-  - "conflict"
-  actions:
-    comment:
-      message: "This pull request is now in conflict. Could you fix it @{{author}}? 🙏"
+  - name: "ask to resolve conflict"
+    conditions:
+      - "conflict"
+    actions:
+      comment:
+        message: "This pull request is now in conflict. Could you fix it @{{author}}? 🙏"
 
-- name: "remove outdated reviews"
-  conditions:
-  - "base=main"
-  actions:
-    dismiss_reviews:
-      changes_requested: true
-      approved: true
-      message: "This Pull Request has been updated, so we're dismissing all reviews."
-
+  - name: "remove outdated reviews"
+    conditions:
+      - "base=main"
+    actions:
+      dismiss_reviews:
+        changes_requested: true
+        approved: true
+        message: "This Pull Request has been updated, so we're dismissing all reviews."
 ```
 
 Create the sample `acme/argo cd-deploy-non-prd/.github/CODEOWNER`
 
 ```yaml title="acme/argo cd-deploy-non-prd/.github/mergify.yml"
 uw2-stg/* @acme/staging @acme/mergebots
-
 ```
 
 Enable branch protections
@@ -507,33 +513,32 @@ metadata:
 spec:
   # Define resource need to be monitor.
   monitorResource:
-    Group:    "argoproj.io"
+    Group: "argoproj.io"
     Resource: "application"
-    Version:  "v1alpha1"
+    Version: "v1alpha1"
   Namespace: default
   notifiers:
-  - name: slack
-    slack:
-      hookUrlSecret:
-        name: my-slack-secret
-        key: hookURL
-      channel: testargonotification
-      hookurl: "https://hooks.slack.com"
+    - name: slack
+      slack:
+        hookUrlSecret:
+          name: my-slack-secret
+          key: hookURL
+        channel: testargonotification
+        hookurl: "https://hooks.slack.com"
   rules:
-  - allConditions:
-    - jsonPath: "status/sync/status"
-      operator: "ne"
-      value: "Unsynced"
-      Events:
-      - message: "Condition Triggered : Deployment = {{.metadata.name}} replicaset does not match. Required Replicas = {{.status.replicas}}, Current Replicas={{.status.readyReplicas}}"
-        emailSubject: "Argo Notification Condition Triggered {{.metadata.name}}"
-        notificationLevel: "warning"
-        notifierNames:
-        - "slack"
-      name: rule1
-      initialDelaySec: 60
-      throttleMinutes: 5
-
+    - allConditions:
+        - jsonPath: "status/sync/status"
+          operator: "ne"
+          value: "Unsynced"
+          Events:
+            - message: "Condition Triggered : Deployment = {{.metadata.name}} replicaset does not match. Required Replicas = {{.status.replicas}}, Current Replicas={{.status.readyReplicas}}"
+              emailSubject: "Argo Notification Condition Triggered {{.metadata.name}}"
+              notificationLevel: "warning"
+              notifierNames:
+                - "slack"
+          name: rule1
+          initialDelaySec: 60
+          throttleMinutes: 5
 ```
 
 - Can `deliverybot` simplify some of this process (including updating the GitHub Status API)
@@ -571,5 +576,3 @@ Common suggestions and practices to consider and discuss in the implementation o
 - [https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html)
 
 - [https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/#ingressgroup](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/#ingressgroup)
-
-

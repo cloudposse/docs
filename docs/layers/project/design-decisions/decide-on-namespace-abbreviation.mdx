@@ -4,9 +4,12 @@ sidebar_label: "Namespace Abbreviation"
 sidebar_position: 2
 refarch_id: REFARCH-53
 description: "Pick a concise prefix for all cloud resource names"
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 Using a common prefix for all resource names will help establish a consistent naming convention. Certain resources in
 AWS are globally unique (e.g. for all customers). In order to maintain an (optimistically) unique naming convention,
@@ -27,8 +30,9 @@ names.
   <dt>Intel</dt>
   <dd>`intl`</dd>
 
-  <dt>Google</dt>
-  <dd>`ggl`</dd>
+{" "}
+<dt>Google</dt>
+<dd>`ggl`</dd>
 
   <dt>Cloud Posse</dt>
   <dd>`cpco`</dd>

@@ -3,12 +3,19 @@ title: "Decide on Terraform State Backend Architecture"
 sidebar_label: "Terraform Backends"
 description: Decide how to organize Terraform State across accounts
 refarch_id: REFARCH-522
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 <Intro>
-When organizing your Terraform state, you need to decide on the backend architecture. Using S3, you can either opt for a single bucket, which simplifies management but grants broad access, or multiple buckets, which enhance security by segmenting access but add complexity. Consider your company’s security and compliance needs when making this decision.
+  When organizing your Terraform state, you need to decide on the backend
+  architecture. Using S3, you can either opt for a single bucket, which
+  simplifies management but grants broad access, or multiple buckets, which
+  enhance security by segmenting access but add complexity. Consider your
+  company’s security and compliance needs when making this decision.
 </Intro>
 
 ## Context and Problem Statement

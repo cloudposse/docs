@@ -4,9 +4,12 @@ sidebar_label: "Database Seeding Strategy"
 sidebar_position: 100
 refarch_id: REFARCH-144
 description: What data should be used in preview environments
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
 
@@ -18,6 +21,7 @@ As a general best practice, we should never use production data in non-productio
 :::
 
 ## Considerations
+
 We prefer to include the DBA in these conversations.
 
 Suggested requirements:
@@ -31,6 +35,7 @@ Suggested requirements:
 - They should have realistic data, so the environments are testing something closer to staging/production
 
 ## Considered Options
+
 **Option 1:** Seed data (fixtures) - **recommended**
 
 - Most database migration tools support something like this (e.g. `rake db:fixtures:load`)
@@ -58,5 +63,3 @@ Suggested requirements:
 **Option 5:** Dedicated cluster (not advised)
 
 - Too slow to launch (e.g. +30-40 minutes), expensive, complicated to implement
-
-

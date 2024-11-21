@@ -4,9 +4,12 @@ sidebar_label: "Kubernetes Application Delivery"
 sidebar_position: 100
 refarch_id: REFARCH-427
 description: How to package and deploy applications to Kubernetes
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 We prefer strategies that ship the Application code (e.g. docker images) with the Application configuration (E.g. everything needed to run the application on the platform, such as manifests, IAM roles, etc.)
 
@@ -27,5 +30,3 @@ We prefer strategies that ship the Application code (e.g. docker images) with th
 - Helm charts
 
 - Kustomize
-
-

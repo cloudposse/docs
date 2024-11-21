@@ -4,13 +4,16 @@ sidebar_label: "Log Retention"
 sidebar_position: 100
 refarch_id: REFARCH-355
 description: "Decide on log retention requirements"
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
 
-Not all logs were created equal. Some may contain PHI (Protected Health Information) or CHD (Card Holder Data) while others are simply HTTP request logs.  Depending on regional jurisdiction (E.g. Europe), there can be other requirements (E.g. [GDPR on AWS](https://docs.aws.amazon.com/whitepapers/latest/navigating-gdpr-compliance/monitoring-and-logging.html)).
+Not all logs were created equal. Some may contain PHI (Protected Health Information) or CHD (Card Holder Data) while others are simply HTTP request logs. Depending on regional jurisdiction (E.g. Europe), there can be other requirements (E.g. [GDPR on AWS](https://docs.aws.amazon.com/whitepapers/latest/navigating-gdpr-compliance/monitoring-and-logging.html)).
 
 We need to identify the log destinations to discuss how to handle them.
 
@@ -67,5 +70,3 @@ For everything in scope, we need to address:
 - [https://www.pcidssguide.com/what-are-the-pci-dss-log-retention-requirements/](https://www.pcidssguide.com/what-are-the-pci-dss-log-retention-requirements/)
 
 - [https://aws.amazon.com/s3/storage-classes/glacier/](https://aws.amazon.com/s3/storage-classes/glacier/)
-
-

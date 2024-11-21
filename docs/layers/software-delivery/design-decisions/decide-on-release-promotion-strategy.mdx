@@ -4,9 +4,12 @@ sidebar_label: "Release Promotion Strategy"
 sidebar_position: 100
 refarch_id: REFARCH-419
 description: Decide how releases are promoted from dev to production
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ### Problem and Context
 
@@ -25,21 +28,25 @@ How that will be accomplished will depend on whether or not GitHub Enterprise fe
 #### Option A: Automatically Deploy to Staging on Every Release, Use GitHub Approval Steps for Production
 
 ##### Pros
+
 - Natively supported by GitHub
 
 - Environment protection rules ensure RBAC restricts who can approve deployments
 
 ##### Cons
+
 - Requires GitHub Enterprise, as GitHub Approvals, GitHub Environment protection rules (and Environment Secrets) are only available in GitHub Enterprise.
 
 #### Option B: Automatically Deploy to Staging on Every Release, Use Manual GitHub Action Workflow to Production Deployments
 
 ##### Pros
+
 - Does not require GitHub Enterprise
 
 - Staging always represents the latest release
 
 ##### Cons
+
 - No environment protection rules; anyone who can run the workflow can deploy. Mitigated by customizing the workflow with business logic to restrict it, but not supported by Cloud Posse today.
 
 #### Option C: Use Manual GitHub Action Workflow for Staging and Production Deployments
@@ -63,6 +70,3 @@ How that will be accomplished will depend on whether or not GitHub Enterprise fe
 ### Related Design Decisions
 
 - [Decide on Database Schema Migration Strategy](/layers/data/design-decisions/decide-on-database-schema-migration-strategy)
-
-
-

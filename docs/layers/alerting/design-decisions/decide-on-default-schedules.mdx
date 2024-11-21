@@ -4,17 +4,20 @@ sidebar_label: "Default Schedules"
 sidebar_position: 100
 refarch_id: REFARCH-520
 description: Determine the on-call schedule for teams
+tags:
+  - design-decision
 ---
 
 ## Context and Problem Statement
 
 By default, an opsgenie team comes with its own schedule. Sometimes however we want different schedules for different timezones. A team spread across the world would have to manually keep track of the schedule to make sure individuals are only on call for particular hours.
 
-<img src="/assets/refarch/image-20220304-204031.png" /><br/>
+<img src="/assets/refarch/image-20220304-204031.png" />
+<br />
 
 ## Considered Options
 
-### Option 1  - Use one default Schedule (Recommended)
+### Option 1 - Use one default Schedule (Recommended)
 
 :::tip
 Our Recommendation is to use Option 1 because....
@@ -42,5 +45,3 @@ Our Recommendation is to use Option 1 because....
 ## References
 
 - Links to any research, ADRs or related Jiras
-
-

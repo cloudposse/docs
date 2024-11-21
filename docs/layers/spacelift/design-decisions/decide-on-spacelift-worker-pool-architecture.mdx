@@ -5,12 +5,19 @@ sidebar_position: 100
 sidebar_class_name: compact
 refarch_id: REFARCH-475
 description: Scope Spacelift Workers for secure automation
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 <Intro>
-  Spacelift Workers are deployed in VPCs with scoped IAM permissions to ensure robust automation capabilities while minimizing security risks. By default, we avoid automating certain core system accounts, but this can be adjusted as needed. Review these considerations to determine the best approach for your organization.
+  Spacelift Workers are deployed in VPCs with scoped IAM permissions to ensure
+  robust automation capabilities while minimizing security risks. By default, we
+  avoid automating certain core system accounts, but this can be adjusted as
+  needed. Review these considerations to determine the best approach for your
+  organization.
 </Intro>
 
 ## Problem
@@ -83,5 +90,3 @@ We typically deploy this configuration, but are leaning towards Option 1 instead
 - [How to Sign Up for Spacelift](/layers/spacelift)
 
 - [spacelift-worker-pool](//components/library/aws/spacelift/worker-pool/) (component)
-
-
