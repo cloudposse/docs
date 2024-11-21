@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Selected Components
         id: components
-        uses: cloudposse/github-action-atmos-terraform-select-components@v2
+        uses: cloudposse/github-action-atmos-terraform-select-components@v3
         with:
           select-filter: '.settings.github.actions_enabled and .metadata.type != "abstract"'
           atmos-version: ${{ vars.ATMOS_VERSION }}
