@@ -30,7 +30,7 @@ Terraform is a popular infrastructure-as-code tool that allows you to define, pr
 
 Subsequently, every major open-source OS distribution ([Alpine](https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.19.0#HashiCorp_packages), [Homebrew](https://formulae.brew.sh/formula/terraform)) has removed Terraform from their registries due to the BSL license. [GitLab has also removed Terraform](https://docs.gitlab.com/ee/update/deprecations.html#deprecate-terraform-cicd-templates) from their CI/CD pipelines due to the BSL license. This has created a significant challenge for organizations that rely on Terraform for infrastructure automation.
 
-OpenTofu (previously named OpenTF) is a fork of Terraform 1.5.7 that is [maintained by the CNCF](https://www.linuxfoundation.org/press/announcing-opentofu) and is fully open-source under the MPL license. OpenTofu is designed to maintain compatibility with Terraform 1.x modules and components while providing a stable and open-source alternative to the BSL-licensed Terraform versions.
+OpenTofu (previously named OpenTF) is a fork of Terraform 1.5.7 that was [accepted by the CNCF](https://www.linuxfoundation.org/press/announcing-opentofu) and is fully open-source under the MPL license. OpenTofu is designed to maintain compatibility with Terraform 1.x modules and components while providing a stable and open-source alternative to the BSL-licensed Terraform versions.
 
 :::important
 Terraform providers are not affected by this change. They are independently licensed and can be used with any version of Terraform and OpenTofu. While HashiCorp maintains some providers, the vast majority are not maintained by HashiCorp. Most importantly, the [`terraform-provider-aws`](https://github.com/hashicorp/terraform-provider-aws/blob/main/LICENSE) remains under the MPL license.
@@ -68,7 +68,9 @@ For the full list of supporters, see the [OpenTofu website](https://opentofu.org
 
 Historically, Terraform versions pre-1.x were notoriously backward incompatible. This changed with Terraform 1.x releases, where backward compatibility is assured for all subsequent 1.x releases. While Terraform provides a stable experience, its recent shift to the BSL license introduces considerations for certain use cases, integrations, and compliance.
 
-OpenTofu is based on Terraform 1.5.7 (the last MPL-licensed version) and maintains compatibility with Terraform 1.x modules and continues to evolve as a fully open-source project under the CNCF. Cloud Posse modules and components are verified to work with OpenTofu, but with hundreds of modules, there may be delays in verifying full support with every new release.
+OpenTofu is based on Terraform 1.5.7 (the last MPL-licensed version) and maintains compatibility with Terraform 1.x modules and continues to evolve as a fully open-source project under the stewardship of the CNCF. Cloud Posse modules and components are verified to work with OpenTofu as part of our test automation, but with hundreds of modules, there may be delays in verifying full support with every new release.
+
+OpenTofu has not been without controversy, with some organizations expressing concerns about the project's governance and sustainability. [HashiCorp sent a cease and desist](https://opentofu.org/blog/our-response-to-hashicorps-cease-and-desist/) to the project. However, the project has gained significant traction and support from the community, including key contributors from the original Terraform project. As a result, [it's sandbox application to the CNCF is delayed](https://github.com/cncf/sandbox/issues/81#issuecomment-2331714515) (as of 2024-09-05).
 
 ## Considerations
 
