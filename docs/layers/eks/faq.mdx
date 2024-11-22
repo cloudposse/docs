@@ -76,5 +76,5 @@ Verify that the Client VPN endpoint has active routes to the EKS VPC CIDR and th
 For example, here's an example command to test connectivity to the EKS cluster's control plane endpoint. You can find this endpoint in the AWS web console or in Terraform outputs:
 
 ```bash
-curl -fsSk --max-time 5 "$url/healthz" https://82F58026XXXXXXXXXXXXXXXXXXXXXXXX.gr7.us-east-1.eks.amazonaws.com
+curl -fsSk --max-time 5 "https://82F58026XXXXXXXXXXXXXXXXXXXXXXXX.gr7.us-east-1.eks.amazonaws.com/healthz"
 ```
