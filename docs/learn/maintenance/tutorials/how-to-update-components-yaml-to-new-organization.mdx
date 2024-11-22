@@ -211,9 +211,13 @@ Please perform special migration procedures:
 1. Copy the `component.yaml` file from `spacelift` component to `spacelift/admin-stack`, `spacelift/spaces` and `spacelift/worker-pool` sub-components dirs.
 2. For each sub-component in `component.yaml` update `source.version` to `1.532.0`
 3. For each sub-component in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/spacelift?ref=\{\{.Version\}\}` with
-    - `github.com/cloudposse-terraform-components/aws-spacelift-admin-stack//src?ref=\{\{.Version\}\}` for `spacelift/admin-stack`
-    - `github.com/cloudposse-terraform-components/aws-spacelift-spaces//src?ref=\{\{.Version\}\}` for `spacelift/spaces`
-    - `github.com/cloudposse-terraform-components/aws-spacelift-worker-pool-asg//src?ref=\{\{.Version\}\}` for `spacelift/worker-pool`
+
+| Component               | New URI                                                                                              |
+|-------------------------|------------------------------------------------------------------------------------------------------|
+| `spacelift/admin-stack` | `github.com/cloudposse-terraform-components/aws-spacelift-admin-stack//src?ref=\{\{.Version\}\}`     |
+| `spacelift/spaces`      | `github.com/cloudposse-terraform-components/aws-spacelift-spaces//src?ref=\{\{.Version\}\}`          |
+| `spacelift/worker-pool` | `github.com/cloudposse-terraform-components/aws-spacelift-worker-pool-asg//src?ref=\{\{.Version\}\}` |
+
 4. Remove `component.yaml` file from `spacelift` component
 
 #### tgw
@@ -221,7 +225,11 @@ Please perform special migration procedures:
 1. Copy the `component.yaml` file from `tgw` component to `tgw/cross-region-hub-connector`, `tgw/hub` and `tgw/spoke` sub-components dirs.
 2. For each sub-component in `component.yaml` update `source.version` to `1.532.0`
 3. For each sub-component in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/tgw?ref=\{\{.Version\}\}` with
-    - `github.com/cloudposse-terraform-components/aws-tgw-hub-connector//src?ref=\{\{.Version\}\}` for `tgw/cross-region-hub-connector`
-    - `github.com/cloudposse-terraform-components/aws-tgw-hub//src?ref=\{\{.Version\}\}` for `tgw/hub`
-    - `github.com/cloudposse-terraform-components/aws-tgw-spoke//src?ref=\{\{.Version\}\}` for `tgw/spoke`
+
+| Component                        | New URI                                                                                      |
+|----------------------------------|----------------------------------------------------------------------------------------------|
+| `tgw/cross-region-hub-connector` | `github.com/cloudposse-terraform-components/aws-tgw-hub-connector//src?ref=\{\{.Version\}\}` |
+| `tgw/hub`                        | `github.com/cloudposse-terraform-components/aws-tgw-hub//src?ref=\{\{.Version\}\}`           |
+| `tgw/spoke`                      | `github.com/cloudposse-terraform-components/aws-tgw-spoke//src?ref=\{\{.Version\}\}`         |
+
 4. Remove `component.yaml` file from `tgw` component
