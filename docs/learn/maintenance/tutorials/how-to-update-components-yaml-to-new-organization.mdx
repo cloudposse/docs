@@ -203,14 +203,14 @@ you will get `component.yaml` files updated automatically.
 
 ### Special migration procedure
 
-The following components have been splited into multiple repos by sub-modules.
+The following components have been splited into multiple repos by subcomponents.
 Please perform special migration procedures:
 
 #### spacelift
 
-1. Copy the `component.yaml` file from `spacelift` component to `spacelift/admin-stack`, `spacelift/spaces` and `spacelift/worker-pool` sub-components dirs.
-2. For each sub-component in `component.yaml` update `source.version` to `1.532.0`
-3. For each sub-component in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/spacelift?ref=\{\{.Version\}\}` with
+1. Copy the `component.yaml` file from `spacelift` component to `spacelift/admin-stack`, `spacelift/spaces` and `spacelift/worker-pool` subcomponents dirs.
+2. For each subcomponent in `component.yaml` update `source.version` to `1.532.0`
+3. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/spacelift?ref=\{\{.Version\}\}` with
 
 | Component               | New URI                                                                                              |
 |-------------------------|------------------------------------------------------------------------------------------------------|
@@ -222,9 +222,9 @@ Please perform special migration procedures:
 
 #### tgw
 
-1. Copy the `component.yaml` file from `tgw` component to `tgw/cross-region-hub-connector`, `tgw/hub` and `tgw/spoke` sub-components dirs.
-2. For each sub-component in `component.yaml` update `source.version` to `1.532.0`
-3. For each sub-component in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/tgw?ref=\{\{.Version\}\}` with
+1. Copy the `component.yaml` file from `tgw` component to `tgw/cross-region-hub-connector`, `tgw/hub` and `tgw/spoke` subcomponents dirs.
+2. For each subcomponent in `component.yaml` update `source.version` to `1.532.0`
+3. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/tgw?ref=\{\{.Version\}\}` with
 
 | Component                        | New URI                                                                                      |
 |----------------------------------|----------------------------------------------------------------------------------------------|
