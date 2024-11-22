@@ -20,7 +20,13 @@ Updating `component.yaml` is as easy as changing `source.uri` to the new compone
 to the latest release version of `cloudposse/terraform-aws-components` - `v1.532.0`.
 You can do that both manually or automatically using the `component-updater` GitHub Action.
 
-## Automatic update
+:::caution
+There are two components that have special migration procedure - `spacelift` and `tgw`.
+Please check the [migration guide](#special-migration-procedure) for more details.
+:::
+
+
+### Automatic update
 
 If you are using the [`component-updater`](https://github.com/cloudposse/github-action-atmos-component-updater) GitHub Action
 you will get `component.yaml` files updated automatically.
@@ -28,7 +34,7 @@ you will get `component.yaml` files updated automatically.
 1. Run Github action workflow that uses `component-updater` action
 2. Review new PRs and merge them
 
-## Manual update
+### Manual update
 
 1. For each component in your repository open the `component.yaml` file
 2. Find the `source` section and update the `version` field to `1.532.0`
@@ -195,3 +201,27 @@ you will get `component.yaml` files updated automatically.
 | waf                                             | github.com/cloudposse/terraform-aws-components.git//modules/waf?ref=\{\{.Version\}\}                                            | github.com/cloudposse-terraform-components/aws-waf//src?ref=\{\{.Version\}\}                                            |
 | zscaler                                         | github.com/cloudposse/terraform-aws-components.git//modules/zscaler?ref=\{\{.Version\}\}                                        | github.com/cloudposse-terraform-components/aws-zscaler//src?ref=\{\{.Version\}\}                                        |
 
+### Special Migration procedure
+
+The following components have been splited into multiple repos by sub-modules.
+Please perform special migration procedures:
+
+#### spacelift
+
+1. Copy the `component.yaml` file from `spacelift` component to `spacelift/admin-stack`, `spacelift/spaces` and `spacelift/worker-pool` sub-components dirs.
+2. For each sub-component in `component.yaml` update `source.version` to `1.532.0`
+3. For each sub-component in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/spacelift?ref=\{\{.Version\}\}` with
+    - `github.com/cloudposse-terraform-components/aws-spacelift-admin-stack//src?ref=\{\{.Version\}\}` for `spacelift/admin-stack`
+    - `github.com/cloudposse-terraform-components/aws-spacelift-spaces//src?ref=\{\{.Version\}\}` for `spacelift/spaces`
+    - `github.com/cloudposse-terraform-components/aws-spacelift-worker-pool-asg//src?ref=\{\{.Version\}\}` for `spacelift/worker-pool`
+4. Remove `component.yaml` file from `spacelift` component
+
+#### tgw
+
+1. Copy the `component.yaml` file from `tgw` component to `tgw/cross-region-hub-connector`, `tgw/hub` and `tgw/spoke` sub-components dirs.
+2. For each sub-component in `component.yaml` update `source.version` to `1.532.0`
+3. For each sub-component in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/tgw?ref=\{\{.Version\}\}` with
+    - `github.com/cloudposse-terraform-components/aws-tgw-hub-connector//src?ref=\{\{.Version\}\}` for `tgw/cross-region-hub-connector`
+    - `github.com/cloudposse-terraform-components/aws-tgw-hub//src?ref=\{\{.Version\}\}` for `tgw/hub`
+    - `github.com/cloudposse-terraform-components/aws-tgw-spoke//src?ref=\{\{.Version\}\}` for `tgw/spoke`
+4. Remove `component.yaml` file from `tgw` component
