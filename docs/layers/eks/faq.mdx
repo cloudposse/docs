@@ -38,3 +38,32 @@ launch and scale runners for GitHub automatically.
 
 For more on how to set up ARC, see the
 [GitHub Action Runners setup docs for EKS](/layers/github-actions/eks-github-actions-controller/).
+
+## The managed nodes are successfully launching, but the worker nodes are not joining the cluster. What could be the issue?
+
+The most common issue is that the worker nodes are not able to communicate with the EKS cluster. This is usually due to missing cluster addons. If you connect to a node with session manager, you can check the kubelet logs. You might see an error like this:
+
+```console
+kubelet ... "Failed to ensure lease exists, will retry" err="Unauthorized" interval="7s"
+...  csi_plugin.go:884] Failed to contact API server when waiting for CSINode publishing: Unauthorized
+```
+
+For the sake of version mapping, we have separated the cluster addon configuration into a single stack configuration file. That file has the version of the EKS cluster and the version of the addons that are compatible with that cluster version.
+
+The file is typically located at `stacks/catalog/eks/mixins/k8s-1-29.yaml` or `stacks/catalog/eks/cluster/mixins/k8s-1-29.yaml`, where `1.29` is the version of the EKS cluster.
+
+Make sure this file is imported and included with your stack. You can verify this by checking the final rendered configuration with Atmos:
+
+```bash
+atmos describe component eks/cluster -s <stack>
+```
+
+## I am able to ping the cluster endpoint, but I am not able to connect to the cluster. What could be the issue?
+
+EKS cluster networking is complex. There are many issues the could cause this problem, so in our experience we recommend the AWS Reachability Analyzer. This tool can help you diagnose the issue by testing the network path between the source and destination. Make sure to test both directions.
+
+For example, we have found misconfigurations where the Security Group was not allowing traffic from the worker nodes to the EKS cluster. Or Transit Gateway was missing an account attachment. Or a subnet missing any given route. In all of these cases, the Reachability Analyzer exposes the issue.
+
+However, one particular issue we had to debug was related to a misconfiguration with subnet selection for managed nodes. Typically we set the EKS cluster to use private subnets for the managed nodes, with `cluster_private_subnets_only: true`. However, if this is not set, the managed nodes may choose public subnets in addition to private subnets. This can cause the cluster's control plane to be reachable by ping, but not properly configured nor accessible.
+
+Make sure to check the subnet selection for the managed nodes in the EKS cluster configuration.
