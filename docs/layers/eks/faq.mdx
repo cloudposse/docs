@@ -68,7 +68,7 @@ Verify that the Client VPN endpoint has active routes to the EKS VPC CIDR and th
 3. Inspect Subnet Route Tables: Ensure that VPC route tables correctly route traffic between your source and the EKS cluster.
 4. Confirm Transit Gateway Configuration: Verify that Transit Gateway attachments and route tables are properly set up.
 5. Verify DNS Resolution: Check that the EKS API endpoint’s DNS name resolves correctly from your source.
-6. *Use AWS Reachability Analyzer*: Analyze the network path to identify any connectivity issues.
+6. *Use AWS Reachability Analyzer*: Analyze the network path to identify any connectivity issues. Set the VPNs ENI as the source and the EKS cluster endpoint private IP as the destination. _Check both directions_.
 7. Review EKS Cluster Endpoint Access Settings: Make sure the cluster’s endpoint access configuration aligns with your needs.
 8. Check the EKS Cluster Subnets: Ensure that the EKS cluster subnets are correctly configured and associated with the cluster. We recommend using private subnets for managed nodes.
 9. Check IAM Permissions: Ensure your IAM user or role has the necessary permissions to access the cluster.
