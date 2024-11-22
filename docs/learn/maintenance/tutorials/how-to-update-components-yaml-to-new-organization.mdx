@@ -211,7 +211,7 @@ Please perform special migration procedures:
 1. Copy the `component.yaml` file from `spacelift` component to `spacelift/admin-stack`, `spacelift/spaces` and `spacelift/worker-pool` subcomponents dirs.
 2. Remove `component.yaml` file from `spacelift` component
 3. For each subcomponent in `component.yaml` update `source.version` to `1.532.0`
-4. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/spacelift?ref=\{\{.Version\}\}` with
+4. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/spacelift?ref={{.Version}}` with
 
 | Subcomponent            | New URI                                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------------------|
@@ -224,7 +224,7 @@ Please perform special migration procedures:
 1. Copy the `component.yaml` file from `tgw` component to `tgw/cross-region-hub-connector`, `tgw/hub` and `tgw/spoke` subcomponents dirs.
 2. Remove `component.yaml` file from `tgw` component
 3. For each subcomponent in `component.yaml` update `source.version` to `1.532.0`
-4. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/tgw?ref=\{\{.Version\}\}` with
+4. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/tgw?ref={{.Version}}` with
 
 | Subcomponent                        | New URI                                                                               |
 |----------------------------------|------------------------------------------------------------------------------------------|
