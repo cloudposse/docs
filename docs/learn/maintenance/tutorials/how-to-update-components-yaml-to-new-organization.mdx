@@ -213,11 +213,11 @@ Please perform special migration procedures:
 3. For each subcomponent in `component.yaml` update `source.version` to `1.532.0`
 4. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/spacelift?ref={{.Version}}` with
 
-| Subcomponent            | New URI                                                                                          |
-|-------------------------|--------------------------------------------------------------------------------------------------|
-| `spacelift/admin-stack` | `github.com/cloudposse-terraform-components/aws-spacelift-admin-stack//src?ref={{.Version}}`     |
-| `spacelift/spaces`      | `github.com/cloudposse-terraform-components/aws-spacelift-spaces//src?ref={{.Version}}`          |
-| `spacelift/worker-pool` | `github.com/cloudposse-terraform-components/aws-spacelift-worker-pool-asg//src?ref={{.Version}}` |
+| Subcomponent            | New URI                                                                                              |
+|-------------------------|------------------------------------------------------------------------------------------------------|
+| `spacelift/admin-stack` | ```github.com/cloudposse-terraform-components/aws-spacelift-admin-stack//src?ref={{.Version}}```     |
+| `spacelift/spaces`      | ```github.com/cloudposse-terraform-components/aws-spacelift-spaces//src?ref={{.Version}}```          |
+| `spacelift/worker-pool` | ```github.com/cloudposse-terraform-components/aws-spacelift-worker-pool-asg//src?ref={{.Version}}``` |
 
 #### tgw
 
@@ -226,8 +226,8 @@ Please perform special migration procedures:
 3. For each subcomponent in `component.yaml` update `source.version` to `1.532.0`
 4. For each subcomponent in `component.yaml` update `source.uri` - replace `github.com/cloudposse/terraform-aws-components.git//modules/tgw?ref={{.Version}}` with
 
-| Subcomponent                        | New URI                                                                               |
-|----------------------------------|------------------------------------------------------------------------------------------|
-| `tgw/cross-region-hub-connector` | `github.com/cloudposse-terraform-components/aws-tgw-hub-connector//src?ref={{.Version}}` |
-| `tgw/hub`                        | `github.com/cloudposse-terraform-components/aws-tgw-hub//src?ref={{.Version}}`           |
-| `tgw/spoke`                      | `github.com/cloudposse-terraform-components/aws-tgw-spoke//src?ref={{.Version}}`         |
+| Subcomponent                     | New URI                                                                                      |
+|----------------------------------|----------------------------------------------------------------------------------------------|
+| `tgw/cross-region-hub-connector` | ```github.com/cloudposse-terraform-components/aws-tgw-hub-connector//src?ref={{.Version}}``` |
+| `tgw/hub`                        | ```github.com/cloudposse-terraform-components/aws-tgw-hub//src?ref={{.Version}}```           |
+| `tgw/spoke`                      | ```github.com/cloudposse-terraform-components/aws-tgw-spoke//src?ref={{.Version}}```         |
