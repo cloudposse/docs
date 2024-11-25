@@ -201,12 +201,14 @@ you will get `component.yaml` files updated automatically.
 | waf                                             | github.com/cloudposse/terraform-aws-components.git//modules/waf?ref=\{\{.Version\}\}                                            | github.com/cloudposse-terraform-components/aws-waf//src?ref=\{\{.Version\}\}                                            |
 | zscaler                                         | github.com/cloudposse/terraform-aws-components.git//modules/zscaler?ref=\{\{.Version\}\}                                        | github.com/cloudposse-terraform-components/aws-zscaler//src?ref=\{\{.Version\}\}                                        |
 
-### Special migration procedure
+### Special Migration Procedures
 
-The following components have been splited into multiple repos by subcomponents.
-Please perform special migration procedures:
+The following components have been split into multiple repos by subcomponents.
 
-#### spacelift
+Here's what you need to know to update your configurations.
+
+
+#### Spacelift Components
 
 1. Copy the `component.yaml` file from `spacelift` component to `spacelift/admin-stack`, `spacelift/spaces` and `spacelift/worker-pool` subcomponents dirs.
 2. Remove `component.yaml` file from `spacelift` component
@@ -219,7 +221,7 @@ Please perform special migration procedures:
 | `spacelift/spaces`      | ```github.com/cloudposse-terraform-components/aws-spacelift-spaces//src?ref={{.Version}}```          |
 | `spacelift/worker-pool` | ```github.com/cloudposse-terraform-components/aws-spacelift-worker-pool-asg//src?ref={{.Version}}``` |
 
-#### tgw
+#### Transit Gateway Components (TGW)
 
 1. Copy the `component.yaml` file from `tgw` component to `tgw/cross-region-hub-connector`, `tgw/hub` and `tgw/spoke` subcomponents dirs.
 2. Remove `component.yaml` file from `tgw` component
