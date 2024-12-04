@@ -39,42 +39,77 @@ launch and scale runners for GitHub automatically.
 For more on how to set up ARC, see the
 [GitHub Action Runners setup docs for EKS](/layers/github-actions/eks-github-actions-controller/).
 
-## Managed nodes are successfully launching, but worker nodes are not joining the cluster
+## Common Connectivity Issues and Solutions
 
-Worker nodes are not joining the EKS cluster even though managed nodes are successfully launching. This often happens when worker nodes cannot communicate with the EKS cluster due to missing cluster add-ons.
+If you're having trouble connecting to your EKS cluster, follow these comprehensive steps to diagnose and resolve the issue:
 
-Ensure that cluster add-ons compatible with your EKS cluster version are properly configured and included in your stack. Verify that the addon stack file (e.g., `stacks/catalog/eks/mixins/k8s-1-29.yaml`) is imported into your stack. You can confirm this by checking the final rendered component stack with Atmos:
+<Steps>
+**1. Test Basic Connectivity**
+
+First, test basic connectivity to your cluster endpoint. This helps isolate whether the issue is with basic network connectivity or something more specific:
+
+```bash
+curl -fsSk --max-time 5 "https://CLUSTER_ENDPOINT/healthz"
+```
+
+If these tests fail, it indicates a fundamental connectivity issue that needs to be addressed before proceeding to more specific troubleshooting.
+
+**2. Check Node Communication**
+
+If worker nodes aren't joining the cluster, follow these detailed steps:
+
+- Verify that the addon stack file (e.g., `stacks/catalog/eks/mixins/k8s-1-29.yaml`) is imported into your stack.
+- Verify cluster add-ons are properly configured for your EKS version.
+    - Check CoreDNS is running
+    - Verify kube-proxy is deployed
+    - Ensure VPC CNI is correctly configured
+- Confirm the rendered component stack configuration.
 
 ```bash
 atmos describe component eks/cluster -s <stack>
 ```
 
-## I'm able to ping the cluster endpoint but unable to connect to the cluster
+**3. Verify Network Configuration**
 
-You can ping the EKS cluster endpoint but cannot connect to it using `kubectl` or other tools. This indicates a networking issue preventing proper communication with the cluster.
+- Security Groups:
+    - Control plane security group must allow port 443 inbound from worker nodes
+    - Worker node security group must allow all traffic between nodes
+    - Verify outbound internet access for pulling container images
+- Subnet Routes:
+    - Verify route tables have paths to all required destinations
+    - Check for conflicting or overlapping CIDR ranges
+    - Ensure NAT Gateway is properly configured for private subnets
+- Transit Gateway:
+    - Verify TGW attachments are active and associated
+    - Check TGW route tables for correct propagation
+    - Confirm cross-account routing if applicable
+- Private Subnets Configuration:
+    - Set `cluster_private_subnets_only: true` in your configuration
+    - Ensure private subnets have proper NAT Gateway routing
 
-Use the AWS Reachability Analyzer to diagnose the network path between your source and the EKS endpoint. Check for misconfigurations in security groups, Transit Gateway attachments, and subnet routes. Ensure that managed nodes are using private subnets by setting `cluster_private_subnets_only: true` in your EKS cluster configuration.
+**4. VPN Connectivity**
 
-## AWS Client VPN clients not receiving routes to EKS cluster
+When accessing via AWS Client VPN, verify these configurations:
 
-VPN clients connected via AWS Client VPN are not receiving routes to the EKS cluster’s VPC, preventing access to the API endpoint.
+- VPN Routes:
+    - Check route table entries for EKS VPC CIDR
+    - Verify routes are active and not in pending state
+    - Confirm no conflicting routes exist
+- Subnet Associations:
+    - Ensure VPN endpoint is associated with correct subnets
+    - Verify subnet route tables include VPN CIDR range
+- Authorization Rules:
+    - Check network ACLs allow VPN CIDR range
+    - Verify security group rules permit VPN traffic
+    - Confirm IAM roles have necessary permissions
 
-Verify that the Client VPN endpoint has active routes to the EKS VPC CIDR and that these routes are associated with subnets attached to the Client VPN endpoint. Confirm that authorization rules permit access to the EKS VPC CIDR. Ensure that security groups associated with the Client VPN endpoint allow outbound traffic to the EKS VPC. After making changes, disconnect and reconnect VPN clients to receive updated routes.
+After making any changes, have clients disconnect and reconnect to receive updated routes.
 
-## Common troubleshooting steps when unable to connect to EKS cluster
+**5. Advanced Diagnostics**
 
-1. Check EKS Cluster Security Groups: Ensure that inbound and outbound rules allow necessary traffic.
-2. Verify Network ACLs: Confirm that Network ACLs permit the required inbound and outbound traffic.
-3. Inspect Subnet Route Tables: Ensure that VPC route tables correctly route traffic between your source and the EKS cluster.
-4. Confirm Transit Gateway Configuration: Verify that Transit Gateway attachments and route tables are properly set up.
-5. Verify DNS Resolution: Check that the EKS API endpoint’s DNS name resolves correctly from your source.
-6. *Use AWS Reachability Analyzer*: Analyze the network path to identify any connectivity issues. Set the VPNs ENI as the source and the EKS cluster endpoint private IP as the destination. _Check both directions_.
-7. Review EKS Cluster Endpoint Access Settings: Make sure the cluster’s endpoint access configuration aligns with your needs.
-8. Check the EKS Cluster Subnets: Ensure that the EKS cluster subnets are correctly configured and associated with the cluster. We recommend using private subnets for managed nodes.
-9. Check IAM Permissions: Ensure your IAM user or role has the necessary permissions to access the cluster.
+- AWS Reachability Analyzer:
+    - Enable cross-account analysis for VPC peering or TGW connections
+    - Test from VPN ENI to cluster endpoint
+    - Test return path from cluster to VPN ENI
 
-For example, here's an example command to test connectivity to the EKS cluster's control plane endpoint. You can find this endpoint in the AWS web console or in Terraform outputs:
-
-```bash
-curl -fsSk --max-time 5 "https://82F58026XXXXXXXXXXXXXXXXXXXXXXXX.gr7.us-east-1.eks.amazonaws.com/healthz"
-```
+</Steps>
