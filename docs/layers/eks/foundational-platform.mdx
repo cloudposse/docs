@@ -47,7 +47,7 @@ those implementations in follow up topics. For details, see the
 
 - [`eks/cluster`](/components/library/aws/eks/cluster/): This component is responsible for provisioning an end-to-end
   EKS Cluster, including IAM role to Kubernetes Auth Config mapping.
-- [`eks/karpenter`](/components/library/aws/eks/karpenter/): Installs the Karpenter chart on the EKS cluster and
+- [`eks/karpenter`](/components/library/aws/eks/karpenter-controller/): Installs the Karpenter chart on the EKS cluster and
   prepares the environment for provisioners.
   - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-node-pool/): Deploys Karpenter Node Pools
     using CRDs made available by `eks/karpenter`

@@ -31,7 +31,7 @@ We have broken down the monitoring solution into several components to make it e
 
 #### Foundation
 
-- [`datadog-configuration`](/components/library/aws/datadog-configuration/): This is a **utility** component. This component expects Datadog API and APP keys to be stored in SSM or ASM, it then copies the keys to SSM/ASM of each account this component is deployed to. This is for several reasons:
+- [`datadog-configuration`](/components/library/aws/datadog-credentials/): This is a **utility** component. This component expects Datadog API and APP keys to be stored in SSM or ASM, it then copies the keys to SSM/ASM of each account this component is deployed to. This is for several reasons:
   1. Keys can be easily rotated from one place
   2. Keys can be set for a group and then copied to all accounts in that group, meaning you could have a pair of api keys and app keys for production accounts and another set for non-production accounts.
   This component is **required** for all other components to work. As it also stores information about your Datadog account, which other components will use, such as your Datadog site url, along with providing an easy interface for other components to configure the Datadog provider.

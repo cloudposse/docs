@@ -4,12 +4,19 @@ sidebar_label: "Private Modules"
 sidebar_position: 100
 refarch_id: REFARCH-535
 description: How to securely access to private Terraform modules in Spacelift
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 <Intro>
-Sometimes there will be a need to host private Terraform modules that may exist outside the infrastructure monorepo. When this is the case, Spacelift needs access to these module registries or repositories. There are a few ways to go about it, with various tradeoffs to ensure secure and efficient module management while minimizing complexity and risk.
+  Sometimes there will be a need to host private Terraform modules that may
+  exist outside the infrastructure monorepo. When this is the case, Spacelift
+  needs access to these module registries or repositories. There are a few ways
+  to go about it, with various tradeoffs to ensure secure and efficient module
+  management while minimizing complexity and risk.
 </Intro>
 
 **Date**: **19 Oct 2021**
@@ -109,5 +116,3 @@ Cloud Posse recommends avoiding this approach.
 - [https://www.terraform.io/language/state/remote-state-data](https://www.terraform.io/language/state/remote-state-data)
 
 - [https://maelvls.dev/gh-actions-with-tf-private-repo/](https://maelvls.dev/gh-actions-with-tf-private-repo/)
-
-

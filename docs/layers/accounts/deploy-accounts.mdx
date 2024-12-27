@@ -48,17 +48,15 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   </Step>
 
   <Step>
-    ## <StepNumber/> Configure Root Account as Organization
+    ## <StepNumber/> Confirm the Root Account is configured as an Organization
 
-    Before performing the "Deploy Accounts" step, the root account needs to be configured as an AWS Organization.
-
-    This process also enables [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) via a CLI command, which is required for connecting the Organization.
+    The previous step will create the AWS Organization and configure the `core-root` account as the "root" account. Take the time now to verify that the root account is configured as an AWS Organization. and that [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) is enabled, which is required for connecting the Organization.
   </Step>
 
   <Step>
     ## <StepNumber/> Raise Account Limits
 
-    To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
+    If you haven't already completed the Account Quota increase, now is the time to do so. To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
 
     From the `root` account (not `SuperAdmin`), increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case
 

@@ -3,9 +3,12 @@ title: "Decide Whether to Use RDS IAM Authentication"
 sidebar_label: "RDS IAM Authentication"
 sidebar_position: 100
 refarch_id: REFARCH-210
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
 
@@ -16,7 +19,7 @@ Multiple ways exist to authenticate with the database. Static credentials grow s
 RDS supports IAM authentication, which means IAM credentials are used to obtain short-lived credentials to access the RDS database. Leveraging RDS IAM Authentication in applications requires application changes to leverage the AWS SDK ([Java Example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.Connecting.Java.html)).
 
 :::caution
- RDS IAM authentication is not recommended for applications due to a maximum of 200 new connections per second, and therefore only advisable for use with human operators.
+RDS IAM authentication is not recommended for applications due to a maximum of 200 new connections per second, and therefore only advisable for use with human operators.
 :::
 
 For applications, the AWS recommended method is using AWS Secrets Manager (as opposed to RDS IAM Authentication) which also has the built-in capability to rotate credentials.
@@ -34,5 +37,3 @@ If we choose to enable RDS IAM Authentication, it’s just a simple feature flag
 - [https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.Connecting.Java.html](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.Connecting.Java.html)
 
 - [Use SSM over ASM for Infrastructure](/resources/adrs/adopted/use-ssm-over-asm-for-infrastructure)
-
-

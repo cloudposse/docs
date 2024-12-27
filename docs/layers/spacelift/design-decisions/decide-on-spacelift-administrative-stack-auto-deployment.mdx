@@ -4,12 +4,19 @@ sidebar_label: "Stack Auto-deployment"
 sidebar_position: 100
 refarch_id: REFARCH-410
 description: Balance auto-deployment with manual confirmation
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 <Intro>
- Spacelift administrative stacks support auto-deployment to streamline the process of provisioning new component stacks, but the ease of use and automation must be balanced against the risk of accidental deletions due to misconfiguration. Reviewing these considerations will help decide the best approach for your organization’s needs.
+  Spacelift administrative stacks support auto-deployment to streamline the
+  process of provisioning new component stacks, but the ease of use and
+  automation must be balanced against the risk of accidental deletions due to
+  misconfiguration. Reviewing these considerations will help decide the best
+  approach for your organization’s needs.
 </Intro>
 
 ## Problem
@@ -28,7 +35,8 @@ This admin stack is manually created in Spacelift (it’s how it knows about you
 
 When making changes or adding a new component to a stack configuration in Spacelift, those changes must be applied first by the administrative stack before Spacelift can do anything with it (e.g. show a terraform plan of this stack).
 
-<img src="/assets/refarch/cleanshot-2021-11-24-at-14.59.56@2x-20211124-210413.png" /><br/>
+<img src="/assets/refarch/cleanshot-2021-11-24-at-14.59.56@2x-20211124-210413.png" />
+<br />
 
 ## Considered Options
 
@@ -65,5 +73,3 @@ If `autodeploy=false` on the admin stack, then new stacks will have to be manual
 - Users are frequently confused why their stack does not show any plans or why nothing is terraformed.
 
 - Users forget to confirm the changes to the Spacelift configuration because this implementation detail is not obvious to them.
-
-

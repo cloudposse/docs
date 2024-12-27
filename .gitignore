@@ -22,6 +22,8 @@
 # Except for these specific files.
 # These are the index files for the components, modules, and GitHub Actions.
 !/docs/components/library/aws/aws.mdx
+!/docs/components/library/aws/spacelift/README.md
+!/docs/components/library/aws/tgw/README.md
 !/docs/modules/library/artifactory/artifactory.mdx
 !/docs/modules/library/cloudflare/cloudflare.mdx
 !/docs/modules/library/example/example.mdx

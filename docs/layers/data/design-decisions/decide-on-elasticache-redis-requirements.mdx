@@ -3,9 +3,12 @@ title: "Decide on Elasticache Redis Requirements"
 sidebar_label: "Elasticache Redis Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-365
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
 
@@ -37,6 +40,7 @@ Ideally, share a screenshot of any existing Elasticache redis requirements and w
 | Number of nodes             |                    |                                                                                                                                                                                                                                                                                                    |
 | Cluster Mode Enabled        |                    |                                                                                                                                                                                                                                                                                                    |
 | AWS Backup requirements     |                    | [https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/backups.html](https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/backups.html)                                                                                                                                               |
+
 Additional options
 
 - [aws_elasticache_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/reference/elasticache_cluster)
@@ -44,6 +48,7 @@ Additional options
 - [aws_elasticache_replication_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/reference/elasticache_replication_group)
 
 ## Consequences
+
 - We’ll provision Elasticache Redis using our `elasticache-redis` component.
 
 - Define the catalog entries for the various Redis configurations
@@ -51,6 +56,7 @@ Additional options
 - Enable AWS backups, as necessary
 
 ## References
+
 - [https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/WhatIs.html](https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/WhatIs.html)
 
 - [https://aws.amazon.com/blogs/database/five-workload-characteristics-to-consider-when-right-sizing-amazon-elasticache-redis-clusters/](https://aws.amazon.com/blogs/database/five-workload-characteristics-to-consider-when-right-sizing-amazon-elasticache-redis-clusters/)
@@ -58,5 +64,3 @@ Additional options
 - [https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/nodes-select-size.html](https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/nodes-select-size.html)
 
 -
-
-

@@ -4,13 +4,17 @@ sidebar_label: "Maintenance Page"
 sidebar_position: 100
 refarch_id: REFARCH-112
 description: Decide how to deliver maintenance pages
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
 
-<img src="/assets/refarch/image-20211109-195645.png" /><br/>
+<img src="/assets/refarch/image-20211109-195645.png" />
+<br />
 
 When your sites go down, we need to be able to communicate more graciously to customers that you’re having issues than a generic “502 Bad Gateway” message.
 
@@ -21,7 +25,7 @@ Specifically, this decision relates to services behind an ALB. CloudFront and S3
 
 ## Solution
 
-We recommend deploying a static maintenance page. The industry best practice is to host the downtime page on a cloud provider that does not share infrastructure with your primary cloud provider. E.g. S3 is not recommended, as even S3 has gone down.  That said, using a separate cloud provider is a micro-optimization for a very narrow set of failure scenarios.
+We recommend deploying a static maintenance page. The industry best practice is to host the downtime page on a cloud provider that does not share infrastructure with your primary cloud provider. E.g. S3 is not recommended, as even S3 has gone down. That said, using a separate cloud provider is a micro-optimization for a very narrow set of failure scenarios.
 
 Some related considerations are how the maintenance page will be activated.
 
@@ -50,5 +54,3 @@ Use ALB with [fixed response](https://docs.aws.amazon.com/elasticloadbalancing/l
 - Use `fixed-response` populated with HTML from `file` with inline CSS, SVGs, etc. and no external dependencies (if possible)
 
 - Add GA code for analytics
-
-

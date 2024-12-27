@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 import yaml
@@ -6,7 +7,7 @@ TAG_REGEX = re.compile("(<)([0-9a-zA-Z._-]+)(>)", re.IGNORECASE)
 BR_REGEX = re.compile(re.escape("<br>"), re.IGNORECASE)
 SIDEBAR_LABEL_REGEX = re.compile("sidebar_label: .*", re.IGNORECASE)
 CUSTOM_EDIT_URL_REGEX = re.compile("custom_edit_url: .*", re.IGNORECASE)
-NAME_REGEX = re.compile("name: .*", re.IGNORECASE)
+NAME_REGEX = re.compile("^name: .*", re.IGNORECASE)
 RELATIVE_LINK_PATTERN = r"\]\((?!http[s]?://)([^)\s]+)\)"
 
 
@@ -258,6 +259,7 @@ def strip_frontmatter(content):
 
     return "\n".join(content_lines), "\n".join(frontmatter)
 
+
 def reformat_admonitions(content):
     """
     Reformat admonitions to be compatible with Docusaurus.
@@ -308,6 +310,7 @@ def reformat_admonitions(content):
 
     return '\n'.join(result)
 
+
 def remove_https_cloudposse_docs(content):
     """
     In component readmes, we have links to the cloudposse docs,
@@ -317,12 +320,14 @@ def remove_https_cloudposse_docs(content):
     """
     return content.replace("https://docs.cloudposse.com/", "/")
 
+
 def strip_title(content):
     """
     The title is created with frontmatter.
     Remove the title from the content.
     """
     return re.sub(r"# Component:(.*)", "", content).strip()
+
 
 def replace_broken_links(content):
     """

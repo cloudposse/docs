@@ -4,9 +4,12 @@ sidebar_label: "ECS App Deployment"
 sidebar_position: 100
 refarch_id: REFARCH-411
 description: Decide how to deploy applications to ECS
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 We need to decide on what methodology to use when deploying applications to ECS.
 
@@ -27,5 +30,3 @@ Think of Helm Charts in Kubernetes as similar to using Terraform Modules for ECS
 - Auto deploy on merges
 
 - Auto deploy on manual cut releases
-
-

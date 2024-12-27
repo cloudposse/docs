@@ -16,7 +16,5 @@ tags: []
 {{ content }}
 
 {%- if change_log_content|trim != "" %}
-## Changelog
-
 {{ change_log_content }}
 {%- endif %}
