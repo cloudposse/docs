@@ -37,7 +37,7 @@ jobs:
     runs-on: ["self-hosted", "terraform"]
     steps:
       - id: affected
-        uses: cloudposse/github-action-atmos-affected-stacks@v4
+        uses: cloudposse/github-action-atmos-affected-stacks@v5
         with:
           base-ref: ${{ github.event.pull_request.base.sha }}
           head-ref: ${{ github.event.pull_request.head.sha }}
