@@ -3,9 +3,12 @@ title: "Decide on the backup AWS region for Aurora Global Cluster"
 sidebar_label: "Backup AWS region for Aurora Global Cluster"
 sidebar_position: 100
 refarch_id: REFARCH-242
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Considerations
 
@@ -21,10 +24,8 @@ Consequences of deploying RDS Aurora Global Cluster include:
 - Provisioning additional VPC and Aurora clusters in the backup region
 
 - Setting up peering via the transit gateway because write operations go directly to the primary DB instance in the primary AWS Region
-:::
+  :::
 
 ### Related
 
 - [Decide on RDS Technology and Architecture](/layers/data/design-decisions/decide-on-rds-technology-and-architecture)
-
-

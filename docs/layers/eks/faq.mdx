@@ -38,3 +38,78 @@ launch and scale runners for GitHub automatically.
 
 For more on how to set up ARC, see the
 [GitHub Action Runners setup docs for EKS](/layers/github-actions/eks-github-actions-controller/).
+
+## Common Connectivity Issues and Solutions
+
+If you're having trouble connecting to your EKS cluster, follow these comprehensive steps to diagnose and resolve the issue:
+
+<Steps>
+**1. Test Basic Connectivity**
+
+First, test basic connectivity to your cluster endpoint. This helps isolate whether the issue is with basic network connectivity or something more specific:
+
+```bash
+curl -fsSk --max-time 5 "https://CLUSTER_ENDPOINT/healthz"
+```
+
+If these tests fail, it indicates a fundamental connectivity issue that needs to be addressed before proceeding to more specific troubleshooting.
+
+**2. Check Node Communication**
+
+If worker nodes aren't joining the cluster, follow these detailed steps:
+
+- Verify that the addon stack file (e.g., `stacks/catalog/eks/mixins/k8s-1-29.yaml`) is imported into your stack.
+- Verify cluster add-ons are properly configured for your EKS version.
+    - Check CoreDNS is running
+    - Verify kube-proxy is deployed
+    - Ensure VPC CNI is correctly configured
+- Confirm the rendered component stack configuration.
+
+```bash
+atmos describe component eks/cluster -s <stack>
+```
+
+**3. Verify Network Configuration**
+
+- Security Groups:
+    - Control plane security group must allow port 443 inbound from worker nodes
+    - Worker node security group must allow all traffic between nodes
+    - Verify outbound internet access for pulling container images
+- Subnet Routes:
+    - Verify route tables have paths to all required destinations
+    - Check for conflicting or overlapping CIDR ranges
+    - Ensure NAT Gateway is properly configured for private subnets
+- Transit Gateway:
+    - Verify TGW attachments are active and associated
+    - Check TGW route tables for correct propagation
+    - Confirm cross-account routing if applicable
+- Private Subnets Configuration:
+    - Set `cluster_private_subnets_only: true` in your configuration
+    - Ensure private subnets have proper NAT Gateway routing
+
+**4. VPN Connectivity**
+
+When accessing via AWS Client VPN, verify these configurations:
+
+- VPN Routes:
+    - Check route table entries for EKS VPC CIDR
+    - Verify routes are active and not in pending state
+    - Confirm no conflicting routes exist
+- Subnet Associations:
+    - Ensure VPN endpoint is associated with correct subnets
+    - Verify subnet route tables include VPN CIDR range
+- Authorization Rules:
+    - Check network ACLs allow VPN CIDR range
+    - Verify security group rules permit VPN traffic
+    - Confirm IAM roles have necessary permissions
+
+After making any changes, have clients disconnect and reconnect to receive updated routes.
+
+**5. Advanced Diagnostics**
+
+- AWS Reachability Analyzer:
+    - Enable cross-account analysis for VPC peering or TGW connections
+    - Test from VPN ENI to cluster endpoint
+    - Test return path from cluster to VPN ENI
+
+</Steps>

@@ -4,9 +4,12 @@ sidebar_label: "Hardened AMIs"
 sidebar_position: 100
 refarch_id: REFARCH-345
 description: "Decide on how to harden base AMIs"
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
 
@@ -26,14 +29,14 @@ We need a solution that covers both EKS (for customers using it) and for standal
 
 ### Use CIS or Not?
 
-> CIS benchmarks are internationally recognized as security standards for defending IT systems and data against cyberattacks. Used by thousands of businesses, they offer prescriptive guidance for establishing a secure baseline configuration.The CIS Foundation is the most recognized industry standard for hardening OS images, however, they have not yet published the CIS standard for container-optimized OS. The traditional CIS benchmarks are for full-blown OSs with a different set of concerns that do not apply to a container-optimized OS. What CIS has defined are [the best practices for hardening EKS as a platform](https://aws.amazon.com/de/blogs/containers/introducing-cis-amazon-eks-benchmark/) and that standard is covered by `kube-bench`.  So by running `kube-bench` on a cluster we would be able to validate if Bottlerocket meets the CIS standard for nodes managed by Kubernetes. While this is not the same as "certification", it might be good enough for benchmark compliance.
+> CIS benchmarks are internationally recognized as security standards for defending IT systems and data against cyberattacks. Used by thousands of businesses, they offer prescriptive guidance for establishing a secure baseline configuration.The CIS Foundation is the most recognized industry standard for hardening OS images, however, they have not yet published the CIS standard for container-optimized OS. The traditional CIS benchmarks are for full-blown OSs with a different set of concerns that do not apply to a container-optimized OS. What CIS has defined are [the best practices for hardening EKS as a platform](https://aws.amazon.com/de/blogs/containers/introducing-cis-amazon-eks-benchmark/) and that standard is covered by `kube-bench`. So by running `kube-bench` on a cluster we would be able to validate if Bottlerocket meets the CIS standard for nodes managed by Kubernetes. While this is not the same as "certification", it might be good enough for benchmark compliance.
 
 ### Use Existing Hardened Image
 
 - AWS does not provide turnkey CIS-compliant base AMIs (third-party vendors only).
 
 - Bottlerocket is more secure but is still not _technically_ CIS-compliant out of the box
-[https://github.com/bottlerocket-os/bottlerocket/issues/1297](https://github.com/bottlerocket-os/bottlerocket/issues/1297)
+  [https://github.com/bottlerocket-os/bottlerocket/issues/1297](https://github.com/bottlerocket-os/bottlerocket/issues/1297)
 
 - [https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami-bottlerocket.html](https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami-bottlerocket.html)
 
@@ -56,5 +59,3 @@ With `cloud-init` we can patch the system at runtime. This has the benefit of no
 ### AWS Systems Manager Patch Manager
 
 With AWS Systems Manager can apply patch documents to running systems based on policies, but violates the principle of immutable infrastructure.
-
-

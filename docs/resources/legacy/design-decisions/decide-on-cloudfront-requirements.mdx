@@ -3,9 +3,12 @@ title: "Decide on CloudFront Requirements"
 sidebar_label: "CloudFront Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-530
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Context and Problem Statement
 
@@ -21,9 +24,8 @@ CloudFront also offers the ability to limit access to content based on the geogr
 
 In order to implement your CDN strategy with CloudFront, we’ll need to know a little bit more about how you currently use it and how you intend to use it. Any combination of one or more of the options below is supported but will need to be implemented differently. Keep in mind, as soon as you introduce a CDN, you have to solve the cache invalidation problem.
 
-> _There are only two hard things in Computer Science: cache invalidation and naming things._
-> _-- Phil Karlton_
-[https://www.karlton.org/2017/12/naming-things-hard/](https://www.karlton.org/2017/12/naming-things-hard/)
+> _There are only two hard things in Computer Science: cache invalidation and naming things._ > _-- Phil Karlton_
+> [https://www.karlton.org/2017/12/naming-things-hard/](https://www.karlton.org/2017/12/naming-things-hard/)
 
 ### Option 1: Origin Acceleration for Dynamic Content
 
@@ -39,7 +41,7 @@ If you intend to also serve static assets behind a CDN, see _Option 2._
 - Reduce the compute capacity required to serve cacheable content
 
 - Improve SEO
-[https://www.semrush.com/blog/how-fast-is-fast-enough-page-load-time-and-your-bottom-line/](https://www.semrush.com/blog/how-fast-is-fast-enough-page-load-time-and-your-bottom-line/)
+  [https://www.semrush.com/blog/how-fast-is-fast-enough-page-load-time-and-your-bottom-line/](https://www.semrush.com/blog/how-fast-is-fast-enough-page-load-time-and-your-bottom-line/)
 
 - Relatively easy to deploy (effectiveness will depend on cache rules and cachabilty of content)
 
@@ -51,7 +53,7 @@ If you intend to also serve static assets behind a CDN, see _Option 2._
 
 - Conceal your origin servers from attackers
 
-- More easily mitigate DoS/DDoS  attacks
+- More easily mitigate DoS/DDoS attacks
 
 #### Cons
 
@@ -115,7 +117,7 @@ Common use-cases include Website Security & Privacy, Dynamics server-side applic
 #### Cons
 
 - There are tons of restrictions on Edge lambda functions intended to ensure they are ultra-performant and do not tax edge locations. Make sure you’re aware of them.
-[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/edge-functions-restrictions.html](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/edge-functions-restrictions.html)
+  [https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/edge-functions-restrictions.html](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/edge-functions-restrictions.html)
 
 - Websites that rely on edge content manipulation will require some compensating controls for local development (harder to test and debug)
 
@@ -124,9 +126,7 @@ Common use-cases include Website Security & Privacy, Dynamics server-side applic
 ## References
 
 - **Lambda@Edge Design Best Practices**
-[https://aws.amazon.com/blogs/networking-and-content-delivery/lambdaedge-design-best-practices/](https://aws.amazon.com/blogs/networking-and-content-delivery/lambdaedge-design-best-practices/)
+  [https://aws.amazon.com/blogs/networking-and-content-delivery/lambdaedge-design-best-practices/](https://aws.amazon.com/blogs/networking-and-content-delivery/lambdaedge-design-best-practices/)
 
 - **Service Quotas (Limitations)**
-[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html)
-
-
+  [https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html)

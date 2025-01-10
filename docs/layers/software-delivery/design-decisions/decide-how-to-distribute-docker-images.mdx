@@ -4,12 +4,18 @@ sidebar_label: "Docker Registry"
 sidebar_position: 100
 refarch_id: REFARCH-91
 description: Choose the right method to distribute Docker images
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 <Intro>
-Choosing the right method to distribute Docker images is crucial for efficient deployment and management.There are various options, including AWS ECR, GitHub Container Registry, DockerHub, Artifactory/Nexus, and self-hosted registries, with multiple advantages and drawbacks.
+  Choosing the right method to distribute Docker images is crucial for efficient
+  deployment and management.There are various options, including AWS ECR, GitHub
+  Container Registry, DockerHub, Artifactory/Nexus, and self-hosted registries,
+  with multiple advantages and drawbacks.
 </Intro>
 
 #### Use AWS ECR
@@ -28,10 +34,6 @@ DockerHub is well suited for public images because it’s the default registry, 
 
 This is more common for traditional artifact storage in Java shops. We don’t see this typically used with Docker, but it is supported.
 
-
-
 #### Self-hosted Registries (e.g. Quay, Docker Registry, etc)
 
 We don’t recommend this approach because, at the very least, we’ll need to use something else like ECR for bootstrapping.
-
-

@@ -55,8 +55,13 @@ From the root account:
    For billing users, you need to enable IAM access. As the root user
    [open up the account settings for AWS Billing](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account),
    then scroll to the section "IAM user and role access to Billing information" and enable it.
-3. ### Enable Regions (Optional)
+1. ### Enable Regions (Optional)
    The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to take extra steps. For details, see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/#optional-enable-regions)
+1. ### Prepare for Account Quota Increase
+   In order to deploy all accounts, you need to request an increase of the Account Quota from AWS support. This requires an AWS Organization to be created first, which we will create with Terraform in the [Deploy Accounts guide](/layers/accounts/deploy-accounts/#-prepare-account-deployment). This request can take a few days to process, so it's important to get it started early so that it doesn't become a blocker.
+
+   At this time we don't need to request the increase, but we should be prepared to do so as soon as the AWS Organization is created.
+
 </Steps>
 
 For more details, see

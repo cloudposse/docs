@@ -4,9 +4,12 @@ sidebar_label: "Branching Strategy"
 confluence:
 sidebar_position: 100
 description: Branching strategies for your software delivery
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Context and Problem Statement
 
@@ -34,7 +37,6 @@ Teams working on projects with a massive codebase, low level of automation, and 
 code coverage and teams with a high percentage of junior devs all benefit from the Gitflow strategy.
 
 However, Gitflow may not be suitable for startups where development speed is the priority.
-
 
 ```mermaid
 ---
@@ -152,6 +154,7 @@ use different flows. However, that often leads to complexity in the CI/CD pipeli
 For these reasons, we recommend a consistent branching strategy, at a minimum on a team level.
 
 ## References
-* [A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/)
-* [Trunk-Based Development vs Git Flow: When to Use Which Development Style](https://blog.mergify.com/trunk-based-development-vs-git-flow-when-to-use-which-development-style/)
-* [Long-lived branches with Gitflow](https://www.thoughtworks.com/radar/techniques/long-lived-branches-with-gitflow)
+
+- [A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/)
+- [Trunk-Based Development vs Git Flow: When to Use Which Development Style](https://blog.mergify.com/trunk-based-development-vs-git-flow-when-to-use-which-development-style/)
+- [Long-lived branches with Gitflow](https://www.thoughtworks.com/radar/techniques/long-lived-branches-with-gitflow)

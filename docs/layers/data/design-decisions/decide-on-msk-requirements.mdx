@@ -3,14 +3,19 @@ title: "Decide on MSK Requirements"
 sidebar_label: "MSK Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-486
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
+
 Requirements for MSK clusters deployed to each active compute environment need to be outlined before an MSK component is configured and deployed.
 
 ## Context
+
 Amazon MSK clusters are going to be used by applications that use Apache Kafka streams.
 
 ## Considered Options
@@ -84,5 +89,3 @@ As a best practice, CloudWatch Logs broker logging should be enabled in order to
 - [https://docs.aws.amazon.com/msk/latest/developerguide/msk-encryption.html](https://docs.aws.amazon.com/msk/latest/developerguide/msk-encryption.html)
 
 - [https://docs.aws.amazon.com/msk/latest/developerguide/msk-default-configuration.html](https://docs.aws.amazon.com/msk/latest/developerguide/msk-default-configuration.html)
-
-

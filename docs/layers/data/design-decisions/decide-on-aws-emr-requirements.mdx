@@ -3,22 +3,27 @@ title: "Decide on AWS EMR Requirements"
 sidebar_label: "AWS EMR Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-490
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem
+
 We need to document the requirements for the EMR cluster.
 
 ## Context
+
 If EMR is presently deployed, the best course of action is to replicate the settings you have (share these details if that’s the case).
 
 ## Considered Options
+
 A list of applications for the cluster. Currently supported options are: Flink, Ganglia, Hadoop, HBase, HCatalog, Hive, Hue, JupyterHub, Livy, Mahout, MXNet, Oozie, Phoenix, Pig, Presto, Spark, Sqoop, TensorFlow, Tez, Zeppelin, and ZooKeeper (as of EMR 5.25.0).
 
 For a full list of supported options, review the EMR module.
 
 ## References
+
 - [https://github.com/cloudposse/terraform-aws-emr-cluster#inputs](https://github.com/cloudposse/terraform-aws-emr-cluster#inputs)
-
-

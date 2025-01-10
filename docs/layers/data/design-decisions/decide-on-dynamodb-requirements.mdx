@@ -3,14 +3,19 @@ title: "Decide on DynamoDB Requirements"
 sidebar_label: "DynamoDB Requirements"
 sidebar_position: 100
 refarch_id: REFARCH-478
+tags:
+  - design-decision
 ---
-import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
 
 ## Problem **DRAFT**
+
 Requirements for DynamoDB tables deployed to each active compute environment need to be outlined before a DynamoDB component is configured and deployed.
 
 ## Context
+
 We need to at a minimum define the following requirements:
 
 - Read/Write capacity Mode (and related settings)
@@ -38,36 +43,36 @@ Currently, DynamoDB tables are used within [CHANGE ME].
 DynamoDB tables use `PAY_PER_REQUEST` billing instead of `PROVISIONED` billing because:
 
 - The DynamoDB is part of a data pipeline where the table IO operations are not entirely predictable, therefore realized
-throughput may be significantly below or above the provisioned throughput throughout the day.
+  throughput may be significantly below or above the provisioned throughput throughout the day.
 
 - The DynamoDB table IO operations are also not entirely consistent, therefore a provisioned capacity table whose
-realized throughput closely meets its provisioned throughput cover a period of one day may not do so the next day.
+  realized throughput closely meets its provisioned throughput cover a period of one day may not do so the next day.
 
 - If the provisioned capacity tables surpass their provisioned throughput, throttling will occur, unless auto-scaling is
-implemented for the DynamoDB table. This involves more machinery and is only warranted for DynamoDB tables whose
-realized throughput is very close to their provisioned throughput, and which need to be able to handle unpredictable
-spikes from time-to-time. This is not cost-effective for a table whose realized throughput does not meet its
-provisioned throughput consistently in the first place.
+  implemented for the DynamoDB table. This involves more machinery and is only warranted for DynamoDB tables whose
+  realized throughput is very close to their provisioned throughput, and which need to be able to handle unpredictable
+  spikes from time-to-time. This is not cost-effective for a table whose realized throughput does not meet its
+  provisioned throughput consistently in the first place.
 
 - Due to the reasons described above, it is more cost-effective to [CHANGE ME: PAY_PER_REQUEST OR PROVISIONED]
 
 Backups (both integrated and via AWS Backup) are configured for DynamoDB as follows:
 
 - Integrated Backup type: in production, the DynamoDB tables have integrated point-in-time-recovery (PITR) backups which
-allow for a to-the-second recovery. The retention period is the maximum PITR retention period, which is 35 days. For
-non-production environments, PITR is disabled. Integrated on-demand backups are not used, because AWS Backup performs
-the same function. Enabling integrated PITR backups alongside AWS Backup allows for the "best of both worlds" for
-DynamoDB backups — that is, the ability to restore to the second for the past 35 days, and to have periodic snapshots
-for a long period of time.
+  allow for a to-the-second recovery. The retention period is the maximum PITR retention period, which is 35 days. For
+  non-production environments, PITR is disabled. Integrated on-demand backups are not used, because AWS Backup performs
+  the same function. Enabling integrated PITR backups alongside AWS Backup allows for the "best of both worlds" for
+  DynamoDB backups — that is, the ability to restore to the second for the past 35 days, and to have periodic snapshots
+  for a long period of time.
 
 - AWS Backup is disabled for non-production environments.
 
 - AWS Backup frequency: the DynamoDB tables are backed up once a month. For simplicity, this is the first day of the
-month.
+  month.
 
 - AWS Backup lifecycle: the DynamoDB tables backups are transitioned to cold storage after some time and are eventually
-deleted. The backup is moved to cold storage after [CHANGE ME] days, and is deleted after [CHANGE ME] days. This leaves a short period
-in the month to restore the table from warm storage, and exactly 3 months in cold storage to recover the table.
+  deleted. The backup is moved to cold storage after [CHANGE ME] days, and is deleted after [CHANGE ME] days. This leaves a short period
+  in the month to restore the table from warm storage, and exactly 3 months in cold storage to recover the table.
 
 [TALK ABOUT WHETHER TTL IS GOING TO BE USED]
 
@@ -99,5 +104,3 @@ Create a DynamoDB component and tune it to the outlined requirements.
 ## References
 
 - [https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html)
-
-
