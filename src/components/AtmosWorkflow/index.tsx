@@ -1,71 +1,32 @@
+// index.tsx
+
 import React, { useEffect, useState } from 'react';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import Note from '@site/src/components/Note';
 import Steps from '@site/src/components/Steps';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
 
-import * as yaml from 'js-yaml';
+import { GetAtmosTerraformCommands } from './utils';
+import { WorkflowStep, WorkflowData } from './types';
+import { WORKFLOWS_DIRECTORY_PATH } from './constants';
 
-// Define constants for the base URL and workflows directory path
-const CLOUDPOSSE_DOCS_URL = 'https://raw.githubusercontent.com/cloudposse/docs/master/';
-const WORKFLOWS_DIRECTORY_PATH = 'examples/snippets/stacks/workflows/';
-
-async function GetAtmosTerraformCommands(workflow: string, fileName: string, stack?: string): Promise<string[] | undefined> {
-  try {
-    // Construct the full URL to the workflow YAML file
-    const url = `${CLOUDPOSSE_DOCS_URL}${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
-
-    // Fetch the workflow file from the constructed URL
-    const response = await fetch(url);
-    if (!response.ok) {
-      console.error('Failed to fetch the file:', response.statusText);
-      console.error('Workflow URL:', url);
-      return undefined;
-    }
-    const fileContent = await response.text();
-
-    // Parse the YAML content
-    const workflows = yaml.load(fileContent) as any;
-
-    // Find the specified workflow in the parsed YAML
-    if (workflows && workflows.workflows && workflows.workflows[workflow]) {
-      const workflowDetails = workflows.workflows[workflow];
-
-      // Extract the commands under that workflow
-      const commands = workflowDetails.steps.map((step: any) => {
-        let command = step.command;
-        // TODO handle nested Atmos Workflows
-        // For example: https://raw.githubusercontent.com/cloudposse/docs/master/examples/snippets/stacks/workflows/identity.yaml
-        if (!step.type) {
-          command = `atmos ${command}`;
-          if (stack) {
-            command += ` -s ${stack}`;
-          }
-        }
-        return command;
-      });
-
-      return commands;
-    }
-
-    // Return undefined if the workflow is not found
-    return undefined;
-  } catch (error) {
-    console.error('Error fetching or parsing the file:', error);
-    return undefined;
-  }
+interface AtmosWorkflowProps {
+  workflow: string;
+  stack?: string;
+  fileName: string;
 }
 
-export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
-  const [commands, setCommands] = useState<string[]>([]);
+export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosWorkflowProps) {
+  const [workflowData, setWorkflowData] = useState<WorkflowData | null>(null);
   const fullFilePath = `${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
 
   useEffect(() => {
-    GetAtmosTerraformCommands(workflow, fileName, stack).then((cmds) => {
-      if (Array.isArray(cmds)) {
-        setCommands(cmds);
+    GetAtmosTerraformCommands(workflow, fileName, stack).then((data) => {
+      if (data) {
+        setWorkflowData(data);
       } else {
-        setCommands([]); // Default to an empty array if cmds is undefined or not an array
+        setWorkflowData(null);
       }
     });
   }, [workflow, fileName, stack]);
@@ -73,24 +34,45 @@ export default function AtmosWorkflow({ workflow, stack = "", fileName }) {
   return (
     <Tabs queryString="workflows">
       <TabItem value="commands" label="Commands">
-        These are the commands included in the <code>{workflow}</code> workflow in the <code>{fullFilePath}</code> file:
+        <Note title={workflow}>
+          These are the commands included in the <code>{workflow}</code> workflow in the{' '}
+          <code>{fullFilePath}</code> file:
+        </Note>
+        {workflowData?.description && (
+          <p className=".workflow-title">
+            {workflowData.description}
+          </p>
+        )}
         <Steps>
           <ul>
-            {commands.length > 0 ? commands.map((cmd, index) => (
-              <li key={index}>
-                <CodeBlock language="bash">
-                  {cmd}
-                </CodeBlock>
-              </li>
-            )) : 'No commands found'}
+            {workflowData?.steps.length ? (
+              workflowData.steps.map((step, index) => (
+                <li key={index}>
+                  {step.type === 'title' ? (
+                    <>
+                      <h4 className=".workflow-title">
+                        {step.content.split('\n\n')[0]}
+                      </h4>
+                      <CodeBlock language="bash">
+                        {step.content.split('\n\n')[1]}
+                      </CodeBlock>
+                    </>
+                  ) : (
+                    <CodeBlock language="bash">{step.content}</CodeBlock>
+                  )}
+                </li>
+              ))
+            ) : (
+              'No commands found'
+            )}
           </ul>
         </Steps>
-        Too many commands? Consider using the Atmos workflow! 🚀
+        <p>Too many commands? Consider using the Atmos workflow! 🚀</p>
       </TabItem>
       <TabItem value="atmos" label="Atmos Workflow">
-        Run the following from your Geodesic shell using the Atmos workflow:
+        <p>Run the following from your Geodesic shell using the Atmos workflow:</p>
         <CodeBlock language="bash">
-          atmos workflow {workflow} -f {fileName} {stack && `-s ${stack}`}
+          {`atmos workflow ${workflow} -f ${fileName} ${stack ? `-s ${stack}` : ''}`}
         </CodeBlock>
       </TabItem>
     </Tabs>
