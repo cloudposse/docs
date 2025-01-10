@@ -57,10 +57,22 @@ export async function GetAtmosTerraformCommands(
         }
       };
 
+      // Group all vendor pull commands together
+      const isVendorWorkflow = workflowDetails.steps.every(step => 
+        step.command.startsWith('vendor pull')
+      );
+
       for (const step of workflowDetails.steps) {
         let command = step.command;
 
-        if (command.trim().startsWith('echo') && step.type === 'shell') {
+        if (isVendorWorkflow) {
+          // Add all vendor commands to a single group
+          let atmosCommand = `atmos ${command}`;
+          if (stack) {
+            atmosCommand += ` -s ${stack}`;
+          }
+          currentGroupCommands.push(atmosCommand);
+        } else if (command.trim().startsWith('echo') && step.type === 'shell') {
           // When we find an echo, add previous group (if any) and start new group
           addGroupToSteps();
           // Store the echo text as the current title
