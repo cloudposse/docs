@@ -73,9 +73,8 @@ export async function GetAtmosTerraformCommands(
           }
           currentGroupCommands.push(atmosCommand);
         } else if (command.trim().startsWith('echo') && step.type === 'shell') {
-          // When we find an echo, add previous group (if any) and start new group
+          // When we find an echo, add previous group and start new group
           addGroupToSteps();
-          // Store the echo text as the current title
           currentTitle = command.replace(/^echo\s+['"](.+)['"]$/, '$1');
         } else if (command.startsWith('workflow')) {
           // For nested workflows, add current group first
@@ -108,9 +107,8 @@ export async function GetAtmosTerraformCommands(
             steps = steps.concat(nestedData.steps);
           }
         } else {
-          // Add command to current group or as individual step
           if (currentTitle) {
-            // We're in a group, add to it
+            // We're in an echo group
             if (step.type === 'shell') {
               const shebang = `#!/bin/bash\n`;
               const titleComment = `# Run the ${step.name || 'script'} Script\n`;
@@ -123,7 +121,7 @@ export async function GetAtmosTerraformCommands(
               currentGroupCommands.push(atmosCommand);
             }
           } else {
-            // No current group, add as individual step
+            // Individual step
             if (step.type === 'shell') {
               const shebang = `#!/bin/bash\n`;
               const titleComment = `# Run the ${step.name || 'script'} Script\n`;
