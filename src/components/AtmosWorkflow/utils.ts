@@ -36,20 +36,39 @@ export async function GetAtmosTerraformCommands(
       visitedWorkflows.add(workflowKey);
 
       let steps: WorkflowStep[] = [];
+      let currentGroupCommands: string[] = [];
+      let currentTitle: string | null = null;
+
+      const addGroupToSteps = () => {
+        if (currentGroupCommands.length > 0) {
+          if (currentTitle) {
+            steps.push({
+              type: 'title',
+              content: `${currentTitle}\n\n${currentGroupCommands.join('\n')}`
+            });
+          } else {
+            steps.push({
+              type: 'command',
+              content: currentGroupCommands.join('\n')
+            });
+          }
+          currentGroupCommands = [];
+          currentTitle = null;
+        }
+      };
 
       for (const step of workflowDetails.steps) {
         let command = step.command;
 
-        if (command.trim().startsWith('echo')) {
-          const titleContent = command
-            .replace(/^echo\s+/, '')
-            .replace(/^['"]|['"]$/g, '')
-            .trim();
-          steps.push({
-            type: 'title',
-            content: titleContent,
-          });
+        if (command.trim().startsWith('echo') && step.type === 'shell') {
+          // When we find an echo, add previous group (if any) and start new group
+          addGroupToSteps();
+          // Store the echo text as the current title
+          currentTitle = command.replace(/^echo\s+['"](.+)['"]$/, '$1');
         } else if (command.startsWith('workflow')) {
+          // For nested workflows, add current group first
+          addGroupToSteps();
+          
           const commandParts = command.split(' ');
           const nestedWorkflowIndex = commandParts.findIndex((part) => part === 'workflow') + 1;
           const nestedWorkflow = commandParts[nestedWorkflowIndex];
@@ -76,26 +95,46 @@ export async function GetAtmosTerraformCommands(
           if (nestedData && nestedData.steps) {
             steps = steps.concat(nestedData.steps);
           }
-        } else if (step.type === 'shell') {
-          const stepName = step.name || 'script';
-          const shebang = `#!/bin/bash\n`;
-          const titleComment = `# Run the ${stepName} Script\n`;
-          const commandWithTitle = `${shebang}${titleComment}${command}`;
-          steps.push({
-            type: 'command',
-            content: commandWithTitle,
-          });
         } else {
-          let atmosCommand = `atmos ${command}`;
-          if (stack) {
-            atmosCommand += ` -s ${stack}`;
+          // Add command to current group or as individual step
+          if (currentTitle) {
+            // We're in a group, add to it
+            if (step.type === 'shell') {
+              const shebang = `#!/bin/bash\n`;
+              const titleComment = `# Run the ${step.name || 'script'} Script\n`;
+              currentGroupCommands.push(`${shebang}${titleComment}${command}`);
+            } else {
+              let atmosCommand = `atmos ${command}`;
+              if (stack) {
+                atmosCommand += ` -s ${stack}`;
+              }
+              currentGroupCommands.push(atmosCommand);
+            }
+          } else {
+            // No current group, add as individual step
+            if (step.type === 'shell') {
+              const shebang = `#!/bin/bash\n`;
+              const titleComment = `# Run the ${step.name || 'script'} Script\n`;
+              steps.push({
+                type: 'command',
+                content: `${shebang}${titleComment}${command}`,
+              });
+            } else {
+              let atmosCommand = `atmos ${command}`;
+              if (stack) {
+                atmosCommand += ` -s ${stack}`;
+              }
+              steps.push({
+                type: 'command',
+                content: atmosCommand,
+              });
+            }
           }
-          steps.push({
-            type: 'command',
-            content: atmosCommand,
-          });
         }
       }
+
+      // Add any remaining grouped commands
+      addGroupToSteps();
 
       return { description: workflowDetails.description, steps };
     }

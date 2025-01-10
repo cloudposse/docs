@@ -49,9 +49,14 @@ export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosW
               workflowData.steps.map((step, index) => (
                 <li key={index}>
                   {step.type === 'title' ? (
-                    <h4 className=".workflow-title">
-                      {step.content}
-                    </h4>
+                    <>
+                      <h4 className=".workflow-title">
+                        {step.content.split('\n\n')[0]}
+                      </h4>
+                      <CodeBlock language="bash">
+                        {step.content.split('\n\n')[1]}
+                      </CodeBlock>
+                    </>
                   ) : (
                     <CodeBlock language="bash">{step.content}</CodeBlock>
                   )}
