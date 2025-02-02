@@ -15,17 +15,17 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.24.8",
-    "@codesweetly/react-youtube-playlist": "^3.0.0",
-    "@docusaurus/core": "^3.4.0",
-    "@docusaurus/mdx-loader": "^3.4.0",
-    "@docusaurus/plugin-client-redirects": "^3.4.0",
-    "@docusaurus/plugin-content-blog": "^3.4.0",
-    "@docusaurus/plugin-content-docs": "^3.4.0",
-    "@docusaurus/plugin-debug": "^3.4.0",
-    "@docusaurus/plugin-google-tag-manager": "^3.4.0",
-    "@docusaurus/plugin-ideal-image": "^3.4.0",
-    "@docusaurus/preset-classic": "^3.4.0",
-    "@docusaurus/theme-mermaid": "^3.4.0",
+    "@codesweetly/react-youtube-playlist": "^2.0.0",
+    "@docusaurus/core": "^3.7.0",
+    "@docusaurus/mdx-loader": "^3.7.0",
+    "@docusaurus/plugin-client-redirects": "^3.7.0",
+    "@docusaurus/plugin-content-blog": "^3.7.0",
+    "@docusaurus/plugin-content-docs": "^3.7.0",
+    "@docusaurus/plugin-debug": "^3.7.0",
+    "@docusaurus/plugin-google-tag-manager": "^3.7.0",
+    "@docusaurus/plugin-ideal-image": "^3.7.0",
+    "@docusaurus/preset-classic": "^3.7.0",
+    "@docusaurus/theme-mermaid": "^3.7.0",
     "@excalidraw/excalidraw": "^0.17.6",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
@@ -72,7 +72,7 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.4.0"
+    "@docusaurus/module-type-aliases": "^3.7.0"
   },
   "browserslist": {
     "production": [
