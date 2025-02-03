@@ -6,6 +6,9 @@ sidebar_position: 1
 
 import Intro from '@site/src/components/Intro';
 import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
 <Intro>
 In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/learn/toolchain/#geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.
@@ -66,81 +69,98 @@ In this tutorial, we'll be running the installed Geodesic `geodesic` to allow us
 
 ## Tutorial
 
-### 1. Install the Geodesic Wrapper Script
+<Steps>
 
-First, at your terminal, let's install the Geodesic shell!
+  <Step>
+    ### <StepNumber/> Install the Geodesic Wrapper Script
 
-```bash
-# Since the "latest" tag changes, ensure we do not have a stale image
-docker image rm cloudposse/geodesic:latest-debian # OK if image not found
-docker run --rm cloudposse/geodesic:latest-debian init | bash
-```
+    First, at your terminal, let's install the Geodesic shell!
 
-The result of running this command should look something like this:
+    ```bash
+    # Since the "latest" tag changes, ensure we do not have a stale image
+    docker image rm cloudposse/geodesic:latest-debian # OK if image not found
+    docker run --rm cloudposse/geodesic:latest-debian init | bash
+    ```
 
-```bash
-# Installing geodesic from cloudposse/geodesic:latest-debian...
-# Installed geodesic to /usr/local/bin/geodesic
-```
+    The result of running this command should look something like this:
 
-### 2. Start the Geodesic Shell
+    ```bash
+    # Installing geodesic from cloudposse/geodesic:latest-debian...
+    # Installed geodesic to /usr/local/bin/geodesic
+    ```
+  </Step>
 
-You should now be able to launch a Geodesic shell just by typing `geodesic` at your terminal:
+  <Step>
+    ### <StepNumber/> Start the Geodesic Shell
 
-```bash
-geodesic
-```
+    You should now be able to launch a Geodesic shell just by typing `geodesic` at your terminal:
 
-![Geodesic Login Shell](/assets/geodesic-login-shell.png)
+    ```bash
+    geodesic
+    ```
 
-Exit it for now by typing `exit` or pressing `logout`.
+    ![Geodesic Login Shell](/assets/geodesic-login-shell.png)
 
-### 2. Download our Tutorial Project
+    Exit it for now by typing `exit` or pressing `logout`.
 
-Great -- we've started up Geodesic so now let's do something with it. How about we pull a terraform project and apply it? To accomplish this, let's do the following:
+  </Step>
 
-# TODO: Continue updates from here
+  <Step>
+    ### <StepNumber/> Download our Tutorial Project
 
-```bash
-# Change to our /localhost directory so that we can pull our project's code to our
-# local machine as well as our docker container
-cd /localhost
+    Great -- we've started up Geodesic so now let's do something with it. How about we pull a terraform project and apply it? To accomplish this, let's do the following:
 
-# Clone our tutorials repository
-git clone https://github.com/cloudposse/tutorials
+  </Step>
 
-# Change to our tutorial code
-cd tutorials/01-geodesic
-```
+  <Step>
+    ### <StepNumber/> TODO: Continue updates from here
 
-Easy! And since we changed into our `/localhost` directory inside Geodesic, the `tutorials` project that we git cloned is available both in the container that we're running our shell in **and** on our local machine in our `$HOME` directory. This enables us to share files between our local machine and our container, which should start to give you an idea of the value of mounting `$HOME` into Geodesic.
+    ```bash
+    # Change to our /localhost directory so that we can pull our project's code to our
+    # local machine as well as our docker container
+    cd /localhost
 
-### 3. Apply our Terraform Project
+    # Clone our tutorials repository
+    git clone https://github.com/cloudposse/tutorials
 
-Now that we've got some code to work with, let's apply it...
+    # Change to our tutorial code
+    cd tutorials/01-geodesic
+    ```
 
-```bash
-# Setup our terraform project
-terraform init
+    Easy! And since we changed into our `/localhost` directory inside Geodesic, the `tutorials` project that we git cloned is available both in the container that we're running our shell in **and** on our local machine in our `$HOME` directory. This enables us to share files between our local machine and our container, which should start to give you an idea of the value of mounting `$HOME` into Geodesic.
 
-# Apply our terraform project
-terraform apply -auto-approve
-```
+  </Step>
+  <Step>
+    ### <StepNumber/> Apply our Terraform Project
 
-Sweet, you should see a successful `terraform apply` with some detailed `output` data on the original star wars hero! 😎
+    Now that we've got some code to work with, let's apply it...
 
-Just to show some simple usage of another tool in the toolbox, how about we parse that data and get that hero's name?
+    ```bash
+    # Setup our terraform project
+    terraform init
 
-### 4. Read some data from our Outputs
+    # Apply our terraform project
+    terraform apply -auto-approve
+    ```
 
-Let's utilize [`jq`](https://github.com/stedolan/jq) to grab some info from that terraform project's output:
+    Sweet, you should see a successful `terraform apply` with some detailed `output` data on the original star wars hero! 😎
 
-```bash
-# Pipe our terraform project's output into jq so we can pull out our hero's name
-terraform output -json | jq .star_wars_data.value.name
-```
+    Just to show some simple usage of another tool in the toolbox, how about we parse that data and get that hero's name?
 
-Again, without having to install anything, we've grabbed a tool from our toolbox and were able to use it without a second thought.
+  </Step>
+  <Step>
+    ### <StepNumber/> Read some data from our Outputs
+
+    Let's utilize [`jq`](https://github.com/stedolan/jq) to grab some info from that terraform project's output:
+
+    ```bash
+    # Pipe our terraform project's output into jq so we can pull out our hero's name
+    terraform output -json | jq .star_wars_data.value.name
+    ```
+
+    Again, without having to install anything, we've grabbed a tool from our toolbox and were able to use it without a second thought.
+  </Step>
+</Steps>
 
 ## Conclusion
 
