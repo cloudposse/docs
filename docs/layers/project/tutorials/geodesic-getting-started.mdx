@@ -4,20 +4,25 @@ description: "Learn what Geodesic is and how you can start using it to simplify 
 sidebar_position: 1
 ---
 
-:::note Geodesic v4 is the current version
+import Intro from '@site/src/components/Intro';
+import Note from '@site/src/components/Note';
+
+<Intro>
+In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/learn/toolchain/#geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.
+
+In this tutorial, we'll walk you through how to use Geodesic to execute Terraform and other tooling. We'll be sure to talk about what is going on under the hood to ensure you're getting the full picture.
+</Intro>
+
+<Note>
+Geodesic v4 is the current version
 This documentation is for Geodesic v4, which is the current version.
 While it is largely the same as earlier versions, there are some significant
 differences, and we have retained documentation on Geodesic v3 for those who
 have yet to make the switch. Please be aware of which version of Geodesic
 and which version of the documentation you are using in case you find
 inconsistencies.
-:::
+</Note>
 
-## Intro
-
-In the landscape of developing infrastructure, there are dozens of tools that we all need on our personal machines to do our jobs. In SweetOps, instead of having you install each tool individually, we use Docker to package all of these tools into one convenient image that you can use as your infrastructure automation toolbox. We call it [Geodesic](/learn/toolchain/#geodesic) and we use it as our DevOps automation shell and as the base Docker image for all of our DevOps scripting / CI jobs.
-
-In this tutorial, we'll walk you through how to use Geodesic to execute Terraform and other tooling. We'll be sure to talk about what is going on under the hood to ensure you're getting the full picture.
 
 ## Prerequisites
 
