@@ -39,8 +39,8 @@ jobs:
       - id: affected
         uses: cloudposse/github-action-atmos-affected-stacks@v4
         with:
-          base-ref: ${{ github.event.pull_request.base.sha }}
-          head-ref: ${{ github.event.pull_request.head.sha }}
+          base-ref: ${{ needs.pr.outputs.base }}
+          head-ref: ${{ needs.pr.outputs.head }}
           atmos-version: ${{ vars.ATMOS_VERSION }}
           atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
     outputs:
