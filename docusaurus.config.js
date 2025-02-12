@@ -112,7 +112,7 @@ async function createConfig() {
                 routeBasePath: '/',
                 sidebarPath: require.resolve('./sidebars.js'),
                 editUrl: ({versionDocsDirPath, docPath, locale}) => {
-                  return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
+                  return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
                 },
                 exclude: ['README.md'],
                 showLastUpdateTime: true,
