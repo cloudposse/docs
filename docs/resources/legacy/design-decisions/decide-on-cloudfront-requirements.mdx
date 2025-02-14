@@ -67,9 +67,10 @@ If you intend to also serve static assets behind a CDN, see _Option 2._
 
 ### Option 2: Origin Acceleration for Static Assets in S3 (e.g. Images, CSS)
 
-The most common pattern we deploy is supporting [https://cloudposse.atlassian.net/wiki/spaces/CP/pages/1225752577](https://cloudposse.atlassian.net/wiki/spaces/CP/pages/1225752577). We’ll need to know if this is a pattern you intend to utilize, as it has an impact on the strategies for CI/CD. Each strategy will at a minimum require a different terraform component.
+The most common pattern we deploy is supporting [`aws-spa-s3-cloudfront`](https://github.com/cloudposse-terraform-components/aws-spa-s3-cloudfront). We’ll need to know if this is a pattern you intend to utilize, as it has an impact on the strategies for CI/CD. Each strategy will at a minimum require a different terraform component.
 
 :::caution
+
 If you intend to serve static assets behind a CDN, this is the only advisable way of doing it. Rolling updates associated with deployments to Kubernetes or ECS means that serving static assets from your application servers will likely yield inconsistent results during deployments.
 
 :::
