@@ -191,9 +191,9 @@ async function createConfig() {
         },
 
         announcementBar: {
-          id: 'new_docs',
+          id: 'quickstart',
           content:
-            'We are in the process of updating our documentation. <a href="mailto:docs@cloudposse.com">Please let us know what you think!</a>',
+          'Missing the <strong>Quickstart</strong> configurations? <a href="/intro/path/">Consider a sponsorship!</a>',
           backgroundColor: 'var(--announcement-bar-background)',
           textColor: 'var(--announcement-bar-text-color)',
           isCloseable: true,
