@@ -37,7 +37,7 @@ deps: init
 	@exit 0
 
 ## Build docker image
-build: export DOCKER_FILE=components/docker/infra-acme/Dockerfile
+build: export DOCKER_FILE=Dockerfile
 build:
 	@$(MAKE) --no-print-directory docker/build
 
