@@ -1,0 +1,6 @@
+import:
+  - orgs/default/test/_defaults
+  - catalog/vpc
+  - catalog/usecase/basic
+  # Import the "disabled" usecase
+  - catalog/usecase/disabled

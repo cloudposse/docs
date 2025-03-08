@@ -1,0 +1,10 @@
+components:
+  terraform:
+    # You can replace example-component with your component name
+    example-component/basic:
+      metadata:
+        # Component name dir should be always `target`
+        component: target
+      vars:
+        enabled: true
+        # Add other inputs that are required for the use case
