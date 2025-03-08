@@ -1,0 +1,9 @@
+components:
+  terraform:
+    # You can replace example-component with your component name
+    example-component/disabled:
+      metadata:
+        component: target
+      vars:
+        # Disable the component
+        enabled: false

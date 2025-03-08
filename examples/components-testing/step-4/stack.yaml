@@ -1,0 +1,5 @@
+import:
+  - orgs/default/test/_defaults
+  - catalog/vpc
+  # Import the usecase
+  - catalog/usecase/basic

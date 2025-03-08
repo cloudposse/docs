@@ -1,0 +1,615 @@
+---
+title: Components Testing
+sidebar_label: Components Testing
+description: 'Our components testing strategy and resources'
+tags:
+  - community
+  - contribute
+  - developer
+---
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import CodeBlock from '@theme/CodeBlock';
+import CollapsibleText from '@site/src/components/CollapsibleText';
+import PillBox from '@site/src/components/PillBox';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import Step3VendorYaml from '@site/examples/components-testing/step-3/vendor.yaml';
+import Step3VpcYaml from '@site/examples/components-testing/step-3/catalog-vpc.yaml';
+import Step3Stack from '@site/examples/components-testing/step-3/stack.yaml';
+
+import Step4UsecaseYaml from '@site/examples/components-testing/step-4/usecase.yaml';
+import Step4Stack from '@site/examples/components-testing/step-4/stack.yaml';
+
+import Step7UsecaseYaml from '@site/examples/components-testing/step-7/usecase.yaml';
+import Step7Stack from '@site/examples/components-testing/step-7/stack.yaml';
+
+## Prerequisites
+<Steps>
+  <Step>
+    ### <StepNumber/> Install Terraform / Tofu
+
+    Ensure you have [Terraform](https://www.terraform.io/downloads.html) or [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Install Atmos
+
+    [Atmos](https://atmos.tools/install/) is a tool for managing Terraform environments.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Install Go Lang
+
+    Go is a programming language that you'll need to run the tests.
+    Download and install Go from the [official Go website](https://golang.org/dl/).
+    Make sure to set up your Go environment correctly by following the [Getting Started with Go](https://golang.org/doc/install/source) guide.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Authenticate on AWS
+
+    Ensure you have the necessary AWS credentials configured on your machine. You can do this by setting up the AWS CLI and running `aws configure`,
+    where you'll input your AWS Access Key, Secret Key, region, and output format.
+    Refer to the [AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for more details.
+  </Step>
+</Steps>
+
+
+## Writing Tests
+<Steps>
+
+<Step>
+  ### <StepNumber/> Copy the test scaffold files
+
+  If you missed the test scaffold files, copy the contents from [this GitHub repository](https://github.com/cloudposse-terraform-components/template/tree/main/test) into your component repository.
+  This will provide you with the necessary structure and example tests to get started.
+  The repo structure should looks like the following:
+
+  ```console
+  ├── src/
+  │   └── main.tf
+  └── test/
+      ├── fixtures/
+      │   ├── stacks/
+      │   |   ├── catalog/
+      │   |   |   ├── usecase/
+      │   |   |   |   ├── basic.yaml
+      │   |   |   |   └── disabled.yaml
+      │   |   |   └── account-map.yaml
+      │   │   └── orgs/default/test/
+      │   |       ├── _defaults.yaml
+      │   |       └── tests.yaml
+      │   ├── atmos.yaml
+      │   └── vendor.yaml
+      ├── component_test.go
+      ├── go.mod
+      └── go.sum
+  ```
+
+</Step>
+
+<Step>
+  ### <StepNumber/> Run Initial Tests
+
+  Navigate to the `tests` directory and run tests in your terminal by running
+
+  <Tabs>
+    <TabItem value="command" label="Command">
+    ```console
+    cd test
+    go test -v -timeout 1h --only-deploy-dependencies
+    ```
+    </TabItem>
+
+    <TabItem value="output" label="Output">
+      <CodeBlock language="console" title="Output">
+          ➜  test git:(main) go test -v -timeout 1h --only-deploy-dependencies
+          === RUN   TestRunSuite
+          2025/03/07 14:13:34 INFO TestRunSuite: setup → started
+          2025/03/07 14:13:34 INFO TestRunSuite: tests will be run in temp directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212
+          2025/03/07 14:13:34 INFO TestRunSuite: terraform state for tests will be saved in state directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212/state
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/bootstrap temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → started
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: vendor dependencies → started
+          TestRunSuite 2025-03-07T14:13:35+01:00 retry.go:91: atmos [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Running command atmos with args [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Processing vendor config file 'vendor.yaml'
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Pulling sources for the component 'account-map' from 'github.com/cloudposse/terraform-aws-components.git//modules/account-map?ref=1.520.0' into 'components/terraform/account-map'
+          2025/03/07 14:13:42 INFO TestRunSuite: vendor dependencies → completed
+          2025/03/07 14:13:42 INFO TestRunSuite: deploy dependencies → started
+          2025/03/07 14:13:42 INFO no dependencies to deploy
+          2025/03/07 14:13:42 INFO TestRunSuite: deploy dependencies → completed
+          2025/03/07 14:13:42 INFO TestRunSuite: setup → completed
+          2025/03/07 14:13:42 WARN TestRunSuite: teardown → skipped
+          --- PASS: TestRunSuite (8.28s)
+          PASS
+          ok      test    9.142s
+      </CodeBlock>
+    </TabItem>
+  </Tabs>
+</Step>
+
+<Step>
+  ### <StepNumber/> Add Dependency
+
+  Identify any additional dependencies your component require. Skip this step if the component don't have any dependencies.
+
+  Add dependency to the vendor file
+  <CodeBlock language="yaml" title="test/fixtures/vendor.yaml">{Step3VendorYaml}</CodeBlock>
+
+  Add atmos component configurations
+  <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/vpc.yaml">{Step3VpcYaml}</CodeBlock>
+
+  Import the dependent component for `default-test` stack
+  <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step3Stack}</CodeBlock>
+
+  Add the dependent component to test suite with go code
+  By default, the test suite will add a unique random value to the `attributes` terraform variable.
+  This is to avoid resoureces naming collision with other tests that are using the same component.
+  But in some cases, you may need to pass unique value to specific input for the component.
+  Check advanced example of the most common use case - dns delegated domain name.
+  <Tabs>
+    <TabItem value="basic" label="Basic">
+    ```go title="test/component_test.go"
+      package test
+
+      import (
+        "testing"
+
+        helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+      )
+
+      type ComponentSuite struct {
+        helper.TestSuite
+      }
+
+      func TestRunSuite(t *testing.T) {
+        suite := new(ComponentSuite)
+
+        // Deploy the dependent vpc component
+        suite.AddDependency(t, "vpc", "default-test", nil)
+
+        helper.Run(t, suite)
+      }
+    ```
+    </TabItem>
+
+    <TabItem value="advanced" label="Advanced">
+      ```go title="test/component_test.go"
+      package test
+
+      import (
+        "testing"
+
+        helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+      )
+
+      type ComponentSuite struct {
+        helper.TestSuite
+      }
+
+      func TestRunSuite(t *testing.T) {
+        suite := new(ComponentSuite)
+
+        subdomain := strings.ToLower(random.UniqueId())
+        inputs := map[string]interface{}{
+          "zone_config": []map[string]interface{}{
+            {
+              "subdomain": subdomain,
+              "zone_name": "components.cptest.test-automation.app",
+            },
+          },
+        }
+        suite.AddDependency(t, "dns-delegated", "default-test", &inputs)
+
+        helper.Run(t, suite)
+      }
+      ```
+    </TabItem>
+  </Tabs>
+
+  Deploy dependencies
+  <Tabs>
+    <TabItem value="command" label="Command">
+    ```console
+    go test -v -timeout 1h --only-deploy-dependencies
+    ```
+    </TabItem>
+
+    <TabItem value="output" label="Output">
+      <CodeBlock language="console" title="Output">
+          === RUN   TestRunSuite
+          2025/03/07 14:13:34 INFO TestRunSuite: setup → started
+          2025/03/07 14:13:34 INFO TestRunSuite: tests will be run in temp directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212
+          2025/03/07 14:13:34 INFO TestRunSuite: terraform state for tests will be saved in state directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212/state
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/bootstrap temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → started
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: vendor dependencies → started
+          TestRunSuite 2025-03-07T14:13:35+01:00 retry.go:91: atmos [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Running command atmos with args [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Processing vendor config file 'vendor.yaml'
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Pulling sources for the component 'account-map' from 'github.com/cloudposse/terraform-aws-components.git//modules/account-map?ref=1.520.0' into 'components/terraform/account-map'
+          2025/03/07 14:13:42 INFO TestRunSuite: vendor dependencies → completed
+          2025/03/07 17:38:24 INFO TestRunSuite: deploy dependencies → started
+          2025/03/07 17:38:24 INFO deploying dependency component=vpc stack=default-test
+          TestRunSuite 2025-03-07T17:38:24+01:00 retry.go:91: atmos [terraform apply vpc -s default-test -input=false -auto-approve -var attributes=["rydpt4"] -no-color -lock=false]
+          TestRunSuite 2025-03-07T17:38:24+01:00 logger.go:67: Running command atmos with args [terraform apply vpc -s default-test -input=false -auto-approve -var attributes=["rydpt4"] -no-color -lock=false]
+                                    ...
+          2025/03/07 17:43:27 INFO TestRunSuite: deploy dependencies → completed
+          2025/03/07 17:43:27 INFO TestRunSuite: setup → completed
+          2025/03/07 17:43:27 WARN TestRunSuite: teardown → skipped
+          --- PASS: TestRunSuite (322.74s)
+          PASS
+          ok      test    324.052s
+      </CodeBlock>
+    </TabItem>
+  </Tabs>
+
+
+</Step>
+
+<Step>
+  ### <StepNumber/> Add Test Usecase
+
+  Add atmos configuration for the component usecase
+  <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/basic.yaml">{Step4UsecaseYaml}</CodeBlock>
+
+  Import the usecase for `default-test` stack
+  <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step4Stack}</CodeBlock>
+
+  Write test
+  ```go title="test/component_test.go"
+  package test
+
+  import (
+    "testing"
+
+    helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+  )
+
+  type ComponentSuite struct {
+    helper.TestSuite
+  }
+
+  func TestRunSuite(t *testing.T) {
+    suite := new(ComponentSuite)
+
+    suite.AddDependency(t, "vpc", "default-test", nil)
+
+    helper.Run(t, suite)
+  }
+
+  func (s *ComponentSuite) TestBasic() {
+    const component = "example-component/basic"
+    const stack = "default-test"
+    const awsRegion = "us-east-2"
+
+    // How to read outputs from the dependent component
+    // vpcOptions, err := s.GetAtmosOptions("vpc", stack, nil)
+    // id := atmos.Output(s.T(), vpcOptions, "id")
+
+    inputs := map[string]interface{}{
+      // Add other inputs that are required for the use case
+    }
+
+    defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
+    options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+    assert.NotNil(s.T(), options)
+  }
+  ```
+
+  Deploy test component
+  <Tabs>
+    <TabItem value="command" label="Command">
+    ```console
+    go test -v -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component --skip-teardown
+    ```
+    </TabItem>
+
+    <TabItem value="output" label="Output">
+      <CodeBlock language="console" title="Output">
+          === RUN   TestRunSuite
+          2025/03/07 14:13:34 INFO TestRunSuite: setup → started
+          2025/03/07 14:13:34 INFO TestRunSuite: tests will be run in temp directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212
+          2025/03/07 14:13:34 INFO TestRunSuite: terraform state for tests will be saved in state directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212/state
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/bootstrap temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → started
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: vendor dependencies → started
+          TestRunSuite 2025-03-07T14:13:35+01:00 retry.go:91: atmos [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Running command atmos with args [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Processing vendor config file 'vendor.yaml'
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Pulling sources for the component 'account-map' from 'github.com/cloudposse/terraform-aws-components.git//modules/account-map?ref=1.520.0' into 'components/terraform/account-map'
+          2025/03/07 14:13:42 INFO TestRunSuite: vendor dependencies → completed
+          2025/03/07 17:38:24 INFO TestRunSuite: deploy dependencies → skipped
+          2025/03/07 17:43:27 INFO TestRunSuite: setup → completed
+          ...
+          2025/03/07 17:43:27 WARN TestRunSuite: teardown → skipped
+          --- PASS: TestRunSuite (322.74s)
+              --- PASS: TestRunSuite/TestBasic (3.19s)
+          PASS
+          ok      test    324.052s
+      </CodeBlock>
+    </TabItem>
+  </Tabs>
+</Step>
+
+<Step>
+  ### <StepNumber/> Add Asserts
+
+  Within your test, include assertions to validate the expected outcomes. Use Go's testing package to assert conditions that must
+  be true for the test to pass. This will help ensure that your component behaves as expected.
+
+  ```go  title="test/component_test.go"
+  package test
+
+  import (
+    "testing"
+
+    "github.com/cloudposse/test-helpers/pkg/atmos"
+    helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+    "github.com/stretchr/testify/assert"
+  )
+
+  type ComponentSuite struct {
+    helper.TestSuite
+  }
+
+  func TestRunSuite(t *testing.T) {
+    suite := new(ComponentSuite)
+
+    suite.AddDependency(t, "vpc", "default-test", nil)
+
+    helper.Run(t, suite)
+  }
+
+  func (s *ComponentSuite) TestBasic() {
+    const component = "example-component/basic"
+    const stack = "default-test"
+    const awsRegion = "us-east-2"
+
+    // How to read outputs from the dependent component
+    // vpcOptions, err := s.GetAtmosOptions("vpc", stack, nil)
+    // id := atmos.Output(s.T(), vpcOptions, "id")
+
+    inputs := map[string]interface{}{
+      // Add other inputs that are required for the use case
+    }
+
+    defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
+    options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+    assert.NotNil(s.T(), options)
+
+    // How to read string output from the component
+    output1 := atmos.Output(s.T(), options, "output_name_1")
+    assert.Equal(s.T(), "expected_value_1", output1)
+
+    // How to read list of strings output from the component
+    output2 := atmos.OutputList(s.T(), options, "output_name_2")
+    assert.Equal(s.T(), "expected_value_2", output2[0])
+    assert.ElementsMatch(s.T(), ["expected_value_2"], output2)
+
+    // How to read map of objects output from the component
+    output3 := atmos.OutputMapOfObjects(s.T(), options, "output_name_3")
+    assert.Equal(s.T(), "expected_value_3", output3["key"])
+
+    // How to read struct output from the component
+    type outputStruct struct {
+        keyName                     string `json:"key"`
+    }
+    output4 := outputStruct{}
+    atmos.OutputStruct(s.T(), options, "output_name_4", &output4)
+    assert.Equal(s.T(), "expected_value_4", output4["keyName"])
+  }
+
+  ```
+
+  Run test
+  <Tabs>
+    <TabItem value="command" label="Command">
+    ```console
+    go test -v -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component --skip-teardown
+    ```
+    </TabItem>
+
+    <TabItem value="output" label="Output">
+      <CodeBlock language="console" title="Output">
+          === RUN   TestRunSuite
+          2025/03/07 14:13:34 INFO TestRunSuite: setup → started
+          2025/03/07 14:13:34 INFO TestRunSuite: tests will be run in temp directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212
+          2025/03/07 14:13:34 INFO TestRunSuite: terraform state for tests will be saved in state directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212/state
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/bootstrap temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → started
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: vendor dependencies → started
+          TestRunSuite 2025-03-07T14:13:35+01:00 retry.go:91: atmos [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Running command atmos with args [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Processing vendor config file 'vendor.yaml'
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Pulling sources for the component 'account-map' from 'github.com/cloudposse/terraform-aws-components.git//modules/account-map?ref=1.520.0' into 'components/terraform/account-map'
+          2025/03/07 14:13:42 INFO TestRunSuite: vendor dependencies → completed
+          2025/03/07 17:38:24 INFO TestRunSuite: deploy dependencies → skipped
+          2025/03/07 17:43:27 INFO TestRunSuite: setup → completed
+          ...
+          2025/03/07 17:43:27 WARN TestRunSuite: teardown → skipped
+          --- PASS: TestRunSuite (322.74s)
+              --- PASS: TestRunSuite/TestBasic (3.19s)
+          PASS
+          ok      test    324.052s
+      </CodeBlock>
+    </TabItem>
+  </Tabs>
+
+</Step>
+
+<Step>
+  ### <StepNumber/> Add drifting test
+
+  The drifting test ensures that the component is not change any resources on rerun with the same inputs.
+
+  Add a "drifting test" check
+
+```go title="test/component_test.go"
+func (s *ComponentSuite) TestBasic() {
+  const component = "example-component/basic"
+  const stack = "default-test"
+  const awsRegion = "us-east-2"
+
+  inputs := map[string]interface{}{}
+
+  defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
+  options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+  assert.NotNil(s.T(), options)
+
+  // ...
+
+  // Just add this line to the check for drift
+  s.DriftTest(component, stack, &inputs)
+}
+```
+
+  Run test
+  <Tabs>
+    <TabItem value="command" label="Command">
+    ```console
+    go test -v -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component --skip-teardown
+    ```
+    </TabItem>
+
+    <TabItem value="output" label="Output">
+      <CodeBlock language="console" title="Output">
+          === RUN   TestRunSuite
+          2025/03/07 14:13:34 INFO TestRunSuite: setup → started
+          2025/03/07 14:13:34 INFO TestRunSuite: tests will be run in temp directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212
+          2025/03/07 14:13:34 INFO TestRunSuite: terraform state for tests will be saved in state directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212/state
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/bootstrap temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → started
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: vendor dependencies → started
+          TestRunSuite 2025-03-07T14:13:35+01:00 retry.go:91: atmos [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Running command atmos with args [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Processing vendor config file 'vendor.yaml'
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Pulling sources for the component 'account-map' from 'github.com/cloudposse/terraform-aws-components.git//modules/account-map?ref=1.520.0' into 'components/terraform/account-map'
+          2025/03/07 14:13:42 INFO TestRunSuite: vendor dependencies → completed
+          2025/03/07 17:38:24 INFO TestRunSuite: deploy dependencies → skipped
+          2025/03/07 17:43:27 INFO TestRunSuite: setup → completed
+          ...
+          2025/03/07 17:43:27 WARN TestRunSuite: teardown → skipped
+          --- PASS: TestRunSuite (322.74s)
+              --- PASS: TestRunSuite/TestBasic (3.19s)
+          PASS
+          ok      test    324.052s
+      </CodeBlock>
+    </TabItem>
+  </Tabs>
+
+</Step>
+
+<Step>
+  ### <StepNumber/> Test "disabled" usecase
+
+  All components should avoid creating any resources if the `enabled` input is set to `false`.
+
+  Add atmos configuration for the component usecase
+  <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/disabled.yaml">{Step7UsecaseYaml}</CodeBlock>
+
+  Import the usecase for `default-test` stack
+  <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step7Stack}</CodeBlock>
+
+  Add a "disabled" usecase test
+
+```go title="test/component_test.go"
+// ...
+
+func (s *ComponentSuite) TestEnabledFlag() {
+  const component = "example-component/disabled"
+  const stack = "default-test"
+  s.VerifyEnabledFlag(component, stack, nil)
+}
+```
+
+  Run test
+  <Tabs>
+    <TabItem value="command" label="Command">
+    ```console
+    go test -v -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component --skip-teardown
+    ```
+    </TabItem>
+
+    <TabItem value="output" label="Output">
+      <CodeBlock language="console" title="Output">
+          === RUN   TestRunSuite
+          2025/03/07 14:13:34 INFO TestRunSuite: setup → started
+          2025/03/07 14:13:34 INFO TestRunSuite: tests will be run in temp directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212
+          2025/03/07 14:13:34 INFO TestRunSuite: terraform state for tests will be saved in state directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212/state
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/bootstrap temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → started
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: vendor dependencies → started
+          TestRunSuite 2025-03-07T14:13:35+01:00 retry.go:91: atmos [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Running command atmos with args [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Processing vendor config file 'vendor.yaml'
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Pulling sources for the component 'account-map' from 'github.com/cloudposse/terraform-aws-components.git//modules/account-map?ref=1.520.0' into 'components/terraform/account-map'
+          2025/03/07 14:13:42 INFO TestRunSuite: vendor dependencies → completed
+          2025/03/07 17:38:24 INFO TestRunSuite: deploy dependencies → skipped
+          2025/03/07 17:43:27 INFO TestRunSuite: setup → completed
+          ...
+          2025/03/07 17:43:27 WARN TestRunSuite: teardown → skipped
+          --- PASS: TestRunSuite (322.74s)
+              --- PASS: TestRunSuite/TestBasic (3.19s)
+              --- PASS: TestRunSuite/TestEnabledFlag (1.02s)
+          PASS
+          ok      test    324.052s
+      </CodeBlock>
+    </TabItem>
+  </Tabs>
+</Step>
+
+<Step>
+  ### <StepNumber/> Tear down resources
+
+  Tear down the test environment
+
+  <Tabs>
+    <TabItem value="command" label="Command">
+    ```console
+    go test -v -timeout 1h --skip-deploy-dependencies
+    ```
+    </TabItem>
+
+    <TabItem value="output" label="Output">
+      <CodeBlock language="console" title="Output">
+          === RUN   TestRunSuite
+          2025/03/07 14:13:34 INFO TestRunSuite: setup → started
+          2025/03/07 14:13:34 INFO TestRunSuite: tests will be run in temp directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212
+          2025/03/07 14:13:34 INFO TestRunSuite: terraform state for tests will be saved in state directory path=/var/folders/1l/hcm6nfms6g58mdrpwcxklsvh0000gn/T/atmos-test-helper3047340212/state
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/bootstrap temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → started
+          2025/03/07 14:13:34 INFO TestRunSuite: setup/copy component to temp dir → completed
+          2025/03/07 14:13:34 INFO TestRunSuite: vendor dependencies → started
+          TestRunSuite 2025-03-07T14:13:35+01:00 retry.go:91: atmos [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Running command atmos with args [vendor pull]
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Processing vendor config file 'vendor.yaml'
+          TestRunSuite 2025-03-07T14:13:35+01:00 logger.go:67: Pulling sources for the component 'account-map' from 'github.com/cloudposse/terraform-aws-components.git//modules/account-map?ref=1.520.0' into 'components/terraform/account-map'
+          2025/03/07 14:13:42 INFO TestRunSuite: vendor dependencies → completed
+          2025/03/07 17:38:24 INFO TestRunSuite: deploy dependencies → completed
+          2025/03/07 17:43:27 INFO TestRunSuite: setup → completed
+          ...
+          2025/03/07 17:43:27 WARN TestRunSuite: teardown → completed
+          --- PASS: TestRunSuite (322.74s)
+              --- PASS: TestRunSuite/TestBasic (3.19s)
+              --- PASS: TestRunSuite/TestEnabledFlag (1.02s)
+          PASS
+          ok      test    324.052s
+      </CodeBlock>
+    </TabItem>
+  </Tabs>
+
+</Step>
+
+</Steps>
+
