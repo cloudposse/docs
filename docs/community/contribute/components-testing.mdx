@@ -166,6 +166,11 @@ import Step7Stack from '@site/examples/components-testing/step-7/stack.yaml';
       type ComponentSuite struct {
         helper.TestSuite
       }
+      
+      func (s *ComponentSuite) TestBasic() {
+        // Add empty test
+        // Suite setup would not be executed without at least one test
+      }
 
       func TestRunSuite(t *testing.T) {
         suite := new(ComponentSuite)
