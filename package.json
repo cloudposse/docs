@@ -32,12 +32,14 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@heroicons/react": "^2.2.0",
     "@iconify-json/carbon": "^1.1.37",
     "@iconify-json/hugeicons": "^1.1.1",
     "@iconify-json/ic": "^1.1.18",
     "@iconify/react": "^5.0.2",
     "@iconify/utils": "^2.1.30",
     "@mdx-js/react": "^3.0.1",
+    "@tailwindcss/postcss": "^4.0.14",
     "asciinema-player": "^3.8.0",
     "aws-react-icons": "^2.1.1",
     "clsx": "^2.1.1",
@@ -72,7 +74,10 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.4.0"
+    "@docusaurus/module-type-aliases": "^3.4.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.14"
   },
   "browserslist": {
     "production": [
