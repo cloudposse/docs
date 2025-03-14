@@ -2,5 +2,13 @@
   {
       "from": "/reference-architecture",
       "to": "/learn"
-  }
+  },
+  {
+      "from": "/quickstart/support/",
+      "to": "/support"
+  },
+  {
+    "from": "/jumpstart/support/",
+    "to": "/support"
+}
 ]
