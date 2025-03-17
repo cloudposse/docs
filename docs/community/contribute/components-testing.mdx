@@ -25,6 +25,15 @@ import Step4Stack from '@site/examples/components-testing/step-4/stack.yaml';
 
 import Step7UsecaseYaml from '@site/examples/components-testing/step-7/usecase.yaml';
 import Step7Stack from '@site/examples/components-testing/step-7/stack.yaml';
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+  This documentation will guide you through our comprehensive strategy for testing Terraform components, provide step-by-step instructions and practical examples to help you validate your component configurations effectively. Whether you’re setting up initial tests, adding dependencies, or verifying output assertions, you’ll find the resources you need to ensure robust and reliable deployments.
+</Intro>
+## Context
+Our component testing strategy is a direct outcome of [our migration to a dedicated GitHub Organization for components](/components/#terraform-component-github-repository-has-moved). This separation allows each component to live in its own repository, enabling independent versioning and testing. It not only improves the reliability of each component but also empowers the community to contribute via pull requests confidently. With integrated testing for every PR, we can ensure high quality and build trust in each contribution.
+
+For more information on building and maintaining components, please refer to our [Component Development Guide](/learn/component-development/), which provides detailed insights into best practices, design principles, and the overall process of component development.
 
 ## Prerequisites
 <Steps>
@@ -94,7 +103,7 @@ import Step7Stack from '@site/examples/components-testing/step-7/stack.yaml';
 <Step>
   ### <StepNumber/> Run Initial Tests
 
-  Navigate to the `tests` directory and run tests in your terminal by running
+  Navigate to the `test` directory and run tests in your terminal by running
 
   <Tabs>
     <TabItem value="command" label="Command">
@@ -136,7 +145,7 @@ import Step7Stack from '@site/examples/components-testing/step-7/stack.yaml';
 <Step>
   ### <StepNumber/> Add Dependency
 
-  Identify any additional dependencies your component require. Skip this step if the component don't have any dependencies.
+  Identify any additional dependencies your component require. Skip this step if the component doesn't have any dependencies.
 
   Add dependency to the vendor file
   <CodeBlock language="yaml" title="test/fixtures/vendor.yaml">{Step3VendorYaml}</CodeBlock>
