@@ -42,7 +42,7 @@ const ActionCard = ({ title = "Ready to learn this topic?",
   return (
     <div className="action-card">
       <h2>{title}</h2>
-      <div>{children}</div>
+      <div className="block">{children}</div>
       {primaryLink && (
         <PrimaryCTA to={primaryLink}>
           {primaryText}
