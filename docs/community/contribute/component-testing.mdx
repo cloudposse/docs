@@ -1,7 +1,7 @@
 ---
-title: Components Testing
-sidebar_label: Components Testing
-description: 'Our components testing strategy and resources'
+title: Component Testing
+sidebar_label: Component Testing
+description: 'Our guide for implementing automated component testing with Terratest'
 tags:
   - community
   - contribute
@@ -16,15 +16,15 @@ import PillBox from '@site/src/components/PillBox';
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-import Step3VendorYaml from '@site/examples/components-testing/step-3/vendor.yaml';
-import Step3VpcYaml from '@site/examples/components-testing/step-3/catalog-vpc.yaml';
-import Step3Stack from '@site/examples/components-testing/step-3/stack.yaml';
+import Step3VendorYaml from '@site/examples/component-testing/step-3/vendor.yaml';
+import Step3VpcYaml from '@site/examples/component-testing/step-3/catalog-vpc.yaml';
+import Step3Stack from '@site/examples/component-testing/step-3/stack.yaml';
 
-import Step4UsecaseYaml from '@site/examples/components-testing/step-4/usecase.yaml';
-import Step4Stack from '@site/examples/components-testing/step-4/stack.yaml';
+import Step4UsecaseYaml from '@site/examples/component-testing/step-4/usecase.yaml';
+import Step4Stack from '@site/examples/component-testing/step-4/stack.yaml';
 
-import Step7UsecaseYaml from '@site/examples/components-testing/step-7/usecase.yaml';
-import Step7Stack from '@site/examples/components-testing/step-7/stack.yaml';
+import Step7UsecaseYaml from '@site/examples/component-testing/step-7/usecase.yaml';
+import Step7Stack from '@site/examples/component-testing/step-7/stack.yaml';
 import Intro from '@site/src/components/Intro';
 
 <Intro>
@@ -50,7 +50,7 @@ For more information on building and maintaining components, please refer to our
   </Step>
 
   <Step>
-    ### <StepNumber/> Install Go Lang
+    ### <StepNumber/> Install Golang
 
     Go is a programming language that you'll need to run the tests.
     Download and install Go from the [official Go website](https://golang.org/dl/).
@@ -67,11 +67,11 @@ For more information on building and maintaining components, please refer to our
 </Steps>
 
 
-## Tests framework
+## Test Framework
 
 Component testing framework assumes that each component's repo structure follows the convention when all component terraform source code
 would be stored in `src` directory and everything related to tests will be placed in `test` directory.
-Tests consists of two coupled parts - atmos configuration fixtures and tests written on go code.
+Tests consists of two coupled parts - atmos configuration fixtures and tests written on Go code.
 Repo structure should be simular to this one:
 
 ```console
@@ -134,7 +134,7 @@ This files and directories contains custom configurations specific for a testing
 6. `stacks/orgs/default/test/tests.yaml` - Include all dependencies and uscases configurations to deploy them for `default-test` stack
 </Steps>
 
-### Tests go code
+### Tests (Golang)
 
 Component tests are writen on go lang as this general purpose language is standard defacto for cloud compute engineering
 Under the hood tests uses several libraries with helper functions
@@ -218,7 +218,7 @@ func (s *ComponentSuite) TestEnabledFlag() {
 
 ### CLI Flags cheatsheet
 
-Test suite run will pass the following phases:
+A test suite run consists of the following phases all of which can be controlled by passing flags:
 
 | Phase      | Description                               |         Skip flag          |
 |------------|-------------------------------------------|----------------------------|
@@ -339,11 +339,11 @@ Here is the usefull combination of flags.
   Import the dependent component for `default-test` stack
   <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step3Stack}</CodeBlock>
 
-  Add the dependent component to test suite with go code
+  Add the dependent component to test suite with Go code
   By default, the test suite will add a unique random value to the `attributes` terraform variable.
-  This is to avoid resoureces naming collision with other tests that are using the same component.
+  This is to avoid resource naming collisions with other tests that are using the same component.
   But in some cases, you may need to pass unique value to specific input for the component.
-  Check advanced example of the most common use case - dns delegated domain name.
+  Check out the advanced example for the most common use-case with the `dns-delegated` domain name.
   <Tabs>
     <TabItem value="basic" label="Basic">
     ```go title="test/component_test.go"
@@ -707,7 +707,7 @@ func (s *ComponentSuite) TestBasic() {
 </Step>
 
 <Step>
-  ### <StepNumber/> Test "disabled" usecase
+  ### <StepNumber/> Test "disabled" Use-case
 
   All components should avoid creating any resources if the `enabled` input is set to `false`.
 
