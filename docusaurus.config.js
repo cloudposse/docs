@@ -101,6 +101,17 @@ async function createConfig() {
         },
       ],
       redirectsPlugin,
+      async function AddTailwindCSS(context, options) {
+        return {
+          name: "docusaurus-tailwindcss",
+          configurePostCss(postcssOptions) {
+            // Appends TailwindCSS and AutoPrefixer.
+            postcssOptions.plugins.push(require("@tailwindcss/postcss"));
+            postcssOptions.plugins.push(require("autoprefixer"));
+            return postcssOptions;
+          },
+        };
+      },
     ],
 
     presets: [
@@ -182,8 +193,8 @@ async function createConfig() {
               position: 'right',
             },
             {
-              to: 'https://cloudposse.com/',
-              label: 'Get a Jumpstart',
+              to: '/support',
+              label: 'Get Support',
               position: 'right',
               className: 'button button--primary navbar-cta-button'
             },
@@ -193,7 +204,7 @@ async function createConfig() {
         announcementBar: {
           id: 'quickstart',
           content:
-          'Missing the <strong>Quickstart</strong> configurations? <a href="/intro/path/">Consider a sponsorship!</a>',
+          'Missing the <strong>Quickstart</strong> configurations? <a href="/intro/path/">Start here!</a>',
           backgroundColor: 'var(--announcement-bar-background)',
           textColor: 'var(--announcement-bar-text-color)',
           isCloseable: true,
