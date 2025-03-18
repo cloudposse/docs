@@ -89,13 +89,13 @@ component-root/
 
 Atmos configuration fixtures provides minimal settings to deploy the component and it's dependencies on test account during test run.
 
-The difference with a regual atmos configuration are:
+The difference with a regular atmos configuration are:
 
 <Steps>
 1. All components deployed on one stack `default-test` in one `us-east-2` region.
-2. Use single aws account for all test resources. If component assumes the cross region or cross account interaction, the configuration still deploies it to the same actual aws account.
+2. Use single aws account for all test resources. If component assumes the cross region or cross account interaction, the configuration still deploys it to the same actual aws account.
 3. Mock `account-map` component to skip role assuming and always use current AWS credentials provided with environment variables
-4. Configure teraform state files storaget to local directory at a path provided by test framework with environment variable `COMPONENT_HELPER_STATE_DIR`
+4. Configure teraform state files storage to local directory at a path provided by test framework with environment variable `COMPONENT_HELPER_STATE_DIR`
 </Steps>
 
 This configuration is common for all components and could be copied from [template repo](https://github.com/cloudposse-terraform-components/template/tree/main/test).
@@ -117,11 +117,11 @@ fixtures/
 └── vendor.yaml
 ```
 
-For most components avoid any changes this files
+For most components, avoid any changes to these files
 <Steps>
 1. `atmos.yaml` - shared atmos config common for all test cases
 2. `stacks/catalog/account-map.yaml` - Mock `account-map` configuration makes any environment/stack/tenant to be backed with the signle AWS test account
-3. `stacks/orgs/default/test/_defaults.yaml` - Configurate terraform state backend to local directory and define shared varibles for `default-test`
+3. `stacks/orgs/default/test/_defaults.yaml` - Configure terraform state backend to local directory and define shared variables for `default-test`
 </Steps>
 
 This files and directories contains custom configurations specific for a testing component:
