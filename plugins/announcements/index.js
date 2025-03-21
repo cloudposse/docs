@@ -3,15 +3,15 @@ const fs = require('fs');
 const matter = require('gray-matter');
 
 function getAnnouncements() {
-  const announcementsDir = path.join(__dirname, '../../docs/community/announcements');
+  const announcementsDir = path.join(__dirname, '../../docs/announcements');
   const files = fs.readdirSync(announcementsDir);
 
   return files
-    .filter(file => file.endsWith('.md') && file !== 'index.md')
+    .filter(file => file.endsWith('.mdx') && file !== 'announcements.mdx')
     .map(file => {
       const content = fs.readFileSync(path.join(announcementsDir, file), 'utf8');
       const { data, content: markdown } = matter(content);
-      const id = file.replace('.md', '');
+      const id = file.replace('.mdx', '');
 
       // Extract intro from the markdown content
       // Look for content between <Intro> and </Intro> after the import statement
@@ -23,7 +23,7 @@ function getAnnouncements() {
         title: data.title,
         date: data.date,
         intro,
-        permalink: `/community/announcements/${id}`,
+        permalink: `/announcements/${id}`,
       };
     })
     .sort((a, b) => new Date(b.date) - new Date(a.date));
