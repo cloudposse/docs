@@ -156,9 +156,6 @@ async function createConfig() {
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
         metadata: [{ name: 'google-site-verification', content: process.env.GOOGLE_SITE_VERIFICATION_ID || 'preview-local' }],
-        customFields: {
-          announcements: [], // This will be populated by the announcements plugin
-        },
         docs: {
           sidebar: {
             hideable: true,
