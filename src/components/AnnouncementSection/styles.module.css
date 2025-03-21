@@ -1,0 +1,23 @@
+.section {
+  margin-top: 75px;
+  margin-bottom: 100px;
+  background: var(--ifm-background-surface-color);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--ifm-heading-color);
+}
+
+.grid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: auto auto;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: auto;
+  }
+} 

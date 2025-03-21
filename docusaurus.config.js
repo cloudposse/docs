@@ -78,6 +78,7 @@ async function createConfig() {
         }
       ],
       path.resolve(__dirname, 'plugins/custom-loaders'),
+      path.resolve(__dirname, 'plugins/announcements'),
       metadataPlugin,
       [
         "posthog-docusaurus",
@@ -129,7 +130,8 @@ async function createConfig() {
                 showLastUpdateTime: true,
                 showLastUpdateAuthor: true,
                 onInlineTags: 'warn',
-                tags: 'tags.yml'
+                tags: 'tags.yml',
+                include: ['**/*.md', '**/*.mdx', 'announcements/**/*.md']
             },
             theme: {
                 customCss: customCssFiles,
