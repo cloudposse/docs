@@ -556,6 +556,15 @@ module.exports = {
               dirName: 'community/contribute',
           }
         ]
+      },
+      {
+        type: 'category',
+        label: 'Announcements',
+        className: 'sidebar-title',
+        collapsible: false,
+        collapsed: false,
+        link: {type: 'doc', id: 'community/announcements/announcements'},
+        items: []
       }
-  ],
+    ],
 };

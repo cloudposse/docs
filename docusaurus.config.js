@@ -78,6 +78,7 @@ async function createConfig() {
         }
       ],
       path.resolve(__dirname, 'plugins/custom-loaders'),
+      path.resolve(__dirname, 'plugins/announcements'),
       metadataPlugin,
       [
         "posthog-docusaurus",
@@ -129,7 +130,8 @@ async function createConfig() {
                 showLastUpdateTime: true,
                 showLastUpdateAuthor: true,
                 onInlineTags: 'warn',
-                tags: 'tags.yml'
+                tags: 'tags.yml',
+                include: ['**/*.md', '**/*.mdx', 'announcements/**/*.md']
             },
             theme: {
                 customCss: customCssFiles,
@@ -154,6 +156,9 @@ async function createConfig() {
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
         metadata: [{ name: 'google-site-verification', content: process.env.GOOGLE_SITE_VERIFICATION_ID || 'preview-local' }],
+        customFields: {
+          announcements: [], // This will be populated by the announcements plugin
+        },
         docs: {
           sidebar: {
             hideable: true,
