@@ -557,5 +557,5 @@ module.exports = {
           }
         ]
       }
-    ]
+  ],
 };
