@@ -1,0 +1,45 @@
+---
+title: Components Testing Project
+authors: [osterman]
+tags: [testing, components, automation]
+---
+
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+We're excited to announce the completion of the second phase of our Component Testing project, which has added automated testing for 27 components. This milestone follows our successful migration of 160+ Terraform Components from a monorepo to individual repositories, making them more maintainable and testable.
+</Intro>
+
+Hello SweetOps!
+
+A few months ago, we embarked on a MASSIVE project to enable Component Testing.
+
+The goal is to improve the stability of our components, detect and fix integration errors, and pave the way for confident delivery of new features. In the first phase, we split the `cloudposse/terraform-aws-components` monorepo consisting of 160+ Terraform Components into individual repositories in the `cloudposse-terraform-components` GitHub organization. We updated the `cloudposse/github-action-atmos-component-updater` GitHub action to rewrite URLs in component manifests automatically, allowing you to smoothly migrate to new repositories.
+
+## Current Status
+
+Today, we are happy to announce that we have completed the second phase of this project - "Added automated testing for the first 27 components". Hopefully, you are already using components from the new organization. 
+
+The complete list of covered components can be found [here](https://github.com/orgs/cloudposse-terraform-components/projects/1/views/3).
+
+We have also developed a testing framework, templates, and a step-by-step guide on writing component tests. You can follow the project status on [this board](https://github.com/orgs/cloudposse-terraform-components/projects/1/views/1).
+
+We invite everyone to contribute to this project.
+
+Please like the "Add component tests" issue in the corresponding component repository for which you are interested in prioritizing test coverage. If you want to contribute more, we have the opportunity.
+
+## How can you help?
+
+We really need help writing tests.
+
+You can take any "Add component tests" issue with the "Good First Question" label and contribute to the test following our [documentation](https://docs.cloudposse.com/community/contribute/component-testing/).
+
+We will prioritize reviewing your PRs and assist you with LGTM as soon as possible. Feel free to write to `@Erik Osterman` or `@Igor Rodionov` with any questions or feedback.
+
+Best regards,
+
+Erik Osterman, Founder & CEO
+
+Cloud Posse
+
+P.S.: Huge thanks to `@RoseSecurity` for the first community-driven component test contribution [here](https://github.com/cloudposse-terraform-components/aws-vpc/pull/25).
