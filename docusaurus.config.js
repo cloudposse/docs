@@ -120,16 +120,27 @@ async function createConfig() {
         /** @type {import('@docusaurus/preset-classic').Options} */
         ({
             docs: {
-                routeBasePath: '/',
-                sidebarPath: require.resolve('./sidebars.js'),
-                editUrl: ({versionDocsDirPath, docPath, locale}) => {
-                  return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
-                },
-                exclude: ['README.md'],
-                showLastUpdateTime: true,
-                showLastUpdateAuthor: true,
-                onInlineTags: 'warn',
-                tags: 'tags.yml'
+              routeBasePath: '/',
+              sidebarPath: require.resolve('./sidebars.js'),
+              editUrl: ({versionDocsDirPath, docPath, locale}) => {
+                return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
+              },
+              exclude: ['README.md'],
+              showLastUpdateTime: true,
+              showLastUpdateAuthor: true,
+              onInlineTags: 'warn',
+              tags: 'tags.yml',
+              include: ['**/*.md', '**/*.mdx']
+            },
+            blog: {
+              showReadingTime: false,
+              postsPerPage: 10,
+              blogTitle: 'Cloud Posse Announcements',
+              blogDescription: 'Stay up to date with the latest news and updates from Cloud Posse',
+              include: ['**/*.{md,mdx}'],
+              editUrl: ({blogDirPath, blogPath, permalink, locale}) => {
+                return `https://github.com/cloudposse/docs/edit/master/${blogPath}`;
+              },
             },
             theme: {
                 customCss: customCssFiles,
@@ -181,6 +192,11 @@ async function createConfig() {
             {
               to: '/community',
               label: 'Community',
+              position: 'left',
+            },
+            {
+              to: '/blog',
+              label: 'Blog',
               position: 'left',
             },
             {
