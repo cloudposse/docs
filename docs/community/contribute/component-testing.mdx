@@ -240,12 +240,12 @@ This is possible to enable/disable steps on each phase more precisly
 
 Here is the usefull combination of flags.
 
-|         Command                                                                                    | Description                                                                                                                               |
-|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-|`go test -timeout 1h --only-deploy-dependencies --skip-destroy-dependencies`                        | Deploy dependencies only. Usefull when you works only on dependencies before any actual tests defined                                     |
-|`go test -timeout 1h --skip-setup --skip-teardown --skip-destroy-component`                         | Deploy testing component. Use previously deployed dependencies. Do not destroy anything. Usefull when you are working on deploing usecase |
-|`go test -timeout 1h --skip-setup --skip-teardown --skip-deploy-component --skip-destroy-component` | Do not deploy or destroy anything. Usefull when you are working on tests asserts                                                          |
-|`go test -timeout 1h --skip-setup --skip-deploy-component`                                          | Destroy component and it's dependencies. Usefull when your tests are done to clean up all resourecs                                       |
+|         Command                                                                                                             | Description                                                                                                                               |
+|-----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+|`go test -timeout 1h --only-deploy-dependencies --skip-destroy-dependencies`                                                 | Deploy dependencies only. Usefull when you works only on dependencies before any actual tests defined                                     |
+|`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component`                        | Deploy testing component. Use previously deployed dependencies. Do not destroy anything. Usefull when you are working on deploing usecase |
+|`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-deploy-component --skip-destroy-component`| Do not deploy or destroy anything. Usefull when you are working on tests asserts                                                          |
+|`go test -timeout 1h --skip-deploy-dependencies --skip-deploy-component`                                                     | Destroy component and it's dependencies. Usefull when your tests are done to clean up all resourecs                                       |
 
 
 [Read more about the test helpers framework](https://github.com/cloudposse/test-helpers/blob/main/pkg/atmos/component-helper/README.md)
@@ -326,10 +326,14 @@ Here is the usefull combination of flags.
 </Step>
 
 <Step>
-  ### <StepNumber/> Add Dependency
+  ### <StepNumber/> Add Dependencies
 
-  Identify any additional dependencies your component require. Skip this step if the component doesn't have any dependencies.
+  <Steps>
 
+  <Step>
+    #### <StepNumber/>
+    Identify any additional dependencies your component require. Skip this step if the component doesn't have any dependencies.
+  </Step>
   Add dependency to the vendor file
   <CodeBlock language="yaml" title="test/fixtures/vendor.yaml">{Step3VendorYaml}</CodeBlock>
 
@@ -446,12 +450,11 @@ Here is the usefull combination of flags.
       </CodeBlock>
     </TabItem>
   </Tabs>
-
-
+  </Steps>
 </Step>
 
 <Step>
-  ### <StepNumber/> Add Test Usecase
+  ### <StepNumber/> Add Test Use-Case
 
   Add atmos configuration for the component usecase
   <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/basic.yaml">{Step4UsecaseYaml}</CodeBlock>
@@ -537,7 +540,7 @@ Here is the usefull combination of flags.
 </Step>
 
 <Step>
-  ### <StepNumber/> Add Asserts
+  ### <StepNumber/> Add Assertions
 
   Within your test, include assertions to validate the expected outcomes. Use Go's testing package to assert conditions that must
   be true for the test to pass. This will help ensure that your component behaves as expected.
@@ -644,7 +647,7 @@ Here is the usefull combination of flags.
 </Step>
 
 <Step>
-  ### <StepNumber/> Add drifting test
+  ### <StepNumber/> Add Drift Detection Test
 
   The drifting test ensures that the component is not change any resources on rerun with the same inputs.
 
@@ -707,7 +710,7 @@ func (s *ComponentSuite) TestBasic() {
 </Step>
 
 <Step>
-  ### <StepNumber/> Test "disabled" Use-case
+  ### <StepNumber/> Test `disabled` Use-case
 
   All components should avoid creating any resources if the `enabled` input is set to `false`.
 
@@ -767,7 +770,7 @@ func (s *ComponentSuite) TestEnabledFlag() {
 </Step>
 
 <Step>
-  ### <StepNumber/> Tear down resources
+  ### <StepNumber/> Tear Down Resources
 
   Tear down the test environment
 
