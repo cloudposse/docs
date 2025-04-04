@@ -1,0 +1,318 @@
+---
+title: "How to set up Authorization for Argo CD with GitHub Apps"
+sidebar_label: "Authorization (GitHub Apps)"
+sidebar_position: 25
+tags:
+  - argocd
+  - github
+  - eks
+  - github-apps
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
+import Admonition from '@theme/Admonition'
+import Note from '@site/src/components/Note'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+<Intro>
+  GitHub Apps is now the preferred method for Argo CD integration with GitHub. GitHub Apps provide more granular permissions, better security, and improved audit capabilities compared to Personal Access Tokens (PATs). This guide will walk you through setting up Argo CD with GitHub Apps.
+</Intro>
+
+<KeyPoints>
+  - GitHub Apps provide more granular permissions than PATs
+  - GitHub Apps can be installed on specific repositories
+  - GitHub Apps have built-in rate limiting and audit capabilities
+  - GitHub Apps can be used for both repository management and notifications
+</KeyPoints>
+
+## Required GitHub Apps
+
+Argo CD integration requires multiple GitHub Apps, each with specific permissions and repository scopes:
+
+### 1. Argo CD Instance
+- **Actor**: Argo CD Deployment in Kubernetes
+- **Use cases and permissions**:
+  - Allow Argo CD to read from Desired State Repositories:
+    - `repository.contents`: Read-Only
+    - `repository.metadata`: Read-Only
+  - Webhooks for Desired State Repositories:
+    - `repository.webhooks`: Read and Write
+    - `repository.metadata`: Read-Only
+- **Repository scope**:
+  - `acme/argocd-deploy-non-prod`
+  - `acme/argocd-deploy-prod`
+
+### 2. Argo CD Deploy Non-prod
+- **Actor**: GitHub App IAT supplied to GitHub Actions Workflows
+- **Use cases and permissions**:
+  - Push commits to Desired State Repositories
+    - `repository.contents`: Read and Write
+    - `repository.metadata`: Read-Only
+- **Repository scope**:
+  - `acme/argocd-deploy-non-prod`
+
+### 3. Argo CD Deploy Prod
+- **Actor**: GitHub App IAT supplied to GitHub Actions Workflows
+- **Use cases and permissions**:
+  - Push commits to Desired State Repositories
+    - `repository.contents`: Read and Write
+    - `repository.metadata`: Read-Only
+- **Repository scope**:
+  - `acme/argocd-deploy-prod`
+
+### 4. Argo CD Notifications
+- **Use cases and permissions**:
+  - Commit status API (relay commit statuses from Desired State Repositories to app repositories via notification templates in `eks/argocd`):
+    - `repository.commit_statuses`: Write
+- **Repository scope**:
+  - All of the app repositories
+
+## Compensating Controls
+
+To address security concerns, the following compensating controls should be implemented:
+
+1. **Organization-Level Branch Ruleset**:
+   - Applied to all app repos but *not* to `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
+   - Prevents changes to the main branch with the Argo CD app *not* in the bypass list
+   - The Argo CD repos are excluded because workflows need to write to the main branch in these repos
+
+2. **Argo CD Desired State Repositories Branch Ruleset**:
+   - Applied only to the Argo CD desired state repositories
+   - Prevents writing to the main branch, but with the Argo CD app in the bypass list
+
+## Deployment
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Create GitHub Apps
+
+    First, you need to create the required GitHub Apps in your organization:
+
+    <Steps>
+      1. Go to your GitHub organization settings
+      2. Navigate to "GitHub Apps" and click "New GitHub App"
+      3. Create the following GitHub Apps with their respective permissions:
+
+        #### Argo CD Instance
+        - Name: `Argo CD Instance`
+        - Homepage URL: Your organization's homepage
+        - Webhook: Disabled
+        - Permissions:
+          - Allow Argo CD to read from Desired State Repositories:
+              - `repository.contents`: Read-Only
+              - `repository.metadata`: Read-Only
+          - Webhooks for Desired State Repositories:
+              - `repository.webhooks`: Read and Write
+              - `repository.metadata`: Read-Only
+
+        #### Argo CD Deploy Non-prod
+        - Name: `Argo CD Deploy Non-prod`
+        - Homepage URL: Your organization's homepage
+        - Webhook: Disabled
+        - Permissions:
+          - Push commits to Desired State Repositories:
+            - `repository.contents`: Read and Write
+            - `repository.metadata`: Read-Only
+
+         #### Argo CD Deploy Prod
+         - Name: `Argo CD Deploy Prod`
+         - Homepage URL: Your organization's homepage
+         - Webhook: Disabled
+        - Permissions:
+          - Push commits to Desired State Repositories:
+            - `repository.contents`: Read and Write
+            - `repository.metadata`: Read-Only
+
+        #### Argo CD Notifications
+        - Name: `Argo CD Notifications`
+        - Homepage URL: Your organization's homepage
+        - Webhook: Disabled
+        - Permissions:
+          - Commit status API (relay commit statuses from Desired State Repositories to app repositories via notification templates in `eks/argocd`):
+            - `repository.commit_statuses`: Write
+
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Generate and Store GitHub App Credentials
+
+    After creating each GitHub App, you need to generate and store credentials:
+
+    <Steps>
+      1. For each GitHub App:
+        <Steps>
+         1. On the GitHub App page, scroll down to "Private keys" and click "Generate a private key"
+         1. Download the private key file
+         1. Store the App ID, Installation ID, and private key securely in 1Password
+        </Steps>
+      2. Upload these credentials to AWS SSM Parameter Store:
+         Save these credentials to AWS SSM at the [paths specified by the `eks/argocd` component](/layers/software-delivery/eks-argocd/setup/#-configure-argo-cd-to-use-github-apps)
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Install the GitHub Apps
+
+    Install each GitHub App on its required repositories:
+
+    <Steps>
+      1. For `Argo CD Instance`:
+         - Go to the GitHub App settings page
+         - Click "Install App" in the sidebar
+         - Select the repositories:
+           - `acme/argocd-deploy-non-prod`
+           - `acme/argocd-deploy-prod`
+         - Complete the installation
+
+      2. For `Argo CD Deploy Non-Prod`:
+         - Go to the GitHub App settings page
+         - Click "Install App" in the sidebar
+         - Select the repository:
+           - `acme/argocd-deploy-non-prod`
+         - Complete the installation
+
+      3. For `Argo CD Deploy Prod`:
+         - Go to the GitHub App settings page
+         - Click "Install App" in the sidebar
+         - Select the repository:
+           - `acme/argocd-deploy-prod`
+         - Complete the installation
+
+      4. For `Argo CD Notifications`:
+         - Go to the GitHub App settings page
+         - Click "Install App" in the sidebar
+         - Select all app repositories, such as `acme/example-app-on-eks`
+         - Complete the installation
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Branch Protection Rules
+
+    Set up the compensating controls by configuring branch protection rules:
+
+    **Organization-Level Branch Ruleset**:
+
+    <Steps>
+     - Go to your organization settings
+     - Navigate to "Code, planning, and automation" > "Branch rules"
+     - Create a new ruleset that applies to all app repos except `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
+     - Configure the ruleset to prevent changes to the main branch with the Argo CD app not in the bypass list
+    </Steps>
+
+    **Argo CD Desired State Repositories Branch Ruleset**:
+
+    <Steps>
+     - Create a separate ruleset that applies only to `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
+     - Configure the ruleset to prevent writing to the main branch, but with the Argo CD app in the bypass list
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Configure Argo CD Desire State Repositories to Use GitHub Apps
+
+    Update your Argo CD desired state repository configuration to use the GitHub App instead of PAT:
+
+    ```yaml
+    components:
+      terraform:
+        argocd-repo:
+          vars:
+            # 1. Use local access to apply this component rather than a PAT
+            # https://registry.terraform.io/providers/integrations/github/latest/docs#github-cli
+            use_local_github_credentials: true
+
+            # 2. If synchronous mode is enabled, set the notifications to send to "github" and not to the "webhook"
+            github_notifications:
+              - "notifications.argoproj.io/subscribe.on-deploy-started.github: \"\""
+              - "notifications.argoproj.io/subscribe.on-deploy-succeeded.github: \"\""
+              - "notifications.argoproj.io/subscribe.on-deploy-failed.github: \"\""
+
+            # 3. Optional, disable the SSH deploy keys to use a GitHub App 
+            #    for the Argo CD instance to authenticate with the desired state repository
+            deploy_keys_enabled: false
+    ```
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Argo CD to Use GitHub Apps
+
+    Update your Argo CD configuration to use the GitHub Apps instead of PATs:
+
+    ```yaml
+    components:
+      terraform:
+        eks/argocd:
+          vars:
+            # GitHub App (Argo CD Instance)
+            # This GitHub App is used for the Argo CD instance to manage webhooks and read from the desired state repository.
+            # ie https://github.com/acme/argocd-deploy-non-prod
+            github_app_enabled: true
+            github_app_id: "1234567"
+            github_app_installation_id: "44444444"
+            # The SSM parameter must exist in the account and region where Argo CD is deployed.
+            ssm_github_app_private_key: "/argocd/argo_cd_instance/app_private_key"
+            # Optional, disable the SSH deploy keys to use this GitHub App 
+            # for the Argo CD instance to authenticate with the desired state repository
+            github_deploy_keys_enabled: false
+
+            # GitHub App (Argo CD Notifications)
+            # This GitHub App is used for the Argo CD instance to send commit status updates back to each ap repository.
+            # This is only required if synchronous mode is enabled.
+            # ie https://github.com/acme/example-app-on-eks
+            github_notifications_app_enabled: true
+            github_notifications_app_id: "8901235"
+            github_notifications_app_installation_id: "55555555"
+            # The SSM parameter must exist in the account and region where Argo CD is deployed.
+            ssm_github_notifications_app_private_key: "/argocd/argo_cd_notifications/app_private_key"
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy the updated configuration
+
+    Redeploy both the `argocd-repo` component for both nonprod and prod.
+
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="argocd" />
+
+    Then redeploy all instances of `eks/argocd`
+
+    <AtmosWorkflow workflow="deploy/argocd" fileName="argocd" />
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure GitHub Actions Workflows
+
+    Update your GitHub Actions workflows to use the appropriate GitHub App. 
+    
+    Set the following GitHub environment variables for the application repositories:
+    
+    1. Set `ARGO_CD_DEPLOY_NONPROD_APP_ID` in both `preview` and `dev`
+    2. Set `ARGO_CD_DEPLOY_PROD_APP_ID` in `staging` and `prod`.
+
+    Then set the following secrets:
+    
+    1. Add `ARGO_CD_DEPLOY_NONPROD_APP_PRIVATE_KEY` to `preview` and `dev`.
+    2. Add `ARGO_CD_DEPLOY_PROD_APP_PRIVATE_KEY` to `staging` and `prod`.
+
+    \**Add QA environments if necessary*
+
+    <Note title="Workflows Might Need Updating!">
+
+    Please be sure to update your GitHub Workflows to support GitHub App authentication. If you are unsure, please reach out to Cloud Posse.
+
+    </Note>
+
+  </Step>
+</Steps>
+
+## References
+- [Setting up Argo CD](/layers/software-delivery/eks-argocd/setup/)
+- [GitHub Apps Documentation](https://docs.github.com/en/developers/apps)
+- [GitHub Apps Permissions](https://docs.github.com/en/developers/apps/building-github-apps/setting-permissions-for-github-apps) 
