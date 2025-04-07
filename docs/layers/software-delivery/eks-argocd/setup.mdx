@@ -71,7 +71,7 @@ All deployment steps below assume that the environment has been successfully set
 
        Terraform will pull that PAT from SSM typically using the `argocd/github` path in the `core-auto` account.
 
-       Alternatively, you can required local access to apply the component. This would require an engineer to locally authenticate with GitHub and apply this component locally. Since this component is rarely updated, this can be a reasonable trade-off.
+       Alternatively, you can enforce local access to apply the component. This would require an engineer to locally authenticate with GitHub and apply this component locally. Since this component is rarely updated, this can be a reasonable trade-off.
 
        At this time, we do not have GitHub App support for this step and prefer using local developer access.
 
@@ -83,7 +83,7 @@ All deployment steps below assume that the environment has been successfully set
 
     3. #### Argo CD GitHub Notification Access
 
-       The next PAT or GitHub App token is used by the Argo CD notifications system to set the GitHub to commit status on successful deployments. This is stored in SSM and pulled by the `eks/argocd` component. That component will pass the token to the Argo CD instance in the given EKS cluster. That Argo CD instance uses that token _only when synchronous mode is enabled_.
+       The next PAT or GitHub App token is used by the Argo CD notifications system to update the GitHub commit status on deployments. This is stored in SSM and pulled by the `eks/argocd` component. That component will pass the token to the Argo CD instance in the given EKS cluster. That Argo CD instance uses that token _only when synchronous mode is enabled_.
 
     4. #### GitHub Release Workflow Access
 
