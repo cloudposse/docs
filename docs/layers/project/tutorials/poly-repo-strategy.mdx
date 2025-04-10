@@ -6,12 +6,10 @@ description: Learn how to manage multiple repositories with Terraform and Atmos 
 ---
 import Intro from '@site/src/components/Intro';
 import Note from '@site/src/components/Note';
-import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
-import Admonition from '@theme/Admonition';
 
 <Intro>
 When managing multiple repositories with Terraform and Atmos, you need a strategy to handle `account-map` configurations effectively. This tutorial shows you how to implement a poly-repo strategy that maintains consistency across your infrastructure while leveraging `account-map` for dynamic role selection.
@@ -86,6 +84,10 @@ The poly-repo strategy with `account-map` involves maintaining a central infrast
 
 ## Frequently Asked Questions
 
+<Note>
+  This tutorial is based on a [GitHub discussion](https://github.com/orgs/cloudposse/discussions/49) about splitting up Atmos and Terraform into service repos.
+</Note> 
+
 ### How do you run the components used within the non-infrastructure repos? Is the directory format the same?
 
 You can use components in the same way as the infrastructure repo, but this would be dependent on your atmos configuration. You will need to set the base paths for components and stacks, then you execute atmos as usual.
@@ -106,24 +108,6 @@ Both by included components and AWS Team permission. The repo would only include
 
 However, you should still scope the AWS Team to least privilege required for that set of resources. You could separate the Terraform state backend as well to create an additional boundary between the sets of resources.
 
-### Are Rego OPA policies used? If so, are they stored in the infrastructure repo and downloaded into the service repo?
-
-At the moment, we don't have a solution for this.
-
-### How do you keep the binaries the same version across entities?
-
-This is currently a challenge that needs to be addressed based on your specific requirements. Consider using a centralized version management approach or CI/CD pipeline that ensures consistent versions.
-
 ### How do you prevent conflicts with the same component deployed in the same stack across multiple repos?
 
 We don't recommend deploying the same component from the same stack across repos. The idea with poly-repos is that an app team can manage their own infrastructure independently. We wouldn't recommend controlling the same infrastructure with 2 separate sources of code.
-
-<ActionCard title="What comes next?">
-  Now that you understand how to manage multiple repositories with `account-map`, you can apply this pattern to your infrastructure projects. Consider exploring our other tutorials to learn more about infrastructure management with Atmos and Terraform.
-
-  <PrimaryCTA to="/layers/project/tutorials">View More Tutorials</PrimaryCTA>
-</ActionCard>
-
-<Note>
-  This tutorial is based on a [GitHub discussion](https://github.com/orgs/cloudposse/discussions/49) about splitting up YAML and Terraform into service repos.
-</Note> 
