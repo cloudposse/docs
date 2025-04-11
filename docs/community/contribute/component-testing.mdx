@@ -112,7 +112,7 @@ fixtures/
 For most components, avoid any changes to these files
 <Steps>
 1. `atmos.yaml` - shared atmos config common for all test cases
-2. `stacks/catalog/account-map.yaml` - Mock `account-map` configuration makes any environment/stack/tenant to be backed with the signle AWS test account
+2. `stacks/catalog/account-map.yaml` - Mock `account-map` configuration makes any environment/stack/tenant to be backed with the single AWS test account
 3. `stacks/orgs/default/test/_defaults.yaml` - Configure terraform state backend to local directory and define shared variables for `default-test`
 </Steps>
 
@@ -198,7 +198,7 @@ func (s *ComponentSuite) TestBasic() {
 	s.DriftTest(component, stack, nil)
 }
 
-// Test disabled usecase
+// Test disabled use case
 func (s *ComponentSuite) TestEnabledFlag() {
 	const component = "example/disabled"
 	const stack = "default-test"
@@ -234,10 +234,10 @@ Here is the usefull combination of flags.
 
 |         Command                                                                                                             | Description                                                                                                                               |
 |-----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-|`go test -timeout 1h --only-deploy-dependencies --skip-destroy-dependencies`                                                 | Deploy dependencies only. Usefull when you works only on dependencies before any actual tests defined                                     |
-|`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component`                        | Deploy testing component. Use previously deployed dependencies. Do not destroy anything. Usefull when you are working on deploing usecase |
-|`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-deploy-component --skip-destroy-component`| Do not deploy or destroy anything. Usefull when you are working on tests asserts                                                          |
-|`go test -timeout 1h --skip-deploy-dependencies --skip-deploy-component`                                                     | Destroy component and it's dependencies. Usefull when your tests are done to clean up all resourecs                                       |
+|`go test -timeout 1h --only-deploy-dependencies --skip-destroy-dependencies`                                                 | Deploy dependencies only.                                     |
+|`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component`                        | Deploy testing component. Use previously deployed dependencies. Do not destroy anything. Useful when you are working on deploying use case |
+|`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-deploy-component --skip-destroy-component`| Do not deploy or destroy anything. Useful when you are working on tests asserts                                                          |
+|`go test -timeout 1h --skip-deploy-dependencies --skip-deploy-component`                                                     | Destroy component and it's dependencies. Useful when your tests are done to clean up all resources                                       |
 
 
 [Read more about the test helpers framework](https://github.com/cloudposse/test-helpers/blob/main/pkg/atmos/component-helper/README.md)
@@ -457,7 +457,7 @@ Writing tests for your Terraform components is essential for building trust in t
 
         <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/basic.yaml">{Step4UsecaseYaml}</CodeBlock>
 
-    1. Import the usecase for `default-test` stack
+    1. Import the use case for `default-test` stack
 
         <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step4Stack}</CodeBlock>
 
@@ -722,15 +722,15 @@ Writing tests for your Terraform components is essential for building trust in t
   All components should avoid creating any resources if the `enabled` input is set to `false`.
 
   <Steps>
-  1. Add atmos configuration for the component usecase
+  1. Add atmos configuration for the component use case
 
       <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/disabled.yaml">{Step7UsecaseYaml}</CodeBlock>
 
-  1. Import the usecase for `default-test` stack
+  1. Import the use case for `default-test` stack
 
       <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step7Stack}</CodeBlock>
 
-  1. Add a "disabled" usecase test
+  1. Add a "disabled" use case test
 
       ```go title="test/component_test.go"
       // ...
