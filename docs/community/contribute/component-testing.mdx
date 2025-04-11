@@ -38,33 +38,23 @@ For more information on building and maintaining components, please refer to our
 
 ## Prerequisites
 <Steps>
-  <Step>
-    ### <StepNumber/> Install Terraform / Tofu
+  1. Install Terraform / Tofu
+      - Ensure you have [Terraform](https://www.terraform.io/downloads.html) or [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine.
 
-    Ensure you have [Terraform](https://www.terraform.io/downloads.html) or [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine.
-  </Step>
+  1. Install Atmos
+      - [Atmos](https://atmos.tools/install/) is a tool for managing Terraform environments.
 
-  <Step>
-    ### <StepNumber/> Install Atmos
+  1. Install Golang
+      <Steps>
+      - Go is a programming language that you'll need to run the tests.
+      - Download and install Go from the [official Go website](https://golang.org/dl/).
+      - Make sure to set up your Go environment correctly by following the [Getting Started with Go](https://golang.org/doc/install/source) guide.
+      </Steps>
 
-    [Atmos](https://atmos.tools/install/) is a tool for managing Terraform environments.
-  </Step>
+  1. Authenticate on AWS
+      - Ensure you have the necessary AWS credentials configured on your machine. You can do this by setting up the AWS CLI and running `aws configure`, where you'll input your AWS Access Key, Secret Key, region, and output format.
+      - Refer to the [AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for more details.
 
-  <Step>
-    ### <StepNumber/> Install Golang
-
-    Go is a programming language that you'll need to run the tests.
-    Download and install Go from the [official Go website](https://golang.org/dl/).
-    Make sure to set up your Go environment correctly by following the [Getting Started with Go](https://golang.org/doc/install/source) guide.
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Authenticate on AWS
-
-    Ensure you have the necessary AWS credentials configured on your machine. You can do this by setting up the AWS CLI and running `aws configure`,
-    where you'll input your AWS Access Key, Secret Key, region, and output format.
-    Refer to the [AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for more details.
-  </Step>
 </Steps>
 
 
@@ -129,15 +119,15 @@ This files and directories contains custom configurations specific for a testing
 <Steps>
 1. `vendor.yaml` - Vendor configuration for all component dependencies
 2. `stacks/catalog/` - Store all dependencies configuration files in the dir
-3. `stacks/catalog/uscases` - Store configuration of the testing component's usescases
-4. `stacks/catalog/uscases/basic.yaml` - Predefined file for basic configuration of the testing component's usescase
-5. `stacks/catalog/uscases/disabled.yaml` - Predefined file for `disabled` configuration usescase (when variable `enabled: false`)
-6. `stacks/orgs/default/test/tests.yaml` - Include all dependencies and uscases configurations to deploy them for `default-test` stack
+3. `stacks/catalog/usecases` - Store configuration of the testing component's use cases
+4. `stacks/catalog/usecases/basic.yaml` - Predefined file for basic configuration of the testing component's use case
+5. `stacks/catalog/usecases/disabled.yaml` - Predefined file for `disabled` configuration usescase (when variable `enabled: false`)
+6. `stacks/orgs/default/test/tests.yaml` - Include all dependencies and use cases configurations to deploy them for `default-test` stack
 </Steps>
 
 ### Tests (Golang)
 
-Component tests are writen on go lang as this general purpose language is standard defacto for cloud compute engineering
+Component tests are written on go lang as this general purpose language is standard defacto for cloud compute engineering
 Under the hood tests uses several libraries with helper functions
 <Steps>
 1. `github.com/cloudposse/test-helpers/atmos/component-helper` - Component testing framework provides
@@ -217,7 +207,7 @@ func (s *ComponentSuite) TestEnabledFlag() {
 }
 ```
 
-### CLI Flags cheatsheet
+### CLI Flags Cheat Sheet
 
 A test suite run consists of the following phases all of which can be controlled by passing flags:
 
@@ -251,9 +241,8 @@ Here is the usefull combination of flags.
 
 [Read more about the test helpers framework](https://github.com/cloudposse/test-helpers/blob/main/pkg/atmos/component-helper/README.md)
 
-## Write test
+## Write Tests
 <Steps>
-
 <Step>
   ### <StepNumber/> Copy the test scaffold files
 
@@ -811,7 +800,6 @@ func (s *ComponentSuite) TestEnabledFlag() {
   </Tabs>
 
 </Step>
-
 </Steps>
 
 ## FAQ
