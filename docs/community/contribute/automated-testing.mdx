@@ -70,3 +70,41 @@ To initialize one of our modules with chatops, run the following commands:
   1. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/atmos/pull/555).
   1. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)
 </Steps>
+
+## FAQ
+
+### Why do my tests fail when looking up remote state for components?
+
+If you encounter an error like:
+```
+Error: Attempt to get attribute from null value
+...
+│ module.s3_bucket.outputs is null
+...
+This value is null, so it does not have any attributes.
+```
+
+This typically occurs when using an older version of the remote-state module. The solution is to upgrade to version 1.8.0 or higher of the `cloudposse/stack-config/yaml//modules/remote-state` module. For example:
+
+```hcl
+module "s3_bucket" {
+  source  = "cloudposse/stack-config/yaml//modules/remote-state"
+  version = "1.8.0"
+
+  component = var.destination_bucket_component_name
+  context   = module.this.context
+}
+```
+
+### How do I handle dependencies in my tests?
+
+When testing components that depend on other infrastructure (like EKS clusters, VPCs, or other foundational components), you need to configure and deploy these dependencies in your test suite. This is done by adding dependencies to the stack test fixtures and deploying before running the tests. For example:
+
+```go
+func TestRunSuite(t *testing.T) {
+    suite := new(ComponentSuite)
+    // Add dependencies
+    suite.AddDependency(t, "s3-bucket/cloudwatch", "default-test", nil)
+    helper.Run(t, suite)
+}
+```
