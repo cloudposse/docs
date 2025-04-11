@@ -29,8 +29,9 @@ import Step7Stack from '@site/examples/component-testing/step-7/stack.yaml';
 import Intro from '@site/src/components/Intro';
 
 <Intro>
-  This documentation will guide you through our comprehensive strategy for testing Terraform components, provide step-by-step instructions and practical examples to help you validate your component configurations effectively. Whether you’re setting up initial tests, adding dependencies, or verifying output assertions, you’ll find the resources you need to ensure robust and reliable deployments.
+  This documentation will guide you through our comprehensive strategy for testing Terraform components, provide step-by-step instructions and practical examples to help you validate your component configurations effectively. Whether you're setting up initial tests, adding dependencies, or verifying output assertions, you'll find the resources you need to ensure robust and reliable deployments.
 </Intro>
+
 ## Context
 Our component testing strategy is a direct outcome of [our migration to a dedicated GitHub Organization for components](/components/#terraform-component-github-repository-has-moved). This separation allows each component to live in its own repository, enabling independent versioning and testing. It not only improves the reliability of each component but also empowers the community to contribute via pull requests confidently. With integrated testing for every PR, we can ensure high quality and build trust in each contribution.
 
@@ -242,6 +243,9 @@ Here is the usefull combination of flags.
 [Read more about the test helpers framework](https://github.com/cloudposse/test-helpers/blob/main/pkg/atmos/component-helper/README.md)
 
 ## Write Tests
+
+Writing tests for your Terraform components is essential for building trust in the component's reliability and enabling safe acceptance of community contributions. By implementing comprehensive tests, we can confidently review and merge pull requests while ensuring the component continues to function as expected.
+
 <Steps>
 <Step>
   ### <StepNumber/> Copy the test scaffold files
@@ -255,15 +259,15 @@ Here is the usefull combination of flags.
   │   └── main.tf
   └── test/
       ├── fixtures/
-      │   ├── stacks/
-      │   |   ├── catalog/
-      │   |   |   ├── usecase/
-      │   |   |   |   ├── basic.yaml
-      │   |   |   |   └── disabled.yaml
-      │   |   |   └── account-map.yaml
+      │   ├── stacks/
+      │   |   ├── catalog/
+      │   |   |   ├── usecase/
+      │   |   |   |   ├── basic.yaml
+      │   |   |   |   └── disabled.yaml
+      │   |   |   └── account-map.yaml
       │   │   └── orgs/default/test/
-      │   |       ├── _defaults.yaml
-      │   |       └── tests.yaml
+      │   |       ├── _defaults.yaml
+      │   |       └── tests.yaml
       │   ├── atmos.yaml
       │   └── vendor.yaml
       ├── component_test.go
@@ -319,91 +323,94 @@ Here is the usefull combination of flags.
   ### <StepNumber/> Add Dependencies
 
   <Steps>
+  Identify any additional dependencies your component require. Skip this step if the component doesn't have any dependencies.
 
-  <Step>
-    #### <StepNumber/>
-    Identify any additional dependencies your component require. Skip this step if the component doesn't have any dependencies.
-  </Step>
-  Add dependency to the vendor file
-  <CodeBlock language="yaml" title="test/fixtures/vendor.yaml">{Step3VendorYaml}</CodeBlock>
+  <Steps>
+    1. Add dependency to the vendor file
+        <CodeBlock language="yaml" title="test/fixtures/vendor.yaml">{Step3VendorYaml}</CodeBlock>
 
-  Add atmos component configurations
-  <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/vpc.yaml">{Step3VpcYaml}</CodeBlock>
+    1. Add atmos component configurations
+        <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/vpc.yaml">{Step3VpcYaml}</CodeBlock>
 
-  Import the dependent component for `default-test` stack
-  <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step3Stack}</CodeBlock>
+    1. Import the dependent component for `default-test` stack
+        <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step3Stack}</CodeBlock>
 
-  Add the dependent component to test suite with Go code
-  By default, the test suite will add a unique random value to the `attributes` terraform variable.
-  This is to avoid resource naming collisions with other tests that are using the same component.
-  But in some cases, you may need to pass unique value to specific input for the component.
-  Check out the advanced example for the most common use-case with the `dns-delegated` domain name.
-  <Tabs>
-    <TabItem value="basic" label="Basic">
-    ```go title="test/component_test.go"
-      package test
+    1. Add the dependent component to test suite with Go code
+        <Steps>
+          - By default, the test suite will add a unique random value to the `attributes` terraform variable.
+          - This is to avoid resource naming collisions with other tests that are using the same component.
+          - But in some cases, you may need to pass unique value to specific input for the component.
+        </Steps>
 
-      import (
-        "testing"
+        Check out the advanced example for the most common use-case with the `dns-delegated` domain name.
 
-        helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
-      )
+        <Tabs>
+          <TabItem value="basic" label="Basic">
+          ```go title="test/component_test.go"
+            package test
 
-      type ComponentSuite struct {
-        helper.TestSuite
-      }
+            import (
+              "testing"
 
-      func (s *ComponentSuite) TestBasic() {
-        // Add empty test
-        // Suite setup would not be executed without at least one test
-      }
+              helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+            )
 
-      func TestRunSuite(t *testing.T) {
-        suite := new(ComponentSuite)
+            type ComponentSuite struct {
+              helper.TestSuite
+            }
 
-        // Deploy the dependent vpc component
-        suite.AddDependency(t, "vpc", "default-test", nil)
+            func (s *ComponentSuite) TestBasic() {
+              // Add empty test
+              // Suite setup would not be executed without at least one test
+            }
 
-        helper.Run(t, suite)
-      }
-    ```
-    </TabItem>
+            func TestRunSuite(t *testing.T) {
+              suite := new(ComponentSuite)
 
-    <TabItem value="advanced" label="Advanced">
-      ```go title="test/component_test.go"
-      package test
+              // Deploy the dependent vpc component
+              suite.AddDependency(t, "vpc", "default-test", nil)
 
-      import (
-        "testing"
+              helper.Run(t, suite)
+            }
+          ```
+          </TabItem>
 
-        helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
-      )
+          <TabItem value="advanced" label="Advanced">
+            ```go title="test/component_test.go"
+            package test
 
-      type ComponentSuite struct {
-        helper.TestSuite
-      }
+            import (
+              "testing"
 
-      func TestRunSuite(t *testing.T) {
-        suite := new(ComponentSuite)
+              helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+            )
 
-        subdomain := strings.ToLower(random.UniqueId())
-        inputs := map[string]interface{}{
-          "zone_config": []map[string]interface{}{
-            {
-              "subdomain": subdomain,
-              "zone_name": "components.cptest.test-automation.app",
-            },
-          },
-        }
-        suite.AddDependency(t, "dns-delegated", "default-test", &inputs)
+            type ComponentSuite struct {
+              helper.TestSuite
+            }
 
-        helper.Run(t, suite)
-      }
-      ```
-    </TabItem>
-  </Tabs>
+            func TestRunSuite(t *testing.T) {
+              suite := new(ComponentSuite)
 
-  Deploy dependencies
+              subdomain := strings.ToLower(random.UniqueId())
+              inputs := map[string]interface{}{
+                "zone_config": []map[string]interface{}{
+                  {
+                    "subdomain": subdomain,
+                    "zone_name": "components.cptest.test-automation.app",
+                  },
+                },
+              }
+              suite.AddDependency(t, "dns-delegated", "default-test", &inputs)
+
+              helper.Run(t, suite)
+            }
+            ```
+          </TabItem>
+        </Tabs>
+
+  1. Deploy dependencies
+  </Steps>
   <Tabs>
     <TabItem value="command" label="Command">
     ```console
@@ -444,56 +451,61 @@ Here is the usefull combination of flags.
 </Step>
 
 <Step>
-  ### <StepNumber/> Add Test Use-Case
+  ### <StepNumber/> Add Test Use-Cases
+  <Steps>
+    1. Add atmos configuration for the component use case
 
-  Add atmos configuration for the component usecase
-  <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/basic.yaml">{Step4UsecaseYaml}</CodeBlock>
+        <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/basic.yaml">{Step4UsecaseYaml}</CodeBlock>
 
-  Import the usecase for `default-test` stack
-  <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step4Stack}</CodeBlock>
+    1. Import the usecase for `default-test` stack
 
-  Write test
-  ```go title="test/component_test.go"
-  package test
+        <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step4Stack}</CodeBlock>
 
-  import (
-    "testing"
+    1. Write tests
 
-    helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
-  )
+        ```go title="test/component_test.go"
+        package test
 
-  type ComponentSuite struct {
-    helper.TestSuite
-  }
+        import (
+          "testing"
 
-  func TestRunSuite(t *testing.T) {
-    suite := new(ComponentSuite)
+          helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+        )
 
-    suite.AddDependency(t, "vpc", "default-test", nil)
+        type ComponentSuite struct {
+          helper.TestSuite
+        }
 
-    helper.Run(t, suite)
-  }
+        func TestRunSuite(t *testing.T) {
+          suite := new(ComponentSuite)
 
-  func (s *ComponentSuite) TestBasic() {
-    const component = "example-component/basic"
-    const stack = "default-test"
-    const awsRegion = "us-east-2"
+          suite.AddDependency(t, "vpc", "default-test", nil)
 
-    // How to read outputs from the dependent component
-    // vpcOptions, err := s.GetAtmosOptions("vpc", stack, nil)
-    // id := atmos.Output(s.T(), vpcOptions, "id")
+          helper.Run(t, suite)
+        }
 
-    inputs := map[string]interface{}{
-      // Add other inputs that are required for the use case
-    }
+        func (s *ComponentSuite) TestBasic() {
+          const component = "example-component/basic"
+          const stack = "default-test"
+          const awsRegion = "us-east-2"
 
-    defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
-    options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
-    assert.NotNil(s.T(), options)
-  }
-  ```
+          // How to read outputs from the dependent component
+          // vpcOptions, err := s.GetAtmosOptions("vpc", stack, nil)
+          // id := atmos.Output(s.T(), vpcOptions, "id")
 
-  Deploy test component
+          inputs := map[string]interface{}{
+            // Add other inputs that are required for the use case
+          }
+
+          defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
+          options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+          assert.NotNil(s.T(), options)
+        }
+        ```
+    1. Deploy test component
+  </Steps>
+
+
   <Tabs>
     <TabItem value="command" label="Command">
     ```console
@@ -532,74 +544,79 @@ Here is the usefull combination of flags.
 <Step>
   ### <StepNumber/> Add Assertions
 
-  Within your test, include assertions to validate the expected outcomes. Use Go's testing package to assert conditions that must
-  be true for the test to pass. This will help ensure that your component behaves as expected.
+  <Steps>
+  1. Include assertions
 
-  ```go  title="test/component_test.go"
-  package test
+      Within your test, include assertions to validate the expected outcomes. Use Go's testing package to assert conditions that must
+      be true for the test to pass. This will help ensure that your component behaves as expected.
 
-  import (
-    "testing"
+      ```go  title="test/component_test.go"
+      package test
 
-    "github.com/cloudposse/test-helpers/pkg/atmos"
-    helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
-    "github.com/stretchr/testify/assert"
-  )
+      import (
+        "testing"
 
-  type ComponentSuite struct {
-    helper.TestSuite
-  }
+        "github.com/cloudposse/test-helpers/pkg/atmos"
+        helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
+        "github.com/stretchr/testify/assert"
+      )
 
-  func TestRunSuite(t *testing.T) {
-    suite := new(ComponentSuite)
+      type ComponentSuite struct {
+        helper.TestSuite
+      }
 
-    suite.AddDependency(t, "vpc", "default-test", nil)
+      func TestRunSuite(t *testing.T) {
+        suite := new(ComponentSuite)
 
-    helper.Run(t, suite)
-  }
+        suite.AddDependency(t, "vpc", "default-test", nil)
 
-  func (s *ComponentSuite) TestBasic() {
-    const component = "example-component/basic"
-    const stack = "default-test"
-    const awsRegion = "us-east-2"
+        helper.Run(t, suite)
+      }
 
-    // How to read outputs from the dependent component
-    // vpcOptions, err := s.GetAtmosOptions("vpc", stack, nil)
-    // id := atmos.Output(s.T(), vpcOptions, "id")
+      func (s *ComponentSuite) TestBasic() {
+        const component = "example-component/basic"
+        const stack = "default-test"
+        const awsRegion = "us-east-2"
 
-    inputs := map[string]interface{}{
-      // Add other inputs that are required for the use case
-    }
+        // How to read outputs from the dependent component
+        // vpcOptions, err := s.GetAtmosOptions("vpc", stack, nil)
+        // id := atmos.Output(s.T(), vpcOptions, "id")
 
-    defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
-    options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
-    assert.NotNil(s.T(), options)
+        inputs := map[string]interface{}{
+          // Add other inputs that are required for the use case
+        }
 
-    // How to read string output from the component
-    output1 := atmos.Output(s.T(), options, "output_name_1")
-    assert.Equal(s.T(), "expected_value_1", output1)
+        defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
+        options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+        assert.NotNil(s.T(), options)
 
-    // How to read list of strings output from the component
-    output2 := atmos.OutputList(s.T(), options, "output_name_2")
-    assert.Equal(s.T(), "expected_value_2", output2[0])
-    assert.ElementsMatch(s.T(), ["expected_value_2"], output2)
+        // How to read string output from the component
+        output1 := atmos.Output(s.T(), options, "output_name_1")
+        assert.Equal(s.T(), "expected_value_1", output1)
 
-    // How to read map of objects output from the component
-    output3 := atmos.OutputMapOfObjects(s.T(), options, "output_name_3")
-    assert.Equal(s.T(), "expected_value_3", output3["key"])
+        // How to read list of strings output from the component
+        output2 := atmos.OutputList(s.T(), options, "output_name_2")
+        assert.Equal(s.T(), "expected_value_2", output2[0])
+        assert.ElementsMatch(s.T(), ["expected_value_2"], output2)
 
-    // How to read struct output from the component
-    type outputStruct struct {
-        keyName                     string `json:"key"`
-    }
-    output4 := outputStruct{}
-    atmos.OutputStruct(s.T(), options, "output_name_4", &output4)
-    assert.Equal(s.T(), "expected_value_4", output4["keyName"])
-  }
+        // How to read map of objects output from the component
+        output3 := atmos.OutputMapOfObjects(s.T(), options, "output_name_3")
+        assert.Equal(s.T(), "expected_value_3", output3["key"])
 
-  ```
+        // How to read struct output from the component
+        type outputStruct struct {
+            keyName                     string `json:"key"`
+        }
+        output4 := outputStruct{}
+        atmos.OutputStruct(s.T(), options, "output_name_4", &output4)
+        assert.Equal(s.T(), "expected_value_4", output4["keyName"])
+      }
 
-  Run test
+      ```
+
+  1. Run test
+  </Steps>
+
   <Tabs>
     <TabItem value="command" label="Command">
     ```console
@@ -633,7 +650,6 @@ Here is the usefull combination of flags.
       </CodeBlock>
     </TabItem>
   </Tabs>
-
 </Step>
 
 <Step>
@@ -641,28 +657,30 @@ Here is the usefull combination of flags.
 
   The drifting test ensures that the component is not change any resources on rerun with the same inputs.
 
-  Add a "drifting test" check
+  <Steps>
+  1. Add a "drifting test" check
 
-```go title="test/component_test.go"
-func (s *ComponentSuite) TestBasic() {
-  const component = "example-component/basic"
-  const stack = "default-test"
-  const awsRegion = "us-east-2"
+      ```go title="test/component_test.go"
+      func (s *ComponentSuite) TestBasic() {
+        const component = "example-component/basic"
+        const stack = "default-test"
+        const awsRegion = "us-east-2"
 
-  inputs := map[string]interface{}{}
+        inputs := map[string]interface{}{}
 
-  defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
-  options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
-  assert.NotNil(s.T(), options)
+        defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
+        options, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+        assert.NotNil(s.T(), options)
 
-  // ...
+        // ...
 
-  // Just add this line to the check for drift
-  s.DriftTest(component, stack, &inputs)
-}
-```
+        // Just add this line to the check for drift
+        s.DriftTest(component, stack, &inputs)
+      }
+      ```
+  1. Run test
+  </Steps>
 
-  Run test
   <Tabs>
     <TabItem value="command" label="Command">
     ```console
@@ -696,7 +714,6 @@ func (s *ComponentSuite) TestBasic() {
       </CodeBlock>
     </TabItem>
   </Tabs>
-
 </Step>
 
 <Step>
@@ -704,25 +721,30 @@ func (s *ComponentSuite) TestBasic() {
 
   All components should avoid creating any resources if the `enabled` input is set to `false`.
 
-  Add atmos configuration for the component usecase
-  <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/disabled.yaml">{Step7UsecaseYaml}</CodeBlock>
+  <Steps>
+  1. Add atmos configuration for the component usecase
 
-  Import the usecase for `default-test` stack
-  <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step7Stack}</CodeBlock>
+      <CodeBlock language="yaml" title="test/fixtures/stacks/catalog/usecase/disabled.yaml">{Step7UsecaseYaml}</CodeBlock>
 
-  Add a "disabled" usecase test
+  1. Import the usecase for `default-test` stack
 
-```go title="test/component_test.go"
-// ...
+      <CodeBlock language="yaml" title="test/fixtures/stacks/orgs/default/test/tests.yaml">{Step7Stack}</CodeBlock>
 
-func (s *ComponentSuite) TestEnabledFlag() {
-  const component = "example-component/disabled"
-  const stack = "default-test"
-  s.VerifyEnabledFlag(component, stack, nil)
-}
-```
+  1. Add a "disabled" usecase test
 
-  Run test
+      ```go title="test/component_test.go"
+      // ...
+
+      func (s *ComponentSuite) TestEnabledFlag() {
+        const component = "example-component/disabled"
+        const stack = "default-test"
+        s.VerifyEnabledFlag(component, stack, nil)
+      }
+      ```
+
+  1. Run test
+  </Steps>
+
   <Tabs>
     <TabItem value="command" label="Command">
     ```console
