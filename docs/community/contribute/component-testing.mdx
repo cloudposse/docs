@@ -122,7 +122,7 @@ This files and directories contains custom configurations specific for a testing
 2. `stacks/catalog/` - Store all dependencies configuration files in the dir
 3. `stacks/catalog/usecases` - Store configuration of the testing component's use cases
 4. `stacks/catalog/usecases/basic.yaml` - Predefined file for basic configuration of the testing component's use case
-5. `stacks/catalog/usecases/disabled.yaml` - Predefined file for `disabled` configuration usescase (when variable `enabled: false`)
+5. `stacks/catalog/usecases/disabled.yaml` - Predefined file for the `disabled` configuration use case (when variable `enabled: false`)
 6. `stacks/orgs/default/test/tests.yaml` - Include all dependencies and use cases configurations to deploy them for `default-test` stack
 </Steps>
 
@@ -237,7 +237,7 @@ Here is the usefull combination of flags.
 |`go test -timeout 1h --only-deploy-dependencies --skip-destroy-dependencies`                                                 | Deploy dependencies only.                                     |
 |`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-destroy-component`                        | Deploy testing component. Use previously deployed dependencies. Do not destroy anything. Useful when you are working on deploying use case |
 |`go test -timeout 1h --skip-deploy-dependencies --skip-destroy-dependencies --skip-deploy-component --skip-destroy-component`| Do not deploy or destroy anything. Useful when you are working on tests asserts                                                          |
-|`go test -timeout 1h --skip-deploy-dependencies --skip-deploy-component`                                                     | Destroy component and it's dependencies. Useful when your tests are done to clean up all resources                                       |
+|`go test -timeout 1h --skip-deploy-dependencies --skip-deploy-component`                                                     | Destroy component and its dependencies. Useful when your tests are done to clean up all resources                                       |
 
 
 [Read more about the test helpers framework](https://github.com/cloudposse/test-helpers/blob/main/pkg/atmos/component-helper/README.md)
