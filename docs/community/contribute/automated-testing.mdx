@@ -6,23 +6,39 @@ tags:
   - community
   - contribute
   - developer
+sidebar_position: 200
 ---
 import Intro from '@site/src/components/Intro';
+import Step from '@site/src/components/Step';
 import Steps from '@site/src/components/Steps';
+import StepNumber from '@site/src/components/StepNumber';
+
+
+<Intro>
+Cloud Posse's Terraform modules use a comprehensive automated testing strategy that combines static code analysis and integration tests. Our testing approach ensures code quality through automated linting and formatting checks, while integration tests validate that modules work correctly in real-world scenarios. Tests can be run locally during development and are automatically triggered through our CI/CD pipeline.
+</Intro>
 
 All of our Terraform modules have automated tests. We have two sets of checks:
 
-- The first set of checks is executed through the feature-branch workflow, which can be found [here](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml)
-This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they *are automatically run* on every commit.
-Before committing and pushing your changes, you can and should run this set of checks locally by executing the following command on your host
-```
-make precommit/terraform
-```
-Running these checks locally incorporates all the required changes that otherwise would block your PR.
+<Steps>
+  <Step>
+    ### <StepNumber/> Static Code Analysis
 
-- The second set of checks consists of Terraform integration tests that validate the functionality and integration of the module. These tests are performed using the [`terratest`](https://github.com/gruntwork-io/terratest) library, specifically designed for infrastructure testing, and do more in-depth integration tests of module functionality.
-Unlike the first set of checks, these integration tests are *executed only on request*, and only by authorized contributors. We use ChatOps to trigger this workflow.
+    The first set of checks is executed through the feature-branch workflow, which can be found [here](https://github.com/cloudposse/github-actions-workflows-terraform-module/blob/main/.github/workflows/feature-branch.yml)
+    This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they *are automatically run* on every commit.
+    Before committing and pushing your changes, you can and should run this set of checks locally by executing the following command on your host
+    ```
+    make precommit/terraform
+    ```
+    Running these checks locally incorporates all the required changes that otherwise would block your PR.
+  </Step>
+  <Step>
+    ### <StepNumber/> Integration Tests
 
+    The second set of checks consists of Terraform integration tests that validate the functionality and integration of the module. These tests are performed using the [`terratest`](https://github.com/gruntwork-io/terratest) library, specifically designed for infrastructure testing, and do more in-depth integration tests of module functionality.
+    Unlike the first set of checks, these integration tests are *executed only on request*, and only by authorized contributors. We use ChatOps to trigger this workflow.
+  </Step>
+</Steps>
 
 ## Philosophy of Terraform Integration Testing
 
@@ -32,7 +48,7 @@ Ideally we would like to test that the resources are properly created, but often
 
 ## Using ChatOps To Trigger Integration Tests
 
-In addition to automatic triggers, tests can be run on demand via "ChatOps". (You will need to have at least `triage` level of access to a repo to use ChatOps commands.) Typically, tests are run by a CloudPosse contributor or team member as part of a PR review.
+In addition to automatic triggers, tests can be run on demand via "ChatOps". (You will need to have at least `triage` level of access to a repo to use ChatOps commands.) Typically, tests are run by a Cloud Posse contributor or team member as part of a PR review.
 
 Tests are initiated by posting GitHub comments on the PR. Currently supported commands are the following:
 
@@ -50,15 +66,18 @@ workflow for all of our hundreds of terraform modules. The downside, however, wi
 
 ## Manually triggering a shared workflow
 Here's a list a workflows you might want to trigger manually should things go wrong on GitHub side or with our configuration.
-- `feature-branch` can be triggered anytime by labeling/unlabeling PR with any label.
-- `release-branch` is the same to creating a GH release manually. We have created a complimentary workflow `release-published` for this case: it will fulfill the missing parts once you create a release manually. Note that you are skipping tests before release in this case.
-- `scheduled` can be triggered anytime from GitHub UI, it has a *workflow_dispatch* trigger for this purpose.
+
+<Steps>
+  - `feature-branch` can be triggered anytime by labeling/unlabeling PR with any label.
+  - `release-branch` is the same to creating a GH release manually. We have created a complimentary workflow `release-published` for this case: it will fulfill the missing parts once you create a release manually. Note that you are skipping tests before release in this case.
+  - `scheduled` can be triggered anytime from GitHub UI, it has a *workflow_dispatch* trigger for this purpose.
+</Steps>
 
 ## ChatOps Configuration
 
-If you're a contributor who wants to intialize one of our terraform modules, this is the process. Note, if a repo has already been configured for chatops, there's no need to proceed with these steps.
+If you're a contributor who wants to initialize one of our terraform modules, this is the process. Note, if a repo has already been configured for ChatOps, there's no need to proceed with these steps.
 
-To initialize one of our modules with chatops, run the following commands:
+To initialize one of our modules with ChatOps, run the following commands:
 
 <Steps>
   1. `git clone` the terraform module repository
