@@ -138,6 +138,8 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
 
 <Steps>
   <Step>
+    ### <StepNumber/> Set up AWS Config globally
+
     Deploy AWS Config to each region in order to collect data for global resources such as IAM.
 
     <AtmosWorkflow workflow="deploy/aws-config/global-collector" fileName="compliance" />
@@ -148,7 +150,9 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
   </Step>
 
   <Step>
-    Deploy AWS Config into accounts that require superadmin to apply.
+    ### <StepNumber/> Set up AWS Config for SuperAdmin accounts
+
+    Deploy AWS Config into accounts that require SuperAdmin to apply.
 
     <AtmosWorkflow workflow="deploy/aws-config/superadmin" fileName="compliance" />
   </Step>
@@ -158,12 +162,16 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
 
 <Steps>
   <Step>
+    ### <StepNumber/> Set up the Delegated Administrator account
+
     First, deploy to each region of the Delegated Administrator account.
 
     <AtmosWorkflow workflow="deploy/security-hub/step1" fileName="compliance" />
   </Step>
 
   <Step>
+    ### <StepNumber/> Set up the Organization Management account
+
     Next, using
     [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/),
     deploy to the Organization Management (root) account in order to designate the `security` account as the Organization
@@ -173,10 +181,14 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
   </Step>
 
   <Step>
+    ### <StepNumber/> Assume the identity role
+
     `assume-role acme-identity`
   </Step>
 
   <Step>
+    ### <StepNumber/> Configure Security Hub organization-wide
+
     Finally, deploy the `security-hub/org-settings` component to the `security` account in order to enable and configure
     Security Hub in all other accounts and regions.
 
@@ -184,43 +196,90 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
   </Step>
 </Steps>
 
-## Guard Duty
+## GuardDuty
 
-First, deploy to each region of the Delegated Administrator account.
+<Steps>
+  <Step>
+    ### <StepNumber/> Set up the Delegated Administrator account
 
-<AtmosWorkflow workflow="deploy/guardduty/step1" fileName="compliance" />
+    First, deploy to each region of the Delegated Administrator account.
 
-Next, deploy to the Organization Management (root) account in order to designate the `security` account as the
-Organization Delegated Administrator account.
+    <AtmosWorkflow workflow="deploy/guardduty/step1" fileName="compliance" />
+  </Step>
 
-<AtmosWorkflow workflow="deploy/guardduty/step2" fileName="compliance" />
+  <Step>
+    ### <StepNumber/> Set up the Organization Management account
 
-Finally, deploy to the `security` account in order to enable and configure GuardDuty in all other accounts and regions.
+    Next, deploy to the Organization Management (root) account in order to designate the `security` account as the
+    Organization Delegated Administrator account.
 
-<AtmosWorkflow workflow="deploy/guardduty/step3" fileName="compliance" />
+    <AtmosWorkflow workflow="deploy/guardduty/step2" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure GuardDuty organization-wide
+
+    Finally, deploy to the `security` account in order to enable and configure GuardDuty in all other accounts and regions.
+
+    <AtmosWorkflow workflow="deploy/guardduty/step3" fileName="compliance" />
+  </Step>
+</Steps>
 
 ## Route53 DNS Resolver Firewall
 
-<AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall-buckets" fileName="compliance" />
-<AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall" fileName="compliance" />
+<Steps>
+  <Step>
+    ### <StepNumber/> Set up DNS Firewall buckets
+
+    Deploy the required S3 buckets for Route53 DNS Resolver Firewall logging.
+
+    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall-buckets" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure the DNS Firewall
+
+    Deploy and configure the Route53 DNS Resolver Firewall.
+
+    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall" fileName="compliance" />
+  </Step>
+</Steps>
 
 ## AWS Shield
 
-:::info
+<Steps>
+  <Step>
+    ### <StepNumber/> Set up AWS Shield Advanced
 
-An [AWS Shield Advanced subscription](https://docs.aws.amazon.com/waf/latest/developerguide/enable-ddos-prem.html) is
-required in each `plat` AWS account before running this workflow.
+    :::info
 
-:::
+    An [AWS Shield Advanced subscription](https://docs.aws.amazon.com/waf/latest/developerguide/enable-ddos-prem.html) is
+    required in each `plat` AWS account before running this workflow.
 
-<AtmosWorkflow workflow="deploy/aws-shield" fileName="compliance" />
+    :::
+
+    Deploy AWS Shield Advanced protection.
+
+    <AtmosWorkflow workflow="deploy/aws-shield" fileName="compliance" />
+  </Step>
+</Steps>
 
 ## AWS Inspector v2
 
-Delegates Administration account for [AWS Inspector v2](https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html) to `core-security` for all regions.
+<Steps>
+  <Step>
+    ### <StepNumber/> Set up the Delegated Administrator account
 
-<AtmosWorkflow workflow="deploy/aws-inspector2/step1" fileName="compliance" />
+    Delegate Administration account for [AWS Inspector v2](https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html) to `core-security` for all regions.
 
-Enables Inspector in all regions across accounts
+    <AtmosWorkflow workflow="deploy/aws-inspector2/step1" fileName="compliance" />
+  </Step>
 
-<AtmosWorkflow workflow="deploy/aws-inspector2/step2" fileName="compliance" />
+  <Step>
+    ### <StepNumber/> Configure Inspector organization-wide
+
+    Enable Inspector in all regions across accounts.
+
+    <AtmosWorkflow workflow="deploy/aws-inspector2/step2" fileName="compliance" />
+  </Step>
+</Steps>
