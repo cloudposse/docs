@@ -6,18 +6,21 @@ sidebar_position: 10
 
 ### What are the included labels?
 
-By default, Cloud Posse includes a few labels for common use-cases. These labels are included with the top level workflows, so they can be modified as desired.
+By default, Cloud Posse includes a few labels for common use-cases. 
 
-On Pull Requests:
-
+#### Pull Request Labels
 1. `auto-apply` - If added, the Atmos Terraform Apply workflow will be triggered for all affected components when the Pull Request is merged.
 1. `no-plan` - If added, the Atmos Terraform Plan workflow will be skipped on commits to the Pull Request, and the Atmos Apply workflow will be skipped when the Pull Request is merged.
 
-On Issues:
-
-1. `apply` - If added, the Atmos Terraform Drift Remediation workflow will be triggered for the given component and stack
-1. `drift` - This label is added to all Issues created by Atmos Terraform Drift Detection. Remediation will only run on Issues that have this label.
-1. `remediated` - This label is added to any Issue that has been resolved by Atmos Terraform Drift Remediation
+#### Issue Labels
+- `apply` - Triggers the Atmos Terraform Drift Remediation workflow for a specific component and stack
+- `discarded` - Issue was closed by the drift detection workflow
+- `drift` - Indicates that drift was detected by the drift detection workflow
+- `drift-recovered` - Indicates that an issue is no longer experiencing drift
+- `error` - Indicates an error occurred during planning for a specific component and stack
+- `error-recovered` - Indicates that an error state has been resolved
+- `remediated` - Issue was successfully remediated by the drift remediation action
+- `removed` - Issue is closed because the component no longer exists (code was deleted)
 
 ### Enabling or disabling components
 
