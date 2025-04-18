@@ -1,0 +1,4 @@
+import:
+  - orgs/default/test/_defaults
+  # Import the dependent component
+  - catalog/vpc

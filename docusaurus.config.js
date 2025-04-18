@@ -101,6 +101,17 @@ async function createConfig() {
         },
       ],
       redirectsPlugin,
+      async function AddTailwindCSS(context, options) {
+        return {
+          name: "docusaurus-tailwindcss",
+          configurePostCss(postcssOptions) {
+            // Appends TailwindCSS and AutoPrefixer.
+            postcssOptions.plugins.push(require("@tailwindcss/postcss"));
+            postcssOptions.plugins.push(require("autoprefixer"));
+            return postcssOptions;
+          },
+        };
+      },
     ],
 
     presets: [
@@ -109,16 +120,27 @@ async function createConfig() {
         /** @type {import('@docusaurus/preset-classic').Options} */
         ({
             docs: {
-                routeBasePath: '/',
-                sidebarPath: require.resolve('./sidebars.js'),
-                editUrl: ({versionDocsDirPath, docPath, locale}) => {
-                  return `https://github.com/cloudposse/docs/edit/master/content/docs/${docPath}`;
-                },
-                exclude: ['README.md'],
-                showLastUpdateTime: true,
-                showLastUpdateAuthor: true,
-                onInlineTags: 'warn',
-                tags: 'tags.yml'
+              routeBasePath: '/',
+              sidebarPath: require.resolve('./sidebars.js'),
+              editUrl: ({versionDocsDirPath, docPath, locale}) => {
+                return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
+              },
+              exclude: ['README.md'],
+              showLastUpdateTime: true,
+              showLastUpdateAuthor: true,
+              onInlineTags: 'warn',
+              tags: 'tags.yml',
+              include: ['**/*.md', '**/*.mdx']
+            },
+            blog: {
+              showReadingTime: false,
+              postsPerPage: 10,
+              blogTitle: 'Cloud Posse Announcements',
+              blogDescription: 'Stay up to date with the latest news and updates from Cloud Posse',
+              include: ['**/*.{md,mdx}'],
+              editUrl: ({blogDirPath, blogPath, permalink, locale}) => {
+                return `https://github.com/cloudposse/docs/edit/master/${blogPath}`;
+              },
             },
             theme: {
                 customCss: customCssFiles,
@@ -173,6 +195,11 @@ async function createConfig() {
               position: 'left',
             },
             {
+              to: '/blog',
+              label: 'Blog',
+              position: 'left',
+            },
+            {
               type: 'search',
               position: 'right',
             },
@@ -182,8 +209,8 @@ async function createConfig() {
               position: 'right',
             },
             {
-              to: 'https://cloudposse.com/',
-              label: 'Get a Jumpstart',
+              to: '/support',
+              label: 'Get Support',
               position: 'right',
               className: 'button button--primary navbar-cta-button'
             },
@@ -191,9 +218,9 @@ async function createConfig() {
         },
 
         announcementBar: {
-          id: 'new_docs',
+          id: 'quickstart',
           content:
-            'We are in the process of updating our documentation. <a href="mailto:docs@cloudposse.com">Please let us know what you think!</a>',
+          'Missing the <strong>Quickstart</strong> configurations? <a href="/intro/path/">Start here!</a>',
           backgroundColor: 'var(--announcement-bar-background)',
           textColor: 'var(--announcement-bar-text-color)',
           isCloseable: true,

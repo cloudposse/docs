@@ -13,7 +13,8 @@ workflows:
   vendor:
     description: Vendor component dependencies for the network layer.
     steps:
-      - command: vendor pull --component tgw
+      - command: vendor pull --component tgw/hub
+      - command: vendor pull --component tgw/spoke
       - command: vendor pull --component acm
       - command: vendor pull --component bastion
       - command: vendor pull --component dns-delegated

@@ -1,0 +1,26 @@
+cloudposse:
+  name: Cloud Posse
+  title: Cloud Posse
+  url: https://cloudposse.com
+  image_url: https://avatars.githubusercontent.com/u/16398900?s=200&v=4
+milldr:
+  name: Daniel Miller
+  title: Cloud Posse
+  url: https://github.com/milldr
+  image_url: https://github.com/milldr.png
+osterman:
+  name: Erik Osterman
+  title: Cloud Posse
+  url: https://github.com/osterman
+  image_url: https://github.com/osterman.png
+goruha:
+  name: Igor Rodionov
+  title: Cloud Posse
+  url: https://github.com/goruha
+  image_url: https://github.com/goruha.png
+Benbentwo:
+  name: Ben Smith
+  title: Cloud Posse
+  url: https://github.com/Benbentwo
+  image_url: https://github.com/Benbentwo.png
+# TODO add your name here

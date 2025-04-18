@@ -1,0 +1,54 @@
+---
+title: Terraform Component GitHub Repository Has Moved!
+authors: [goruha]
+slug: terraform-components-have-moved
+tags: [terraform, github, migration]
+date: 2024-11-12
+---
+
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+The GitHub repository for Cloud Posse's Terraform components has migrated to a dedicated GitHub organization. All documentation remains here, but all future updates, contributions, and issue tracking for the source code should now be directed to the respective repositories in the new organization.
+</Intro>
+
+# Hello, Cloud Posse Community!
+
+We're excited to announce that starting on November 12, 2024, we will begin migrating each component in the `cloudposse/terraform-aws-components` repository to individual repositories under a new GitHub organization. This change aims to improve the stability, maintainability, and usability of our components.
+
+## Why This Migration?
+
+Our goal is to make each component easier to use, contribute to, and maintain. This migration will allow us to:
+
+<Steps>
+- Leverage terratest automation for better testing
+- Implement semantic versioning to clearly communicate updates and breaking changes
+- Improve PR review times and accelerate community contributions
+- Enable Dependabot automation for dependency management
+- And much more!
+</Steps>
+
+## What to Expect Starting November 12, 2024
+
+### Migration Timeline
+The migration will begin on November 12 and is anticipated to finish by the end of the following week.
+
+### Code Freeze
+Starting on November 12, this repository will be set to read-only mode, marking the beginning of a code freeze. No new pull requests or issues will be accepted here after that date.
+
+### New Contribution Workflow
+After the migration, all contributions should be directed to the new individual component repositories.
+
+### Updated Documentation
+To support this transition, we are updating our documentation and cloudposse-component updater.
+
+### Future Archiving
+In approximately six months, we plan to archive this repository and transfer it to the cloudposse-archives organization.
+
+## Frequently Asked Questions
+
+### Does this affect Terraform modules?
+No, only the `terraform-aws-components` repository is affected. Our Terraform modules will remain where they are.
+
+We are committed to making this transition as seamless as possible. If you have any questions or concerns, please feel free to post them in this issue. Your feedback is important to us, and we appreciate your support as we embark on this new chapter!
