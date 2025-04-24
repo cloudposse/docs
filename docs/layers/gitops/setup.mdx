@@ -11,6 +11,7 @@ import StepNumber from '@site/src/components/StepNumber';
 import TaskList from '@site/src/components/TaskList';
 import Admonition from '@theme/Admonition';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import CodeBlock from '@theme/CodeBlock';
 
 ## Quick Start
 
@@ -58,23 +59,36 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
   <Step>
     ### <StepNumber/> Authentication Prerequisites
 
-    The GitHub Action workflows expect the `gitops` AWS Team to be properly setup and connected to GitHub OIDC. Both of
+    The GitHub Action workflows expect both the `gitops` and `planners` AWS Teams to be properly setup and connected to GitHub OIDC. Both of
     these components should already be deployed with `aws-teams`/`aws-team-roles` and `github-oidc-provider` respectively,
     but `github-oidc-provider` will likely need to deployed to several additional accounts. Verify the following to complete
     the authentication prerequisites.
 
+    <Admonition type="info" title="Trusted GitHub Repos">
+
+    By default in the Reference Architecture, the `trusted_github_repos` input is commented out for `aws-teams`. Now is the time to uncomment those lines. Follows the tasks below. Please see `stacks/catalog/aws-teams.yaml`
+
+    </Admonition>
+
     <TaskList>
-      - The `gitops` Team is defined and deployed by `aws-teams`.
-      - The `gitops` team adds a trusted relationship with the given infrastructure repo, via `trusted_github_repos`.
-        _Capitalization matters!_
+      - The `gitops` and `planners` Teams are defined and deployed by `aws-teams`.
+      - Both teams have trusted relationships with the infrastructure repo via `trusted_github_repos`.
+        _Capitalization matters!_ In the reference architecture, these values are initially commented out and will need to be updated with your specific repository information:
           ```yaml
-          trusted_github_repos:
-            gitops:
-              - "acme/infra-acme"
+          components:
+            terraform:
+              aws-teams:
+                vars:
+                  trusted_github_repos:
+                    gitops:
+                      - "acme/infra:main"
+                    planners:
+                      - "acme/infra"
           ```
       - The `aws-team-roles` default catalog allows the `gitops` team to assume the `terraform` role, including anywhere
         `aws-team-roles` is overwritten (`plat-dev` and `plat-sandbox`)
-      - `tfstate-backend` allows `gitops` to assume the default access role from the `core-identity` account
+      - Similarly, the `planners` team can assume the `planner` role in `aws-team-roles` to plan Terraform only.
+      - `tfstate-backend` allows both teams to assume the default access role from the `core-identity` account
       - `github-oidc-provider` is deployed to every account that GitHub will be able to access. This should be every account
         except `root`.
       - The workflows have adequate permission
@@ -119,14 +133,47 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
   <Step>
 
-    ### <StepNumber/> Deploy
+    ### <StepNumber/> Deploy GitOps Prerequisites
 
-    Deploy three components, `gitops/s3-bucket`, `gitops/dynamodb`, and `gitops` with the following workflow:
+    Deploy the GitOps prerequisite components, `gitops/s3-bucket`, `gitops/dynamodb`, and `gitops` with the following workflow
 
     <AtmosWorkflow workflow="deploy/gitops" fileName="gitops" />
 
-    And that's it!
   </Step>
+  <Step>
+    ### <StepNumber/> Reapply `aws-teams`
+
+    Now we need to reapply `aws-teams` to add the trusted GitHub repositories to `gitops` and `planners`.
+
+    Uncomment or add the `trusted_github_repos` input:
+
+    ```yaml
+    # stacks/catalog/aws-teams.yaml
+    components:
+      terraform:
+        aws-teams:
+          vars:
+            trusted_github_repos:
+              gitops:
+                - "acme/infra:main"
+              planners:
+                - "acme/infra"
+    ```
+
+    Run the following command to apply:
+
+    <Admonition type="info" title="Use a Privileged Role">
+
+    `aws-teams` is a sensitive component deployed to the `core-identity` account and therefore needs to be applied with a role or user with access to the account. For example use the `managers` AWS Team or the SuperAdmin user.
+
+    </Admonition>
+
+    ```bash
+    atmos terraform apply aws-teams -s core-gbl-identity
+    ```
+
+  </Step>
+    And that's it! Now you can try creating a new pull request. If properly configured, you should see GitHub Actions kick off `Atmos Terraform Plan`.
 </Steps>
 
 

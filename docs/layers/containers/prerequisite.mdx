@@ -1,0 +1,36 @@
+---
+title: "Prepare Container Registry"
+sidebar_label: "Prepare Container Registry"
+sidebar_position: 10
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+<Intro>
+Now that the GitHub OIDC Provider has been deployed, we can proceed with setting up the necessary prerequisites for containers. The first prerequisite is deploying Amazon Elastic Container Registry (ECR) repositories that will be used to store container images built by GitHub Actions workflows.
+</Intro>
+
+| Steps                      | Actions                             |
+| -------------------------- | ----------------------------------- |
+| Deploy ECR repositories    | `atmos workflow deploy/ecr -f baseline`      |
+
+<Steps>
+  <Step>
+  ## <StepNumber/> Deploy ECR Repositories
+
+  Deploy the ECR repositories that will be used by GitHub Actions workflows:
+
+  <AtmosWorkflow workflow="deploy/ecr" fileName="baseline" />
+
+  We use ECR for two main purposes:
+  <Steps>
+  1. Storing the Geodesic base image that provides the development environment and tooling
+  2. Storing container images built during CI steps of application release workflows
+  </Steps>
+
+  </Step>
+</Steps>
