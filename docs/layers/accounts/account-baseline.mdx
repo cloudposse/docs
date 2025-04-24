@@ -1,5 +1,5 @@
 ---
-title: "Deploy CloudTrail and ECR"
+title: "Deploy CloudTrail and Account Budgets"
 sidebar_label: "Deploy Account Baseline"
 sidebar_position: 5
 ---
@@ -11,7 +11,7 @@ import StepNumber from '@site/src/components/StepNumber';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
-Now that all the accounts have been deployed, we need to finalize the setup of the accounts. This includes deploying CloudTrail and ECR. These foundational components will be necessary to move forward with the rest of the deployment.
+Now that all the accounts have been deployed, we need to finalize the setup of the accounts. This includes deploying CloudTrail and optionally account budgets. These foundational components will be necessary to move forward with the rest of the deployment.
 </Intro>
 
 | Steps                      | Actions                             |
@@ -21,11 +21,11 @@ Now that all the accounts have been deployed, we need to finalize the setup of t
 
 <Steps>
   <Step>
-  ## <StepNumber/> Deploy Baseline Components
+  ## <StepNumber/> Deploy CloudTrail
 
-  Deploy CloudTrail and ECR with the following workflow:
+  Deploy CloudTrail and the the CloudTrail bucket:
 
-  <AtmosWorkflow workflow="deploy" fileName="baseline" />
+  <AtmosWorkflow workflow="deploy/cloudtrail" fileName="baseline" />
   </Step>
 
   <Step>
