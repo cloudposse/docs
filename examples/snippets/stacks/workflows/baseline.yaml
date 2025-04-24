@@ -6,7 +6,8 @@ workflows:
       - command: workflow vendor -f baseline
       - command: workflow init/tfstate -f baseline
       - command: workflow deploy/tfstate -f baseline
-      - command: workflow deploy -f baseline
+      - command: workflow deploy/cloudtrail -f baseline
+      - command: workflow deploy/ecr -f baseline
 
   vendor:
     description: Vendor baseline layer components.
@@ -36,9 +37,13 @@ workflows:
     steps:
       - command: terraform deploy tfstate-backend --stack core-use1-root
 
-  deploy:
+  deploy/cloudtrail:
     description: Start AWS Cloudtrail in audit and root accounts to track changes across the org.
     steps:
       - command: terraform deploy cloudtrail-bucket -s core-use1-audit
       - command: terraform deploy cloudtrail -s core-gbl-root
+
+  deploy/ecr:
+    description: Deploy ECR in the artifacts account to use as our container registry
+    steps:
       - command: terraform deploy ecr -s core-use1-artifacts
