@@ -10,7 +10,7 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 
 <Intro>
-The `SuperAdmin` user is necessary for performing administrative functions that IAM roles cannot, ensuring secure and controlled access to the root account while minimizing risks. These are the step-by-step instructions for creating a `SuperAdmin` user in AWS, including setting permissions, enabling MFA, and securely storing credentials in 1Password.
+The `SuperAdmin` user is recommended for performing certain high-risk administrative tasks that modify IAM permissions affecting users on SSO or SAML. We don't recommend making these types of changes with your own SSO or SAML identity because a misconfiguration could lead to account lockout. This guide outlines the steps to create a secure `SuperAdmin` user in AWS, including setting permissions, enabling MFA, and storing credentials safely in 1Password.
 </Intro>
 
 [Follow the prerequisites steps in the How-to Get Started guide](/layers/project/#0-prerequisites)
