@@ -1,0 +1,32 @@
+
+
+# Dont forget to run
+#   export AWS_ACCESS_KEY_ID=test
+#   export AWS_SECRET_ACCESS_KEY=test
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow vendor -f baseline
+      - command: workflow init/tfstate -f localstack
+      - command: workflow deploy/accounts -f accounts
+      - command: workflow deploy/tfstate -f baseline
+      - command: workflow vendor -f identity
+      - command: workflow deploy/saml -f identity
+      - command: workflow deploy/teams -f identity
+      - command: workflow update-aws-config -f identity
+      - command: workflow vendor -f network
+      - command: workflow deploy/vpc -f network
+#      - command: workflow deploy/tgw -f network
+      - command: workflow deploy/dns -f network
+#      - command: workflow deploy/vpn -f network
+
+  # A slightly different version than the typical baseline
+  init/tfstate:
+    description: Provision Terraform State Backend for initial deployment.
+    steps:
+      - command: terraform deploy tfstate-backend -var=access_roles_enabled=false --stack core-use1-root --auto-generate-backend-file=false -- -input=false -auto-approve
+      - command: until aws s3 ls acme-core-use1-root-tfstate; do sleep 5; done
+        type: shell
+      - command: terraform init tfstate-backend -s core-use1-root -- -force-copy
+      - command: terraform deploy tfstate-backend -var=access_roles_enabled=false --stack core-use1-root --init-run-reconfigure=false
