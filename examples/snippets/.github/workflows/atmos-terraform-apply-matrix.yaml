@@ -44,7 +44,7 @@ jobs:
       - uses: unfor19/install-aws-cli-action@v1
 
       - name: Apply Atmos Component
-        uses: cloudposse/github-action-atmos-terraform-apply@v2
+        uses: cloudposse/github-action-atmos-terraform-apply@v3
         with:
           component: ${{ matrix.component }}
           stack: ${{ matrix.stack }}
