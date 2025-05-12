@@ -24,6 +24,7 @@ workflows:
   all:
     description: Run all workflows
     steps:
+      - command: workflow check-setup -f identity
       - command: workflow vendor -f identity
       - command: workflow deploy/all -f identity
 
@@ -44,7 +45,6 @@ workflows:
   vendor/aws-config:
     description: Vendor aws-config script.
     steps:
-      - command: workflow check-setup -f identity
       - name: vendor-aws-config
         type: shell
         command: |-
@@ -61,6 +61,7 @@ workflows:
       - command: workflow deploy/saml -f identity
       - command: workflow deploy/sso -f identity
       - command: workflow deploy/teams -f identity
+      - command: workflow update-aws-config -f identity
 
   deploy/saml:
     description: Update aws-saml configuration (when adding a new Identity Provider).
@@ -88,12 +89,10 @@ workflows:
       - command: terraform deploy aws-team-roles -s plat-gbl-prod
       - command: terraform deploy aws-team-roles -s plat-gbl-sandbox
       - command: terraform deploy aws-team-roles -s plat-gbl-staging
-      - command: workflow update-aws-config -f identity
 
   update-aws-config:
     description: Update AWS Config files.
     steps:
-      - command: workflow check-setup -f identity
       - name: update-aws-config
         type: shell
         command: |-

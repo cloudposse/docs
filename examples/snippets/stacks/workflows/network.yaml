@@ -6,6 +6,7 @@ workflows:
       - command: workflow deploy/vpc -f network
       - command: workflow deploy/tgw -f network
       - command: workflow deploy/dns -f network
+      - command: workflow output/dns-name-servers -f network
       - command: workflow deploy/acm -f network
       - command: workflow deploy/vpn -f network
       - command: workflow deploy/bastion -f network
@@ -77,7 +78,6 @@ workflows:
       - command: terraform deploy dns-delegated -s plat-gbl-dev
       - command: terraform deploy dns-delegated -s plat-gbl-staging
       - command: terraform deploy dns-delegated -s plat-gbl-prod
-      - command: workflow output/dns-name-servers -f network
 
   output/dns-name-servers:
     description: Output NS records for each dns-primary
