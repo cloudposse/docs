@@ -273,6 +273,26 @@ We prefer to keep terraform outputs symmetrical as much as possible with the ups
 
 ![Terraform outputs should be symmetrical](/assets/terraform-outputs-should-be-symmetrical.png)
 
+### All attributes of a resource
+
+The AWS provider updates frequently and it's challenging to stay up to date with all of it's attributes. While it's still important to have an explicit output for necessary attributes, there is a limbo period where those outputs haven't been added yet. For that reason, we can setup exposing all attributes of a resource with this convention.
+
+```hcl
+output "<resource_type>_<resource_name>" {
+  value       = <resource_type>.<resource_name>
+  description = "All attributes of [`<resource_type>.<resource_name>`](link-to-aws-provider-resource-attribute-docs)"
+}
+```
+
+For example, if the module contained the resource address `aws_ec2_instance.default` then the output would be defined like this.
+
+```hcl
+output "aws_ec2_instance_default" {
+  value       = aws_ec2_instance.default
+  description = "All attributes of [`aws_ec2_instance.default`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#attribute-reference)"
+}
+```
+
 ## Language
 
 ### Use indented `HEREDOC` syntax
