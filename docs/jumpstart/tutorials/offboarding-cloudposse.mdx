@@ -46,14 +46,19 @@ For things like Okta, Workspaces, or Azure AD:
 
 Typically customers provision a “Cloud Posse” team within their GitHub org.
 
-#### Option 1: Revoke All Access
+#### Offboarding Github Access
 
+- Option 1: Revoke All
 Revoking this team’s access from repositories should be sufficient to remove all of our access. Also, ensure that any repositories do not have Cloud Posse usernames directly added as external contributors. This happens if repositories were created by our team in your organization.
 
-#### Option 2: Downgrade Access
+- Option 2: Downgrade Access
 Changing our team’s access to read-only will enable us to still participate in Code Reviews.
 
 <img src="/assets/refarch/cleanshot-2022-02-25-at-17.05.51-20220225-230814.png" /><br/>
+
+#### Offboarding GitHub Ownership
+
+The `CODEOWNERS` file should be checked to make sure that no Cloud Posse usernames or groups are listed. This file is typically located in the root of the repository.
 
 ### Spacelift
 
