@@ -82,7 +82,7 @@ async function createConfig() {
       [
         "posthog-docusaurus",
         {
-          apiKey: "phc_G3idXOACKt4vIzgRu2FVP8ORO1D2VlkeEwX9mE2jDvT",
+          apiKey: "phc_J8pdbvqrRKd5vAoNJ5ObGhBk2AYs6VsF4bo3vU7xOb7",
           appUrl: "https://us.i.posthog.com",
           enableInDevelopment: false, // optional
         },
