@@ -1,0 +1,32 @@
+name: 👽 Atmos Pro
+run-name: 👽 Atmos Pro
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+
+permissions:
+  id-token: write # This is required for requesting the JWT (OIDC) token
+  contents: read # This is required for actions/checkout
+
+jobs:
+  affected:
+    name: Trigger Affected Stacks
+    runs-on:
+      - "ubuntu-latest"
+    steps:
+      - name: Determine Affected Stacks
+        id: affected
+        uses: cloudposse/github-action-atmos-affected-stacks@v6
+        with:
+          atmos-version: ${{ vars.ATMOS_VERSION }}
+          atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+          atmos-pro-upload: true
+          atmos-pro-token: ${{ secrets.ATMOS_PRO_TOKEN }}
+          head-ref: ${{ github.event.pull_request.head.sha }}
+  
