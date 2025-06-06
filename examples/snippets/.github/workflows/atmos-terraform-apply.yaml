@@ -34,7 +34,9 @@ jobs:
     name: Determine Affected Stacks
     if: needs.pr.outputs.no-apply == 'false'
     needs: ["pr"]
-    runs-on: ["self-hosted", "terraform"]
+    runs-on: 
+    - self-hosted
+    - terraform
     steps:
       - id: affected
         uses: cloudposse/github-action-atmos-affected-stacks@v4

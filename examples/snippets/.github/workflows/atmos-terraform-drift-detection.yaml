@@ -17,7 +17,9 @@ permissions:
 jobs:
   select-components:
     name: Select Components
-    runs-on: ["self-hosted", "terraform"]
+    runs-on: 
+    - self-hosted
+    - terraform
     steps:
       - name: Selected Components
         id: components
@@ -52,7 +54,7 @@ jobs:
     needs: ["plan-atmos-components"]
     if: always()
     name: Reconcile issues
-    runs-on: ["self-hosted", "terraform"]
+    runs-on: ['self-hosted', 'terraform']
     steps:
       - name: Drift Detection
         uses: cloudposse/github-action-atmos-terraform-drift-detection@v2

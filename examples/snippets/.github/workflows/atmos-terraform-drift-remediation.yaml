@@ -16,7 +16,9 @@ jobs:
   remediate-drift:
     if: github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'apply')
     name: Remediate Drift
-    runs-on: ["self-hosted", "terraform"]
+    runs-on: 
+    - self-hosted
+    - terraform
     steps:
       - uses: unfor19/install-aws-cli-action@v1
       - name: Remediate Drift
@@ -35,7 +37,7 @@ jobs:
       ) &&
       !contains(github.event.issue.labels.*.name, 'remediated')
     name: Discard Drift
-    runs-on: ["self-hosted", "terraform"]
+    runs-on: ['self-hosted', 'terraform']
     steps:
       - name: Discard Drift
         uses: cloudposse/github-action-atmos-terraform-drift-remediation@v2
