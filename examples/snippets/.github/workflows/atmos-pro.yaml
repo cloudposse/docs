@@ -1,0 +1,16 @@
+name: Atmos Pro
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  describe-affected:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Describe Affected
+        uses: cloudposse/github-action-atmos-pro-describe-affected@main
+        with:
+          workspace-id: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
+          api-key: ${{ secrets.ATMOS_PRO_API_KEY }} 
