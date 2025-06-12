@@ -40,15 +40,16 @@ import Admonition from '@theme/Admonition';
       The "Deploy to AWS" button will be available soon. This will provide a one-click deployment experience for setting up the required infrastructure.
     </Admonition>
   </Step>
-
-  <Step>
-    ### <StepNumber/> Verify Deployment
-
-    <TaskList>
-      - Check that the S3 bucket exists and has versioning enabled
-      - Verify the DynamoDB table is created
-      - Confirm IAM roles have the correct permissions
-      - Test the GitHub OIDC connection
-    </TaskList>
-  </Step>
 </Steps>
+
+## Review
+
+Congratulations! The CloudFormation stack has now deployed:
+
+<TaskList>
+- An IAM role configured with trusted relationships for GitHub Actions
+- An S3 bucket to store Terraform plan files 
+- A DynamoDB table for managing those plan files
+</TaskList>
+
+You're now ready to start using Atmos Pro with GitHub Actions.
