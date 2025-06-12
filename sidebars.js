@@ -269,8 +269,8 @@ module.exports = {
             {
               type: 'category',
               label: 'Automate Terraform',
-              collapsible: false,
-              collapsed: false,
+              collapsible: true,
+              collapsed: true,
               link: {
                 type: 'doc',
                 id: 'layers/atmos-pro/atmos-pro'
