@@ -9,7 +9,9 @@ on:
 jobs:
   update:
     environment: atmos
-    runs-on: ["self-hosted", "default"]
+    runs-on:
+      - self-hosted
+      - terraform
     steps:
       - name: "Checkout source code at current commit"
         uses: actions/checkout@v4
