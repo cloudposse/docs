@@ -1,0 +1,59 @@
+---
+title: "Deploy Infrastructure with CloudFormation"
+sidebar_label: "Deploy with CloudFormation"
+sidebar_position: 2
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import TaskList from '@site/src/components/TaskList';
+import Admonition from '@theme/Admonition';
+
+<Intro>
+  Deploy the required AWS infrastructure for Atmos Pro with just a few clicks using CloudFormation. This approach provides a quick and straightforward way to set up all necessary resources.
+</Intro>
+
+<Admonition type="info" title="Coming Soon">
+  Cloudformation support will be available soon. This will provide a one-click deployment experience for setting up the required infrastructure.
+</Admonition>
+
+## Deployment Steps
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Authenticate with AWS
+
+    <TaskList>
+      - Sign in to your AWS account
+      - Ensure you have administrator access
+    </TaskList>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Infrastructure
+
+    <TaskList>
+      - Click the "Deploy to AWS" button below
+      - Review the CloudFormation template parameters
+      - Click "Create stack" to deploy
+    </TaskList>
+
+    <Admonition type="info" title="Coming Soon">
+      The "Deploy to AWS" button will be available soon. This will provide a one-click deployment experience for setting up the required infrastructure.
+    </Admonition>
+  </Step>
+</Steps>
+
+## Review
+
+Congratulations! The CloudFormation stack has now deployed:
+
+<TaskList>
+- An IAM role configured with trusted relationships for GitHub Actions
+- An S3 bucket to store Terraform plan files 
+- A DynamoDB table for managing those plan files
+</TaskList>
+
+You're now ready to start using Atmos Pro with GitHub Actions.

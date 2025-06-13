@@ -1,0 +1,76 @@
+---
+title: "Atmos Pro"
+sidebar_label: "Atmos Pro"
+sidebar_class_name: hidden
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+  Atmos Pro is our advanced GitOps solution for Terraform and OpenTofu automation, designed to provide enterprise-grade workflow orchestration in GitHub Actions. It extends the capabilities of standard GitHub Actions with powerful features for managing infrastructure deployments, ensuring compliance, and maintaining infrastructure as code at scale.
+</Intro>
+
+## The Problem
+
+While GitHub Actions provides a solid foundation for CI/CD, it lacks the specialized tooling needed for complex infrastructure deployments. Teams face several challenges:
+
+<Steps>
+- **Limited Deployment Control**: GitHub Actions doesn't provide built-in mechanisms for ordered deployments or dependency management between infrastructure components
+- **Poor Visibility**: Understanding the impact of changes across your infrastructure requires manual investigation
+- **Insufficient Guardrails**: Basic GitHub Actions workflows don't enforce deployment policies or prevent dangerous operations
+- **Drift Management**: Keeping infrastructure in sync with code requires additional tooling and manual processes
+- **Multi-Cloud Complexity**: Managing deployments across different cloud providers adds another layer of complexity
+</Steps>
+
+Traditional Terraform Automation and Collaboration Software (TACOS) solutions like Terraform Cloud, Spacelift, or Env0 attempt to solve these problems but often come with significant costs and vendor lock-in.
+
+## Our Solution
+
+Atmos Pro enhances GitHub Actions with enterprise-grade features specifically designed for infrastructure deployment:
+
+<Steps>
+* **Ordered Deployments**: Ensure infrastructure components are deployed in the correct sequence based on their dependencies
+* **Dependency Visualization**: Automatically generate and maintain dependency graphs for your infrastructure
+* **Drift Detection**: Continuously monitor and report on infrastructure drift with automated remediation options
+* **Enhanced Guardrails**: Implement policy controls and approval gates to prevent dangerous operations
+* **Native GitOps**: Leverage Git as the single source of truth with full audit trails and change history
+* **Beautiful Job Summaries**: Clear, actionable insights into deployment status and changes
+</Steps>
+
+## How It Works
+
+Atmos Pro integrates seamlessly with your GitOps workflow, providing automated infrastructure planning and deployment through two main processes:
+
+### Pull Request Workflow
+
+When a developer creates a pull request, Atmos Pro automatically triggers the planning process:
+
+<Steps>
+1. **Developer Makes a Change**: Infrastructure code is modified in a feature branch
+2. **Code Is Pushed**: Changes are pushed to the feature branch
+3. **GitHub Actions Trigger**: Atmos affected stacks are identified
+4. **Atmos Uploads**: Affected stacks information is uploaded
+5. **Atmos Pro Dispatches**: Plan workflows are triggered for affected components
+6. **Status Updates**: Atmos Pro maintains a status comment showing the progress of plans
+</Steps>
+
+### Merge Workflow
+
+When a pull request is merged, Atmos Pro automatically handles the deployment:
+
+<Steps>
+1. **Pull Request Is Merged**: Changes are merged into the main branch
+2. **GitHub Actions Trigger**: Atmos affected stacks are identified
+3. **Atmos Uploads**: Affected stacks information is uploaded
+4. **Atmos Pro Dispatches**: Apply workflows are triggered for affected components
+5. **Status Updates**: Atmos Pro maintains a status comment showing the progress of deployments
+</Steps>
+
+## References
+
+[Setup Documentation](/layers/atmos-pro/setup): Learn how to set up and configure Atmos Pro for your infrastructure, including prerequisites and initial configuration steps.
+
+[atmos-pro.com](https://www.atmos-pro.com): Explore the full documentation for Atmos Pro features and capabilities, including detailed guides and API references.
+
+[atmos.tools](https://www.atmos.tools): Learn about the core Atmos CLI and its features, which form the foundation for Atmos Pro's enhanced capabilities.

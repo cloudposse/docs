@@ -1,0 +1,23 @@
+name: Atmos Pro Terraform Apply
+
+on:
+  workflow_call:
+    inputs:
+      stack:
+        required: true
+        type: string
+      component:
+        required: true
+        type: string
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Terraform Apply
+        uses: cloudposse/github-action-atmos-pro-terraform-apply@main
+        with:
+          workspace-id: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
+          api-key: ${{ secrets.ATMOS_PRO_API_KEY }}
+          stack: ${{ inputs.stack }}
+          component: ${{ inputs.component }}

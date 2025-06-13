@@ -1,0 +1,99 @@
+---
+title: "Deploy with Atmos and Terraform"
+sidebar_label: "Deploy with Atmos and Terraform"
+sidebar_position: 1
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import TaskList from '@site/src/components/TaskList';
+import Admonition from '@theme/Admonition';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import CodeBlock from '@theme/CodeBlock';
+
+## Quick Start
+
+| Steps     |                                        |
+| :-------- | :------------------------------------- |
+| 1. Vendor | `atmos workflow vendor -f gitops`   |
+| 2. Deploy | `atmos workflow deploy/all -f gitops` |
+
+<Admonition type="info" title="GitOps Terminology">
+  Currently, the workflows use the terminology "gitops". In the future, we plan to replace this with "atmos-pro".
+</Admonition>
+
+## Requirements
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Authentication Prerequisites
+
+    The GitHub Action workflows expect the `gitops` AWS Team to be properly setup and connected to GitHub OIDC. This component should already be deployed with `aws-teams`/`aws-team-roles` and `github-oidc-provider` respectively. Verify the following to complete the authentication prerequisites.
+
+    <Admonition type="info" title="Trusted GitHub Repos">
+      By default in the Reference Architecture, the `trusted_github_repos` input is commented out for `aws-teams`. Now is the time to uncomment those lines. Please see `stacks/catalog/aws-teams.yaml`
+    </Admonition>
+
+    <TaskList>
+      - The `gitops` Team is defined and deployed by `aws-teams`
+      - The team has trusted relationships with the infrastructure repo via `trusted_github_repos`
+        _Capitalization matters!_ In the reference architecture, these values are initially commented out and will need to be updated with your specific repository information:
+        ```yaml
+        components:
+          terraform:
+            aws-teams:
+              vars:
+                trusted_github_repos:
+                  gitops:
+                    - "acme/infra:main"
+        ```
+      - The `aws-team-roles` default catalog allows the `gitops` team to assume the `terraform` role
+      - `github-oidc-provider` is deployed to the account where Atmos Pro infrastructure will be created
+      - The workflows have adequate permission
+    </TaskList>
+
+    <Admonition type="info" title="GitHub Workflow Permissions">
+      In order to assume GitHub OIDC roles, a workflow needs the following:
+
+      ```yaml
+      permissions:
+        id-token: write # This is required for requesting the JWT
+        contents: read # This is required for actions/checkout
+      ```
+    </Admonition>
+  </Step>
+</Steps>
+
+## How To Setup
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Vendor Components
+
+    The `gitops` stacks depends on components that may already exist in your component library (`s3-bucket` and `dynamodb`) and adds new components to manage the GitHub OIDC access. Vendor these components either with the included Atmos Workflows or using [Atmos Vendoring](https://atmos.tools/core-concepts/components/vendoring).
+
+    <AtmosWorkflow workflow="vendor" fileName="gitops" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Atmos Pro Infrastructure
+
+    Deploy the Atmos Pro infrastructure components with the following workflow:
+
+    <AtmosWorkflow workflow="deploy/all" fileName="gitops" />
+  </Step>
+</Steps>
+
+## Review
+
+Congratulations! The Atmos components have now deployed:
+
+<TaskList>
+- An IAM role configured with trusted relationships for GitHub Actions
+- An S3 bucket to store Terraform plan files 
+- A DynamoDB table for managing those plan files
+</TaskList>
+
+You're now ready to start using Atmos Pro with GitHub Actions.

@@ -25,10 +25,6 @@ That being said, a Terraform configuration created in a repository outside the i
 
 ## Solution
 
-:::tip
-TL;DR: Create a Spacelift stack pointing to a microservice repo via the monorepo stack config, give Spacelift access to the microservice repo, drop in `drop-in.tf` into the microservice repository’s `terraform` directory. See also [How to Use Multiple Infrastructure Repositories with Spacelift?](/layers/spacelift/tutorials/how-to-use-multiple-infrastructure-repositories-with-spacelift)
-
-:::
 
 The following is a guide on how to create a Terraform configuration inside a microservice repo that can be used with Spacelift, and which retains some of the features and patterns stemming from the infrastructure monorepo, despite `atmos` not being involved.
 

@@ -1,0 +1,142 @@
+---
+title: "Setup Atmos Pro"
+sidebar_label: "Setup"
+sidebar_position: 1
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import TaskList from '@site/src/components/TaskList';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import PartialAtmosPro from '@site/examples/snippets/.github/workflows/atmos-pro.yaml';
+import PartialAtmosProTerraformPlan from '@site/examples/snippets/.github/workflows/atmos-pro-terraform-plan.yaml';
+import PartialAtmosProTerraformApply from '@site/examples/snippets/.github/workflows/atmos-pro-terraform-apply.yaml';
+
+<Intro>
+  Setting up Atmos Pro is straightforward: install the GitHub App, grant repository permissions, set up the workflows, and deploy the AWS infrastructure. This guide provides an overview of each step, with detailed instructions available in the linked pages.
+</Intro>
+
+## Setup Process
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Install the GitHub App
+
+    The first step is to install the Atmos Pro GitHub App into your infrastructure repository. This will set up the initial connection between your repository and Atmos Pro.
+
+    <TaskList>
+      - Sign up for Atmos Pro using GitHub
+      - Create or join a workspace
+      - Install the Atmos Pro GitHub App
+      - Import your repositories
+    </TaskList>
+
+    For step-by-step instructions, see the [official Atmos Pro installation guide](https://atmos-pro.com/docs/install).
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Grant Repository Permissions
+
+    The second step is to grant repository permissions in Atmos Pro to enable ordered deployments and other features.
+
+    <TaskList>
+      - Permission: `Affected Stacks Create`
+      - Workflow: `*`
+      - Branch: `*`
+      - Environment: `*`
+    </TaskList>
+
+    For detailed instructions on repository permissions, see the [official Atmos Pro repository permissions guide](https://atmos-pro.com/docs/ordered-deployments/repository-permissions).
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Set Up Workflows
+
+    The third step is to configure the workflows in your repository. This includes reviewing the generated workflows, setting up environment variables, and configuring branch protection rules.
+
+    <TaskList>
+      - Review the 3 GitHub Action workflows
+      - Add the Workspace ID to GitHub repository variables
+      - Merge the workflows into the default branch
+    </TaskList>
+
+    _The dispatched workflows need to exist in the default branch before they can be triggered!_
+
+    The following workflows should be added to your repository:
+
+    <Tabs>
+      <TabItem value="atmos-pro" label="atmos-pro.yaml">
+        This workflow is triggered by GitHub on pull request events (opened, synchronized, reopened) and when the PR is merged (closed). It uses the `atmos describe affected` command to identify affected components and upload them to Atmos Pro.
+
+        <CodeBlock language="yaml" title=".github/workflows/atmos-pro.yaml">
+          {PartialAtmosPro}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="atmos-pro-terraform-plan" label="atmos-pro-terraform-plan.yaml">
+        This workflow is dispatched by Atmos Pro to create Terraform plans for affected components. It is a reusable workflow that takes stack and component as inputs.
+
+        <CodeBlock language="yaml" title=".github/workflows/atmos-pro-terraform-plan.yaml">
+          {PartialAtmosProTerraformPlan}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="atmos-pro-terraform-apply" label="atmos-pro-terraform-apply.yaml">
+        This workflow is dispatched by Atmos Pro to apply Terraform changes for affected components. It is a reusable workflow that takes stack and component as inputs.
+
+        <CodeBlock language="yaml" title=".github/workflows/atmos-pro-terraform-apply.yaml">
+          {PartialAtmosProTerraformApply}
+        </CodeBlock>
+      </TabItem>
+    </Tabs>
+
+    For additional workflow setup instructions, see the [official Atmos Pro workflow configuration guide](https://atmos-pro.com/docs/ordered-deployments/github-workflow-config).
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy AWS Infrastructure
+
+    The final step is to deploy the required AWS infrastructure. This will create all necessary resources for running Atmos Terraform Plan and Apply from GitHub Actions.
+
+    <TaskList>
+      - Configure Terraform State Backend
+      - For role assumption, deploy the GitHub OIDC provider and roles
+      - To store Terraform planfiles, deploy the S3 bucket and DynamoDB table.
+    </TaskList>
+
+    For step-by-step AWS deployment instructions, choose one of the following options:
+    - [Atmos and Terraform deployment](/layers/atmos-pro/tutorials/deploy-with-terraform)
+    - [CloudFormation deployment](/layers/atmos-pro/tutorials/deploy-with-cloudformation)
+  </Step>
+</Steps>
+
+<KeyPoints title="Tips">
+  1. Make sure you have admin access to both GitHub and AWS before starting the setup
+  2. Follow the detailed instructions in each linked guide for specific steps
+  3. Test the setup with a small change before deploying major infrastructure changes
+</KeyPoints>
+
+## Verification
+
+After completing all four steps, you can verify the setup by:
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Test GitHub Integration
+
+    - Create a new pull request with a small stack change
+    - The Atmos Pro GitHub App will automatically comment on the PR
+    - The comment will show the status of affected components
+    - As workflows are dispatched for each component, the comment will automatically update
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Verify AWS Resources
+
+    - Check that the S3 bucket for storing Terraform plans exists
+    - Verify the DynamoDB table for tracking deployments is created
+    - Confirm the IAM roles have the correct permissions
+  </Step>
+</Steps>
