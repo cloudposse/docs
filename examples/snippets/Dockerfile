@@ -2,8 +2,7 @@
 ARG GEODESIC_VERSION=4.3.0
 ARG GEODESIC_OS=debian
 # https://github.com/cloudposse/atmos
-ARG ATMOS_VERSION=1.179.0
-# This should match the version set in stacks/catalog/spacelift.yaml
+ARG ATMOS_VERSION=1.180.0
 # This should match the version set in .github/workflows/auto-format.yaml
 ARG TF_1_VERSION=1.5.7
 ARG TOFU_VERSION=1.8.8
@@ -24,8 +23,7 @@ ENV AWS_SDK_LOAD_CONFIG=1
 ENV AWS_DEFAULT_REGION=us-east-1
 ENV AWS_DEFAULT_SHORT_REGION=use1
 ENV AWS_REGION_ABBREVIATION_TYPE=short
-# Install specific versions of Terraform. Must match versions in Spacelift terraform_version_map
-# in components/terraform/spacelift/default.auto.tfvars
+
 ARG TF_1_VERSION
 ARG TOFU_VERSION
 RUN apt-get update && apt-get install -y -u --allow-downgrades \
