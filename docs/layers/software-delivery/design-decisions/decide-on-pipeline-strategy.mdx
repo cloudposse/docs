@@ -98,7 +98,7 @@ What we implement as part of our approach and the specific use cases we address 
 
 ### CI QA Environments
 
-- QA environments are a discreet set of static environments running on Kubernetes with preprovisioned third party services. They are similar to preview environments, except that environments are shared by QA engineers to verify PR changes in “close to real live” environment. QA engineer can deploy/undeploy PR changes to one of the QA environments by adding or removing the `deploy/qa{number}` label.
+- QA environments are a discrete set of static environments running on Kubernetes with preprovisioned third party services. They are similar to preview environments, except that environments are shared by QA engineers to verify PR changes in “close to real live” environment. QA engineer can deploy/undeploy PR changes to one of the QA environments by adding or removing the `deploy/qa{number}` label.
 - If several PRs of one repo have `deploy/qa{number}` label then the latest deployment (commit & push) will override each other.
 - It is responsibility of QA engineers to avoid this conflict. GitHub environments UI is useful for seeing what is deployed.
 
@@ -119,7 +119,7 @@ What we implement as part of our approach and the specific use cases we address 
 
 ### Automated Releases with Approval Gates
 
-- When a Developer (or Release Manager) decides to issue a new release they need just to publish the _Draft Release_ that will trigger the “_Release workflow_“. The workflow should create a new “Release branch” `release/{version}`, promote docker image with release version and consequentially deploy it to `Staging` and `Production` environments with approval gates. Developer need to approve deployment on `Staging` environment, wait the deployment would be successfully completed and then repeat the same for `Production` environment.
+- When a Developer (or Release Manager) decides to issue a new release they need just to publish the _Draft Release_ that will trigger the “_Release workflow_“. The workflow should create a new “Release branch” `release/{version}`, promote docker image with release version and consequently deploy it to `Staging` and `Production` environments with approval gates. Developer need to approve deployment on `Staging` environment, wait the deployment would be successfully completed and then repeat the same for `Production` environment.
 
 ### Staging Environment
 
