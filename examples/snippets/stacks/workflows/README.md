@@ -32,7 +32,7 @@ Use `atmos workflow init -f {{ filename }}` to run any commands required before 
 Example
 
 ```
-atmos workflow init -f spacelift
+atmos workflow init -f baseline
 ```
 
 ### `deploy`
@@ -59,7 +59,7 @@ Workflow in order.
 For example,
 
 ```
-atmos workflow all -f spacelift
+atmos workflow all -f baseline
 ```
 
 
