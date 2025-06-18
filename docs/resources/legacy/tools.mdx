@@ -296,7 +296,7 @@ A flexible commandline tool for template rendering. Supports lots of local and r
 
 ### Why Gomplate?
 
-The Go progamming language supports [native templating](https://golang.org/pkg/text/template/). The problem is that there aren't very many functions supported out-of-the-box and it cannot be called from the command line.
+The Go programming language supports [native templating](https://golang.org/pkg/text/template/). The problem is that there aren't very many functions supported out-of-the-box and it cannot be called from the command line.
 
 Gomplate is a CLI tool that addresses this need. That is, it can be used as an alternative to [`envsubst`](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html), but also supports
 additional template data-sources such as: JSON, YAML, and even AWS EC2 metadata.
@@ -355,7 +355,7 @@ Another way to think about it is like this:
 - **Chamber Compatibility** - Use [`chamber`](/learn/toolchain/#chamber) to deploy helm charts with secrets pulled from SSM
 - **CI/CD Integration** - Easily integrate `helmfile` with CI/CD pipelines using our [`build-harness`](/learn/toolchain/#build-harness)
 - **Synchronize Environments**  - Rapidly deploy or update all services for a cluster
-- **Go Templating** - Configuration is templatized using [Go template](https://godoc.org/text/template) and supports all the [Sprig](https://godoc.org/github.com/Masterminds/sprig) intepolation functions.
+- **Go Templating** - Configuration is templatized using [Go template](https://godoc.org/text/template) and supports all the [Sprig](https://godoc.org/github.com/Masterminds/sprig) interpolation functions.
 
 ### Use-cases
 
@@ -624,7 +624,7 @@ Targets are like “functions”. They can run any shell command. Those shell co
 2. Render all variables, functions and macros
 3. Then execute each line as a standalone shell script, which is executed in a sub-shell (`/bin/bash`` -c “......”`)
 
-#### Defintion
+#### Definition
 
 
 There are 3 ways target names can be defined.

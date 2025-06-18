@@ -87,7 +87,7 @@ The difference with a regular atmos configuration are:
 1. All components deployed on one stack `default-test` in one `us-east-2` region.
 2. Use single aws account for all test resources. If component assumes the cross region or cross account interaction, the configuration still deploys it to the same actual aws account.
 3. Mock `account-map` component to skip role assuming and always use current AWS credentials provided with environment variables
-4. Configure teraform state files storage to local directory at a path provided by test framework with environment variable `COMPONENT_HELPER_STATE_DIR`
+4. Configure terraform state files storage to local directory at a path provided by test framework with environment variable `COMPONENT_HELPER_STATE_DIR`
 </Steps>
 
 This configuration is common for all components and could be copied from [template repo](https://github.com/cloudposse-terraform-components/template/tree/main/test).
@@ -218,7 +218,7 @@ A test suite run consists of the following phases all of which can be controlled
 | Test       | Deploy the component                      |`--only-deploy-dependencies`|
 | Teardown   | Destroy all dependencies                  |`--skip-teardown`           |
 
-This is possible to enable/disable steps on each phase more precisly
+This is possible to enable/disable steps on each phase more precisely
 
 | Phase      | Description                                            |         Skip flag           |
 |------------|--------------------------------------------------------|-----------------------------|
@@ -230,7 +230,7 @@ This is possible to enable/disable steps on each phase more precisly
 | Teardown   | Destroy all dependencies                               |`--skip-destroy-dependencies`|
 
 
-Here is the usefull combination of flags.
+Here is the useful combination of flags.
 
 |         Command                                                                                                             | Description                                                                                                                               |
 |-----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
