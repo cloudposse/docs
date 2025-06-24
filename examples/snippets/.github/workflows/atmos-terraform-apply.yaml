@@ -39,7 +39,7 @@ jobs:
       - terraform
     steps:
       - id: affected
-        uses: cloudposse/github-action-atmos-affected-stacks@v4
+        uses: cloudposse/github-action-atmos-affected-stacks@v5
         with:
           base-ref: ${{ needs.pr.outputs.base }}
           head-ref: ${{ needs.pr.outputs.head }}
