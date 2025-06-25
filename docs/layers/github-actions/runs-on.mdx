@@ -1,94 +1,148 @@
 ---
 title: "Runs On - Self-Hosted Runners"
-sidebar_position: 11
+sidebar_label: "Runs On"
+sidebar_position: 12
 ---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Admonition from '@theme/Admonition';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import EmbedFile from '@site/src/components/EmbedFile';
+import File from '@site/src/components/File';
 
-# Runs On - Self-Hosted Runners
+<Intro>
+  This guide explains how to set up and manage self-hosted runners using the Runs On component. Self-hosted runners provide more control over the execution environment, allowing you to run workflows on your own infrastructure.
+</Intro>
 
-## Quick Start
+<Admonition type="note">
+  [GitHub-OIDC](/layers/github-actions/github-oidc-provider/) is not required to deploy Runs On, but it is required for several components to be deployed on or to via SelfHosted Runners.
+  For example, your runners cannot push to ECR without GitHub-OIDC.
+</Admonition>
 
-| Steps                      | Example                                    |
-| :------------------------- | :----------------------------------------- |
-| 1. Vendor GitHub components | `atmos workflow vendor -f github`           |
-| 2. Deploy OIDC Provider    | `atmos workflow deploy/github-oidc-provider -f github` |
-| 3. Deploy Runs On          | `atmos workflow deploy/runs-on -f github`   |
+<KeyPoints title="Quick Start">
 
-
-GitHub Layer provisioning includes deploying the GitHub OIDC Provider and Runs On components.
-
-GitHub OIDC Provider is not immediately required for Runs On to function, but it is recommended to deploy it as soon as possible as it is required for several GitHub workflows to function and several other components including `ecr` and `aws-teams`.
-
-## Deploying Runs On
-
-1. Vendor the Runs On component
+1. Vendor the required components
 2. Deploy the Runs On component
 3. Install the GitHub App
-4. Ensure Workflow `runs-on` configuration points to Runs-On from default branch
+4. Configure your workflows to use the runners
 
-## How To
+</KeyPoints>
 
-### Vendor Components
+<Steps>
+  <Step>
+  ## <StepNumber/> Vendor Runs On Component
 
-Vendor these components with the included Atmos Workflows.
+  Vendor the required components using the included Atmos workflow:
 
-```bash
-atmos workflow vendor -f github
-```
+  <AtmosWorkflow workflow="vendor" fileName="github" />
 
-Or for each component individually:
+  </Step>
 
-```bash
-atmos vendor pull --component github-oidc-provider
-atmos vendor pull --component runs-on
-```
+  {/* <Step>
+  ### <StepNumber/> Validate configuration
 
-### Deploy Runs On
+  Validate the configuration of the Runs On component:
 
-#### Using Atmos Workflow (Recommended)
+  <EmbedFile fileName="examples/snippets/stacks/workflows/github.yaml" />
 
-```bash
-atmos workflow deploy/runs-on -f github
-```
+  </Step>   
+   */}
 
-#### Using Direct Terraform Command
+  <Step>
+  ## <StepNumber/> Deploy Runs On Component
 
-```bash
-atmos terraform deploy runs-on -s core-use2-auto
-```
+  Deploy the Runs On component using the included Atmos workflow:
 
-### Install GitHub App
+  <AtmosWorkflow workflow="deploy/runs-on" fileName="github" />
 
-After deploying the runs-on component, follow these steps:
+  </Step>
 
-1. Check the Terraform outputs for a key called `RunsOnEntryPoint`
-2. This contains the URL to install the GitHub App
-3. Click the URL and follow the prompts to install the app to your GitHub Organization
-4. You'll need appropriate permissions in GitHub to install the app
+  <Step>
+  ## <StepNumber/> Install GitHub App
 
-### Configure Workflow
+  After deployment, follow these steps to install the GitHub App:
 
-Update your GitHub Actions workflow files to use the self-hosted runners. Here's an example:
+  1. Check the Terraform outputs for `RunsOnEntryPoint` 
+  2. Use the provided URL to install the GitHub App 
+  3. Follow the prompts to complete the installation in your GitHub Organization 
+  4. Ensure you have the necessary permissions in GitHub to install the app 
 
-```yaml
-jobs:
-  build:
-    runs-on: runs-on-default  # This references the runner group
-    steps:
-      - uses: actions/checkout@v3
-      # Add your build steps here
-```
+  </Step>
 
-For more information on available runner types and configurations, check the [runner types documentation](https://runs-on.com/runners/linux/).
+  <Step>
+  ### <StepNumber/> Configure Workflows
 
-## Best Practices
+  Update your GitHub Actions workflow files to use the self-hosted runners:
 
-- Always pin your runner versions in your workflows
-- Use appropriate runner sizes based on your workload requirements
-- Monitor runner utilization and scale accordingly
-- Regularly review and update your runner configurations
-- Implement proper security measures for your self-hosted runners
-- Keep your runners updated with the latest security patches
-- Use labels effectively to route jobs to appropriate runners
-- Set up monitoring and alerting for your self-hosted runners
-- Implement proper cleanup procedures for ephemeral runners
-- Regularly audit runner permissions and access controls
+  ```yaml
+  jobs:
+    build:
+      runs-on: 
+        - "runs-on=${{ github.run_id }}"
+        - "runner=terraform" # Note `terraform` is a runner group name defined by a RunsOn configuration
+        ## If no configuraiton is present, use
+        # - "runner=2cpu-linux-x64"
+        ## Optional Tags
+        # - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      steps:
+        - uses: actions/checkout@v3
+        # Add your build steps here
+  ```
+
+  For more information on available runner types and configurations, check the [RunsOn: Runner Types documentation](https://runs-on.com/runners/linux/).
+  </Step>
+
+  <Step>
+  ### <StepNumber/> (Optional) Setup a RunsOn Repo or Organization Configuration
+
+    In your Repository you can add a file to configure Runs On. This can also extend the configuration for the Organization.
+
+  <Admonition type="note">
+    <br/>
+    Please note this snippet below is an extremely simplified example
+    <br/>
+    <br/>
+    If you want to see what Cloud Posse uses as a starting point checkout
+    [CloudPosse/.github/.github/runs-on.yml](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml)
+  </Admonition>
+
+  <File title="MyOrg/MyInfraRepo/.github/runs-on.yml">
+    ```yaml
+    # See https://runs-on.com/configuration/repo-config/
+    _extends: .github
+    terraform:
+      cpu: [4, 32] # example override
+    ```
+  </File>       
+
+  <File title="MyOrg/.github/.github/runs-on.yml">
+    ```yaml
+    # Organizational Defaults for RunsOn usable by every repository
+
+    runners:
+      terraform:
+        image: ubuntu22-full-x64
+        disk: default
+        spot: price-capacity-optimized
+        retry: when-interrupted
+        private: false
+        ssh: false
+        cpu: [2, 32]
+        ram: [8, 64]
+        tags:
+          - "gha-runner:runs-on/terraform"
+    ```
+  </File>
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+### GitHub Action Runner Not Found
+
+First determine if the Workflow or the Runner is the issue, sometimes the workflow doesn't kick off because it is on a feature branch and not on the default.
+
+If the workflow kicks off but is waiting on a runner, checkout [Runs On Troubleshooting](https://runs-on.com/guides/troubleshoot/) as they have great docs on figuring out why a runner is not available.
