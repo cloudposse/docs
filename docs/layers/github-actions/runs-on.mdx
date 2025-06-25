@@ -16,7 +16,7 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 </Intro>
 
 <Admonition type="note">
-  [GitHub-OIDC](/layers/github-actions/github-oidc-provider/) is not required to deploy Runs On, but it is required for several components to be deployed on or to via SelfHosted Runners.
+  [GitHub-OIDC](/layers/github-actions/github-oidc-with-aws/) is not required to deploy Runs On, but it is required for several components to be deployed on or to via SelfHosted Runners.
   For example, your runners cannot push to ECR without GitHub-OIDC.
 </Admonition>
 
@@ -38,16 +38,6 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
   <AtmosWorkflow workflow="vendor" fileName="github" />
 
   </Step>
-
-  {/* <Step>
-  ### <StepNumber/> Validate configuration
-
-  Validate the configuration of the Runs On component:
-
-  <EmbedFile fileName="examples/snippets/stacks/workflows/github.yaml" />
-
-  </Step>   
-   */}
 
   <Step>
   ## <StepNumber/> Deploy Runs On Component
