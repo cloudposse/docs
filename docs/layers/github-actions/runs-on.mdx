@@ -1,0 +1,94 @@
+---
+title: "Runs On - Self-Hosted Runners"
+sidebar_position: 11
+---
+
+# Runs On - Self-Hosted Runners
+
+## Quick Start
+
+| Steps                      | Example                                    |
+| :------------------------- | :----------------------------------------- |
+| 1. Vendor GitHub components | `atmos workflow vendor -f github`           |
+| 2. Deploy OIDC Provider    | `atmos workflow deploy/github-oidc-provider -f github` |
+| 3. Deploy Runs On          | `atmos workflow deploy/runs-on -f github`   |
+
+
+GitHub Layer provisioning includes deploying the GitHub OIDC Provider and Runs On components.
+
+GitHub OIDC Provider is not immediately required for Runs On to function, but it is recommended to deploy it as soon as possible as it is required for several GitHub workflows to function and several other components including `ecr` and `aws-teams`.
+
+## Deploying Runs On
+
+1. Vendor the Runs On component
+2. Deploy the Runs On component
+3. Install the GitHub App
+4. Ensure Workflow `runs-on` configuration points to Runs-On from default branch
+
+## How To
+
+### Vendor Components
+
+Vendor these components with the included Atmos Workflows.
+
+```bash
+atmos workflow vendor -f github
+```
+
+Or for each component individually:
+
+```bash
+atmos vendor pull --component github-oidc-provider
+atmos vendor pull --component runs-on
+```
+
+### Deploy Runs On
+
+#### Using Atmos Workflow (Recommended)
+
+```bash
+atmos workflow deploy/runs-on -f github
+```
+
+#### Using Direct Terraform Command
+
+```bash
+atmos terraform deploy runs-on -s core-use2-auto
+```
+
+### Install GitHub App
+
+After deploying the runs-on component, follow these steps:
+
+1. Check the Terraform outputs for a key called `RunsOnEntryPoint`
+2. This contains the URL to install the GitHub App
+3. Click the URL and follow the prompts to install the app to your GitHub Organization
+4. You'll need appropriate permissions in GitHub to install the app
+
+### Configure Workflow
+
+Update your GitHub Actions workflow files to use the self-hosted runners. Here's an example:
+
+```yaml
+jobs:
+  build:
+    runs-on: runs-on-default  # This references the runner group
+    steps:
+      - uses: actions/checkout@v3
+      # Add your build steps here
+```
+
+For more information on available runner types and configurations, check the [runner types documentation](https://runs-on.com/runners/linux/).
+
+## Best Practices
+
+- Always pin your runner versions in your workflows
+- Use appropriate runner sizes based on your workload requirements
+- Monitor runner utilization and scale accordingly
+- Regularly review and update your runner configurations
+- Implement proper security measures for your self-hosted runners
+- Keep your runners updated with the latest security patches
+- Use labels effectively to route jobs to appropriate runners
+- Set up monitoring and alerting for your self-hosted runners
+- Implement proper cleanup procedures for ephemeral runners
+- Regularly audit runner permissions and access controls
