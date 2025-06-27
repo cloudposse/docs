@@ -59,7 +59,46 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     If you haven't already completed the Account Quota increase, now is the time to do so. To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
 
     From the `root` account (not `SuperAdmin`), increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case
+  </Step>
 
+  <Step>
+    ## <StepNumber/> Confirm Root Account Name
+
+    After deploying the AWS Organization, you need to verify the root account name and configure it in the `account-map` catalog, if not already set. This is a critical step that prevents errors in subsequent deployments.
+
+    **Why this is needed:** The root account has two different names:
+    <Steps>
+    - **AWS Account Name**: The name you typed when originally creating the AWS account (often "root" but can be different)
+    - **Account Alias**: The deterministic name set in the account configuration (e.g., "core-root")
+    </Steps>
+
+    The account-map component needs to know the actual AWS account name to properly map accounts.
+
+    **To find your root account name:**
+
+    ```bash
+    # Make sure you're using a user with access to your root account
+    aws organizations list-accounts \
+      --query "Accounts[?Id=='$(aws organizations describe-organization --query 'Organization.MasterAccountId' --output text)'].Name" \
+      --output text
+    ```
+
+    **To configure the account-map:**
+
+    Update `stacks/catalog/account-map.yaml` to set the correct root account name:
+
+    ```yaml
+    components:
+      terraform:
+        account-map:
+          vars:
+            root_account_aws_name: "your-actual-root-account-name"  # The name from the AWS Organizations output
+            root_account_account_name: "core-root"  # This should always be "core-root"
+    ```
+
+    <Note title="Common Issue">
+      If you encounter "The given key does not identify an element in this collection value" errors in subsequent deployments, it's usually because the `root_account_aws_name` is not correctly set in the account-map configuration.
+    </Note>
   </Step>
 
   <Step>
