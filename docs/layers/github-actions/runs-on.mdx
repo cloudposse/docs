@@ -109,33 +109,14 @@ import File from '@site/src/components/File';
     [CloudPosse/.github/.github/runs-on.yml](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml)
   </Admonition>
 
-  <File title="MyOrg/MyInfraRepo/.github/runs-on.yml">
-    ```yaml
-    # See https://runs-on.com/configuration/repo-config/
-    _extends: .github
-    terraform:
-      cpu: [4, 32] # example override
-    ```
-  </File>       
-
-  <File title="MyOrg/.github/.github/runs-on.yml">
-    ```yaml
-    # Organizational Defaults for RunsOn usable by every repository
-
-    runners:
+  <File title="MyOrg/MyInfraRepo/.github/runs-on.yaml">
+      ```yaml
+      # See https://runs-on.com/configuration/repo-config/
+      _extends: .github
       terraform:
-        image: ubuntu22-full-x64
-        disk: default
-        spot: price-capacity-optimized
-        retry: when-interrupted
-        private: false
-        ssh: false
-        cpu: [2, 32]
-        ram: [8, 64]
-        tags:
-          - "gha-runner:runs-on/terraform"
-    ```
-  </File>
+        cpu: [4, 32] # example override
+      ```
+  </File>       
   </Step>
 </Steps>
 
