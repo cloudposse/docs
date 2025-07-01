@@ -28,37 +28,10 @@ const iconMap = {
     // Add more mappings as needed
   };
 
-// Function to guess the type based on the title
-const guessTypeFromTitle = (title) => {
-    if (/\.tf\.json$/i.test(title)) {
-      return 'code';
-    }
-    if (/atmos\.ya?ml$/i.test(title)) {
-        return 'config';
-    }    
-    if (/.*stack.*\.ya?ml$/i.test(title)) {
-        return 'stack';
-    }
-    if (/\.ya?ml$/i.test(title)) {
-        return 'yaml';
-    }   
-    if (/\.json$/i.test(title)) {
-        return 'json';
-    }
-    if (/\.tf$/i.test(title)) {
-        return 'hcl';
-    }
-    if (/\/$/i.test(title)) {
-        return 'folder';
-    }
-    // Add more patterns as needed
-    return 'file'; // Default to 'file'
-  };
-
   
 export default function File({ title, className, type, icon, size = '1x', children }) {
     // Determine the icon to use
-    const guessedType = type || guessTypeFromTitle(title);
+    const guessedType = type || 'file';
     const selectedIcon = icon || iconMap[guessedType] || faFile;
 
     return (
