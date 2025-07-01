@@ -96,7 +96,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   <Step>
     ## <StepNumber/> Confirm Root Account Name
 
-    After deploying the AWS Organization, you need to verify the root account name and configure it in the `account-map` catalog, if not already set. This is a critical step that prevents errors in subsequent deployments.
+    After deploying the AWS Organization, verify the **account name** of the root (a.k.a. management/payer) account and ensure it's set in the `account-map` catalog. This is the human-readable **account name**, not the account alias. While we default to `root`, it may have been set to your company name or another custom label when the account was originally created.
 
     **Why this is needed:** The root account has two different names:
     <Steps>
@@ -129,7 +129,11 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     ```
 
     <Note title="Common Issue">
-      If you encounter "The given key does not identify an element in this collection value" errors in subsequent deployments, it's usually because the `root_account_aws_name` is not correctly set in the account-map configuration.
+      If you encounter an error such as the following in subsequent deployments, it's usually because the `root_account_aws_name` is not correctly set in the `account-map` configuration.
+      
+      ```console
+      The given key does not identify an element in this collection value
+      ```
     </Note>
   </Step>
 
