@@ -98,18 +98,21 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     After deploying the AWS Organization, verify the **account name** of the root (a.k.a. management/payer) account and ensure it's set in the `account-map` catalog. This is the human-readable **account name**, not the account alias. While we default to `root`, it may have been set to your company name or another custom label when the account was originally created.
 
-    **Why this is needed:** The root account has two different names:
-    <Steps>
-    - **AWS Account Name**: The name you typed when originally creating the AWS account (often "root" but can be different)
-    - **Account Alias**: The deterministic name set in the account configuration (e.g., "core-root")
-    </Steps>
+    <details>
+      <summary><strong>Why this is needed?</strong></summary>
+      
+      The root account has two different names:
+      
+      - **AWS Account Name**: The name you typed when originally creating the AWS account (often "root" but can be different)
+      - **Account Alias**: The deterministic name set in the account configuration (e.g., "core-root")
+    </details>
 
     The account-map component needs to know the actual AWS account name to properly map accounts.
 
     **To find your root account name:**
 
     ```bash
-    # Make sure you're using a user with access to your root account
+    # Make sure you're using a user with access to your root account, such as SuperAdmin
     aws organizations list-accounts \
       --query "Accounts[?Id=='$(aws organizations describe-organization --query 'Organization.MasterAccountId' --output text)'].Name" \
       --output text
