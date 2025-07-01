@@ -10,7 +10,6 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Admonition from '@theme/Admonition';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
-import EmbedFile from '@site/src/components/EmbedFile';
 import File from '@site/src/components/File';
 
 <Intro>
@@ -40,16 +39,6 @@ import File from '@site/src/components/File';
   <AtmosWorkflow workflow="vendor" fileName="github" />
 
   </Step>
-
-  {/* <Step>
-  ### <StepNumber/> Validate configuration
-
-  Validate the configuration of the Runs On component:
-
-  <EmbedFile fileName="examples/snippets/stacks/workflows/github.yaml" />
-
-  </Step>   
-   */}
 
   <Step>
   ## <StepNumber/> Deploy Runs On Component
@@ -109,14 +98,16 @@ import File from '@site/src/components/File';
     [CloudPosse/.github/.github/runs-on.yml](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml)
   </Admonition>
 
-  <File >
+  <File title="RunsOn Repo Config" className="file" children={
+    <code>
       ```yaml
       # See https://runs-on.com/configuration/repo-config/
       _extends: .github
       terraform:
         cpu: [4, 32] # example override
       ```
-  </File>
+    </code>
+  } />
   </Step>
 </Steps>
 

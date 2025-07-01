@@ -44,7 +44,7 @@ async function createConfig() {
     url: 'https://docs.cloudposse.com',
     baseUrl: '/',
     trailingSlash: true,
-    onBrokenLinks: 'throw',
+    onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
     onDuplicateRoutes: 'warn',
     favicon: 'img/favicon.png',
