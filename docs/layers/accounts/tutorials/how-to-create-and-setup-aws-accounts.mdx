@@ -30,7 +30,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
 
     First, add the new account to your account catalog configuration. This defines the account structure within your AWS Organization.
 
-    Navigate to your account catalog file (typically `stacks/catalog/account*.yaml`) and add the new account under the appropriate Organizational Unit (OU).
+    Navigate to your account catalog file (typically `stacks/catalog/account.yaml`) and add the new account under the appropriate Organizational Unit (OU).
 
     **Example for a new account named `foobar`:**
 
@@ -53,96 +53,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
   <Step>
     ### <StepNumber/> Create Stack Configuration Files
 
-    Create the necessary stack configuration files for your new account using the modern `stacks/orgs/namespace/tenant/region` pattern. You'll typically need a global-region stack for account settings, and regional stacks depending on your specific use case.
-
-    **Stage Mixin** (`stacks/mixins/stage/foobar.yaml`):
-
-    Create a mixin file for your stage to keep configuration DRY. This file contains only variables.
-
-    ```yaml
-    # This file is for vars only; do not import components here
-    # For more information, see "Mixins and Imports with Atmos" in the baseline documentation
-    vars:
-      stage: foobar
-    ```
-
-    **Account Defaults** (`stacks/orgs/acme/core/foobar/_defaults.yaml`):
-
-    This file is necessary for keeping configuration DRY and establishing common settings to be imported in all subsequent files.
-
-    ```yaml
-    import:
-      - orgs/acme/core/_defaults
-      - mixins/stage/foobar
-    ```
-
-    **Account Settings** (`stacks/orgs/acme/core/foobar/global-region/baseline.yaml`):
-
-    This file configures account-level settings and policies.
-
-    ```yaml
-    import:
-      - orgs/acme/core/foobar/_defaults
-      - mixins/region/global-region
-      - catalog/account-settings
-
-    components:
-      terraform:
-        account-settings:
-          vars:
-            # Allow creating public S3 buckets in this account
-            # Public buckets are used, for example, to deploy documentation websites into preview environments and serve them via Lambda@Edge
-            block_public_acls: false
-            ignore_public_acls: false
-            block_public_policy: false
-            restrict_public_buckets: false
-    ```
-
-    **AWS Team Roles** (`stacks/orgs/acme/core/foobar/global-region/identity.yaml`):
-
-    This file configures cross-account IAM roles and team access permissions.
-
-    ```yaml
-    import:
-      - orgs/acme/core/foobar/_defaults
-      - mixins/region/global-region
-      - catalog/aws-team-roles
-
-    components:
-      terraform:
-        aws-team-roles:
-          vars:
-            roles:
-              reader:
-                trusted_teams:
-                  - devops
-                  - developers
-                  - managers
-              poweruser:
-                trusted_teams:
-                  - devops
-                  - developers
-                  - managers
-              terraform:
-                trusted_teams:
-                  - devops
-                  - developers
-                  - managers
-                  - gitops
-    ```
-
-    **Regional Stack** (`stacks/orgs/acme/core/foobar/us-east-1/baseline.yaml`):
-
-    Create regional stacks based on your specific needs. Start with a basic placeholder that you can expand later.
-
-    ```yaml
-    import:
-      - orgs/acme/core/foobar/_defaults
-      - mixins/region/us-east-1
-
-    components:
-      terraform: {}
-    ```
+    Create the necessary stack configuration files for your new account using the `stacks/orgs/<namespace>/<tenant>/<stage>` pattern. See the following example where the namespace is `acme`, the tenant is `core`, and the stage is `foobar`.
 
     **Example Directory Structure:**
 
@@ -162,6 +73,117 @@ This guide provides a step-by-step approach to create and configure new AWS acco
     <Note title="Recommendation">
       Start with a basic global-region stack for account settings and create placeholder regional stacks for future expansion. You can add more regional stacks and components as your account requirements grow.
     </Note>
+
+    <Steps>
+      <Step>
+        ### <StepNumber/> Stage Mixin
+
+        **For example:** `stacks/mixins/stage/foobar.yaml`
+
+        Create a mixin file for your stage to keep configuration DRY. This file contains only variables.
+
+        ```yaml
+        # This file is for vars only; do not import components here
+        # For more information, see "Mixins and Imports with Atmos" in the baseline documentation
+        vars:
+          stage: foobar
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> Account Defaults
+
+        **For example:** `stacks/orgs/acme/core/foobar/_defaults.yaml`
+
+        This file is necessary for keeping configuration DRY and establishing common settings to be imported in all subsequent files.
+
+        ```yaml
+        import:
+          - orgs/acme/core/_defaults
+          - mixins/stage/foobar
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> Account Settings
+
+        **For example:** `stacks/orgs/acme/core/foobar/global-region/baseline.yaml`
+
+        This file configures account-level settings and policies.
+
+        ```yaml
+        import:
+          - orgs/acme/core/foobar/_defaults
+          - mixins/region/global-region
+          - catalog/account-settings
+
+        components:
+          terraform:
+            account-settings:
+              vars:
+                # Allow creating public S3 buckets in this account
+                # Public buckets are used, for example, to deploy documentation websites into preview environments and serve them via Lambda@Edge
+                block_public_acls: false
+                ignore_public_acls: false
+                block_public_policy: false
+                restrict_public_buckets: false
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> AWS Team Roles
+
+        **For example:** `stacks/orgs/acme/core/foobar/global-region/identity.yaml`
+
+        This file configures cross-account IAM roles and team access permissions.
+
+        ```yaml
+        import:
+          - orgs/acme/core/foobar/_defaults
+          - mixins/region/global-region
+          - catalog/aws-team-roles
+
+        components:
+          terraform:
+            aws-team-roles:
+              vars:
+                roles:
+                  reader:
+                    trusted_teams:
+                      - devops
+                      - developers
+                      - managers
+                  poweruser:
+                    trusted_teams:
+                      - devops
+                      - developers
+                      - managers
+                  terraform:
+                    trusted_teams:
+                      - devops
+                      - developers
+                      - managers
+                      - gitops
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> Regional Stack
+
+        **For example:** `stacks/orgs/acme/core/foobar/us-east-1/baseline.yaml`
+
+        Create regional stacks based on your specific needs. Start with a basic placeholder that you can expand later.
+
+        ```yaml
+        import:
+          - orgs/acme/core/foobar/_defaults
+          - mixins/region/us-east-1
+
+        components:
+          terraform: {}
+        ```
+      </Step>
+    </Steps>
   </Step>
 
   <Step>

@@ -140,18 +140,18 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   <Step>
     ## <StepNumber/> Deploy Accounts
 
-    <Note title="Important">
-      With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
-      on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
-      stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
-      uses `account-map` (indirectly) to chose the role to assume. However, these components do _not_ need to be deployed yet.
-    </Note>
-
     Again review the "account" configuration in `stacks/catalog/account.yaml`. In particular, check the email address and account names. In the next step, we will create and configure all accounts in the AWS Organization using the configuration in that stack file.
 
     Once confident, begin the accounts deployment:
 
     <AtmosWorkflow workflow="deploy/accounts" fileName="accounts" />
+
+    <Note title="Info">
+      With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
+      on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
+      stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
+      uses `account-map` (indirectly) to chose the role to assume. However, these components do _not_ need to be deployed yet.
+    </Note>
 
     These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
     outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
@@ -160,6 +160,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     <Note title="Important">
     Always run `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
     </Note>
+
   </Step>
 
   <Step>
