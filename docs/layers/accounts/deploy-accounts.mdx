@@ -62,6 +62,38 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   </Step>
 
   <Step>
+    ## <StepNumber/> Deploy Accounts
+
+    <Note title="Important">
+      With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
+      on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
+      stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
+      uses `account-map` (indirectly) to chose the role to assume. However, these components do _not_ need to be deployed yet.
+    </Note>
+
+    Again verify the "account" configuration in `stacks/catalog/account.yaml`. In the next step, we will create and configure all accounts in the AWS Organization using the configuration in that stack file.
+
+    Once confident, begin the accounts deployment:
+
+    <AtmosWorkflow workflow="deploy/accounts" fileName="accounts" />
+
+    These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
+    outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
+    role, we provision a static component `account-map`.
+
+    <Note title="Important">
+    Always run `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
+    </Note>
+
+    Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves. Run the following:
+
+    <AtmosWorkflow workflow="deploy/account-settings" fileName="accounts" />
+
+    The workflows will kick off several sequential Terraform runs to provision all the AWS member account settings for
+    member accounts in the Organization.
+  </Step>
+
+  <Step>
     ## <StepNumber/> Confirm Root Account Name
 
     After deploying the AWS Organization, you need to verify the root account name and configure it in the `account-map` catalog, if not already set. This is a critical step that prevents errors in subsequent deployments.
@@ -99,38 +131,6 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     <Note title="Common Issue">
       If you encounter "The given key does not identify an element in this collection value" errors in subsequent deployments, it's usually because the `root_account_aws_name` is not correctly set in the account-map configuration.
     </Note>
-  </Step>
-
-  <Step>
-    ## <StepNumber/> Deploy Accounts
-
-    <Note title="Important">
-      With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
-      on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
-      stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
-      uses `account-map` (indirectly) to chose the role to assume. However, these components do _not_ need to be deployed yet.
-    </Note>
-
-    Again verify the "account" configuration in `stacks/catalog/account.yaml`. In the next step, we will create and configure all accounts in the AWS Organization using the configuration in that stack file.
-
-    Once confident, begin the accounts deployment:
-
-    <AtmosWorkflow workflow="deploy/accounts" fileName="accounts" />
-
-    These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
-    outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
-    role, we provision a static component `account-map`.
-
-    <Note title="Important">
-    Always run `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
-    </Note>
-
-    Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves. Run the following:
-
-    <AtmosWorkflow workflow="deploy/account-settings" fileName="accounts" />
-
-    The workflows will kick off several sequential Terraform runs to provision all the AWS member account settings for
-    member accounts in the Organization.
   </Step>
 
   <Step>
