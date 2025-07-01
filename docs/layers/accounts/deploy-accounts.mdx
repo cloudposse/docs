@@ -41,7 +41,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploy the AWS Organization:
+    ## <StepNumber/> Deploy the AWS Organization
 
     <AtmosWorkflow workflow="deploy/organization" fileName="accounts" />
 
@@ -147,7 +147,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
       uses `account-map` (indirectly) to chose the role to assume. However, these components do _not_ need to be deployed yet.
     </Note>
 
-    Again verify the "account" configuration in `stacks/catalog/account.yaml`. In the next step, we will create and configure all accounts in the AWS Organization using the configuration in that stack file.
+    Again review the "account" configuration in `stacks/catalog/account.yaml`. In particular, check the email address and account names. In the next step, we will create and configure all accounts in the AWS Organization using the configuration in that stack file.
 
     Once confident, begin the accounts deployment:
 
