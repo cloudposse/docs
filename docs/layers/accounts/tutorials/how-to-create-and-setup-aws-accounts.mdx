@@ -32,15 +32,15 @@ This guide provides a step-by-step approach to create and configure new AWS acco
 
     Navigate to your account catalog file (typically `stacks/catalog/account*.yaml`) and add the new account under the appropriate Organizational Unit (OU).
 
-    **Example for a new account named `pca`:**
+    **Example for a new account named `foobar`:**
 
     ```yaml
     organizational_units:
       - name: core
         accounts:
           # ... existing accounts ...
-          - name: pca
-            stage: pca
+          - name: foobar
+            stage: foobar
             tags:
               eks: false
     ```
@@ -55,7 +55,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
 
     Create the necessary stack configuration files for your new account using the modern `stacks/orgs/namespace/tenant/region` pattern. You'll typically need a global-region stack for account settings, and regional stacks depending on your specific use case.
 
-    **Stage Mixin** (`stacks/mixins/stage/pca.yaml`):
+    **Stage Mixin** (`stacks/mixins/stage/foobar.yaml`):
 
     Create a mixin file for your stage to keep configuration DRY. This file contains only variables.
 
@@ -63,26 +63,26 @@ This guide provides a step-by-step approach to create and configure new AWS acco
     # This file is for vars only; do not import components here
     # For more information, see "Mixins and Imports with Atmos" in the baseline documentation
     vars:
-      stage: pca
+      stage: foobar
     ```
 
-    **Account Defaults** (`stacks/orgs/acme/core/pca/_defaults.yaml`):
+    **Account Defaults** (`stacks/orgs/acme/core/foobar/_defaults.yaml`):
 
     This file is necessary for keeping configuration DRY and establishing common settings to be imported in all subsequent files.
 
     ```yaml
     import:
       - orgs/acme/core/_defaults
-      - mixins/stage/pca
+      - mixins/stage/foobar
     ```
 
-    **Account Settings** (`stacks/orgs/acme/core/pca/global-region/baseline.yaml`):
+    **Account Settings** (`stacks/orgs/acme/core/foobar/global-region/baseline.yaml`):
 
     This file configures account-level settings and policies.
 
     ```yaml
     import:
-      - orgs/acme/core/pca/_defaults
+      - orgs/acme/core/foobar/_defaults
       - mixins/region/global-region
       - catalog/account-settings
 
@@ -98,13 +98,13 @@ This guide provides a step-by-step approach to create and configure new AWS acco
             restrict_public_buckets: false
     ```
 
-    **AWS Team Roles** (`stacks/orgs/acme/core/pca/global-region/identity.yaml`):
+    **AWS Team Roles** (`stacks/orgs/acme/core/foobar/global-region/identity.yaml`):
 
     This file configures cross-account IAM roles and team access permissions.
 
     ```yaml
     import:
-      - orgs/acme/core/pca/_defaults
+      - orgs/acme/core/foobar/_defaults
       - mixins/region/global-region
       - catalog/aws-team-roles
 
@@ -131,13 +131,13 @@ This guide provides a step-by-step approach to create and configure new AWS acco
                   - gitops
     ```
 
-    **Regional Stack** (`stacks/orgs/acme/core/pca/us-east-1/baseline.yaml`):
+    **Regional Stack** (`stacks/orgs/acme/core/foobar/us-east-1/baseline.yaml`):
 
     Create regional stacks based on your specific needs. Start with a basic placeholder that you can expand later.
 
     ```yaml
     import:
-      - orgs/acme/core/pca/_defaults
+      - orgs/acme/core/foobar/_defaults
       - mixins/region/us-east-1
 
     components:
@@ -146,10 +146,10 @@ This guide provides a step-by-step approach to create and configure new AWS acco
 
     **Example Directory Structure:**
 
-    For a new account `pca` in the `core` tenant under namespace `acme`:
+    For a new account `foobar` in the `core` tenant under namespace `acme`:
 
     ```
-    stacks/orgs/acme/core/pca/
+    stacks/orgs/acme/core/foobar/
     ├── _defaults.yaml
     ├── global-region/
     │   ├── baseline.yaml          # Account settings
@@ -194,10 +194,10 @@ This guide provides a step-by-step approach to create and configure new AWS acco
     atmos terraform apply account-map --stack core-gbl-root
 
     # Configure account settings for the new account
-    atmos terraform apply account-settings --stack core-gbl-pca
+    atmos terraform apply account-settings --stack core-gbl-foobar
 
     # Deploy AWS Team Roles to enable cross-account access
-    atmos terraform apply aws-team-roles --stack core-gbl-pca
+    atmos terraform apply aws-team-roles --stack core-gbl-foobar
     ```
 
     <Note title="Component Order">
