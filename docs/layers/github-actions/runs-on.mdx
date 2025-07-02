@@ -98,6 +98,7 @@ import File from '@site/src/components/File';
     [CloudPosse/.github/.github/runs-on.yml](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml)
   </Admonition>
 
+  Here is a sample configuration in a `.github` Repository, typically used for shared configurations:
   <File title="MyOrg/.github/.github/runs-on.yml">
     ```yaml
     runners:
@@ -114,6 +115,8 @@ import File from '@site/src/components/File';
           - "gha-runner:runs-on/terraform"
     ```
   </File>
+
+  Here is an example of extending your Organization's configuration in an individual Repository:
   <File title="MyOrg/MyInfraRepo/.github/runs-on.yml">
     ```yaml
     # See https://runs-on.com/configuration/repo-config/
