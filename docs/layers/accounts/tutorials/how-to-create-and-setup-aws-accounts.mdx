@@ -53,7 +53,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
   <Step>
     ### <StepNumber/> Create Stack Configuration Files
 
-    Create the necessary stack configuration files for your new account using the `stacks/orgs/<namespace>/<tenant>/<stage>` pattern. See the following example where the namespace is `acme`, the tenant is `core`, and the stage is `foobar`.
+    Create the corresponding stack configuration files for your new account in the `stacks/orgs/<namespace>/<tenant>/<stage>` folder (or follow the convention your organization uses). See the following example where the namespace is `acme`, the tenant is `core`, and the stage is `foobar`.
 
     **Example Directory Structure:**
 
@@ -76,8 +76,8 @@ This guide provides a step-by-step approach to create and configure new AWS acco
 
     <Steps>
       <Step>
-        ### <StepNumber/> Stage Mixin
-
+        ### <StepNumber/> Define Stage Mixin
+  By convention, we treat every account as an operating stage. Stages are configured as mixins, so that each stack operating in that stage can import that mixin to have a consistent stage name.
         **For example:** `stacks/mixins/stage/foobar.yaml`
 
         Create a mixin file for your stage to keep configuration DRY. This file contains only variables.
@@ -91,7 +91,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
       </Step>
 
       <Step>
-        ### <StepNumber/> Account Defaults
+        ### <StepNumber/> Configure Account Defaults
 
         **For example:** `stacks/orgs/acme/core/foobar/_defaults.yaml`
 
@@ -105,7 +105,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
       </Step>
 
       <Step>
-        ### <StepNumber/> Account Settings
+        ### <StepNumber/> Configure Account Settings
 
         **For example:** `stacks/orgs/acme/core/foobar/global-region/baseline.yaml`
 
@@ -131,7 +131,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
       </Step>
 
       <Step>
-        ### <StepNumber/> AWS Team Roles
+        ### <StepNumber/> Configure AWS Team Roles
 
         **For example:** `stacks/orgs/acme/core/foobar/global-region/identity.yaml`
 
@@ -223,7 +223,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
     ```
 
     <Note title="Component Order">
-      The order of deployment is important. The `account` component creates the account, `account-map` updates the account mapping, `account-settings` configures the account, and `aws-team-roles` enables cross-account role assumption.
+      The order of deployment is important. The `account` component creates the account, `account-map` updates the account mapping required to map accounts to IAM roles, `account-settings` configures the account, and `aws-team-roles` enables cross-account role assumption.
     </Note>
   </Step>
 
@@ -232,7 +232,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
 
     After deploying the account infrastructure, you need to perform some manual configurations to finalize the account setup.
 
-    **Required Steps:**
+    **Recommended Steps:**
     <Steps>
     - Reset the root user password and set up MFA
     - Enable any necessary optional AWS regions
@@ -248,7 +248,7 @@ This guide provides a step-by-step approach to create and configure new AWS acco
     </Steps>
 
     <Note title="Important">
-      Save the root credentials, MFA TOTP key, and account number in 1Password for future reference.
+      Save the root credentials, MFA TOTP key, and account number in 1Password. Use a highly restricted vault, and only share access on a strict need-to-know basis.
     </Note>
 
     For detailed step-by-step instructions, see [Complete Account Setup via ClickOps](/layers/accounts/deploy-accounts/#step-number-clickops-to-complete-account-setup).
