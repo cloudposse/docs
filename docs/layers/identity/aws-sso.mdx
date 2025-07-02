@@ -165,23 +165,24 @@ For providers not included in the following section, please [follow the AWS docu
 
       #### <StepNumber overrideNumber={5}/> On the Left Panel Click **Single sign-on,** then download the XML File by Pressing the Button on step 5 **Set up AWS IAM Identity Center (successor to AWS Single Sign-On**)
          <img src="/assets/refarch/screen-shot-2023-01-13-at-8.41.28-am.png" />
-         The Metadata file downloaded will need to be given to the CloudPosse team, as it is used in AWS for setting up SSO.
+         The Metadata file downloaded will need to be uploaded to AWS when setting up the identity provider in AWS IAM Identity Center.
 
-      #### <StepNumber overrideNumber={6}/> Similarly, in Jumpstarts the Cloud Posse Team will give you an XML file from AWS SSO that contains metadata.
-         Upload this by clicking the **Upload metadata file** button.
+      #### <StepNumber overrideNumber={6}/> Similarly, you'll need to download the AWS IAM Identity Center metadata XML file from AWS.
+         Upload this to Microsoft Entra ID by clicking the **Upload metadata file** button.
          <img src="/assets/refarch/screen-shot-2023-01-13-at-8.47.03-am.png" />
 
       #### <StepNumber overrideNumber={7}/> **SAVE**
     </Steps>
 
-    ### Automatic Provisioning
+    ## Automatic Provisioning
 
     <Steps>
-      1. Cloud Posse team will provide a URL and secret via 1Password
+      1. In AWS IAM Identity Center, you can set up automatic provisioning by generating a URL and secret
+      <img src="/assets/refarch/aws-sso/sso-enable-provisioning.png" />
 
-      2. Go to Your App for Single Sign On, on the left Panel go to **Provisioning**
+      2. Go to Your App for Single Sign On in Microsoft Entra ID, on the left Panel go to **Provisioning**
 
-      3. Set the mode to **Automatic** and Paste the Values provided into the **Admin Credentials** Section <img src="/assets/refarch/screen-shot-2023-01-13-at-8.53.55-am.png" /><br/>
+      3. Set the mode to **Automatic** and paste the values from AWS into the **Admin Credentials** Section <img src="/assets/refarch/screen-shot-2023-01-13-at-8.53.55-am.png" /><br/>
 
     </Steps>
 
