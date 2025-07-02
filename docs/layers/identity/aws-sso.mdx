@@ -9,6 +9,8 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import StepNumber from '@site/src/components/StepNumber';
+import Step from '@site/src/components/Step';
 
 <Intro>
 This guide provides an overview of setting up AWS Identity Center (SSO) with ClickOps, detailing prerequisites and supported external identity providers. It explains how to integrate AWS SSO with providers like Azure AD, JumpCloud, Okta, and Google Workspace, including specific steps for configuring each.
@@ -123,24 +125,53 @@ For providers not included in the following section, please [follow the AWS docu
     ### Setup Microsoft Entra ID
 
     <Steps>
-      1. Under [https://aad.portal.azure.com/#allservices/category/All](https://aad.portal.azure.com/#allservices/category/All)  go to **Enterprise Applications** <img src="/assets/refarch/screen-shot-2023-01-13-at-8.33.13-am.png" /><br/>
+        #### <StepNumber overrideNumber={1}/> Under [Microsoft Entra's Admin Center](https://entra.microsoft.com/) 
+        
+        (or [Microsoft Azure](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview)) 
 
-      2. Click **New Application**
+        Go to `Microsoft Entra ID`
+        <Tabs queryString="microsoft-portal">
+          <TabItem value="microsoft-entra-id" label="Microsoft Entra ID">
+            <img src="/assets/refarch/aws-sso/microsoft/microsoft-entra-to-entra-id.png" />
+          </TabItem>
+          <TabItem value="azure" label="Azure">
+            <img src="/assets/refarch/aws-sso/microsoft/azure-to-entra-id.png" />
+          </TabItem>
+        </Tabs>
 
-      3. Choose the right application, for SSO it’s **AWS IAM Identity Center (successor to AWS Single Sign-On)**
-        <img src="/assets/refarch/screen-shot-2023-01-13-at-8.36.16-am.png" /><br/>
+       #### <StepNumber overrideNumber={2}/> Add an **Enterprise Application**
+      <Tabs queryString="microsoft-portal">
+         <TabItem value="microsoft-entra-id" label="Microsoft Entra ID">
+          <img src="/assets/refarch/aws-sso/microsoft/microsoft-entra-entra-id-new-enterprise-app.png" />
+         </TabItem>
+         <TabItem value="azure" label="Azure">
+          <img src="/assets/refarch/aws-sso/microsoft/azure-entra-id-new-enterprise-app.png" />
+         </TabItem>
+      </Tabs>
 
-      4. Click **Create**, default options are fine
+      <br/>
 
-      5. On the Left Panel Click **Single sign-on,** then download the XML File by Pressing the Button on step 5 **Set up AWS IAM Identity Center (successor to AWS Single Sign-On**)
+      #### <StepNumber overrideNumber={3}/> Choose the right application, for SSO it's **`AWS IAM Identity Center (successor to AWS Single Sign-On)`**
+      <Tabs queryString="microsoft-portal">
+         <TabItem value="microsoft-entra-id" label="Microsoft Entra ID">
+          <img src="/assets/refarch/aws-sso/microsoft/microsoft-entra-sso-app.png" />
+         </TabItem>
+         <TabItem value="azure" label="Azure">
+          <img src="/assets/refarch/aws-sso/microsoft/azure-sso-app.png" />
+         </TabItem>
+      </Tabs>
+
+      #### <StepNumber overrideNumber={4}/> Click **Create**, default options are fine
+
+      #### <StepNumber overrideNumber={5}/> On the Left Panel Click **Single sign-on,** then download the XML File by Pressing the Button on step 5 **Set up AWS IAM Identity Center (successor to AWS Single Sign-On**)
          <img src="/assets/refarch/screen-shot-2023-01-13-at-8.41.28-am.png" />
          The Metadata file downloaded will need to be given to the CloudPosse team, as it is used in AWS for setting up SSO.
 
-      7. Similarly, in Jumpstarts the Cloud Posse Team will give you an XML file from AWS SSO that contains metadata.
+      #### <StepNumber overrideNumber={6}/> Similarly, in Jumpstarts the Cloud Posse Team will give you an XML file from AWS SSO that contains metadata.
          Upload this by clicking the **Upload metadata file** button.
          <img src="/assets/refarch/screen-shot-2023-01-13-at-8.47.03-am.png" />
 
-      9. **SAVE**
+      #### <StepNumber overrideNumber={7}/> **SAVE**
     </Steps>
 
     ### Automatic Provisioning
