@@ -4,6 +4,7 @@ sidebar_label: FAQ
 sidebar_position: 10
 ---
 import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
 Frequently asked questions about managing AWS accounts with Cloud Posse's reference architecture.
@@ -52,3 +53,67 @@ This component manages the state of all AWS accounts, so apply with extreme caut
 ### How can you create a Tenant?
 
 [Follow the documentation for creating a new Organizational Unit](/layers/accounts/tutorials/how-to-add-a-new-organizational-unit/)
+
+### Why does `account-map` fail with "The given key does not identify an element in this collection value"?
+
+This is a common error you may encounter when reading from `account-map`:
+
+```bash
+Acquiring state lock. This may take a few moments...
+module.iam_roles.module.account_map.data.utils_component_config.config[0]: Reading...
+module.iam_roles.module.account_map.data.utils_component_config.config[0]: Read complete after 0s [id=xyx]
+module.iam_roles.module.account_map.data.terraform_remote_state.data_source[0]: Reading...
+module.iam_roles.module.account_map.data.terraform_remote_state.data_source[0]: Read complete after 5s
+module.iam_roles.data.awsutils_caller_identity.current[0]: Reading...
+module.iam_roles.data.awsutils_caller_identity.current[0]: Read complete after 1s [id=123]
+
+Planning failed. Terraform encountered an error while generating this plan.
+
+╷
+│ Error: Invalid index
+│ 
+│   on ../account-map/modules/iam-roles/main.tf line 46, in locals:
+│   46:   is_root_user   = local.current_identity_account == local.account_map.full_account_map[local.root_account_name]
+│     ├────────────────
+│     │ local.account_map.full_account_map is map of string with 12 elements
+│     │ local.root_account_name is "core-root"
+│ 
+│ The given key does not identify an element in this collection value.
+╵
+Releasing state lock. This may take a few moments...```
+```
+
+This error typically occurs when the `root_account_aws_name` is not correctly configured in the `account-map` component. The root account has two different names:
+
+<Steps>
+- **AWS Account Name**: The name you typed when originally creating the AWS account (often "root" but can be different)
+- **Account Alias**: The deterministic name set in the account configuration (e.g., "core-root")
+</Steps>
+
+To fix this:
+
+<Steps>
+1. Find your root account name using AWS Organizations:
+   ```bash
+   aws organizations list-accounts \
+     --query "Accounts[?Id=='$(aws organizations describe-organization --query 'Organization.MasterAccountId' --output text)'].Name" \
+     --output text
+   ```
+
+2. Update `stacks/catalog/account-map.yaml`:
+   ```yaml
+   components:
+     terraform:
+       account-map:
+         vars:
+           root_account_aws_name: "your-actual-root-account-name"  # The name from step 1
+           root_account_account_name: "core-root"  # This should always be "core-root"
+   ```
+
+3. Reapply the account-map:
+   ```bash
+   atmos terraform apply account-map -s core-gbl-root
+   ```
+</Steps>
+
+For more details, see [the account deployment documentation](/layers/accounts/deploy-accounts/#confirm-root-account-name).

@@ -58,7 +58,7 @@ export async function GetAtmosTerraformCommands(
       };
 
       // Group all vendor pull commands together
-      const isVendorWorkflow = workflowDetails.steps.every(step => 
+      const isVendorWorkflow = workflowDetails.steps.every(step =>
         step.command.startsWith('vendor pull')
       );
 
@@ -79,7 +79,7 @@ export async function GetAtmosTerraformCommands(
         } else if (command.startsWith('workflow')) {
           // For nested workflows, add current group first
           addGroupToSteps();
-          
+
           const commandParts = command.split(' ');
           const nestedWorkflowIndex = commandParts.findIndex((part) => part === 'workflow') + 1;
           const nestedWorkflow = commandParts[nestedWorkflowIndex];
@@ -111,7 +111,7 @@ export async function GetAtmosTerraformCommands(
             // We're in an echo group
             if (step.type === 'shell') {
               const shebang = `#!/bin/bash\n`;
-              const titleComment = `# Run the ${step.name || 'script'} Script\n`;
+              const titleComment = `# Run the ${step.name || 'script'}\n`;
               currentGroupCommands.push(`${shebang}${titleComment}${command}`);
             } else {
               let atmosCommand = `atmos ${command}`;
@@ -124,7 +124,7 @@ export async function GetAtmosTerraformCommands(
             // Individual step
             if (step.type === 'shell') {
               const shebang = `#!/bin/bash\n`;
-              const titleComment = `# Run the ${step.name || 'script'} Script\n`;
+              const titleComment = `# Run the ${step.name || 'script'}\n`;
               steps.push({
                 type: 'command',
                 content: `${shebang}${titleComment}${command}`,
