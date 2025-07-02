@@ -98,7 +98,7 @@ import File from '@site/src/components/File';
     [CloudPosse/.github/.github/runs-on.yml](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml)
   </Admonition>
 
-  Here is a sample configuration in a `.github` Repository, typically used for shared configurations:
+  Here's a sample configuration. We recommend storing this in a centralized `.github` repository so you can define a shared `runs-on` configuration that you can use across all repositories, without duplicating it in each one. This is especially useful when managing many repositories.
   <File title="MyOrg/.github/.github/runs-on.yml">
     ```yaml
     runners:
@@ -116,7 +116,7 @@ import File from '@site/src/components/File';
     ```
   </File>
 
-  Here is an example of extending your Organization's configuration in an individual Repository:
+  To use your organization's shared configuration in an individual repository, you need to define a local configuration that uses the `_extends` keyword to inherit from the centralized setup — it won’t be applied automatically.
   <File title="MyOrg/MyInfraRepo/.github/runs-on.yml">
     ```yaml
     # See https://runs-on.com/configuration/repo-config/
