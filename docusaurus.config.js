@@ -19,20 +19,20 @@ const customCssFiles = fs.readdirSync(cssDirectory)
 //https://github.com/saucelabs/elemental-next/blob/b1a325631243a13a4f3beee58a295b7b36f6574d/frontend/docusaurus.config.js#L105
 function metadataPlugin(context, options) {
   return {
-      name: 'metadata',
-      async allContentLoaded({actions, allContent}) {
-          const {setGlobalData} = actions;
-          let docs = []
-          allContent['docusaurus-plugin-content-docs']
-              .default
-              .loadedVersions[0]
-              .docs
-              .filter(doc => doc.id !== undefined)
-              .map((doc) => docs.push(doc));
-          //console.log(JSON.stringify(allContent['docusaurus-plugin-content-docs'], 2, 2, null));
-          //console.log(tempFrontMatter);
-          setGlobalData({aggregateMetadata: docs});
-      }
+    name: 'metadata',
+    async allContentLoaded({ actions, allContent }) {
+      const { setGlobalData } = actions;
+      let docs = []
+      allContent['docusaurus-plugin-content-docs']
+        .default
+        .loadedVersions[0]
+        .docs
+        .filter(doc => doc.id !== undefined)
+        .map((doc) => docs.push(doc));
+      //console.log(JSON.stringify(allContent['docusaurus-plugin-content-docs'], 2, 2, null));
+      //console.log(tempFrontMatter);
+      setGlobalData({ aggregateMetadata: docs });
+    }
   }
 }
 
@@ -119,32 +119,32 @@ async function createConfig() {
         'classic',
         /** @type {import('@docusaurus/preset-classic').Options} */
         ({
-            docs: {
-              routeBasePath: '/',
-              sidebarPath: require.resolve('./sidebars.js'),
-              editUrl: ({versionDocsDirPath, docPath, locale}) => {
-                return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
-              },
-              exclude: ['README.md'],
-              showLastUpdateTime: true,
-              showLastUpdateAuthor: true,
-              onInlineTags: 'warn',
-              tags: 'tags.yml',
-              include: ['**/*.md', '**/*.mdx']
+          docs: {
+            routeBasePath: '/',
+            sidebarPath: require.resolve('./sidebars.js'),
+            editUrl: ({ versionDocsDirPath, docPath, locale }) => {
+              return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
             },
-            blog: {
-              showReadingTime: false,
-              postsPerPage: 10,
-              blogTitle: 'Cloud Posse Announcements',
-              blogDescription: 'Stay up to date with the latest news and updates from Cloud Posse',
-              include: ['**/*.{md,mdx}'],
-              editUrl: ({blogDirPath, blogPath, permalink, locale}) => {
-                return `https://github.com/cloudposse/docs/edit/master/${blogPath}`;
-              },
+            exclude: ['README.md'],
+            showLastUpdateTime: true,
+            showLastUpdateAuthor: true,
+            onInlineTags: 'warn',
+            tags: 'tags.yml',
+            include: ['**/*.md', '**/*.mdx']
+          },
+          blog: {
+            showReadingTime: false,
+            postsPerPage: 10,
+            blogTitle: 'Cloud Posse Announcements',
+            blogDescription: 'Stay up to date with the latest news and updates from Cloud Posse',
+            include: ['**/*.{md,mdx}'],
+            editUrl: ({ blogDirPath, blogPath, permalink, locale }) => {
+              return `https://github.com/cloudposse/docs/edit/master/${blogPath}`;
             },
-            theme: {
-                customCss: customCssFiles,
-            },
+          },
+          theme: {
+            customCss: customCssFiles,
+          },
         }),
       ],
     ],
@@ -220,7 +220,7 @@ async function createConfig() {
         announcementBar: {
           id: 'quickstart',
           content:
-          'Missing the <strong>Quickstart</strong> configurations? <a href="/intro/path/">Start here!</a>',
+            'Missing the <strong>Quickstart</strong> configurations? <a href="/intro/path/">Start here!</a>',
           backgroundColor: 'var(--announcement-bar-background)',
           textColor: 'var(--announcement-bar-text-color)',
           isCloseable: true,
@@ -305,8 +305,8 @@ async function createConfig() {
         },
         mermaid: {
           theme: {
-              light: 'neutral',
-              dark: 'dark',
+            light: 'neutral',
+            dark: 'dark',
           },
           options: {
             flowchart: {
