@@ -49,6 +49,7 @@ workflows:
         type: shell
         command: |-
           set -e
+          : "${ATMOS_BASE_PATH:=.}"
           AWS_CONFIG_VERSION="1.227.0"
           printf "Updating AWS Config in $ATMOS_BASE_PATH/rootfs/usr/local/bin/aws-config\n"
           printf "Note: Rebuild Geodesic to apply script updates\n"
@@ -101,7 +102,7 @@ workflows:
           aws-config teams > "$ATMOS_BASE_PATH/rootfs/etc/aws-config/aws-config-teams"
           aws-config switch-roles > "$ATMOS_BASE_PATH/rootfs/etc/aws-config/aws-extend-switch-roles"
           aws-config switch-roles planner > "$ATMOS_BASE_PATH/rootfs/etc/aws-config/aws-extend-switch-roles-planner"
-          aws-config spacelift > "$ATMOS_BASE_PATH/rootfs/etc/aws-config/aws-config-spacelift"
+
           diffs=$(git diff --name-only "$ATMOS_BASE_PATH/rootfs/etc/aws-config")
           if [[ -n $diffs ]] then
             printf "Updated: %s\n" "${diffs[@]}"

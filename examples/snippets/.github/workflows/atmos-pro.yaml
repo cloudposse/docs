@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: Atmos Pro
 
 on:
@@ -14,3 +15,87 @@ jobs:
         with:
           workspace-id: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
           api-key: ${{ secrets.ATMOS_PRO_API_KEY }} 
+=======
+name: 👽 Atmos Pro Determine Affected Stacks
+run-name: 👽 Atmos Pro Determine Affected Stacks
+
+# Atmos Pro reacts to events defined in the Atmos stack settings
+# and will trigger the appropriate workflows for the given event.
+#
+# For example, pull requests opened, synchronize, and reopened will trigger plan workflows.
+# Whereas pull requests merged will trigger apply workflows
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    branches:
+      - main
+
+# Avoid conflicting workflow triggers.
+# For example, wait to trigger apply until plan has been triggered
+concurrency:
+  group: "${{ github.ref }}"
+  cancel-in-progress: false
+
+permissions:
+  id-token: write # This is required for requesting the JWT (OIDC) token
+  contents: read # This is required for actions/checkout
+
+jobs:
+  affected:
+    name: Trigger Affected Stacks
+
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=small"
+      - "tag=affected-stacks"
+      - "private=false"
+
+    # Trigger Atmos Pro for Pull Request plan events and specifically closed PRs that have been merged (not just closed)
+    if: github.event.action != 'closed' || (github.event.action == 'closed' && github.event.pull_request.merged == true)
+
+    steps:
+      - uses: runs-on/action@v1
+      - name: Checkout
+        # For merged PRs, we will need to checkout the base branch to get the correct base branch SHA.
+        # This isn't necessary for other events.
+        if: github.event.action == 'closed'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
+      # For merged PRs, we want to use 1 previous commit from the base branch SHA
+      # This is because by the time this workflow runs, the PR branch has already been merged.
+      # It's critical to use the base branch SHA to get the correct changes, not the previous commit from the PR branch.
+      - name: Determine previous commit on base branch
+        id: get_parent
+        if: github.event.action == 'closed'
+        shell: bash
+        run: |
+          # For squash merges, github.event.pull_request.base.sha represents the state of the base branch
+          # when the PR was created (or last updated). This may be stale compared to the actual commit
+          # on the main branch at the time of the merge. Using 'HEAD~1' after the merge ensures we get
+          # the commit that was the tip of main immediately before the squash merge commit was added.
+          echo "Merge commit: $(git rev-parse HEAD)"
+          PARENT=$(git rev-parse HEAD~1)
+          echo "Parent (base) commit: $PARENT"
+          echo "merge_commit=$MERGE_COMMIT" >> "$GITHUB_OUTPUT"
+          echo "parent_commit=$PARENT" >> "$GITHUB_OUTPUT"
+
+      - name: Determine Affected Stacks
+        id: affected
+        uses: cloudposse/github-action-atmos-affected-stacks@v6
+        env:
+          ATMOS_PRO_WORKSPACE_ID: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
+        with:
+          atmos-version: ${{ vars.ATMOS_VERSION }}
+          atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+          atmos-pro-upload: true
+          # Compare the head of the PR to the base of the PR if the PR is not merged.
+          # If the PR is merged, compare the head of the PR to 1 previous commit on the base branch.
+          head-ref: ${{ github.event.pull_request.head.sha }}
+          base-ref: ${{ github.event.action == 'closed' && steps.get_parent.outputs.parent_commit || github.event.pull_request.base.sha }}
+>>>>>>> master

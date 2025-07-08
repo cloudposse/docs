@@ -1,17 +1,11 @@
 
 workflows:
-  vendor/arc:
+  vendor:
     description: |
-      This workflow vendors all EKS/ARC related components to the latest provided version
+      This workflow vendors all RunsOn self-hosted runner related components to the latest provided version
     steps:
       - command: vendor pull --component github-oidc-provider
-      - command: vendor pull --component eks/actions-runner-controller
-  vendor/philips-labs:
-    description: |
-      This workflow vendors all Philips Labs self-hosted runner related components to the latest provided version
-    steps:
-      - command: vendor pull --component github-oidc-provider
-      - command: vendor pull --component philips-labs-github-runners
+      - command: vendor pull --component runs-on
 
   deploy/github-oidc-provider:
     description: |
@@ -25,67 +19,8 @@ workflows:
       - command: terraform deploy github-oidc-provider -s plat-gbl-staging
       - command: terraform deploy github-oidc-provider -s plat-gbl-prod
 
-  deploy/arc-github-runners:
+  deploy/runs-on:
     description: |
-      This workflow deploys the EKS/ARC GitHub self-hosted runners
+      This workflow deploys Runs-On Github Runners
     steps:
-    - command: terraform deploy iam-service-linked-roles -s core-gbl-auto
-    - command: workflow deploy/cluster -s core-use1-auto -f eks
-    - command: workflow deploy/resources -s core-use1-auto -f eks
-    - command: terraform deploy eks/actions-runner-controller -s core-use1-auto
-
-  upload/pl-secrets:
-    description: |
-      This workflow uploads the secrets for the Philips Labs self-hosted runners
-    steps:
-      - type: shell
-        command: |-
-          if [ $( AWS_PROFILE=acme-core-gbl-auto-admin chamber read -q pl-github-runners key ) ]; then
-            echo "Found Github APP Key, skipping init..."
-            exit 0
-          fi
-
-          echo "Please enter a PATH to a Github App Key"
-          read -p "App Key path: " -r APP_KEY
-          if [ -z "$APP_KEY" ]
-          then
-            echo 'Inputs cannot be blank, please try again!'
-            exit 0
-          fi
-          if ! [[ -f "$APP_KEY" ]]
-          then
-            echo "Invalid APP Key Path"
-            echo "HINT: The APP key should be a file path."
-            exit 0
-          fi
-          APP_KEY_BASE64=$( cat "$APP_KEY" | base64 )
-          AWS_PROFILE=acme-core-gbl-auto-admin chamber write pl-github-runners key "$APP_KEY_BASE64"
-      - type: shell
-        command: |-
-          if [ $( AWS_PROFILE=acme-core-gbl-auto-admin chamber read -q pl-github-runners id ) ]; then
-          echo "Found Github APP ID, skipping init..."
-          exit 0
-          fi
-
-          echo "Please enter a Github App Id"
-          stty -echo
-          read -p "App ID: " -r APP_ID
-          stty echo
-          if [ -z "$APP_ID" ]
-          then
-            echo 'Inputs cannot be blank, please try again!'
-            exit 0
-          fi
-          if ! [[ "$APP_ID" =~ "^[a-zA-Z0-9-]{6}$" ]]
-          then
-            echo "Invalid APP Id"
-            echo "HINT: The APP id should be alphanumeric and 6 characters long."
-            exit 0
-          fi
-          AWS_PROFILE=acme-core-gbl-auto-admin chamber write pl-github-runners id "$APP_ID"
-
-  deploy/pl-github-runners:
-    description: |
-      This workflow deploys the github runners from Philips Labs (component philips-labs-github-runners)
-    steps:
-      - command: terraform deploy philips-labs-github-runners -s core-use1-auto
+      - command: terraform deploy runs-on -s core-use1-auto

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: Atmos Pro Terraform Apply
 
 on:
@@ -21,3 +22,68 @@ jobs:
           api-key: ${{ secrets.ATMOS_PRO_API_KEY }}
           stack: ${{ inputs.stack }}
           component: ${{ inputs.component }}
+=======
+name: 👽 Atmos Pro Terraform Apply
+run-name: apply ${{ inputs.component }}/${{ inputs.stack }}/${{ inputs.atmos_pro_run_id}}
+
+on:
+  workflow_dispatch:
+    inputs:
+      atmos_pro_run_id:
+        description: "Atmos Pro Run ID"
+        type: string
+      sha:
+        description: "Commit SHA"
+        type: string
+      component:
+        description: "Component"
+        required: true
+        type: string
+      stack:
+        description: "Stack"
+        required: true
+        type: string
+      github_environment:
+        description: "GitHub Environment"
+        required: true
+        type: string
+
+# Avoid running the same stack in parallel mode (from different workflows)
+# This applied to across workflows to both plan and apply
+concurrency:
+  group: "${{ inputs.stack }}-${{ inputs.component }}"
+  cancel-in-progress: false
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs: 
+  atmos-apply:
+    name: ${{ inputs.component }}-${{ inputs.stack }}
+
+    # The GitHub environment is defined in Atmos Pro settings.
+    # Typically this is <tenant>-<stage>
+    environment: ${{ inputs.github_environment }}
+
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
+
+    steps:
+      - uses: runs-on/action@v1
+      - uses: unfor19/install-aws-cli-action@v1
+
+      - name: Apply Atmos Component
+        uses: cloudposse/github-action-atmos-terraform-apply@v4
+        with:
+          # Atmos Pro args
+          component: ${{ inputs.component }}
+          stack: ${{ inputs.stack }}
+          sha: ${{ inputs.sha }}
+          # Atmos required configuration
+          atmos-version: ${{ vars.ATMOS_VERSION }}
+          atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+>>>>>>> master
