@@ -1,26 +1,60 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 name: Atmos Pro Terraform Plan
+=======
+name: 👽 Atmos Pro Terraform Plan
+run-name: plan ${{ inputs.component }}/${{ inputs.stack }}/${{ inputs.atmos_pro_run_id}}
+>>>>>>> 525f355ffc4471dbb3988fdb48edc3d1b84efc13
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
-      stack:
-        required: true
+      atmos_pro_run_id:
+        description: "Atmos Pro Run ID"
+        type: string
+      sha:
+        description: "Commit SHA"
         type: string
       component:
+        description: "Component"
+        required: true
+        type: string
+      stack:
+        description: "Stack"
         required: true
         type: string
 
+# Avoid running the same stack in parallel mode (from different workflows)
+# This applied to across workflows to both plan and apply
+concurrency:
+  group: "${{ inputs.stack }}-${{ inputs.component }}"
+  cancel-in-progress: false
+
+permissions:
+  id-token: write # This is required for requesting the JWT (OIDC) token
+  contents: read # This is required for actions/checkout
+
 jobs:
-  plan:
-    runs-on: ubuntu-latest
+  atmos-plan:
+    name: ${{ inputs.component }}-${{ inputs.stack }}
+
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
+
     steps:
-      - name: Terraform Plan
-        uses: cloudposse/github-action-atmos-pro-terraform-plan@main
+      - uses: runs-on/action@v1
+      - uses: unfor19/install-aws-cli-action@v1
+
+      - name: Plan Atmos Component
+        uses: cloudposse/github-action-atmos-terraform-plan@v5
         with:
-          workspace-id: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
-          api-key: ${{ secrets.ATMOS_PRO_API_KEY }}
+          # Atmos Pro args
+          component: ${{ inputs.component }}
           stack: ${{ inputs.stack }}
+<<<<<<< HEAD
           component: ${{ inputs.component }} 
 =======
 name: 👽 Atmos Pro Terraform Plan
@@ -74,8 +108,14 @@ jobs:
           # Atmos Pro args
           component: ${{ inputs.component }}
           stack: ${{ inputs.stack }}
+=======
+>>>>>>> 525f355ffc4471dbb3988fdb48edc3d1b84efc13
           sha: ${{ inputs.sha }}
           # Atmos required configuration
           atmos-version: ${{ vars.ATMOS_VERSION }}
           atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+<<<<<<< HEAD
 >>>>>>> master
+=======
+
+>>>>>>> 525f355ffc4471dbb3988fdb48edc3d1b84efc13

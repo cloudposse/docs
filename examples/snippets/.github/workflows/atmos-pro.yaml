@@ -1,18 +1,58 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 name: Atmos Pro
+=======
+name: 👽 Atmos Pro Determine Affected Stacks
+run-name: 👽 Atmos Pro Determine Affected Stacks
+>>>>>>> 525f355ffc4471dbb3988fdb48edc3d1b84efc13
 
+# Atmos Pro reacts to events defined in the Atmos stack settings
+# and will trigger the appropriate workflows for the given event.
+#
+# For example, pull requests opened, synchronize, and reopened will trigger plan workflows.
+# Whereas pull requests merged will trigger apply workflows
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
-  workflow_dispatch:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    branches:
+      - main
+
+# Avoid conflicting workflow triggers.
+# For example, wait to trigger apply until plan has been triggered
+concurrency:
+  group: "${{ github.ref }}"
+  cancel-in-progress: false
+
+permissions:
+  id-token: write # This is required for requesting the JWT (OIDC) token
+  contents: read # This is required for actions/checkout
 
 jobs:
-  describe-affected:
-    runs-on: ubuntu-latest
+  affected:
+    name: Trigger Affected Stacks
+
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=small"
+      - "tag=affected-stacks"
+      - "private=false"
+
+    # Trigger Atmos Pro for Pull Request plan events and specifically closed PRs that have been merged (not just closed)
+    if: github.event.action != 'closed' || (github.event.action == 'closed' && github.event.pull_request.merged == true)
+
     steps:
-      - name: Describe Affected
-        uses: cloudposse/github-action-atmos-pro-describe-affected@main
+      - uses: runs-on/action@v1
+      - name: Checkout
+        # For merged PRs, we will need to checkout the base branch to get the correct base branch SHA.
+        # This isn't necessary for other events.
+        if: github.event.action == 'closed'
+        uses: actions/checkout@v4
         with:
+<<<<<<< HEAD
           workspace-id: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
           api-key: ${{ secrets.ATMOS_PRO_API_KEY }} 
 =======
@@ -65,6 +105,8 @@ jobs:
         if: github.event.action == 'closed'
         uses: actions/checkout@v4
         with:
+=======
+>>>>>>> 525f355ffc4471dbb3988fdb48edc3d1b84efc13
           fetch-depth: 0 # Fetch all history for all branches and tags
 
       # For merged PRs, we want to use 1 previous commit from the base branch SHA
@@ -98,4 +140,8 @@ jobs:
           # If the PR is merged, compare the head of the PR to 1 previous commit on the base branch.
           head-ref: ${{ github.event.pull_request.head.sha }}
           base-ref: ${{ github.event.action == 'closed' && steps.get_parent.outputs.parent_commit || github.event.pull_request.base.sha }}
+<<<<<<< HEAD
 >>>>>>> master
+=======
+
+>>>>>>> 525f355ffc4471dbb3988fdb48edc3d1b84efc13
