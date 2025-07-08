@@ -2,8 +2,7 @@
 ARG GEODESIC_VERSION=4.3.0
 ARG GEODESIC_OS=debian
 # https://github.com/cloudposse/atmos
-ARG ATMOS_VERSION=1.179.0
-# This should match the version set in stacks/catalog/spacelift.yaml
+ARG ATMOS_VERSION=1.180.0
 # This should match the version set in .github/workflows/auto-format.yaml
 ARG TF_1_VERSION=1.5.7
 ARG TOFU_VERSION=1.8.8
