@@ -13,6 +13,29 @@ import Admonition from '@theme/Admonition';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import CodeBlock from '@theme/CodeBlock';
 
+<Intro>
+  Verify and complete the AWS infrastructure setup for Atmos Pro using Atmos and Terraform. This approach checks your existing backend infrastructure and deploys the additional resources needed for plan file storage and GitHub OIDC integration.
+</Intro>
+
+<KeyPoints>
+  - Verify existing Terraform backend infrastructure (S3 + DynamoDB)
+  - Deploy new S3 bucket and DynamoDB table for plan file storage
+  - Ensure GitHub OIDC integration is properly configured
+  - Create IAM roles for GitHub Actions authentication
+</KeyPoints>
+
+## Overview
+
+Atmos Pro doesn't run Terraform or Atmos itself. It dispatches GitHub Actions that **you control**. To run Terraform in those GitHub Actions, you need to set up a few things in your cloud environment:
+
+<TaskList>
+- **State Backend** (S3 + DynamoDB) to store Terraform state and enable state locking
+- **Plan File Storage** (S3 + DynamoDB) to persist Terraform plan outputs for review and approvals
+- **OIDC Integration** with GitHub for workflows to authenticate with your cloud provider
+</TaskList>
+
+This deployment method verifies your existing backend infrastructure (which should already be deployed as part of the reference architecture) and deploys the additional resources needed for plan file storage and GitHub OIDC integration.
+
 ## Quick Start
 
 | Steps     |                                        |
@@ -88,12 +111,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Review
 
-Congratulations! The Atmos components have now deployed:
+Congratulations! The Atmos components have now verified and deployed:
 
 <TaskList>
-- An IAM role configured with trusted relationships for GitHub Actions
-- An S3 bucket to store Terraform plan files 
-- A DynamoDB table for managing those plan files
+- Verified existing Terraform backend infrastructure (S3 bucket and DynamoDB table for state)
+- Deployed new S3 bucket to store Terraform plan files 
+- Deployed new DynamoDB table for managing plan files
+- Ensured GitHub OIDC provider is properly configured
+- Created IAM roles for GitHub Actions authentication
 </TaskList>
 
 You're now ready to start using Atmos Pro with GitHub Actions.
