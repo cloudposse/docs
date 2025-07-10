@@ -13,7 +13,7 @@
   },
   {
     "from": "/reference-architecture/fundamentals/gitops",
-    "to": "/layers/gitops"
+    "to": "/resources/deprecated/gitops"
   },
   {
     "from": "/reference-architecture/how-to-guides/integrations/opsgenie",
@@ -29,7 +29,7 @@
   },
   {
     "from": "/reference-architecture/how-to-guides/integrations/spacelift",
-    "to": "/layers/spacelift"
+    "to": "/resources/deprecated/spacelift"
   },
   {
     "from": "/reference-architecture/how-to-guides/tutorials/how-to-setup-grafana",
