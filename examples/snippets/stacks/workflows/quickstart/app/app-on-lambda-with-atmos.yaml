@@ -1,0 +1,39 @@
+workflows:
+  all:
+    steps:
+      - command: workflow init/artifact-bucket -f app-on-lambda-with-atmos
+      - command: workflow init/app-on-lambda-with-atmos -f app-on-lambda-with-atmos
+      - command: workflow deploy/github-oidc-role -f app-on-lambda-with-atmos
+      - command: workflow deploy/artifact-bucket -f app-on-lambda-with-atmos
+
+  init/artifact-bucket:
+    description: |
+      This workflow deploys the artifact bucket for the app-on-lambda-with-atmos workflow.
+    steps:
+      - command: terraform deploy s3-bucket/github-action-artifacts -s core-us-east-1-artifacts -var privileged_principal_arns=[]
+
+  deploy/artifact-bucket:
+    description: |
+      This workflow deploys the artifact bucket for the app-on-lambda-with-atmos workflow.
+    steps:
+      - command: terraform deploy s3-bucket/github-action-artifacts -s core-us-east-1-artifacts
+
+  deploy/github-oidc-role:
+    description: |
+      This workflow deploys the github-oidc-role for the app-on-lambda-with-atmos workflow.
+    steps:
+      - command: terraform deploy github-oidc-role/lambda-publish -s core-gbl-artifacts
+      - command: terraform deploy github-oidc-role/app-on-lambda-with-atmos -s plat-gbl-dev
+      - command: terraform deploy github-oidc-role/app-on-lambda-with-atmos -s plat-gbl-staging
+      - command: terraform deploy github-oidc-role/app-on-lambda-with-atmos -s plat-gbl-prod
+
+  init/app-on-lambda-with-atmos:
+    description: Initializes SSM parameters for app-on-lambda-with-atmos, these are not valid until the github actions run to update the values.
+    steps:
+      - type: shell
+        name: setup ssm params
+        command: |-
+          profiles=( "acme-plat-gbl-dev-admin" "acme-plat-gbl-sandbox-admin" "acme-plat-gbl-staging-admin" "acme-plat-gbl-prod-admin" )
+          for profile in ${profiles[@]} ; do
+              aws --profile $profile ssm put-parameter --name /lambda/app-on-lambda-with-atmos/tag --value 0.0.0 --type String --overwrite
+          done

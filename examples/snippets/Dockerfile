@@ -4,7 +4,6 @@ ARG GEODESIC_OS=debian
 # https://github.com/cloudposse/atmos
 ARG ATMOS_VERSION=1.180.0
 # This should match the version set in .github/workflows/auto-format.yaml
-ARG TF_1_VERSION=1.5.7
 ARG TOFU_VERSION=1.8.8
 
 FROM public.ecr.aws/cloudposse/geodesic:${GEODESIC_VERSION}-${GEODESIC_OS}
@@ -24,12 +23,9 @@ ENV AWS_DEFAULT_REGION=us-east-1
 ENV AWS_DEFAULT_SHORT_REGION=use1
 ENV AWS_REGION_ABBREVIATION_TYPE=short
 
-ARG TF_1_VERSION
 ARG TOFU_VERSION
-RUN apt-get update && apt-get install -y -u --allow-downgrades \
-    terraform-1="${TF_1_VERSION}-*" && \
-    tofu="${TOFU_VERSION}" && \
-    update-alternatives --set terraform /usr/share/terraform/1/bin/terraform
+RUN apt-get update && apt-get install -y --allow-downgrades \
+    tofu="${TOFU_VERSION}"
 ARG ATMOS_VERSION
 RUN apt-get update && apt-get install -y --allow-downgrades \
     atmos="${ATMOS_VERSION}-*" \
