@@ -19,10 +19,9 @@ workflows:
 
   deploy/acm:
     description: |
-      This workflow deploys additional ACM certificates required for specific release workflow environments.
+      This workflow deploys additional ACM certificates required for specific app-on-eks-with-argocd workflow environments.
     steps:
       - command: terraform deploy acm/preview -s plat-use1-dev
-      - command: terraform deploy acm/hotfix -s plat-use1-dev
       - command: terraform deploy acm/qa1 -s plat-use1-staging
       - command: terraform deploy acm/qa2 -s plat-use1-staging
       - command: terraform deploy acm/qa3 -s plat-use1-staging
@@ -30,6 +29,6 @@ workflows:
 
   demo/install:
     description: |
-      This workflow deploys GitHub repositories for release engineering demo
+      This workflow deploys GitHub repositories for app-on-eks-with-argocd demo
     steps:
       - command: terraform deploy release-engineering-bootstrap -s core-gbl-auto
