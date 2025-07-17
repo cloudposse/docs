@@ -97,10 +97,7 @@ workflows:
     description: Provision AWS Certificate Manager for custom and ad-hoc requests.
     steps:
       - command: terraform deploy acm -s core-use1-auto
-      - command: terraform deploy acm -s plat-use1-sandbox
-      - command: terraform deploy acm -s plat-use1-dev
-      - command: terraform deploy acm -s plat-use1-staging
-      - command: terraform deploy acm -s plat-use1-prod
+      
 
   deploy/vpn:
     description: Establish the AWS Client VPN in the core-network account.
