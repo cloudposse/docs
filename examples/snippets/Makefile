@@ -1,6 +1,6 @@
 export DOCKER_ORG ?= acme
 export DOCKER_TAG ?= latest
-export ECR_IMAGE ?= infra-acme
+export ECR_IMAGE ?= infrastructure
 export DOCKER_IMAGE ?= $(DOCKER_ORG)/$(ECR_IMAGE)
 export DOCKER_IMAGE_NAME ?= $(DOCKER_IMAGE):$(DOCKER_TAG)
 
