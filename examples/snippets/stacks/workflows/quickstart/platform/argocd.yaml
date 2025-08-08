@@ -249,7 +249,7 @@ workflows:
       - type: shell
         command: |-
           echo "Please create a fine-grained GitHub PAT"
-          echo "Scope: acme/argocd-deploy-non-prod and acme/infra-acme"
+          echo "Scope: acme/argocd-deploy-non-prod and acme/infrastructure"
           echo "Permissions: (Repository) Contents: Read and write, Metadata: Read-only"
           echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
           echo "Please upload this PAT to 1Password"
@@ -260,7 +260,7 @@ workflows:
       - type: shell
         command: |-
           echo "Please create a fine-grained GitHub PAT"
-          echo "Scope: acme/argocd-deploy-prod and acme/infra-acme"
+          echo "Scope: acme/argocd-deploy-prod and acme/infrastructure"
           echo "Permissions: (Repository) Contents: Read and write, Metadata: Read-only"
           echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
           echo "Please upload this PAT to 1Password"
