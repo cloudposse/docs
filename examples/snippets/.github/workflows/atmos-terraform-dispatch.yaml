@@ -28,9 +28,11 @@ permissions:
 
 jobs:
   dispatch-id:
-    runs-on: 
-      - self-hosted
-      - terraform
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
     steps:
       - name: echo Distinct ID ${{ github.event.inputs.distinct_id }}
         run: echo ${{ github.event.inputs.distinct_id }}

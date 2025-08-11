@@ -17,9 +17,11 @@ permissions:
 jobs:
   select-components:
     name: Select Components
-    runs-on: 
-      - self-hosted
-      - terraform
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
     steps:
       - name: Selected Components
         id: components
@@ -54,10 +56,14 @@ jobs:
     needs: ["plan-atmos-components"]
     if: always()
     name: Reconcile issues
-    runs-on: ['self-hosted', 'terraform']
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
     steps:
       - name: Drift Detection
         uses: cloudposse/github-action-atmos-terraform-drift-detection@v2
         with:
-          max-opened-issues: '25'
+          max-opened-issues: '10'
           process-all: 'true'
