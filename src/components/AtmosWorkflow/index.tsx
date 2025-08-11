@@ -19,7 +19,12 @@ interface AtmosWorkflowProps {
 
 export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosWorkflowProps) {
   const [workflowData, setWorkflowData] = useState<WorkflowData | null>(null);
-  const fullFilePath = `${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
+  // Only temporarily, we're pointing all workflows to a copy of the workflow directory.
+  // However, we dont want to show the user the "legacy/" prefix in the file path, so we have a temporary trick until the staging PR is merged.
+  // Uncomment this when the staging PR is merged:
+  // const fullFilePath = `${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`;
+  // and delete the following line:
+  const fullFilePath = `${WORKFLOWS_DIRECTORY_PATH}${fileName}.yaml`.replace('legacy/', '');
 
   useEffect(() => {
     GetAtmosTerraformCommands(workflow, fileName, stack).then((data) => {

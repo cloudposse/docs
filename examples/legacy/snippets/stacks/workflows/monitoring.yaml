@@ -1,0 +1,159 @@
+
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow init -f monitoring
+      - command: workflow vendor -f monitoring
+      - command: workflow deploy/datadog-configuration -f monitoring
+      - command: workflow deploy/datadog-integration -f monitoring
+#      - command: workflow deploy/datadog-logs-archive -f monitoring
+      - command: workflow deploy/datadog-monitor -f monitoring
+      - command: workflow deploy/datadog-lambda-forwarder -f monitoring
+      - command: workflow deploy/datadog-agent -f monitoring
+      - command: workflow deploy/datadog-synthetics-private-location -f monitoring
+      - command: workflow deploy/datadog-private-location-ecs -f monitoring
+
+  init:
+    description: Prompt for uploading Datadog API Key to AWS SSM
+    steps:
+      - type: shell
+        command: |-
+          echo "Please enter a Datadog API Key"
+
+          stty -echo
+          read -p "API Key: " -r API_KEY
+          stty echo
+          if [ -z "$API_KEY" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+          if ! [[ "$API_KEY" =~ "^[a-zA-Z0-9-]{32}$" ]]
+          then
+              echo "Invalid API Key"
+              echo "HINT: The API key ID is displayed as an upper-case, 32-character alphanumeric value."
+              exit 0
+          fi
+
+          stty -echo
+          read -p "APP Key: " -r APP_KEY
+          stty echo
+          if [ -z "$APP_KEY" ]
+          then
+             echo 'Inputs cannot be blank please try again!'
+             exit 0
+          fi
+          if ! [[ "$APP_KEY" =~ "^[a-zA-Z0-9]{40}$" ]]
+          then
+             echo "Invalid APP Key"
+             exit 0
+          fi
+
+          AWS_PROFILE=acme-core-gbl-auto-admin aws ssm put-parameter --name /datadog/default/datadog_api_key --value $API_KEY --type SecureString
+          AWS_PROFILE=acme-core-gbl-auto-admin aws ssm put-parameter --name /datadog/default/datadog_app_key --value $APP_KEY --type SecureString
+
+  vendor:
+    description: vendor dependencies
+    steps:
+      - command: vendor pull --component datadog-configuration
+      - command: vendor pull --component datadog-integration
+      - command: vendor pull --component datadog-lambda-forwarder
+      - command: vendor pull --component datadog-monitor
+      #- command: vendor pull --component datadog-logs-archive
+      - command: vendor pull --component eks/datadog-agent
+      - command: vendor pull --component datadog-synthetics-private-location
+      - command: vendor pull --component datadog-private-location-ecs
+
+  deploy/datadog-configuration:
+    description: deploys all datadog-configuration components
+    steps:
+      - command: terraform deploy datadog-configuration -s core-gbl-artifacts
+      - command: terraform deploy datadog-configuration -s core-gbl-audit
+      - command: terraform deploy datadog-configuration -s core-gbl-auto
+      - command: terraform deploy datadog-configuration -s core-gbl-dns
+      - command: terraform deploy datadog-configuration -s core-gbl-network
+      - command: terraform deploy datadog-configuration -s core-gbl-security
+      - command: terraform deploy datadog-configuration -s plat-gbl-sandbox
+      - command: terraform deploy datadog-configuration -s plat-gbl-dev
+      - command: terraform deploy datadog-configuration -s plat-gbl-staging
+      - command: terraform deploy datadog-configuration -s plat-gbl-prod
+
+  deploy/datadog-integration:
+    description: deploys all datadog-integration components
+    steps:
+      - command: terraform deploy datadog-integration -s core-gbl-artifacts
+      - command: terraform deploy datadog-integration -s core-gbl-audit
+      - command: terraform deploy datadog-integration -s core-gbl-auto
+      - command: terraform deploy datadog-integration -s core-gbl-dns
+      - command: terraform deploy datadog-integration -s core-gbl-network
+      - command: terraform deploy datadog-integration -s core-gbl-security
+      - command: terraform deploy datadog-integration -s plat-gbl-sandbox
+      - command: terraform deploy datadog-integration -s plat-gbl-dev
+      - command: terraform deploy datadog-integration -s plat-gbl-staging
+      - command: terraform deploy datadog-integration -s plat-gbl-prod
+
+#  deploy/datadog-logs-archive:
+#    description: deploys all datadog-logs-archive components
+#    steps:
+#      - command: terraform deploy datadog-logs-archive -s core-gbl-artifacts
+#      - command: terraform deploy datadog-logs-archive -s core-gbl-audit
+#      - command: terraform deploy datadog-logs-archive -s core-gbl-auto
+#      - command: terraform deploy datadog-logs-archive -s core-gbl-dns
+#      - command: terraform deploy datadog-logs-archive -s core-gbl-network
+#      - command: terraform deploy datadog-logs-archive -s core-gbl-security
+#      - command: terraform deploy datadog-logs-archive -s plat-gbl-sandbox
+#      - command: terraform deploy datadog-logs-archive -s plat-gbl-dev
+#      - command: terraform deploy datadog-logs-archive -s plat-gbl-staging
+#      - command: terraform deploy datadog-logs-archive -s plat-gbl-prod
+
+  deploy/datadog-monitor:
+    description: deploys all datadog-monitor components
+    steps:
+      - command: terraform deploy datadog-monitor -s core-gbl-auto
+      - command: terraform deploy datadog-monitor -s plat-gbl-sandbox
+      - command: terraform deploy datadog-monitor -s plat-gbl-dev
+      - command: terraform deploy datadog-monitor -s plat-gbl-staging
+      - command: terraform deploy datadog-monitor -s plat-gbl-prod
+
+  deploy/datadog-lambda-forwarder:
+    description: deploys all datadog-lambda-forwarder components
+    steps:
+      - command: terraform deploy datadog-lambda-forwarder -s core-use1-artifacts
+      - command: terraform deploy datadog-lambda-forwarder -s core-use1-audit
+      - command: terraform deploy datadog-lambda-forwarder -s core-use1-auto
+      - command: terraform deploy datadog-lambda-forwarder -s core-use1-dns
+      - command: terraform deploy datadog-lambda-forwarder -s core-use1-network
+      - command: terraform deploy datadog-lambda-forwarder -s core-use1-security
+      - command: terraform deploy datadog-lambda-forwarder -s plat-use1-sandbox
+      - command: terraform deploy datadog-lambda-forwarder -s plat-use1-dev
+      - command: terraform deploy datadog-lambda-forwarder -s plat-use1-staging
+      - command: terraform deploy datadog-lambda-forwarder -s plat-use1-prod
+
+
+  deploy/datadog-agent:
+    description: deploys all datadog-agent components
+    steps:
+      - command: terraform deploy eks/datadog-agent -s core-use1-auto
+      - command: terraform deploy eks/datadog-agent -s plat-use1-dev
+      - command: terraform deploy eks/datadog-agent -s plat-use1-staging
+      - command: terraform deploy eks/datadog-agent -s plat-use1-prod
+
+  deploy/datadog-synthetics-private-location:
+    description: deploys all datadog-synthetics-private-location components
+    steps:
+      - command: terraform deploy datadog-synthetics-private-location -s core-use1-auto
+      - command: terraform deploy datadog-synthetics-private-location -s plat-use1-dev
+      - command: terraform deploy datadog-synthetics-private-location -s plat-use1-staging
+      - command: terraform deploy datadog-synthetics-private-location -s plat-use1-prod
+
+
+  deploy/datadog-private-location-ecs:
+    description: deploys all datadog-private-location-ecs components
+    steps:
+      - command: terraform deploy datadog-private-location-ecs -s core-use1-auto
+      - command: terraform deploy datadog-private-location-ecs -s plat-use1-sandbox
+      - command: terraform deploy datadog-private-location-ecs -s plat-use1-dev
+      - command: terraform deploy datadog-private-location-ecs -s plat-use1-staging
+      - command: terraform deploy datadog-private-location-ecs -s plat-use1-prod
+

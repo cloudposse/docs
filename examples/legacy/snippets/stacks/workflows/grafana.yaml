@@ -1,0 +1,43 @@
+
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow vendor -f grafana
+      - command: workflow deploy -f grafana
+
+  vendor:
+    description: vendor dependencies
+    steps:
+      - command: vendor pull --component
+
+  deploy:
+    description: deploys all Grafana data sources into plat accounts
+    steps:
+      - command: workflow deploy/data-sources -s plat-use1-dev -f grafana
+      - command: workflow deploy/data-sources -s plat-use1-staging -f grafana
+      - command: workflow deploy/data-sources -s plat-use1-prod -f grafana
+      - command: workflow deploy/grafana -s core-use1-auto -f grafana
+
+  deploy/data-sources:
+    description: deploys all Grafana data sources into a given stack
+    steps:
+      - command: terraform deploy prometheus
+      - command: terraform deploy eks/prometheus-scraper
+      - command: terraform deploy eks/loki
+      - command: terraform deploy eks/promtail
+      - type: shell
+        command: |-
+          echo "Now update the eks/cluster map_additional_iam_roles and reapply eks/cluster"
+
+  deploy/grafana:
+    description: deploys centralized Grafana and all sub components
+    steps:
+      - command: terraform deploy grafana -s core-use1-auto
+      - command: terraform deploy grafana/api-key -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-dev-prometheus -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-dev-loki -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-staging-prometheus -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-staging-loki -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-prod-prometheus -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-prod-loki -s core-use1-auto
