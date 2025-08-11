@@ -4,14 +4,15 @@ on:
   workflow_dispatch: {}
 
   schedule:
-    - cron: 0 8 * * *
+    - cron: "0 8 * * *"
 
 jobs:
   update:
     environment: atmos
     runs-on:
-      - self-hosted
-      - terraform
+      - "runs-on=${{ github.run_id }}"
+      - "runner=small"
+      - "private=false"
     steps:
       - name: "Checkout source code at current commit"
         uses: actions/checkout@v4

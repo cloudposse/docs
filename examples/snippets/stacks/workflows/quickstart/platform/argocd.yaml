@@ -249,7 +249,7 @@ workflows:
       - type: shell
         command: |-
           echo "Please create a fine-grained GitHub PAT"
-          echo "Scope: acme/argocd-deploy-non-prod and acme/infra-acme"
+          echo "Scope: acme/argocd-deploy-non-prod and acme/infrastructure"
           echo "Permissions: (Repository) Contents: Read and write, Metadata: Read-only"
           echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
           echo "Please upload this PAT to 1Password"
@@ -260,24 +260,7 @@ workflows:
       - type: shell
         command: |-
           echo "Please create a fine-grained GitHub PAT"
-          echo "Scope: acme/argocd-deploy-prod and acme/infra-acme"
+          echo "Scope: acme/argocd-deploy-prod and acme/infrastructure"
           echo "Permissions: (Repository) Contents: Read and write, Metadata: Read-only"
           echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
           echo "Please upload this PAT to 1Password"
-
-  migrate_less_1_305:
-    description: |
-      This workflow migrates ArgoCD to `0.0.0`
-    steps:
-      - type: shell
-        command: |-
-          AWS_PROFILE=acme-plat-gbl-dev-admin chamber read -q argocd/notifications/notifiers/service_webhook_github-commit-status github-token | AWS_PROFILE=acme-plat-gbl-dev-admin  chamber write argocd/notifications/notifiers/common github-token
-          AWS_PROFILE=acme-plat-gbl-dev-admin chamber delete argocd/notifications/notifiers/service_webhook_github-commit-status github-token
-          AWS_PROFILE=acme-plat-gbl-dev-admin chamber delete argocd/notifications/notifiers/service_githubAWS_PROFILE=acme-plat-gbl-staging-admin chamber read -q argocd/notifications/notifiers/service_webhook_github-commit-status github-token | AWS_PROFILE=acme-plat-gbl-staging-admin  chamber write argocd/notifications/notifiers/common github-token
-          AWS_PROFILE=acme-plat-gbl-staging-admin chamber delete argocd/notifications/notifiers/service_webhook_github-commit-status github-token
-          AWS_PROFILE=acme-plat-gbl-staging-admin chamber delete argocd/notifications/notifiers/service_githubAWS_PROFILE=acme-plat-gbl-prod-admin chamber read -q argocd/notifications/notifiers/service_webhook_github-commit-status github-token | AWS_PROFILE=acme-plat-gbl-prod-admin  chamber write argocd/notifications/notifiers/common github-token
-          AWS_PROFILE=acme-plat-gbl-prod-admin chamber delete argocd/notifications/notifiers/service_webhook_github-commit-status github-token
-          AWS_PROFILE=acme-plat-gbl-prod-admin chamber delete argocd/notifications/notifiers/service_github
-      - command: workflow deploy/github-webhook-pat -f argocd
-      - command: workflow deploy/argocd -f argocd
-      - command: workflow deploy/argocd-repos -f argocd
