@@ -45,7 +45,7 @@ ARG TENANT="core"
 ENV NAMESPACE=acme
 # Format of Geodesic banner prompt
 ENV BANNER=${NAMESPACE}
-ENV DOCKER_IMAGE="acme/infra-acme"
+ENV DOCKER_IMAGE="acme/infrastructure"
 ENV DOCKER_TAG="latest"
 
 # Default AWS_PROFILE

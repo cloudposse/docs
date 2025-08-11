@@ -1,0 +1,70 @@
+name: 👽 Atmos Terraform Plan Matrix (Reusable)
+run-name: 👽 Atmos Terraform Plan Matrix (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      stacks:
+        description: "Stacks"
+        required: true
+        type: string
+      drift-detection-mode-enabled:
+        description: "Indicate whether this action is used in drift detection workflow."
+        type: string
+        required: false
+        default: 'false'
+      sha:
+        description: "SHA to use"
+        required: false
+        default: "${{ github.event.pull_request.head.sha }}"
+        type: string
+      atmos-version:
+        description: The version of atmos to install
+        required: false
+        default: ">= 1.63.0"
+        type: string
+      atmos-config-path:
+        description: The path to the atmos.yaml file
+        required: true
+        type: string
+      continue-on-error:
+        description: "Prevents a workflow run from failing when a job fails. Set to true to allow a workflow run to pass when this job fails."
+        required: false
+        default: "false"
+        type: string
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+  atmos-plan:
+    if: ${{ inputs.stacks != '{include:[]}' }}
+    name: ${{ matrix.stack_slug }}
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
+    continue-on-error: ${{ inputs.continue-on-error == 'true' }}
+    strategy:
+      max-parallel: 10
+      fail-fast: false # Don't fail fast to avoid locking TF State
+      matrix: ${{ fromJson(inputs.stacks) }}
+    ## Avoid running the same stack in parallel mode (from different workflows)
+    concurrency:
+      group: ${{ matrix.stack_slug }}
+      cancel-in-progress: false
+    steps:
+      - uses: unfor19/install-aws-cli-action@v1
+
+      - name: Plan Atmos Component
+        uses: cloudposse/github-action-atmos-terraform-plan@v3
+        with:
+          component: ${{ matrix.component }}
+          stack: ${{ matrix.stack }}
+          drift-detection-mode-enabled: ${{ inputs.drift-detection-mode-enabled }}
+          infracost-api-key: ${{ secrets.INFRACOST_API_KEY }}
+          sha: ${{ inputs.sha }}
+          atmos-version: ${{ inputs.atmos-version }}
+          atmos-config-path: ${{ inputs.atmos-config-path }}
