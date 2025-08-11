@@ -41,9 +41,11 @@ jobs:
   atmos-plan:
     if: ${{ inputs.stacks != '{include:[]}' }}
     name: ${{ matrix.stack_slug }}
-    runs-on: 
-      - self-hosted
-      - terraform
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
     continue-on-error: ${{ inputs.continue-on-error == 'true' }}
     strategy:
       max-parallel: 10
