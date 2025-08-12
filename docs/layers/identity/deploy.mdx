@@ -20,7 +20,7 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 | ----------------------------- | ------------------------------------------- |
 | Install requirements          |                                             |
 | Vendor components             | `atmos workflow vendor -f identity`         |
-| Prepare AWS SSO               | Click Ops                                   |
+| [Setup Identity Center](/layers/identity/aws-sso/) | Click Ops |
 | Add your SAML provider        | Click Ops                                   |
 | Deploy identity components    | `atmos workflow deploy/all -f identity`     |
 | Reconfigure Terraform Backend | `atmos workflow deploy/tfstate -f baseline` |
@@ -36,6 +36,21 @@ These components are expected to be used together to provide fine-grained role d
 </Note>
 
 <Steps>
+
+  <Step>
+    ### <StepNumber/> Vendor Identity Components
+
+    Pull the Identity components into your local repository.
+
+    <AtmosWorkflow workflow="vendor" fileName="identity" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Setup Identity Center
+
+    Follow the [Setup Identity Center](/layers/identity/aws-sso/) guide to enable AWS IAM Identity Center and connect your IdP.
+  </Step>
+
 
   <Step>
     ### <StepNumber/> Deploy Identity Components
@@ -85,9 +100,9 @@ These components are expected to be used together to provide fine-grained role d
 
     <Note title="Important">
     Anytime that teams or roles are changed, rebuild AWS config
+    </Note>
 
     <AtmosWorkflow workflow="update-aws-config" fileName="identity" />
-    </Note>
 
   </Step>
 </Steps>

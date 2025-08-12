@@ -1,0 +1,266 @@
+workflows:
+  vendor:
+    description: |
+      This workflow vendors all ArgoCD related components to the latest provided version
+    steps:
+      - command: vendor pull --component argocd-repo
+      - command: vendor pull --component sso-saml-provider
+      - command: vendor pull --component eks/argocd
+
+  deploy/argocd:
+    description: |
+      This workflow deploys ArgoCD
+    steps:
+      - command: terraform deploy eks/argocd -s plat-use1-dev
+      - command: terraform deploy eks/argocd -s plat-use1-staging
+      - command: terraform deploy eks/argocd -s plat-use1-prod
+
+  deploy/argocd-repos:
+    description: |
+      This workflow deploys ArgoCD repos
+    steps:
+      - command: terraform deploy argocd-deploy-non-prod -s core-gbl-auto
+      - command: terraform deploy argocd-deploy-prod -s core-gbl-auto
+
+  deploy/iam-identity-center-app/dev:
+    description: Prompt for uploading SSO SAML configs to AWS SSM for dev
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a new IAM Identity Center SAML App for prod"
+          echo "Use https://argocd.use1.dev.plat.acme-svc.com/api/dex/callback"
+
+          echo "Please enter the IAM Identity Center SAML issuer URL"
+          read -p "IAM Identity Center Issuer URL: " -r SSO_ISSUER
+          if [ -z "SSO_ISSUER" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+
+          echo "Please download the IAM Identity Center Certificate and enter the path here"
+          DEFAULT_SSO_CA_PATH="/localhost/Downloads/AWS_SSO_for_Custom SAML 2.0 application_certificate.pem"
+          read -p "IAM Identity Center Certificate path [${DEFAULT_SSO_CA_PATH}]: " -r SSO_CA_PATH
+          SSO_CA_PATH=${SSO_CA_PATH:-$DEFAULT_SSO_CA_PATH}
+          if [ -z "SSO_CA_PATH" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+
+          prefix="-----BEGIN CERTIFICATE-----"
+          suffix="-----END CERTIFICATE-----"
+          FULL_SSO_CA=$(cat "$SSO_CA_PATH" | tr -d '\n')
+          SSO_CA=${FULL_SSO_CA#"$prefix"}
+          SSO_CA=${SSO_CA%"$suffix"}
+
+          AWS_PROFILE=acme-plat-gbl-dev-admin chamber write argocd/saml issuer $SSO_ISSUER
+          AWS_PROFILE=acme-plat-gbl-dev-admin chamber write argocd/saml url $SSO_ISSUER
+          AWS_PROFILE=acme-plat-gbl-dev-admin chamber write argocd/saml ca $SSO_CA
+
+          echo "Uploaded to SSM."
+          echo "Don't forget to set attribute mappings and assign groups to the new app!"
+          read -p "Continue with component deployment? (yes/no) " -r CONTINUE
+          if [[ "$CONTINUE" != "yes" ]]
+          then
+            echo "Exiting."
+            exit 0
+          fi
+      - command: terraform deploy sso-saml-provider -s plat-use1-dev
+
+  deploy/iam-identity-center-app/staging:
+    description: Prompt for uploading SSO SAML configs to AWS SSM for staging
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a new IAM Identity Center SAML App for prod"
+          echo "Use https://argocd.use1.staging.plat.acme-svc.com/api/dex/callback"
+
+          echo "Please enter the IAM Identity Center SAML issuer URL"
+          read -p "IAM Identity Center Issuer URL: " -r SSO_ISSUER
+          if [ -z "SSO_ISSUER" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+
+          echo "Please download the IAM Identity Center Certificate and enter the path here"
+          DEFAULT_SSO_CA_PATH="/localhost/Downloads/AWS_SSO_for_Custom SAML 2.0 application_certificate.pem"
+          read -p "IAM Identity Center Certificate path [${DEFAULT_SSO_CA_PATH}]: " -r SSO_CA_PATH
+          SSO_CA_PATH=${SSO_CA_PATH:-$DEFAULT_SSO_CA_PATH}
+          if [ -z "SSO_CA_PATH" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+
+          prefix="-----BEGIN CERTIFICATE-----"
+          suffix="-----END CERTIFICATE-----"
+          FULL_SSO_CA=$(cat "$SSO_CA_PATH" | tr -d '\n')
+          SSO_CA=${FULL_SSO_CA#"$prefix"}
+          SSO_CA=${SSO_CA%"$suffix"}
+
+          AWS_PROFILE=acme-plat-gbl-staging-admin chamber write argocd/saml issuer $SSO_ISSUER
+          AWS_PROFILE=acme-plat-gbl-staging-admin chamber write argocd/saml url $SSO_ISSUER
+          AWS_PROFILE=acme-plat-gbl-staging-admin chamber write argocd/saml ca $SSO_CA
+
+          echo "Uploaded to SSM."
+          echo "Don't forget to set attribute mappings and assign groups to the new app!"
+          read -p "Continue with component deployment? (yes/no) " -r CONTINUE
+          if [[ "$CONTINUE" != "yes" ]]
+          then
+            echo "Exiting."
+            exit 0
+          fi
+      - command: terraform deploy sso-saml-provider -s plat-use1-staging
+
+  deploy/iam-identity-center-app/prod:
+    description: Prompt for uploading SSO SAML configs to AWS SSM for prod
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a new IAM Identity Center SAML App for prod"
+          echo "Use https://argocd.use1.prod.plat.acme-svc.com/api/dex/callback"
+
+          echo "Please enter the IAM Identity Center SAML issuer URL"
+          read -p "IAM Identity Center Issuer URL: " -r SSO_ISSUER
+          if [ -z "SSO_ISSUER" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+
+          echo "Please download the IAM Identity Center Certificate and enter the path here"
+          DEFAULT_SSO_CA_PATH="/localhost/Downloads/AWS_SSO_for_Custom SAML 2.0 application_certificate.pem"
+          read -p "IAM Identity Center Certificate path [${DEFAULT_SSO_CA_PATH}]: " -r SSO_CA_PATH
+          SSO_CA_PATH=${SSO_CA_PATH:-$DEFAULT_SSO_CA_PATH}
+          if [ -z "SSO_CA_PATH" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+
+          prefix="-----BEGIN CERTIFICATE-----"
+          suffix="-----END CERTIFICATE-----"
+          FULL_SSO_CA=$(cat "$SSO_CA_PATH" | tr -d '\n')
+          SSO_CA=${FULL_SSO_CA#"$prefix"}
+          SSO_CA=${SSO_CA%"$suffix"}
+
+          AWS_PROFILE=acme-plat-gbl-prod-admin chamber write argocd/saml issuer $SSO_ISSUER
+          AWS_PROFILE=acme-plat-gbl-prod-admin chamber write argocd/saml url $SSO_ISSUER
+          AWS_PROFILE=acme-plat-gbl-prod-admin chamber write argocd/saml ca $SSO_CA
+
+          echo "Uploaded to SSM."
+          echo "Don't forget to set attribute mappings and assign groups to the new app!"
+          read -p "Continue with component deployment? (yes/no) " -r CONTINUE
+          if [[ "$CONTINUE" != "yes" ]]
+          then
+            echo "Exiting."
+            exit 0
+          fi
+      - command: terraform deploy sso-saml-provider -s plat-use1-prod
+
+  deploy/terraform-argocdrepo-pat:
+    description: Prompt for creating the argocd/terraform/argocd-repo GitHub PAT
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a fine-grained GitHub PAT"
+          echo "Scope: acme/argocd-deploy-non-prod and acme/argocd-deploy-prod"
+          echo "Permissions: (Repository) Administration: Read and write, Contents: Read and write, Metadata: Read-only. (Organization) Members: Read-only"
+          echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+          echo "Upload the fine-grained GitHub PAT to AWS SSM"
+          stty -echo
+          read -p "GitHub PAT (text will be hidden): " -r GITHUB_PAT
+          stty echo
+          if [ -z "GITHUB_PAT" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+          AWS_PROFILE=acme-core-gbl-auto-admin chamber write argocd/github api_key $GITHUB_PAT
+
+  deploy/terraform-webhooks-nonprod-pat:
+    description: Prompt for creating the argocd/terraform-webhooks/nonprod GitHub PAT
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a fine-grained GitHub PAT"
+          echo "Scope: acme/argocd-deploy-non-prod"
+          echo "Permissions: (Repository) Webhooks: Read and write, Metadata: Read-only"
+          echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+          echo "Upload the fine-grained GitHub PAT to AWS SSM"
+          stty -echo
+          read -p "GitHub PAT (text will be hidden): " -r GITHUB_PAT
+          stty echo
+          if [ -z "GITHUB_PAT" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+          AWS_PROFILE=acme-plat-gbl-dev-admin chamber write argocd/github api_key $GITHUB_PAT
+          AWS_PROFILE=acme-plat-gbl-staging-admin chamber write argocd/github api_key $GITHUB_PAT
+
+  deploy/terraform-webhooks-prod-pat:
+    description: Prompt for creating the argocd/terraform-webhooks/prod GitHub PAT
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a fine-grained GitHub PAT"
+          echo "Scope: acme/argocd-deploy-prod"
+          echo "Permissions: (Repository) Webhooks: Read and write, Metadata: Read-only"
+          echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+          echo "Upload the fine-grained GitHub PAT to AWS SSM"
+          stty -echo
+          read -p "GitHub PAT (text will be hidden): " -r GITHUB_PAT
+          stty echo
+          if [ -z "GITHUB_PAT" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+          AWS_PROFILE=acme-plat-gbl-prod-admin chamber write argocd/github api_key $GITHUB_PAT
+
+  deploy/app-notifications-pat:
+    description: Prompt for creating the ARGOCD_APP_NOTIFICATIONS GitHub PAT
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a classic GitHub PAT"
+          echo "Scope: n/a"
+          echo "Permissions: repo:status"
+          echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+          echo "Upload the classic GitHub PAT to AWS SSM"
+          stty -echo
+          read -p "GitHub PAT (text will be hidden): " -r GITHUB_PAT
+          stty echo
+          if [ -z "GITHUB_PAT" ]
+          then
+              echo 'Inputs cannot be blank please try again!'
+              exit 0
+          fi
+          AWS_PROFILE=acme-plat-gbl-dev-admin chamber write argocd/notifications/notifiers/common github-token $GITHUB_PAT
+          AWS_PROFILE=acme-plat-gbl-staging-admin chamber write argocd/notifications/notifiers/common github-token $GITHUB_PAT
+          AWS_PROFILE=acme-plat-gbl-prod-admin chamber write argocd/notifications/notifiers/common github-token $GITHUB_PAT
+
+  deploy/github-nonprod-pat:
+    description: Prompt for creating the argocd/github/nonprod GitHub PAT
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a fine-grained GitHub PAT"
+          echo "Scope: acme/argocd-deploy-non-prod and acme/infrastructure"
+          echo "Permissions: (Repository) Contents: Read and write, Metadata: Read-only"
+          echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+          echo "Please upload this PAT to 1Password"
+
+  deploy/github-prod-pat:
+    description: Prompt for creating the argocd/github/prod GitHub PAT
+    steps:
+      - type: shell
+        command: |-
+          echo "Please create a fine-grained GitHub PAT"
+          echo "Scope: acme/argocd-deploy-prod and acme/infrastructure"
+          echo "Permissions: (Repository) Contents: Read and write, Metadata: Read-only"
+          echo "Follow this manual to create PAT https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+          echo "Please upload this PAT to 1Password"

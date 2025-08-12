@@ -1,0 +1,10 @@
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: terraform deploy ssm-parameters --stack plat-use1-sandbox
+
+  vendor:
+    description: vendor all components required for this addon
+    steps:
+      - command: vendor pull --component ssm-parameters

@@ -31,9 +31,11 @@ jobs:
   atmos-apply:
     if: ${{ inputs.stacks != '{include:[]}' }}
     name: ${{ matrix.stack_slug }}
-    runs-on: 
-      - self-hosted
-      - terraform
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
     strategy:
       max-parallel: 10
       fail-fast: false # Don't fail fast to avoid locking TF State

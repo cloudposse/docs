@@ -18,9 +18,11 @@ jobs:
   atmos-affected:
     if: ${{ !contains( github.event.pull_request.labels.*.name, 'no-plan') }}
     name: Determine Affected Stacks
-    runs-on: 
-      - self-hosted
-      - terraform
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=terraform"
+      - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      - "private=false"
     steps:
       - id: affected
         uses: cloudposse/github-action-atmos-affected-stacks@v4
