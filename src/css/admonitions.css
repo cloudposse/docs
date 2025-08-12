@@ -25,7 +25,6 @@ html[data-theme='dark'] .theme-admonition details {
 
 html[data-theme='dark'] .theme-admonition  > .admonitionHeading_node_modules-\@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module:not(:last-child) {
     margin-bottom: 1em;
-    font-size: 1.2em;
 }
 
 html[data-theme='dark'] .admonitionContent_node_modules-\@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module > ul:last-child {
@@ -38,10 +37,15 @@ html[data-theme='dark'] .admonitionContent_node_modules-\@docusaurus-theme-class
 }
 
 .theme-admonition > div, .theme-admonition > div p {
-  display: inline;
+  display: block;
 }
 
 .theme-admonition > div:first-child {
-  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+}
+
+.theme-admonition > div:not(:first-child) {
+  font-size: 0.95em;
 }
 

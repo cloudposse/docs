@@ -333,9 +333,38 @@ li.menu__list-item.deprecated > a {
   color: #444950;
 }
 
+/* Global list styling */
 ol ::marker {
   font-weight: bold;
 }
+
+/* Add custom bullet icons to unordered lists */
+.markdown ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.markdown ul li {
+  position: relative;
+  padding-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.markdown ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+/* Dark theme support for bullet icons */
+[data-theme='dark'] .markdown ul li::before {
+  color: var(--ifm-color-primary-light);
+}
+
+
 
 .theme-last-updated {
   color: #666;
