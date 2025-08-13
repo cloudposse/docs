@@ -15,11 +15,11 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 | Steps                               | Example                                                   |
 | :---------------------------------- | :-------------------------------------------------------- |
-| 1. Vendor EKS components            | `atmos workflow vendor -f eks`                            |
+| 1. Vendor EKS components            | `atmos workflow vendor -f quickstart/platform/eks`                            |
 | 2. Connect to the VPN               |                                                           |
-| 3. Deploy roles for each EKS stack  | `atmos workflow deploy/iam-service-linked-roles -f eks`   |
-| 4. Deploy cluster into each stack   | `atmos workflow deploy/cluster -s plat-use1-dev -f eks`   |
-| 5. Deploy resources into each stack | `atmos workflow deploy/resources -s plat-use1-dev -f eks` |
+| 3. Deploy roles for each EKS stack  | `atmos workflow deploy/iam-service-linked-roles -f quickstart/platform/eks`   |
+| 4. Deploy cluster into each stack   | `atmos workflow deploy/cluster -s plat-use1-dev -f quickstart/platform/eks`   |
+| 5. Deploy resources into each stack | `atmos workflow deploy/resources -s plat-use1-dev -f quickstart/platform/eks` |
 
 <Note>
   Repeat steps 4 and 5 for each EKS stack, typically `plat-dev`, `plat-staging`, and `plat-prod`

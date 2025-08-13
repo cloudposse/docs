@@ -364,7 +364,10 @@ ol ::marker {
   color: var(--ifm-color-primary-light);
 }
 
-
+/* Remove bullet icons from lists inside tabs */
+.tabs-container ul li::before {
+  content: none;
+}
 
 .theme-last-updated {
   color: #666;

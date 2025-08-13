@@ -4,3 +4,19 @@
   font-size: 1.25em;
   color: #2c3e50;
 }
+
+/* Exclude AtmosWorkflow lists from bullet icon styling */
+.atmos-workflow ul li::before {
+  content: none;
+}
+
+/* Remove indentation for lists inside AtmosWorkflow */
+.atmos-workflow ul {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.atmos-workflow ul li {
+  padding-left: 0;
+  margin-left: 0;
+}
