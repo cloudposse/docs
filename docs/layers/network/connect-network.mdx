@@ -15,30 +15,3 @@ Next, set up AWS Transit Gateway (TGW) to connect each desired AWS account to th
 <AtmosWorkflow workflow="deploy/tgw" fileName="quickstart/foundation/network" />
 
 This command will deploy the TGW hub and spokes to connect the network to the AWS accounts. The TGW hub is deployed in the `core-network` account, and the TGW spokes are deployed in each AWS account with a VPC.
-
-## Known Issues
-
-<Note>
-  At this time you will need to make sure that all EKS VPCs are commented out in the TGW catalog. This is because the components currently have a race condition requiring EKS clusters to exist before the TGW can be provisioned. This will be fixed in the future, but for now comment out the cluster variable until clusters are created.
-</Note>
-
-It's worth noting that propagation can fail during provisioning of Transit Gateway spokes. You'll likely see an error
-like this:
-
-```console
-╷
-│ Error: reading EC2 Transit Gateway Route Table Propagation (tgw-rtb-*_tgw-attach-*): empty result
-│
-│   with module.tgw_hub_routes.aws_ec2_transit_gateway_route_table_propagation.default["plat-sandbox"],
-│   on .terraform/modules/tgw_hub_routes/main.tf line 71, in resource "aws_ec2_transit_gateway_route_table_propagation" "default":
-│   71: resource "aws_ec2_transit_gateway_route_table_propagation" "default" {
-│
-```
-
-If this happens, you can safely wait a minute or two and then re-attempt the provisioning.
-
-### Redeploy `tgw` when Deploying a New EKS Cluster
-
-The file `stacks/catalog/tgw/hub.yaml` and the separate `tgw/spokes` in each `stacks/org/**/global-region/network.yaml` potentially contain references to EKS Clusters using the `eks_component_names` variable. If you add an EKS Cluster, then you will want to look up the individual `spoke` and `hub` components that are affected. If you are using cross-region `tgw/cross-region-hub-connector` components, you will also want to update `eks_component_names` on the regional connections.
-
-<AtmosWorkflow workflow="deploy/tgw" fileName="quickstart/foundation/network" />

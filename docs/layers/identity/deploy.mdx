@@ -30,11 +30,11 @@ import TaskList from '@site/src/components/TaskList';
 The identity components are designed to provision all primary user and system roles into a centralized identity account.
 These components are expected to be used together to provide fine-grained role delegation across the account hierarchy.
 
-<Note title="Important">
-  All identity components in this guide required elevated permissions to deploy, and in particular require Administrator access in `core-root` and `core-identity`. Assume the SuperAdmin IAM user role before continuing.
+:::tip
+All identity components in this guide required elevated permissions to deploy, and in particular require Administrator access in `core-root` and `core-identity`. Assume the `SuperAdmin` IAM user role before continuing.
 
-  For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tutorials/how-to-create-superadmin-user/).
-</Note>
+For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+:::
 
 <Steps>
 
@@ -50,6 +50,12 @@ These components are expected to be used together to provide fine-grained role d
     ### <StepNumber/> Setup Identity Center
 
     Follow the [Setup Identity Center](/layers/identity/aws-sso/) guide to enable AWS IAM Identity Center and connect your IdP.
+
+    <Note title="Tip">
+
+    Once you've deployed Identity Center, take note of the AWS access portal URL and region. You can find this in the "Settings Summary" of the AWS Identity Center dashboard. We will need this to sign into AWS.
+
+    </Note>
   </Step>
 
   <Step>
@@ -66,7 +72,7 @@ These components are expected to be used together to provide fine-grained role d
             enabled: false # <---- Disable the component
     ```
 
-    Read more with [Why use AWS SAML?](/layers/identity/centralized-terraform-access/#why-use-aws-saml).
+    Read more with [Why use AWS SAML?](/layers/identity/centralized-terraform-access/#why-use-aws-saml) and [Setup AWS SAML](/layers/identity/optional/aws-saml/)
 
     _If you are using `aws-saml`_, generate the metadata to connect your IdP with the federated identity in AWS. Once you have generated the metadata, store the file with the component's directory (`components/terraform/aws-saml`) in your repository and add the integration to your `aws-saml` stack catalog:
 
@@ -108,7 +114,7 @@ These components are expected to be used together to provide fine-grained role d
             #
             # trusted_github_repos:
             #   gitops:
-            #   - "cloudposse-sandbox/infra-train:main"
+            #     - "cloudposse-sandbox/infra-train:main"
             #   planners:
             #     - "cloudposse-sandbox/infra-train"
     ```

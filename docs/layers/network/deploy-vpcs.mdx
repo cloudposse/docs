@@ -14,6 +14,12 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 The first step in deploying the network is to deploy the VPCs in each region. This will create the necessary foundation for the platform to run and includes the VPC, subnets, route tables, security groups, and VPC endpoints.
 </Intro>
 
+:::tip
+Up to this point, we've used the `SuperAdmin` user for administrative access. With the Identity layer now deployed, switch to using your designated AWS Team credentials for local access and deployments. Using roles rather than users provides better security through temporary credentials and easier access management. Unless otherwise requested, assume all future deployments use your AWS Team.
+
+Please see [How to Log into AWS](/layers/identity/how-to-log-into-aws/)
+:::
+
 <Steps>
   <Step>
   ## <StepNumber/> Vendor the Networking components
