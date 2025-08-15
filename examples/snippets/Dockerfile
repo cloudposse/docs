@@ -2,7 +2,7 @@
 ARG GEODESIC_VERSION=4.3.0
 ARG GEODESIC_OS=debian
 # https://github.com/cloudposse/atmos
-ARG ATMOS_VERSION=1.185.0
+ARG ATMOS_VERSION=1.186.0
 # This should match the version set in .github/workflows/auto-format.yaml
 ARG TOFU_VERSION=1.10.5
 
