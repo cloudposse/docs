@@ -17,15 +17,15 @@
   },
   {
     "from": "/reference-architecture/how-to-guides/integrations/opsgenie",
-    "to": "/layers/alerting/opsgenie"
+    "to": "/resources/deprecated/alerting/opsgenie"
   },
   {
     "from": "/reference-architecture/how-to-guides/integrations/opsgenie/how-to-create-new-teams-in-opsgenie",
-    "to": "/layers/alerting/opsgenie/how-to-create-new-teams-in-opsgenie"
+    "to": "/resources/deprecated/alerting/opsgenie/how-to-create-new-teams-in-opsgenie"
   },
   {
     "from": "/reference-architecture/how-to-guides/integrations/opsgenie/how-to-sign-up-for-opsgenie",
-    "to": "/layers/alerting/opsgenie/how-to-sign-up-for-opsgenie"
+    "to": "/resources/deprecated/alerting/opsgenie/how-to-sign-up-for-opsgenie"
   },
   {
     "from": "/reference-architecture/how-to-guides/integrations/spacelift",
