@@ -1,0 +1,34 @@
+workflows:
+  verify/github-oidc-providers:
+    description: |
+      This workflow ensures all Github OIDC Provider Configuration deployed.
+      Please assume `acme-core-gbl-root-admin`
+    steps:
+      - command: workflow deploy/github-oidc-provider -f quickstart/foundation/github
+
+  deploy/pre-requisites:
+    description: |
+      This workflow ensures all components are up to date before attempting to deploy the repos that access them.
+      Often a eks/cluster component will need to be reapplied to add OIDC access for a given repo.
+    steps:
+      - command: terraform deploy ecr -s core-use1-artifacts
+      - command: workflow deploy/acm -f quickstart/foundation/network
+      - command: terraform deploy eks/cluster -s plat-use1-dev
+      - command: terraform deploy eks/cluster -s plat-use1-staging
+      - command: terraform deploy eks/cluster -s plat-use1-prod
+
+  deploy/acm:
+    description: |
+      This workflow deploys additional ACM certificates required for specific app-on-eks-with-argocd workflow environments.
+    steps:
+      - command: terraform deploy acm/preview -s plat-use1-dev
+      - command: terraform deploy acm/qa1 -s plat-use1-staging
+      - command: terraform deploy acm/qa2 -s plat-use1-staging
+      - command: terraform deploy acm/qa3 -s plat-use1-staging
+      - command: terraform deploy acm/qa4 -s plat-use1-staging
+
+  demo/install:
+    description: |
+      This workflow deploys GitHub repositories for app-on-eks-with-argocd demo
+    steps:
+      - command: terraform deploy release-engineering-bootstrap -s core-gbl-auto

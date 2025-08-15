@@ -2,8 +2,8 @@ workflows:
   all:
     description: run all workflows
     steps:
-      - command: atmos workflow deploy -f addons/spa-s3-cloudfront
-      - command: atmos workflow upload -f addons/spa-s3-cloudfront
+      - command: atmos workflow deploy -f quickstart/app/addons/spa-s3-cloudfront
+      - command: atmos workflow upload -f quickstart/app/addons/spa-s3-cloudfront
 
   vendor:
     description: vendor all components required for this addon

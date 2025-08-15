@@ -2,8 +2,8 @@ workflows:
   all:
     description: run all workflows
     steps:
-      - command: workflow vendor -f data
-      - command: workflow deploy/all -f data
+      - command: workflow vendor -f quickstart/app/data
+      - command: workflow deploy/all -f quickstart/app/data
 
   vendor:
     description: Vendor addon components.
@@ -23,17 +23,17 @@ workflows:
   deploy/all:
     description: run all deploy workflows
     steps:
-      - command: workflow deploy/aurora-postgres -f data
-      - command: workflow deploy/aurora-postgres-resources -f data
-      - command: workflow deploy/aurora-mysql -f data
-      - command: workflow deploy/aurora-mysql-resources -f data
-      - command: workflow deploy/aws-backup -f data
-      - command: workflow deploy/documentdb -f data
-      - command: workflow deploy/dynamodb -f data
-      - command: workflow deploy/elasticsearch -f data
-      - command: workflow deploy/rds -f data
-      - command: workflow deploy/redshift -f data
-      - command: workflow deploy/elasticache-redis -f data
+      - command: workflow deploy/aurora-postgres -f quickstart/app/data
+      - command: workflow deploy/aurora-postgres-resources -f quickstart/app/data
+      - command: workflow deploy/aurora-mysql -f quickstart/app/data
+      - command: workflow deploy/aurora-mysql-resources -f quickstart/app/data
+      - command: workflow deploy/aws-backup -f quickstart/app/data
+      - command: workflow deploy/documentdb -f quickstart/app/data
+      - command: workflow deploy/dynamodb -f quickstart/app/data
+      - command: workflow deploy/elasticsearch -f quickstart/app/data
+      - command: workflow deploy/rds -f quickstart/app/data
+      - command: workflow deploy/redshift -f quickstart/app/data
+      - command: workflow deploy/elasticache-redis -f quickstart/app/data
 
   deploy/aws-backup:
     description: >-
