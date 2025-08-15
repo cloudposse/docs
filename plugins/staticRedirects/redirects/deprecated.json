@@ -1,0 +1,10 @@
+[
+  {
+    "from": "/layers/spacelift/",
+    "to": "/resources/deprecated/spacelift/"
+  },
+  {
+    "from": "/layers/alerting/",
+    "to": "/resources/deprecated/alerting/"
+  }
+]

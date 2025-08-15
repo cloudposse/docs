@@ -18,7 +18,7 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 | Steps              | Example                                    |
 | :----------------- | :----------------------------------------- |
-| Deploy Echo Server | `atmos workflow deploy/echo-server -f ecs` |
+| Deploy Echo Server | `atmos workflow deploy/echo-server -f quickstart/platform/ecs` |
 
 Once the cluster is up and running, continue with the first ECS service deployment. We deploy Echo Server as an example and to validate a given cluster. This deploys two ECS services: one private and one public. The private deployment should only be accessible by VPN.
 
@@ -29,7 +29,7 @@ Once the cluster is up and running, continue with the first ECS service deployme
     Run the following to deploy `ecs/platform/service/echo-server` and
     `ecs/platform/service/echo-server-private` to every cluster.
 
-    <AtmosWorkflow workflow="deploy/echo-server" fileName="ecs" />
+    <AtmosWorkflow workflow="deploy/echo-server" fileName="quickstart/platform/ecs" />
 
   </Step>
 

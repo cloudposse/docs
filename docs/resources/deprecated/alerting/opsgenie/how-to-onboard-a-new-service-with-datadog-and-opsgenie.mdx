@@ -68,13 +68,13 @@ By default, we should know if the new app is deployed and healthy, and its curre
 
     If Tag fetching is setup (#1) and your app is tagged (#2) then the datadog side is complete (excluding additional monitors). The next step would be to ensure that a team exists in opsgenie to receive an alert. We need to ensure an opsgenie-team component instance for `<owning-team>` exists. This would be a team with `name: <owning-team>` to be set.
 
-    **If no team already exists** follow this guide to create a new opsgenie team [How to Create New Teams in OpsGenie](/layers/alerting/opsgenie/how-to-create-new-teams-in-opsgenie).
+    **If no team already exists** follow this guide to create a new opsgenie team [How to Create New Teams in OpsGenie](/resources/deprecated/alerting/opsgenie/how-to-create-new-teams-in-opsgenie).
   </Step>
 
   <Step>
     ## <StepNumber/> Add Users to Teams
 
-    Once a team exists we need people to respond to the alert. Follow [How to Add Users to a Team in OpsGenie](/layers/alerting/opsgenie/how-to-add-users-to-a-team-in-opsgenie)  to add people to a team.
+    Once a team exists we need people to respond to the alert. Follow [How to Add Users to a Team in OpsGenie](/resources/deprecated/alerting/opsgenie/how-to-add-users-to-a-team-in-opsgenie)  to add people to a team.
 
     At this point the default suite of monitors will create a base system of monitoring and alerting for a new service. The default suite of monitors includes:
     - `(k8s) <stage> - ImagePullBackOff detected`

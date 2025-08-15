@@ -20,8 +20,6 @@ Our goal with this document is to identify the reusable, standard SLI/SLO for ou
   If you are trying to solve a specific problem, checkout [our tutorials for DataDog](/layers/monitoring/datadog/tutorials/).
 </Admonition>
 
-Also, make sure to see [How to Implement Incident Management with OpsGenie](/layers/alerting/opsgenie/)
-
 ## Problem
 
 A typical business operating in AWS has literally tens of thousands of data points that leads to analysis paralysis. If we sit down and try to make sense of it all, we realize knowing what is critical and when is non-trivial. Modern advances in monitoring platforms have brought Artificial Intelligence and Anomaly Detection, but those are not foolproof. There is no silver bullet. AI can not tell us what is mission-critical for _our_ business to succeed. That’s because they only see part of the story. They have no visibility into our finances or business objectives.  Defining Service Level Objectives, therefore, becomes paramount and while mathematically trivial to compute, but defining what are services in the context of your organization and what your objectives are, is still very subjective. There’s an overwhelming amount of theory on what we should do, but not that much prescriptive step-by-step advice on how to actually implement it using IaC resulting in a fully functioning system.
@@ -119,7 +117,7 @@ Here are other useful metrics that are examples that don’t necessarily fit int
     <dd>The number of pull requests merged by admins without the usual approval process. This metric highlights instances
       where standard review procedures were skipped.</dd>
   </dl>
-  
+
 #### Code Quality
 
     <dl>
@@ -361,12 +359,6 @@ Questions:
 - Each widget displays an SLO with the remaining error budget.
 
 ## FAQ
-
-- **Where is the line drawn between OpsGenie and Datadog?**
-  - Datadog is only responsible for monitoring and raising alerts tagged with appropriate tags (priority, service, severity, etc)
-  - The OpsGenie configuration should be thought of as mostly static and it only operates on tags. The OpsGenie configuration should only change when Teams and Escalations change, or when new services are added that need to be associated with teams.
-  - Everything else should be tag-driven, so that behaviors are regulated almost entirely from within Datadog simply by tagging of alerts.
-  - We should alert in OpsGenie if an alert doesn’t match any rules, as it’s improperly categorized with tags
 
 - **How to visualize error budgets and burn rate?**
   - [Using Datadogs SLO Summary](https://docs.datadoghq.com/dashboards/widgets/slo/#setup)

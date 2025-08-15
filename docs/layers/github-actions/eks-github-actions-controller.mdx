@@ -29,7 +29,7 @@ customizable, scale automatically, and be cheaper than both GitHub hosted runner
 | 1. Generate GitHub Private Key                        | `ssm_github_secret_path: "/github_runners/controller_github_app_secret"`              |
 | 2. Generate GitHub Webhook Secret Token               | `ssm_github_webhook_secret_token_path: "/github_runners/github_webhook_secret_token"` |
 | 3. Connect to the VPN                                 |                                                                                       |
-| 4. Deploy cluster and resources into the `auto` stack | `atmos workflow deploy/github-runners -f github`                                      |
+| 4. Deploy cluster and resources into the `auto` stack | `atmos workflow deploy/github-runners -f quickstart/foundation/github`                |
 | 5. Set up Webhook Driven Scaling                      | Click Ops                                                                             |
 
 ## Requirements
@@ -123,7 +123,7 @@ In order to deploy Self-Hosted GitHub Runners on EKS, follow the steps outlined 
   <Note title="Tip">
     The first three steps before are all included in the following workflow:
 
-    <AtmosWorkflow workflow="deploy/arc-github-runners" fileName="github" />
+    <AtmosWorkflow workflow="deploy/arc-github-runners" fileName="quickstart/foundation/github" />
   </Note>
 
   <Step>
@@ -142,8 +142,8 @@ In order to deploy Self-Hosted GitHub Runners on EKS, follow the steps outlined 
 
     Deploy the cluster with the same commands as `plat` cluster deployments:
 
-    <AtmosWorkflow workflow="deploy/cluster" fileName="eks" stack="core-use1-auto"/>
-    <AtmosWorkflow workflow="deploy/resources" fileName="eks" stack="core-use1-auto"/>
+    <AtmosWorkflow workflow="deploy/cluster" fileName="quickstart/platform/eks" stack="core-use1-auto"/>
+    <AtmosWorkflow workflow="deploy/resources" fileName="quickstart/platform/eks" stack="core-use1-auto"/>
 
     Validate the `core-auto` deployment using Echo Server. For example: https://echo.use1.auto.core.acme-svc.com/
   </Step>

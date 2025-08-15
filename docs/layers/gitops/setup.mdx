@@ -18,9 +18,9 @@ import CodeBlock from '@theme/CodeBlock';
 | Steps                           |                                                        |
 | :------------------------------ | :----------------------------------------------------- |
 | 1. Verify Identity requirements |                                                        |
-| 2. Expand GitHub OIDC           | `atmos workflow deploy/github-oidc-provider -f gitops` |
-| 2. Vendor                       | `atmos workflow vendor -f gitops`                      |
-| 3. Deploy                       | `atmos workflow deploy/gitops -f gitops`               |
+| 2. Expand GitHub OIDC           | `atmos workflow deploy/github-oidc-provider -f quickstart/foundation/gitops` |
+| 2. Vendor                       | `atmos workflow vendor -f quickstart/foundation/gitops`                      |
+| 3. Deploy                       | `atmos workflow deploy/gitops -f quickstart/foundation/gitops`               |
 
 ## Requirements
 
@@ -128,7 +128,7 @@ import CodeBlock from '@theme/CodeBlock';
     `dynamodb`) and adds one new component (`gitops`) to manage the GitHub OIDC access. Vendor these components either with
     the included Atmos Workflows or using [Atmos Vendoring](https://atmos.tools/core-concepts/components/vendoring).
 
-    <AtmosWorkflow workflow="vendor" fileName="gitops" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/gitops" />
   </Step>
 
   <Step>
@@ -137,7 +137,7 @@ import CodeBlock from '@theme/CodeBlock';
 
     Deploy the GitOps prerequisite components, `gitops/s3-bucket`, `gitops/dynamodb`, and `gitops` with the following workflow
 
-    <AtmosWorkflow workflow="deploy/gitops" fileName="gitops" />
+    <AtmosWorkflow workflow="deploy/gitops" fileName="quickstart/foundation/gitops" />
 
   </Step>
   <Step>

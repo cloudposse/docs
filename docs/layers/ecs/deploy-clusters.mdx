@@ -14,10 +14,10 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 | Steps                   | Example                                 |
 | :---------------------- | :-------------------------------------- |
-| Vendor ECS components   | `atmos workflow vendor -f ecs`          |
-| Deploy ACM certificates | `atmos workflow deploy/ecs-acm -f ecs`  |
+| Vendor ECS components   | `atmos workflow vendor -f quickstart/platform/ecs`          |
+| Deploy ACM certificates | `atmos workflow deploy/ecs-acm -f quickstart/platform/ecs`  |
 | Connect to the VPN      | Click Ops                               |
-| Deploy Clusters         | `atmos workflow deploy/clusters -f ecs` |
+| Deploy Clusters         | `atmos workflow deploy/clusters -f quickstart/platform/ecs` |
 
 ## Requirements
 
@@ -39,7 +39,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Vendor these components with the included Atmos Workflows.
 
-    <AtmosWorkflow workflow="vendor" fileName="ecs" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/platform/ecs" />
 
   </Step>
 
@@ -60,7 +60,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Run the following to deploy every required ACM certificate for ECS.
 
-    <AtmosWorkflow workflow="deploy/ecs-acm" fileName="ecs" />
+    <AtmosWorkflow workflow="deploy/ecs-acm" fileName="quickstart/platform/ecs" />
 
   </Step>
 
@@ -83,7 +83,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Run the following to deploy every ECS cluster. This workflow will deploy every required platform cluster.
 
-    <AtmosWorkflow workflow="deploy/clusters" fileName="ecs" />
+    <AtmosWorkflow workflow="deploy/clusters" fileName="quickstart/platform/ecs" />
 
   </Step>
 </Steps>

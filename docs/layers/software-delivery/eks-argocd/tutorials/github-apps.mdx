@@ -232,7 +232,7 @@ To address security concerns, the following compensating controls should be impl
               - "notifications.argoproj.io/subscribe.on-deploy-succeeded.github: \"\""
               - "notifications.argoproj.io/subscribe.on-deploy-failed.github: \"\""
 
-            # 3. Optional, disable the SSH deploy keys to use a GitHub App 
+            # 3. Optional, disable the SSH deploy keys to use a GitHub App
             #    for the Argo CD instance to authenticate with the desired state repository
             deploy_keys_enabled: false
     ```
@@ -257,7 +257,7 @@ To address security concerns, the following compensating controls should be impl
             github_app_installation_id: "44444444"
             # The SSM parameter must exist in the account and region where Argo CD is deployed.
             ssm_github_app_private_key: "/argocd/argo_cd_instance/app_private_key"
-            # Optional, disable the SSH deploy keys to use this GitHub App 
+            # Optional, disable the SSH deploy keys to use this GitHub App
             # for the Argo CD instance to authenticate with the desired state repository
             github_deploy_keys_enabled: false
 
@@ -278,26 +278,26 @@ To address security concerns, the following compensating controls should be impl
 
     Redeploy both the `argocd-repo` component for both nonprod and prod.
 
-    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="argocd" />
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/app/argocd" />
 
     Then redeploy all instances of `eks/argocd`
 
-    <AtmosWorkflow workflow="deploy/argocd" fileName="argocd" />
+    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/app/argocd" />
 
   </Step>
 
   <Step>
     ### <StepNumber/> Configure GitHub Actions Workflows
 
-    Update your GitHub Actions workflows to use the appropriate GitHub App. 
-    
+    Update your GitHub Actions workflows to use the appropriate GitHub App.
+
     Set the following GitHub environment variables for the application repositories:
-    
+
     1. Set `ARGO_CD_DEPLOY_NONPROD_APP_ID` in both `preview` and `dev`
     2. Set `ARGO_CD_DEPLOY_PROD_APP_ID` in `staging` and `prod`.
 
     Then set the following secrets:
-    
+
     1. Add `ARGO_CD_DEPLOY_NONPROD_APP_PRIVATE_KEY` to `preview` and `dev`.
     2. Add `ARGO_CD_DEPLOY_PROD_APP_PRIVATE_KEY` to `staging` and `prod`.
 
@@ -315,4 +315,4 @@ To address security concerns, the following compensating controls should be impl
 ## References
 - [Setting up Argo CD](/layers/software-delivery/eks-argocd/setup/)
 - [GitHub Apps Documentation](https://docs.github.com/en/developers/apps)
-- [GitHub Apps Permissions](https://docs.github.com/en/developers/apps/building-github-apps/setting-permissions-for-github-apps) 
+- [GitHub Apps Permissions](https://docs.github.com/en/developers/apps/building-github-apps/setting-permissions-for-github-apps)

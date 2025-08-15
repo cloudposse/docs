@@ -128,7 +128,9 @@ async function createConfig() {
             exclude: ['README.md'],
             showLastUpdateTime: true,
             showLastUpdateAuthor: true,
-            onInlineTags: 'warn',
+            // Ignore tags missing from tags.yml
+            // There are many from components and GHA, it's too much noise without being helpful
+            onInlineTags: 'ignore', 
             tags: 'tags.yml',
             include: ['**/*.md', '**/*.mdx']
           },

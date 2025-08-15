@@ -43,7 +43,7 @@ All deployment steps below assume that the environment has been successfully set
 
     First vendor all related components for the Argo CD layer:
 
-    <AtmosWorkflow workflow="vendor" fileName="argocd" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/app/argocd" />
   </Step>
 
   <Step>
@@ -79,7 +79,7 @@ All deployment steps below assume that the environment has been successfully set
 
        The next two PATs or GitHub App installations are also used by Terraform now with the `eks/argocd` component. Each of these is used to register the webhook in GitHub for the Argo CD Application created with this given component. One is used for non-prod stages and the other is used for prod stages.
 
-       Terraform will pull that token from SSM typically in `plat-dev`, `plat-staging`, and `plat-prod` accounts. 
+       Terraform will pull that token from SSM typically in `plat-dev`, `plat-staging`, and `plat-prod` accounts.
 
     3. #### Argo CD GitHub Notification Access
 
@@ -120,7 +120,7 @@ All deployment steps below assume that the environment has been successfully set
                       - "notifications.argoproj.io/subscribe.on-deploy-succeeded.github: \"\""
                       - "notifications.argoproj.io/subscribe.on-deploy-failed.github: \"\""
 
-                    # 3. Optional, disable the SSH deploy keys to use a GitHub App 
+                    # 3. Optional, disable the SSH deploy keys to use a GitHub App
                     #    for the Argo CD instance to authenticate with the desired state repository
                     deploy_keys_enabled: false
             ```
@@ -145,7 +145,7 @@ All deployment steps below assume that the environment has been successfully set
                     github_app_installation_id: "44444444"
                     # The SSM parameter must exist in the account and region where Argo CD is deployed.
                     ssm_github_app_private_key: "/argocd/argo_cd_instance/app_private_key"
-                    # Optional, disable the SSH deploy keys to use this GitHub App 
+                    # Optional, disable the SSH deploy keys to use this GitHub App
                     # for the Argo CD instance to authenticate with the desired state repository
                     github_deploy_keys_enabled: false
 
@@ -203,7 +203,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy the Argo CD configuration for the two GitHub repos with the following workflow:
 
-    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="argocd" />
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/app/argocd" />
 
     Once this finishes, review the two repos in your GitHub Organization. These should both be fully configured at this point.
 
@@ -227,7 +227,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy `eks/argocd` to each cluster with the following workflow:
 
-    <AtmosWorkflow workflow="deploy/argocd" fileName="argocd" />
+    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/app/argocd" />
   </Step>
 
   <Step>
@@ -325,16 +325,6 @@ public.
 </Steps>
 
 ## FAQ
-
-### Migrating from Argo CD version `<1.305.0` to `1.305.0`
-
-In order to migrate to `1.305.0` from a lesser version, delete the previous SSM parameters in each account for
-`/argocd/notifications/notifiers/service_webhook_github-commit-status/github-token` and redeploy `github-webhook-pat`,
-`eks/argocd`, and `argocd-repos`.
-
-Or use the following workflow:
-
-<AtmosWorkflow workflow="migrate_less_1_305" fileName="argocd" />
 
 ### GitHub Apps vs Personal Access Tokens
 

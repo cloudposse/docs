@@ -11,7 +11,7 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 You will need a OpsGenie account!
 
-Please follow the sign up steps in [How to Sign Up for OpsGenie](/layers/alerting/opsgenie/how-to-sign-up-for-opsgenie/)
+Please follow the sign up steps in [How to Sign Up for OpsGenie](/resources/deprecated/alerting/opsgenie/how-to-sign-up-for-opsgenie/)
 
 ## How To
 
@@ -19,7 +19,7 @@ Please follow the sign up steps in [How to Sign Up for OpsGenie](/layers/alertin
 
 Like most other components we need to vendor in the component. This can be done with the following:
 
-<AtmosWorkflow workflow="vendor" fileName="alerting" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/monitor/alerting" />
 
 ### Deploy
 
@@ -32,9 +32,9 @@ reference team YAML file with many options written out but left disabled. You ca
 `stacks/catalog/opsgenie-team/_defaults.yaml`.
 
 Please read
-[How to Create New Teams in OpsGenie](/layers/alerting/opsgenie/how-to-create-new-teams-in-opsgenie/)
+[How to Create New Teams in OpsGenie](/resources/deprecated/alerting/opsgenie/how-to-create-new-teams-in-opsgenie/)
 and
-[How to Implement Incident Management with OpsGenie](/layers/alerting).
+[How to Implement Incident Management with OpsGenie](/resources/deprecated/alerting).
 
 Once your company defaults have been setup and your teams customized, simply deploy the `opsgenie-team` component.
 
