@@ -55,11 +55,6 @@ Mailgun supports plus addressing and complex forwarding rules. It’s free for 5
 Google Groups are probably the most common solution we see. It
 [works very well with plus addressing](https://support.google.com/a/users/answer/9308648?hl=en).
 
-### Use OpsGenie Email Integration
-
-OpsGenie is nice, but it does not support plus addressing. That means we’ll need to provision one integration for each
-account.
-
 ### Use AWS SES with Lambda Forwarder (catch-22)
 
 Provisioning AWS SES is nice, but we need an email address even for the root account, so it doesn’t solve the cold-start
