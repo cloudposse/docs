@@ -98,17 +98,16 @@ import PartialAtmosProTerraformApply from '@site/examples/snippets/.github/workf
   <Step>
     ### <StepNumber/> Deploy AWS Infrastructure
 
-    The final step is to deploy the required AWS infrastructure. This will create all necessary resources for running Atmos Terraform Plan and Apply from GitHub Actions.
+    Atmos Pro doesn't run Terraform or Atmos itself. It dispatches GitHub Actions that **you control**. To run Terraform in those GitHub Actions, you need to set up a few things in your cloud environment:
 
     <TaskList>
-      - Configure Terraform State Backend
-      - For role assumption, deploy the GitHub OIDC provider and roles
-      - To store Terraform planfiles, deploy the S3 bucket and DynamoDB table.
+    - [x] **State Backend** (S3 + DynamoDB) to store Terraform state and enable state locking
+    - [ ] **Plan File Storage** (S3 + DynamoDB) to persist Terraform plan outputs for review and approvals
+    - [ ] **OIDC Integration** with GitHub for workflows to authenticate with your cloud provider
     </TaskList>
 
-    For step-by-step AWS deployment instructions, choose one of the following options:
-    - [Atmos and Terraform deployment](/layers/atmos-pro/tutorials/deploy-with-terraform)
-    - [CloudFormation deployment](/layers/atmos-pro/tutorials/deploy-with-cloudformation)
+    If you've been following along with the reference architecture, by now you should already have the Terraform State Backend provisioned. To complete the requirements for Atmos Pro and GitHub Actions, continue with the step-by-step instructions: 
+    [Atmos and Terraform deployment](/layers/atmos-pro/tutorials/deploy-with-terraform)
   </Step>
 </Steps>
 
@@ -133,10 +132,21 @@ After completing all four steps, you can verify the setup by:
   </Step>
 
   <Step>
-    ### <StepNumber/> Verify AWS Resources
+    ### <StepNumber/> Trigger a Plan
 
-    - Check that the S3 bucket for storing Terraform plans exists
-    - Verify the DynamoDB table for tracking deployments is created
-    - Confirm the IAM roles have the correct permissions
+    - In the new pull request, change a value for any component. For example, add a tag to a S3 bucket.
+    - The `atmos-pro.yaml` workflow will discover the newly affected stack and trigger Atmos Pro.
+    - Atmos Pro will run Atmos Terraform Plan for the affected stack.
+    - As the workflow is executed, Atmos Pro will update the comment on the PR with the plan status.
   </Step>
+
+  <Step>
+    ### <StepNumber/> Merge the PR
+
+    - Now try merging the PR
+    - Again, the `atmos-pro.yaml` workflow will discover the affected stacks and trigger Atmos Pro.
+    - This time Atmos Pro will determine this is a "merged" event and run Atmos Terraform Apply.
+    - Finally, Atmos Pro will update the comment on the PR will the apply status.
+  </Step>
+
 </Steps>

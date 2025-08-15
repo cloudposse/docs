@@ -30,13 +30,15 @@ export default function AtmosWorkflow({ workflow, stack = '', fileName }: AtmosW
       if (data) {
         setWorkflowData(data);
       } else {
-        // Throw error to fail the build
-        throw new Error(`Workflow file not found: ${fullFilePath}`);
+        // Set workflowData to null to show "No commands found" message
+        setWorkflowData(null);
       }
       setIsLoading(false);
     }).catch((err) => {
-      // Throw error to fail the build
-      throw new Error(`Failed to load workflow file: ${fullFilePath}. Error: ${err.message}`);
+      // Log error to console but don't fail the build
+      console.error(`Failed to load workflow file: ${fullFilePath}. Error:`, err);
+      setWorkflowData(null);
+      setIsLoading(false);
     });
   }, [workflow, fileName, stack, fullFilePath]);
 
