@@ -13,7 +13,7 @@
   },
   {
     "from": "/reference-architecture/fundamentals/gitops",
-    "to": "/resources/deprecated/gitops"
+    "to": "/layers/gitops"
   },
   {
     "from": "/reference-architecture/how-to-guides/integrations/opsgenie",

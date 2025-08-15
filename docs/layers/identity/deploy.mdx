@@ -99,7 +99,7 @@ For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tut
 
     There should be no action required for this step, but this is a very common issue.
 
-    In the `aws-teams` component, we specify a map of trusted GitHub repositories with `var.trusted_github_repos`. This will connect a given AWS Team to the GitHub OIDC Provider. However, at this point, the GitHub OIDC provider is not provisioned. We need to comment out that variable until the provider is ready. Once ready, we will reapply the `aws-teams` component. 
+    In the `aws-teams` component, we specify a map of trusted GitHub repositories with `var.trusted_github_repos`. This will connect a given AWS Team to the GitHub OIDC Provider. However, at this point, the GitHub OIDC provider is not provisioned. We need to comment out that variable until the provider is ready. Once ready, we will reapply the `aws-teams` component.
 
     ```yaml
     # stacks/catalog/aws-teams/defaults.yaml
@@ -110,7 +110,6 @@ For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tut
             #
             # Uncomment the following to enable GitOps for the GitHub Actions workflow.
             # This requires the `github-oidc-provider` to be deployed.
-            # Please see https://docs.cloudposse.com/layers/gitops/setup/#-authentication-prerequisites
             #
             # trusted_github_repos:
             #   gitops:
@@ -118,8 +117,8 @@ For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tut
             #   planners:
             #     - "cloudposse-sandbox/infra-train"
     ```
-    
-    For more details, see [How to use GitHub OIDC with AWS](/layers/github-actions/github-oidc-with-aws/) and [Setup GitOps with GitHub Actions](/layers/gitops/setup/).
+
+    For more details, see [How to use GitHub OIDC with AWS](/layers/github-actions/github-oidc-with-aws/) and [Setup GitHub Actions](/layers/gitops/setup/).
   </Step>
 
   <Step>
@@ -128,8 +127,8 @@ For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tut
 
     <AtmosWorkflow workflow="deploy/all" fileName="quickstart/foundation/identity" />
 
-    After deploying the identity components, the above workflow will attempt to create local AWS configuration for all new roles and profiles. This will be generated with the `update-aws-config` workflow and stored in the `rootfs` directory locally. 
-    
+    After deploying the identity components, the above workflow will attempt to create local AWS configuration for all new roles and profiles. This will be generated with the `update-aws-config` workflow and stored in the `rootfs` directory locally.
+
     Everything included in the `rootfs` directory is passed to the Geodesic image when it is built. This will include the AWS configuration files, included with the `aws-config-teams` file, that are needed to assume roles across the AWS Organization. In particular, we recommend setting a common AWS profile, such as `acme-identity`, as the entry-point for all role assumption. That way all users can configure the same AWS profile name and be allowed to assume roles that they can access.
 
     <Note title="Tip">

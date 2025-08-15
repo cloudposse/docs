@@ -1,9 +1,5 @@
 [
   {
-    "from": "/layers/gitops/",
-    "to": "/resources/deprecated/gitops/"
-  },
-  {
     "from": "/layers/spacelift/",
     "to": "/resources/deprecated/spacelift/"
   }
