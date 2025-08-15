@@ -2,8 +2,8 @@ workflows:
   all:
     description: run all workflows
     steps:
-      - command: workflow deploy/accounts -f accounts
-      - command: workflow deploy/account-settings -f accounts
+      - command: workflow deploy/accounts -f quickstart/foundation/accounts
+      - command: workflow deploy/account-settings -f quickstart/foundation/accounts
 
   deploy/organization:
     description: | 

@@ -24,15 +24,15 @@ workflows:
   all:
     description: Run all workflows
     steps:
-      - command: workflow check-setup -f identity
-      - command: workflow vendor -f identity
-      - command: workflow deploy/all -f identity
+      - command: workflow check-setup -f quickstart/foundation/identity
+      - command: workflow vendor -f quickstart/foundation/identity
+      - command: workflow deploy/all -f quickstart/foundation/identity
 
   vendor:
     description: Vendor identity layer components and scripts.
     steps:
-      - command: workflow vendor/components -f identity
-      - command: workflow vendor/aws-config -f identity
+      - command: workflow vendor/components -f quickstart/foundation/identity
+      - command: workflow vendor/aws-config -f quickstart/foundation/identity
 
   vendor/components:
     description: Vendor identity layer components.
@@ -59,10 +59,10 @@ workflows:
   deploy/all:
     description: Deploy all identity components.
     steps:
-      - command: workflow deploy/saml -f identity
-      - command: workflow deploy/sso -f identity
-      - command: workflow deploy/teams -f identity
-      - command: workflow update-aws-config -f identity
+      - command: workflow deploy/saml -f quickstart/foundation/identity
+      - command: workflow deploy/sso -f quickstart/foundation/identity
+      - command: workflow deploy/teams -f quickstart/foundation/identity
+      - command: workflow update-aws-config -f quickstart/foundation/identity
 
   deploy/saml:
     description: Update aws-saml configuration (when adding a new Identity Provider).
