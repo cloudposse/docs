@@ -3,11 +3,11 @@ workflows:
   all:
     description: run all workflows
     steps:
-      - command: workflow vendor -f baseline
-      - command: workflow init/tfstate -f baseline
-      - command: workflow deploy/tfstate -f baseline
-      - command: workflow deploy/cloudtrail -f baseline
-      - command: workflow deploy/ecr -f baseline
+      - command: workflow vendor -f quickstart/foundation/baseline
+      - command: workflow init/tfstate -f quickstart/foundation/baseline
+      - command: workflow deploy/tfstate -f quickstart/foundation/baseline
+      - command: workflow deploy/cloudtrail -f quickstart/foundation/baseline
+      - command: workflow deploy/ecr -f quickstart/foundation/baseline
 
   vendor:
     description: Vendor baseline layer components.
