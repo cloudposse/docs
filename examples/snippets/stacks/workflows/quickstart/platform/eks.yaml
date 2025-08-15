@@ -1,5 +1,11 @@
-
 workflows:
+  all:
+    description: |
+      This workflow vendors and deploys all EKS related components to the latest provided version
+    steps:
+      - command: workflow vendor -f quickstart/platform/eks
+      - command: workflow deploy -f quickstart/platform/eks
+
   vendor:
     description: |
       This workflow vendors all EKS related components to the latest provided version
@@ -20,6 +26,18 @@ workflows:
       - command: vendor pull --component eks/echo-server
       - command: vendor pull --component eks/idp-roles
 
+  deploy:
+    description: |
+      This workflow deploys all EKS related components to the latest provided version
+    steps:
+      - command: workflow deploy/iam-service-linked-roles -f quickstart/platform/eks
+      - command: workflow deploy/cluster -f quickstart/platform/eks -s plat-use1-dev
+      - command: workflow deploy/resources -f quickstart/platform/eks -s plat-use1-dev
+      - command: workflow deploy/cluster -f quickstart/platform/eks -s plat-use1-staging
+      - command: workflow deploy/resources -f quickstart/platform/eks -s plat-use1-staging
+      - command: workflow deploy/cluster -f quickstart/platform/eks -s plat-use1-prod
+      - command: workflow deploy/resources -f quickstart/platform/eks -s plat-use1-prod
+
   deploy/iam-service-linked-roles:
     description: |
       This workflow deploys IAM Service Linked Roles required for EKS and Karpenter
@@ -39,6 +57,28 @@ workflows:
       - command: terraform deploy eks/cluster
       - command: terraform deploy efs
       - command: terraform deploy eks/storage-class
+
+  deploy/resources:
+    description: |
+      This workflow creates or updates all shared components in an
+      EKS cluster. It is especially useful for (re)creating a cluster
+      in a given stack (e.g. bringing up a cluster in a new region).
+
+      This is stack agnostic, ensure you pass in the `-s ${tenant}-${region}-${stage}`
+      argument.
+    steps:
+      - command: terraform deploy eks/karpenter
+      - command: terraform deploy eks/karpenter-node-pool
+      - command: terraform deploy eks/external-secrets-operator
+      - command: terraform deploy eks/idp-roles
+      - command: terraform deploy eks/external-dns
+      - command: terraform deploy eks/reloader
+      - command: terraform deploy eks/metrics-server
+      - command: terraform deploy eks/cert-manager
+      - command: terraform deploy eks/alb-controller
+      - command: terraform deploy eks/alb-controller-ingress-group
+      - command: terraform deploy eks/alb-controller-ingress-group/internal
+      - command: terraform deploy eks/echo-server
 
   destroy/cluster:
     description: |
@@ -75,25 +115,3 @@ workflows:
       - command: terraform destroy eks/karpenter -auto-approve
       - command: terraform destroy eks/storage-class
       - command: terraform destroy eks/cluster -auto-approve
-
-  deploy/resources:
-    description: |
-      This workflow creates or updates all shared components in an
-      EKS cluster. It is especially useful for (re)creating a cluster
-      in a given stack (e.g. bringing up a cluster in a new region).
-
-      This is stack agnostic, ensure you pass in the `-s ${tenant}-${region}-${stage}`
-      argument.
-    steps:
-      - command: terraform deploy eks/karpenter
-      - command: terraform deploy eks/karpenter-node-pool
-      - command: terraform deploy eks/external-secrets-operator
-      - command: terraform deploy eks/idp-roles
-      - command: terraform deploy eks/external-dns
-      - command: terraform deploy eks/reloader
-      - command: terraform deploy eks/metrics-server
-      - command: terraform deploy eks/cert-manager
-      - command: terraform deploy eks/alb-controller
-      - command: terraform deploy eks/alb-controller-ingress-group
-      - command: terraform deploy eks/alb-controller-ingress-group/internal
-      - command: terraform deploy eks/echo-server
