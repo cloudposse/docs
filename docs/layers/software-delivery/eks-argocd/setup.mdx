@@ -68,25 +68,25 @@ All deployment steps below assume that the environment has been successfully set
     <Steps>
     1. #### Terraform `argocd-repo` Access
 
-      First we will need to apply the Argo CD desired state repositories configuration with Terraform. By default, we use local access to apply the component. This requires an engineer to locally authenticate with GitHub and apply this component locally. Since this component is rarely updated, this can be a reasonable trade-off.
+        First we will need to apply the Argo CD desired state repositories configuration with Terraform. By default, we use local access to apply the component. This requires an engineer to locally authenticate with GitHub and apply this component locally. Since this component is rarely updated, this can be a reasonable trade-off.
 
     2. #### Argo CD Instance
 
-      Next, we need a GitHub App for Terraform and the `eks/argocd` component. This app is used to register the webhook in GitHub for the Argo CD Application created with this given component. 
+        Next, we need a GitHub App for Terraform and the `eks/argocd` component. This app is used to register the webhook in GitHub for the Argo CD Application created with this given component. 
 
-      After creating the GitHub App, add the app's private key to AWS SSM Parameter Store in each account with Argo CD, typically the `plat-dev`, `plat-staging`, and `plat-prod` accounts, and add the App ID to the stack catalog. Detailed instructions linked below.
+        After creating the GitHub App, add the app's private key to AWS SSM Parameter Store in each account with Argo CD, typically the `plat-dev`, `plat-staging`, and `plat-prod` accounts, and add the App ID to the stack catalog. Detailed instructions linked below.
 
     3. #### Argo CD Desired State Repository Access (2)
 
-      We will need two more GitHub Apps for accessing the ArgoCD desired state repositories _from GitHub Actions_. GitHub Actions running for an application repositories will build and update application manifests in the Argo CD desired state repositories and therefore will need write access to that respective non-prod or prod repository.
+        We will need two more GitHub Apps for accessing the ArgoCD desired state repositories _from GitHub Actions_. GitHub Actions running for an application repositories will build and update application manifests in the Argo CD desired state repositories and therefore will need write access to that respective non-prod or prod repository.
 
-      This GitHub App does not need to be added to the stack catalog or SSM since it will be used by GitHub Actions, not Terraform.
+        This GitHub App does not need to be added to the stack catalog or SSM since it will be used by GitHub Actions, not Terraform.
 
     4. #### Argo CD GitHub Notification Access
 
-      The last GitHub App is used by the Argo CD notifications system to update the GitHub commit status on deployments. This is stored in SSM and pulled by the `eks/argocd` component. That component will pass the ID and private key to the Argo CD instance in the given EKS cluster. That Argo CD instance uses that app _only when synchronous mode is enabled_.
+        The last GitHub App is used by the Argo CD notifications system to update the GitHub commit status on deployments. This is stored in SSM and pulled by the `eks/argocd` component. That component will pass the ID and private key to the Argo CD instance in the given EKS cluster. That Argo CD instance uses that app _only when synchronous mode is enabled_.
 
-      After creating the GitHub App, add the app's private key to AWS SSM Parameter Store in each account with Argo CD, typically the `plat-dev`, `plat-staging`, and `plat-prod` accounts, and add the App ID to the stack catalog. Detailed instructions linked below.
+        After creating the GitHub App, add the app's private key to AWS SSM Parameter Store in each account with Argo CD, typically the `plat-dev`, `plat-staging`, and `plat-prod` accounts, and add the App ID to the stack catalog. Detailed instructions linked below.
 
     </Steps>
 
@@ -102,9 +102,9 @@ All deployment steps below assume that the environment has been successfully set
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploy Argo CD repo configuration
+    ## <StepNumber/> Deploy the Argo CD Desired State Repositories
 
-    Deploy the Argo CD configuration for the two GitHub repos with the following workflow:
+    Deploy the Argo CD configuration for the two Argo CD desired state GitHub repositories with the following workflow:
 
     <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/app/argocd" />
 
@@ -123,7 +123,7 @@ All deployment steps below assume that the environment has been successfully set
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploy Argo CD to each EKS Cluster
+    ## <StepNumber/> Deploy the Argo CD Instances to each EKS Cluster
 
     Once the GitHub repositories are in place and the SAML applications have been created and configuration uploaded to SSM,
     we're ready to deploy Argo CD to each cluster.

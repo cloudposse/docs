@@ -8,14 +8,15 @@ tags:
   - eks
   - github-apps
 ---
+import Admonition from '@theme/Admonition'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-import Steps from '@site/src/components/Steps'
+import Note from '@site/src/components/Note'
 import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
-import Admonition from '@theme/Admonition'
-import Note from '@site/src/components/Note'
-import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import Steps from '@site/src/components/Steps'
+import TaskList from '@site/src/components/TaskList'
 
 <Intro>
   GitHub Apps is now the preferred method for Argo CD integration with GitHub. GitHub Apps provide more granular permissions, better security, and improved audit capabilities compared to Personal Access Tokens (PATs). This guide will walk you through setting up Argo CD with GitHub Apps.
@@ -131,13 +132,28 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
 
     <Steps>
       1. For each GitHub App:
-        <Steps>
-         1. On the GitHub App page, scroll down to "Private keys" and click "Generate a private key"
-         1. Download the private key file
-         1. Store the App ID, Installation ID, and private key securely in 1Password
-        </Steps>
-      2. Upload these credentials to AWS SSM Parameter Store:
-         Save these credentials to AWS SSM at the [paths specified by the `eks/argocd` component](/layers/software-delivery/eks-argocd/setup/#-configure-argo-cd-to-use-github-apps)
+          <Steps>
+           1. On the GitHub App page, scroll down to "Private keys" and click "Generate a private key"
+           1. Download the private key file
+           1. Store the App ID, Installation ID, and private key securely in 1Password
+          </Steps>
+      2. Upload these credentials to AWS SSM Parameter Store
+          <TaskList>
+          - Upload the `Argo CD Instance` private key to `/argocd/argo_cd_instance/app_private_key` `core-auto`: 
+            ```bash
+            # Replace acme with your namespace or assume the role separately.
+            # Your default region should be the same as your primary region. 
+            assume-role acme-core-gbl-auto-admin
+            chamber write argocd argo_cd_instance/app_private_key \
+              "$(cat /path/to/argocd-deploy-non-prod.private-key.pem)"
+            ```
+          - Upload the `Argo CD Notifications` to `/argocd/argo_cd_notifications/app_private_key` to `core-auto`:
+            ```bash
+            assume-role acme-core-gbl-auto-admin
+            chamber write argocd argo_cd_notifications/app_private_key \
+              "$(cat /path/to/argocd-notifications.private-key.pem)"
+            ```
+          </TaskList>
     </Steps>
   </Step>
 
@@ -189,7 +205,11 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
   <Step>
     ## <StepNumber/> Configure Argo CD Desire State Repositories to Use GitHub Apps
 
-    Update your Argo CD desired state repository configuration to use the GitHub App instead of PAT:
+    <Note title="Reference Architecture Users">
+    This step should be pre-configured for Reference Architecture users.
+    </Note>
+
+    Update your Argo CD desired state repository configuration to use the GitHub App:
 
     ```yaml
     components:
@@ -216,9 +236,18 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
   <Step>
     ### <StepNumber/> Configure Argo CD to Use GitHub Apps
 
-    Update your Argo CD configuration to use the GitHub Apps instead of PATs:
+    <Note title="Reference Architecture Users">
+      Reference Architecture users will need to update both GitHub App and Installation IDs.
+    </Note>
+
+    Update your Argo CD configuration to use the GitHub Apps by modifying the component configuration shown below. 
+    
+    <Note title="Installation ID">
+      You can find the Installation ID by going to your GitHub Organization settings, selecting "GitHub Apps", clicking on your app, then selecting "Install App". The Installation ID will be in the URL, e.g. https://github.com/organizations/acme/settings/installations/44444444.
+    </Note>
 
     ```yaml
+    # stacks/catalog/eks/argocd/defaults.yaml
     components:
       terraform:
         eks/argocd:
