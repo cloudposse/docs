@@ -43,7 +43,7 @@ All deployment steps below assume that the environment has been successfully set
 
     First vendor all related components for the Argo CD layer:
 
-    <AtmosWorkflow workflow="vendor" fileName="quickstart/app/argocd" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/platform/argocd" />
   </Step>
 
   <Step>
@@ -106,7 +106,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy the Argo CD configuration for the two Argo CD desired state GitHub repositories with the following workflow:
 
-    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/app/argocd" />
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/platform/argocd" />
 
     Once this finishes, review the two repos in your GitHub Organization. These should both be fully configured at this point.
 
@@ -130,7 +130,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy `eks/argocd` to each cluster with the following workflow:
 
-    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/app/argocd" />
+    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/platform/argocd" />
   </Step>
 
   <Step>
