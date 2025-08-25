@@ -25,7 +25,7 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
   - GitHub Apps provide more granular permissions than PATs
   - GitHub Apps can be installed on specific repositories
   - GitHub Apps have built-in rate limiting and audit capabilities
-  - GitHub Apps can be used for both repository management and notifications
+  - GitHub Apps need the ability to bypass branch protection rules
 </KeyPoints>
 
 ## Required GitHub Apps
@@ -70,19 +70,6 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
 - **Repository scope**:
   - All of the app repositories
 
-## Compensating Controls
-
-To address security concerns, the following compensating controls should be implemented:
-
-1. **Organization-Level Branch Ruleset**:
-   - Applied to all app repos but *not* to `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
-   - Prevents changes to the main branch with the Argo CD app *not* in the bypass list
-   - The Argo CD repos are excluded because workflows need to write to the main branch in these repos
-
-2. **Argo CD Desired State Repositories Branch Ruleset**:
-   - Applied only to the Argo CD desired state repositories
-   - Prevents writing to the main branch, but with the Argo CD app in the bypass list
-
 ## Deployment
 
 <Steps>
@@ -117,10 +104,10 @@ To address security concerns, the following compensating controls should be impl
             - `repository.contents`: Read and Write
             - `repository.metadata`: Read-Only
 
-         #### Argo CD Deploy Prod
-         - Name: `Argo CD Deploy Prod`
-         - Homepage URL: Your organization's homepage
-         - Webhook: Disabled
+        #### Argo CD Deploy Prod
+        - Name: `Argo CD Deploy Prod`
+        - Homepage URL: Your organization's homepage
+        - Webhook: Disabled
         - Permissions:
           - Push commits to Desired State Repositories:
             - `repository.contents`: Read and Write
@@ -193,23 +180,10 @@ To address security concerns, the following compensating controls should be impl
   <Step>
     ### <StepNumber/> Configure Branch Protection Rules
 
-    Set up the compensating controls by configuring branch protection rules:
+    If branch protection rules are enabled in your GitHub Organization, you'll need to configure exceptions for the ArgoCD GitHub Apps. This allows ArgoCD to update repositories while still maintaining security. The GitHub Apps must be able to bypass branch protection rules in order for ArgoCD's automated deployments to work correctly. 
 
-    **Organization-Level Branch Ruleset**:
+    Branch rulesets may be configured both or either at an organization and repository level. Check the enabled rulesets in both ArgoCD desired state repositories under "Code, planning, and automation" > "Branch rules". Add the ArgoCD GitHub Apps to the bypass list of any ruleset that prevents changes to the main branch.
 
-    <Steps>
-     - Go to your organization settings
-     - Navigate to "Code, planning, and automation" > "Branch rules"
-     - Create a new ruleset that applies to all app repos except `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
-     - Configure the ruleset to prevent changes to the main branch with the Argo CD app not in the bypass list
-    </Steps>
-
-    **Argo CD Desired State Repositories Branch Ruleset**:
-
-    <Steps>
-     - Create a separate ruleset that applies only to `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
-     - Configure the ruleset to prevent writing to the main branch, but with the Argo CD app in the bypass list
-    </Steps>
   </Step>
 
   <Step>
