@@ -1,0 +1,167 @@
+---
+title: "Deploy Infrastructure with CloudFormation"
+sidebar_label: "Deploy with CloudFormation"
+sidebar_position: 2
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import TaskList from '@site/src/components/TaskList';
+import Admonition from '@theme/Admonition';
+
+<Intro>
+  Deploy the required AWS infrastructure for Atmos Pro with just a few clicks using CloudFormation. This approach provides a quick and straightforward way to set up all necessary resources including state backend, plan file storage, and GitHub OIDC integration.
+</Intro>
+
+<KeyPoints>
+  - Deploy complete Terraform backend infrastructure in a single CloudFormation stack
+  - Set up S3 buckets for state and plan file storage
+  - Configure DynamoDB tables for state locking and plan file management
+  - Create GitHub OIDC integration for secure authentication
+  - Configure Atmos Pro to use the deployed infrastructure
+</KeyPoints>
+
+## Overview
+
+Atmos Pro doesn't run Terraform or Atmos itself. It dispatches GitHub Actions that **you control**. To run Terraform in those GitHub Actions, you need to set up a few things in your cloud environment:
+
+<TaskList>
+- **State Backend** (S3 + DynamoDB) to store Terraform state and enable state locking
+- **Plan File Storage** (S3 + DynamoDB) to persist Terraform plan outputs for review and approvals
+- **OIDC Integration** with GitHub for workflows to authenticate with your cloud provider
+</TaskList>
+
+To make things easier, we've provided a CloudFormation template that sets up everything for you.
+
+## Deployment Steps
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Authenticate with AWS
+
+    <TaskList>
+      - Sign in to your AWS account
+      - Ensure you have administrator access
+      - Choose your deployment region (we recommend `us-east-1`)
+    </TaskList>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Infrastructure
+
+    <TaskList>
+      - Click the "Deploy to AWS" button below
+      - Review the CloudFormation template parameters
+      - Click "Create stack" to deploy
+    </TaskList>
+
+    <Admonition type="warning" title="Important">
+      Your stack name must be unique across all AWS accounts. We use the stack name as part of the S3 bucket and DynamoDB table IDs.
+    </Admonition>
+
+    [![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=my-terraform-backend&templateURL=https://s3.amazonaws.com/cplive-core-ue2-public-cloudformation/aws-cloudformation-terraform-backend.yaml)
+
+    Or manually deploy the template with the AWS CLI:
+
+    ```bash
+    aws cloudformation deploy \
+      --stack-name my-backend \
+      --template-url https://s3.amazonaws.com/cplive-core-ue2-public-cloudformation/aws-cloudformation-terraform-backend.yaml \
+      --capabilities CAPABILITY_NAMED_IAM \
+      --no-fail-on-empty-changeset \
+      --parameter-overrides GitHubOrg=my-org
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Atmos Pro
+
+    Once deployed, you will need to add the new role and plan file storage configuration to your Atmos configuration.
+
+    #### GitHub Integration Configuration
+
+    ```yaml
+    integrations:
+      github:
+        gitops:
+          opentofu-version: "1.10.0"
+          artifact-storage:
+            region: "us-east-1" # Ensure this matches the region where the template was deployed
+            bucket: "my-backend-tfplan" # Get this value from the PlanBucketName output
+            table: "my-backend-tfplan" # Get this value from the PlanDynamoDBTableName output
+            role: "arn:aws:iam::123456789012:role/my-backend-github-actions" # Get this value from the GitHubActionsRoleARN output
+          role:
+            plan: "arn:aws:iam::123456789012:role/my-backend-github-actions" # Get this value from the GitHubActionsRoleARN output
+            apply: "arn:aws:iam::123456789012:role/my-backend-github-actions" # Get this value from the GitHubActionsRoleARN output
+    ```
+
+    #### State Backend Configuration
+
+    Then use the state backend with Atmos by specifying the S3 bucket and DynamoDB table:
+
+    ```yaml
+    terraform:
+      backend_type: s3
+      backend:
+        s3:
+          bucket: my-backend-tfstate # Get this value from the StateBucketName output
+          dynamodb_table: my-backend-tfstate # Get this value from the StateDynamoDBTableName output
+          role_arn: null # Set to null to use the current AWS credentials
+          encrypt: true
+          key: terraform.tfstate
+          acl: bucket-owner-full-control
+          region: us-east-1 # Ensure this matches the region where the template was deployed
+      remote_state_backend:
+        s3:
+          role_arn: null # Set to null to use the current AWS credentials
+    ```
+  </Step>
+</Steps>
+
+## CloudFormation Parameters
+
+| Parameter               | Description                                                                                      | Default |
+| ----------------------- | ------------------------------------------------------------------------------------------------ | ------- |
+| `CreateStateBackend`    | Set to 'true' to create state backend resources (S3 bucket, DynamoDB table), 'false' to skip     | true    |
+| `CreatePlanFileStorage` | Set to 'true' to create plan file storage resources (S3 bucket, DynamoDB table), 'false' to skip | true    |
+| `CreateGitHubAccess`    | Set to 'true' to create GitHub access resources (OIDC provider, IAM role), 'false' to skip       | true    |
+| `CreateOIDCProvider`    | Set to 'true' to create the GitHub OIDC provider, 'false' to skip (if it already exists)         | true    |
+| `GitHubOrg`             | GitHub organization or username                                                                  |         |
+| `GitHubRepo`            | GitHub repository name. Set to `*` to allow all repositories                                     | \*      |
+
+## Review
+
+Congratulations! The CloudFormation stack has now deployed:
+
+<TaskList>
+- An IAM role configured with trusted relationships for GitHub Actions
+- An S3 bucket to store Terraform state files
+- A DynamoDB table for state locking
+- An S3 bucket to store Terraform plan files 
+- A DynamoDB table for managing those plan files
+- GitHub OIDC provider for secure authentication
+</TaskList>
+
+You're now ready to start using Atmos Pro with GitHub Actions.
+
+## Cleanup
+
+To destroy the template, run:
+
+```bash
+aws cloudformation delete-stack --stack-name my-backend
+```
+
+This will destroy the stack and all the resources it created. However, if the S3 bucket is not empty, the stack will fail to destroy.
+
+To destroy the stack and empty the S3 bucket, run:
+
+```bash
+aws cloudformation delete-stack --stack-name my-backend --deletion-mode FORCE_DELETE_STACK
+```
+
+<Admonition type="warning" title="Warning">
+  This will destroy the state files and empty the S3 bucket. This is a destructive action and cannot be undone.
+</Admonition>

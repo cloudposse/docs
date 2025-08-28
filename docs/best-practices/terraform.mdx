@@ -212,7 +212,7 @@ restricted, you should not use a custom validator to enforce that for two reason
 2. If you use a custom validator to enforce that the string is one of those
    two values, and then a later version of the resource adds a new option to the
    enumeration, such as "HOURLY", the custom validator will prevent the
-   module from using the new value, even though the module woudl function
+   module from using the new value, even though the module would function
    perfectly were it not for the validator. This adds work and delay to the
    adoption of underlying enhancements to the resource, without providing
    enough benefit to be worth the extra effort.
@@ -272,6 +272,28 @@ practically since Terraform's inception, so a near-term solution is unlikely.
 We prefer to keep terraform outputs symmetrical as much as possible with the upstream resource or module, with exception of prefixes. This reduces the amount of entropy in the code or possible ambiguity, while increasing consistency. Below is an example of what **not* to do. The expected output name is `user_secret_access_key`. This is because the other IAM user outputs in the upstream module are prefixed with `user_`, and then we should borrow the upstream's output name of `secret_access_key` to become `user_secret_access_key` for consistency.
 
 ![Terraform outputs should be symmetrical](/assets/terraform-outputs-should-be-symmetrical.png)
+
+### Export all Attributes of a Resource
+
+While it's important to explicitly output the most relevant attributes from a resource, there are cases where exposing the entire resource object is beneficial. By outputting the full resource, you provide downstream modules and users with greater flexibility and easier interoperability—especially when composing infrastructure across multiple modules.
+
+This approach also future-proofs your module. As providers evolve and introduce new attributes, consumers can immediately access those attributes without requiring the module to be updated with new outputs.
+
+```hcl
+output "<resource_type>_<resource_name>" {
+  value       = <resource_type>.<resource_name>
+  description = "All attributes of [`<resource_type>.<resource_name>`](link-to-aws-provider-resource-attribute-docs)"
+}
+```
+
+For example, if the module contained the resource address `aws_ec2_instance.default` then the output would be defined like this.
+
+```hcl
+output "aws_ec2_instance_default" {
+  value       = aws_ec2_instance.default
+  description = "All attributes of [`aws_ec2_instance.default`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#attribute-reference)"
+}
+```
 
 ## Language
 

@@ -28,7 +28,7 @@ The `$AWS_CONFIG_FILE` (by default, `$HOME/.aws/config`) contains _profiles_ tha
   </dd>
 </dl>
 
-You should only use Leapp (or `aws sso login`) to log into Primary profiles. Once logged into a Primary profile, any tool should be able to use that profile or any Derived profile simply by specifying which profile to use (usually by setting the AWS_PROFILE environment variable via `export AWS_PROFILE=profile-name` or via a command-line flag, configuration string, or configuration file, such as in the case of `kubectl` where it is specified via the `users.user.exec.env` section of the `$KUBECONFIG` file).
+In the Cloud Posse reference architecture you must use Leapp to log into Primary profiles. Once logged into a Primary profile, any tool can use that profile or any Derived profile simply by specifying which profile to use (usually by setting the AWS_PROFILE environment variable via `export AWS_PROFILE=profile-name` or via a command-line flag, configuration string, or configuration file, such as in the case of `kubectl` where it is specified via the `users.user.exec.env` section of the `$KUBECONFIG` file).
 
 <Note title="Watch out!">
   The AWS documentation and examples are confusing. In this scenario, it is important that you _do not include_ `mfa_serial` _in the Derived profile configuration_. The use case for having `mfa_serial` in the Derived profile is if you did not use MFA to authenticate to your Primary profile. In that (rare) case, the Derived profile really turns into a sort of Primary profile, because it is responsible for providing a credential (the MFA token) that the source profile does not have. That is when you need `mfa_serial` in the Derived profile and when you should put it in Leapp instead of just the `$AWS_CONFIG_FILE`.

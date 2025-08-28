@@ -318,7 +318,7 @@ For proprietary apps deployed by your organization, we recommend taking a differ
 
 **What if we need more than one deployment (or XYZ) in a chart?**  That’s easy. You have a few options: a) Deploy the same chart twice; b) Decide if as an organization you want to support that interface and then extend the chart; c) Develop an additional chart interface.
 
-**What if we want to add a feature to our chart and don’t want to disrupt other services?** No problem. Charts are versioned. So think of the version of a chart as the version of your interface. Everytime you change the chart, bump the version. Ensure all your services pin to a version of the chart. Now when you change the version of the chart in your service, you know that your upgrading your interface as well.
+**What if we want to add a feature to our chart and don’t want to disrupt other services?** No problem. Charts are versioned. So think of the version of a chart as the version of your interface. Every time you change the chart, bump the version. Ensure all your services pin to a version of the chart. Now when you change the version of the chart in your service, you know that your upgrading your interface as well.
 
 **What if we need some backing services?** Good question. You can still use the features of umbrella charts, and even feature flag common things like deploying a database backend for development environments by using a `condition` in the `requirements.yaml` that can be toggled in the `values.yaml`. _Pro-tip:_ Use [https://artifacthub.io/](https://artifacthub.io/) to find ready-made charts you can use.
 

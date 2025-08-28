@@ -58,7 +58,7 @@ When Geodesic is started using the wrapper script, it mounts the host’s `$HOME
 
 ### Use as a Remote Development Environment
 
-Running `geodesic` as a remote development environment is as easy as calling `kubectl run` on the geodesic container. You’ll be able then to remotely interact with the container to debug within a kubenretes cluster.
+Running `geodesic` as a remote development environment is as easy as calling `kubectl run` on the geodesic container. You’ll be able then to remotely interact with the container to debug within a kubernetes cluster.
 
 ### Use as a Base Image for Automation
 
@@ -98,7 +98,7 @@ infrastructure/  # GitHub Repository
 ├── Dockerfile   # Dockerfile uses `cloudposse/geodesic` as base Image
 ├── Makefile     # Makefile to build custom Geodestic-based Docker image and install wrapper script for `geodesic`
 ├── README.md
-├── components  # Location for all re-usable component building blocks
+├── components  # Location for all reusable component building blocks
 │   └── terraform/  # Location for all terraform (HCL) components
 │       └── foobar/                     # Example `foobar` component
 │           ├── README.md               # Every component has a well-maintained `README.md` with usage instructions

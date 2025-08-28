@@ -1,0 +1,22 @@
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: atmos workflow deploy -f quickstart/app/addons/spa-s3-cloudfront
+      - command: atmos workflow upload -f quickstart/app/addons/spa-s3-cloudfront
+
+  vendor:
+    description: vendor all components required for this addon
+    steps:
+      - command: vendor pull --component spa-s3-cloudfront
+
+  deploy:
+    description: Deploy the component
+    steps:
+      - command: terraform deploy spa-s3-cloudfront/example-site --stack plat-use1-sandbox
+
+  upload:
+    description: Upload example content
+    steps:
+      - type: shell
+        command: AWS_PROFILE=acme-plat-gbl-sandbox-admin aws s3 sync components/terraform/spa-s3-cloudfront/example-site s3://acme-plat-use1-sandbox-example-site-origin

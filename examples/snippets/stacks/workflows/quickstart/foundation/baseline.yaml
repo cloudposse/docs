@@ -1,0 +1,49 @@
+
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow vendor -f quickstart/foundation/baseline
+      - command: workflow init/tfstate -f quickstart/foundation/baseline
+      - command: workflow deploy/tfstate -f quickstart/foundation/baseline
+      - command: workflow deploy/cloudtrail -f quickstart/foundation/baseline
+      - command: workflow deploy/ecr -f quickstart/foundation/baseline
+
+  vendor:
+    description: Vendor baseline layer components.
+    steps:
+      - command: vendor pull --component account
+      - command: vendor pull --component account-map
+      - command: vendor pull --component account-quotas
+      - command: vendor pull --component account-settings
+      - command: vendor pull --component cloudtrail
+      - command: vendor pull --component cloudtrail-bucket
+      - command: vendor pull --component ecr
+      - command: vendor pull --component tfstate-backend
+
+  init/tfstate:
+    description: Provision Terraform State Backend for initial deployment.
+    steps:
+      - command: terraform deploy tfstate-backend -var=access_roles_enabled=false --stack core-use1-root --auto-generate-backend-file=false
+      - command: until aws s3 ls acme-core-use1-root-tfstate; do sleep 5; done
+        type: shell
+      - command: terraform deploy tfstate-backend -var=access_roles_enabled=false --stack core-use1-root --init-run-reconfigure=false
+
+  deploy/tfstate:
+    description: >-
+      Deploy Terraform State Backend.
+
+      Finalize Terraform State Backend access, which requires AWS Teams to be deployed first.
+    steps:
+      - command: terraform deploy tfstate-backend --stack core-use1-root
+
+  deploy/cloudtrail:
+    description: Start AWS Cloudtrail in audit and root accounts to track changes across the org.
+    steps:
+      - command: terraform deploy cloudtrail-bucket -s core-use1-audit
+      - command: terraform deploy cloudtrail -s core-gbl-root
+
+  deploy/ecr:
+    description: Deploy ECR in the artifacts account to use as our container registry
+    steps:
+      - command: terraform deploy ecr -s core-use1-artifacts

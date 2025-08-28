@@ -14,9 +14,9 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 | Steps                     | Example                             |
 | :------------------------ | :---------------------------------- |
-| 1. Vendor data components | `atmos workflow vendor -f data`     |
+| 1. Vendor data components | `atmos workflow vendor -f quickstart/app/data`     |
 | 2. Connect to the VPN     | Click Ops                           |
-| 3. Deploy clusters        | `atmos workflow deploy/all -f data` |
+| 3. Deploy clusters        | `atmos workflow deploy/all -f quickstart/app/data` |
 
 ## Requirements
 
@@ -50,7 +50,7 @@ At the moment we have support for:
 
 Vendor all data components with the following workflow:
 
-<AtmosWorkflow workflow="vendor" fileName="data" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/app/data" />
 
 These run several vendor commands for each included component. You can always run these commands individually to update
 any single component. For example:
@@ -66,4 +66,4 @@ atmos vendor pull -c aurora-postgres
 In order to deploy database, deploy both the cluster and the resources component (if applicable). Applying changes to
 the resources component requires a VPN connection. For example,
 
-<AtmosWorkflow workflow="deploy/all" fileName="data" />
+    <AtmosWorkflow workflow="deploy/all" fileName="quickstart/app/data" />

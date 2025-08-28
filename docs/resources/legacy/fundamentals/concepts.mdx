@@ -101,7 +101,7 @@ Great, so what can you do with a stack? Stacks are meant to be a language and to
 3. [Spacelift](https://spacelift.io/): By using the [terraform-spacelift-cloud-infrastructure-automation module](https://github.com/cloudposse/terraform-spacelift-cloud-infrastructure-automation) you can configure Spacelift continuously deliver components. Read up on why we [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform) .
 
 ### Catalogs
-Catalogs in SweetOps are collections of sharable and reusable configurations. Think of the configurations in catalogs as defining archetypes (a very typical example of a certain thing) of configuration (E.g. `s3/public` and `s3/logs` would be two kinds of archtypes of S3 buckets). They are also convenient for managing [Terraform](/resources/legacy/fundamentals/terraform). These are typically YAML configurations that can be imported and provide solid baselines to configure security, monitoring, or other 3rd party tooling. Catalogs enable an organization to codify its best practices of configuration and share them. We use this pattern both with our public terraform modules as well as with our stack configurations (e.g. in the `stacks/catalog` folder).
+Catalogs in SweetOps are collections of sharable and reusable configurations. Think of the configurations in catalogs as defining archetypes (a very typical example of a certain thing) of configuration (E.g. `s3/public` and `s3/logs` would be two kinds of archetypes of S3 buckets). They are also convenient for managing [Terraform](/resources/legacy/fundamentals/terraform). These are typically YAML configurations that can be imported and provide solid baselines to configure security, monitoring, or other 3rd party tooling. Catalogs enable an organization to codify its best practices of configuration and share them. We use this pattern both with our public terraform modules as well as with our stack configurations (e.g. in the `stacks/catalog` folder).
 
 SweetOps provides many examples of how to use the catalog pattern to get you started.
 
@@ -119,7 +119,7 @@ In the future, you’re likely to see additional open-source catalogs for OPA ru
 Collections are groups of stacks.
 
 ### Segments
-Sements are interconnected networks. For example, a production segment connects all production-tier stacks, while a non-production segment connects all non-production stacks.
+Segments are interconnected networks. For example, a production segment connects all production-tier stacks, while a non-production segment connects all non-production stacks.
 
 ### Primary vs Delegated
 Primary vs Delegated is an implementation pattern in SweetOps. This is most easily described when looking at the example of domain and DNS usage in a mutli-account AWS organization: SweetOps takes the approach that the root domain (e.g. `example.com`) is owned by a **primary** AWS account where the apex zone resides. Subdomains on that domain (e.g. `dev.example.com`) are then **delegated** to the other AWS accounts via an `NS` record on the primary hosted zone which points to the delegated hosted zone’s name servers.
