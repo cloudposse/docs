@@ -54,6 +54,30 @@ This component manages the state of all AWS accounts, so apply with extreme caut
 
 [Follow the documentation for creating a new Organizational Unit](/layers/accounts/tutorials/how-to-add-a-new-organizational-unit/)
 
+### How do I use mixins and imports with Atmos
+
+As infrastructure grows, we end up with hundreds or thousands of settings for components and stack configurations. If we
+copy and paste these settings everywhere, it’s error-prone and not DRY. What we really want to do is to define a sane
+set of defaults and override those defaults when we need them to change.
+
+We accomplish this with Mixins. Mixins are imported into all stacks and each follow a set of rules. We use the
+`mixins/region` and `mixins/account` configurations to define common **variables** for all stacks. For example,
+`mixins/region/us-east-1.yaml` will define the variable `region: us-east-1`.
+
+**Note.** Do not import components into the account or region mixins. These are imported multiple times to define common
+variables, so any component imports would be duplicated and cause an Atmos error such as this:
+
+```
+Executing command:
+/usr/bin/atmos terraform deploy account-settings -s core-gbl-artifacts
+
+Found duplicate config for the component 'account-settings' for the stack 'core-gbl-artifacts' in the files: orgs/cch/core/artifacts/global-region/baseline, orgs/cch/core/artifacts/global-region/monitoring, orgs/cch/core/artifacts/global-region/identity.
+Check that all context variables in the stack name pattern '{tenant}-{environment}-{stage}' are correctly defined in the files and not duplicated.
+Check that all imports are valid.
+
+exit status 1
+```
+
 ### Why does `account-map` fail with "The given key does not identify an element in this collection value"?
 
 This is a common error you may encounter when reading from `account-map`:

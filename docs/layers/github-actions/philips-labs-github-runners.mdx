@@ -49,7 +49,7 @@ or follow the steps below.
 
     Vendor in the necessary components with the following workflow:
 
-    <AtmosWorkflow workflow="vendor/philips-labs" fileName="github" />
+    <AtmosWorkflow workflow="vendor/philips-labs" fileName="quickstart/foundation/github" />
 
   </Step>
 
@@ -120,7 +120,7 @@ or follow the steps below.
 
     Or run the `upload/pl-secrets` workflow with `atmos` to write the GitHub App information to the `core-use1-auto` SSM account and deploy the component.
 
-    <AtmosWorkflow workflow="upload/pl-secrets" fileName="github" />
+    <AtmosWorkflow workflow="upload/pl-secrets" fileName="quickstart/foundation/github" />
 
   </Step>
 
@@ -130,7 +130,7 @@ or follow the steps below.
     First deploy the GitHub OIDC provider to all accounts where we want to grant GitHub access. The typical list of accounts
     is included with the `deploy/github-oidc-provider` workflow; run the following with `SuperAdmin`:
 
-    <AtmosWorkflow workflow="deploy/github-oidc-provider" fileName="github" />
+    <AtmosWorkflow workflow="deploy/github-oidc-provider" fileName="quickstart/foundation/github" />
 
   </Step>
 
@@ -139,7 +139,7 @@ or follow the steps below.
 
     Now that the GitHub App has been created and the SSM parameters have been uploaded, deploy the `philips-labs-github-runners` component.
 
-    <AtmosWorkflow workflow="deploy/pl-github-runners" fileName="github" />
+    <AtmosWorkflow workflow="deploy/pl-github-runners" fileName="quickstart/foundation/github" />
 
   </Step>
 

@@ -38,7 +38,7 @@ ramifications as to IP/trademark defense.
     To start the dns setup, run the following. This will go through creating primaries, and then
     follow up with establishing the delegates.
 
-    <AtmosWorkflow workflow="deploy/dns" fileName="network" />
+    <AtmosWorkflow workflow="deploy/dns" fileName="quickstart/foundation/network" />
   </Step>
 
   <Step>
@@ -91,4 +91,4 @@ We use a separate instance of the `acm` component to provision each service doma
 
 We can deploy all required ACM certificates with the following command:
 
-<AtmosWorkflow workflow="deploy/acm" fileName="network" />
+    <AtmosWorkflow workflow="deploy/acm" fileName="quickstart/foundation/network" />

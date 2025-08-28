@@ -16,8 +16,8 @@ Now that all the accounts have been deployed, we need to finalize the setup of t
 
 | Steps                      | Actions                             |
 | -------------------------- | ----------------------------------- |
-| Deploy baseline components | `atmos workflow deploy -f baseline` |
-| Deploy account budgets     | Create Slack Webhook and `atmos workflow deploy -f accounts` |
+| Deploy baseline components | `atmos workflow deploy -f quickstart/foundation/baseline` |
+| Deploy account budgets     | Create Slack Webhook and `atmos workflow deploy -f quickstart/foundation/accounts` |
 
 <Steps>
   <Step>
@@ -25,7 +25,7 @@ Now that all the accounts have been deployed, we need to finalize the setup of t
 
   Deploy CloudTrail and the the CloudTrail bucket:
 
-  <AtmosWorkflow workflow="deploy/cloudtrail" fileName="baseline" />
+      <AtmosWorkflow workflow="deploy/cloudtrail" fileName="quickstart/foundation/baseline" />
   </Step>
 
   <Step>
@@ -106,7 +106,7 @@ Now that all the accounts have been deployed, we need to finalize the setup of t
                time_unit: MONTHLY
      ```
   5. Finally, reapply `account-settings` in any changed account to apply the new settings
-     <AtmosWorkflow workflow="deploy/account-settings" fileName="accounts" />
+     <AtmosWorkflow workflow="deploy/account-settings" fileName="quickstart/foundation/accounts" />
   </Steps>
   </Step>
 </Steps>

@@ -11,6 +11,7 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Note from '@site/src/components/Note';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
 This step-by-step process outlines how to deploy AWS accounts using `atmos` workflows and ClickOps steps. It covers necessary preparations, such as configuring the AWS Organization, increasing account quotas, and verifying account configurations. The guide details the deployment processes and post-deployment configurations, including setting up account settings, enabling AWS RAM for Organizations, and performing certain manual configurations via ClickOps.
@@ -18,10 +19,10 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
 | Steps                     | Actions                                              |
 | ------------------------- | ---------------------------------------------------- |
-| Deploy AWS Organization   | `atmos workflow deploy/organization -f accounts`     |
+| Deploy AWS Organization   | `atmos workflow deploy/organization -f quickstart/foundation/accounts`     |
 | Prepare accounts creation | Click Ops                                            |
-| Deploy accounts           | `atmos workflow deploy/accounts -f accounts`         |
-| Deploy accounts settings  | `atmos workflow deploy/account-settings -f accounts` |
+| Deploy accounts           | `atmos workflow deploy/accounts -f quickstart/foundation/accounts`         |
+| Deploy accounts settings  | `atmos workflow deploy/account-settings -f quickstart/foundation/accounts` |
 | Finalize account setup    | Click Ops                                            |
 
 <Steps>
@@ -34,16 +35,18 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     You should double-check the following:
 
-    1. Check that `stacks/catalog/account.yaml` has the values you expect, especially account email format
-    2. Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_
+    <TaskList>
+    - Check that `stacks/catalog/account.yaml` has the values you expect, especially account email format
+    - Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_
       all the mixins have been imported)
-    3. Plan the run with `atmos terraform plan account -s core-gbl-root`
+    - Plan the run with `atmos terraform plan account -s core-gbl-root`
+    </TaskList>
   </Step>
 
   <Step>
     ## <StepNumber/> Deploy the AWS Organization
 
-    <AtmosWorkflow workflow="deploy/organization" fileName="accounts" />
+    <AtmosWorkflow workflow="deploy/organization" fileName="quickstart/foundation/accounts" />
 
   </Step>
 
@@ -144,7 +147,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     Once confident, begin the accounts deployment:
 
-    <AtmosWorkflow workflow="deploy/accounts" fileName="accounts" />
+    <AtmosWorkflow workflow="deploy/accounts" fileName="quickstart/foundation/accounts" />
 
     <Note title="Info">
       With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
@@ -168,7 +171,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves. Run the following:
 
-    <AtmosWorkflow workflow="deploy/account-settings" fileName="accounts" />
+    <AtmosWorkflow workflow="deploy/account-settings" fileName="quickstart/foundation/accounts" />
 
     The workflows will kick off several sequential Terraform runs to provision all the AWS member account settings for
     member accounts in the Organization.
