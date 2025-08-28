@@ -25,30 +25,19 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
     Vendor all required components
 
-    <AtmosWorkflow workflow="vendor" fileName="grafana" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/monitor/grafana" />
 
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploy Grafana
+    ## <StepNumber/> Deploy Grafana and the Prometheus Scraper
 
     Please see [How to Setup Grafana](/layers/monitoring/grafana/) for in depth documentation.
 
     However, if you can find the summary of steps in Atmos Workflows here. You can choose to run these workflows
     one-by-one, or run them altogether with the following:
 
-    <AtmosWorkflow workflow="deploy" fileName="grafana" />
-
-  </Step>
-
-  <Step>
-    ## <StepNumber/> Deploy all data sources
-
-    Deploy Prometheus and Loki to `plat-dev`, `plat-staging`, and `plat-prod`. Run the following Atmos Workflow:
-
-    <AtmosWorkflow workflow="deploy" fileName="data-sources" stack="plat-use1-dev"/>
-    <AtmosWorkflow workflow="deploy" fileName="data-sources" stack="plat-use1-staging"/>
-    <AtmosWorkflow workflow="deploy" fileName="data-sources" stack="plat-use1-prod"/>
+    <AtmosWorkflow workflow="deploy" fileName="quickstart/monitor/grafana" />
 
   </Step>
 
@@ -92,15 +81,6 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
     atmos terraform apply eks/cluster -s plat-use1-staging
     atmos terraform apply eks/cluster -s plat-use1-prod
     ```
-
-  </Step>
-
-  <Step>
-    ## <StepNumber/>  Deploy Grafana
-
-    Deploy the Amazon Managed Grafana workspace, API key, data-source integrations, and finally dashboards:
-
-    <AtmosWorkflow workflow="deploy" fileName="grafana" stack="core-use1-auto" />
 
   </Step>
 

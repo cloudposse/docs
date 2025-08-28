@@ -1,0 +1,12 @@
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: terraform deploy api-gateway/account-settings --stack plat-use1-sandbox
+      - command: terraform deploy api-gateway/rest-api --stack plat-use1-sandbox
+
+  vendor:
+    description: vendor all components required for this addon
+    steps:
+      - command: vendor pull --component api-gateway/account-settings
+      - command: vendor pull --component api-gateway/rest-api

@@ -46,6 +46,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           # This workflows runs on pull_request_target, so we need to checkout the PR branch
           ref: ${{ github.event.pull_request.head.ref }}
 

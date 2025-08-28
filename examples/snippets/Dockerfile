@@ -2,11 +2,9 @@
 ARG GEODESIC_VERSION=4.3.0
 ARG GEODESIC_OS=debian
 # https://github.com/cloudposse/atmos
-ARG ATMOS_VERSION=1.157.0
-# This should match the version set in stacks/catalog/spacelift.yaml
+ARG ATMOS_VERSION=1.186.0
 # This should match the version set in .github/workflows/auto-format.yaml
-ARG TF_1_VERSION=1.5.7
-ARG TOFU_VERSION=1.8.8
+ARG TOFU_VERSION=1.10.5
 
 FROM public.ecr.aws/cloudposse/geodesic:${GEODESIC_VERSION}-${GEODESIC_OS}
 
@@ -24,14 +22,10 @@ ENV AWS_SDK_LOAD_CONFIG=1
 ENV AWS_DEFAULT_REGION=us-east-1
 ENV AWS_DEFAULT_SHORT_REGION=use1
 ENV AWS_REGION_ABBREVIATION_TYPE=short
-# Install specific versions of Terraform. Must match versions in Spacelift terraform_version_map
-# in components/terraform/spacelift/default.auto.tfvars
-ARG TF_1_VERSION
+
 ARG TOFU_VERSION
-RUN apt-get update && apt-get install -y -u --allow-downgrades \
-    terraform-1="${TF_1_VERSION}-*" && \
-    tofu="${TOFU_VERSION}" && \
-    update-alternatives --set terraform /usr/share/terraform/1/bin/terraform
+RUN apt-get update && apt-get install -y --allow-downgrades \
+    tofu="${TOFU_VERSION}"
 ARG ATMOS_VERSION
 RUN apt-get update && apt-get install -y --allow-downgrades \
     atmos="${ATMOS_VERSION}-*" \
@@ -51,7 +45,7 @@ ARG TENANT="core"
 ENV NAMESPACE=acme
 # Format of Geodesic banner prompt
 ENV BANNER=${NAMESPACE}
-ENV DOCKER_IMAGE="acme/infra-acme"
+ENV DOCKER_IMAGE="acme/infrastructure"
 ENV DOCKER_TAG="latest"
 
 # Default AWS_PROFILE
