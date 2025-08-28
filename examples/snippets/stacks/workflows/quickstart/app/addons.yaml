@@ -1,0 +1,135 @@
+workflows:
+  all:
+    description: run all workflows
+    steps:
+      - command: workflow vendor -f quickstart/app/addons
+      - command: workflow deploy/all -f quickstart/app/addons
+
+  vendor:
+    description: Vendor addon components.
+    steps:
+      - command: workflow vendor -f quickstart/app/addons/alb
+      - command: workflow vendor -f quickstart/app/addons/api-gateway
+      - command: workflow vendor -f quickstart/app/addons/cognito
+      - command: workflow vendor -f quickstart/app/addons/ec2-instance
+      - command: workflow vendor -f quickstart/app/addons/kinesis-stream
+      - command: workflow vendor -f quickstart/app/addons/kms
+      - command: workflow vendor -f quickstart/app/addons/lambda
+      - command: workflow vendor -f quickstart/app/addons/memorydb
+      - command: workflow vendor -f quickstart/app/addons/s3-bucket
+      - command: workflow vendor -f quickstart/app/addons/ses
+      - command: workflow vendor -f quickstart/app/addons/sns-topic
+      - command: workflow vendor -f quickstart/app/addons/spa-s3-cloudfront
+      - command: workflow vendor -f quickstart/app/addons/sqs-queue
+      - command: workflow vendor -f quickstart/app/addons/ssm-parameters
+      - command: workflow vendor -f quickstart/app/addons/waf
+
+  deploy/all:
+    description: run all deploy workflows
+    steps:
+      - command: workflow deploy/alb -f quickstart/app/addons
+      - command: workflow deploy/api-gateway -f quickstart/app/addons
+      - command: workflow deploy/cognito -f quickstart/app/addons
+      - command: workflow deploy/ec2-instance -f quickstart/app/addons
+      - command: workflow deploy/kinesis-stream -f quickstart/app/addons
+      - command: workflow deploy/kms -f quickstart/app/addons
+      - command: workflow deploy/lambda -f quickstart/app/addons
+      - command: workflow deploy/memorydb -f quickstart/app/addons
+      - command: workflow deploy/s3-bucket -f quickstart/app/addons
+      - command: workflow deploy/ses -f quickstart/app/addons
+      - command: workflow deploy/sns-topic -f quickstart/app/addons
+      - command: workflow deploy/spa-s3-cloudfront -f quickstart/app/addons
+      - command: workflow deploy/sqs-queue -f quickstart/app/addons
+      - command: workflow deploy/ssm-parameters -f quickstart/app/addons
+      - command: workflow deploy/waf -f quickstart/app/addons
+    
+  deploy/alb:
+    description: >-
+      Deploy Alb Component.
+      Please modify the stacks/workflows/addons/alb.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/alb
+  deploy/api-gateway:
+    description: >-
+      Deploy Api-Gateway Component.
+      Please modify the stacks/workflows/addons/api-gateway.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/api-gateway
+  deploy/cognito:
+    description: >-
+      Deploy Cognito Component.
+      Please modify the stacks/workflows/addons/cognito.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/cognito
+  deploy/ec2-instance:
+    description: >-
+      Deploy Ec2-Instance Component.
+      Please modify the stacks/workflows/addons/ec2-instance.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/ec2-instance
+  deploy/kinesis-stream:
+    description: >-
+      Deploy Kinesis-Stream Component.
+      Please modify the stacks/workflows/addons/kinesis-stream.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/kinesis-stream
+  deploy/kms:
+    description: >-
+      Deploy Kms Component.
+      Please modify the stacks/workflows/addons/kms.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/kms
+  deploy/lambda:
+    description: >-
+      Deploy Lambda Component.
+      Please modify the stacks/workflows/addons/lambda.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/lambda
+  deploy/memorydb:
+    description: >-
+      Deploy Memorydb Component.
+      Please modify the stacks/workflows/addons/memorydb.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/memorydb
+  deploy/s3-bucket:
+    description: >-
+      Deploy S3-Bucket Component.
+      Please modify the stacks/workflows/addons/s3-bucket.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/s3-bucket
+  deploy/ses:
+    description: >-
+      Deploy Ses Component.
+      Please modify the stacks/workflows/addons/ses.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/ses
+  deploy/sns-topic:
+    description: >-
+      Deploy Sns-Topic Component.
+      Please modify the stacks/workflows/addons/sns-topic.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/sns-topic
+  deploy/spa-s3-cloudfront:
+    description: >-
+      Deploy Spa-S3-Cloudfront Component.
+      Please modify the stacks/workflows/addons/spa-s3-cloudfront.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/spa-s3-cloudfront
+  deploy/sqs-queue:
+    description: >-
+      Deploy Sqs-Queue Component.
+      Please modify the stacks/workflows/addons/sqs-queue.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/sqs-queue
+  deploy/ssm-parameters:
+    description: >-
+      Deploy Ssm-Parameters Component.
+      Please modify the stacks/workflows/addons/ssm-parameters.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/ssm-parameters
+  deploy/waf:
+    description: >-
+      Deploy Waf Component.
+      Please modify the stacks/workflows/addons/waf.yaml to customize
+    steps:
+      - command: workflow all -f quickstart/app/addons/waf

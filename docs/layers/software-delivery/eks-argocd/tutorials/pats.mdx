@@ -35,7 +35,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
 
     Each one of these PATs will be associated with a given user. We recommend creating or using an existing "bot" user. For example, at Cloud Posse we have the "cloudpossebot" GitHub user. This user has its own email address and GitHub account, is accessible from our internal 1Password vault for all privileged users, and has all access keys and tokens stored with it in 1Password.
 
-    This bot user will need permission to manage a few repositories in your Organization. If you wish to simplify deployment, you can grant this user permission to create repositories. See (Can we use the Bot user to create the ArgoCD repos)[#can-we-use-the-bot-user-to-create-the-argocd-repos].
+    This bot user will need permission to manage a few repositories in your Organization. If you wish to simplify deployment, you can grant this user permission to create repositories. See [Can we use the Bot user to create the ArgoCD repos](#can-we-use-the-bot-user-to-create-the-argocd-repos).
 
     Use this bot user for all access tokens in the remainder of this guide.
   </Step>
@@ -81,7 +81,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
 
           Use the following workflow to upload this PAT to AWS SSM:
 
-          <AtmosWorkflow workflow="deploy/terraform-argocdrepo-pat" fileName="argocd" />
+          <AtmosWorkflow workflow="deploy/terraform-argocdrepo-pat" fileName="quickstart/app/argocd" />
 
           Or manually save this PAT to AWS SSM at `argocd/github/api_key` in the `core-auto` account.
     </Steps>
@@ -92,7 +92,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
 
     Deploy the ArgoCD configuration for the two GitHub repos with the following workflow:
 
-    <AtmosWorkflow workflow="argocd-repos" fileName="argocd" />
+    <AtmosWorkflow workflow="argocd-repos" fileName="quickstart/app/argocd" />
 
     Once this finishes, review the two repos in your GitHub Organization. These should both be fully configured at this point.
 
@@ -129,7 +129,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
           ```
       4. Use the following workflow to upload this PAT to AWS SSM:
 
-          <AtmosWorkflow workflow="deploy/terraform-webhooks-nonprod-pat" fileName="argocd" />
+          <AtmosWorkflow workflow="deploy/terraform-webhooks-nonprod-pat" fileName="quickstart/app/argocd" />
 
           Or manually save this PAT to AWS SSM at `argocd/github/api_key` in the `plat-dev` and `plat-staging` accounts.
     </Steps>
@@ -147,7 +147,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
           ```
       4. Use the following workflow to upload this PAT to AWS SSM:
 
-          <AtmosWorkflow workflow="deploy/terraform-webhooks-prod-pat" fileName="argocd" />
+          <AtmosWorkflow workflow="deploy/terraform-webhooks-prod-pat" fileName="quickstart/app/argocd" />
 
           Or manually save this PAT to AWS SSM at `argocd/github/api_key` in the `plat-prod` account.
     </Steps>
@@ -172,7 +172,7 @@ Fine-grained PATs are preferred to classic PATs. All PATs except the Notificatio
 
          Use the following workflow to upload this PAT to AWS SSM:
 
-         <AtmosWorkflow workflow="deploy/app-notifications-pat" fileName="argocd" />
+         <AtmosWorkflow workflow="deploy/app-notifications-pat" fileName="quickstart/app/argocd" />
 
          Or manually save this PAT to AWS SSM at `argocd/notifications/notifiers/common/github-token` in the `plat-dev`, `plat-staging`, and `plat-prod` accounts.
     </Steps>

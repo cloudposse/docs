@@ -34,7 +34,7 @@ Here is a standard usage pattern that contributors can adopt to specific changes
     1. `mkdir ~/mp_workspace && cd ~/mp_workspace`
   1. Initialize microplane:
     1. `mp init --all-repos "cloudposse"`
-    1. Initializing creates an `mp/` folder in your current directoy, finds all of the Cloud Posse public projects, and then creates an `mp/init.json` file describing them.
+    1. Initializing creates an `mp/` folder in your current directory, finds all of the Cloud Posse public projects, and then creates an `mp/init.json` file describing them.
     1. NOTE: microplane supposedly has the ability to search against an organization and narrow the returned repos that end up in `init.json`, but that functionality seems buggy and not working. We do our repo filtering manually in the next step.
   1. Manually edit `mp/init.json` to only include the repos which you want to make changes against.
     1. Your editor's multi-select and edit capabilities are your friend here! (or maybe some [`jq`](https://stedolan.github.io/jq/) if that's your thing)

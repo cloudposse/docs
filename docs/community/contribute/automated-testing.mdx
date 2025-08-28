@@ -28,7 +28,7 @@ All of our Terraform modules have automated tests. We have two sets of checks:
     This workflow generates some documentation and performs basic sanity checks, including linting and formatting. These checks are lightweight and can be executed without requiring any special permissions. Consequently, they *are automatically run* on every commit.
     Before committing and pushing your changes, you can and should run this set of checks locally by executing the following command on your host
     ```
-    make precommit/terraform
+    pre-commit run --all-files
     ```
     Running these checks locally incorporates all the required changes that otherwise would block your PR.
   </Step>
@@ -73,6 +73,37 @@ Here's a list a workflows you might want to trigger manually should things go wr
   - `scheduled` can be triggered anytime from GitHub UI, it has a *workflow_dispatch* trigger for this purpose.
 </Steps>
 
+## Running Terraform Tests locally
+
+We use [Atmos](https://atmos.tools) to streamline how Terraform tests are run. It centralizes configuration and wraps common test workflows with easy-to-use commands.
+
+All tests are located in the `test/` folder.
+
+Under the hood, tests are powered by Terratest together with our internal [Test Helpers](https://github.com/cloudposse/test-helpers) library, providing robust infrastructure validation.
+
+Setup dependencies:
+- Install Atmos ([installation guide](https://atmos.tools/install/))
+- Install Go [1.24+ or newer](https://go.dev/doc/install)
+- Install Terraform or OpenTofu
+
+To run tests:
+
+- Run all tests:
+  ```sh
+  atmos test run
+  ```
+- Clean up test artifacts:
+  ```sh
+  atmos test clean
+  ```
+- Explore additional test options:
+  ```sh
+  atmos test --help
+  ```
+The configuration for test commands is centrally managed. To review what's being imported, see the [`atmos.yaml`](https://raw.githubusercontent.com/cloudposse/.github/refs/heads/main/.github/atmos/terraform-module.yaml) file.
+
+Learn more about implementing [custom commands](https://atmos.tools/core-concepts/custom-commands/) with atmos.
+
 ## ChatOps Configuration
 
 If you're a contributor who wants to initialize one of our terraform modules, this is the process. Note, if a repo has already been configured for ChatOps, there's no need to proceed with these steps.
@@ -80,12 +111,12 @@ If you're a contributor who wants to initialize one of our terraform modules, th
 To initialize one of our modules with ChatOps, run the following commands:
 
 <Steps>
+  1. Install Atmos ([installation guide](https://atmos.tools/install/))
   1. `git clone` the terraform module repository
   1. `cd $repo` to enter the repository directory
-  1. `make init` to initialize the build-harness
   1. `git add *` to add the changes
   1. Add the build badge to the `README.yaml` under the `badges` section.
-  1. `make readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
+  1. `atmos docs generate readme` to rebuild the `README.md` (remember, never edit the `README.md` manually since it's generated from the `README.yaml`)
   1. Open up a Pull Request with the changes. Here is a [good example](https://github.com/cloudposse/atmos/pull/555).
   1. Request a Code Review in the [`#pr-reviews`](https://slack.cloudposse.com) Slack channel (and *big* thanks for your contribution!)
 </Steps>
