@@ -129,11 +129,11 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     ```bash
     aws service-quotas request-service-quota-increase \
       --service-code organizations \
-      --quota-code L-29A42BEB \
+      --quota-code L-E619E033 \
       --desired-value 20
     ```
 
-    Where `L-29A42BEB` is the quota code for "Accounts per organization".
+    Where `L-E619E033` is the quota code for "Default maximum number of accounts" under "AWS Organizations" in "us-east-1".
 
     <Note title="Terraform Alternative">
       This quota increase can also be requested through our [account-quotas](/components/library/aws/account-quotas/) component, but it's generally faster to handle this manually or through the API since it's a one time request.
