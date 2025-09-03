@@ -8,14 +8,15 @@ tags:
   - eks
   - github-apps
 ---
+import Admonition from '@theme/Admonition'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-import Steps from '@site/src/components/Steps'
+import Note from '@site/src/components/Note'
 import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
-import Admonition from '@theme/Admonition'
-import Note from '@site/src/components/Note'
-import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import Steps from '@site/src/components/Steps'
+import TaskList from '@site/src/components/TaskList'
 
 <Intro>
   GitHub Apps is now the preferred method for Argo CD integration with GitHub. GitHub Apps provide more granular permissions, better security, and improved audit capabilities compared to Personal Access Tokens (PATs). This guide will walk you through setting up Argo CD with GitHub Apps.
@@ -25,7 +26,7 @@ import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
   - GitHub Apps provide more granular permissions than PATs
   - GitHub Apps can be installed on specific repositories
   - GitHub Apps have built-in rate limiting and audit capabilities
-  - GitHub Apps can be used for both repository management and notifications
+  - GitHub Apps need the ability to bypass branch protection rules
 </KeyPoints>
 
 ## Required GitHub Apps
@@ -70,19 +71,6 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
 - **Repository scope**:
   - All of the app repositories
 
-## Compensating Controls
-
-To address security concerns, the following compensating controls should be implemented:
-
-1. **Organization-Level Branch Ruleset**:
-   - Applied to all app repos but *not* to `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
-   - Prevents changes to the main branch with the Argo CD app *not* in the bypass list
-   - The Argo CD repos are excluded because workflows need to write to the main branch in these repos
-
-2. **Argo CD Desired State Repositories Branch Ruleset**:
-   - Applied only to the Argo CD desired state repositories
-   - Prevents writing to the main branch, but with the Argo CD app in the bypass list
-
 ## Deployment
 
 <Steps>
@@ -117,10 +105,10 @@ To address security concerns, the following compensating controls should be impl
             - `repository.contents`: Read and Write
             - `repository.metadata`: Read-Only
 
-         #### Argo CD Deploy Prod
-         - Name: `Argo CD Deploy Prod`
-         - Homepage URL: Your organization's homepage
-         - Webhook: Disabled
+        #### Argo CD Deploy Prod
+        - Name: `Argo CD Deploy Prod`
+        - Homepage URL: Your organization's homepage
+        - Webhook: Disabled
         - Permissions:
           - Push commits to Desired State Repositories:
             - `repository.contents`: Read and Write
@@ -144,13 +132,28 @@ To address security concerns, the following compensating controls should be impl
 
     <Steps>
       1. For each GitHub App:
-        <Steps>
-         1. On the GitHub App page, scroll down to "Private keys" and click "Generate a private key"
-         1. Download the private key file
-         1. Store the App ID, Installation ID, and private key securely in 1Password
-        </Steps>
-      2. Upload these credentials to AWS SSM Parameter Store:
-         Save these credentials to AWS SSM at the [paths specified by the `eks/argocd` component](/layers/software-delivery/eks-argocd/setup/#-configure-argo-cd-to-use-github-apps)
+          <Steps>
+           1. On the GitHub App page, scroll down to "Private keys" and click "Generate a private key"
+           1. Download the private key file
+           1. Store the App ID, Installation ID, and private key securely in 1Password
+          </Steps>
+      2. Upload these credentials to AWS SSM Parameter Store
+          <TaskList>
+          - Upload the `Argo CD Instance` private key to `/argocd/argo_cd_instance/app_private_key` in `core-auto`: 
+            ```bash
+            # Replace acme with your namespace or assume the role separately.
+            # Your default region should be the same as your primary region. 
+            assume-role acme-core-gbl-auto-admin
+            chamber write argocd argo_cd_instance/app_private_key \
+              "$(cat /path/to/argocd-deploy-non-prod.private-key.pem)"
+            ```
+          - Upload the `Argo CD Notifications` private key to `/argocd/argo_cd_notifications/app_private_key` to `core-auto`:
+            ```bash
+            assume-role acme-core-gbl-auto-admin
+            chamber write argocd argo_cd_notifications/app_private_key \
+              "$(cat /path/to/argocd-notifications.private-key.pem)"
+            ```
+          </TaskList>
     </Steps>
   </Step>
 
@@ -193,29 +196,20 @@ To address security concerns, the following compensating controls should be impl
   <Step>
     ### <StepNumber/> Configure Branch Protection Rules
 
-    Set up the compensating controls by configuring branch protection rules:
+    If branch protection rules are enabled in your GitHub Organization, you'll need to configure exceptions for the ArgoCD GitHub Apps. This allows ArgoCD to update repositories while still maintaining security. The GitHub Apps must be able to bypass branch protection rules in order for ArgoCD's automated deployments to work correctly. 
 
-    **Organization-Level Branch Ruleset**:
+    Branch rulesets may be configured both or either at an organization and repository level. Check the enabled rulesets in both ArgoCD desired state repositories under "Code, planning, and automation" > "Branch rules". Add the ArgoCD GitHub Apps to the bypass list of any ruleset that prevents changes to the main branch.
 
-    <Steps>
-     - Go to your organization settings
-     - Navigate to "Code, planning, and automation" > "Branch rules"
-     - Create a new ruleset that applies to all app repos except `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
-     - Configure the ruleset to prevent changes to the main branch with the Argo CD app not in the bypass list
-    </Steps>
-
-    **Argo CD Desired State Repositories Branch Ruleset**:
-
-    <Steps>
-     - Create a separate ruleset that applies only to `acme/argocd-deploy-non-prod` and `acme/argocd-deploy-prod`
-     - Configure the ruleset to prevent writing to the main branch, but with the Argo CD app in the bypass list
-    </Steps>
   </Step>
 
   <Step>
     ## <StepNumber/> Configure Argo CD Desire State Repositories to Use GitHub Apps
 
-    Update your Argo CD desired state repository configuration to use the GitHub App instead of PAT:
+    <Note title="Reference Architecture Users">
+    This step should be pre-configured for Reference Architecture users.
+    </Note>
+
+    Update your Argo CD desired state repository configuration to use the GitHub App:
 
     ```yaml
     components:
@@ -242,9 +236,18 @@ To address security concerns, the following compensating controls should be impl
   <Step>
     ### <StepNumber/> Configure Argo CD to Use GitHub Apps
 
-    Update your Argo CD configuration to use the GitHub Apps instead of PATs:
+    <Note title="Reference Architecture Users">
+      Reference Architecture users will need to update both GitHub App and Installation IDs.
+    </Note>
+
+    Update your Argo CD configuration to use the GitHub Apps by modifying the component configuration shown below. 
+    
+    <Note title="Installation ID">
+      You can find the Installation ID by going to your GitHub Organization settings, selecting "GitHub Apps", clicking on your app, then selecting "Install App". The Installation ID will be in the URL, e.g. https://github.com/organizations/acme/settings/installations/44444444.
+    </Note>
 
     ```yaml
+    # stacks/catalog/eks/argocd/defaults.yaml
     components:
       terraform:
         eks/argocd:
@@ -278,12 +281,11 @@ To address security concerns, the following compensating controls should be impl
 
     Redeploy both the `argocd-repo` component for both nonprod and prod.
 
-    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/app/argocd" />
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/platform/argocd" />
 
     Then redeploy all instances of `eks/argocd`
 
-    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/app/argocd" />
-
+    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/platform/argocd" />
   </Step>
 
   <Step>
