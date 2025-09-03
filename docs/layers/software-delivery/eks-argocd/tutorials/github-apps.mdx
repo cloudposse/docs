@@ -139,7 +139,7 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
           </Steps>
       2. Upload these credentials to AWS SSM Parameter Store
           <TaskList>
-          - Upload the `Argo CD Instance` private key to `/argocd/argo_cd_instance/app_private_key` `core-auto`: 
+          - Upload the `Argo CD Instance` private key to `/argocd/argo_cd_instance/app_private_key` in `core-auto`: 
             ```bash
             # Replace acme with your namespace or assume the role separately.
             # Your default region should be the same as your primary region. 
@@ -147,7 +147,7 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
             chamber write argocd argo_cd_instance/app_private_key \
               "$(cat /path/to/argocd-deploy-non-prod.private-key.pem)"
             ```
-          - Upload the `Argo CD Notifications` to `/argocd/argo_cd_notifications/app_private_key` to `core-auto`:
+          - Upload the `Argo CD Notifications` private key to `/argocd/argo_cd_notifications/app_private_key` to `core-auto`:
             ```bash
             assume-role acme-core-gbl-auto-admin
             chamber write argocd argo_cd_notifications/app_private_key \
