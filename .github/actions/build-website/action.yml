@@ -75,6 +75,11 @@ runs:
       run: |
         make init
 
+    - name: Install Atmos
+      uses: cloudposse/github-action-setup-atmos@v2
+      with:
+        install-wrapper: false
+
     - name: "Install Python Dependencies"
       shell: bash
       run: |
