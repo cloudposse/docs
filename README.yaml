@@ -21,9 +21,6 @@ description: |-
 
   Let's jump right in! Here's how to get started with our documentation.
 
-include:
-  - "docs/targets.md"
-
 usage: |-
   1. Build dependencies
   ```
