@@ -15,4 +15,4 @@ DOWNLOAD_TMP_DIR="${DOWNLOAD_TMP_DIR:-tmp/modules}"
 python scripts/docs-collator/render_docs_for_modules.py \
 	--download-dir "${DOWNLOAD_TMP_DIR}" \
 	--output-dir "${RENDERED_DOCS_DIR}" \
-	--excludes "terraform-aws-components"
+	--excludes "terraform-aws-components,terraform-provider-template,terraform-provider-atmos"

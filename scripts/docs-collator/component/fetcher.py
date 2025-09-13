@@ -26,6 +26,7 @@ class ComponentFetcher(AbstractFetcher):
 
         self._fetch_readme_yaml(repo, module_download_dir)
         self._fetch_readme_md(repo, module_download_dir)
+        self._fetch_atmos_yaml(repo, module_download_dir)
 
         if CHANGELOG_MD in remote_files:
             self._fetch_changelog_md(repo, module_download_dir)

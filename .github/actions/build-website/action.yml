@@ -43,8 +43,6 @@ runs:
         ref: main
         path: tmp/components/terraform-aws-components
 
-
-
     - name: "Setup Python"
       uses: actions/setup-python@v5
       with:

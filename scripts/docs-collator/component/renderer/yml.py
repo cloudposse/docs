@@ -53,16 +53,19 @@ class ComponentRendererYaml(AbstractRenderer):
         logging.debug(f"README_INCLUDES: {self.component.dir}")
         response = subprocess.run(
             [
-                "make",
+                "atmos",
+                "docs",
+                "generate",
                 "readme",
-                f"README_TEMPLATE_FILE={os.path.abspath(readme_tmpl_file)}",
-                f"README_FILE={os.path.abspath(readme_md_file)}",
-                f"README_YAML={os.path.abspath(readme_yaml_file)}",
-                f"README_TEMPLATE_YAML={os.path.abspath(readme_yaml_file)}",
-                f"README_INCLUDES={os.path.abspath(self.component.dir)}/",
+                # f"README_TEMPLATE_FILE={os.path.abspath(readme_tmpl_file)}",
+                # f"README_FILE={os.path.abspath(readme_md_file)}",
+                # f"README_YAML={os.path.abspath(readme_yaml_file)}",
+                # f"README_TEMPLATE_YAML={os.path.abspath(readme_yaml_file)}",
+                # f"README_INCLUDES={os.path.abspath(self.component.dir)}/",
             ],
             capture_output=True,
-            cwd=os.path.join(SCRIPT_DIR, "templates", "make"),
+            # cwd=os.path.join(SCRIPT_DIR, "templates", "make"),
+            cwd=self.component.dir,
         )
 
         if response.returncode != 0:

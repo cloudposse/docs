@@ -66,13 +66,6 @@ class ModuleRenderer(AbstractRenderer):
 
         io.create_dirs(module_docs_dir)
 
-        # Re-render terraform docs with this repo's terraform-docs template for modules.
-        # This replaces docs/terraform.md for the given module in place
-        logging.debug(f"Rendering terraform docs for: {module_download_dir}")
-        rendering.render_terraform_docs(
-            module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
-        )
-
         # Run the make readme command in the module directory to compile README.md
         logging.debug(f"Rendering README.md for: {module_download_dir}")
         logging.debug(f"make readme")
@@ -83,20 +76,30 @@ class ModuleRenderer(AbstractRenderer):
         logging.debug(f"README_INCLUDES: {module_download_dir}")
         response = subprocess.run(
             [
-                "make",
+                "atmos",
+                "docs",
+                "generate",
                 "readme",
-                f"README_TEMPLATE_FILE={readme_tmpl_file}",
-                f"README_FILE={readme_md_file}",
-                f"README_YAML={readme_yaml_file}",
-                f"README_TEMPLATE_YAML={readme_yaml_file}",
-                f"README_INCLUDES={module_download_dir}",
+                # f"README_TEMPLATE_FILE={readme_tmpl_file}",
+                # f"README_FILE={readme_md_file}",
+                # f"README_YAML={readme_yaml_file}",
+                # f"README_TEMPLATE_YAML={readme_yaml_file}",
+                # f"README_INCLUDES={module_download_dir}",
             ],
             capture_output=True,
+            cwd=module_download_dir,
         )
 
         if response.returncode != 0:
             error_message = response.stderr.decode("utf-8")
             raise TerraformDocsRenderingError(error_message)
+
+        # Re-render terraform docs with this repo's terraform-docs template for modules.
+        # This replaces docs/terraform.md for the given module in place
+        logging.debug(f"Rendering terraform docs for: {module_download_dir}")
+        rendering.render_terraform_docs(
+            module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
+        )
 
         logging.info(f"Rendered: {readme_md_file}")
 
