@@ -1,8 +1,6 @@
 {{- defineDatasource "config" .Env.README_YAML | regexp.Replace ".*" "" -}}
-{{- defineDatasource "includes" .Env.README_INCLUDES -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
-{{- $shortModuleName := ( conv.Default $fullModuleName (conv.Join (coll.GoSlice ($fullModuleName | strings.SplitN "-" 3) 1) "-")) -}}
 ---
 title: {{ $fullModuleName }}
 sidebar_label: {{ $fullModuleName }}
@@ -69,6 +67,14 @@ This module is no longer actively maintained
 ## Examples
 
 {{(ds "config").examples }}
+{{ end }}
+
+{{ if has (ds "config") "terraform_docs" }}
+<!-- markdownlint-disable -->
+<!-- BEGIN_TF_DOCS -->
+{{ (ds "config").terraform_docs }}
+<!-- END_TF_DOCS -->
+<!-- markdownlint-restore -->
 {{ end }}
 
 {{ if has (ds "config") "include" }}

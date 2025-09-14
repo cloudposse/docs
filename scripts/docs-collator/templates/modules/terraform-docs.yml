@@ -203,7 +203,7 @@ output-values:
 
 output:
   file: README.md
-  mode: replace
+  mode: inject
 #output:
 #  file: README.md
 #  mode: inject

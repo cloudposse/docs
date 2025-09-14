@@ -1,5 +1,4 @@
 {{- defineDatasource "config" .Env.README_YAML | regexp.Replace ".*" "" -}}
-{{- defineDatasource "includes" .Env.README_INCLUDES | regexp.Replace ".*" "" -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
 {{- $shortModuleName := (index ($fullModuleName | strings.SplitN "-" 3) 2) -}}
@@ -71,6 +70,14 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullModuleName }}/edit/main/R
 ## Examples
 
 {{(ds "config").examples }}
+{{ end }}
+
+{{ if has (ds "config") "terraform_docs" }}
+<!-- markdownlint-disable -->
+<!-- BEGIN_TF_DOCS -->
+{{ (ds "config").terraform_docs }}
+<!-- END_TF_DOCS -->
+<!-- markdownlint-restore -->
 {{ end }}
 
 {{ if has (ds "config") "include" }}
