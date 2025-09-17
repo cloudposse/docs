@@ -1,0 +1,20 @@
+docs:
+  generate:
+    readme:
+      base-dir: .
+      input:
+        - "./action.yml"
+        - "./README.yaml"
+        - get_support: true
+      template: "../../../scripts/docs-collator/templates/github-actions/readme.md"
+      output: "./README.md"
+      terraform:
+        source: .
+        enabled: false
+        format: "markdown table"
+        show_providers: false
+        show_inputs: true
+        show_outputs: true
+        sort_by: "name"
+        hide_empty: false
+        indent_level: 2
