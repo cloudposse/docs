@@ -1,4 +1,5 @@
 {{- defineDatasource "config" .Env.README_YAML -}}
+{{- defineDatasource "includes" (env.Getenv "README_INCLUDES" | default "./") -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullName := (ds "config").name -}}
 {{- $shortName := (index ((ds "config").github_repo | strings.SplitN "-" 3) 2) -}}
@@ -100,7 +101,7 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullName }}/edit/main/README.
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" (printf "%s/%s" $fullName $file)) }}
+{{ (include "includes" ($file)) }}
 {{- end }}
 {{- end }}
 {{- end }}

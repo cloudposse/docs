@@ -58,7 +58,7 @@ class ModuleRenderer(AbstractRenderer):
         # self.__create_index_for_provider(repo)
         # self.__create_indexes_for_subfolders(repo)
 
-    def __render_readme(self, module_download_dir, module_docs_dir):
+    def __render_readme(self, module_download_dir, module_docs_dir, template_name="readme"):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
         readme_md_file = os.path.join(module_download_dir, README_MD)
         atmos_yaml_file = os.path.join(TEMPLATES_DIR, ATMOS_YAML)
@@ -79,7 +79,7 @@ class ModuleRenderer(AbstractRenderer):
                 f"{atmos_yaml_file}",
                 "docs",
                 "generate",
-                "readme",
+                template_name,
             ],
             capture_output=True,
             cwd=module_download_dir,
@@ -141,7 +141,7 @@ class ModuleRenderer(AbstractRenderer):
                 submodule_dir = os.path.dirname(readme)
                 readme_md = os.path.join(submodule_dir, README_MD)
                 self._pre_rendering_fixes(repo, module_download_dir, rel_dir)
-                self.__render_readme(submodule_dir, dest_dir)
+                self.__render_readme(submodule_dir, dest_dir, "submodule-readme")
                 self._post_rendering_fixes(repo, readme_md, rel_dir)
                 io.copy_file(readme_md, os.path.join(dest_dir, README_MD))
                 continue

@@ -17,3 +17,20 @@ docs:
         sort_by: "name"
         hide_empty: false
         indent_level: 2
+
+    submodule-readme:
+      base-dir: .
+      input:
+        - "./README.yaml"
+      template: "../../../../../scripts/docs-collator/templates/modules/submodule.readme.yaml.md"
+      output: "./README.md"
+      terraform:
+        source: .
+        enabled: true
+        format: "markdown table"
+        show_providers: false
+        show_inputs: true
+        show_outputs: true
+        sort_by: "name"
+        hide_empty: false
+        indent_level: 2

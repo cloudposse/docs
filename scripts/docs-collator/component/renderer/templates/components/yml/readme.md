@@ -1,4 +1,5 @@
 {{- defineDatasource "config" .Env.README_YAML | regexp.Replace ".*" "" -}}
+{{- defineDatasource "includes" (env.Getenv "README_INCLUDES" | default "./") -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
 ---
@@ -79,7 +80,7 @@ This module is no longer actively maintained
 
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" $file) }}
+{{ (include "includes" ($file)) }}
 {{- end }}
 {{- end }}
 {{- end }}

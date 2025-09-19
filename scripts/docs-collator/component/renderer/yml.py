@@ -50,7 +50,8 @@ class ComponentRendererYaml(AbstractRenderer):
         logging.debug(f"README_FILE: {readme_md_file}")
         logging.debug(f"README_YAML: {readme_yaml_file}")
         logging.debug(f"README_MD: {readme_md_file}")
-        logging.debug(f"README_INCLUDES: {self.component.dir}")
+        logging.debug(f"COMPONENT_DIR: {self.component.dir}")
+        logging.debug(f"README_INCLUDES: {dow}")
         response = subprocess.run(
             [
                 "atmos",
