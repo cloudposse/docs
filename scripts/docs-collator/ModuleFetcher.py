@@ -1,6 +1,7 @@
 import os
 
 from AbstractFetcher import AbstractFetcher, MissingReadmeYamlException
+import logging
 
 DOCS_DIR = "docs"
 IMAGES_DIR = "images"
@@ -56,11 +57,14 @@ class ModuleFetcher(AbstractFetcher):
         for readme_file in readme_files.values():
             self.github_provider.fetch_file(repo, readme_file, module_download_dir)
             if os.path.basename(readme_file) == README_YAML:
+                logging.info(f"Fetching submodule docs for: {os.path.dirname(readme_file)}")
                 self._fetch_docs(
                     repo,
                     module_download_dir,
                     submodule_dir=os.path.dirname(readme_file),
                 )
+
+        self.__fetch_terraform_files(repo, module_download_dir, remote_files)
 
     def __fetch_terraform_files(self, repo, module_download_dir, remote_files):
         for remote_file in remote_files:

@@ -9,7 +9,7 @@ from component.component import Component
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 README_YAML = "README.yaml"
 README_MD = "README.md"
-
+ATMOS_YAML = "atmos.yaml"
 IMAGES_DIR = "images"
 MODULES_README_TEMPLATE = "readme.md"
 
@@ -40,29 +40,28 @@ class ComponentRendererYaml(AbstractRenderer):
         readme_yaml_file = os.path.join(self.component.dir, README_YAML)
         readme_md_file = os.path.join(self.component.dir, README_MD)
 
-        readme_tmpl_file = os.path.join(self.templates_dir, MODULES_README_TEMPLATE)
+        atmos_yaml_file = os.path.join(self.templates_dir, ATMOS_YAML)
 
         io.create_dirs(module_docs_dir)
         # Run the make readme command in the module directory to compile README.md
         logging.debug(f"Rendering README.md for: {self.component.dir}")
-        logging.debug(f"make readme")
-        logging.debug(f"README_TEMPLATE_FILE: {readme_tmpl_file}")
+        logging.debug(f"atmos docs generate readme --config {atmos_yaml_file}")
+        logging.debug(f"ATMOS_YAML_FILE: {atmos_yaml_file}")
         logging.debug(f"README_FILE: {readme_md_file}")
         logging.debug(f"README_YAML: {readme_yaml_file}")
-        logging.debug(f"README_TEMPLATE_YAML: {readme_yaml_file}")
-        logging.debug(f"README_INCLUDES: {self.component.dir}")
+        logging.debug(f"README_MD: {readme_md_file}")
+        logging.debug(f"COMPONENT_DIR: {self.component.dir}")
         response = subprocess.run(
             [
-                "make",
+                "atmos",
+                "--config",
+                f"{atmos_yaml_file}",
+                "docs",
+                "generate",
                 "readme",
-                f"README_TEMPLATE_FILE={os.path.abspath(readme_tmpl_file)}",
-                f"README_FILE={os.path.abspath(readme_md_file)}",
-                f"README_YAML={os.path.abspath(readme_yaml_file)}",
-                f"README_TEMPLATE_YAML={os.path.abspath(readme_yaml_file)}",
-                f"README_INCLUDES={os.path.abspath(self.component.dir)}/",
             ],
             capture_output=True,
-            cwd=os.path.join(SCRIPT_DIR, "templates", "make"),
+            cwd=self.component.dir,
         )
 
         if response.returncode != 0:
@@ -73,7 +72,7 @@ class ComponentRendererYaml(AbstractRenderer):
 
         # Re-render terraform docs with this repo's terraform-docs template for modules.
         # This replaces docs/terraform.md for the given module in place
-        logging.debug(f"Rendering terraform docs for: {self.component.dir}")
+        # logging.debug(f"Rendering terraform docs for: {self.component.dir}")
         rendering.render_terraform_docs(
             self.component.terraform_dir, os.path.join(self.templates_dir, "terraform-docs.yml")
         )

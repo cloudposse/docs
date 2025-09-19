@@ -3,6 +3,7 @@ import os
 DOCS_DIR = "docs"
 TARGETS_MD = "targets.md"
 README_YAML = "README.yaml"
+ATMOS_YAML = "atmos.yaml"
 
 
 class MissingReadmeYamlException(Exception):
@@ -29,3 +30,7 @@ class AbstractFetcher:
                 continue
 
             self.github_provider.fetch_file(repo, remote_file, module_download_dir)
+
+    def _fetch_atmos_yaml(self, repo, module_download_dir):
+        self.github_provider.fetch_file(repo, ATMOS_YAML, module_download_dir)
+

@@ -7,10 +7,9 @@ from utils import io
 from utils import rendering, templating
 
 TARGETS_MD = "targets.md"
-README_YAML = "README.yaml"
 README_MD = "README.md"
+ATMOS_YAML = "atmos.yaml"
 INDEX_CATEGORY_JSON = "_category_.json"
-README_TEMPLATE = "readme.md"
 DOC_SUBFOLDER = "actions"
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -45,24 +44,25 @@ class GitHubActionRenderer(AbstractRenderer):
         self._copy_extra_resources_for_docs(repo_download_dir, module_docs_dir)
 
     def __render_readme(self, module_download_dir, module_docs_dir):
-        readme_yaml_file = os.path.join(module_download_dir, README_YAML)
         readme_md_file = os.path.join(module_download_dir, README_MD)
-        readme_tmpl_file = os.path.join(TEMPLATES_DIR, README_TEMPLATE)
+        atmos_yaml_file = os.path.join(TEMPLATES_DIR, ATMOS_YAML)
 
         io.create_dirs(module_docs_dir)
 
         response = subprocess.run(
             [
-                "make",
+                "atmos",
+                "--config",
+                f"{atmos_yaml_file}",
+                "docs",
+                "generate",
                 "readme",
-                f"README_TEMPLATE_FILE={readme_tmpl_file}",
-                f"README_FILE={readme_md_file}",
-                f"README_YAML={readme_yaml_file}",
-                f"README_TEMPLATE_YAML={readme_yaml_file}",
-                f"README_INCLUDES={module_download_dir}",
             ],
             capture_output=True,
+            cwd=module_download_dir,
         )
+
+        logging.info(response.stderr.decode("utf-8"))
 
         if response.returncode != 0:
             error_message = response.stderr.decode("utf-8")

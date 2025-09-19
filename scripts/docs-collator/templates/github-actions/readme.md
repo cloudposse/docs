@@ -1,8 +1,11 @@
 {{- defineDatasource "config" .Env.README_YAML -}}
-{{- defineDatasource "includes" (env.Getenv "README_INCLUDES") -}}
+{{- defineDatasource "includes" (env.Getenv "README_INCLUDES" | default "./") -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullName := (ds "config").name -}}
-{{- $shortName := (index ($fullName | strings.SplitN "-" 3) 2) -}}
+{{- $shortName := (index ((ds "config").github_repo | strings.SplitN "-" 3) 2) -}}
+{{/* Inspired https://github.com/Dirrk/action-docs/blob/master/src/default_template.tpl */}}
+{{- define "escape_chars" }}{{ . | strings.ReplaceAll "_" "\\_" | strings.ReplaceAll "|" "\\|" | strings.ReplaceAll "*" "\\*" }}{{- end }}
+{{- define "sanitize_string" }}{{ . | strings.ReplaceAll "\n\n" "<br><br>" | strings.ReplaceAll "  \n" "<br>" | strings.ReplaceAll "\n" "<br>" | tmpl.Exec "escape_chars" }}{{ end -}}
 ---
 title: {{ $shortName }}
 sidebar_label: {{ $shortName }}
@@ -73,9 +76,32 @@ custom_edit_url: https://github.com/cloudposse/{{ $fullName }}/edit/main/README.
 {{(ds "config").examples }}
 {{ end }}
 
+{{- $action := (datasource "config") -}}
+{{ if has $action "inputs" }}
+## Inputs
+<!-- markdownlint-disable -->
+| Name | Description | Default | Required |
+|------|-------------|---------|----------|
+{{- range $key, $input := $action.inputs }}
+| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $input "description") }}{{ tmpl.Exec "sanitize_string" $input.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} | {{ if (has $input "default") }}{{ tmpl.Exec "sanitize_string" $input.default }}{{ else }}N/A{{ end }} | {{ if (has $input "required") }}{{ $input.required }}{{ else }}false{{ end }} |
+{{- end }}
+<!-- markdownlint-restore -->
+{{- end }}
+
+{{ if has $action "outputs" }}
+## Outputs
+<!-- markdownlint-disable -->
+| Name | Description |
+|------|-------------|
+{{- range $key, $output := $action.outputs }}
+| {{ tmpl.Exec "escape_chars" $key }} | {{ if (has $output "description") }}{{ tmpl.Exec "sanitize_string" $output.description }}{{ else }}{{ tmpl.Exec "escape_chars" $key }}{{ end }} |
+{{- end }}
+<!-- markdownlint-restore -->
+{{- end }}
+
 {{ if has (ds "config") "include" }}
 {{ range $file := (datasource "config").include -}}
-{{ (include "includes" (printf "%s/%s" $fullName $file)) }}
+{{ (include "includes" ($file)) }}
 {{- end }}
 {{- end }}
 {{- end }}

@@ -90,10 +90,15 @@ runs:
         tag: v0.18.0
         cache: enable
 
+    - name: Install Atmos
+      uses: cloudposse/github-action-setup-atmos@v2
+      with:
+        install-wrapper: false
+
     - name: "Render Documentation for Terraform Components"
       shell: bash
       env:
-        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}      
+        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
       run: |
         ./scripts/render-docs-for-components.sh
 

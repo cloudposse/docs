@@ -6,6 +6,7 @@ DOCS_DIR = "docs"
 ACTIONS_DIR = "actions"
 README_YAML = "README.yaml"
 README_MD = "README.md"
+ACTION_YAML = "action.yml"
 
 
 class GitHubActionFetcher(AbstractFetcher):
@@ -23,11 +24,18 @@ class GitHubActionFetcher(AbstractFetcher):
 
         self._fetch_readme_yaml(repo, repo_download_dir)
 
+        self._fetch_action_yaml(repo, repo_download_dir)
+
+        self._fetch_atmos_yaml(repo, repo_download_dir)
+
         if DOCS_DIR in remote_files:
             self._fetch_docs(repo, repo_download_dir)
 
         if ACTIONS_DIR in remote_files:
             self.__fetch_sub_actions(repo, repo_download_dir)
+
+    def _fetch_action_yaml(self, repo, module_download_dir):
+        self.github_provider.fetch_file(repo, ACTION_YAML, module_download_dir)
 
     def __fetch_sub_actions(self, repo, module_download_dir):
         remote_files = self.github_provider.list_repo_dir(repo, ACTIONS_DIR)

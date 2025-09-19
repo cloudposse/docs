@@ -40,3 +40,9 @@ real-clean:
 
 lint:
 	npx docusaurus-mdx-checker --cwd docs
+
+readme/build:
+	@atmos docs generate readme
+
+readme:
+	@atmos docs generate readme

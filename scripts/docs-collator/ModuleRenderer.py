@@ -9,11 +9,10 @@ from utils import rendering, templating
 DOCS_DIR = "docs"
 IMAGES_DIR = "images"
 SUBMODULES_DIR = "modules"
-TARGETS_MD = "targets.md"
+ATMOS_YAML = "atmos.yaml"
 README_YAML = "README.yaml"
 README_MD = "README.md"
 INDEX_CATEGORY_JSON = "_category_.json"
-MODULES_README_TEMPLATE = "readme.md"
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMPLATES_DIR = os.path.join(SCRIPT_DIR, "templates/modules")
@@ -59,12 +58,36 @@ class ModuleRenderer(AbstractRenderer):
         # self.__create_index_for_provider(repo)
         # self.__create_indexes_for_subfolders(repo)
 
-    def __render_readme(self, module_download_dir, module_docs_dir):
+    def __render_readme(self, module_download_dir, module_docs_dir, template_name="readme"):
         readme_yaml_file = os.path.join(module_download_dir, README_YAML)
         readme_md_file = os.path.join(module_download_dir, README_MD)
-        readme_tmpl_file = os.path.join(TEMPLATES_DIR, MODULES_README_TEMPLATE)
+        atmos_yaml_file = os.path.join(TEMPLATES_DIR, ATMOS_YAML)
 
         io.create_dirs(module_docs_dir)
+
+        # Run the make readme command in the module directory to compile README.md
+        logging.debug(f"Rendering README.md for: {module_download_dir}")
+        logging.debug(f"atmos docs generate readme --config {atmos_yaml_file}")
+        logging.debug(f"ATMOS_YAML_FILE: {atmos_yaml_file}")
+        logging.debug(f"README_FILE: {readme_md_file}")
+        logging.debug(f"README_YAML: {readme_yaml_file}")
+        logging.debug(f"README_MD: {readme_md_file}")
+        response = subprocess.run(
+            [
+                "atmos",
+                "--config",
+                f"{atmos_yaml_file}",
+                "docs",
+                "generate",
+                template_name,
+            ],
+            capture_output=True,
+            cwd=module_download_dir,
+        )
+
+        if response.returncode != 0:
+            error_message = response.stderr.decode("utf-8")
+            raise TerraformDocsRenderingError(error_message)
 
         # Re-render terraform docs with this repo's terraform-docs template for modules.
         # This replaces docs/terraform.md for the given module in place
@@ -72,31 +95,6 @@ class ModuleRenderer(AbstractRenderer):
         rendering.render_terraform_docs(
             module_download_dir, os.path.join(TEMPLATES_DIR, "terraform-docs.yml")
         )
-
-        # Run the make readme command in the module directory to compile README.md
-        logging.debug(f"Rendering README.md for: {module_download_dir}")
-        logging.debug(f"make readme")
-        logging.debug(f"README_TEMPLATE_FILE: {readme_tmpl_file}")
-        logging.debug(f"README_FILE: {readme_md_file}")
-        logging.debug(f"README_YAML: {readme_yaml_file}")
-        logging.debug(f"README_TEMPLATE_YAML: {readme_yaml_file}")
-        logging.debug(f"README_INCLUDES: {module_download_dir}")
-        response = subprocess.run(
-            [
-                "make",
-                "readme",
-                f"README_TEMPLATE_FILE={readme_tmpl_file}",
-                f"README_FILE={readme_md_file}",
-                f"README_YAML={readme_yaml_file}",
-                f"README_TEMPLATE_YAML={readme_yaml_file}",
-                f"README_INCLUDES={module_download_dir}",
-            ],
-            capture_output=True,
-        )
-
-        if response.returncode != 0:
-            error_message = response.stderr.decode("utf-8")
-            raise TerraformDocsRenderingError(error_message)
 
         logging.info(f"Rendered: {readme_md_file}")
 
@@ -143,7 +141,7 @@ class ModuleRenderer(AbstractRenderer):
                 submodule_dir = os.path.dirname(readme)
                 readme_md = os.path.join(submodule_dir, README_MD)
                 self._pre_rendering_fixes(repo, module_download_dir, rel_dir)
-                self.__render_readme(submodule_dir, dest_dir)
+                self.__render_readme(submodule_dir, dest_dir, "submodule-readme")
                 self._post_rendering_fixes(repo, readme_md, rel_dir)
                 io.copy_file(readme_md, os.path.join(dest_dir, README_MD))
                 continue

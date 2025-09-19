@@ -103,3 +103,7 @@ content/reference-architecture/**
 !content/components/library/aws/_category_.json
 !content/github-actions/library/actions/_category_.json
 changelog/*
+
+.atmos
+.python-version
+yarn.lock

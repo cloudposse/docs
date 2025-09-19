@@ -202,8 +202,8 @@ output-values:
   from: ''
 
 output:
-  file: docs/terraform.md
-  mode: replace
+  file: README.md
+  mode: inject
 #output:
 #  file: README.md
 #  mode: inject

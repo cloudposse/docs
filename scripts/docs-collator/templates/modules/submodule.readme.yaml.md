@@ -2,7 +2,7 @@
 {{- defineDatasource "includes" (env.Getenv "README_INCLUDES" | default "./") -}}
 {{- $deprecated := has (ds "config") "deprecated" -}}
 {{- $fullModuleName := (ds "config").name -}}
-{{- $shortModuleName := (index ($fullModuleName | strings.SplitN "-" 3) 2) -}}
+{{- $shortModuleName := $fullModuleName -}}
 ---
 title: {{ $shortModuleName }}
 sidebar_label: {{ $shortModuleName }}
