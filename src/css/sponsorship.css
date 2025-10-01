@@ -1,0 +1,9 @@
+
+
+[data-theme="light"] img.datadog-logo {
+  content: url('https://cloudposse.com/images/partners/datadog-purple.svg');
+}
+
+[data-theme="dark"] img.datadog-logo {
+  content: url('https://cloudposse.com/images/partners/datadog-white.svg');
+}
