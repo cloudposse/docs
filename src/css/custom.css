@@ -76,6 +76,14 @@ body {
   background-color: #00fff61d;
 }
 
+html[data-theme="light"] .datadog-logo {
+  content: url('https://cloudposse.com/images/partners/datadog-purple.svg');
+}
+
+html[data-theme="dark"] .datadog-logo {
+  content: url('https://cloudposse.com/images/partners/datadog-white.svg');
+}
+
 .button--lg {
   margin-top: 1em;
   margin-bottom: 2em;
