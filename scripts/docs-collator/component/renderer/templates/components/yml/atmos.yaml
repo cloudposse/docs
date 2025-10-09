@@ -17,3 +17,7 @@ docs:
         sort_by: "name"
         hide_empty: false
         indent_level: 2
+
+settings:
+  telemetry:
+    enabled: false
