@@ -100,6 +100,30 @@ async function createConfig() {
           redirects: getStaticRedirects(),
         },
       ],
+      [
+        'docusaurus-plugin-llms',
+        {
+          generateLLMsTxt: true,
+          generateLLMsFullTxt: true,
+          docsDir: 'docs',
+          includeBlog: true,
+          includeOrder: [
+            'into/*',
+            'quickstart/*',
+            'jumpstart/*',
+            'learn/*',
+            'layers/*',
+            'best-practices/*',
+            'reference/*',
+            'components/*',
+            'modules/*',
+            'github-actions/*',
+            'resources/*',
+            'community/*',
+            'support/*',
+          ],
+        },
+      ],
       redirectsPlugin,
       async function AddTailwindCSS(context, options) {
         return {
@@ -130,7 +154,7 @@ async function createConfig() {
             showLastUpdateAuthor: true,
             // Ignore tags missing from tags.yml
             // There are many from components and GHA, it's too much noise without being helpful
-            onInlineTags: 'ignore', 
+            onInlineTags: 'ignore',
             tags: 'tags.yml',
             include: ['**/*.md', '**/*.mdx']
           },

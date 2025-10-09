@@ -107,3 +107,6 @@ changelog/*
 .atmos
 .python-version
 yarn.lock
+
+**/llms.txt
+**/llms-full.txt
