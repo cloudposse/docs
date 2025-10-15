@@ -16,8 +16,6 @@ For a while, running Karpenter on AWS Fargate sounded like a perfect solution. N
 
 But in practice, that setup started to cause problems for certain EKS add-ons. Over time, those lessons led us — and our customers — to recommend using a small managed node group (MNG) instead of relying solely on Fargate. Here's why.
 
----
-
 ## The Problem with "No Nodes"
 
 EKS cluster creation with Terraform requires certain managed add-ons — like CoreDNS or the EBS CSI driver — to become active before Terraform considers the cluster complete.
@@ -25,8 +23,6 @@ EKS cluster creation with Terraform requires certain managed add-ons — like Co
 But Fargate pods don't exist until there's a workload that needs them. That means when Terraform tries to deploy add-ons, there are no compute nodes for the add-ons to run on. Terraform waits… and waits… until the cluster creation fails.
 
 You can manually retry or patch things later, but that defeats the purpose of automation. We build for repeatability — not babysitting.
-
----
 
 ## The Hidden Cost of "Serverless Nodes"
 
@@ -40,8 +36,6 @@ Once they're running, those pods don't move automatically, even as the cluster g
 
 **A deceptively healthy cluster with all your CoreDNS replicas living on the same node in one AZ — a single point of failure disguised as a distributed system.**
 
----
-
 ## The Terraform Catch-22
 
 Terraform enforces a strict dependency model: it won't complete a resource until it's ready.
@@ -51,8 +45,6 @@ So without a static node group, Terraform can't successfully create the cluster 
 And without those add-ons running, Karpenter can't launch its first node (because Karpenter itself is waiting on the cluster to stabilize).
 
 This circular dependency means your beautiful "fully automated" Fargate-only cluster gets stuck in the most ironic place: **bootstrap deadlock**.
-
----
 
 ## The Solution: A Minimal Managed Node Pool
 
@@ -71,8 +63,6 @@ You can even disable autoscaling for this node pool. One node per AZ is enough.
 
 Think of it as your cluster's heartbeat — steady, predictable, and inexpensive.
 
----
-
 ## Cost and Flexibility
 
 Fargate offers convenience, but at a premium. A pod requesting 2 vCPUs and 4 GiB of memory costs about **$0.098/hour**, compared to **$0.076/hour** for an equivalent EC2 c6a.large instance.
@@ -89,8 +79,6 @@ By contrast, a managed node group gives you flexibility:
 
 The result: **predictable cost floor, flexible scale ceiling**.
 
----
-
 ## Lessons Learned
 
 At Cloud Posse, we love automation — but we love reliability through simplicity even more.
@@ -106,8 +94,6 @@ But for production systems where uptime and high availability matter, a hybrid m
 </FeatureList>
 
 It's not about Fargate being bad — it's about knowing where it fits in your architecture.
-
----
 
 > "Karpenter doesn't use voting. Leader election uses Kubernetes leases. There's no strict technical requirement to have three pods — unless you actually care about staying up."
 >
