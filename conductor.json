@@ -1,7 +1,7 @@
 {
   "scripts": {
     "setup": "./scripts/conductor-setup.sh",
-    "run": "npm start -- --port $CONDUCTOR_PORT --host 0.0.0.0"
+    "run": "npm start -- --port $CONDUCTOR_PORT"
   },
   "runScriptMode": "nonconcurrent"
 }
