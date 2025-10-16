@@ -1,0 +1,47 @@
+---
+title: Introducing Our Component Deprecation Process
+slug: deprecation-process
+authors: [osterman]
+tags: [community, maintenance, github]
+date: 2025-10-15
+---
+
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+We've documented our formal process for deprecating and archiving components to ensure transparency and give our community adequate notice when repositories are being sunset.
+</Intro>
+
+Hello SweetOps!
+
+As part of our commitment to maintaining [300+ open source projects](https://github.com/cloudposse/) across Terraform modules, [components](https://github.com/cloudposse-terraform-components), and other tooling, we occasionally need to deprecate repositories that are no longer actively maintained or have been superseded by better alternatives.
+
+## What to Expect
+
+We've added comprehensive documentation outlining our [Deprecation and Archival Process](/community/contribute/our-github#deprecation-and-archival-process) to ensure this transition is as smooth as possible for everyone in our community.
+
+When we deprecate a repository, here's what you can expect:
+
+1. **GitHub Issue Created**: A pinned issue with detailed explanation, timeline, and migration guidance
+2. **README Warnings Added**: Prominent deprecation notices at the top of documentation
+3. **Blog Post Published**: Announcement in our changelog/blog about the deprecation
+4. **Pull Request Submitted**: All changes announced via PR for community visibility
+5. **Grace Period**: Typically 90+ days for the community to migrate and ask questions
+6. **Repository Archived**: After the grace period, repos are archived (not deleted) and remain publicly accessible
+7. **Blog Post Updated**: Announcement updated to reflect the archival completion
+
+## Why This Matters
+
+This structured approach ensures that:
+- You have advance notice before any repository is archived
+- Migration paths and alternatives are clearly documented
+- Historical access to code is preserved
+- The community can provide feedback during the deprecation period
+
+## Our Commitment
+
+As stated in our [GitHub documentation](/community/contribute/our-github), we commit to always provide free and public access to our Open Source repositories. Even when archived, repositories remain accessible for historical reference and continued use.
+
+:::tip Questions?
+If you have questions about deprecated components or need migration assistance, reach out in the [SweetOps Slack](https://cloudposse.com/slack) or [GitHub Discussions](https://github.com/orgs/cloudposse/discussions).
+:::

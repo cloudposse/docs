@@ -42,6 +42,106 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 Cloud Posse actively maintains all projects on [our GitHub](https://github.com/cloudposse/).
 
+## Deprecation and Archival Process
+
+From time to time, we may need to deprecate and archive repositories that are no longer actively maintained. We follow a structured process to ensure transparency and give the community adequate notice.
+
+This process applies to all Cloud Posse repositories, including:
+- Terraform modules in the [cloudposse](https://github.com/cloudposse/) organization
+- Terraform components in the [cloudposse-terraform-components](https://github.com/cloudposse-terraform-components) organization
+- GitHub Actions and other tooling
+
+### Step 1: Create and Pin a GitHub Issue
+
+Create a comprehensive GitHub issue that includes:
+- Detailed explanation of the deprecation
+- Timeline and key dates
+- Migration path or alternatives
+- Answers to common questions
+- Contact information for support
+
+Pin this issue to the repository so it appears at the top of the Issues tab.
+
+### Step 2: Add Deprecation Notice to README
+
+Add a deprecation warning at the top of the `README.md` using a GitHub-style warning admonition:
+
+```markdown
+> [!WARNING]
+> **Deprecated**: This repository is deprecated and will be archived on [DATE].
+> Please see [Issue #XXX](link-to-pinned-issue) for more information.
+```
+
+### Step 3: Update README.yaml
+
+If the project uses `README.yaml` for generating documentation, add the `deprecated` field:
+
+```yaml
+deprecated:
+  notice: |-
+    This module is deprecated and will be archived on [DATE].
+    Please see the [pinned issue](link-to-pinned-issue) for details and migration guidance.
+
+    Consider using [alternative-module](link) as a replacement.
+```
+
+After updating `README.yaml`, regenerate the `README.md`:
+
+```bash
+atmos docs generate readme
+```
+
+### Step 4: Publish Blog Post Announcement
+
+Create a blog post announcing the deprecation. This post should:
+- Link to the pinned GitHub issue
+- Explain the reason for deprecation
+- Provide the timeline and deprecation date
+- Offer migration guidance or alternatives
+- Direct readers where to ask questions
+
+This ensures the broader community is aware of the deprecation, even if they're not actively monitoring the repository.
+
+### Step 5: Submit Pull Request
+
+Create a pull request with the changes from Steps 2-3. This PR provides visibility to those monitoring repository activity. The PR should:
+- Clearly state the reason for deprecation
+- Specify the planned deprecation date
+- Provide migration guidance or alternative solutions (if applicable)
+- Reference the GitHub issue created in Step 1
+- Tag relevant stakeholders for visibility
+
+### Step 6: Wait Until Deprecation Date
+
+Allow sufficient time (typically 90+ days) for the community to:
+- Migrate away from the deprecated component
+- Ask questions and get support
+- Complete any in-flight work
+
+### Step 7: Archive the Repository
+
+Once the deprecation date has passed:
+
+1. Update the `.github/settings.yml` file in the repository:
+
+```yaml
+repository:
+  archived: true
+```
+
+2. Commit and merge this change
+
+3. The repository will be automatically archived by GitHub settings automation
+
+Once archived, the repository becomes read-only but remains publicly accessible for historical reference.
+
+### Step 8: Update Blog Post
+
+Update the blog post from Step 4 to reflect that the repository has been archived:
+- Add a note that the deprecation period has ended
+- Confirm the repository is now archived
+- Remind readers that the code remains publicly accessible for historical reference
+
 ## GitHub Projects
 
 There's a lot going on in our GitHub. With over [200+ Open Source repositories](https://github.com/cloudposse/), keeping track of all the [Open Issues](https://github.com/search?q=org%3Acloudposse+type%3Aissues+is%3Aopen), Feature Requests, and Pull Requests is a fulltime job.
