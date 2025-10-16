@@ -12,39 +12,50 @@ import Intro from '@site/src/components/Intro';
 When simplicity meets automation, sometimes it's the hidden complexity that bites back.
 </Intro>
 
-For a while, running Karpenter on AWS Fargate sounded like a perfect solution. No nodes to manage, automatic scaling, and no EC2 lifecycle headaches. Even the Karpenter team showcased it — after all, what better way to demonstrate an autoscaler's power than by letting it manage everything from a blank slate?
+For a while, running Karpenter on AWS Fargate sounded like a perfect solution. No nodes to manage, automatic scaling, and no EC2 lifecycle headaches. The [AWS EKS Best Practices Guide](https://aws.github.io/aws-eks-best-practices/karpenter/#run-the-karpenter-controller-on-eks-fargate-or-on-a-worker-node-that-belongs-to-a-node-group) and [Karpenter's official documentation](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/) both present Fargate as a viable option for running the Karpenter controller.
 
-But in practice, that setup started to cause problems for certain EKS add-ons. Over time, those lessons led us — and our customers — to recommend using a small managed node group (MNG) instead of relying solely on Fargate. Here's why.
+But in practice, that setup started to cause problems for certain EKS add-ons. Over time, those lessons led us — and our customers — to recommend using a small managed node group (MNG) instead of relying solely on Fargate.
 
-## The Problem with "No Nodes"
+**This recommendation diverges from some official AWS guidance**, and we acknowledge that. Here's why we made this decision.
+
+## Why Fargate Was Attractive (and Still Is, Sometimes)
+
+The appeal of Fargate for Karpenter is understandable:
+
+<FeatureList>
+  - No need to bootstrap a managed node group before deploying Karpenter
+  - Simpler initial setup for teams not using Infrastructure-as-Code frameworks
+  - Karpenter's early versions had limited integration with managed node pools
+  - It showcased Karpenter's capabilities in the most dramatic way possible
+</FeatureList>
+
+For teams deploying clusters manually or with basic tooling, Fargate eliminates several complex setup steps. But when you're using sophisticated Infrastructure-as-Code like [Cloud Posse's Terraform components](https://docs.cloudposse.com/components/), that initial complexity is already handled—and the operational benefits of a managed node group become far more valuable.
+
+## The Problem with "No Nodes" (and the Terraform Catch-22)
 
 EKS cluster creation with Terraform requires certain managed add-ons — like CoreDNS or the EBS CSI driver — to become active before Terraform considers the cluster complete.
 
 But Fargate pods don't exist until there's a workload that needs them. That means when Terraform tries to deploy add-ons, there are no compute nodes for the add-ons to run on. Terraform waits… and waits… until the cluster creation fails.
 
+Terraform enforces a strict dependency model: it won't complete a resource until it's ready. Without a static node group, Terraform can't successfully create the cluster (because the add-ons can't start). And without those add-ons running, Karpenter can't launch its first node (because Karpenter itself is waiting on the cluster to stabilize).
+
+This circular dependency means your beautiful "fully automated" Fargate-only cluster gets stuck in the most ironic place: **bootstrap deadlock**.
+
 You can manually retry or patch things later, but that defeats the purpose of automation. We build for repeatability — not babysitting.
 
 ## The Hidden Cost of "Serverless Nodes"
 
-Even after getting past cluster creation, the Fargate-only model creates subtle but serious issues with high availability.
+Even after getting past cluster creation, there are subtle but serious issues with high availability.
 
 By AWS and Cloud Posse best practices, production-grade clusters should span three availability zones, with cluster-critical services distributed across them.
 
-However, during initial scheduling, Karpenter might spin up just one node large enough to fit all your add-on pods — even if they request three replicas with anti-affinity rules. Kubernetes will happily co-locate them all on that single node.
+However, during initial scheduling with **managed node groups**, Karpenter might spin up just one node large enough to fit all your add-on pods — even if they request three replicas with anti-affinity rules. Kubernetes will happily co-locate them all on that single node.
 
 Once they're running, those pods don't move automatically, even as the cluster grows. The result?
 
 **A deceptively healthy cluster with all your CoreDNS replicas living on the same node in one AZ — a single point of failure disguised as a distributed system.**
 
-## The Terraform Catch-22
-
-Terraform enforces a strict dependency model: it won't complete a resource until it's ready.
-
-So without a static node group, Terraform can't successfully create the cluster (because the add-ons can't start).
-
-And without those add-ons running, Karpenter can't launch its first node (because Karpenter itself is waiting on the cluster to stabilize).
-
-This circular dependency means your beautiful "fully automated" Fargate-only cluster gets stuck in the most ironic place: **bootstrap deadlock**.
+While [topologySpreadConstraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) can help encourage multi-AZ distribution, they don't guarantee it during the critical cluster bootstrap phase when Karpenter is creating its first nodes.
 
 ## The Solution: A Minimal Managed Node Pool
 
@@ -63,11 +74,24 @@ You can even disable autoscaling for this node pool. One node per AZ is enough.
 
 Think of it as your cluster's heartbeat — steady, predictable, and inexpensive.
 
+## Additional Fargate Constraints
+
+Beyond the HA challenges, [Fargate has architectural constraints](https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html) that can affect cluster add-ons:
+
+<FeatureList>
+  - Each Fargate pod runs on its own isolated compute resource (one pod per node)
+  - No dynamic persistent volume provisioning
+  - Fixed CPU and memory configurations with coarse granularity
+  - 256 MB memory overhead for Kubernetes components
+</FeatureList>
+
+While these constraints don't necessarily prevent Fargate from working, they add complexity when running cluster-critical infrastructure that needs precise resource allocation and high availability guarantees.
+
 ## Cost and Flexibility
 
 Fargate offers convenience, but at a premium. A pod requesting 2 vCPUs and 4 GiB of memory costs about **$0.098/hour**, compared to **$0.076/hour** for an equivalent EC2 c6a.large instance.
 
-And because Fargate bills in coarse increments, you often overpay for partial capacity.
+And because [Fargate bills in coarse increments](https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html), you often overpay for partial capacity.
 
 By contrast, a managed node group gives you flexibility:
 
@@ -78,6 +102,12 @@ By contrast, a managed node group gives you flexibility:
 </FeatureList>
 
 The result: **predictable cost floor, flexible scale ceiling**.
+
+## The Evolution of Karpenter's Recommendations
+
+Interestingly, the Karpenter team's own guidance has evolved over time. [Karpenter's current getting started guide](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/) now defaults to using **EKS Managed Node Groups** in its example configurations, with Fargate presented as an alternative that requires uncommenting configuration sections.
+
+While we can't pinpoint exactly when this shift occurred, it suggests the Karpenter team recognized that managed node groups provide a more reliable foundation for most production use cases.
 
 ## Lessons Learned
 
@@ -95,10 +125,29 @@ But for production systems where uptime and high availability matter, a hybrid m
 
 It's not about Fargate being bad — it's about knowing where it fits in your architecture.
 
+## When Fargate-Only Might Still Work
+
+To be fair, there are scenarios where running Karpenter on Fargate might make sense:
+
+<FeatureList>
+  - Long-lived development environments where the $120/month MNG baseline cost matters more than availability
+  - Clusters deployed manually (not via Terraform) where bootstrap automation isn't critical
+  - Proof-of-concept deployments demonstrating Karpenter's capabilities
+  - Organizations that have accepted the operational trade-offs and built workarounds
+</FeatureList>
+
+**However**, be aware that development clusters that are frequently rebuilt will hit the Terraform bootstrap deadlock problem more often—making automation failures a regular occurrence rather than a one-time setup issue.
+
+## Your Mileage May Vary
+
+It's worth noting that [experienced practitioners in the SweetOps community](https://sweetops.slack.com/) have successfully run Karpenter on Fargate for years across multiple production clusters. Their setups work, and they've built processes around the constraints.
+
+This proves our recommendation isn't absolute—some teams make Fargate work through careful configuration and accepted trade-offs. However, these same practitioners acknowledged they'd likely choose MNG if starting fresh today with modern tooling.
+
 > "Karpenter doesn't use voting. Leader election uses Kubernetes leases. There's no strict technical requirement to have three pods — unless you actually care about staying up."
 >
 > — Ihor Urazov, SweetOps Slack
 
-That's the key. If you care about staying up, give your cluster something to stand on.
+That's the key insight. The technical requirements are flexible—it's your operational requirements that determine the right choice.
 
-A small, stable managed node pool does exactly that.
+If staying up matters, if automation matters, if avoiding manual intervention matters, then give your cluster something solid to stand on. A small, stable managed node pool does exactly that.
