@@ -80,7 +80,7 @@ Beyond the HA challenges, [Fargate has architectural constraints](https://docs.a
 
 <FeatureList>
   - Each Fargate pod runs on its own isolated compute resource (one pod per node)
-  - No dynamic persistent volume provisioning
+  - No support for EBS-backed dynamic PVCs; only EFS CSI volumes are supported
   - Fixed CPU and memory configurations with coarse granularity
   - 256 MB memory overhead for Kubernetes components
 </FeatureList>
