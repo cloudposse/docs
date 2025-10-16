@@ -152,3 +152,20 @@ This proves our recommendation isn't absolute—some teams make Fargate work thr
 That's the key insight. The technical requirements are flexible—it's your operational requirements that determine the right choice.
 
 If staying up matters, if automation matters, if avoiding manual intervention matters, then give your cluster something solid to stand on. A small, stable managed node pool does exactly that.
+
+## What About EKS Auto Mode?
+
+It's worth mentioning that AWS introduced [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html) in December 2024, which takes a fundamentally different approach to solving these problems.
+
+EKS Auto Mode runs Karpenter and other critical cluster components (like the EBS CSI driver and Load Balancer Controller) **off-cluster** as AWS-managed services. This elegantly sidesteps the bootstrap deadlock problem entirely—there's no chicken-and-egg dependency because the control plane components don't need to run inside your cluster.
+
+The cluster starts with zero nodes and automatically provisions compute capacity as workloads are scheduled. While this solves the technical bootstrap challenge we've discussed, it comes with trade-offs:
+
+<FeatureList>
+  - Additional 12-15% cost premium on top of EC2 instance costs
+  - Lock-in to AWS VPC CNI (can't use alternatives like Cilium or Calico)
+  - Less control over cluster infrastructure configuration
+  - Available only for Kubernetes 1.29+ and not in all AWS regions
+</FeatureList>
+
+For organizations willing to accept these constraints in exchange for fully managed operations, EKS Auto Mode may address many of the concerns raised in this post. However, for teams requiring fine-grained control, cost optimization, or running on older Kubernetes versions, the MNG + Karpenter approach remains highly relevant.
