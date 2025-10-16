@@ -93,15 +93,16 @@ Fargate offers convenience, but at a premium. A pod requesting 2 vCPUs and 4 GiB
 
 And because [Fargate bills in coarse increments](https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html), you often overpay for partial capacity.
 
-By contrast, a managed node group gives you flexibility:
+By contrast, a managed node group for your baseline cluster infrastructure gives you flexibility:
 
 <FeatureList>
-  - Use Graviton-based instances (c7g.medium) to cut costs nearly in half
-  - Mix On-Demand nodes for reliability and Spot nodes (via Karpenter) for efficiency
-  - Keep the static node pool minimal while letting Karpenter handle the dynamic scale-out
+  - Use Graviton-based instances (c7g.medium) for the MNG to cut costs nearly in half
+  - Run the static MNG with On-Demand instances for reliability
+  - Let Karpenter provision Spot instances for dynamic workloads, maximizing cost savings
+  - Keep the baseline small and predictable while Karpenter handles burst capacity
 </FeatureList>
 
-The result: **predictable cost floor, flexible scale ceiling**.
+The result: **reliable foundation with On-Demand nodes, cost-efficient scaling with Spot**.
 
 ## The Evolution of Karpenter's Recommendations
 
@@ -118,9 +119,9 @@ Running Karpenter on Fargate works for proof-of-concepts or ephemeral clusters.
 But for production systems where uptime and high availability matter, a hybrid model is the clear winner:
 
 <FeatureList>
-  - Static MNG for cluster-critical add-ons
-  - Karpenter for dynamic workloads
-  - Fargate only when you truly need "no nodes"
+  - Static MNG with On-Demand instances for cluster-critical add-ons (CoreDNS, Karpenter, etc.)
+  - Karpenter provisioning Spot instances for dynamic application workloads
+  - Fargate only when you truly need pod-level isolation
 </FeatureList>
 
 It's not about Fargate being bad — it's about knowing where it fits in your architecture.
