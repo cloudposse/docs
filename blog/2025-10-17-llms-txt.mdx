@@ -1,0 +1,61 @@
+---
+title: Making Our Docs AI-Friendly with llms.txt
+slug: llms-txt
+authors: [osterman]
+tags: [documentation, ai, llm]
+date: 2025-10-17
+---
+
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+We've implemented the llms.txt standard to make our documentation more accessible to AI assistants, ensuring better responses when you ask ChatGPT, Claude, or other LLMs about Cloud Posse tools and best practices.
+</Intro>
+
+Hello SweetOps!
+
+As AI assistants become increasingly integrated into developer workflows, we're excited to announce support for the [llms.txt standard](https://llmstxt.org/) across our documentation site.
+
+## What is llms.txt?
+
+Think of `llms.txt` as the AI equivalent of `robots.txt` for search engines. It's an emerging standard that provides LLMs with structured, curated documentation in a format optimized for their understanding. Rather than crawling entire websites and hitting context window limits, AI assistants can now access our documentation in two curated formats:
+
+- **[/llms.txt](https://docs.cloudposse.com/llms.txt)** - A compact list of important documentation links
+- **[/llms-full.txt](https://docs.cloudposse.com/llms-full.txt)** - Full documentation content in markdown format
+
+## Why This Matters
+
+When you ask an AI assistant about Atmos, Terraform components, or Cloud Posse best practices, you'll get more accurate and up-to-date responses. The assistant can reference our curated documentation directly instead of relying on training data that may be outdated or incomplete.
+
+### Benefits for the Community
+
+- **Better AI Assistance**: More accurate responses when asking AI tools about our projects
+- **Efficient Context Usage**: LLMs can access precisely what they need without crawling
+- **Up-to-Date Information**: Always references current documentation, not stale training data
+- **Developer Velocity**: Faster answers means less time searching, more time building
+
+## How It Works
+
+We're using the [`docusaurus-plugin-llms`](https://github.com/rachfop/docusaurus-plugin-llms) to automatically generate these files from our Docusaurus site. The plugin:
+
+1. Prioritizes core documentation sections (Atmos, components, tutorials)
+2. Includes blog content for recent updates and announcements
+3. Generates both compact and full-text versions
+4. Automatically updates with each documentation deployment
+
+## Try It Out
+
+Next time you're working with an AI assistant, try asking questions about:
+- "How do I configure Atmos stacks?"
+- "What's the latest on Cloud Posse component deprecation?"
+- "Show me examples of Terraform component patterns"
+
+The assistant will have direct access to our structured documentation, leading to better, more accurate responses.
+
+## Join the Movement
+
+The llms.txt standard is gaining adoption across the developer community. If you maintain documentation, consider implementing it for your projects. It's a simple way to make your content more accessible to the AI tools your users are already using.
+
+:::tip Questions?
+Have feedback about our AI-friendly documentation? Join us in the [SweetOps Slack](https://cloudposse.com/slack) or [GitHub Discussions](https://github.com/orgs/cloudposse/discussions).
+:::
