@@ -9,6 +9,28 @@ import Steps from '@site/src/components/Steps';
 
 The Cold Start involves more manual steps than other layers. Read through the following steps and see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/) for edge cases.
 
+:::caution Prerequisites
+
+**Before following this guide**, ensure you have:
+
+1. ✅ **Purchased Quickstart or Jumpstart** - This guide references stack configurations (`stacks/catalog/account.yaml`) that are only provided with our paid packages
+2. ✅ **Completed the kickoff call** - Your configurations should be customized to your design decisions
+3. ✅ **Set up your infrastructure repository** - See [Create Repository](/layers/project/create-repository)
+
+**Don't have the Quickstart configs yet?** You'll get stuck at the "Check the configuration of the 'account' in the stack catalog" step because that file won't exist. [Choose your path](/intro/path) first.
+
+:::
+
+<Note title="First Time Using Atmos?">
+This guide assumes familiarity with [Atmos](https://atmos.tools), our infrastructure orchestration tool. If you're new to Atmos:
+
+1. Review [How to Use Atmos](/learn/maintenance/tutorials/how-to-use-atmos) for basic commands
+2. Understand that Atmos uses YAML configuration files (called "stacks") to define infrastructure
+3. You don't need to be an Atmos expert—you can learn as you go by following the deployment steps
+
+The [Deploy Accounts guide](/layers/accounts/deploy-accounts/) includes configuration examples to help you understand what needs to be configured.
+</Note>
+
 In short, the steps are...
 
 | Steps                     | Actions                             |
@@ -58,9 +80,22 @@ From the root account:
 1. ### Enable Regions (Optional)
    The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to take extra steps. For details, see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/#optional-enable-regions)
 1. ### Prepare for Account Quota Increase
-   In order to deploy all accounts, you need to request an increase of the Account Quota from AWS support. This requires an AWS Organization to be created first, which we will create with Terraform in the [Deploy Accounts guide](/layers/accounts/deploy-accounts/#-prepare-account-deployment). This request can take a few days to process, so it's important to get it started early so that it doesn't become a blocker.
+   In order to deploy all accounts, you need to request an increase of the Account Quota from AWS support. This requires an AWS Organization to be created first, which we will create with Terraform in the [Deploy Accounts guide](/layers/accounts/deploy-accounts/#-prepare-account-deployment). **You can optionally create the Organization manually in the AWS Console first and then import it into Terraform, which allows you to submit the quota increase request earlier (see note below).** This request can take a few days to process, so it's important to get it started early so that it doesn't become a blocker.
 
    At this time we don't need to request the increase, but we should be prepared to do so as soon as the AWS Organization is created.
+
+   :::tip Manual Creation Option
+
+   Some teams prefer to create the Organization manually in the AWS Console first, then import it into Terraform afterward so it's fully managed as code. This approach allows you to submit the service quota request to increase the account limit right away, without needing to set up Terraform state and everything else first.
+
+   To do this:
+   1. Create the Organization manually in the AWS Console
+   2. Submit the quota increase request immediately (can take several days)
+   3. Set up Terraform/Atmos as described in the guides
+   4. Import the existing Organization into Terraform when deploying the `account` component
+
+   This helps keep things moving since quota requests in the reference architecture often exceed default limits and can take time to process.
+   :::
 
 </Steps>
 
