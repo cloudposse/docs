@@ -277,6 +277,24 @@ img.center {
   --ifm-h1-font-size: 2.5rem;
 }
 
+/* Restore list styles for markdown content (Tailwind-compatible) */
+@layer base {
+  .markdown ul,
+  article ul {
+    @apply list-disc pl-6 my-4;
+  }
+
+  .markdown ol,
+  article ol {
+    @apply list-decimal pl-6 my-4;
+  }
+
+  .markdown li,
+  article li {
+    @apply my-1;
+  }
+}
+
 .margin-top--md,
 .margin-vert--md {
   margin-top: 1rem !important;
