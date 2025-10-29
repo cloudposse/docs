@@ -14,8 +14,9 @@
   margin-right: 0.5rem;
   line-height: 1.5rem;
   vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
 }
-
 
 .cardContainer:hover {
   border-color: var(--ifm-color-primary);
@@ -28,6 +29,9 @@
 
 .cardTitle {
   font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .cardDescription {
