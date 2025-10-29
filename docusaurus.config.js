@@ -246,7 +246,7 @@ async function createConfig() {
         announcementBar: {
           id: 'quickstart',
           content:
-            'Missing the <strong>Quickstart</strong> configurations? <a href="/intro/path/">Start here!</a>',
+            'Looking for the configurations? <a href="/intro/path/">Start here</a>',
           backgroundColor: 'var(--announcement-bar-background)',
           textColor: 'var(--announcement-bar-text-color)',
           isCloseable: true,
