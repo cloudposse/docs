@@ -45,3 +45,7 @@ html[data-theme='dark'] .admonitionContent_node_modules-\@docusaurus-theme-class
   margin-right: 0.5em;
 }
 
+.theme-admonition > div p {
+  margin-right: 0.5em;
+}
+
