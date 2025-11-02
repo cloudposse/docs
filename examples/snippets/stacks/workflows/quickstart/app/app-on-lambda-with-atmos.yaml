@@ -10,7 +10,7 @@ workflows:
     description: |
       This workflow deploys the artifact bucket for the app-on-lambda-with-atmos workflow.
     steps:
-      - command: terraform deploy s3-bucket/github-action-artifacts -s core-us-east-1-artifacts -var privileged_principal_arns=[]
+      - command: terraform deploy s3-bucket/github-action-artifacts -s core-us-east-1-artifacts -var "privileged_principal_arns=[]"
 
   deploy/artifact-bucket:
     description: |
