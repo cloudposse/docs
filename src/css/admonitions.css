@@ -23,22 +23,12 @@ html[data-theme='dark'] .theme-admonition details {
     border: 1px solid #ffffff52;
 }
 
-html[data-theme='dark'] .theme-admonition  > .admonitionHeading_node_modules-\@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module:not(:last-child) {
-    margin-bottom: 1em;
-    font-size: 1.2em;
-}
-
-html[data-theme='dark'] .admonitionContent_node_modules-\@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module > ul:last-child {
-    margin-bottom: 0;
-    padding-left: 1.6em;
-}
-
 .alert--secondary {
     margin-top: 2em;
 }
 
 .theme-admonition > div, .theme-admonition > div p {
-  display: inline;
+  display: block;
 }
 
 .theme-admonition > div:first-child {
