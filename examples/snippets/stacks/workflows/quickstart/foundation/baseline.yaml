@@ -13,7 +13,6 @@ workflows:
     description: Vendor baseline layer components.
     steps:
       - command: vendor pull --component account
-      - command: vendor pull --component account-map
       - command: vendor pull --component account-quotas
       - command: vendor pull --component account-settings
       - command: vendor pull --component cloudtrail
@@ -30,10 +29,7 @@ workflows:
       - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --init-run-reconfigure=false
 
   deploy/tfstate:
-    description: >-
-      Deploy Terraform State Backend.
-
-      Finalize Terraform State Backend access, which requires AWS Teams to be deployed first.
+    description: Deploy Terraform State Backend.
     steps:
       - command: terraform deploy tfstate-backend --stack core-use1-root
 

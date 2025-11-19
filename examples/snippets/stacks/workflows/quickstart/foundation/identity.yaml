@@ -37,10 +37,7 @@ workflows:
   vendor/components:
     description: Vendor identity layer components.
     steps:
-      - command: vendor pull --component aws-saml
       - command: vendor pull --component aws-sso
-      - command: vendor pull --component aws-team-roles
-      - command: vendor pull --component aws-teams
 
   vendor/aws-config:
     description: Vendor aws-config script.
@@ -59,37 +56,12 @@ workflows:
   deploy/all:
     description: Deploy all identity components.
     steps:
-      - command: workflow deploy/saml -f quickstart/foundation/identity
       - command: workflow deploy/sso -f quickstart/foundation/identity
-      - command: workflow deploy/teams -f quickstart/foundation/identity
-      - command: workflow update-aws-config -f quickstart/foundation/identity
-
-  deploy/saml:
-    description: Update aws-saml configuration (when adding a new Identity Provider).
-    steps:
-      - command: terraform deploy aws-saml -s core-gbl-identity
 
   deploy/sso:
     description: Update aws-sso configuration.
     steps:
       - command: terraform deploy aws-sso -s core-gbl-root
-
-  deploy/teams:
-    description: Establish cross account AWS Teams roles for access.
-    steps:
-      - command: terraform deploy aws-teams -s core-gbl-identity
-      - command: terraform deploy aws-team-roles -s core-gbl-artifacts
-      - command: terraform deploy aws-team-roles -s core-gbl-audit
-      - command: terraform deploy aws-team-roles -s core-gbl-auto
-      - command: terraform deploy aws-team-roles -s core-gbl-dns
-      - command: terraform deploy aws-team-roles -s core-gbl-identity
-      - command: terraform deploy aws-team-roles -s core-gbl-network
-      - command: terraform deploy aws-team-roles -s core-gbl-root
-      - command: terraform deploy aws-team-roles -s core-gbl-security
-      - command: terraform deploy aws-team-roles -s plat-gbl-dev
-      - command: terraform deploy aws-team-roles -s plat-gbl-prod
-      - command: terraform deploy aws-team-roles -s plat-gbl-sandbox
-      - command: terraform deploy aws-team-roles -s plat-gbl-staging
 
   update-aws-config:
     description: Update AWS Config files.
