@@ -25,6 +25,18 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 | Deploy accounts settings  | `atmos workflow deploy/account-settings -f quickstart/foundation/accounts` |
 | Finalize account setup    | Click Ops                                            |
 
+:::info Required: Quickstart Configurations
+
+This deployment guide references Atmos stack configurations that are provided as part of our [Quickstart package](/intro/path). Specifically, you'll need:
+
+- `stacks/catalog/account.yaml` - Defines your AWS Organization structure
+- `stacks/catalog/account-map.yaml` - Maps account names and roles
+- Various mixin files that configure organizational units and accounts
+
+**New to the reference architecture?** The complete stack catalog is what we sell—it's how we sustain our open source. [Learn more about choosing your path](/intro/path).
+
+:::
+
 <Steps>
   <Step>
     ## <StepNumber/> Prepare Account Deployment
@@ -32,6 +44,8 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     Review the "account" configuration in the stack catalog. **This is the hardest part to change/fix once the accounts are
     provisioned**. If you aren't confident about the email configuration, account names, or anything else, now is the time
     to make changes or ask for help.
+
+    **Need help understanding the configuration?** See the expandable example below for a sample `account.yaml` structure and explanation of key fields. For adding new accounts or OUs later, see [How to Add a New Organizational Unit](/layers/accounts/tutorials/how-to-add-a-new-organizational-unit/).
 
     You should double-check the following:
 
@@ -41,12 +55,84 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
       all the mixins have been imported)
     - Plan the run with `atmos terraform plan account -s core-gbl-root`
     </TaskList>
+
+    <Note title="New to Atmos?">
+    If you're unfamiliar with Atmos, here's what you need to know:
+
+    - **Stacks** are YAML configuration files that define infrastructure (e.g., `core-gbl-root` is a stack)
+    - **Components** are Terraform modules that get deployed (e.g., `account` is a component)
+    - **Catalogs** (`stacks/catalog/*.yaml`) contain reusable configuration that stacks can import
+    - Commands follow the pattern: `atmos terraform <action> <component> -s <stack>`
+
+    For a deeper introduction, see [How to Use Atmos](/learn/maintenance/tutorials/how-to-use-atmos).
+    </Note>
+
+    <details>
+      <summary><strong>Example: What does account.yaml look like?</strong></summary>
+
+    The `stacks/catalog/account.yaml` file defines your AWS Organization structure. Here's a simplified example:
+
+    ```yaml
+    components:
+      terraform:
+        account:
+          vars:
+            account_email_format: aws+%s@example.com
+            account_iam_user_access_to_billing: "ALLOW"
+            organization_enabled: true
+
+            organizational_units:
+              - name: core
+                accounts:
+                  - name: core-identity
+                    tenant: core
+                    stage: identity
+                    tags:
+                      eks: false
+                  - name: core-security
+                    tenant: core
+                    stage: security
+                    tags:
+                      eks: false
+
+              - name: plat
+                accounts:
+                  - name: plat-dev
+                    tenant: plat
+                    stage: dev
+                    tags:
+                      eks: true
+                  - name: plat-staging
+                    tenant: plat
+                    stage: staging
+                    tags:
+                      eks: true
+                  - name: plat-prod
+                    tenant: plat
+                    stage: prod
+                    tags:
+                      eks: true
+    ```
+
+    **Key fields to customize:**
+    - `account_email_format`: Email pattern for new accounts (AWS requires unique emails per account)
+    - `organizational_units`: List of OUs and the accounts within them
+    - `name`: Account name (becomes the AWS account name)
+    - `tenant` and `stage`: Used for naming conventions
+    - `tags`: Metadata for organizational purposes
+
+    See the [aws-account component](https://github.com/cloudposse-terraform-components/aws-account) for all available configuration options.
+    </details>
   </Step>
 
   <Step>
     ## <StepNumber/> Deploy the AWS Organization
 
     <AtmosWorkflow workflow="deploy/organization" fileName="quickstart/foundation/accounts" />
+
+    <Note title="Organization Creation Methods">
+    The workflow above creates the AWS Organization automatically using Terraform. Alternatively, if you created the Organization manually in the AWS Console beforehand (to expedite quota increase requests), Terraform will detect the existing Organization and can import it to manage it as code going forward.
+    </Note>
 
   </Step>
 

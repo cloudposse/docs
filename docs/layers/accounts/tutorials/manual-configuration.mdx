@@ -321,10 +321,11 @@ email address to access, update, or delete the account.
 Your AWS Organization is managed by the `account` component, along with accounts and organizational units.
 
 However, because the AWS defaults for an Organization and its accounts are not exactly what we want, and there is no way
-to change them via Terraform, we have to first provision the AWS Organization, then take some steps on the AWS console,
-and then we can provision the rest.
+to change them via Terraform, we have to first provision the AWS Organization **with Terraform**, then take some manual configuration steps in the AWS console (such as requesting quota increases and enabling AWS RAM), and then we can provision the member accounts.
 
-### Use AWS Console to create and set up the Organization
+### Configure Organization Settings via AWS Console
+
+The AWS Organization itself is created automatically by Terraform (see [Deploy Accounts guide](/layers/accounts/deploy-accounts/)). However, some post-creation configuration tasks must be done manually through the AWS console.
 
 Unfortunately, there are some tasks that need to be done via the console. Log into the AWS Console with the root (not
 SuperAdmin) credentials you have saved in 1Password.
