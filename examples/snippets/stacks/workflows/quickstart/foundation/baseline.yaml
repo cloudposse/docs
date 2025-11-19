@@ -24,10 +24,10 @@ workflows:
   init/tfstate:
     description: Provision Terraform State Backend for initial deployment.
     steps:
-      - command: terraform deploy tfstate-backend -var=access_roles_enabled=false --stack core-use1-root --auto-generate-backend-file=false
+      - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --auto-generate-backend-file=false
       - command: until aws s3 ls acme-core-use1-root-tfstate; do sleep 5; done
         type: shell
-      - command: terraform deploy tfstate-backend -var=access_roles_enabled=false --stack core-use1-root --init-run-reconfigure=false
+      - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --init-run-reconfigure=false
 
   deploy/tfstate:
     description: >-

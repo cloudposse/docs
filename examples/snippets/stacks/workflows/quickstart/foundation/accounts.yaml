@@ -9,7 +9,7 @@ workflows:
     description: | 
       Deploy the AWS Organization. This is required before finishing the root account requirements.
     steps:
-      - command: terraform deploy account -target=aws_organizations_organization.this[0] -s core-gbl-root
+      - command: terraform deploy account -target="aws_organizations_organization.this[0]" -s core-gbl-root
       - command: aws ram enable-sharing-with-aws-organization
         type: shell
 
