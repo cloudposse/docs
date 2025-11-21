@@ -282,7 +282,7 @@ async function createConfig() {
                 to: '/learn/',
               },
               {
-                label: 'Reference',
+                label: 'Reference Architecture',
                 to: '/reference/',
               }
             ],

@@ -48,6 +48,10 @@
     opacity: 0.9;
 }
 
+.footer__link-item {
+    white-space: nowrap;
+}
+
 
 @media screen and (max-width: 996px) {
   .footer .row {
