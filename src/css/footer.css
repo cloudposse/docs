@@ -50,6 +50,8 @@
 
 .footer__link-item {
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
 }
 
 
