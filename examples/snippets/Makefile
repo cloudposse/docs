@@ -77,7 +77,7 @@ run/check:
 run/new: run/check run
 	@exit 0
 
-.PHONY: terraform-rm-lockfiles rebuild-adr-docs rebuild-aws-config rebuild-docs ecr-auth
+.PHONY: terraform-rm-lockfiles rebuild-adr-docs rebuild-docs ecr-auth
 
 ## Remove all lock files
 terraform-rm-lockfiles:
@@ -90,11 +90,6 @@ rebuild-docs: packages/install/terraform-docs
 ## Rebuild README TOC for all ADRs
 rebuild-adr-docs:
 	adr generate toc > $(ADR_DOCS_README);
-
-rebuild-aws-config:
-	@printf "\nTo rebuild the AWS configuration files, from within the Geodesic shell ($(APP_NAME)), run:\n\n" >&2
-	@printf "  atmos workflow update-aws-config -f identity\n\n" >&2
-	exit 1
 
 ## Authenticate with ECR repository
 ecr-auth:

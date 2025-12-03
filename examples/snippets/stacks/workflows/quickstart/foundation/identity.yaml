@@ -29,84 +29,46 @@ workflows:
       - command: workflow deploy/all -f quickstart/foundation/identity
 
   vendor:
-    description: Vendor identity layer components and scripts.
-    steps:
-      - command: workflow vendor/components -f quickstart/foundation/identity
-      - command: workflow vendor/aws-config -f quickstart/foundation/identity
-
-  vendor/components:
     description: Vendor identity layer components.
     steps:
-      - command: vendor pull --component aws-saml
       - command: vendor pull --component aws-sso
-      - command: vendor pull --component aws-team-roles
-      - command: vendor pull --component aws-teams
-
-  vendor/aws-config:
-    description: Vendor aws-config script.
-    steps:
-      - name: vendor-aws-config
-        type: shell
-        command: |-
-          set -e
-          : "${ATMOS_BASE_PATH:=.}"
-          AWS_CONFIG_VERSION="1.227.0"
-          printf "Updating AWS Config in $ATMOS_BASE_PATH/rootfs/usr/local/bin/aws-config\n"
-          printf "Note: Rebuild Geodesic to apply script updates\n"
-          curl -fsSL https://raw.githubusercontent.com/cloudposse/terraform-aws-components/$AWS_CONFIG_VERSION/rootfs/usr/local/bin/aws-config -o "$ATMOS_BASE_PATH/rootfs/usr/local/bin/aws-config"
-          chmod +x "$ATMOS_BASE_PATH/rootfs/usr/local/bin/aws-config"
+      - command: vendor pull --component iam-role
 
   deploy/all:
     description: Deploy all identity components.
     steps:
-      - command: workflow deploy/saml -f quickstart/foundation/identity
       - command: workflow deploy/sso -f quickstart/foundation/identity
-      - command: workflow deploy/teams -f quickstart/foundation/identity
-      - command: workflow update-aws-config -f quickstart/foundation/identity
-
-  deploy/saml:
-    description: Update aws-saml configuration (when adding a new Identity Provider).
-    steps:
-      - command: terraform deploy aws-saml -s core-gbl-identity
+      - command: workflow deploy/iam-role -f quickstart/foundation/identity
 
   deploy/sso:
     description: Update aws-sso configuration.
     steps:
       - command: terraform deploy aws-sso -s core-gbl-root
 
-  deploy/teams:
-    description: Establish cross account AWS Teams roles for access.
+  deploy/iam-role:
+    description: |
+      Deploy iam-role/terraform and iam-role/planner to all accounts (except root).
+      These roles are used by GitHub Actions for CI/CD.
     steps:
-      - command: terraform deploy aws-teams -s core-gbl-identity
-      - command: terraform deploy aws-team-roles -s core-gbl-artifacts
-      - command: terraform deploy aws-team-roles -s core-gbl-audit
-      - command: terraform deploy aws-team-roles -s core-gbl-auto
-      - command: terraform deploy aws-team-roles -s core-gbl-dns
-      - command: terraform deploy aws-team-roles -s core-gbl-identity
-      - command: terraform deploy aws-team-roles -s core-gbl-network
-      - command: terraform deploy aws-team-roles -s core-gbl-root
-      - command: terraform deploy aws-team-roles -s core-gbl-security
-      - command: terraform deploy aws-team-roles -s plat-gbl-dev
-      - command: terraform deploy aws-team-roles -s plat-gbl-prod
-      - command: terraform deploy aws-team-roles -s plat-gbl-sandbox
-      - command: terraform deploy aws-team-roles -s plat-gbl-staging
-
-  update-aws-config:
-    description: Update AWS Config files.
-    steps:
-      - name: update-aws-config
-        type: shell
-        command: |-
-          set -e
-          printf "Updating AWS Config files in $ATMOS_BASE_PATH/rootfs/etc/aws-config\n"
-          aws-config teams > "$ATMOS_BASE_PATH/rootfs/etc/aws-config/aws-config-teams"
-          aws-config switch-roles > "$ATMOS_BASE_PATH/rootfs/etc/aws-config/aws-extend-switch-roles"
-          aws-config switch-roles planner > "$ATMOS_BASE_PATH/rootfs/etc/aws-config/aws-extend-switch-roles-planner"
-
-          diffs=$(git diff --name-only "$ATMOS_BASE_PATH/rootfs/etc/aws-config")
-          if [[ -n $diffs ]] then
-            printf "Updated: %s\n" "${diffs[@]}"
-            printf "Note: Rebuild Geodesic to apply script updates\n"
-          else
-            printf "No changes\n"
-          fi
+      # Core accounts (except root)
+      - command: terraform deploy iam-role/terraform -s core-gbl-artifacts
+      - command: terraform deploy iam-role/planner -s core-gbl-artifacts
+      - command: terraform deploy iam-role/terraform -s core-gbl-audit
+      - command: terraform deploy iam-role/planner -s core-gbl-audit
+      - command: terraform deploy iam-role/terraform -s core-gbl-auto
+      - command: terraform deploy iam-role/planner -s core-gbl-auto
+      - command: terraform deploy iam-role/terraform -s core-gbl-dns
+      - command: terraform deploy iam-role/planner -s core-gbl-dns
+      - command: terraform deploy iam-role/terraform -s core-gbl-network
+      - command: terraform deploy iam-role/planner -s core-gbl-network
+      - command: terraform deploy iam-role/terraform -s core-gbl-security
+      - command: terraform deploy iam-role/planner -s core-gbl-security
+      # Platform accounts
+      - command: terraform deploy iam-role/terraform -s plat-gbl-dev
+      - command: terraform deploy iam-role/planner -s plat-gbl-dev
+      - command: terraform deploy iam-role/terraform -s plat-gbl-staging
+      - command: terraform deploy iam-role/planner -s plat-gbl-staging
+      - command: terraform deploy iam-role/terraform -s plat-gbl-prod
+      - command: terraform deploy iam-role/planner -s plat-gbl-prod
+      - command: terraform deploy iam-role/terraform -s plat-gbl-sandbox
+      - command: terraform deploy iam-role/planner -s plat-gbl-sandbox

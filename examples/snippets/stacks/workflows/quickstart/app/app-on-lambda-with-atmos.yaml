@@ -3,7 +3,7 @@ workflows:
     steps:
       - command: workflow init/artifact-bucket -f quickstart/app/app-on-lambda-with-atmos
       - command: workflow init/app-on-lambda-with-atmos -f quickstart/app/app-on-lambda-with-atmos
-      - command: workflow deploy/github-oidc-role -f quickstart/app/app-on-lambda-with-atmos
+      - command: workflow deploy/iam-role -f quickstart/app/app-on-lambda-with-atmos
       - command: workflow deploy/artifact-bucket -f quickstart/app/app-on-lambda-with-atmos
 
   init/artifact-bucket:
@@ -18,14 +18,14 @@ workflows:
     steps:
       - command: terraform deploy s3-bucket/github-action-artifacts -s core-us-east-1-artifacts
 
-  deploy/github-oidc-role:
+  deploy/iam-role:
     description: |
-      This workflow deploys the github-oidc-role for the app-on-lambda-with-atmos workflow.
+      This workflow deploys the iam-role for the app-on-lambda-with-atmos workflow.
+      TODO: Create iam-role/lambda-publish catalog configuration to replace github-oidc-role/lambda-publish
     steps:
-      - command: terraform deploy github-oidc-role/lambda-publish -s core-gbl-artifacts
-      - command: terraform deploy github-oidc-role/app-on-lambda-with-atmos -s plat-gbl-dev
-      - command: terraform deploy github-oidc-role/app-on-lambda-with-atmos -s plat-gbl-staging
-      - command: terraform deploy github-oidc-role/app-on-lambda-with-atmos -s plat-gbl-prod
+      # TODO: Add iam-role/lambda-publish deployment
+      # - command: terraform deploy iam-role/lambda-publish -s core-gbl-artifacts
+      - command: echo "TODO - iam-role/lambda-publish deployment not yet configured"
 
   init/app-on-lambda-with-atmos:
     description: Initializes SSM parameters for app-on-lambda-with-atmos, these are not valid until the github actions run to update the values.
