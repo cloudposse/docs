@@ -11,7 +11,6 @@ workflows:
     description: |
       This workflow deploys Github OIDC Provider Configuration for Github Runners
     steps:
-      - command: terraform deploy github-oidc-provider -s core-gbl-identity
       - command: terraform deploy github-oidc-provider -s core-gbl-artifacts
       - command: terraform deploy github-oidc-provider -s core-gbl-auto
       - command: terraform deploy github-oidc-provider -s plat-gbl-dev
