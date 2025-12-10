@@ -2,7 +2,7 @@
 title: "How to Log into AWS"
 sidebar_label: "Log into AWS"
 sidebar_position: 9
-description: Use Leapp to login to AWS
+description: Use Atmos Auth to login to AWS
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -10,6 +10,23 @@ import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Note from '@site/src/components/Note';
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - REWRITE PAGE - Status: Not Started */}
+{/*
+## Required Updates:
+- Replace Leapp instructions with Atmos Auth
+- Document `atmos auth login` command
+- Add profile selection (`ATMOS_PROFILE=devops`)
+- Remove all Leapp references
+- Add troubleshooting for SSO session expiry
+- Update description to mention Atmos Auth instead of Leapp
+*/}
+
+:::warning Page Update In Progress
+This page is being updated to document **Atmos Auth** as the primary authentication method.
+
+For the new approach, see [Atmos Auth](/layers/identity/atmos-auth) and [Atmos Profiles](/layers/identity/atmos-profiles).
+:::
 
 <Intro>
 We use Leapp to facilitate logging into AWS. Leapp is a tool that allows you to authenticate with your organization's

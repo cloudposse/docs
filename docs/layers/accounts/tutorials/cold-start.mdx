@@ -9,6 +9,23 @@ description: "Steps to initialize a net-new AWS Organization with Terraform"
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+{/* TODO:DEPRECATE-ACCOUNT-MAP - REWRITE PAGE - Status: Not Started */}
+{/*
+## Required Updates:
+- Remove account-map bootstrap steps
+- Remove aws-teams bootstrap steps
+- Add SuperAdmin profile bootstrap flow
+- Document static account_map creation
+- Update for Atmos Auth authentication
+*/}
+
+:::warning Page Update In Progress
+This cold start documentation is being updated for the new architecture that uses:
+- **Static `account_map` variable** instead of account-map component
+- **Atmos Auth** for authentication instead of Leapp
+- **Permission Sets** instead of aws-teams/aws-team-roles
+:::
+
 <Intro>
 These documents explain the complete cold-start process required to initialize a net-new AWS Organization using the
 SweetOps process by Cloud Posse. The cold-start process is the first step in setting up a new AWS Organization and is

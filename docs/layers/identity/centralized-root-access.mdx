@@ -1,0 +1,61 @@
+---
+title: Centralized Root Access
+sidebar_label: Centralized Root Access
+sidebar_position: 5
+---
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - NEW PAGE - Status: Not Started */}
+{/*
+This page needs to be written from scratch.
+
+## Required Content:
+- RootAccess permission set overview
+- Organizational root access for delegated accounts
+- Security considerations
+- Usage examples
+- When to use organizational root access vs other methods
+
+## Source Reference:
+- refarch-scaffold/template/stacks/catalog/aws-sso/defaults.yaml (RootAccess permission set)
+- refarch-scaffold/template/profiles/managers/atmos.yaml (organizational-root-access identity)
+*/}
+
+# Centralized Root Access
+
+:::info Work in Progress
+This documentation is being written as part of the account-map deprecation effort.
+:::
+
+## Overview
+
+The `RootAccess` permission set enables organizational root access to delegated AWS accounts. This allows managers to perform root-level operations without needing the root account credentials.
+
+## Permission Set Configuration
+
+The `RootAccess` permission set is configured in the `aws-sso` component and provides `sts:AssumeRoot` permissions.
+
+## Using Organizational Root Access
+
+Managers can use the `organizational-root-access` identity to assume root access:
+
+```yaml
+# In profiles/managers/atmos.yaml
+organizational-root-access:
+  kind: aws/permission-set
+  via:
+    provider: sso
+  principal:
+    name: RootAccess
+    account:
+      name: core-root
+```
+
+## Security Considerations
+
+- Only assign `RootAccess` to trusted users (typically managers only)
+- Use for emergency access and specific administrative tasks
+- Audit all usage of organizational root access
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add detailed permission set configuration */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add use cases and examples */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add security best practices */}

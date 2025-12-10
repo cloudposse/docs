@@ -1,0 +1,75 @@
+---
+title: Migrate from Account-Map
+sidebar_label: Migrate from Account-Map
+sidebar_position: 10
+---
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - NEW PAGE - Status: Not Started */}
+{/*
+This page needs to be written from scratch.
+
+## Required Content:
+- Step-by-step migration guide
+- Before/after comparisons
+- Common issues and solutions
+- Component updates required
+- Provider mixin changes
+
+## Source Reference:
+- refarch-scaffold/docs/prd/remove-account-map.md
+- refarch-scaffold/.claude/skills/account-map-migration/SKILL.md
+*/}
+
+# Migrate from Account-Map
+
+:::info Work in Progress
+This documentation is being written as part of the account-map deprecation effort.
+:::
+
+## Overview
+
+This guide walks through migrating from the `account-map` component to the new static account mapping approach.
+
+## Before You Begin
+
+The migration involves:
+1. Replacing `account-map` component with static `account_map` variable
+2. Updating component providers to use the new mixin
+3. Removing `aws-teams` and `aws-team-roles` components
+4. Configuring Atmos profiles and Permission Sets
+
+## Migration Steps
+
+### Step 1: Add Static Account Map
+
+Add the `account_map` variable to your stack defaults:
+
+```yaml
+# stacks/orgs/NAMESPACE/_defaults.yaml
+vars:
+  account_map:
+    core-root: "111111111111"
+    core-audit: "222222222222"
+    # ... other accounts
+```
+
+### Step 2: Update Component Providers
+
+Vendor components with the new provider mixin:
+
+```yaml
+# components/terraform/vpc/component.yaml
+spec:
+  source:
+    uri: github.com/cloudposse-terraform-components/aws-vpc.git//src
+    version: v1.537.0
+    excluded_paths:
+      - "providers.tf"
+  mixins:
+    - uri: https://raw.githubusercontent.com/cloudposse-terraform-components/mixins/v0.3.0/src/mixins/provider-without-account-map.tf
+      filename: providers.tf
+```
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add complete migration steps */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add troubleshooting section */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add rollback instructions */}

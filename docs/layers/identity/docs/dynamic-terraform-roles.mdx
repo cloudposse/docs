@@ -8,6 +8,19 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 
+{/* TODO:DEPRECATE-ACCOUNT-MAP - DEPRECATED PAGE - Status: Admonition Added */}
+
+:::warning Deprecated
+This documentation describes the legacy Dynamic Terraform Roles feature using `aws-teams` and `aws-team-roles` components.
+
+**The recommended approach now uses:**
+- **Permission Sets** (TerraformPlanAccess, TerraformApplyAccess, TerraformStateAccess) for human users
+- **`iam-role` component** for machine users (CI/CD)
+- **Static `account_map` variable** instead of dynamic lookups
+
+See [Migrate from Account-Map](/layers/identity/tutorials/migrate-from-account-map) for migration instructions.
+:::
+
 <Intro>
 This document describes the Dynamic Terraform Roles feature and its benefits, and, for users of the previous architecture, **how to migrate to it**. The [AWS Access Control Architecture](/layers/identity/docs/aws-access-control-architecture) documentation assumes this feature is enabled and describes how to use it. The [AWS Access Control Evolution](/layers/identity/docs/aws-access-control-evolution#dynamic-terraform-roles-normalization-of-team-roles-better-team-and-team-role-iam-policy-management) documentation describes the feature in more detail.
 </Intro>

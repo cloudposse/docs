@@ -1,8 +1,8 @@
 ---
-title: "Deploy AWS Teams and Team Roles across your AWS Organization"
+title: "Deploy IAM Roles"
 sidebar_label: "Deploy Roles"
 sidebar_position: 4
-description: Provision AWS teams, integrate SSO, generate role configurations.
+description: Deploy IAM roles for Terraform access using the iam-role component.
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -12,6 +12,22 @@ import StepNumber from '@site/src/components/StepNumber';
 import Note from '@site/src/components/Note';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import TaskList from '@site/src/components/TaskList';
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Not Started */}
+{/*
+## Required Updates:
+- Remove aws-teams deployment steps
+- Remove aws-team-roles deployment steps
+- Add iam-role component deployment for terraform/planner roles
+- Update deployment order for new architecture
+- Update title and description
+*/}
+
+:::warning Page Update In Progress
+This page is being updated to document the **`iam-role` component** for deploying Terraform access roles.
+
+The legacy `aws-teams` and `aws-team-roles` components are deprecated.
+:::
 
 <Intro>
   Learn how to provision AWS teams and team roles across an AWS Organization using Atmos workflows, integrate them with AWS SSO, and generate AWS configuration files for role assumption with profiles.

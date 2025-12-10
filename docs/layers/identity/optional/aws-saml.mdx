@@ -12,6 +12,19 @@ import StepNumber from '@site/src/components/StepNumber';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+{/* TODO:DEPRECATE-ACCOUNT-MAP - DEPRECATED PAGE - Status: Admonition Added */}
+
+:::warning Deprecated
+This documentation describes using **AWS SAML** for federated identity access, which is an advanced option that provides lower-level control but with more complexity.
+
+**The recommended approach now uses:**
+- **AWS IAM Identity Center** (AWS SSO) for user authentication
+- **Permission Sets** (TerraformPlanAccess, TerraformApplyAccess, TerraformStateAccess) for access control
+- **Atmos Auth** via `atmos auth login` for CLI authentication
+
+This approach is preserved for organizations with specific requirements for direct SAML federation.
+:::
+
 <Intro>
   The AWS SAML component allows you to authenticate with AWS via a federated identity. This is an alternative to using AWS SSO, that provides lower-level control over the authentication process and supports multiple concurrent IdPs, but with more complexity and a reduced user experience.
 </Intro>

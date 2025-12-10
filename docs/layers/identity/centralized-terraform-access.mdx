@@ -7,6 +7,20 @@ description: "Overview of centralized access management for AWS"
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
+{/* TODO:DEPRECATE-ACCOUNT-MAP - DEPRECATED PAGE - Status: Admonition Added */}
+
+:::warning Deprecated
+This documentation describes the legacy architecture using **`aws-teams`** and **`aws-team-roles`** components for centralized access management.
+
+**The recommended approach now uses:**
+- **Permission Sets only** (TerraformPlanAccess, TerraformApplyAccess, TerraformStateAccess) for human user access
+- **`iam-role` component** for machine users (CI/CD) with GitHub OIDC
+- **Static `account_map` variable** instead of dynamic account-map component
+- **Identity managed in `core-root`** instead of separate `core-identity` account
+
+See [Access Control Evolution](/layers/identity/docs/aws-access-control-evolution) for the current recommended approach.
+:::
+
 <Intro>
 This is an overview of our approach to centralized access management and the relationships between the components used to implement it. It explains how SAML, SSO, and custom constructs for AWS teams and team roles interact to provide efficient role delegation and authentication across an AWS Organization.
 </Intro>

@@ -1,0 +1,69 @@
+---
+title: Static Account Map
+sidebar_label: Static Account Map
+sidebar_position: 6
+---
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - NEW PAGE - Status: Not Started */}
+{/*
+This page needs to be written from scratch.
+
+## Required Content:
+- How to configure static account_map variable
+- Format and structure
+- Where to define (stacks/orgs/NAMESPACE/_defaults.yaml)
+- Comparison with old account-map component approach
+
+## Source Reference:
+- refarch-scaffold/template/stacks/orgs/acme/_defaults.yaml
+*/}
+
+# Static Account Map
+
+:::info Work in Progress
+This documentation is being written as part of the account-map deprecation effort.
+:::
+
+## Overview
+
+The static `account_map` variable replaces the dynamic `account-map` component. This provides a simpler, faster approach to account ID lookups without requiring remote state access.
+
+## Configuration
+
+Define the `account_map` in your organization defaults:
+
+```yaml
+# stacks/orgs/NAMESPACE/_defaults.yaml
+vars:
+  account_map:
+    core-root: "111111111111"
+    core-audit: "222222222222"
+    core-security: "333333333333"
+    core-network: "444444444444"
+    core-dns: "555555555555"
+    core-auto: "666666666666"
+    core-artifacts: "777777777777"
+    plat-sandbox: "888888888888"
+    plat-dev: "999999999999"
+    plat-staging: "101010101010"
+    plat-prod: "111111111112"
+```
+
+## Usage in Components
+
+Components access account IDs via the `account_map` variable:
+
+```hcl
+variable "account_map" {
+  type        = map(string)
+  description = "Map of account names to account IDs"
+}
+
+locals {
+  audit_account_id = var.account_map["core-audit"]
+}
+```
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add more examples */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add comparison with old approach */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add troubleshooting */}

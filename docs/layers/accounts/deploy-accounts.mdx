@@ -13,6 +13,18 @@ import Note from '@site/src/components/Note';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import TaskList from '@site/src/components/TaskList';
 
+{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Not Started */}
+{/*
+## Required Updates:
+- Remove account-map deployment steps
+- Add static account_map variable configuration
+- Update deployment order
+- Remove Step 4 "Confirm Root Account Name" (account-map specific)
+- Remove the Note in Step 6 about dynamic Terraform roles and account-map
+- Update Step 8 "ClickOps to Complete Account Setup" - root password reset is no longer needed with centralized root access
+- Add sub-page or section for setting up RootAccess permission set as alternative to per-account root credentials
+*/}
+
 <Intro>
 This step-by-step process outlines how to deploy AWS accounts using `atmos` workflows and ClickOps steps. It covers necessary preparations, such as configuring the AWS Organization, increasing account quotas, and verifying account configurations. The guide details the deployment processes and post-deployment configurations, including setting up account settings, enabling AWS RAM for Organizations, and performing certain manual configurations via ClickOps.
 </Intro>

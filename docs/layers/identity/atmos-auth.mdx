@@ -1,0 +1,61 @@
+---
+title: Atmos Auth
+sidebar_label: Atmos Auth
+sidebar_position: 4
+---
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - NEW PAGE - Status: Not Started */}
+
+{/*
+Required Content:
+- How to configure Atmos Auth
+- Provider configuration (aws/iam-identity-center)
+- Login commands and troubleshooting
+- Credential caching
+- Automatic authentication per-stack
+
+Source Reference:
+- refarch-scaffold/template/profiles/atmos.yaml files
+- atmos.tools/cli/auth/
+*/}
+
+# Atmos Auth
+
+:::info Work in Progress
+This documentation is being written as part of the account-map deprecation effort.
+:::
+
+## Overview
+
+Atmos Auth provides seamless authentication to AWS using AWS IAM Identity Center (SSO). It automatically handles credential management and session refresh.
+
+## Configuration
+
+Atmos Auth is configured in your profile's `atmos.yaml`:
+
+```yaml
+auth:
+  providers:
+    sso:
+      kind: aws/iam-identity-center
+      region: us-east-2
+      start_url: https://your-org.awsapps.com/start
+```
+
+## Login
+
+```bash
+# Trigger SSO login
+atmos auth login --provider your-org-sso
+
+# Credentials are now cached
+atmos terraform plan vpc -s plat-use2-dev
+```
+
+## Automatic Authentication
+
+When running Atmos commands, authentication happens automatically based on the stack's configured identity.
+
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add detailed provider configuration */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add troubleshooting section */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - Add credential caching details */}
