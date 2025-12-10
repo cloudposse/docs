@@ -11,6 +11,8 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Note from '@site/src/components/Note';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
 {/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Done */}
 
@@ -21,7 +23,7 @@ Deploy IAM roles for GitHub Actions and machine users using the `iam-role` compo
 <Note title="Legacy Approach">
 The legacy `aws-teams` and `aws-team-roles` components are deprecated. This page documents the new approach using Permission Sets for human users and IAM roles for machine users.
 
-For the legacy approach, see [Centralized Terraform Access](/layers/identity/tutorials/centralized-terraform-access/).
+For the legacy approach, see [Access Control Evolution](/layers/identity/tutorials/access-control-evolution/).
 </Note>
 
 ## Overview
@@ -43,7 +45,7 @@ Human users authenticate through Identity Center and never need IAM roles. The `
 
     Pull the identity components into your local repository:
 
-    <AtmosWorkflow workflow="vendor" fileName="identity" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/identity" />
   </Step>
 
   <Step>
@@ -51,78 +53,25 @@ Human users authenticate through Identity Center and never need IAM roles. The `
 
     Deploy the GitHub OIDC provider in all accounts:
 
-    ```bash
-    atmos workflow deploy -f github-oidc-provider
-    ```
+    <AtmosWorkflow workflow="deploy/github-oidc-provider" fileName="quickstart/foundation/github" />
 
     This creates the OIDC identity provider in each account, allowing GitHub Actions to assume IAM roles.
   </Step>
 
   <Step>
-    ### <StepNumber/> Configure IAM Roles for CI/CD
-
-    The `iam-role` component creates roles that GitHub Actions can assume via OIDC:
-
-    ```yaml
-    # stacks/catalog/iam-role/github-actions.yaml
-    components:
-      terraform:
-        iam-role/github-actions-plan:
-          vars:
-            enabled: true
-            role_name: github-actions-plan
-            role_description: "IAM role for GitHub Actions plan operations"
-            assume_role_policy_statements:
-              - effect: "Allow"
-                principals:
-                  Federated:
-                    - "arn:aws:iam::${identity_account_id}:oidc-provider/token.actions.githubusercontent.com"
-                actions:
-                  - "sts:AssumeRoleWithWebIdentity"
-                conditions:
-                  StringEquals:
-                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
-                  StringLike:
-                    "token.actions.githubusercontent.com:sub": "repo:your-org/your-repo:*"
-    ```
-  </Step>
-
-  <Step>
     ### <StepNumber/> Deploy IAM Roles
 
-    Deploy the IAM roles across all accounts:
+    The reference architecture includes pre-configured `iam-role/terraform` and `iam-role/planner` components. Deploy them across all accounts:
 
-    <AtmosWorkflow workflow="deploy/identity" fileName="identity" />
+    <AtmosWorkflow workflow="deploy/iam-role" fileName="quickstart/foundation/identity" />
 
     This deploys:
 
     <Steps>
-      1. **GitHub Actions roles** — Roles for CI/CD plan and apply operations
+      1. **`iam-role/terraform`** — Role for GitHub Actions apply operations
+      1. **`iam-role/planner`** — Role for GitHub Actions plan operations
       1. **Trust policies** — Allow assumption via GitHub OIDC
-      1. **Permission boundaries** — Enforce least-privilege access
     </Steps>
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Configure GitHub Actions Workflow
-
-    In your GitHub Actions workflow, assume the role using OIDC:
-
-    ```yaml
-    # .github/workflows/terraform.yml
-    jobs:
-      plan:
-        permissions:
-          id-token: write
-          contents: read
-        steps:
-          - uses: aws-actions/configure-aws-credentials@v4
-            with:
-              role-to-assume: arn:aws:iam::123456789012:role/github-actions-plan
-              aws-region: us-east-1
-
-          - run: atmos terraform plan vpc -s plat-ue1-dev
-    ```
   </Step>
 </Steps>
 
@@ -140,10 +89,7 @@ See [Configure Atmos Auth](/layers/identity/atmos-auth/) for human user setup.
 
 ## Next Steps
 
-After deploying IAM roles:
-
-<Steps>
-  1. **Configure Atmos Auth** — Set up authentication for your team ([Login to AWS](/layers/identity/how-to-log-into-aws/))
-  1. **Setup GitHub Actions** — Configure CI/CD workflows ([GitHub Actions](/layers/github-actions/))
-  1. **Deploy baseline** — Continue with baseline components ([Deploy Accounts](/layers/accounts/deploy-accounts/))
-</Steps>
+<ActionCard title="Configure authentication">
+  With IAM roles deployed for machine users and Permission Sets available for human users, configure Atmos Auth profiles to map users to identities.
+  <PrimaryCTA to="/layers/identity/atmos-auth/">Configure Atmos Auth</PrimaryCTA>
+</ActionCard>

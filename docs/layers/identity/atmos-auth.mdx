@@ -5,25 +5,21 @@ sidebar_position: 5
 description: Configure Atmos Auth for AWS authentication using IAM Identity Center
 ---
 import Intro from '@site/src/components/Intro';
-import Note from '@site/src/components/Note';
 import Steps from '@site/src/components/Steps';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
 {/* TODO:DEPRECATE-ACCOUNT-MAP - NEW PAGE - Status: Done */}
 
 <Intro>
-Atmos Auth provides seamless authentication to AWS using AWS IAM Identity Center (SSO). It automatically handles credential management and session refresh.
+Atmos Auth provides seamless authentication to AWS using IAM Identity Center or GitHub OIDC. It automatically handles credential management and session refresh.
 </Intro>
 
 ## Overview
 
-Atmos Auth integrates with AWS IAM Identity Center to provide:
+In the previous steps, we deployed Identity Center with Permission Sets for human users and IAM roles for machine access (GitHub Actions). Now we map those Permission Sets and roles to groups of users using Atmos profiles. These profiles are preconfigured in the reference architecture.
 
-<Steps>
-  1. **SSO Authentication** — Login once, access all accounts
-  1. **Automatic Credential Refresh** — Sessions are refreshed automatically
-  1. **Profile-Based Access** — Different access levels for different roles
-  1. **Stack-Aware Identity** — Automatically selects the correct identity per stack
-</Steps>
+For daily usage, see [Login to AWS](/layers/identity/how-to-log-into-aws/). For detailed commands and the latest documentation, see [Atmos Auth](https://atmos.tools/cli/commands/auth/usage/).
 
 ## Profiles
 
@@ -31,18 +27,25 @@ Profiles define role-based access patterns for different user types. Each profil
 
 ### Available Profiles
 
-| Profile | Description | Core Accounts | Dev/Sandbox | Staging/Prod |
-|---------|-------------|---------------|-------------|--------------|
-| `superadmin` | Emergency/break-glass access | Full | Full | Full |
-| `managers` | Full access to all environments | Full | Full | Full |
-| `devops` | Full access to all environments | Full | Full | Full |
-| `developers` | Limited access | State read only | Apply | Plan only |
-| `github-plan` | CI/CD plan operations | Plan | Plan | Plan |
-| `github-apply` | CI/CD apply operations | Apply | Apply | Apply |
+| Profile | Description | Root | Core Accounts | Dev/Sandbox | Staging/Prod |
+|---------|-------------|------|---------------|-------------|--------------|
+| `managers` | Full access to all accounts | Write | Write | Write | Write |
+| `devops` | Full access to most accounts | Read | Write | Write | Write |
+| `developers` | Limited access | State | State | Write | Read |
+| `github-plan` | CI/CD plan operations | State | Read | Read | Read |
+| `github-apply` | CI/CD apply operations | State | Write | Write | Write |
+
+**Access Levels:**
+
+<Steps>
+  1. **Write** — Full access including `AdministratorAccess` or `PowerUserAccess` permission sets, plus `TerraformApplyAccess` roles
+  1. **Read** — Read-only access via `ReadOnlyAccess` permission sets or `TerraformPlanAccess` roles
+  1. **State** — Access via `TerraformStateAccess` permission set, used for reading Terraform outputs from components deployed in that account
+</Steps>
 
 ### Setting Your Profile
 
-Set the `ATMOS_PROFILE` environment variable:
+Set the `ATMOS_PROFILE` environment variable to the appropriate profile for your group (e.g., `managers`, `devops`, or `developers`):
 
 ```bash
 export ATMOS_PROFILE=devops
@@ -90,95 +93,13 @@ auth:
 Identities follow the format `<account>/<permission-set>`:
 
 <Steps>
-  1. **Terraform identities** — `plat-dev/terraform`, `core-identity/terraform` - Used automatically for Terraform operations
-  1. **Permission set identities** — `plat-dev/ReadOnlyAccess`, `plat-prod/AdministratorAccess` - Used for AWS CLI and console access
+  1. **Static Terraform identities** — Preconfigured identities like `plat-dev/terraform` that map the correct Permission Set or IAM role for Terraform operations (plan, apply, or state access) for each stack. Defined in stack defaults (e.g., `stacks/orgs/acme/plat/dev/_defaults.yaml`)
+  1. **Auto-provisioned Permission Sets** — When `auto_provision_identities: true` is set, Atmos automatically populates all Permission Sets available to the user (e.g., `plat-dev/ReadOnlyAccess`, `plat-prod/AdministratorAccess`) for console and CLI access
 </Steps>
 
-## Commands
+## Next Steps
 
-### Login
-
-Authenticate with AWS SSO:
-
-```bash
-atmos auth login --provider sso
-```
-
-This opens your browser for SSO authentication and caches credentials in your system keychain.
-
-### Check Status
-
-View your current authentication status:
-
-```bash
-atmos auth whoami
-```
-
-### List Identities
-
-See all available identities for your profile:
-
-```bash
-atmos auth list
-```
-
-### Launch Console
-
-Open the AWS Console for a specific identity:
-
-```bash
-atmos auth console --identity plat-dev/ReadOnlyAccess
-```
-
-### Execute Commands
-
-Run AWS CLI commands with a specific identity:
-
-```bash
-atmos auth exec --identity plat-dev/ReadOnlyAccess -- aws sts get-caller-identity
-```
-
-### Interactive Shell
-
-Start a shell session with a specific identity:
-
-```bash
-atmos auth shell --identity plat-dev/PowerUserAccess
-```
-
-## Automatic Authentication
-
-When running Atmos Terraform commands, authentication happens automatically based on the stack's configured identity:
-
-```bash
-# Atmos automatically uses the plat-dev/terraform identity
-atmos terraform plan vpc -s plat-ue1-dev
-```
-
-The identity is determined by:
-
-<Steps>
-  1. **Stack configuration** — Each stack maps to an account
-  1. **Profile identities** — Your profile defines which Permission Set to use for each account
-  1. **Automatic selection** — Atmos selects the correct `<account>/terraform` identity
-</Steps>
-
-## Credential Caching
-
-Atmos Auth caches credentials in your system keychain:
-
-<Steps>
-  1. **SSO session** — Cached after initial login, typically valid for 8-12 hours
-  1. **Account credentials** — Cached per-identity, refreshed automatically when expired
-</Steps>
-
-To clear cached credentials:
-
-```bash
-rm -rf ~/.aws/sso/cache/*
-atmos auth login --provider sso
-```
-
-## Additional Information
-
-For more details about Atmos Auth, see the [Atmos Auth documentation](https://atmos.tools/cli/commands/auth/usage/#overview).
+<ActionCard title="Start using AWS">
+  With Atmos Auth configured and profiles ready, learn how to access AWS and deploy Terraform using Atmos.
+  <PrimaryCTA to="/layers/identity/how-to-log-into-aws/">Login to AWS</PrimaryCTA>
+</ActionCard>

@@ -17,7 +17,6 @@ workflows:
     description: Deploys all AWS Organization accounts
     steps:
       - command: terraform apply account -s core-gbl-root
-      - command: terraform deploy account-map -s core-gbl-root
 
   deploy/account-settings:
     description: Apply AWS Account settings for best practices.
@@ -26,7 +25,6 @@ workflows:
       - command: terraform deploy account-settings -s core-gbl-audit
       - command: terraform deploy account-settings -s core-gbl-auto
       - command: terraform deploy account-settings -s core-gbl-dns
-      - command: terraform deploy account-settings -s core-gbl-identity
       - command: terraform deploy account-settings -s core-gbl-network
       - command: terraform deploy account-settings -s core-gbl-root
       - command: terraform deploy account-settings -s core-gbl-security

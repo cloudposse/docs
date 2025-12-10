@@ -12,6 +12,9 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import StepNumber from "@site/src/components/StepNumber";
 import Step from "@site/src/components/Step";
+import ActionCard from "@site/src/components/ActionCard";
+import PrimaryCTA from "@site/src/components/PrimaryCTA";
+import AtmosWorkflow from "@site/src/components/AtmosWorkflow";
 
 {/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Not Started */}
 {/*
@@ -32,48 +35,48 @@ import Step from "@site/src/components/Step";
 
 ## How it Works
 
-AWS Single Sign-On (AWS SSO) is a service that simplifies access management for AWS accounts and applications. It enables users to sign in to AWS once and access multiple AWS accounts and applications without the need to re-enter credentials. To use it with an identity provider (e.g. such as Okta) for AWS SSO, administrators typically need to configure the integration within the AWS Management Console.
-This involves setting up a new AWS SSO instance, connecting it the IdP, and specifying the users or groups that should have access to AWS resources. AWS SSO provides logging and auditing capabilities, allowing organizations to track user access to AWS resources and monitor security-related events
+AWS Single Sign-On (AWS SSO) is a service that simplifies access management for AWS accounts and applications. It enables users to sign in to AWS once and access multiple AWS accounts and applications without the need to re-enter credentials. To use it with an identity provider (IdP) for AWS SSO, administrators typically need to configure the integration within the AWS Management Console. This involves setting up a new AWS SSO instance, connecting it to the IdP, and specifying the users or groups that should have access to AWS resources. AWS SSO provides logging and auditing capabilities, allowing organizations to track user access to AWS resources and monitor security-related events.
 
 <Steps>
   <Step>
     ### <StepNumber/> SAML-Based Authentication
 
-    The integration between the IdP and AWS SSO relies on the Security Assertion Markup Language (SAML) for authentication and authorization. SAML enables the exchange of authentication and authorization data between Okta and AWS, allowing users to log in once to Okta and gain access to AWS resources without additional logins.
+    The integration between the IdP and AWS SSO relies on the Security Assertion Markup Language (SAML) for authentication and authorization. SAML enables the exchange of authentication and authorization data between your IdP and AWS, allowing users to log in once to their IdP and gain access to AWS resources without additional logins.
 
   </Step>
   <Step>
     ### <StepNumber/> User Provisioning
 
-    AWS SSO can be configured to automatically provision and de-provision user accounts based on changes in the IdP directory. This helps keep user access in sync with changes made in the Okta environment.
+    AWS SSO can be configured to automatically provision and de-provision user accounts based on changes in the IdP directory. This helps keep user access in sync with changes made in your IdP.
 
   </Step>
   <Step>
     ### <StepNumber/> AWS SSO Permission Sets
 
-    AWS SSO allows administrators to define fine-grained access policies, specifying which AWS accounts and services users from the IdP can access
+    AWS SSO allows administrators to define fine-grained access policies, specifying which AWS accounts and services users from the IdP can access.
 
   </Step>
   <Step>
     ### <StepNumber/> Multi-Factor Authentication (MFA)
 
-    Organizations using Okta for authentication with AWS SSO can enhance security by enforcing multi-factor authentication (MFA) for added identity verification.
+    Organizations using an IdP for authentication with AWS SSO can enhance security by enforcing multi-factor authentication (MFA) for added identity verification.
 
   </Step>
 </Steps>
 
 Once configured, users can experience single sign-on when accessing AWS resources. They log in to their IdP account and seamlessly gain access to AWS without needing to provide credentials again.
 
-It's important to note that the specifics of the integration process may be subject to updates or changes, so it's recommended to refer to the official AWS documentation and Okta documentation for the most accurate and up-to-date information based on your current date.
+It's important to note that the specifics of the integration process may be subject to updates or changes, so it's recommended to refer to the official AWS documentation and your IdP's documentation for the most accurate and up-to-date information.
 
 ## Prerequisites
 
 First, enable the AWS IAM Identity Center (successor to AWS Single Sign-On) service in the `core-root` account. This is the account where the `aws-sso` component will be deployed.
 
 <Steps>
-  1. Navigate to the `core-root` account in the AWS Web Console 2. Select your
-  primary region 3. Go to AWS IAM Identity Center (successor to AWS Single
-  Sign-On) 4. Enable the service
+  1. **Navigate** to the `core-root` account in the AWS Web Console
+  1. **Select** your primary region
+  1. **Go to** AWS IAM Identity Center (successor to AWS Single Sign-On)
+  1. **Enable** the service
 </Steps>
 
 ## Configure your Identity Provider
@@ -90,7 +93,7 @@ For providers not included in the following section, please [follow the AWS docu
       Okta is a common business suite that has an active director to manage users and permissions. We can utilize this to login to AWS by leveraging **Applications** that are used to sign in to things from your Okta Account.
     </Intro>
 
-    ### Setup Okta
+    #### Setup Okta
     <Steps>
       1. Under the Admin Panel go to **Applications**
       2. Click **Browse App Catalog**
@@ -100,7 +103,7 @@ For providers not included in the following section, please [follow the AWS docu
       6. Then go to Provisioning and click **Configure API Integration**
     </Steps>
 
-    ### Setup AWS SSO
+    #### Setup AWS SSO
 
     <Steps>
       1. Sign into AWS SSO under your management account (`core-root`)
@@ -140,7 +143,7 @@ For providers not included in the following section, please [follow the AWS docu
 
     AWS SSO allows organizations to centralize identity management and provide users with seamless access to AWS resources using their existing Microsoft Entra ID credentials.
 
-    ### Setup Microsoft Entra ID
+    #### Setup Microsoft Entra ID
 
     <Steps>
     <Step>
@@ -210,7 +213,7 @@ For providers not included in the following section, please [follow the AWS docu
 
 <br />
 
-## Automatic Provisioning
+#### Automatic Provisioning
 
 <Steps>
   <Step>
@@ -262,32 +265,39 @@ For providers not included in the following section, please [follow the AWS docu
         <StepNumber/> On the Dashboard page of the IAM Identity Center console, select Choose your identity source
       </Step>
       <Step>
-        <StepNumber/> In the Settings, choose the Identity source tab, select the Actions dropdown in the top right, and then select Change
-        identity source
+        <StepNumber/> In the Settings, choose the Identity source tab, select the Actions dropdown in the top right, and then select Change identity source
       </Step>
       <Step>
-        <StepNumber/> By default, IAM Identity Center uses its own directory as the IdP. To use another IdP, you have to switch to an
-        external identity provider. Select External identity provider from the available identity sources
-      5. Configure the custom SAML application with the Service provider metadata generated from your IdP. Follow the next
-        steps from your IdP, and then complete this AWS configuration afterwards
-      6. Open your chosen IdP
-      7. Create a new SSO application
-      8. Download the new app's IdP metadata and use this to complete step 5 above
-      9. Fill in the Service provider details using the data from IAM Identity Center, and then choose Continue. The mapping
-        for the data is as follows:
+        <StepNumber/> By default, IAM Identity Center uses its own directory as the IdP. To use another IdP, you have to switch to an external identity provider. Select External identity provider from the available identity sources
+      </Step>
+      <Step>
+        <StepNumber/> Configure the custom SAML application with the Service provider metadata generated from your IdP. Follow the next steps from your IdP, and then complete this AWS configuration afterwards
+      </Step>
+      <Step>
+        <StepNumber/> Open your chosen IdP
+      </Step>
+      <Step>
+        <StepNumber/> Create a new SSO application
+      </Step>
+      <Step>
+        <StepNumber/> Download the new app's IdP metadata and use this to complete step 5 above
+      </Step>
+      <Step>
+        <StepNumber/> Fill in the Service provider details using the data from IAM Identity Center, and then choose Continue. The mapping for the data is as follows:
 
-          ```console
-          For ACS URL, enter the IAM Identity Center Assertion Consumer Service (ACS) URL.
-          For Entity ID, enter the IAM Identity Center issuer URL.
-          Leave the Start URL field empty.
-          For Name ID format, select EMAIL.
-          ```
-
-      10. If required for the IdP, enable the application for all users
-      11. Finally, define specific Groups to match the given Group names by the aws-sso component
-          (`stacks/catalog/aws-sso.yaml`). In the default catalog, we define four Groups: `DevOps`, `Developers`,
-          `BillingAdmin`, and `Everyone`
-    </Step>
+```
+For ACS URL, enter the IAM Identity Center Assertion Consumer Service (ACS) URL.
+For Entity ID, enter the IAM Identity Center issuer URL.
+Leave the Start URL field empty.
+For Name ID format, select EMAIL.
+```
+      </Step>
+      <Step>
+        <StepNumber/> If required for the IdP, enable the application for all users
+      </Step>
+      <Step>
+        <StepNumber/> Finally, define specific Groups to match the given Group names by the `aws-sso` component (`stacks/catalog/aws-sso.yaml`). In the default catalog, we define four Groups: `DevOps`, `Developers`, `BillingAdmin`, and `Everyone`
+      </Step>
     </Steps>
 
     If set up properly, Users and Groups added to your IdP will automatically populate and update in AWS.
@@ -298,3 +308,44 @@ For providers not included in the following section, please [follow the AWS docu
 
   </TabItem>
 </Tabs>
+
+## Required Groups
+
+Before deploying the `aws-sso` component, you must create the following groups in your Identity Provider. These names are **case-sensitive** and must match exactly:
+
+<Steps>
+  1. **Managers** — Full access to all accounts
+  1. **DevOps** — Full access to most accounts (except root)
+  1. **Developers** — Limited access for development work
+  1. **BillingAdmin** — Access to billing and cost management
+</Steps>
+
+Once these groups are provisioned and synced to AWS Identity Center, you can deploy the `aws-sso` component.
+
+## Deploy Permission Sets
+
+The `aws-sso` component deploys all Permission Sets and assigns them to the appropriate groups. This includes:
+
+<Steps>
+  1. **`TerraformApplyAccess`** — Write access for Terraform operations
+  1. **`TerraformPlanAccess`** — Read-only access for Terraform plan operations
+  1. **`TerraformStateAccess`** — Access to Terraform state only
+  1. **`AdministratorAccess`** — Full AWS administrator access
+  1. **`PowerUserAccess`** — Power user access without IAM management
+  1. **`ReadOnlyAccess`** — Read-only access to AWS resources
+</Steps>
+
+Deploy the component using the identity workflow:
+
+<AtmosWorkflow workflow="deploy/sso" fileName="quickstart/foundation/identity" />
+
+:::caution Groups Must Exist First
+The `aws-sso` component will fail if the required groups (`Managers`, `DevOps`, `Developers`, `BillingAdmin`) do not exist in AWS Identity Center. Ensure your IdP is configured and groups are synced before deploying.
+:::
+
+## Next Steps
+
+<ActionCard title="Centralize root access">
+  Now that Identity Center and Permission Sets are provisioned, configure centralized root access management. This allows secure, auditable root operations on member accounts without maintaining root credentials.
+  <PrimaryCTA to="/layers/identity/centralized-root-access/">Centralize Root Access</PrimaryCTA>
+</ActionCard>

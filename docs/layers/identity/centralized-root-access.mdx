@@ -1,61 +1,158 @@
 ---
 title: Centralized Root Access
-sidebar_label: Centralized Root Access
+sidebar_label: "Centralize Root Access"
 sidebar_position: 3
+description: Configure centralized root access management for AWS Organizations using IAM Identity Center
 ---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
-{/* TODO:DEPRECATE-ACCOUNT-MAP - NEW PAGE - Status: Not Started */}
-{/*
-This page needs to be written from scratch.
+{/* TODO:DEPRECATE-ACCOUNT-MAP - NEW PAGE - Status: Done */}
 
-## Required Content:
-- RootAccess permission set overview
-- Organizational root access for delegated accounts
-- Security considerations
-- Usage examples
-- When to use organizational root access vs other methods
-
-## Source Reference:
-- refarch-scaffold/template/stacks/catalog/aws-sso/defaults.yaml (RootAccess permission set)
-- refarch-scaffold/template/profiles/managers/atmos.yaml (organizational-root-access identity)
-*/}
-
-# Centralized Root Access
-
-:::info Work in Progress
-This documentation is being written as part of the account-map deprecation effort.
-:::
+<Intro>
+Centralized root access management allows you to securely perform privileged root actions on member accounts without maintaining root credentials. This eliminates the need to manage root passwords or MFA devices for each AWS account.
+</Intro>
 
 ## Overview
 
-The `RootAccess` permission set enables organizational root access to delegated AWS accounts. This allows managers to perform root-level operations without needing the root account credentials.
+AWS Organizations now supports centralized root access, which enables the management account (or a delegated administrator) to assume root on member accounts for specific privileged tasks. This is configured through the `RootAccess` permission set in IAM Identity Center.
 
-## Permission Set Configuration
+With centralized root access:
 
-The `RootAccess` permission set is configured in the `aws-sso` component and provides `sts:AssumeRoot` permissions.
+<Steps>
+  1. **No root credentials needed** — Member accounts have no root passwords, access keys, or MFA devices
+  1. **Task-scoped access** — Root access is limited to specific AWS-managed task policies
+  1. **Audit trail** — All root operations are logged through CloudTrail
+  1. **Centralized control** — Only users with the `RootAccess` permission set can assume root
+</Steps>
 
-## Using Organizational Root Access
+## Prerequisites
 
-Managers can use the `organizational-root-access` identity to assume root access:
+Before using centralized root access, enable the feature in your AWS Organization:
+
+<Steps>
+  1. **Sign in** to the AWS Management Console as the root account
+  1. **Navigate** to IAM → Root access management
+  1. **Enable** both "Root credentials management" and "Privileged root actions"
+  1. **Deploy** the `aws-sso` component which configures the `RootAccess` permission set
+</Steps>
+
+:::tip
+These prerequisites are typically completed during the [account setup](/layers/accounts/deploy-accounts/) or cold start process.
+:::
+
+## Available Task Policies
+
+When assuming root, you must specify a task policy that limits what actions can be performed:
+
+| Task Policy | Description |
+|-------------|-------------|
+| `IAMAuditRootUserCredentials` | Audit root user credentials across member accounts |
+| `IAMCreateRootUserPassword` | Create a root user password (for recovery) |
+| `IAMDeleteRootUserCredentials` | Delete root passwords, access keys, MFA devices |
+| `S3UnlockBucketPolicy` | Unlock S3 bucket policies that deny all access |
+| `SQSUnlockQueuePolicy` | Unlock SQS queue policies that deny all access |
+
+## Using Centralized Root Access
+
+Atmos supports the `aws/assume-root` identity kind, which chains from an SSO permission set to assume root in target accounts with a specific task policy.
+
+### Configuration
+
+Define assume-root identities in your profile's `atmos.yaml`:
 
 ```yaml
-# In profiles/managers/atmos.yaml
-organizational-root-access:
-  kind: aws/permission-set
-  via:
-    provider: sso
-  principal:
-    name: RootAccess
-    account:
-      name: core-root
+# profiles/managers/atmos.yaml
+auth:
+  identities:
+    # Base identity with RootAccess permission set
+    organizational-root-access:
+      kind: aws/permission-set
+      via:
+        provider: sso
+      principal:
+        name: RootAccess
+        account:
+          name: core-root
+
+    # Chain to assume root for auditing credentials
+    plat-dev/audit-root:
+      kind: aws/assume-root
+      via:
+        identity: organizational-root-access
+      principal:
+        target_principal: "123456789012"  # plat-dev account ID
+        task_policy_arn: arn:aws:iam::aws:policy/root-task/IAMAuditRootUserCredentials
+
+    # Chain to assume root for deleting credentials
+    plat-dev/delete-root-credentials:
+      kind: aws/assume-root
+      via:
+        identity: organizational-root-access
+      principal:
+        target_principal: "123456789012"  # plat-dev account ID
+        task_policy_arn: arn:aws:iam::aws:policy/root-task/IAMDeleteRootUserCredentials
+```
+
+### Assume Root on a Member Account
+
+<Steps>
+  1. **Authenticate** directly with the assume-root identity for the specific task:
+
+```bash
+atmos auth login --identity plat-dev/audit-root
+```
+
+  1. **Run commands** as root on the member account:
+
+```bash
+atmos auth exec --identity plat-dev/audit-root -- aws iam list-mfa-devices
+```
+
+  1. **Or start an interactive shell** with root credentials:
+
+```bash
+atmos auth shell --identity plat-dev/audit-root
+aws sts get-caller-identity
+```
+</Steps>
+
+### Example: Delete Root Credentials
+
+To delete root credentials from a member account:
+
+```bash
+# Authenticate and run commands as root with the delete credentials task policy
+atmos auth exec --identity plat-dev/delete-root-credentials -- \
+  aws iam delete-access-key --user-name root --access-key-id <KEY_ID>
+
+# Or start a shell for multiple operations
+atmos auth shell --identity plat-dev/delete-root-credentials
+
+# Delete root MFA device
+aws iam deactivate-mfa-device --user-name root --serial-number <MFA_ARN>
+aws iam delete-virtual-mfa-device --serial-number <MFA_ARN>
 ```
 
 ## Security Considerations
 
-- Only assign `RootAccess` to trusted users (typically managers only)
-- Use for emergency access and specific administrative tasks
-- Audit all usage of organizational root access
+<Steps>
+  1. **Restrict access** — Only the `managers` profile has the `RootAccess` permission set
+  1. **Task-scoped** — Each assume-root session is limited to a specific task policy
+  1. **Short-lived** — Root sessions have a maximum duration of 15 minutes
+  1. **Audited** — All `sts:AssumeRoot` calls are logged in CloudTrail
+  1. **No standing access** — Credentials are generated on-demand, not stored
+</Steps>
 
-{/* TODO:DEPRECATE-ACCOUNT-MAP - Add detailed permission set configuration */}
-{/* TODO:DEPRECATE-ACCOUNT-MAP - Add use cases and examples */}
-{/* TODO:DEPRECATE-ACCOUNT-MAP - Add security best practices */}
+## Additional Information
+
+For more details, see the [AWS Centralized Root Access Documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-enable-root-access.html).
+
+## Next Steps
+
+<ActionCard title="Deploy IAM roles">
+  Now that we have Permission Sets deployed for human access, we need to configure IAM roles for machine users.
+  <PrimaryCTA to="/layers/identity/deploy/">Deploy IAM Roles</PrimaryCTA>
+</ActionCard>

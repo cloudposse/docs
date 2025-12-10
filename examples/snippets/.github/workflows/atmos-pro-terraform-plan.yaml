@@ -18,6 +18,11 @@ on:
         description: "Stack"
         required: true
         type: string
+      upload_status:
+        description: "Upload status to Atmos Pro"
+        required: false
+        type: boolean
+        default: false
 
 # Avoid running the same stack in parallel mode (from different workflows)
 # This applied to across workflows to both plan and apply
@@ -45,11 +50,16 @@ jobs:
 
       - name: Plan Atmos Component
         uses: cloudposse/github-action-atmos-terraform-plan@v5
+        env:
+          ATMOS_PROFILE: "github-plan"
+          ATMOS_PRO_WORKSPACE_ID: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
         with:
           # Atmos Pro args
           component: ${{ inputs.component }}
           stack: ${{ inputs.stack }}
           sha: ${{ inputs.sha }}
+          # Upload the status to Atmos Pro
+          atmos-pro-upload-status: ${{ inputs.upload_status }}
           # Atmos required configuration
           atmos-version: ${{ vars.ATMOS_VERSION }}
           atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}

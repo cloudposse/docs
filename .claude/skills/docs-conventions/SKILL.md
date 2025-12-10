@@ -93,6 +93,70 @@ import SecondaryCTA from '@site/src/components/SecondaryCTA';
 </ActionCard>
 ```
 
+### Next Steps Section (Required)
+
+**IMPORTANT: All primary pages should end with a "Next Steps" section using ActionCard.**
+
+The description should provide context by:
+1. Acknowledging what was accomplished in the current page
+2. Explaining why the next step is needed
+3. Describing what the next page will cover
+
+**Pattern:** "Now that [what was accomplished], [why the next step matters]. [What the next page covers]."
+
+**Good examples:**
+
+```mdx
+## Next Steps
+
+<ActionCard title="Centralize root access">
+  Now that Identity Center and Permission Sets are provisioned, configure centralized root access management. This allows secure, auditable root operations on member accounts without maintaining root credentials.
+  <PrimaryCTA to="/layers/identity/centralized-root-access/">Centralize Root Access</PrimaryCTA>
+</ActionCard>
+```
+
+```mdx
+## Next Steps
+
+<ActionCard title="Deploy IAM roles">
+  With Permission Sets available for human access, configure IAM roles for machine users. These roles enable GitHub Actions and other CI/CD systems to authenticate via OIDC.
+  <PrimaryCTA to="/layers/identity/deploy/">Deploy IAM Roles</PrimaryCTA>
+</ActionCard>
+```
+
+```mdx
+## Next Steps
+
+<ActionCard title="Configure authentication">
+  With IAM roles deployed for machine users, configure Atmos Auth to map Permission Sets to user profiles. This enables seamless CLI authentication for your team.
+  <PrimaryCTA to="/layers/identity/atmos-auth/">Configure Atmos Auth</PrimaryCTA>
+</ActionCard>
+```
+
+**Bad examples (too generic):**
+
+```mdx
+{/* ❌ Too generic - doesn't explain context */}
+<ActionCard title="Configure authentication">
+  Learn how to configure Atmos Auth.
+  <PrimaryCTA to="/layers/identity/atmos-auth/">Configure Atmos Auth</PrimaryCTA>
+</ActionCard>
+```
+
+For multiple next steps, use `<div>` to wrap CTAs:
+
+```mdx
+## Next Steps
+
+<ActionCard title="Setup Identity Center">
+  Start by configuring AWS Identity Center with your IdP and deploying Permission Sets for your team.
+  <div>
+    <PrimaryCTA to="/layers/identity/aws-sso/">Setup Identity Center</PrimaryCTA>
+    <SecondaryCTA to="/layers/identity/how-to-log-into-aws/">How to Log into AWS</SecondaryCTA>
+  </div>
+</ActionCard>
+```
+
 ### Other Components
 
 | Component | Use Case |

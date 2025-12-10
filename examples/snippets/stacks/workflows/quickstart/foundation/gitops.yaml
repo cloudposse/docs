@@ -10,14 +10,14 @@ workflows:
     description: Vendor Gitops required components.
     steps:
     - command: vendor pull --component github-oidc-provider
-    - command: vendor pull --component github-oidc-role
+    - command: vendor pull --component iam-role
     - command: vendor pull --component dynamodb
     - command: vendor pull --component s3-bucket
 
   deploy:
     description: Run deployment for Gitops requirements
     steps:
-      - command: terraform deploy github-oidc-provider -s core-gbl-identity
+      - command: terraform deploy github-oidc-provider -s core-use1-auto
       - command: terraform deploy gitops/s3-bucket --stack core-use1-auto
       - command: terraform deploy gitops/dynamodb --stack core-use1-auto
-      - command: terraform deploy github-oidc-role/gitops --stack core-use1-auto
+      - command: terraform deploy iam-role/gitops --stack core-use1-auto

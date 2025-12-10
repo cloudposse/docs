@@ -9,7 +9,7 @@
   },
   {
     "from": "/layers/identity/centralized-terraform-access/",
-    "to": "/layers/identity/tutorials/centralized-terraform-access/"
+    "to": "/layers/identity/tutorials/access-control-evolution/"
   },
   {
     "from": "/layers/identity/atmos-profiles/",
@@ -21,23 +21,23 @@
   },
   {
     "from": "/layers/identity/docs/aws-access-control-architecture/",
-    "to": "/layers/identity/tutorials/aws-access-control-architecture/"
+    "to": "/layers/identity/tutorials/access-control-evolution/"
   },
   {
     "from": "/layers/identity/docs/aws-access-control-evolution/",
-    "to": "/layers/identity/tutorials/aws-access-control-evolution/"
+    "to": "/layers/identity/tutorials/access-control-evolution/"
   },
   {
     "from": "/layers/identity/docs/aws-access-control/",
-    "to": "/layers/identity/tutorials/aws-access-control/"
+    "to": "/layers/identity/tutorials/access-control-evolution/"
   },
   {
     "from": "/layers/identity/docs/aws-restricting-admin-access/",
-    "to": "/layers/identity/tutorials/aws-restricting-admin-access/"
+    "to": "/layers/identity/tutorials/access-control-evolution/"
   },
   {
     "from": "/layers/identity/docs/dynamic-terraform-roles/",
-    "to": "/layers/identity/tutorials/dynamic-terraform-roles/"
+    "to": "/layers/identity/tutorials/access-control-evolution/"
   },
   {
     "from": "/layers/identity/optional/aws-saml/",
@@ -45,6 +45,54 @@
   },
   {
     "from": "/layers/identity/faq/",
-    "to": "/layers/identity/tutorials/faq/"
+    "to": "/layers/identity/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-access-control/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-access-control-architecture/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-access-control-evolution/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-restricting-admin-access/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/dynamic-terraform-roles/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/centralized-terraform-access/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/expanding-iam-roles/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/how-to-easily-switch-aws-account-roles/",
+    "to": "/layers/identity/how-to-log-into-aws/"
+  },
+  {
+    "from": "/layers/identity/tutorials/faq/",
+    "to": "/layers/identity/"
+  },
+  {
+    "from": "/layers/identity/tutorials/how-to-create-a-delegated-role-for-assumption-by-one-or-more-pri/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/leapp/",
+    "to": "/layers/identity/how-to-log-into-aws/"
+  },
+  {
+    "from": "/layers/identity/tutorials/leapp/how-to-setup-windows/",
+    "to": "/layers/identity/how-to-log-into-aws/"
   }
 ]
