@@ -6,5 +6,45 @@
   {
     "from": "/layers/alerting/",
     "to": "/resources/deprecated/alerting/"
+  },
+  {
+    "from": "/layers/identity/centralized-terraform-access/",
+    "to": "/layers/identity/tutorials/centralized-terraform-access/"
+  },
+  {
+    "from": "/layers/identity/atmos-profiles/",
+    "to": "/layers/identity/atmos-auth/"
+  },
+  {
+    "from": "/layers/identity/tutorials/migrate-from-account-map/",
+    "to": "/layers/project/tutorials/migrate-from-account-map/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-access-control-architecture/",
+    "to": "/layers/identity/tutorials/aws-access-control-architecture/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-access-control-evolution/",
+    "to": "/layers/identity/tutorials/aws-access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-access-control/",
+    "to": "/layers/identity/tutorials/aws-access-control/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-restricting-admin-access/",
+    "to": "/layers/identity/tutorials/aws-restricting-admin-access/"
+  },
+  {
+    "from": "/layers/identity/docs/dynamic-terraform-roles/",
+    "to": "/layers/identity/tutorials/dynamic-terraform-roles/"
+  },
+  {
+    "from": "/layers/identity/optional/aws-saml/",
+    "to": "/layers/identity/tutorials/aws-saml/"
+  },
+  {
+    "from": "/layers/identity/faq/",
+    "to": "/layers/identity/tutorials/faq/"
   }
 ]

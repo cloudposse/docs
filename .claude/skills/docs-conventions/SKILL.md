@@ -14,19 +14,47 @@ Every MDX file requires frontmatter:
 ```mdx
 ---
 title: "Human-Readable Title"
-sidebar_label: "Short Label"
+sidebar_label: "Action-Oriented Label"
 sidebar_class_name: hidden          # Optional: hide from sidebar
 description: Brief description for SEO and previews
 ---
 ```
 
+### Sidebar Labels
+
+**IMPORTANT: Sidebar labels should be action-oriented verbs.**
+
+| Good | Bad |
+|------|-----|
+| `Configure Atmos Auth` | `Atmos Auth` |
+| `Deploy Roles` | `IAM Roles` |
+| `Login to AWS` | `AWS Login` |
+| `Setup Identity Center` | `Identity Center` |
+| `Understand Identity` | `Identity Overview` |
+
+Use verbs like: Configure, Deploy, Setup, Create, Manage, Understand, Review, Migrate
+
 ## Available React Components
 
 Import components from `@site/src/components/`:
 
-### Steps and Step
+### Steps Component
 
-For numbered step-by-step instructions:
+**IMPORTANT: Always wrap lists and numbered items with the `<Steps>` component.**
+
+For compact lists (preferred for simple items):
+
+```mdx
+import Steps from '@site/src/components/Steps';
+
+<Steps>
+  1. **First item** — Description of first item
+  1. **Second item** — Description of second item
+  1. **Third item** — Description of third item
+</Steps>
+```
+
+For detailed step-by-step instructions with more content:
 
 ```mdx
 import Steps from '@site/src/components/Steps';
@@ -36,7 +64,7 @@ import StepNumber from '@site/src/components/StepNumber';
 <Steps>
   <Step>
     ### <StepNumber/> First Step Title
-    Step content here.
+    Step content here with code blocks, notes, etc.
   </Step>
   <Step>
     ### <StepNumber/> Second Step Title
@@ -44,6 +72,8 @@ import StepNumber from '@site/src/components/StepNumber';
   </Step>
 </Steps>
 ```
+
+Use the compact format for simple lists and the detailed format when steps require code blocks or extensive explanation.
 
 ### ActionCard with CTAs
 

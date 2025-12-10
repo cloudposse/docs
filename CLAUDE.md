@@ -183,3 +183,4 @@ Use structured TODO comments for tracking documentation updates:
 See `.claude/skills/` for specialized documentation tasks:
 - `docs-conventions` - Writing standards, React components, MDX patterns
 - `docs-build` - Building, rendering library docs, deployment
+- `docs-styles` - CSS styles, color themes, mermaid diagram colors
