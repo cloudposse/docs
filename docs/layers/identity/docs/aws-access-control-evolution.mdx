@@ -7,12 +7,12 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
-{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: In Progress */}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Not Started */}
 {/*
 ## Required Updates:
-- Add new section for "Static Account Map and Permission Sets" phase
-- Update Roadmap section
-- Mark aws-teams/aws-team-roles as deprecated approach
+- Add new section for "Static Account Map and Permission Sets" phase (Phase 4)
+- This should be a NEW section added to the existing feature sets, not a replacement
+- Keep all existing content intact - this is historical documentation
 */}
 
 ## Overview
@@ -75,102 +75,13 @@ have them, please contact Cloud Posse to discuss how to get them implemented.
 
 ### SSO Permission Sets Automatically Acquire Team Permissions
 
-~~When the SSO Permission Set corresponding to a Team is created, it should
+When the SSO Permission Set corresponding to a Team is created, it should
 automatically be granted the permissions that the Team has in the `identity` account.
 Currently, the sets have minimal permissions in the `identity` account, although
-they have the exact same ability to assume roles in other accounts as the Team does.~~
-
-**Update**: This feature has been superseded by the [Static Account Map and Permission Sets](#static-account-map-and-permission-sets-current) approach, which eliminates Teams entirely in favor of using Permission Sets directly for all access control.
+they have the exact same ability to assume roles in other accounts as the Team does.
 
 ## Feature Sets (reverse chronological order)
 
-### Static Account Map and Permission Sets (Current)
-
-- **Status**: Current recommended approach
-- Required component updates: None (replaces `account-map`, `aws-teams`, `aws-team-roles`)
-- Required configuration update complexity: significant for existing deployments
-
-:::tip Recommended Approach
-This is the current recommended approach for new deployments and represents a significant simplification
-of the access control model.
-:::
-
-#### Summary
-
-This phase represents a major simplification of the access control architecture:
-
-1. **Static `account_map` variable** replaces the `account-map` component
-2. **Permission Sets only** replace `aws-teams` and `aws-team-roles` for human user access
-3. **`iam-role` component** replaces `github-oidc-role` for machine user IAM roles (CI/CD)
-4. **Atmos Auth** replaces Leapp for AWS authentication
-5. **Identity managed in `core-root`** instead of separate `core-identity` account
-
-#### Key Changes
-
-##### Account Map is Now Static Configuration
-
-Previously, `account-map` was a Terraform component that dynamically looked up account IDs and role ARNs
-from Terraform state. This created circular dependencies and required the component to be deployed before
-most other components could function.
-
-Now, account mappings are defined as a static YAML variable in `stacks/orgs/NAMESPACE/_defaults.yaml`:
-
-```yaml
-vars:
-  account_map:
-    root: "111111111111"
-    artifacts: "222222222222"
-    audit: "333333333333"
-    # ... other accounts
-```
-
-##### Permission Sets Replace Teams and Team Roles
-
-Instead of using `aws-teams` (IAM roles in the identity account) and `aws-team-roles` (IAM roles in each target account),
-access is now managed entirely through AWS IAM Identity Center Permission Sets:
-
-| Permission Set | Purpose |
-|----------------|---------|
-| `TerraformPlanAccess` | Read-only Terraform access for planning |
-| `TerraformApplyAccess` | Read/write Terraform access for applying changes |
-| `TerraformStateAccess` | Read access to Terraform state for `!terraform.state` functions |
-| `RootAccess` | Centralized root-level access for delegated administration |
-
-##### Machine Users via `iam-role` Component
-
-The `iam-role` component provides a unified way to create IAM roles for machine users (CI/CD pipelines):
-
-- **`github-plan`**: Role for GitHub Actions to run `terraform plan`
-- **`github-apply`**: Role for GitHub Actions to run `terraform apply`
-
-These roles use GitHub OIDC federation and replace the previous `github-oidc-role` component.
-
-##### Atmos Auth for CLI Authentication
-
-Atmos Auth provides a unified authentication experience:
-
-```bash
-# Login with Atmos Auth
-atmos auth login
-
-# Use a specific profile
-ATMOS_PROFILE=devops atmos terraform plan vpc -s plat-ue1-dev
-```
-
-Profiles available:
-- `superadmin` - Full administrative access
-- `managers` - Management-level access
-- `devops` - DevOps team access
-- `developers` - Developer access
-- `github-plan` - CI/CD planning role
-- `github-apply` - CI/CD apply role
-
-#### Migration
-
-For migration instructions from the previous `aws-teams`/`aws-team-roles` approach, see
-[Migrate from Account-Map](/layers/identity/tutorials/migrate-from-account-map).
-
----
 
 ### SSO Permission Sets as Teams
 
