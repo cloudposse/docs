@@ -15,7 +15,7 @@ content: |-
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
-      {{ . }}<br/>
+      {{ . | html }}<br/>
       {{- end }}
 
       {{ if gt (len (split "\n" (tostring .Type))) 2 }}
@@ -45,7 +45,7 @@ content: |-
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
-      {{ . }}<br/>
+      {{ . | html }}<br/>
       {{- end }}
       <br/>
       {{ if gt (len (split "\n" (tostring .Type))) 2 }}
@@ -83,7 +83,7 @@ content: |-
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "") -1 -}}
       {{- range $lines }}
-      {{ . }}<br/>
+      {{ . | html }}<br/>
       {{- end }}
       **Required:** {{ ternary .Required "Yes" "No" }}<br/>
       {{ if gt (len (split "\n" (tostring .Type))) 2 }}
@@ -116,7 +116,7 @@ content: |-
     <dd>
       {{- $lines := regexSplit "\n" (tostring .Description | replace "OBSOLETE: " "" | default "n/a" ) -1 -}}
       {{- range $lines }}
-      {{ . }}<br/>
+      {{ . | html }}<br/>
       {{- end }}
     </dd>
   {{- end }}
