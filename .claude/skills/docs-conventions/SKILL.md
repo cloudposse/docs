@@ -157,18 +157,133 @@ For multiple next steps, use `<div>` to wrap CTAs:
 </ActionCard>
 ```
 
+### Definition Lists for Component Overviews
+
+Use `<dl>/<dt>/<dd>` for listing infrastructure components with descriptions:
+
+```mdx
+<dl>
+  <dt><code>s3-bucket/gitops</code></dt>
+  <dd>
+    Stores plan files generated during the planning phase and retrieved during apply.
+    Created with the <a href="/components/library/aws/s3-bucket/"><code>s3-bucket</code></a> component.
+  </dd>
+
+  <dt><code>dynamodb/gitops</code></dt>
+  <dd>
+    Maps git SHAs to plan files, ensuring the correct plan is retrieved for each apply.
+    Created with the <a href="/components/library/aws/dynamodb/"><code>dynamodb</code></a> component.
+  </dd>
+</dl>
+```
+
+**IMPORTANT:** Hyperlinks go on "Created with X component" text in `<dd>`, NOT on the component name in `<dt>`.
+
+### Note Component vs Admonitions
+
+Use `<Note>` for inline notes within sections (e.g., inside definition lists):
+
+```mdx
+import Note from '@site/src/components/Note';
+
+<Note>
+  These roles are deployed as part of the Identity layer.
+</Note>
+
+<Note title="Optional Title">
+  Content with a title.
+</Note>
+```
+
+Use `:::info` admonitions for standalone callouts:
+
+```mdx
+:::info Included with Reference Architecture
+These workflows are already included with the reference architecture package.
+:::
+```
+
+### CollapsibleText with CodeBlock
+
+For wrapping long code blocks or workflow tabs:
+
+```mdx
+import CodeBlock from '@theme/CodeBlock';
+import CollapsibleText from '@site/src/components/CollapsibleText';
+import PartialWorkflow from '@site/examples/snippets/workflows/example.yaml';
+
+<CollapsibleText type="medium">
+  <CodeBlock title="example.yaml">{PartialWorkflow}</CodeBlock>
+</CollapsibleText>
+```
+
+`type="medium"` sets the collapsed height. Reference: `docs/layers/project/toolbox.mdx:42-48`
+
+### KeyPoints with TaskList (Prerequisites)
+
+For "Before You Begin" sections, place KeyPoints BEFORE Steps:
+
+```mdx
+import KeyPoints from '@site/src/components/KeyPoints';
+import TaskList from '@site/src/components/TaskList';
+
+<KeyPoints title="Before You Begin">
+  <TaskList>
+    - [x] State Backend configured
+    - [x] OIDC Integration deployed
+    - [ ] Plan File Storage pending
+  </TaskList>
+</KeyPoints>
+```
+
+### Troubleshooting Sections
+
+Use H3 headers for each issue and TaskList for diagnostic steps:
+
+```mdx
+## Troubleshooting
+
+### No instances appearing
+
+<TaskList>
+- Verify the workflow is running successfully
+- Check that environment variables are set
+- Ensure IAM role has required permissions
+</TaskList>
+
+### Remediation failing
+
+<TaskList>
+- Verify workflow configuration matches apply workflow
+- Check GitHub environments are properly configured
+- Review GitHub Actions logs for specific errors
+</TaskList>
+```
+
+### Workflow Summary Tables
+
+Standard format for listing multiple workflows:
+
+```mdx
+| Workflow | Purpose | Trigger | Frequency |
+|----------|---------|---------|-----------|
+| `list-instances` | Register components with Atmos Pro | Schedule | Nightly |
+| `detect-drift` | Run terraform plan on each instance | Schedule | Weekly |
+| `remediate` | Apply fixes for drifted components | Manual | On-demand |
+```
+
 ### Other Components
 
 | Component | Use Case |
 |-----------|----------|
 | `Card` / `CardGroup` | Grid of linked cards |
-| `Note` | Highlighted notes |
+| `Note` | Inline highlighted notes (use within sections) |
 | `Terminal` | Terminal output display |
 | `File` | File content display |
-| `CollapsibleText` | Expandable sections |
+| `CollapsibleText` | Expandable sections for long content |
 | `AtmosWorkflow` | Atmos workflow display |
 | `TaskList` | Checkbox task lists |
-| `KeyPoints` | Key takeaways |
+| `KeyPoints` | Key takeaways / prerequisites |
 | `PillBox` | Tag/label pills |
 
 ## Docusaurus Admonitions
@@ -247,7 +362,7 @@ variable "enabled" {
 
 ## Mermaid Diagrams
 
-Mermaid is enabled for diagrams:
+Mermaid is enabled for diagrams. Use `flowchart LR` for left-to-right diagrams:
 
 ```mdx
 ```mermaid
@@ -257,6 +372,31 @@ flowchart LR
     B -->|No| D[End]
 ​```
 ```
+
+### Architecture Diagrams
+
+For infrastructure flows, use descriptive node labels:
+
+```mdx
+```mermaid
+flowchart LR
+    subgraph "GitHub Actions"
+        PR["Pull Request"] --> Plan["Terraform Plan"]
+        Plan --> Apply["Terraform Apply"]
+    end
+
+    subgraph "Atmos Pro"
+        Plan --> Upload["Upload Plan"]
+        Upload --> Store["S3 Storage"]
+    end
+
+    style PR fill:#9b59b6,color:#fff
+    style Plan fill:#3578e5,color:#fff
+    style Apply fill:#28a745,color:#fff
+​```
+```
+
+See `docs-styles/SKILL.md` for color conventions.
 
 ## Video Embeds
 
@@ -304,3 +444,106 @@ Track documentation updates with structured comments:
 - Layer pages: `{layer-name}.mdx` (e.g., `identity.mdx`)
 - Tutorials: `how-to-*.mdx`
 - Design decisions: `design-decisions/*.mdx`
+
+## Sidebar Ordering
+
+Control page order within a category using `sidebar_position` in frontmatter:
+
+```yaml
+---
+title: "Setup Atmos Pro"
+sidebar_label: "Setup Atmos Pro"
+sidebar_position: 1
+---
+```
+
+Pages are ordered by `sidebar_position` value (1, 2, 3, etc.). Pages without `sidebar_position` appear after numbered pages in alphabetical order.
+
+**Recommended order pattern:**
+1. Main setup/deploy pages
+2. Feature configuration pages
+3. Tutorials subfolder (autogenerated)
+
+### sidebar_label vs title
+
+Use short `sidebar_label` for navigation, longer `title` for page header:
+
+```yaml
+---
+title: "Deploy Plan File Storage with Atmos and Terraform"
+sidebar_label: "Deploy Plan Storage"
+sidebar_position: 2
+---
+```
+
+## Reference Architecture Naming Conventions
+
+### Tenant Names
+
+| Tenant | Purpose |
+|--------|---------|
+| `core` | Shared infrastructure (network, automation, identity) |
+| `plat` | Platform/application workloads |
+
+### Stage Names
+
+| Stage | Purpose | Example Stack |
+|-------|---------|---------------|
+| `network` | Network hub account | `core-use1-network` |
+| `auto` | Automation/CI account | `core-use1-auto` |
+| `dev` | Development environment | `plat-use1-dev` |
+| `staging` | Staging environment | `plat-use1-staging` |
+| `prod` | Production environment | `plat-use1-prod` |
+| `sandbox` | Sandbox/experimentation | `plat-use1-sandbox` |
+
+### Stack Naming Pattern
+
+```
+{tenant}-{region}-{stage}
+```
+
+Examples:
+- `core-use1-network` — Network account in us-east-1
+- `core-use2-auto` — Automation account in us-east-2
+- `plat-use1-dev` — Dev environment in us-east-1
+- `plat-use1-prod` — Production in us-east-1
+
+### Component Library URLs
+
+Link to components using path-style URLs:
+
+```mdx
+[`vpc`](/components/library/aws/vpc/)
+[`tgw/hub`](/components/library/aws/tgw/hub/)
+[`iam-role`](/components/library/aws/iam-role/)
+```
+
+## YAML Configuration Patterns
+
+### YAML Anchors for DRY Configs
+
+Use anchors to avoid repetition in workflow configurations:
+
+```yaml
+workflows:
+  detect: &detect-config
+    file: atmos-pro-terraform-detect.yaml
+    inputs:
+      upload_status: "true"
+
+  remediate:
+    <<: *detect-config
+    file: atmos-pro-terraform-remediate.yaml
+```
+
+### Terraform State References
+
+Use `!terraform.state` for cross-component references:
+
+```yaml
+vars:
+  table_arn: !terraform.state gitops/dynamodb core-use2-auto table_arn
+  bucket_arn: !terraform.state gitops/s3-bucket core-use2-auto bucket_arn
+```
+
+**Note:** Use `!terraform.state`, NOT `!terraform.output`.
