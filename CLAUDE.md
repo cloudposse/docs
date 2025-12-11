@@ -149,35 +149,6 @@ description: Short description for SEO
 ---
 ```
 
-### Deprecation Notices
-
-Add deprecation admonitions to deprecated content (do NOT move files):
-
-```mdx
-:::warning Deprecated
-This documentation describes the legacy approach using `account-map`.
-
-**The recommended approach now uses:**
-- [Atmos Auth](/layers/identity/atmos-auth) for authentication
-- [Atmos Pro](/layers/atmos-pro/) for CI/CD automation
-
-This content is preserved for users with existing deployments.
-:::
-```
-
-### TODO Comments
-
-Use structured TODO comments for tracking documentation updates:
-
-```mdx
-{/* TODO:PROJECT-NAME - ACTION - Status: Not Started|In Progress|Done */}
-{/*
-## Required Updates:
-- Update item 1
-- Update item 2
-*/}
-```
-
 ## Skills
 
 See `.claude/skills/` for specialized documentation tasks:
