@@ -12,15 +12,6 @@ import SecondaryCTA from '@site/src/components/SecondaryCTA';
 import TaskList from '@site/src/components/TaskList';
 import CategoryList from '@site/src/components/CategoryList';
 
-{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Not Started */}
-{/*
-## Required Updates:
-- Remove core-identity account references
-- Update account list to show identity managed in core-root
-- Update architecture diagram
-- Add reference to static-account-map.mdx
-*/}
-
 <Intro>
 This chapter presents how Cloud Posse designs and manages AWS Account architectures. We will explain how Cloud Posse provisions and manages AWS Accounts using Atmos and Terraform, the reasoning behind our decisions, and how this architecture will better align your organization with the [AWS Well-Architected Framework](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/userguide/wellarchitected-ug.pdf).
 </Intro>
@@ -46,6 +37,7 @@ The AWS Well-Architected Framework provides several foundational recommendations
 
 Cloud Posse has developed a set of components to provision, configure, and manage AWS Accounts and Organizations.
 
+{/* TODO: Update diagram to remove core-identity account - identity is now managed in core-root */}
 <img
   src="https://lucid.app/publicSegments/view/8499e634-7da0-4fdb-9776-7088fad21ffc/image.png"
   style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
@@ -105,7 +97,8 @@ By convention, we prefix each account name with its organizational unit (OU) to 
       accounts associated with it
     </p>
     <p>Service Control Policies can only be set in this account</p>
-    <p>It’s the only account that can manage the AWS Organization</p>
+    <p>It's the only account that can manage the AWS Organization</p>
+    <p>As the organization owner, this is where IAM Identity Center is deployed for centralized identity management</p>
   </dd>
   <dt>
     <code>core-audit</code>
@@ -120,14 +113,6 @@ By convention, we prefix each account name with its organizational unit (OU) to 
     <p>
       The "security" account is where to run automated security scanning software that might operate in a read-only
       fashion against the audit account.
-    </p>
-  </dd>
-  <dt>
-    <code>core-identity</code>
-  </dt>
-  <dd>
-    <p>
-      The "identity" account is where to add users and delegate access to the other accounts and is where users log in
     </p>
   </dd>
   <dt>
@@ -239,25 +224,6 @@ Cloud Posse manages this process with the following components.
   <dd>
     This component is responsible for provisioning account level settings: IAM password policy, AWS Account Alias, EBS
     encryption, and Service Quotas. We can also leverage this component to enable account or organization level budgets.
-  </dd>
-  <dt>
-    <a href="/components/library/aws/account-map/">
-      <code>account-map</code>
-    </a>
-  </dt>
-  <dd>
-    Transforms account metadata to a safe place for all designated roles to able to access. IAM roles should not able to
-    read `account`. Once `account-map` is provisioned, other components can utilized `remote-state` to pull account
-    metadata such as Account ID mapping or IAM Roles to assume for a given account.
-  </dd>
-  <dt>
-    <a href="/components/library/aws/account-quotas/">
-      <code>account-quotas</code>
-    </a>
-  </dt>
-  <dd>
-    This component is responsible for requesting service quota increases. We recommend making requests here rather than
-    in `account-settings` because `account-settings` is a restricted component that can only be applied by SuperAdmin.
   </dd>
   <dt>
     <a href="/components/library/aws/tfstate-backend/">

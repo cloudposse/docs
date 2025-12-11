@@ -16,15 +16,7 @@ import ActionCard from "@site/src/components/ActionCard";
 import PrimaryCTA from "@site/src/components/PrimaryCTA";
 import AtmosWorkflow from "@site/src/components/AtmosWorkflow";
 
-{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Not Started */}
-{/*
-## Required Updates:
-- Add TerraformPlanAccess permission set documentation
-- Add TerraformApplyAccess permission set documentation
-- Add TerraformStateAccess permission set documentation
-- Add RootAccess permission set for organizational root access
-- Document permission set assignment patterns per account type
-*/}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Done */}
 
 <Intro>
   This guide provides an overview of setting up AWS Identity Center (SSO) with
@@ -333,7 +325,10 @@ The `aws-sso` component deploys all Permission Sets and assigns them to the appr
   1. **`AdministratorAccess`** — Full AWS administrator access
   1. **`PowerUserAccess`** — Power user access without IAM management
   1. **`ReadOnlyAccess`** — Read-only access to AWS resources
+  1. **`RootAccess`** — Organizational root access for privileged operations (see [Centralized Root Access](/layers/identity/centralized-root-access/))
 </Steps>
+
+The `aws-sso` component is responsible for deploying all Permission Sets and mapping them to the appropriate groups per account. This mapping is configured in `stacks/catalog/aws-sso.yaml`, where you define which groups receive which Permission Sets for each account type. This is how you assign permissions to users — by adding them to the appropriate IdP group, they automatically receive the corresponding Permission Sets when they access AWS.
 
 Deploy the component using the identity workflow:
 

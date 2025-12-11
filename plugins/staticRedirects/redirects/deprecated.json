@@ -94,5 +94,21 @@
   {
     "from": "/layers/identity/tutorials/leapp/how-to-setup-windows/",
     "to": "/layers/identity/how-to-log-into-aws/"
+  },
+  {
+    "from": "/layers/accounts/account-baseline/",
+    "to": "/layers/accounts/setup-cloudtrail/"
+  },
+  {
+    "from": "/layers/accounts/tutorials/cold-start/",
+    "to": "/layers/accounts/tutorials/legacy-account-map/"
+  },
+  {
+    "from": "/layers/accounts/tutorials/manual-configuration/",
+    "to": "/layers/accounts/tutorials/legacy-account-map/"
+  },
+  {
+    "from": "/layers/accounts/tutorials/deprecated-cold-start-components/",
+    "to": "/layers/accounts/tutorials/legacy-account-map/"
   }
 ]

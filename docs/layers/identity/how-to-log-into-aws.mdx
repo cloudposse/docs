@@ -14,9 +14,9 @@ import Steps from '@site/src/components/Steps';
 Locally authenticating with Atmos Auth and AWS Identity Center (AWS SSO).
 </Intro>
 
-:::tip Leapp is Deprecated
+<Note>
 Leapp is no longer used for authentication. If you see references to Leapp in older documentation, they are deprecated. We now use **Atmos Auth** for AWS authentication.
-:::
+</Note>
 
 ## Requirements
 
@@ -193,49 +193,6 @@ make run
 </Steps>
 
 Both approaches work seamlessly with Atmos Auth!
-
-## Troubleshooting
-
-### Error: invalid identity kind / unsupported identity kind
-
-This error occurs when the `ATMOS_PROFILE` environment variable is not set:
-
-```
-Error: invalid identity kind
-unsupported identity kind:
-```
-
-**Fix:** Set your profile:
-
-```bash
-export ATMOS_PROFILE=developers  # or devops, managers
-```
-
-To make the profile persistent, add `export ATMOS_PROFILE=<your-profile>` to your shell configuration file (`~/.zshrc` or `~/.bashrc`).
-
-### Cannot connect to cluster
-
-<Steps>
-  1. **VPN connection** — Verify VPN connection is active
-  1. **Correct identity** — Check that you're using the correct identity for the account
-  1. **Cluster name** — Ensure the cluster name matches the expected format
-</Steps>
-
-### Permission denied errors
-
-<Steps>
-  1. **Account identity** — Confirm you're using the correct account identity for the account
-  1. **Profile permissions** — Verify your profile has the appropriate permissions for that account
-  1. **Identity configuration** — Check that the identity has been properly configured in your profile
-</Steps>
-
-### Terraform commands fail
-
-<Steps>
-  1. **Account identities** — Account identities don't provide Terraform access - they're for EKS/AWS CLI only
-  1. **Exit shell** — Exit any account identity shell and use the default identity from your profile
-  1. **Profile setting** — Ensure your profile is set correctly with `ATMOS_PROFILE`
-</Steps>
 
 ## Additional Information
 

@@ -61,7 +61,7 @@
   },
   {
     "from": "/reference-architecture/setup/cold-start/manual-configuration",
-    "to": "/layers/accounts/tutorials/manual-configuration"
+    "to": "/layers/accounts/tutorials/legacy-account-map"
   },
   {
     "from": "/reference-architecture/setup/eks",

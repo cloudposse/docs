@@ -6,39 +6,31 @@ sidebar_class_name: hidden
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
-{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Not Started */}
-{/*
-## Required Updates:
-- Make this the primary entry point for "Automate Terraform"
-- Add comparison with legacy GitHub Actions approach
-- Emphasize as recommended approach
-- Add migration notes from GitHub Actions GitOps
-- Remove "coming soon" banner when appropriate
-*/}
+{/* TODO:DEPRECATE-ACCOUNT-MAP - UPDATE PAGE - Status: Done */}
 
 <Intro>
-  Atmos Pro is our advanced GitOps solution for Terraform and OpenTofu automation, designed to provide enterprise-grade workflow orchestration in GitHub Actions. It extends the capabilities of standard GitHub Actions with powerful features for managing infrastructure deployments, ensuring compliance, and maintaining infrastructure as code at scale.
+Atmos Pro is the recommended solution for automating Terraform and OpenTofu workflows in GitHub Actions. It provides enterprise-grade GitOps capabilities including ordered deployments, drift detection, and policy controls — all without the cost and vendor lock-in of traditional TACOS platforms.
 </Intro>
 
-:::tip
-
-Atmos Pro is coming soon! 
-
-Our team is actively developing Atmos Pro and its exciting new capabilities. In the meantime, explore the documentation below for a preview of what's ahead. We'll provide full details and launch timing as we approach the official release date.
-
-:::
+<KeyPoints>
+- Recommended approach for automating Terraform in the reference architecture
+- Native GitHub Actions integration with no external dependencies
+- Replaces legacy GitHub Actions GitOps workflows
+</KeyPoints>
 
 ## The Problem
 
 While GitHub Actions provides a solid foundation for CI/CD, it lacks the specialized tooling needed for complex infrastructure deployments. Teams face several challenges:
 
 <Steps>
-- **Limited Deployment Control**: GitHub Actions doesn't provide built-in mechanisms for ordered deployments or dependency management between infrastructure components
-- **Poor Visibility**: Understanding the impact of changes across your infrastructure requires manual investigation
-- **Insufficient Guardrails**: Basic GitHub Actions workflows don't enforce deployment policies or prevent dangerous operations
-- **Drift Management**: Keeping infrastructure in sync with code requires additional tooling and manual processes
-- **Multi-Cloud Complexity**: Managing deployments across different cloud providers adds another layer of complexity
+1. **Limited Deployment Control** — GitHub Actions doesn't provide built-in mechanisms for ordered deployments or dependency management between infrastructure components
+1. **Poor Visibility** — Understanding the impact of changes across your infrastructure requires manual investigation
+1. **Insufficient Guardrails** — Basic GitHub Actions workflows don't enforce deployment policies or prevent dangerous operations
+1. **Drift Management** — Keeping infrastructure in sync with code requires additional tooling and manual processes
+1. **Multi-Cloud Complexity** — Managing deployments across different cloud providers adds another layer of complexity
 </Steps>
 
 Traditional Terraform Automation and Collaboration Software (TACOS) solutions like Terraform Cloud, Spacelift, or Env0 attempt to solve these problems but often come with significant costs and vendor lock-in.
@@ -48,12 +40,12 @@ Traditional Terraform Automation and Collaboration Software (TACOS) solutions li
 Atmos Pro enhances GitHub Actions with enterprise-grade features specifically designed for infrastructure deployment:
 
 <Steps>
-* **Ordered Deployments**: Ensure infrastructure components are deployed in the correct sequence based on their dependencies
-* **Dependency Visualization**: Automatically generate and maintain dependency graphs for your infrastructure
-* **Drift Detection**: Continuously monitor and report on infrastructure drift with automated remediation options
-* **Enhanced Guardrails**: Implement policy controls and approval gates to prevent dangerous operations
-* **Native GitOps**: Leverage Git as the single source of truth with full audit trails and change history
-* **Beautiful Job Summaries**: Clear, actionable insights into deployment status and changes
+1. **Ordered Deployments** — Ensure infrastructure components are deployed in the correct sequence based on their dependencies
+1. **Dependency Visualization** — Automatically generate and maintain dependency graphs for your infrastructure
+1. **[Drift Detection](/layers/atmos-pro/drift-detection/)** — Continuously monitor and report on infrastructure drift with automated remediation options
+1. **Enhanced Guardrails** — Implement policy controls and approval gates to prevent dangerous operations
+1. **Native GitOps** — Leverage Git as the single source of truth with full audit trails and change history
+1. **Beautiful Job Summaries** — Clear, actionable insights into deployment status and changes
 </Steps>
 
 ## How It Works
@@ -65,12 +57,12 @@ Atmos Pro integrates seamlessly with your GitOps workflow, providing automated i
 When a developer creates a pull request, Atmos Pro automatically triggers the planning process:
 
 <Steps>
-1. **Developer Makes a Change**: Infrastructure code is modified in a feature branch
-2. **Code Is Pushed**: Changes are pushed to the feature branch
-3. **GitHub Actions Trigger**: Atmos affected stacks are identified
-4. **Atmos Uploads**: Affected stacks information is uploaded
-5. **Atmos Pro Dispatches**: Plan workflows are triggered for affected components
-6. **Status Updates**: Atmos Pro maintains a status comment showing the progress of plans
+1. **Developer Makes a Change** — Infrastructure code is modified in a feature branch
+1. **Code Is Pushed** — Changes are pushed to the feature branch
+1. **GitHub Actions Trigger** — Atmos affected stacks are identified
+1. **Atmos Uploads** — Affected stacks information is uploaded
+1. **Atmos Pro Dispatches** — Plan workflows are triggered for affected components
+1. **Status Updates** — Atmos Pro maintains a status comment showing the progress of plans
 </Steps>
 
 ### Merge Workflow
@@ -78,17 +70,53 @@ When a developer creates a pull request, Atmos Pro automatically triggers the pl
 When a pull request is merged, Atmos Pro automatically handles the deployment:
 
 <Steps>
-1. **Pull Request Is Merged**: Changes are merged into the main branch
-2. **GitHub Actions Trigger**: Atmos affected stacks are identified
-3. **Atmos Uploads**: Affected stacks information is uploaded
-4. **Atmos Pro Dispatches**: Apply workflows are triggered for affected components
-5. **Status Updates**: Atmos Pro maintains a status comment showing the progress of deployments
+1. **Pull Request Is Merged** — Changes are merged into the main branch
+1. **GitHub Actions Trigger** — Atmos affected stacks are identified
+1. **Atmos Uploads** — Affected stacks information is uploaded
+1. **Atmos Pro Dispatches** — Apply workflows are triggered for affected components
+1. **Status Updates** — Atmos Pro maintains a status comment showing the progress of deployments
 </Steps>
+
+## Drift Detection
+
+Infrastructure drift occurs when your deployed resources no longer match your Terraform configuration — whether from manual console changes, external automation, or incomplete applies. Left unchecked, drift creates security vulnerabilities, compliance violations, and deployment failures.
+
+Atmos Pro provides automated drift detection that runs scheduled Terraform plans against your infrastructure, identifies changes, and offers multiple remediation paths including auto-remediation, manual review via pull request, or accepting changes into your code.
+
+See [Drift Detection](/layers/atmos-pro/drift-detection/) for configuration details and best practices.
+
+## Migrating from Legacy GitOps
+
+If you're currently using the legacy GitHub Actions GitOps workflows, Atmos Pro provides a simplified and more powerful alternative. The legacy approach required complex workflow configurations and custom GitHub Actions. Atmos Pro replaces this with a streamlined setup that handles dependency ordering, drift detection, and policy controls automatically.
+
+See the [Migration Guide](/layers/atmos-pro/tutorials/migrate-from-github-actions-gitops/) for step-by-step instructions.
+
+## Why a Hosted Service?
+
+Atmos Pro exists to solve problems that can't realistically be solved inside a CLI. These are capabilities that physically require a hosted control plane:
+
+<Steps>
+1. **Ordered Dependencies** — Ensuring components deploy in the correct sequence across distributed workflows
+1. **Coordinated Rollouts** — Workflow dispatching that spans multiple GitHub Actions runs
+1. **Drift Detection** — Scheduled infrastructure scanning and tracking over time
+1. **Distributed Locking** — Workspace and stack-level locking across concurrent operations
+</Steps>
+
+The open-source [Atmos CLI](https://atmos.tools) will always remain fully featured for local and CI/CD workflows. Atmos Pro is its hosted counterpart, designed for teams that need orchestration, coordination, and visibility across large infrastructures.
+
+:::info Self-Hosted Option
+We may eventually introduce a self-hosted commercial edition for regulated or air-gapped environments. For now, Atmos Pro is SaaS only.
+:::
 
 ## References
 
-[Setup Documentation](/layers/atmos-pro/setup): Learn how to set up and configure Atmos Pro for your infrastructure, including prerequisites and initial configuration steps.
+<Steps>
+1. [Setup Documentation](/layers/atmos-pro/setup/) — Learn how to set up and configure Atmos Pro for your infrastructure
+1. [atmos-pro.com](https://www.atmos-pro.com) — Full documentation for Atmos Pro features and capabilities
+1. [atmos.tools](https://www.atmos.tools) — Core Atmos CLI documentation
+</Steps>
 
-[atmos-pro.com](https://www.atmos-pro.com): Explore the full documentation for Atmos Pro features and capabilities, including detailed guides and API references.
-
-[atmos.tools](https://www.atmos.tools): Learn about the core Atmos CLI and its features, which form the foundation for Atmos Pro's enhanced capabilities.
+<ActionCard title="Get Started">
+  Set up Atmos Pro for your infrastructure repository to automate Terraform workflows with enterprise-grade controls.
+  <PrimaryCTA to="/layers/atmos-pro/setup/">Setup Atmos Pro</PrimaryCTA>
+</ActionCard>
