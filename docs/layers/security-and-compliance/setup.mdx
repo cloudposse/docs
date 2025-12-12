@@ -41,7 +41,7 @@ The following steps are required to set up Security and Compliance in your AWS O
     - `securityhub.amazonaws.com`
 
     <Note title="Reminder">
-      The following command requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/). Ensure the `plan` output only touches service principals.
+      The following command requires a privileged role with access to the root account. Use an appropriate Permission Set (e.g., `AdministratorAccess` on `core-root`) or, if deploying during cold start, [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/). Ensure the `plan` output only touches service principals.
     </Note>
 
     ```bash
@@ -144,14 +144,14 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
     <AtmosWorkflow workflow="deploy/aws-config/global-collector" fileName="quickstart/monitor/compliance" />
 
     <Note title="Reminder">
-      This command requires [`SuperAdmin`](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+      This command requires a privileged role with access to the root account. Use an appropriate Permission Set or, if deploying during cold start, [`SuperAdmin`](/layers/accounts/tutorials/how-to-create-superadmin-user/).
     </Note>
   </Step>
 
   <Step>
-    ### <StepNumber/> Set up AWS Config for SuperAdmin accounts
+    ### <StepNumber/> Set up AWS Config for Privileged Accounts
 
-    Deploy AWS Config into accounts that require SuperAdmin to apply.
+    Deploy AWS Config into accounts that require privileged access to apply.
 
     <AtmosWorkflow workflow="deploy/aws-config/superadmin" fileName="quickstart/monitor/compliance" />
   </Step>

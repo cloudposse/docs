@@ -35,7 +35,7 @@ From the root account:
    1. Save the MFA TOTP key in 1Password using 1Password's TOTP field and built-in screen scanner to scan the QR code
    </Steps>
 1. ### Create the `SuperAdmin` IAM User
-   [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/). This is the user we will use until IAM Identity Center is provisioned.
+   [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/). This break-glass user is used during cold start bootstrapping before IAM Identity Center is provisioned. After cold start, it should only be used if your IdP is completely unavailable—otherwise, use Permission Sets.
    <Steps>
    1. Create the IAM user (do not enable "console login")
    1. Set up MFA for the user
