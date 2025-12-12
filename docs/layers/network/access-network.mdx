@@ -31,7 +31,7 @@ and client setup.
     ## <StepNumber/> Deploy the VPN
     Next, deploy the `ec2-client-vpn` component. This is done by running the following:
 
-    <AtmosWorkflow workflow="deploy/vpn" fileName="quickstart/foundation/network" />
+    <AtmosWorkflow workflow="deploy/vpn" fileName="quickstart/network/network" />
 
     Depending on the given network configuration, you may run out of available Client VPN routes.
 
@@ -84,6 +84,6 @@ You can apply that quota using `atmos terraform apply account-quotas -s core-gbl
 
 If you'd like to set up bastion hosts, you can do so by running the following. This would let you further evaluate the VPN.
 
-    <AtmosWorkflow workflow="deploy/bastion" fileName="quickstart/foundation/network" />
+    <AtmosWorkflow workflow="deploy/bastion" fileName="quickstart/network/network" />
 
 By default, we deploy the bastion to all accounts connected to Transit Gateway.

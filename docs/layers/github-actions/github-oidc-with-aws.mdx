@@ -1,7 +1,7 @@
 ---
-title: "How to use GitHub OIDC with AWS"
+title: "How GitHub OIDC Works with AWS"
 sidebar_label: "GitHub OIDC with AWS"
-sidebar_position: 10
+sidebar_position: 2
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -10,8 +10,12 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 
 <Intro>
-This is a detailed guide on how to integrate GitHub OpenID Connect (OIDC) with AWS to facilitate secure and efficient authentication and authorization for GitHub Actions, without the need for permanent (static) AWS credentials, thereby enhancing security and simplifying access management. First we explaini the concept of OIDC, illustrating its use with AWS, and then provide the step-by-step instructions for setting up GitHub as an OIDC provider in AWS.
+This guide explains how GitHub OpenID Connect (OIDC) integrates with AWS to enable secure authentication for GitHub Actions without permanent credentials. Understanding OIDC is helpful for troubleshooting and extending your GitHub Actions workflows.
 </Intro>
+
+:::info Deployment Note
+The GitHub OIDC Provider is deployed as part of the [Identity layer](/layers/identity/deploy/). This page is a reference explaining how OIDC works—you don't need to deploy anything separately.
+:::
 
 GitHub OIDC (OpenID Connect) for AWS refers to the integration between GitHub as an identity provider using OpenID Connect and AWS services. This integration allows users to use their GitHub credentials to authenticate and access AWS resources securely. By configuring GitHub as an OIDC provider in AWS Identity and Access Management (IAM), organizations can establish a federated identity model. This enables GitHub users to sign in to AWS using their GitHub credentials, streamlining access management and eliminating the need for separate AWS-specific usernames and passwords. The integration also provides a centralized way to manage access permissions and enables Single Sign-On (SSO) capabilities, enhancing security and user experience in the AWS environment. Organizations can configure OIDC settings in AWS, including client IDs, client secrets, and the GitHub OIDC discovery URL, to establish a trust relationship between GitHub and AWS. For the most accurate and up-to-date information, it's recommended to check the official documentation of GitHub and AWS.
 
@@ -74,30 +78,11 @@ sequenceDiagram
   Note right of aws: GitHub Action Workflow calls STS AssumeRoleWithWebIdentity,<br/>passing the token obtained from the GitHub OIDC provider<br/>and receives temporary AWS Credentials in return
 ```
 
-## Implementation
+## Creating IAM Roles for GitHub Actions
 
-<KeyPoints title="Overview">
-
-1. Install the [GitHub OIDC Provider component](/components/library/aws/github-oidc-provider/) in each account where GitHub Actions need to assume a role.
-2. Create the role that GitHub Actions Workflows will assume
-3. Configure the GitHub Actions Workflow to assume the role
-</KeyPoints>
+Once the GitHub OIDC Provider is deployed (via the [Identity layer](/layers/identity/deploy/)), you can create IAM roles that GitHub Actions workflows can assume. There are two approaches:
 
 <Steps>
-  <Step>
-  ### <StepNumber/> Deploy GitHub OIDC Provider Component
-
-  After deploying the [GitHub OIDC Provider component](/components/library/aws/github-oidc-provider/) into an account, you should see the Identity Provider in IAM in the AWS Web Console.
-
-  Deploy this component in each account where GitHub Actions need to assume a role.
-
-  <Steps>
-    - Import `catalog/github-oidc-provider` in the `gbl` stack for the given account
-    - Deploy the `github-oidc-provider` component: `atmos terraform apply github-oidc-provider -s plat-gbl-dev`
-  </Steps>
-
-  </Step>
-
   <Step>
   ### <StepNumber/> Option 1: Configure GitHub OIDC Mixin Role and Policy
 

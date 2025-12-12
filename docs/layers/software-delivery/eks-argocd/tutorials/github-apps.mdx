@@ -281,11 +281,11 @@ Argo CD integration requires multiple GitHub Apps, each with specific permission
 
     Redeploy both the `argocd-repo` component for both nonprod and prod.
 
-    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/platform/argocd" />
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/platform/software-delivery" />
 
     Then redeploy all instances of `eks/argocd`
 
-    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/platform/argocd" />
+    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/platform/software-delivery" />
   </Step>
 
   <Step>

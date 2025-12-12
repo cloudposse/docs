@@ -6,31 +6,16 @@ sidebar_position: 2
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
-The Cold Start involves more manual steps than other layers. Read through the following steps and see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/) for edge cases.
-
-In short, the steps are...
-
-| Steps                     | Actions                             |
-| ------------------------- | ----------------------------------- |
-| Install requirements      |                                     |
-| Build Geodesic            | `make all`                          |
-| Vendor components         | `atmos workflow vendor -f quickstart/foundation/baseline` |
-| Configure root SuperAdmin | Click Ops                           |
+The Cold Start involves more manual steps than other layers. Read through the following steps carefully.
 
 :::tip Cold Start
 
 The set up process for the "baseline" or "account" layer is commonly referred to as the Cold Start.
 
 :::
-
-
-## Prerequisites
-
-Follow the [prerequisites steps in the How-to Get Started guide](/layers/project/#0-prerequisites).
-
-Start your Geodesic shell before continuing.
-
 
 ## Before Running Terraform (ClickOps)
 
@@ -43,20 +28,37 @@ From the root account:
    Enable [business support](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_support.html) in
    the `root` account (in order to expedite requests to raise the AWS member account limits)
 1. ### Set up MFA on Root Account
-   Set up up the Virtual MFA device on the root account, following
-   [the instructions in the AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root) for enabling a virtual MFA device for an AWS account root user. Save the MFA TOTP key in 1Password by using
-   1Password's TOTP field and built-in screen scanner to scan the QR code presented on the web page.
+   Set up the Virtual MFA device on the root account following [the AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root).
+   <Steps>
+   1. Navigate to the root account's security credentials
+   1. Set up a Virtual MFA device
+   1. Save the MFA TOTP key in 1Password using 1Password's TOTP field and built-in screen scanner to scan the QR code
+   </Steps>
 1. ### Create the `SuperAdmin` IAM User
-   [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/). Do not enable "console
-   login", do set up MFA, and then create a single Access key. Create an API Credential for the `SuperAdmin` credentials
-   in 1Password and store the Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key. This is the user
-   we will use until AWS Team Roles (`aws-team-roles` component) are provisioned.
+   [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/). This break-glass user is used during cold start bootstrapping before IAM Identity Center is provisioned. After cold start, it should only be used if your IdP is completely unavailable—otherwise, use Permission Sets.
+   <Steps>
+   1. Create the IAM user (do not enable "console login")
+   1. Set up MFA for the user
+   1. Create a single Access Key
+   1. Store credentials in 1Password: Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key
+   </Steps>
 1. ### Enable IAM Access for Billing
-   For billing users, you need to enable IAM access. As the root user
-   [open up the account settings for AWS Billing](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account),
-   then scroll to the section "IAM user and role access to Billing information" and enable it.
+   For billing users, you need to enable IAM access to billing information.
+   <Steps>
+   1. As the root user, open [AWS Billing Account Settings](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account)
+   1. Scroll to "IAM user and role access to Billing information"
+   1. Enable IAM access
+   </Steps>
+1. ### Enable Centralized Root Access
+   Enable centralized root access management to eliminate the need for per-account root credentials. This allows the management account to perform privileged root operations on member accounts without maintaining separate root passwords or MFA devices.
+   <Steps>
+   1. Navigate to [IAM → Root access management](https://console.aws.amazon.com/iam/home#/root-access-management)
+   1. Enable **Root credentials management**
+   1. Enable **Privileged root actions**
+   </Steps>
+   For more details, see [Centralized Root Access](/layers/identity/centralized-root-access/).
 1. ### Enable Regions (Optional)
-   The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to take extra steps. For details, see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/#optional-enable-regions)
+   The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to [enable it in your AWS account settings](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html).
 1. ### Prepare for Account Quota Increase
    In order to deploy all accounts, you need to request an increase of the Account Quota from AWS support. This requires an AWS Organization to be created first, which we will create with Terraform in the [Deploy Accounts guide](/layers/accounts/deploy-accounts/#-prepare-account-deployment). This request can take a few days to process, so it's important to get it started early so that it doesn't become a blocker.
 
@@ -64,7 +66,8 @@ From the root account:
 
 </Steps>
 
-For more details, see
-[the detailed documentation](/layers/accounts/tutorials/manual-configuration/#provision-account-settings-component).
-
-
+<ActionCard title="Next Steps">
+  Now that your AWS Organization is prepared with MFA, SuperAdmin credentials, and billing access configured,
+  you're ready to initialize the Terraform state backend that will store all infrastructure state.
+  <PrimaryCTA to="/layers/accounts/initialize-tfstate">Initialize Terraform Backend</PrimaryCTA>
+</ActionCard>

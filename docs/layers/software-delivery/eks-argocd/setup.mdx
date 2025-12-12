@@ -30,7 +30,7 @@ All deployment steps below assume that the environment has been successfully set
 ### Authentication
 
 <Steps>
-  1. Sign into AWS via Leapp
+  1. Sign into AWS via [Atmos Auth](/layers/identity/how-to-log-into-aws/)
   1. Connect to the VPN
   1. Open Geodesic
 </Steps>
@@ -43,7 +43,7 @@ All deployment steps below assume that the environment has been successfully set
 
     First vendor all related components for the Argo CD layer:
 
-    <AtmosWorkflow workflow="vendor" fileName="quickstart/platform/argocd" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/platform/software-delivery" />
   </Step>
 
   <Step>
@@ -106,7 +106,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy the Argo CD configuration for the two Argo CD desired state GitHub repositories with the following workflow:
 
-    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/platform/argocd" />
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/platform/software-delivery" />
 
     Once this finishes, review the two repos in your GitHub Organization. These should both be fully configured at this point.
 
@@ -130,7 +130,7 @@ All deployment steps below assume that the environment has been successfully set
 
     Deploy `eks/argocd` to each cluster with the following workflow:
 
-    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/platform/argocd" />
+    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/platform/software-delivery" />
   </Step>
 
   <Step>

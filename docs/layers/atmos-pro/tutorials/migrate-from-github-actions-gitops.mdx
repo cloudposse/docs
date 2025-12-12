@@ -1,0 +1,145 @@
+---
+title: "Migrate from GitHub Actions GitOps"
+sidebar_label: "Migrate from Legacy GitOps"
+sidebar_position: 10
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Note from '@site/src/components/Note';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+
+<Intro>
+This guide helps you migrate from the legacy GitHub Actions GitOps workflows to Atmos Pro. Atmos Pro provides a simplified and more powerful alternative with built-in dependency ordering, drift detection, and policy controls.
+</Intro>
+
+## Overview
+
+The legacy GitHub Actions GitOps approach required:
+
+<Steps>
+1. Custom GitHub Action workflows for plan, apply, drift detection, and remediation
+1. Manual configuration of S3 buckets and DynamoDB tables for plan storage
+1. Complex IAM role setup with `aws-teams` and `aws-team-roles` components
+1. Custom workflow dispatch logic and matrix strategies
+</Steps>
+
+Atmos Pro replaces all of this with:
+
+<Steps>
+1. Three simple workflow files that Atmos Pro manages
+1. Built-in plan storage and management
+1. Simplified IAM setup using the `iam-role` component
+1. Automatic dependency ordering and parallel execution
+</Steps>
+
+## Migration Steps
+
+### Step 1: Set Up Atmos Pro
+
+Follow the [Atmos Pro Setup Guide](/layers/atmos-pro/setup/) to:
+
+<Steps>
+1. Sign up for Atmos Pro and create a workspace
+1. Install the Atmos Pro GitHub App
+1. Grant repository permissions
+1. Add the three Atmos Pro workflow files
+</Steps>
+
+### Step 2: Deploy New IAM Roles
+
+Atmos Pro uses the `iam-role` component instead of `aws-teams` and `aws-team-roles` for GitHub Actions authentication. Deploy the new roles:
+
+```bash
+atmos workflow deploy/iam-role -f identity
+```
+
+This creates `terraform` and `planner` IAM roles in each account that GitHub Actions can assume via OIDC.
+
+### Step 3: Update GitHub OIDC Provider
+
+Ensure the `github-oidc-provider` component is deployed to all accounts where Terraform will run:
+
+```bash
+atmos workflow deploy/github-oidc-provider -f github
+```
+
+### Step 4: Test Atmos Pro Workflows
+
+Before removing the legacy workflows:
+
+<Steps>
+1. Create a test pull request with a small change
+1. Verify Atmos Pro comments on the PR with affected stacks
+1. Verify plan workflows are dispatched and complete successfully
+1. Merge the PR and verify apply workflows run correctly
+</Steps>
+
+### Step 5: Remove Legacy Workflows
+
+Once Atmos Pro is working correctly, remove the legacy workflow files:
+
+<Steps>
+1. `.github/workflows/atmos-terraform-plan.yaml`
+1. `.github/workflows/atmos-terraform-apply.yaml`
+1. `.github/workflows/atmos-terraform-drift-detection.yaml`
+1. `.github/workflows/atmos-terraform-drift-remediation.yaml`
+1. `.github/workflows/atmos-terraform-dispatch.yaml`
+1. `.github/workflows/atmos-terraform-plan-matrix.yaml`
+1. `.github/workflows/atmos-terraform-apply-matrix.yaml`
+</Steps>
+
+### Step 6: Clean Up Legacy Infrastructure (Optional)
+
+If you no longer need the legacy GitOps infrastructure, you can remove:
+
+<Steps>
+1. `gitops/s3-bucket` component — Plan file storage bucket
+1. `gitops/dynamodb` component — Plan metadata table
+1. `gitops` component — Legacy GitHub OIDC roles
+</Steps>
+
+<Note title="Caution">
+Only remove these components after confirming Atmos Pro is working correctly and you no longer need access to historical plan files.
+</Note>
+
+## Key Differences
+
+| Feature | Legacy GitOps | Atmos Pro |
+|---------|--------------|-----------|
+| Workflow configuration | 7+ custom workflow files | 3 simple workflow files |
+| Plan storage | Self-managed S3 + DynamoDB | Built-in |
+| IAM roles | `aws-teams` + `aws-team-roles` | `iam-role` component |
+| Dependency ordering | Manual or none | Automatic |
+| Drift detection | Scheduled workflow | Built-in with dashboard |
+| Policy controls | Custom implementation | Built-in |
+
+## Troubleshooting
+
+### Workflows Not Triggering
+
+If Atmos Pro workflows aren't being dispatched:
+
+<Steps>
+1. Verify the Atmos Pro GitHub App is installed and has access to the repository
+1. Check that repository permissions are configured in the Atmos Pro console
+1. Ensure the workflow files exist in the default branch
+</Steps>
+
+### Authentication Errors
+
+If workflows fail with authentication errors:
+
+<Steps>
+1. Verify `github-oidc-provider` is deployed to the target account
+1. Check that `iam-role` components are deployed with correct trust policies
+1. Ensure the workflow has `id-token: write` permission
+</Steps>
+
+## See Also
+
+<Steps>
+1. [Atmos Pro Setup](/layers/atmos-pro/setup/) — Complete setup guide
+1. [Atmos Pro Overview](/layers/atmos-pro/) — Features and capabilities
+1. [Legacy GitOps Documentation](/layers/gitops/) — Reference for existing deployments
+</Steps>

@@ -33,6 +33,6 @@ map_secrets:
 
 ## How can we create Self Hosted Runners for GitHub with ECS?
 
-If we are not deploying EKS for our platform, it doesn't make much sense to configure EKS solely for self-hosted runners. Instead, we deploy the [Philips Labs Action Runners](/layers/github-actions/philips-labs-github-runners) and connect those instances to GitHub.
+We recommend [Runs On](/layers/github-actions/runs-on/) for self-hosted GitHub runners. It provides zero infrastructure management, simple setup via GitHub App, and cost-effective pay-per-use pricing without requiring Kubernetes.
 
-For more on self-hosted GitHub Runners, see [`github-runners`](/layers/github-actions).
+For more on self-hosted GitHub Runners, see the [GitHub Actions layer](/layers/github-actions/).

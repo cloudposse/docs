@@ -1,175 +1,197 @@
 ---
 title: "How to Log into AWS"
-sidebar_label: "Log into AWS"
-sidebar_position: 9
-description: Use Leapp to login to AWS
+sidebar_label: "Login to AWS"
+sidebar_position: 6
+description: Use Atmos Auth to login to AWS
 ---
 import Intro from '@site/src/components/Intro';
-import KeyPoints from '@site/src/components/KeyPoints';
-import Steps from '@site/src/components/Steps';
-import Step from '@site/src/components/Step';
-import StepNumber from '@site/src/components/StepNumber';
 import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
-We use Leapp to facilitate logging into AWS. Leapp is a tool that allows you to authenticate with your organization's
-Identity Provider (IdP) and then assume an IAM Role in AWS. This allows you to use your organization's SSO to
-authenticate with AWS.
+Locally authenticating with Atmos Auth and AWS Identity Center (AWS SSO).
 </Intro>
+
+<Note>
+Leapp is no longer used for authentication. If you see references to Leapp in older documentation, they are deprecated. We now use **Atmos Auth** for AWS authentication.
+</Note>
 
 ## Requirements
 
-<Steps>
-  <Step>
-    ### <StepNumber/> Install Leapp
-    Install Leapp following [Leapp documentation](https://www.leapp.cloud/download/desktop-app) or with brew:
+Atmos Auth is built into the Atmos CLI, so no additional tools are required beyond what's already in the project.
 
-    ```console
-    brew install --cask leapp
-    ```
+## Setting Your Profile
 
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Install AWS Session Manager (If required)
-
-    ```console
-    brew install --cask session-manager-plugin
-    ```
-
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Launch Leapp
-
-    ![Leapp Search](/assets/refarch/leapp-search.png)
-  </Step>
-</Steps>
-
-## Setup
-
-The following steps are required only for initial setup.
+Before authenticating, you need to set your profile to match your team role. Profiles are located in the `profiles/` directory:
 
 <Steps>
-  <Step>
-    ### <StepNumber/> Launch Leapp
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Create new Integration
-    ![Leapp Integration](/assets/refarch/leapp-integration.png)
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Fill out Single Sign-On configuration
-
-    ```console
-    Alias: acme # This can be whatever you would like to label the Integration in Leapp
-    Portal URL: https://d-1111aa1a11.awsapps.com/start/ # Set this to your SSO Launch URL
-    AWS Region: us-east-1 # Your primary region
-    Auth. Method: In-browser # Optional
-    ```
-
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Click Integration “dots” and select “Login”.
-
-    This should launch a tab in your web browser.
-
-    ![Leapp Integration Dots](/assets/refarch/leapp-integration-dots.png)
-    ![Leapp Integration Login](/assets/refarch/leapp-integration-login.png)
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Log into your IdP
-
-    Log into your IdP for your Organization and “Allow” Authorization request
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Create a “Chained Session” from `core-identity`
-    Create a “Chained Session” from the `core-identity` account with the `IdentityDevopsTeamAccess` Role
-
-    <Note>
-      This Permission Set will match the given Team name. For example, Developers will use `IdentityDevelopersTeamAccess` and
-      DevOps will use `IdentityDevopsTeamAccess`.
-    </Note>
-
-    ![Leapp Chained Session](/assets/refarch/leapp-chained-session.png)
-
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Fill out the Chained Session configuration
-
-    Fill out the Chained Session configuration for connecting to `core-identity`
-
-    ```yaml
-    Named profile: acme-identity # This must match the profile name given in AWS config
-    Session Alias: acme-identity # Optional
-    AWS Region: us-east-1 # This must be your primary region
-    Role ARN: arn:aws:iam::666666666666:role/acme-core-gbl-identity-devops # This ARN depends on the given team. This example uses the "devops" team
-    Role Session Name: acme-identity # Optional
-    Assumer Session: core-identity # This must match the name of the identity account, almost always "core-identity"
-    ```
-
-    ![Leapp Chained Session Configuration](/assets/refarch/leapp-chained-session-configuration.png)
-  </Step>
-
-  <Step>
-    ### <StepNumber/> (Optional) Pin the new `acme-identity` IAM Role Chained Session
-
-    This makes it easier to filter to the primary session we will be used for connecting to AWS
-    <Steps>
-      - Go to All Sessions
-      - Find the new IAM Role Chained Session for `acme-identity` or whatever value you used for `Session Alias`
-      - Click the dots on the IAM Role Chained Session
-      - Select Pin Session
-    </Steps>
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Connect to `acme-identity` IAM Role Chained Session
-    <Steps>
-      - Select the Session
-      - Click Start Session
-        ![Leapp Start Session](/assets/refarch/leapp-start-session.png)
-    </Steps>
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Rebuild Geodesic
-    Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
-
-    ```console
-    make all
-    ```
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Use AWS in Geodesic
-    You're done! You can now use AWS from with in Geodesic.
-
-    ![Geodesic Check](/assets/refarch/geodesic-check.png)
-  </Step>
+  1. **`developers`** — For developers team members
+  1. **`devops`** — For DevOps team members
+  1. **`managers`** — For managers team members
 </Steps>
 
-## Usage
+### Setting the Profile
 
-After initial setup, quickly connect to AWS with the following steps:
+Set the `ATMOS_PROFILE` environment variable to your team's profile:
+
+```bash
+export ATMOS_PROFILE=developers  # or devops, managers
+```
+
+To make this persistent, add the export command to your shell configuration file:
 
 <Steps>
-  1. Launch Leapp
-  2. Connect to `acme-identity` IAM Role Chained Session
-      ![Leapp Start Session](/assets/refarch/leapp-start-session.png)
-  3. Open your terminal of choice, navigate to the `infrastructure` repository, and launch Geodesic
-
-      ```console
-      make run
-      ```
-  4. Done!<br/>
-    ![Geodesic Check](/assets/refarch/geodesic-check.png)
+  1. **zsh** — Add to `~/.zshrc`
+  1. **bash** — Add to `~/.bashrc` or `~/.bash_profile`
+  1. **fish** — Add to `~/.config/fish/config.fish` (use `set -gx ATMOS_PROFILE developers`)
 </Steps>
 
+After adding to your shell config, reload it:
 
+```bash
+source ~/.zshrc  # or source ~/.bashrc
+```
+
+<Note>
+If you only run the export command without adding it to your config file, it will only apply to your current session.
+</Note>
+
+The profile determines which permissions and identities are available to you. Identities follow the format `<account>/<permission-set>` and include:
+
+<Steps>
+  1. **Terraform identities** — `plat-dev/terraform`, `core-identity/terraform` - Used automatically by Atmos for Terraform operations
+  1. **Permission set identities** — `plat-dev/ReadOnlyAccess`, `plat-prod/AdministratorAccess` - Used for AWS CLI and console access
+</Steps>
+
+## Authentication
+
+Authentication with Atmos Auth is simple and streamlined. The authentication configuration is already set up in `atmos.yaml` and your selected profile.
+
+### Quick Login
+
+To authenticate with AWS, run:
+
+```bash
+atmos auth login --provider sso
+```
+
+This will:
+
+<Steps>
+  1. **Use your configured profile** — Determine the appropriate identity
+  1. **Open your browser** — Navigate to the AWS SSO login page
+  1. **Authenticate with your IdP** — Sign in with your organization credentials
+  1. **Store credentials securely** — Save to your system keychain
+  1. **Set up AWS credentials** — Configure access to the infrastructure
+</Steps>
+
+No need to specify an identity - your profile handles that automatically!
+
+### Check Authentication Status
+
+To verify you're authenticated and see your current session details:
+
+```bash
+atmos auth whoami
+```
+
+This will show you:
+
+<Steps>
+  1. **Identity** — Which identity you're using
+  1. **Account and role** — The AWS account and role
+  1. **Expiration** — Credential expiration time
+</Steps>
+
+## Daily Workflow
+
+Your typical workflow with Atmos is simple and straightforward.
+
+### Using Atmos CLI (Recommended)
+
+With Atmos Auth, you can run Atmos commands directly on your local machine. Once you've authenticated with `atmos auth login` and selected an identity, Atmos will automatically use your credentials and select the appropriate identity for each stack.
+
+**Run Terraform commands:**
+
+```bash
+# Plan a terraform component
+atmos terraform plan vpc -s plat-ue1-dev
+
+# Apply a terraform component
+atmos terraform apply vpc -s plat-ue1-dev
+```
+
+**Launch AWS Console in browser:**
+
+```bash
+atmos auth console --identity plat-dev/ReadOnlyAccess
+```
+
+**Run a specific AWS CLI command:**
+
+```bash
+# Execute a single AWS CLI command with read-only access
+atmos auth exec --identity plat-dev/ReadOnlyAccess -- aws sts get-caller-identity
+
+# List S3 buckets in production with admin access
+atmos auth exec --identity plat-prod/AdministratorAccess -- aws s3 ls
+```
+
+**Start an interactive shell with a specific identity:**
+
+```bash
+# Open a shell session for running multiple commands
+atmos auth shell --identity core-security/PowerUserAccess
+
+# Exit the shell with Ctrl+D or type 'exit'
+```
+
+**List all available identities:**
+
+```bash
+atmos auth list
+```
+
+:::tip
+Atmos will automatically select the correct identity for the stack you're working with. You can override this with the `--identity` flag if needed.
+:::
+
+### Using Geodesic (Optional)
+
+If you prefer a containerized development environment with all tools pre-configured, you can use Geodesic:
+
+**First time setup:**
+
+```bash
+make all
+```
+
+**Subsequent launches:**
+
+```bash
+make run
+```
+
+**When to use Geodesic:**
+
+<Steps>
+  1. **Containerized environment** — You prefer a containerized development environment
+  1. **Pre-configured tools** — You want all tools pre-configured without managing versions locally
+  1. **Persistent shell** — You're working on multiple components and want a persistent shell session
+  1. **Multiple projects** — You're working across multiple projects with different tool requirements
+  1. **Kubernetes access** — You need to set up Kubernetes access with the `set-cluster` script
+</Steps>
+
+**When to use direct Atmos:**
+
+<Steps>
+  1. **Quick commands** — You're running quick one-off commands
+  1. **Local integration** — You want to integrate Atmos into your local scripts or workflows
+  1. **Local machine** — You prefer working directly on your local machine
+</Steps>
+
+Both approaches work seamlessly with Atmos Auth!
+
+## Additional Information
+
+For more details about Atmos Auth, including advanced features like identity chaining, multiple identities, and troubleshooting, see the [Atmos Auth documentation](https://atmos.tools/cli/commands/auth/usage/#overview).

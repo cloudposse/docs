@@ -61,7 +61,7 @@
   },
   {
     "from": "/reference-architecture/setup/cold-start/manual-configuration",
-    "to": "/layers/accounts/tutorials/manual-configuration"
+    "to": "/layers/accounts/tutorials/legacy-account-map"
   },
   {
     "from": "/reference-architecture/setup/eks",
@@ -69,7 +69,7 @@
   },
   {
     "from": "/reference-architecture/setup/github-arc",
-    "to": "/layers/github-actions/eks-github-actions-controller"
+    "to": "/layers/github-actions/tutorials/eks-github-actions-controller"
   },
   {
     "from": "/reference-architecture/setup/github-runners",
@@ -85,6 +85,6 @@
   },
   {
     "from": "/reference-architecture/setup/philips-labs-github-runners",
-    "to": "/layers/github-actions/philips-labs-github-runners"
+    "to": "/layers/github-actions/tutorials/philips-labs-github-runners"
   }
 ]

@@ -10,6 +10,8 @@ import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
 <Intro>
 Follow these steps to configure and initialize the Terraform state backend using Atmos, ensuring proper setup of the infrastructure components and state management.
@@ -17,7 +19,7 @@ Follow these steps to configure and initialize the Terraform state backend using
 
 | Steps                     | Actions                                   |
 | ------------------------- | ----------------------------------------- |
-| Configure Terraform state | `atmos workflow init/tfstate -f quickstart/foundation/baseline` |
+| Configure Terraform state | `atmos workflow init/tfstate -f quickstart/foundation/accounts` |
 
 ## Setting up the Terraform State Backend
 
@@ -33,7 +35,7 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
   <Step>
     ## <StepNumber/> Vendor the Terraform State Backend component
 
-    Vendor the Terraform State Backend component by running the following command. The steps here require the `tfstate-backend` and `account-map` components.
+    Vendor the Terraform State Backend component by running the following command.
 
     :::tip What is Vendoring?
 
@@ -45,7 +47,7 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
 
     :::
 
-    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/baseline" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/accounts" />
 
   </Step>
   <Step>
@@ -55,7 +57,7 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
     - Create the backend using a local Terraform state
     - Once the backend bucket exists, migrate the state file into the newly created S3 bucket
 
-    <AtmosWorkflow workflow="init/tfstate" fileName="quickstart/foundation/baseline" />
+    <AtmosWorkflow workflow="init/tfstate" fileName="quickstart/foundation/accounts" />
   </Step>
 
   <Step>
@@ -81,3 +83,8 @@ update the root account ID.
 ## References
 
 - Review the [Structure of Terraform S3 State Backend Bucket](/layers/accounts/tutorials/terraform-s3-state/)
+
+<ActionCard title="Next Steps">
+  Now that the Terraform state backend is initialized, you're ready to deploy all AWS accounts in your organization.
+  <PrimaryCTA to="/layers/accounts/deploy-accounts">Deploy Accounts</PrimaryCTA>
+</ActionCard>

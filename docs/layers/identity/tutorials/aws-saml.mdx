@@ -1,0 +1,176 @@
+---
+title: "Using AWS SAML to Access AWS"
+sidebar_label: "Setup AWS SAML (Optional)"
+sidebar_position: 8
+description: Authenticate with AWS via federated identity using AWS SAML.
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Intro>
+AWS SAML provides federated identity access to AWS, allowing users to authenticate via their Identity Provider and assume IAM roles directly. While the reference architecture defaults to AWS IAM Identity Center with Permission Sets, AWS SAML remains fully supported for organizations that prefer or require direct SAML federation.
+</Intro>
+
+## When to Use AWS SAML
+
+AWS SAML is an alternative to AWS IAM Identity Center that provides:
+
+<Steps>
+  1. **Lower-level control** — Direct SAML federation to IAM roles without the Identity Center abstraction
+  1. **Multiple concurrent IdPs** — Support for multiple Identity Providers simultaneously
+  1. **Legacy compatibility** — Works with existing SAML-based authentication workflows
+</Steps>
+
+## Requirements
+
+Using AWS SAML instead of IAM Identity Center requires modifications to your Atmos Auth configuration:
+
+<Steps>
+  1. **Configure profiles for IAM roles** — Map Atmos profiles to IAM roles instead of Permission Sets
+  1. **Deploy the `aws-saml` component** — Create the SAML Identity Provider in AWS
+  1. **Configure your IdP** — Set up SAML federation in your Identity Provider
+</Steps>
+
+## Setup
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Export IdP Metadata
+
+    Export a metadata file from your Identity Provider. The process varies by provider:
+
+    <Tabs queryString="idp">
+      <TabItem value="google" label="Google Workspace">
+        <Steps>
+          1. Open the [AWS documentation for GSuite](https://aws.amazon.com/blogs/desktop-and-application-streaming/setting-up-g-suite-saml-2-0-federation-with-amazon-appstream-2-0/)
+          1. Follow Steps 1 through 7 (the process is the same for any AWS service)
+          1. Download the metadata file
+        </Steps>
+      </TabItem>
+      <TabItem value="okta" label="Okta">
+        <Steps>
+          1. Create an "Amazon Web Services Account Federation" application in Okta
+          1. Select "SAML 2.0" from the Sign-On Method
+          1. View and download the identity provider (IdP) metadata file
+        </Steps>
+
+        For details, see the official [Okta documentation](https://help.okta.com/en-us/Content/Topics/DeploymentGuides/AWS/aws-configure-identity-provider.htm).
+      </TabItem>
+      <TabItem value="jumpcloud" label="JumpCloud">
+        Follow the [JumpCloud documentation](https://support.jumpcloud.com/support/s/article/getting-started-applications-saml-sso2) and download the metadata file.
+      </TabItem>
+      <TabItem value="microsoft-entra-id" label="Microsoft Entra ID">
+        The setup for Microsoft Entra ID (formerly Azure AD) has some nuances. See our [Microsoft Entra ID guide](/layers/identity/tutorials/how-to-setup-saml-login-to-aws-from-office-365/) for detailed instructions.
+      </TabItem>
+    </Tabs>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Import the Metadata File
+
+    Place the metadata file in your infrastructure repository:
+
+    <Steps>
+      1. Save the file to `components/terraform/aws-saml/`
+      1. Update `stacks/catalog/aws-saml.yaml` to reference the filename
+      1. Commit to version control
+    </Steps>
+
+    <Tabs>
+      <TabItem value="okta" label="Okta">
+        For Okta, ensure the `var.saml_providers` map key ends with `-okta`. This suffix triggers creation of a dedicated IAM user for Okta role discovery:
+
+        ```yaml
+        saml_providers:
+          acme-okta: "OktaIDPMetadata-acme.com.xml"
+        ```
+      </TabItem>
+    </Tabs>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy the SAML Integration
+
+    Deploy the `aws-saml` component to your root account:
+
+    ```bash
+    atmos terraform apply aws-saml -s core-gbl-root
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Complete IdP Setup
+
+    Complete the integration in your Identity Provider:
+
+    <Tabs>
+      <TabItem value="okta" label="Okta">
+        Follow the [official Okta documentation](https://help.okta.com/en-us/content/topics/deploymentguides/aws/aws-configure-aws-app.htm) to complete setup.
+
+        **Important notes:**
+        - The `aws-saml` component creates an IAM User for Okta to discover roles. Access keys are stored in AWS SSM Parameter Store.
+        - In Okta's "Provisioning" tab, check **"Update User Attributes"** for roles to populate correctly.
+      </TabItem>
+    </Tabs>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Atmos Auth for SAML
+
+    Update your Atmos Auth configuration to use the SAML provider and IAM roles instead of Permission Sets.
+
+    First, define the SAML provider in your `atmos.yaml`:
+
+    ```yaml
+    # atmos.yaml
+    auth:
+      providers:
+        acme-okta:
+          kind: aws/saml
+          region: us-east-1
+          url: https://acme.okta.com/app/amazon_aws/abc123/sso/saml
+          idp_arn: arn:aws:iam::123456789012:saml-provider/acme-okta
+          driver: Okta  # Options: Browser, GoogleApps, Okta, ADFS
+    ```
+
+    Then, define identities that use the SAML provider. The `aws/saml` provider requires chaining to an `aws/assume-role` identity:
+
+    ```yaml
+    # atmos.yaml (continued)
+    auth:
+      identities:
+        plat-dev/terraform:
+          kind: aws/assume-role
+          via:
+            provider: acme-okta  # References the SAML provider defined above
+          principal:
+            assume_role: arn:aws:iam::111111111111:role/acme-plat-gbl-dev-terraform
+            session_name: atmos-session
+    ```
+
+    See [Atmos Auth Providers](https://atmos.tools/cli/configuration/auth/providers/#aws-saml) and [Atmos Auth Identities](https://atmos.tools/cli/configuration/auth/identities/) for detailed configuration options.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> (Optional) AWS Extend Switch Roles
+
+    For easier role-switching in the AWS Console, use the [AWS Extend Switch Roles](https://github.com/tilfinltd/aws-extend-switch-roles) browser extension.
+
+    Copy the configuration from `rootfs/etc/aws-config` in your infrastructure repository into the plugin.
+  </Step>
+</Steps>
+
+## Comparison with IAM Identity Center
+
+| Feature | AWS SAML | IAM Identity Center |
+|---------|----------|---------------------|
+| Setup complexity | Higher | Lower |
+| User experience | Manual role selection | Integrated portal |
+| Multiple IdPs | Supported | Single IdP |
+| Permission management | IAM roles directly | Permission Sets |
+| Atmos Auth support | Yes (aws/saml kind) | Yes (aws/sso kind) |
+| Reference architecture default | No | Yes |

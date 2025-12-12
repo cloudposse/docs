@@ -1,0 +1,61 @@
+---
+title: "Legacy Account Map"
+sidebar_label: "Legacy Account Map"
+sidebar_position: 100
+sidebar_class_name: "deprecated"
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+The `account-map` component has been deprecated. The reference architecture now uses [Atmos Auth](https://atmos.tools/cli/auth) for authentication and [Atmos Functions](https://atmos.tools/core-concepts/stacks/templates/functions) for dynamic values, eliminating the need for `account-map` entirely.
+</Intro>
+
+## Why Deprecate Account Map?
+
+The `account-map` component was originally designed to store AWS account metadata in Terraform state and provide dynamic lookups for account IDs, IAM roles, and other configuration. While functional, this approach had several limitations:
+
+<Steps>
+1. **Tight coupling** — Components depended on `account-map` remote state, creating deployment dependencies
+1. **Greenfield only** — The pattern assumed Cloud Posse deployed all accounts, making brownfield adoption difficult
+1. **Slower operations** — Every Terraform run required remote state lookups
+1. **Complex bootstrapping** — Cold start required careful ordering of component deployments
+</Steps>
+
+## The New Approach
+
+The refactored architecture replaces `account-map` with:
+
+<Steps>
+1. **Atmos stack variables** — Account IDs and configuration stored directly in stack configuration (no remote state)
+1. **Atmos Auth** — Authentication handled before Terraform runs via `atmos auth login`
+1. **Atmos Functions** — Dynamic values resolved at plan time using `!terraform.output` and other functions
+1. **Simplified components** — Components work in both greenfield and brownfield environments
+</Steps>
+
+This approach enables all Cloud Posse components to work in brownfield environments where accounts already exist.
+
+## Current Documentation
+
+The accounts layer documentation has been updated for the new approach:
+
+<Steps>
+1. [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) — ClickOps setup before Terraform
+1. [Initialize Terraform Backend](/layers/accounts/initialize-tfstate/) — Set up the S3 state backend
+1. [Deploy Accounts](/layers/accounts/deploy-accounts/) — Create AWS accounts and configure settings
+1. [Setup CloudTrail](/layers/accounts/setup-cloudtrail/) — Enable organization-wide audit logging
+</Steps>
+
+## Migrating from Account Map
+
+If you have an existing deployment using the `account-map` component, see the migration guide:
+
+- [Migrate from Account Map](/layers/project/tutorials/migrate-from-account-map/)
+
+## See Also
+
+<Steps>
+1. [Atmos Auth](https://atmos.tools/cli/auth) — Authentication commands
+1. [Atmos Functions](https://atmos.tools/core-concepts/stacks/templates/functions) — Dynamic value resolution
+1. [Identity Layer](/layers/identity/) — IAM Identity Center and access management
+</Steps>

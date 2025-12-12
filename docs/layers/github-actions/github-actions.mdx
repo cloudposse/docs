@@ -5,14 +5,45 @@ sidebar_class_name: hidden
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-import DocCardList from '@theme/DocCardList';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
 <Intro>
-  GitHub Actions (GHA) are one of the cornerstones of your platform, automating everything from Terraform with Atmos to application build, test and deployment, fully integrated into AWS without any hardcoded, static credentials.
+GitHub Actions (GHA) are one of the cornerstones of your platform, automating everything from Terraform with Atmos to application build, test and deployment, fully integrated into AWS without any hardcoded, static credentials.
 </Intro>
 
-GitHub Actions offer a convenient way to achieve CI/CD automation directly on GitHub, without additional third-party services (e.g. CircleCI or Jenkins). GitHub doesn't charge extra for self-hosting runners, unlike many other platforms, making them an ideal choice for automation. Using self-hosted runners allows them to reside within your private networks, enabling you to manage resources like databases and Kubernetes clusters in private VPCs without exposing them publicly. We'll show you how to set up self-hosted runners (which are optional but recommended) and configure your IAM architecture to work with GitHub OIDC, so your Actions and workflows can assume AWS roles without relying on static credentials.
+GitHub Actions offer a convenient way to achieve CI/CD automation directly on GitHub, without additional third-party services (e.g. CircleCI or Jenkins). GitHub doesn't charge extra for self-hosting runners, unlike many other platforms, making them an ideal choice for automation. Using self-hosted runners allows them to reside within your private networks, enabling you to manage resources like databases and Kubernetes clusters in private VPCs without exposing them publicly.
 
-## Getting Started
+## Recommended: RunsOn
 
-<DocCardList/>
+We recommend **[RunsOn](/layers/github-actions/runs-on/)** for self-hosted GitHub runners. RunsOn provides:
+
+<dl>
+<dt>Zero Infrastructure Management</dt>
+<dd>No EC2 instances, Lambda functions, or Kubernetes clusters to maintain. No patching, scaling, or monitoring required.</dd>
+
+<dt>Simple Setup</dt>
+<dd>Deploy a single Terraform component, install a GitHub App, and start using immediately.</dd>
+
+<dt>Cost Effective</dt>
+<dd>Pay only for what you use with automatic spot instance pricing. No idle infrastructure costs.</dd>
+
+<dt>Works Everywhere</dt>
+<dd>No Kubernetes required. Works with any GitHub repository and supports organization-wide configuration.</dd>
+</dl>
+
+<ActionCard title="Get Started with RunsOn">
+Deploy self-hosted runners with minimal setup and zero infrastructure management.
+<PrimaryCTA to="/layers/github-actions/runs-on/">Setup RunsOn</PrimaryCTA>
+</ActionCard>
+
+## GitHub OIDC
+
+GitHub OIDC allows your GitHub Actions workflows to assume AWS IAM roles without static credentials. The GitHub OIDC Provider is deployed as part of the [Identity layer](/layers/identity/deploy/).
+
+For a detailed explanation of how GitHub OIDC works with AWS, see [GitHub OIDC with AWS](/layers/github-actions/github-oidc-with-aws/).
+
+## Additional Resources
+
+- [Design Decisions](/layers/github-actions/design-decisions/) - Architecture decisions for self-hosted runners
+- [Additional Tutorials](/layers/github-actions/tutorials/) - Previous runner solutions (Philips Labs, Actions Runner Controller)

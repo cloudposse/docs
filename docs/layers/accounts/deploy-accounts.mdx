@@ -12,6 +12,8 @@ import StepNumber from '@site/src/components/StepNumber';
 import Note from '@site/src/components/Note';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import TaskList from '@site/src/components/TaskList';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
 <Intro>
 This step-by-step process outlines how to deploy AWS accounts using `atmos` workflows and ClickOps steps. It covers necessary preparations, such as configuring the AWS Organization, increasing account quotas, and verifying account configurations. The guide details the deployment processes and post-deployment configurations, including setting up account settings, enabling AWS RAM for Organizations, and performing certain manual configurations via ClickOps.
@@ -68,53 +70,6 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     The `FeatureSet` should return `ALL` if RAM for Organizations is enabled, or `CONSOLIDATED_BILLING` if it's not enabled.
   </Step>
 
- <Step>
-    ## <StepNumber/> Confirm Root Account Name
-
-    After deploying the AWS Organization, verify the **account name** of the root (a.k.a. management/payer) account and ensure it's set in the `account-map` catalog. This is the human-readable **account name**, not the account alias. While we default to `root`, it may have been set to your company name or another custom label when the account was originally created.
-
-    <details>
-      <summary><strong>Why this is needed?</strong></summary>
-      
-      The root account has two different names:
-      
-      - **AWS Account Name**: The name you typed when originally creating the AWS account (often "root" but can be different)
-      - **Account Alias**: The deterministic name set in the account configuration (e.g., "core-root")
-    </details>
-
-    The account-map component needs to know the actual AWS account name to properly map accounts.
-
-    **To find your root account name:**
-
-    ```bash
-    # Make sure you're using a user with access to your root account, such as SuperAdmin
-    aws organizations list-accounts \
-      --query "Accounts[?Id=='$(aws organizations describe-organization --query 'Organization.MasterAccountId' --output text)'].Name" \
-      --output text
-    ```
-
-    **To configure the account-map:**
-
-    Update `stacks/catalog/account-map.yaml` to set the correct root account name:
-
-    ```yaml
-    components:
-      terraform:
-        account-map:
-          vars:
-            root_account_aws_name: "your-actual-root-account-name"  # The name from the AWS Organizations output
-            root_account_account_name: "core-root"  # This should always be "core-root"
-    ```
-
-    <Note title="Common Issue">
-      If you encounter an error such as the following in subsequent deployments, it's usually because the `root_account_aws_name` is not correctly set in the `account-map` configuration.
-      
-      ```console
-      The given key does not identify an element in this collection value
-      ```
-    </Note>
-  </Step>
-
   <Step>
     ## <StepNumber/> Raise Account Limits
 
@@ -134,10 +89,6 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
     ```
 
     Where `L-E619E033` is the quota code for "Default maximum number of accounts" under "AWS Organizations" in "us-east-1".
-
-    <Note title="Terraform Alternative">
-      This quota increase can also be requested through our [account-quotas](/components/library/aws/account-quotas/) component, but it's generally faster to handle this manually or through the API since it's a one time request.
-    </Note>
   </Step>
 
   <Step>
@@ -149,20 +100,7 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     <AtmosWorkflow workflow="deploy/accounts" fileName="quickstart/foundation/accounts" />
 
-    <Note title="Info">
-      With the addition of support for dynamic Terraform roles, our `baseline` cold start refarch layer now depends
-      on/requires that we have `aws-teams` and `aws-team-roles` stacks configured. This is because `account-map` uses those
-      stacks to determine which IAM role to assume when performing Terraform in the account, and almost every other component
-      uses `account-map` (indirectly) to chose the role to assume. However, these components do _not_ need to be deployed yet.
-    </Note>
-
-    These deployments will create all AWS member accounts and store relevant account metadata as "mappings" in the Terraform
-    outputs of the `account-map` component. Rather than querying this `account` component each time we need an Account ID or
-    role, we provision a static component `account-map`.
-
-    <Note title="Important">
-    Always run `atmos terraform apply account-map -s core-gbl-root` after provisioning accounts.
-    </Note>
+    This workflow creates all AWS member accounts in the AWS Organization using the configuration in your stack files.
 
   </Step>
 
@@ -178,48 +116,24 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   </Step>
  
   <Step>
-    ## <StepNumber/> ClickOps to Complete Account Setup
+    ## <StepNumber/> Unsubscribe from Marketing Emails (Optional)
 
-    For each new account, you will need to perform some manual configurations via ClickOps. These configurations include setting up the root account credentials, enabling MFA, and unsubscribing the account's email address from all marketing emails.
+    For each new account, unsubscribe the account's email address from AWS marketing emails:
 
     <Steps>
-      1. Reset the root user password:
-         <Steps>
-         1. Perform a password reset by attempting to log in to the AWS console as a "root user" using that account's email address
-         1. Click the "Forgot password?" link
-         1. You will receive a password reset link via email, which should be forwarded to the shared Slack channel for automated messages. Click the link
-         1. Enter a new password
-
-            <Note title="Tip">
-             Use 1Password to create a password 26-38 characters long, including at least 3 of each class of character: lower case, uppercase, digit, and symbol
-            </Note>
-
-         1. Save the email address and generated password as web login credentials in 1Password
-         1. Finally, record the account number in a separate field of the 1Password item, and save it. This is optional but recommended.
-         </Steps>
-
-      1. Configure MFA:
-         <Steps>
-         1. Log in to the AWS console using the new password
-         1. Choose "My Security Credentials" from the account dropdown menu
-         1. Set up Multi-Factor Authentication (MFA) to use a Virtual MFA device
-         1. Save the MFA TOTP key in 1Password with 1Password's "One-Time Password" field
-         1. Enter the generated MFA codes in AWS to verify the MFA device
-         1. Save the Virtual MFA ARN in the same 1Password entry. We will need this to set up the MFA device for `SuperAdmin` in Leapp
-         </Steps>
-
-      1. Enable any necessary optional regions
-
-      1. Optional, but highly recommended - unsubscribe the account's email address from all marketing emails
-         <Steps>
-         1. Go to [AWS Marketing Preferences](https://pages.awscloud.com/communication-preferences.html)
-         1. Click "Unsubscribe from Email"
-         1. Enter the account's email address
-         1. Check "Unsubscribe from all AWS marketing emails"
-         </Steps>
+    1. Go to [AWS Marketing Preferences](https://pages.awscloud.com/communication-preferences.html)
+    1. Click "Unsubscribe from Email"
+    1. Enter the account's email address
+    1. Check "Unsubscribe from all AWS marketing emails"
     </Steps>
 
-    For more details, review
-    [the detailed "AWS Cold Start" documentation](/layers/accounts/tutorials/manual-configuration/#configure-root-account-credentials-for-each-account).
+    :::tip Root User Credentials
+    With [centralized root access](/layers/identity/centralized-root-access/) enabled, member accounts do not require individual root credentials. If you need per-account root credentials, see [Create Account Root Users](/layers/accounts/tutorials/create-account-root-users/).
+    :::
   </Step>
 </Steps>
+
+<ActionCard title="Next Steps">
+  Now that all accounts are deployed and configured, you're ready to set up CloudTrail for audit logging across your organization.
+  <PrimaryCTA to="/layers/accounts/setup-cloudtrail">Setup CloudTrail</PrimaryCTA>
+</ActionCard>

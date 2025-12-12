@@ -1,0 +1,35 @@
+# RunsOn Self-Hosted Runners Workflows
+#
+# These workflows deploy RunsOn self-hosted GitHub Actions runners.
+# RunsOn provides cost-effective, high-performance runners for CI/CD.
+#
+# Documentation: https://docs.cloudposse.com/layers/github-actions/
+#
+# Usage:
+#   atmos workflow all -f quickstart/foundation/runs-on
+#   atmos workflow deploy/runs-on -f quickstart/foundation/runs-on
+#
+# Prerequisites:
+#   - GitHub OIDC Provider must be deployed (see identity layer)
+#
+# Available workflows:
+#   - all: Deploy RunsOn self-hosted runners
+#   - vendor: Pull required components
+#   - deploy/runs-on: Deploy RunsOn GitHub Runners
+#
+workflows:
+  all:
+    description: Deploy RunsOn self-hosted runners
+    steps:
+      - command: workflow vendor -f quickstart/foundation/runs-on
+      - command: workflow deploy/runs-on -f quickstart/foundation/runs-on
+
+  vendor:
+    description: Vendor RunsOn components
+    steps:
+      - command: vendor pull --component runs-on
+
+  deploy/runs-on:
+    description: Deploy RunsOn GitHub Runners
+    steps:
+      - command: terraform deploy runs-on -s core-use1-auto

@@ -10,8 +10,27 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 
 <Intro>
-The `SuperAdmin` user is recommended for performing certain high-risk administrative tasks that modify IAM permissions affecting users on SSO or SAML. We don't recommend making these types of changes with your own SSO or SAML identity because a misconfiguration could lead to account lockout. This guide outlines the steps to create a secure `SuperAdmin` user in AWS, including setting permissions, enabling MFA, and storing credentials safely in 1Password.
+The `SuperAdmin` user is an IAM user created for cold start bootstrapping and emergency break-glass access only. This guide outlines the steps to create a secure `SuperAdmin` user in AWS, including setting permissions, enabling MFA, and storing credentials safely in 1Password.
 </Intro>
+
+## About SuperAdmin
+
+The `SuperAdmin` user is a break-glass IAM user intended for two scenarios:
+
+<Steps>
+1. **Cold start bootstrapping** — Initial account setup before IAM Identity Center is configured
+1. **Emergency IdP failure** — When your Identity Provider is completely unavailable and you cannot authenticate via IAM Identity Center
+</Steps>
+
+After cold start is complete, prefer these alternatives:
+
+| Scenario | Recommended Approach |
+|----------|---------------------|
+| Administrative tasks in a specific account | Use `AdministratorAccess` Permission Set for that account |
+| Organization-level or emergency administrative tasks | Use [Centralized Root Access](/layers/identity/centralized-root-access/) via the `RootAccess` Permission Set |
+| Emergency access (IdP down) | `SuperAdmin` (this is the only valid use case post-cold-start) |
+
+Because `SuperAdmin` is an IAM user with static credentials, there is no audit trail for *who* used the credentials—all access appears as the same user. Permission Sets provide per-user audit trails via CloudTrail, making them the preferred option whenever your IdP is available.
 
 [Follow the prerequisites steps in the How-to Get Started guide](/layers/project/#0-prerequisites)
 

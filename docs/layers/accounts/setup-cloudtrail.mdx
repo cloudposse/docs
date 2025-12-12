@@ -1,0 +1,52 @@
+---
+title: "Setup Organizational CloudTrail"
+sidebar_label: "Setup CloudTrail"
+sidebar_position: 5
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+
+<Intro>
+Now that all the accounts have been deployed, we need to deploy CloudTrail for audit logging. This foundational component provides visibility into API activity across your AWS Organization.
+</Intro>
+
+| Steps           | Actions                                                     |
+| --------------- | ----------------------------------------------------------- |
+| Deploy CloudTrail | `atmos workflow deploy/cloudtrail -f quickstart/foundation/accounts` |
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Deploy CloudTrail
+
+    Deploy CloudTrail and the CloudTrail bucket to enable audit logging across your organization:
+
+    <AtmosWorkflow workflow="deploy/cloudtrail" fileName="quickstart/foundation/accounts" />
+
+    This workflow deploys:
+    - **CloudTrail bucket** in `core-audit` — Centralized S3 bucket for storing CloudTrail logs
+    - **Organization CloudTrail** in `core-root` — Organization-wide trail that captures API activity from all accounts
+  </Step>
+</Steps>
+
+## Auditing CloudTrail Logs
+
+{/* TODO: Add content covering:
+- How to query CloudTrail logs with Amazon Athena
+- Setting up Athena tables for CloudTrail
+- Example queries for common audit scenarios
+- Link to cloudtrail-athena component if available
+*/}
+
+## What's Next?
+
+With CloudTrail deployed, you have completed the accounts layer. The next step is to configure identity and access management.
+
+<ActionCard title="Next Steps">
+  Now that your accounts are deployed with audit logging enabled, you're ready to set up identity management with IAM Identity Center.
+  <PrimaryCTA to="/layers/identity/">Setup Identity</PrimaryCTA>
+</ActionCard>
