@@ -17,7 +17,7 @@ Now that all the accounts have been deployed, we need to deploy CloudTrail for a
 
 | Steps           | Actions                                                     |
 | --------------- | ----------------------------------------------------------- |
-| Deploy CloudTrail | `atmos workflow deploy/cloudtrail -f quickstart/foundation/baseline` |
+| Deploy CloudTrail | `atmos workflow deploy/cloudtrail -f quickstart/foundation/accounts` |
 
 <Steps>
   <Step>
@@ -25,7 +25,7 @@ Now that all the accounts have been deployed, we need to deploy CloudTrail for a
 
     Deploy CloudTrail and the CloudTrail bucket to enable audit logging across your organization:
 
-    <AtmosWorkflow workflow="deploy/cloudtrail" fileName="quickstart/foundation/baseline" />
+    <AtmosWorkflow workflow="deploy/cloudtrail" fileName="quickstart/foundation/accounts" />
 
     This workflow deploys:
     - **CloudTrail bucket** in `core-audit` — Centralized S3 bucket for storing CloudTrail logs

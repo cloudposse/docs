@@ -1,11 +1,11 @@
 ---
 title: Philips Labs GitHub Action Runners
-sidebar_label: Philips Labs Action Runners
+sidebar_label: Philips Labs Runners
+sidebar_position: 2
 ---
 
 import Intro from "@site/src/components/Intro";
 import KeyPoints from "@site/src/components/KeyPoints";
-import AtmosWorkflow from "@site/src/components/AtmosWorkflow";
 import Steps from "@site/src/components/Steps";
 import Step from "@site/src/components/Step";
 import StepNumber from "@site/src/components/StepNumber";
@@ -13,11 +13,19 @@ import TaskList from "@site/src/components/TaskList";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+:::warning Legacy Approach
+
+This page documents a legacy approach to self-hosted GitHub runners. **For new deployments, we recommend using [RunsOn](/layers/github-actions/runs-on/)**, which provides:
+- Zero infrastructure management
+- Simple GitHub App installation
+- Cost-effective pay-per-use pricing
+
+This content is preserved for organizations with existing Philips Labs runner deployments.
+
+:::
+
 <Intro>
-  If we are not deploying EKS, it's not worth the additional effort to set up Self-Hosted runners on EKS. Instead, we
-  deploy Self-Hosted runners on EC2 instances. These are managed by an API Gateway and Lambda function that will
-  automatically scale the number of runners based on the number of pending jobs in the queue. The queue is written to by
-  the API Gateway from GitHub Events.
+The Philips Labs approach deploys self-hosted runners on EC2 instances managed by an API Gateway and Lambda function that automatically scales based on pending jobs in the queue.
 </Intro>
 
 ## Quick Start
@@ -47,9 +55,11 @@ or follow the steps below.
   <Step>
     ### <StepNumber/> Vendor Components
 
-    Vendor in the necessary components with the following workflow:
+    Vendor in the necessary components:
 
-    <AtmosWorkflow workflow="vendor/philips-labs" fileName="quickstart/foundation/github" />
+    ```bash
+    atmos vendor pull --component philips-labs-github-runners
+    ```
 
   </Step>
 
@@ -118,28 +128,25 @@ or follow the steps below.
       2. Upload the GitHub App ID to the specified ssm path, `/pl-github-runners/id`, in `core-use1-auto`.
     </Steps>
 
-    Or run the `upload/pl-secrets` workflow with `atmos` to write the GitHub App information to the `core-use1-auto` SSM account and deploy the component.
-
-    <AtmosWorkflow workflow="upload/pl-secrets" fileName="quickstart/foundation/github" />
+    Alternatively, use the AWS CLI or console to set these SSM parameters directly.
 
   </Step>
 
   <Step>
     ### <StepNumber/> Deploy GitHub OIDC Providers
 
-    First deploy the GitHub OIDC provider to all accounts where we want to grant GitHub access. The typical list of accounts
-    is included with the `deploy/github-oidc-provider` workflow; run the following with `SuperAdmin`:
-
-    <AtmosWorkflow workflow="deploy/github-oidc-provider" fileName="quickstart/foundation/github" />
+    The GitHub OIDC provider should already be deployed as part of the [Identity layer](/layers/identity/deploy/). If not, deploy it to all accounts where GitHub Actions need to assume roles.
 
   </Step>
 
   <Step>
     ### <StepNumber/> Deploy the Philips Labs GitHub Runners
 
-    Now that the GitHub App has been created and the SSM parameters have been uploaded, deploy the `philips-labs-github-runners` component.
+    Now that the GitHub App has been created and the SSM parameters have been uploaded, deploy the `philips-labs-github-runners` component:
 
-    <AtmosWorkflow workflow="deploy/pl-github-runners" fileName="quickstart/foundation/github" />
+    ```bash
+    atmos terraform deploy philips-labs-github-runners -s core-use1-auto
+    ```
 
   </Step>
 
@@ -159,7 +166,7 @@ or follow the steps below.
 
     <Steps>
       1. Open the GitHub App created in
-        [Create the GitHub App above](/layers/github-actions/philips-labs-github-runners/#create-the-github-app)
+        [Create the GitHub App above](#-create-the-github-app)
       1. Enable the webhook.
       1. Provide the webhook url, should be part of the output of terraform.
       1. Provide the webhook secret (`terraform output -raw <NAME_OUTPUT_VAR>`).

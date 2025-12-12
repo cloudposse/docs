@@ -240,7 +240,7 @@ The GitHub OIDC provider is likely already deployed as part of the [Identity lay
 
     The GitOps stacks depend on components that may already exist in your component library (`s3-bucket` and `dynamodb`) and adds new components for GitHub OIDC authentication. Vendor these components with the included Atmos workflow:
 
-    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/gitops" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/atmos-pro" />
 
     Alternatively, use [Atmos Vendoring](https://atmos.tools/core-concepts/components/vendoring) directly.
 
@@ -251,7 +251,7 @@ The GitHub OIDC provider is likely already deployed as part of the [Identity lay
 
     Deploy the Atmos Pro infrastructure components:
 
-    <AtmosWorkflow workflow="deploy" fileName="quickstart/foundation/gitops" />
+    <AtmosWorkflow workflow="deploy" fileName="quickstart/foundation/atmos-pro" />
 
     This workflow deploys the **Plan File Storage** and **GitHub OIDC** integration:
 

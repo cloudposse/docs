@@ -1,12 +1,65 @@
+# Accounts Layer Workflows
+#
+# These workflows are used for the quickstart setup of the accounts layer.
+# They automate the deployment of AWS Organization, accounts, and baseline
+# infrastructure including Terraform state backend, CloudTrail, and ECR.
+#
+# Documentation: https://docs.cloudposse.com/layers/accounts/
+#
+# Usage:
+#   atmos workflow all -f quickstart/foundation/accounts
+#   atmos workflow deploy/accounts -f quickstart/foundation/accounts
+#
+# Available workflows:
+#   - all: Deploy complete accounts layer
+#   - vendor: Pull required components
+#   - init/tfstate: Initialize Terraform state backend (first-time only)
+#   - deploy/tfstate: Deploy Terraform state backend
+#   - deploy/organization: Create AWS Organization
+#   - deploy/accounts: Provision AWS accounts
+#   - deploy/account-settings: Configure account settings
+#   - deploy/cloudtrail: Enable CloudTrail logging
+#   - deploy/ecr: Deploy ECR registry
+#
 workflows:
   all:
-    description: run all workflows
+    description: Deploy complete accounts layer
     steps:
+      - command: workflow vendor -f quickstart/foundation/accounts
+      - command: workflow init/tfstate -f quickstart/foundation/accounts
+      - command: workflow deploy/tfstate -f quickstart/foundation/accounts
+      - command: workflow deploy/organization -f quickstart/foundation/accounts
       - command: workflow deploy/accounts -f quickstart/foundation/accounts
       - command: workflow deploy/account-settings -f quickstart/foundation/accounts
+      - command: workflow deploy/cloudtrail -f quickstart/foundation/accounts
+      - command: workflow deploy/ecr -f quickstart/foundation/accounts
+
+  vendor:
+    description: Vendor accounts layer components.
+    steps:
+      - command: vendor pull --component account
+      - command: vendor pull --component account-quotas
+      - command: vendor pull --component account-settings
+      - command: vendor pull --component cloudtrail
+      - command: vendor pull --component cloudtrail-bucket
+      - command: vendor pull --component ecr
+      - command: vendor pull --component tfstate-backend
+
+  init/tfstate:
+    description: Provision Terraform State Backend for initial deployment.
+    steps:
+      - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --auto-generate-backend-file=false
+      - command: until aws s3 ls acme-core-use1-root-tfstate; do sleep 5; done
+        type: shell
+      - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --init-run-reconfigure=false
+
+  deploy/tfstate:
+    description: Deploy Terraform State Backend.
+    steps:
+      - command: terraform deploy tfstate-backend --stack core-use1-root
 
   deploy/organization:
-    description: | 
+    description: |
       Deploy the AWS Organization. This is required before finishing the root account requirements.
     steps:
       - command: terraform deploy account -target="aws_organizations_organization.this[0]" -s core-gbl-root
@@ -32,3 +85,14 @@ workflows:
       - command: terraform deploy account-settings -s plat-gbl-prod
       - command: terraform deploy account-settings -s plat-gbl-sandbox
       - command: terraform deploy account-settings -s plat-gbl-staging
+
+  deploy/cloudtrail:
+    description: Start AWS Cloudtrail in audit and root accounts to track changes across the org.
+    steps:
+      - command: terraform deploy cloudtrail-bucket -s core-use1-audit
+      - command: terraform deploy cloudtrail -s core-gbl-root
+
+  deploy/ecr:
+    description: Deploy ECR in the artifacts account to use as our container registry
+    steps:
+      - command: terraform deploy ecr -s core-use1-artifacts

@@ -110,5 +110,13 @@
   {
     "from": "/layers/accounts/tutorials/deprecated-cold-start-components/",
     "to": "/layers/accounts/tutorials/legacy-account-map/"
+  },
+  {
+    "from": "/layers/github-actions/philips-labs-github-runners/",
+    "to": "/layers/github-actions/tutorials/philips-labs-github-runners/"
+  },
+  {
+    "from": "/layers/github-actions/eks-github-actions-controller/",
+    "to": "/layers/github-actions/tutorials/eks-github-actions-controller/"
   }
 ]

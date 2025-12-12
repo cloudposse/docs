@@ -1,15 +1,38 @@
+# Network Layer Workflows
+#
+# These workflows are used for the quickstart setup of the network layer.
+# They automate the deployment of VPCs, Transit Gateway, DNS zones,
+# ACM certificates, VPN, and bastion hosts.
+#
+# Documentation: https://docs.cloudposse.com/layers/network/
+#
+# Usage:
+#   atmos workflow all -f quickstart/network/network
+#   atmos workflow deploy/vpc -f quickstart/network/network
+#
+# Available workflows:
+#   - all: Deploy complete network layer
+#   - vendor: Pull required components
+#   - deploy/vpc: Provision VPCs
+#   - deploy/tgw: Configure Transit Gateway
+#   - deploy/dns: Set up DNS zones
+#   - deploy/acm: Provision ACM certificates
+#   - deploy/vpn: Establish VPN connectivity
+#   - deploy/bastion: Deploy bastion hosts
+#
+
 workflows:
   all:
     description: run all workflows
     steps:
-      - command: workflow vendor -f quickstart/foundation/network
-      - command: workflow deploy/vpc -f quickstart/foundation/network
-      - command: workflow deploy/tgw -f quickstart/foundation/network
-      - command: workflow deploy/dns -f quickstart/foundation/network
-      - command: workflow output/dns-name-servers -f quickstart/foundation/network
-      - command: workflow deploy/acm -f quickstart/foundation/network
-      - command: workflow deploy/vpn -f quickstart/foundation/network
-      - command: workflow deploy/bastion -f quickstart/foundation/network
+      - command: workflow vendor -f quickstart/network/network
+      - command: workflow deploy/vpc -f quickstart/network/network
+      - command: workflow deploy/tgw -f quickstart/network/network
+      - command: workflow deploy/dns -f quickstart/network/network
+      - command: workflow output/dns-name-servers -f quickstart/network/network
+      - command: workflow deploy/acm -f quickstart/network/network
+      - command: workflow deploy/vpn -f quickstart/network/network
+      - command: workflow deploy/bastion -f quickstart/network/network
 
   vendor:
     description: Vendor component dependencies for the network layer.

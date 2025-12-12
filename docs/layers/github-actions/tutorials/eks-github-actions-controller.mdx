@@ -1,6 +1,7 @@
 ---
-title: "[EKS] GitHub Action Runner Controller"
+title: "Actions Runner Controller (EKS)"
 sidebar_label: "Actions Runner Controller (EKS)"
+sidebar_position: 3
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -8,13 +9,22 @@ import Note from '@site/src/components/Note';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
-import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+:::warning Legacy Approach
+
+This page documents a legacy approach to self-hosted GitHub runners. **For new deployments, we recommend using [RunsOn](/layers/github-actions/runs-on/)**, which provides:
+- Zero infrastructure management
+- Simple GitHub App installation
+- Cost-effective pay-per-use pricing
+- No Kubernetes required
+
+This content is preserved for organizations with existing ARC deployments on EKS.
+
+:::
 
 <Intro>
 The GitHub Action Runner Controller (ARC) is a Kubernetes operator that automates the management of self-hosted GitHub Actions runners in a Kubernetes cluster, that works very well together with Karpenter for EKS.
 </Intro>
-
-<Note title="Important">We recommend using ARC only if your organization uses Kubernetes, otherwise we recommend the [Philips Labs GitHub Runner](/layers/github-actions/philips-labs-github-runners) approach instead.</Note>
 
 By default, GitHub Actions are run in the cloud on hosted machines, but we can opt to use "Self-Hosted" GitHub Action
 Runners instead. Historically, we've deployed an Auto Scaling Group that gives each run a dedicated and customized
@@ -29,7 +39,7 @@ customizable, scale automatically, and be cheaper than both GitHub hosted runner
 | 1. Generate GitHub Private Key                        | `ssm_github_secret_path: "/github_runners/controller_github_app_secret"`              |
 | 2. Generate GitHub Webhook Secret Token               | `ssm_github_webhook_secret_token_path: "/github_runners/github_webhook_secret_token"` |
 | 3. Connect to the VPN                                 |                                                                                       |
-| 4. Deploy cluster and resources into the `auto` stack | `atmos workflow deploy/github-runners -f quickstart/foundation/github`                |
+| 4. Deploy cluster and resources into the `auto` stack | See deployment steps below                                                            |
 | 5. Set up Webhook Driven Scaling                      | Click Ops                                                                             |
 
 ## Requirements
@@ -121,9 +131,7 @@ In order to deploy Self-Hosted GitHub Runners on EKS, follow the steps outlined 
   GitHub Repository or Organization
 
   <Note title="Tip">
-    The first three steps before are all included in the following workflow:
-
-    <AtmosWorkflow workflow="deploy/arc-github-runners" fileName="quickstart/foundation/github" />
+    The deployment steps below cover the complete process for setting up ARC on EKS.
   </Note>
 
   <Step>
@@ -140,10 +148,7 @@ In order to deploy Self-Hosted GitHub Runners on EKS, follow the steps outlined 
   <Step>
     ### <StepNumber/> Deploy Automation Cluster and Resources
 
-    Deploy the cluster with the same commands as `plat` cluster deployments:
-
-    <AtmosWorkflow workflow="deploy/cluster" fileName="quickstart/platform/eks" stack="core-use1-auto"/>
-    <AtmosWorkflow workflow="deploy/resources" fileName="quickstart/platform/eks" stack="core-use1-auto"/>
+    Deploy the cluster with the same commands as `plat` cluster deployments. See the [EKS layer documentation](/layers/eks/) for detailed deployment instructions.
 
     Validate the `core-auto` deployment using Echo Server. For example: https://echo.use1.auto.core.acme-svc.com/
   </Step>

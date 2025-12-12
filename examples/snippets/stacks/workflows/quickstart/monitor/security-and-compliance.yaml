@@ -1,4 +1,23 @@
-workflows:
+# Security and Compliance Layer Workflows
+#
+# These workflows are used for the quickstart setup of security and compliance.
+# They automate the deployment of AWS Config, Security Hub, GuardDuty,
+# AWS Inspector, and other compliance tooling.
+#
+# Documentation: https://docs.cloudposse.com/layers/security-and-compliance/
+#
+# Usage:
+#   atmos workflow vendor -f quickstart/monitor/security-and-compliance
+#   atmos workflow deploy/security-hub/step1 -f quickstart/monitor/security-and-compliance
+#
+# Available workflows:
+#   - vendor: Pull required components
+#   - deploy/aws-config/global-collector: Deploy AWS Config
+#   - deploy/aws-config/superadmin: Deploy AWS Config to root (requires SuperAdmin)
+#   - deploy/security-hub/step1-3: Deploy Security Hub (3 steps)
+#   - deploy/guardduty/step1-3: Deploy GuardDuty (3 steps)
+#   - deploy/aws-inspector2/step1-2: Deploy AWS Inspector (2 steps)
+#workflows:
   vendor:
     description: Vendor compliance layer components and scripts.
     steps:

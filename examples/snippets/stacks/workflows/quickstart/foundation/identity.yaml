@@ -1,4 +1,24 @@
-
+# Identity Layer Workflows
+#
+# These workflows are used for the quickstart setup of the identity layer.
+# They automate the deployment of IAM Identity Center (AWS SSO), GitHub OIDC
+# providers, and IAM roles for Terraform execution across all accounts.
+#
+# Documentation: https://docs.cloudposse.com/layers/identity/
+#
+# Usage:
+#   atmos workflow all -f quickstart/foundation/identity
+#   atmos workflow deploy/sso -f quickstart/foundation/identity
+#   atmos workflow deploy/github-oidc-provider -f quickstart/foundation/identity
+#
+# Available workflows:
+#   - all: Deploy complete identity layer
+#   - vendor: Pull required components
+#   - deploy/all: Deploy all identity components
+#   - deploy/sso: Configure IAM Identity Center
+#   - deploy/iam-role: Deploy Terraform execution roles
+#   - deploy/github-oidc-provider: Deploy GitHub OIDC Provider to all accounts
+#
 workflows:
   check-setup:
     description: Verify that the environment is setup correctly to run these workflows.
@@ -33,12 +53,14 @@ workflows:
     steps:
       - command: vendor pull --component aws-sso
       - command: vendor pull --component iam-role
+      - command: vendor pull --component github-oidc-provider
 
   deploy/all:
     description: Deploy all identity components.
     steps:
       - command: workflow deploy/sso -f quickstart/foundation/identity
       - command: workflow deploy/iam-role -f quickstart/foundation/identity
+      - command: workflow deploy/github-oidc-provider -f quickstart/foundation/identity
 
   deploy/sso:
     description: Update aws-sso configuration.
@@ -72,3 +94,22 @@ workflows:
       - command: terraform deploy iam-role/planner -s plat-gbl-prod
       - command: terraform deploy iam-role/terraform -s plat-gbl-sandbox
       - command: terraform deploy iam-role/planner -s plat-gbl-sandbox
+
+  deploy/github-oidc-provider:
+    description: |
+      Deploy GitHub OIDC Provider to all accounts.
+      This enables GitHub Actions to authenticate to AWS using OIDC.
+    steps:
+      # Core accounts
+      - command: terraform deploy github-oidc-provider -s core-gbl-root
+      - command: terraform deploy github-oidc-provider -s core-gbl-artifacts
+      - command: terraform deploy github-oidc-provider -s core-gbl-audit
+      - command: terraform deploy github-oidc-provider -s core-gbl-auto
+      - command: terraform deploy github-oidc-provider -s core-gbl-dns
+      - command: terraform deploy github-oidc-provider -s core-gbl-network
+      - command: terraform deploy github-oidc-provider -s core-gbl-security
+      # Platform accounts
+      - command: terraform deploy github-oidc-provider -s plat-gbl-dev
+      - command: terraform deploy github-oidc-provider -s plat-gbl-staging
+      - command: terraform deploy github-oidc-provider -s plat-gbl-prod
+      - command: terraform deploy github-oidc-provider -s plat-gbl-sandbox

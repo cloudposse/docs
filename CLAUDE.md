@@ -149,6 +149,10 @@ description: Short description for SEO
 ---
 ```
 
+## PRDs
+
+Project requirement documents are stored in `internal/prd/`. These contain planning documents for documentation restructuring and improvements.
+
 ## Skills
 
 See `.claude/skills/` for specialized documentation tasks:
