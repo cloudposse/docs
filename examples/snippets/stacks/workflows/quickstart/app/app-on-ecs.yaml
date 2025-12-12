@@ -8,7 +8,7 @@ workflows:
     description: |
       This workflow ensures all Github OIDC Provider Configuration deployed.
     steps:
-      - command: workflow deploy/github-oidc-provider -f quickstart/foundation/github
+      - command: workflow deploy/github-oidc-provider -f quickstart/foundation/identity
 
   deploy/app-on-ecs:
     description: |

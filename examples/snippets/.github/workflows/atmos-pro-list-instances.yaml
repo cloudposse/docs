@@ -1,0 +1,65 @@
+name: 👽 Atmos Pro List instances
+run-name: list instances
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+# Avoid running the same stack in parallel mode (from different workflows)
+# This applied to across workflows to both plan and apply
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+  atmos-list-instances:
+    name: list instances
+
+    runs-on:
+      - "runs-on=${{ github.run_id }}"
+      - "runner=small"
+      - "tag=list-instances"
+      - "private=false"
+
+    steps:
+      - uses: runs-on/action@v1
+      - uses: unfor19/install-aws-cli-action@v1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set atmos cli config path vars
+        shell: bash
+        run: |-
+          echo "ATMOS_CLI_CONFIG_PATH=$(realpath ${{ vars.ATMOS_CONFIG_PATH }})" >> $GITHUB_ENV
+
+      - name: Install Atmos
+        uses: cloudposse/github-action-setup-atmos@v2
+        with:
+          atmos-version: ${{ vars.ATMOS_VERSION }}
+          token: ${{ github.token }}
+          install-wrapper: false
+
+      # We need to assume AWS credentials to read the Terraform state
+      - name: Assume Planner Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: "us-east-1"
+          role-to-assume: "arn:aws:iam::333333333333:role/acme-core-gbl-auto-planner"
+          role-session-name: "atmos-pro-list-instances"
+          mask-aws-account-id: "no"
+
+      - name: List instances and upload to Atmos Pro
+        env:
+          ATMOS_PRO_WORKSPACE_ID: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
+          ATMOS_PROFILE: "github-plan"
+        run: |
+          atmos list instances \
+            --upload

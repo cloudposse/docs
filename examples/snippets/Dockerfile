@@ -48,12 +48,7 @@ ENV BANNER=${NAMESPACE}
 ENV DOCKER_IMAGE="acme/infrastructure"
 ENV DOCKER_TAG="latest"
 
-# Default AWS_PROFILE
-ENV AWS_PROFILE=${NAMESPACE}-identity
-# This sets the default AWS_CONFIG to be used after signing in with Leapp.
-# Once logged in, this config file gives you access to all the other teams
-# and roles (if you are authorized for access).
-ENV AWS_CONFIG_FILE=/etc/aws-config/aws-config-teams
+# Default AWS_PROFILE is not needed with Atmos Auth profiles
 ENV ASSUME_ROLE_INTERACTIVE_QUERY=${NAMESPACE}${TENANT:+-$TENANT}-gbl-
 
 WORKDIR /

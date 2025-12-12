@@ -1,4 +1,21 @@
-workflows:
+# Software Delivery Layer Workflows
+#
+# These workflows are used for the quickstart setup of software delivery with ArgoCD.
+# They automate the deployment of ArgoCD for GitOps-based application delivery
+# and SSO SAML integration with IAM Identity Center.
+#
+# Documentation: https://docs.cloudposse.com/layers/software-delivery/
+#
+# Usage:
+#   atmos workflow vendor -f quickstart/platform/software-delivery
+#   atmos workflow deploy/argocd -f quickstart/platform/software-delivery
+#
+# Available workflows:
+#   - vendor: Pull required components
+#   - deploy/argocd: Deploy ArgoCD to EKS clusters
+#   - deploy/argocd-repos: Deploy ArgoCD repository configurations
+#   - deploy/iam-identity-center-app/{stage}: Configure SSO SAML for ArgoCD
+#workflows:
   vendor:
     description: |
       This workflow vendors all ArgoCD related components to the latest provided version

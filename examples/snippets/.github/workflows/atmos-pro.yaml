@@ -37,7 +37,10 @@ jobs:
       - "private=false"
 
     # Trigger Atmos Pro for Pull Request plan events and specifically closed PRs that have been merged (not just closed)
-    if: github.event.action != 'closed' || (github.event.action == 'closed' && github.event.pull_request.merged == true)
+    # Skip if the PR has the "no-apply" label
+    if: |
+      !contains(github.event.pull_request.labels.*.name, 'no-apply') &&
+      (github.event.action != 'closed' || (github.event.action == 'closed' && github.event.pull_request.merged == true))
 
     steps:
       - uses: runs-on/action@v1
@@ -67,11 +70,20 @@ jobs:
           echo "merge_commit=$MERGE_COMMIT" >> "$GITHUB_OUTPUT"
           echo "parent_commit=$PARENT" >> "$GITHUB_OUTPUT"
 
+      - name: Assume Planner Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: "us-east-1"
+          role-to-assume: "arn:aws:iam::333333333333:role/acme-core-gbl-auto-planner"
+          role-session-name: "atmos-pro-determine-affected-stacks"
+          mask-aws-account-id: "no"
+
       - name: Determine Affected Stacks
         id: affected
         uses: cloudposse/github-action-atmos-affected-stacks@v6
         env:
           ATMOS_PRO_WORKSPACE_ID: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
+          ATMOS_PROFILE: "github-plan"
         with:
           atmos-version: ${{ vars.ATMOS_VERSION }}
           atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}

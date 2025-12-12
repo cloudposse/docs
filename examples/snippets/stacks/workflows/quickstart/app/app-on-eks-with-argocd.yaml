@@ -4,7 +4,7 @@ workflows:
       This workflow ensures all Github OIDC Provider Configuration deployed.
       Please assume `acme-core-gbl-root-admin`
     steps:
-      - command: workflow deploy/github-oidc-provider -f quickstart/foundation/github
+      - command: workflow deploy/github-oidc-provider -f quickstart/foundation/identity
 
   deploy/pre-requisites:
     description: |
@@ -12,7 +12,7 @@ workflows:
       Often a eks/cluster component will need to be reapplied to add OIDC access for a given repo.
     steps:
       - command: terraform deploy ecr -s core-use1-artifacts
-      - command: workflow deploy/acm -f quickstart/foundation/network
+      - command: workflow deploy/acm -f quickstart/network/network
       - command: terraform deploy eks/cluster -s plat-use1-dev
       - command: terraform deploy eks/cluster -s plat-use1-staging
       - command: terraform deploy eks/cluster -s plat-use1-prod
