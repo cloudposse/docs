@@ -39,33 +39,26 @@ Shield Advanced protects:
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS Organization                                     │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Shield Advanced Subscription (Organization-wide)                      │ │
-│  │  - $3,000/month covers all accounts in organization                    │ │
-│  │  - Manual subscription required before deployment                      │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Global Resources (Global Stack)                                       │ │
-│  │  ┌─────────────────┐ ┌─────────────────┐                              │ │
-│  │  │ Route53 Zones   │ │ CloudFront      │                              │ │
-│  │  │ - example.com   │ │ - E1ABCDEFG123  │                              │ │
-│  │  └─────────────────┘ └─────────────────┘                              │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Regional Resources (Regional Stack - us-east-1)                       │ │
-│  │  ┌─────────────────┐ ┌─────────────────┐                              │ │
-│  │  │ ALBs            │ │ Elastic IPs     │                              │ │
-│  │  │ - k8s-common    │ │ - NAT Gateway   │                              │ │
-│  │  │ - api-gateway   │ │ - Bastion       │                              │ │
-│  │  └─────────────────┘ └─────────────────┘                              │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph subscription["Shield Advanced Subscription"]
+            sub_info["$3,000/month - covers all accounts<br/>Manual subscription required"]
+        end
+
+        subgraph global["Global Resources (Global Stack)"]
+            route53["Route53 Zones<br/>example.com"]
+            cloudfront["CloudFront<br/>E1ABCDEFG123"]
+        end
+
+        subgraph regional["Regional Resources (us-east-1)"]
+            albs["Application Load Balancers<br/>k8s-common, api-gateway"]
+            eips["Elastic IPs<br/>NAT Gateway, Bastion"]
+        end
+    end
+
+    subscription -->|"Protects"| global
+    subscription -->|"Protects"| regional
 ```
 
 ## Deployment

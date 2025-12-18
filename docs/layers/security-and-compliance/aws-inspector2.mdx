@@ -1,6 +1,6 @@
 ---
-title: AWS Inspector
-sidebar_label: AWS Inspector
+title: AWS Inspector 2
+sidebar_label: AWS Inspector 2
 sidebar_position: 7
 description: "Automated vulnerability scanning for EC2 instances, container images, and Lambda functions"
 ---
@@ -9,13 +9,13 @@ import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
 
 <Intro>
-AWS Inspector provides automated vulnerability scanning for EC2 instances, container images in ECR, and Lambda
+AWS Inspector 2 provides automated vulnerability scanning for EC2 instances, container images in ECR, and Lambda
 functions across your AWS Organization using machine learning and pattern matching.
 </Intro>
 
 ## Overview
 
-AWS Inspector provides:
+AWS Inspector 2 provides:
 
 - **EC2 Scanning**: Vulnerability assessment of EC2 instances using SSM Agent
 - **ECR Scanning**: Container image scanning for vulnerabilities in your registries
@@ -33,42 +33,29 @@ AWS Inspector provides:
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS Organization                                     │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Organization Management Account (root)                                │ │
-│  │  STEP 1: Delegate Inspector administration to security account         │ │
-│  │  - Creates: aws_inspector2_delegated_admin_account                     │ │
-│  │  - Requires: SuperAdmin permissions (privileged: true)                 │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              │                                              │
-│                              ▼ Delegation                                   │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Delegated Administrator Account (security)                            │ │
-│  │  STEP 2: Configure org settings (admin_delegated: true)                │ │
-│  │  - Creates: aws_inspector2_organization_configuration                  │ │
-│  │  - Enables EC2, ECR, Lambda scanning for all accounts                  │ │
-│  │  - Auto-enrolls new member accounts                                    │ │
-│  │                                                                        │ │
-│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
-│  │  │                    Inspector Dashboard                           │  │ │
-│  │  │  ┌──────────┐ ┌──────────┐ ┌──────────┐                         │  │ │
-│  │  │  │   EC2    │ │   ECR    │ │  Lambda  │                         │  │ │
-│  │  │  │ Findings │ │ Findings │ │ Findings │                         │  │ │
-│  │  │  └──────────┘ └──────────┘ └──────────┘                         │  │ │
-│  │  └──────────────────────────────────────────────────────────────────┘  │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              ▲                                              │
-│                              │ Findings                                     │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Member Accounts                                                       │ │
-│  │  - Automatically enrolled by delegated administrator                   │ │
-│  │  - EC2 instances, ECR images, Lambda functions scanned                │ │
-│  │  - Findings sent to security account                                   │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph root["Organization Management Account (root)"]
+            step1["STEP 1: Delegate Administration<br/>Creates: aws_inspector2_delegated_admin_account<br/>Requires: SuperAdmin (privileged: true)"]
+        end
+
+        subgraph security["Delegated Administrator Account (security)"]
+            step2["STEP 2: Configure Org Settings<br/>Creates: aws_inspector2_organization_configuration<br/>admin_delegated: true"]
+            subgraph dashboard["Inspector Dashboard"]
+                ec2["EC2<br/>Findings"]
+                ecr["ECR<br/>Findings"]
+                lambda["Lambda<br/>Findings"]
+            end
+        end
+
+        subgraph members["Member Accounts"]
+            member["Auto-enrolled accounts<br/>EC2, ECR, Lambda scanned<br/>Findings sent to security"]
+        end
+    end
+
+    step1 -->|"Delegation"| security
+    member -->|"Findings"| dashboard
 ```
 
 ## Deployment
@@ -174,7 +161,7 @@ Inspector automatically sends findings to Security Hub when both services are en
 
 ## References
 
-- [AWS Inspector Documentation](https://docs.aws.amazon.com/inspector/)
+- [AWS Inspector 2 Documentation](https://docs.aws.amazon.com/inspector/)
 - [aws-inspector2 Component](https://github.com/cloudposse-terraform-components/aws-inspector2)
 - [Inspector Scanning Types](https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html)
 - [Inspector Findings](https://docs.aws.amazon.com/inspector/latest/user/findings.html)

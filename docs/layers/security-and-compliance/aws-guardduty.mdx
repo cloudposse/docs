@@ -35,35 +35,25 @@ GuardDuty provides:
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS Organization                                     │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Organization Management Account (root)                                │ │
-│  │  STEP 2: Delegate GuardDuty administration to security account         │ │
-│  │  - Creates: aws_guardduty_organization_admin_account                   │ │
-│  │  - Requires: SuperAdmin permissions (privileged: true)                 │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              │                                              │
-│                              ▼ Delegation                                   │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Delegated Administrator Account (security)                            │ │
-│  │  STEP 1 (FIRST): Create GuardDuty detector (admin_delegated: false)    │ │
-│  │  - Creates: aws_guardduty_detector                                     │ │
-│  │                                                                        │ │
-│  │  STEP 3 (LAST): Configure org settings (admin_delegated: true)         │ │
-│  │  - Creates: aws_guardduty_organization_configuration                   │ │
-│  │  - Enables protection features, auto-enrolls members                   │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              ▲                                              │
-│                              │ Findings                                     │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Member Accounts (all other accounts)                                  │ │
-│  │  - Automatically enrolled by delegated administrator                   │ │
-│  │  - Findings sent to security account                                   │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph root["Organization Management Account (root)"]
+            step2["STEP 2: Delegate Administration<br/>Creates: aws_guardduty_organization_admin_account<br/>Requires: SuperAdmin (privileged: true)"]
+        end
+
+        subgraph security["Delegated Administrator Account (security)"]
+            step1["STEP 1 (FIRST): Create Detector<br/>Creates: aws_guardduty_detector<br/>admin_delegated: false"]
+            step3["STEP 3 (LAST): Configure Org Settings<br/>Creates: aws_guardduty_organization_configuration<br/>admin_delegated: true"]
+        end
+
+        subgraph members["Member Accounts"]
+            member["All other accounts<br/>Auto-enrolled by delegated admin<br/>Findings sent to security account"]
+        end
+    end
+
+    step2 -->|"Delegation"| security
+    member -->|"Findings"| step3
 ```
 
 ## Deployment

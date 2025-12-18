@@ -27,29 +27,29 @@ Deploy a comprehensive set of Cloud Posse components to enable security monitori
 AWS Organization. Our approach uses the **delegated administrator** pattern, where a central `security` account manages
 organization-wide security services, while logs are stored in an isolated `audit` account.
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS Organization                                    │
-│                                                                             │
-│  ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐      │
-│  │   Root Account   │    │  Security Account │    │   Audit Account  │      │
-│  │                  │    │ (Delegated Admin) │    │                  │      │
-│  │ • Delegates      │───▶│ • GuardDuty      │    │ • CloudTrail     │      │
-│  │   administration │    │ • Security Hub   │    │   logs bucket    │      │
-│  │ • Enables org    │    │ • Inspector      │    │ • Config         │      │
-│  │   service access │    │ • Macie          │    │   snapshots      │      │
-│  │                  │    │ • Access Analyzer│    │                  │      │
-│  └──────────────────┘    └────────┬─────────┘    └──────────────────┘      │
-│                                   │                                         │
-│                    ┌──────────────┴──────────────┐                         │
-│                    ▼                             ▼                          │
-│  ┌──────────────────────────┐  ┌──────────────────────────┐                │
-│  │     Member Accounts      │  │     Member Accounts      │                │
-│  │  (prod, staging, dev)    │  │    (workload accounts)   │                │
-│  │  • Auto-enrolled         │  │  • Findings → Security   │                │
-│  │  • Monitored by security │  │  • Logs → Audit          │                │
-│  └──────────────────────────┘  └──────────────────────────┘                │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph root["Root Account"]
+            root_tasks["• Delegates administration<br/>• Enables org service access"]
+        end
+
+        subgraph security["Security Account (Delegated Admin)"]
+            sec_services["• GuardDuty<br/>• Security Hub<br/>• Inspector<br/>• Macie<br/>• Access Analyzer"]
+        end
+
+        subgraph audit["Audit Account"]
+            audit_storage["• CloudTrail logs bucket<br/>• Config snapshots"]
+        end
+
+        subgraph members["Member Accounts (prod, staging, dev)"]
+            member_info["• Auto-enrolled<br/>• Monitored by security"]
+        end
+    end
+
+    root -->|"Delegates"| security
+    members -->|"Findings"| security
+    members -->|"Logs"| audit
 ```
 
 ## Security Components Overview
@@ -62,7 +62,7 @@ Cloud Posse provides 9 Terraform components for comprehensive AWS security and c
 | [AWS CloudTrail](/layers/security-and-compliance/aws-cloudtrail/) | API activity logging and audit trail | Organization trail |
 | [AWS GuardDuty](/layers/security-and-compliance/aws-guardduty/) | Intelligent threat detection | 3-step delegated admin |
 | [AWS Security Hub](/layers/security-and-compliance/aws-security-hub/) | Centralized security findings aggregation | 3-step delegated admin |
-| [AWS Inspector](/layers/security-and-compliance/aws-inspector2/) | Automated vulnerability scanning | 2-step delegated admin |
+| [AWS Inspector 2](/layers/security-and-compliance/aws-inspector2/) | Automated vulnerability scanning | 2-step delegated admin |
 | [Amazon Macie](/layers/security-and-compliance/aws-macie/) | Sensitive data discovery in S3 | 3-step delegated admin |
 | [IAM Access Analyzer](/layers/security-and-compliance/aws-access-analyzer/) | External and unused access detection | 2-step delegated admin |
 | [AWS Shield](/layers/security-and-compliance/aws-shield/) | DDoS protection | Per-resource |
@@ -113,9 +113,9 @@ aggregating, organizing, and prioritizing security findings from AWS services an
 - Cross-region finding aggregation
 - Custom insights and automated remediation via EventBridge
 
-### AWS Inspector
+### AWS Inspector 2
 
-[**AWS Inspector**](/layers/security-and-compliance/aws-inspector2/) provides automated vulnerability scanning for
+[**AWS Inspector 2**](/layers/security-and-compliance/aws-inspector2/) provides automated vulnerability scanning for
 EC2 instances, container images in ECR, and Lambda functions.
 
 **Key Features:**
@@ -181,49 +181,66 @@ The components use different deployment patterns based on AWS service requiremen
 
 Used by: **GuardDuty**, **Security Hub**, **Macie**
 
-```text
-Step 1: Security Account → Create service account (admin_delegated: false)
-Step 2: Root Account     → Delegate administration (privileged: true)
-Step 3: Security Account → Configure org settings (admin_delegated: true)
+```mermaid
+flowchart LR
+    step1["Step 1: Security Account<br/>Create service account<br/>(admin_delegated: false)"]
+    step2["Step 2: Root Account<br/>Delegate administration<br/>(privileged: true)"]
+    step3["Step 3: Security Account<br/>Configure org settings<br/>(admin_delegated: true)"]
+    step1 --> step2 --> step3
 ```
 
 ### 2-Step Delegated Administrator
 
 Used by: **Inspector**, **Access Analyzer**
 
-```text
-Step 1: Root Account     → Delegate administration (privileged: true)
-Step 2: Security Account → Configure org settings (admin_delegated: true)
+```mermaid
+flowchart LR
+    step1["Step 1: Root Account<br/>Delegate administration<br/>(privileged: true)"]
+    step2["Step 2: Security Account<br/>Configure org settings<br/>(admin_delegated: true)"]
+    step1 --> step2
 ```
 
 ### Per-Account Deployment
 
 Used by: **Config**, **CloudTrail**
 
-```text
-Deploy to each account with central aggregation in security/audit accounts
-```
+Deploy to each account with central aggregation in security/audit accounts.
 
 ### Per-Resource Deployment
 
 Used by: **Shield**
 
-```text
-Deploy to each account/resource that needs protection (not organization-wide)
-```
+Deploy to each account/resource that needs protection (not organization-wide).
 
 ## Integration Architecture
 
 All security services integrate through AWS Security Hub for centralized visibility:
 
-```text
-CloudTrail ──────────────────────────────────▶ Audit Account S3
-Config ─────▶ Snapshots ─────────────────────▶ Audit Account S3 + Aggregator
-                                                     │
-GuardDuty ─────▶ Findings ──────────────────┐       │
-Inspector ─────▶ Findings ──────────────────┼──────▶ Security Hub
-Macie ─────────▶ Findings ──────────────────┤
-Access Analyzer ▶ Findings ─────────────────┘
+```mermaid
+flowchart LR
+    cloudtrail["CloudTrail"]
+    config["Config"]
+    guardduty["GuardDuty"]
+    inspector["Inspector"]
+    macie["Macie"]
+    analyzer["Access Analyzer"]
+
+    subgraph audit["Audit Account"]
+        s3["S3 Storage"]
+        aggregator["Config Aggregator"]
+    end
+
+    subgraph security["Security Account"]
+        hub["Security Hub"]
+    end
+
+    cloudtrail --> s3
+    config -->|"Snapshots"| s3
+    config --> aggregator
+    guardduty -->|"Findings"| hub
+    inspector -->|"Findings"| hub
+    macie -->|"Findings"| hub
+    analyzer -->|"Findings"| hub
 ```
 
 ## Regional Deployment

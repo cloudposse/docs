@@ -25,40 +25,37 @@ AWS Config is responsible for:
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           AWS Organization                                   │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │ Management Account (Organization Conformance Packs)                    │ │
-│  │  - Deploys organization-wide conformance packs                         │ │
-│  │  - Packs automatically apply to all member accounts                    │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │ Security Account (Central Aggregator)                                  │ │
-│  │  - AWS Config Aggregator (collects from ALL accounts)                  │ │
-│  │  - Centralized compliance dashboard                                    │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              ▲ ▲ ▲                                          │
-│                              │ │ │ Aggregate Authorizations                 │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │ Audit Account                                                          │ │
-│  │  - S3 Bucket (aws-config-bucket)                                       │ │
-│  │  - Stores ALL Config data from all accounts                            │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │ Each Member Account                                                    │ │
-│  │  Global Collector Region (e.g., us-east-1):                           │ │
-│  │    ✓ Configuration Recorder + IAM Role                                │ │
-│  │    ✓ Tracks global resources (IAM, Route53, etc.)                     │ │
-│  │  Additional Regions:                                                   │ │
-│  │    ✓ Configuration Recorder (references IAM role)                     │ │
-│  │    ✓ Tracks regional resources (EC2, VPC, RDS, etc.)                  │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph mgmt["Management Account"]
+            mgmt_packs["Organization Conformance Packs<br/>Deploys org-wide compliance rules"]
+        end
+
+        subgraph security["Security Account (Central Aggregator)"]
+            aggregator["AWS Config Aggregator<br/>Collects from ALL accounts"]
+            dashboard["Centralized Compliance Dashboard"]
+        end
+
+        subgraph audit["Audit Account"]
+            bucket["S3 Bucket (aws-config-bucket)<br/>Stores ALL Config data"]
+        end
+
+        subgraph members["Member Accounts"]
+            subgraph global_region["Global Collector Region (us-east-1)"]
+                recorder1["Configuration Recorder + IAM Role<br/>Tracks IAM, Route53, etc."]
+            end
+            subgraph other_regions["Additional Regions"]
+                recorder2["Configuration Recorder<br/>Tracks EC2, VPC, RDS, etc."]
+            end
+        end
+    end
+
+    mgmt_packs -->|"Applies to all"| members
+    recorder1 -->|"Aggregate Authorization"| aggregator
+    recorder2 -->|"Aggregate Authorization"| aggregator
+    recorder1 -->|"Delivers snapshots"| bucket
+    recorder2 -->|"Delivers snapshots"| bucket
 ```
 
 ## Deployment

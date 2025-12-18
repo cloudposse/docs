@@ -41,41 +41,29 @@ Audit Manager provides:
 
 Audit Manager uses a **unique single-step deployment model**:
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS Organization                                     │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Organization Management Account (root)                                │ │
-│  │  SINGLE STEP: Enable Audit Manager + Delegate Administration           │ │
-│  │  - Enables Audit Manager in the organization                           │ │
-│  │  - Delegates administration to security account                        │ │
-│  │  - Requires: SuperAdmin permissions (privileged: true)                 │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              │                                              │
-│                              ▼ Automatic Delegation                         │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Delegated Administrator Account (security)                            │ │
-│  │  - Receives delegation automatically                                   │ │
-│  │  - Creates and manages assessments                                     │ │
-│  │  - Generates compliance reports                                        │ │
-│  │                                                                        │ │
-│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
-│  │  │                Audit Manager Dashboard                           │  │ │
-│  │  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐                │  │ │
-│  │  │  │ Assessments │ │  Evidence   │ │  Reports    │                │  │ │
-│  │  │  └─────────────┘ └─────────────┘ └─────────────┘                │  │ │
-│  │  └──────────────────────────────────────────────────────────────────┘  │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              ▲                                              │
-│                              │ Evidence Collection                          │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Member Accounts                                                       │ │
-│  │  - Evidence automatically collected                                    │ │
-│  │  - No per-account configuration required                              │ │
-│  │  - CloudTrail, Config, Security Hub data aggregated                   │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph root["Organization Management Account (root)"]
+            single_step["SINGLE STEP: Enable + Delegate<br/>Requires: SuperAdmin (privileged: true)"]
+        end
+
+        subgraph security["Delegated Administrator Account (security)"]
+            admin_info["Receives delegation automatically<br/>Creates and manages assessments"]
+            subgraph dashboard["Audit Manager Dashboard"]
+                assessments["Assessments"]
+                evidence["Evidence"]
+                reports["Reports"]
+            end
+        end
+
+        subgraph members["Member Accounts"]
+            member["Auto-collected evidence<br/>CloudTrail, Config, Security Hub"]
+        end
+    end
+
+    single_step -->|"Automatic Delegation"| security
+    member -->|"Evidence Collection"| dashboard
 ```
 
 ## Deployment Model Comparison

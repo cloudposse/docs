@@ -30,30 +30,33 @@ Before deploying security and compliance components, ensure:
 
 The security components have dependencies and must be deployed in a specific order:
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         Deployment Order                                    │
-│                                                                             │
-│  Phase 1: Prerequisites (one-time setup)                                    │
-│  ├── Service Principals (account component)                                 │
-│  ├── config-bucket (audit account)                                          │
-│  └── cloudtrail-bucket (audit account)                                      │
-│                                                                             │
-│  Phase 2: Foundational Services                                             │
-│  ├── AWS CloudTrail (organization trail)                                    │
-│  └── AWS Config (all accounts, all regions)                                 │
-│                                                                             │
-│  Phase 3: Threat Detection & Vulnerability Scanning                         │
-│  ├── AWS GuardDuty (3-step: security → root → security)                     │
-│  ├── AWS Inspector (2-step: root → security)                                │
-│  ├── Amazon Macie (3-step: security → root → security)                      │
-│  └── IAM Access Analyzer (2-step: root → security)                          │
-│                                                                             │
-│  Phase 4: Aggregation & Protection                                          │
-│  ├── AWS Security Hub (3-step: security → root → security)                  │
-│  ├── AWS Shield (per-resource, where needed)                                │
-│  └── AWS Audit Manager (optional, root account only)                        │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph phase1["Phase 1: Prerequisites (one-time setup)"]
+        p1a["Service Principals<br/>(account component)"]
+        p1b["config-bucket<br/>(audit account)"]
+        p1c["cloudtrail-bucket<br/>(audit account)"]
+    end
+
+    subgraph phase2["Phase 2: Foundational Services"]
+        p2a["AWS CloudTrail<br/>(organization trail)"]
+        p2b["AWS Config<br/>(all accounts, all regions)"]
+    end
+
+    subgraph phase3["Phase 3: Threat Detection & Scanning"]
+        p3a["AWS GuardDuty<br/>(3-step)"]
+        p3b["AWS Inspector 2<br/>(2-step)"]
+        p3c["Amazon Macie<br/>(3-step)"]
+        p3d["IAM Access Analyzer<br/>(2-step)"]
+    end
+
+    subgraph phase4["Phase 4: Aggregation & Protection"]
+        p4a["AWS Security Hub<br/>(3-step)"]
+        p4b["AWS Shield<br/>(per-resource)"]
+        p4c["AWS Audit Manager<br/>(root only, optional)"]
+    end
+
+    phase1 --> phase2 --> phase3 --> phase4
 ```
 
 :::tip Workflow Recovery
@@ -250,9 +253,9 @@ analysis. It uses a 3-step delegated administrator deployment model.
   </Step>
 </Steps>
 
-### AWS Inspector
+### AWS Inspector 2
 
-[AWS Inspector](/layers/security-and-compliance/aws-inspector2/) provides automated vulnerability scanning for EC2,
+[AWS Inspector 2](/layers/security-and-compliance/aws-inspector2/) provides automated vulnerability scanning for EC2,
 ECR, and Lambda. It uses a 2-step delegated administrator deployment model.
 
 <Steps>

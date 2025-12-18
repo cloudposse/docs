@@ -50,42 +50,28 @@ External access analyzer monitors:
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS Organization                                     │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Organization Management Account (root)                                │ │
-│  │  STEP 1: Delegate Access Analyzer administration                       │ │
-│  │  - Creates: aws_organizations_delegated_administrator                  │ │
-│  │  - Creates: aws_iam_service_linked_role (if enabled)                   │ │
-│  │  - Requires: SuperAdmin permissions                                    │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              │                                              │
-│                              ▼ Delegation                                   │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Delegated Administrator Account (security)                            │ │
-│  │  STEP 2: Create organization analyzers                                 │ │
-│  │  - Creates: aws_accessanalyzer_analyzer (ORGANIZATION)                 │ │
-│  │  - Creates: aws_accessanalyzer_analyzer (ORGANIZATION_UNUSED_ACCESS)   │ │
-│  │                                                                        │ │
-│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
-│  │  │               Access Analyzer Dashboard                          │  │ │
-│  │  │  ┌─────────────────────┐ ┌─────────────────────┐                │  │ │
-│  │  │  │ External Access     │ │ Unused Access       │                │  │ │
-│  │  │  │ Findings            │ │ Findings            │                │  │ │
-│  │  │  └─────────────────────┘ └─────────────────────┘                │  │ │
-│  │  └──────────────────────────────────────────────────────────────────┘  │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              ▲                                              │
-│                              │ Resource Analysis                            │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Member Accounts                                                       │ │
-│  │  - Resources automatically analyzed                                    │ │
-│  │  - No per-account configuration required                              │ │
-│  │  - Findings sent to security account                                   │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph root["Organization Management Account (root)"]
+            step1["STEP 1: Delegate Administration<br/>Creates: aws_organizations_delegated_administrator<br/>Creates: aws_iam_service_linked_role"]
+        end
+
+        subgraph security["Delegated Administrator Account (security)"]
+            step2["STEP 2: Create Organization Analyzers"]
+            subgraph dashboard["Access Analyzer Dashboard"]
+                external["External Access<br/>Findings"]
+                unused["Unused Access<br/>Findings"]
+            end
+        end
+
+        subgraph members["Member Accounts"]
+            member["Auto-analyzed resources<br/>No per-account config needed<br/>Findings sent to security"]
+        end
+    end
+
+    step1 -->|"Delegation"| security
+    member -->|"Resource Analysis"| dashboard
 ```
 
 ## Deployment

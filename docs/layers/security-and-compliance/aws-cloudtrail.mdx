@@ -25,26 +25,28 @@ AWS CloudTrail provides:
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           AWS Organization                                   │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │ Audit Account                                                          │ │
-│  │  - cloudtrail-bucket (S3)                                              │ │
-│  │  - Organization Trail                                                  │ │
-│  │  - CloudWatch Log Group                                                │ │
-│  │  - KMS Key (optional encryption)                                       │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              ▲                                              │
-│                              │ API Activity Logs                            │
-│                              │                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │ All Member Accounts                                                    │ │
-│  │  - Automatically included in organization trail                        │ │
-│  │  - No per-account configuration required                               │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph audit["Audit Account"]
+            trail["Organization Trail"]
+            bucket["cloudtrail-bucket (S3)"]
+            logs["CloudWatch Log Group"]
+            kms["KMS Key (optional)"]
+        end
+
+        subgraph members["All Member Accounts"]
+            member1["Account 1<br/>Auto-included"]
+            member2["Account 2<br/>Auto-included"]
+            member3["Account N<br/>Auto-included"]
+        end
+    end
+
+    member1 -->|"API Activity Logs"| trail
+    member2 -->|"API Activity Logs"| trail
+    member3 -->|"API Activity Logs"| trail
+    trail --> bucket
+    trail --> logs
 ```
 
 ## Deployment

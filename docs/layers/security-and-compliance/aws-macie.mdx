@@ -35,43 +35,30 @@ Macie provides:
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS Organization                                     │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Organization Management Account (root)                                │ │
-│  │  STEP 2: Delegate Macie administration to security account             │ │
-│  │  - Creates: aws_macie2_organization_admin_account                      │ │
-│  │  - Requires: SuperAdmin permissions (privileged: true)                 │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              │                                              │
-│                              ▼ Delegation                                   │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Delegated Administrator Account (security)                            │ │
-│  │  STEP 1 (FIRST): Create Macie account (admin_delegated: false)         │ │
-│  │  - Creates: aws_macie2_account                                         │ │
-│  │                                                                        │ │
-│  │  STEP 3 (LAST): Configure org settings (admin_delegated: true)         │ │
-│  │  - Creates: awsutils_macie2_organization_settings                      │ │
-│  │  - Enables member accounts, configures finding publishing              │ │
-│  │                                                                        │ │
-│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
-│  │  │                    Macie Dashboard                               │  │ │
-│  │  │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐          │  │ │
-│  │  │  │ S3 Inventory  │ │Policy Findings│ │ Data Findings │          │  │ │
-│  │  │  └───────────────┘ └───────────────┘ └───────────────┘          │  │ │
-│  │  └──────────────────────────────────────────────────────────────────┘  │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-│                              ▲                                              │
-│                              │ S3 Data + Findings                           │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │  Member Accounts                                                       │ │
-│  │  - Automatically enabled by delegated administrator                    │ │
-│  │  - S3 buckets automatically inventoried and monitored                  │ │
-│  │  - Findings sent to security account                                   │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph org["AWS Organization"]
+        subgraph root["Organization Management Account (root)"]
+            step2["STEP 2: Delegate Administration<br/>Creates: aws_macie2_organization_admin_account<br/>Requires: SuperAdmin (privileged: true)"]
+        end
+
+        subgraph security["Delegated Administrator Account (security)"]
+            step1["STEP 1 (FIRST): Create Macie Account<br/>Creates: aws_macie2_account<br/>admin_delegated: false"]
+            step3["STEP 3 (LAST): Configure Org Settings<br/>Creates: awsutils_macie2_organization_settings<br/>admin_delegated: true"]
+            subgraph dashboard["Macie Dashboard"]
+                inventory["S3 Inventory"]
+                policy["Policy Findings"]
+                data["Data Findings"]
+            end
+        end
+
+        subgraph members["Member Accounts"]
+            member["Auto-enabled accounts<br/>S3 buckets inventoried & monitored<br/>Findings sent to security"]
+        end
+    end
+
+    step2 -->|"Delegation"| security
+    member -->|"S3 Data + Findings"| dashboard
 ```
 
 ## Deployment
