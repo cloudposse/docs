@@ -1,109 +1,220 @@
 ---
 title: FAQ
 sidebar_label: FAQ
-sidebar_position: 10
+sidebar_position: 20
 ---
 
-## Q: Error: error disabling security hub control
+## Deployment Order Issues
 
-```bash
- Error: error disabling security hub control arn:aws:securityhub:us-west-2:267314709865:control/aws-foundational-security-best-practices/v/1.0.0/EC2.17: InvalidAccessException: Account 267314709865 is not subscribed to AWS Security Hub
-│ {
-│   RespMetadata: {
-│     StatusCode: 401,
-│     RequestID: "53bc6538-18ff-4df0-9c14-57afe7b1d1a0"
-│   },
-│   Code_: "InvalidAccessException",
-│   Message_: "Account 267314709865 is not subscribed to AWS Security Hub"
-│ }
-│
-│   with awsutils_security_hub_control_disablement.ec2_multiple_enis[0],
-│   on main.tf line 138, in resource "awsutils_security_hub_control_disablement" "ec2_multiple_enis":
-│  138: resource "awsutils_security_hub_control_disablement" "ec2_multiple_enis" {
-```
+### Q: What is the correct deployment order for security services?
 
-A: None of the commands in the final step have been run. Check the commands and run them again.
+**A:** Security services with delegated administrator patterns must be deployed in a specific order. See the
+[Setup Guide](/layers/security-and-compliance/setup) for the complete deployment sequence.
 
-## Q: Deploying `compliance` to `security` fails on Step 1
+**General pattern for 3-step services (GuardDuty, Security Hub, Macie):**
+1. Deploy to security account first (`admin_delegated: false`)
+2. Deploy to root account (`privileged: true`)
+3. Deploy org settings to security account (`admin_delegated: true`)
 
-```text
-│ Error: error designating security hub administrator account members: BadRequestException:
-│   status code: 400, request id: 7279a38b-7bff-48b5-834c-f8e3ab0d4bf7
-│
-│   with awsutils_security_hub_organization_settings.this[0],
-│   on main.tf line 72, in resource "awsutils_security_hub_organization_settings" "this":
-│   72: resource "awsutils_security_hub_organization_settings" "this" {
-```
+**General pattern for 2-step services (Inspector, Access Analyzer):**
+1. Deploy to root account first
+2. Deploy org settings to security account
 
-or
+### Q: Why must I deploy to the security account before the root account?
+
+**A:** For 3-step services (GuardDuty, Security Hub, Macie), the security account must have the service enabled
+before it can be designated as a delegated administrator. Deploying to root first will fail because there's
+nothing to delegate to.
+
+---
+
+## Security Hub Errors
+
+### Q: "Account is not subscribed to AWS Security Hub"
 
 ```text
-│ Error: error updating security hub administrator account settings: InvalidAccessException: Account 174772947570 is not an administrator for this organization
-│ {
-│   RespMetadata: {
-│     StatusCode: 401,
-│     RequestID: "335a2c87-c5bf-4006-9017-50a4428fcc30"
-│   },
-│   Code_: "InvalidAccessException",
-│   Message_: "Account 174772947570 is not an administrator for this organization"
-│ }
+Error: error disabling security hub control: InvalidAccessException: Account 123456789012
+is not subscribed to AWS Security Hub
 ```
 
-A: Please re-deploy and set the correct input vars to `false` , then deploy compliance-root, then redeploy with the
-correct input vars to `true` and it should work.
+**A:** This error occurs when trying to configure Security Hub before it's fully enabled. Ensure you've completed
+all three deployment steps:
 
-## Q: Deploying `compliance` to `security` fails on Step 3 `designating guardduty administrator account members`
+1. `security-hub/delegated-administrator` to security account
+2. `security-hub/root` to root account
+3. `security-hub/org-settings` to security account
+
+If you skipped Step 3, the organization settings (including control configurations) won't work.
+
+### Q: "Account is not an administrator for this organization"
 
 ```text
-│ Error: error designating guardduty administrator account members: BadRequestException: The request is rejected because the input detectorId is not owned by the current account.
-│ {
-│   RespMetadata: {
-│     StatusCode: 400,
-│     RequestID: "e8d39bc9-2f1f-4d95-8283-6193facba4d3"
-│   },
-│   Message_: "The request is rejected because the input detectorId is not owned by the current account.",
-│   Type: "InvalidInputException"
-│ }
+Error: error updating security hub administrator account settings: InvalidAccessException:
+Account 123456789012 is not an administrator for this organization
 ```
 
-A: This error may not be related to GuardDuty delegation, but rather the `awsutils` provider configuration. For example:
+**A:** This means the delegation from root to security hasn't been completed. Check:
+
+1. Verify you deployed `security-hub/root` to the root account with `privileged: true`
+2. Ensure the `delegated_administrator_account_name` matches your security account name
+3. Re-deploy the root component if needed
+
+### Q: "Organization master must first enable SecurityHub"
+
+```text
+Error: error designating security hub administrator account members:
+"Operation failed because your organization master must first enable SecurityHub to be added as a member"
+```
+
+**A:** Security Hub service access must be enabled in AWS Organizations. Add `securityhub.amazonaws.com` to
+`aws_service_access_principals` in your `account` component:
+
+```yaml
+# In your account component configuration
+components:
+  terraform:
+    account:
+      vars:
+        aws_service_access_principals:
+          - securityhub.amazonaws.com
+          - guardduty.amazonaws.com
+          - macie.amazonaws.com
+          # ... other principals
+```
+
+---
+
+## GuardDuty Errors
+
+### Q: "The input detectorId is not owned by the current account"
+
+```text
+Error: error designating guardduty administrator account members: BadRequestException:
+The request is rejected because the input detectorId is not owned by the current account.
+```
+
+**A:** This typically indicates a provider configuration issue. The `awsutils` provider must be configured to
+assume the correct role. Check your provider configuration:
 
 ```hcl
 provider "awsutils" {
   region = var.region
-
-  profile = module.iam_roles.profiles_enabled ? coalesce(var.import_profile_name, module.iam_roles.terraform_profile_name) : null
-  dynamic "assume_role" {
-    for_each = module.iam_roles.profiles_enabled ? [] : ["role"]
-    content {
-      role_arn = coalesce(var.import_role_arn, module.iam_roles.terraform_role_arn)
-    }
+  assume_role {
+    role_arn = module.iam_roles.terraform_role_arn
   }
 }
 ```
 
-## Q: Deploying `compliance` to `security` fails on Step 3 `designating security hub administrator account members`
+Also verify you're deploying to the correct account (security, not root) for Step 3.
+
+---
+
+## AWS Config Errors
+
+### Q: "Blank spaces are not acceptable for input parameter: policyARN"
 
 ```text
-│ Error: error designating security hub administrator account members: [{
-│   AccountId: "1234567890",
-│   ProcessingResult: "Operation failed because your organization master must first enable SecurityHub to be added as a member"
-│ }]
+Error: Error creating AWSConfig rule: InvalidParameterValueException:
+Blank spaces are not acceptable for input parameter: policyARN.
 ```
 
-A: Security Hub must be enabled for the Organization. Typically this is done with the `account` component by adding
-`securityhub.amazonaws.com` to `aws_service_access_principals`. Alternately, it can be manually enabled. Open the AWS
-console for the `root` account within the given Organization, go to Security Hub for the appropriate region, click
-“Enable Security Hub” under “AWS Integrations”
+**A:** This error typically occurs when the `support` IAM role doesn't exist in the account. The CIS conformance
+pack requires this role. Deploy `aws-team-roles` with the `support` role enabled before deploying AWS Config
+conformance packs.
 
-## Q: `Blank spaces are not acceptable for input parameter: policyARN`
+### Q: Organization conformance packs fail to deploy
 
-```text
-│ Error: Error creating AWSConfig rule: Failed to create AWSConfig rule: InvalidParameterValueException: Blank spaces are not acceptable for input parameter: policyARN.
-│
-│   with module.aws_config.aws_config_config_rule.rules["iam-policy-in-use"],
-│   on .terraform-mdev/modules/aws_config/main.tf line 42, in resource "aws_config_config_rule" "rules":
-│   42: resource "aws_config_config_rule" "rules" {│
+**A:** Organization conformance packs require:
+1. All member accounts must have configuration recorders already set up
+2. Deploy `aws-config` to **all member accounts first**, then deploy to root account last
+
+```bash
+# Deploy to members first
+atmos terraform apply aws-config -s core-ue1-audit
+atmos terraform apply aws-config -s core-ue1-security
+atmos terraform apply aws-config -s plat-ue1-dev
+
+# Deploy to root last (with organization conformance packs)
+atmos terraform apply aws-config -s core-ue1-root
 ```
 
-A: The `support` role may not be deployed into the given account. Check `aws-team-roles` for the `support` role.
+---
+
+## Service Principal Issues
+
+### Q: Which service principals are required for security services?
+
+**A:** Add these to `aws_service_access_principals` in your `account` component:
+
+| Service | Service Principal |
+|---------|-------------------|
+| AWS Config | `config.amazonaws.com`, `config-multiaccountsetup.amazonaws.com` |
+| CloudTrail | `cloudtrail.amazonaws.com` |
+| GuardDuty | `guardduty.amazonaws.com` |
+| Security Hub | `securityhub.amazonaws.com` |
+| Inspector | `inspector2.amazonaws.com` |
+| Macie | `macie.amazonaws.com` |
+| Access Analyzer | `access-analyzer.amazonaws.com` |
+
+---
+
+## Multi-Region Deployment
+
+### Q: Do I need to deploy security services to every region?
+
+**A:** It depends on the service:
+
+| Service | Regional? | Recommendation |
+|---------|-----------|----------------|
+| AWS Config | Yes | Deploy to all regions with resources |
+| CloudTrail | No | Single organization trail covers all regions |
+| GuardDuty | Yes | Deploy to all enabled regions |
+| Security Hub | Yes | Deploy to primary region, enable aggregation |
+| Inspector | Yes | Deploy to regions with EC2/Lambda/ECR |
+| Macie | Yes | Deploy to regions with S3 buckets |
+| Access Analyzer | Yes | Deploy to all regions |
+
+### Q: How do I aggregate findings from multiple regions?
+
+**A:** Security Hub supports cross-region finding aggregation. Enable it in your primary region:
+
+```yaml
+components:
+  terraform:
+    security-hub/delegated-administrator/ue1:
+      vars:
+        finding_aggregator_enabled: true
+        finding_aggregator_linking_mode: ALL_REGIONS
+```
+
+---
+
+## Shield Advanced
+
+### Q: Shield Advanced deployment fails
+
+**A:** Shield Advanced requires a manual subscription before deploying the component:
+
+```bash
+# Subscribe via AWS CLI (or use AWS Console)
+aws shield create-subscription
+```
+
+The subscription is $3,000/month per organization and covers all accounts.
+
+---
+
+## IAM Inline Policy False Positives
+
+### Q: Why are Service-Linked Roles flagged for inline policies?
+
+**A:** The `IAM_NO_INLINE_POLICY_CHECK` AWS Config rule flags AWS Service-Linked Roles (SLRs) as NON_COMPLIANT.
+This is a **known false positive** because SLRs must have inline policies by design.
+
+Common SLRs that trigger this:
+- `AWSServiceRoleForAmazonGuardDuty`
+- `AWSServiceRoleForConfig`
+- `AWSServiceRoleForSecurityHub`
+- `AWSServiceRoleForAccessAnalyzer`
+
+**Recommendation:** Document these as accepted false positives in your compliance documentation.

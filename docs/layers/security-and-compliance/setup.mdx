@@ -2,6 +2,7 @@
 title: Setup Security and Compliance
 sidebar_label: Setup
 sidebar_position: 1
+description: "Step-by-step guide to deploy AWS security services across your organization"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints'
@@ -13,122 +14,51 @@ import Note from '@site/src/components/Note'
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 
 <Intro>
-These are the setup instructions for Security and Compliance in your AWS Organization.
+This guide walks you through deploying AWS security and compliance services across your AWS Organization.
+Follow the steps in order to ensure proper configuration of all services.
 </Intro>
 
-## Organization-Level Configuration
+## Prerequisites
 
-The following steps are required to set up Security and Compliance in your AWS Organization. They only be completed once for the entire organization.
+Before deploying security and compliance components, ensure:
 
-<Steps>
-  <Step>
-    ### <StepNumber/> Vendor Components
+1. **AWS Organizations** is configured with your account structure
+2. **Account baseline** has been deployed (see [Account Baseline](/layers/accounts/account-baseline/))
+3. **SuperAdmin user** is available for root account deployments (see [How to Create SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/))
 
-    Vendor all data components with the following workflow:
+## Deployment Order
 
-    <AtmosWorkflow workflow="vendor" fileName="quickstart/monitor/compliance" />
-  </Step>
+The security components have dependencies and must be deployed in a specific order:
 
-  <Step>
-    ### <StepNumber/> Add Service Principals to the `account` component
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         Deployment Order                                    │
+│                                                                             │
+│  Phase 1: Prerequisites (one-time setup)                                    │
+│  ├── Service Principals (account component)                                 │
+│  ├── config-bucket (audit account)                                          │
+│  └── cloudtrail-bucket (audit account)                                      │
+│                                                                             │
+│  Phase 2: Foundational Services                                             │
+│  ├── AWS CloudTrail (organization trail)                                    │
+│  └── AWS Config (all accounts, all regions)                                 │
+│                                                                             │
+│  Phase 3: Threat Detection & Vulnerability Scanning                         │
+│  ├── AWS GuardDuty (3-step: security → root → security)                     │
+│  ├── AWS Inspector (2-step: root → security)                                │
+│  ├── Amazon Macie (3-step: security → root → security)                      │
+│  └── IAM Access Analyzer (2-step: root → security)                          │
+│                                                                             │
+│  Phase 4: Aggregation & Protection                                          │
+│  ├── AWS Security Hub (3-step: security → root → security)                  │
+│  ├── AWS Shield (per-resource, where needed)                                │
+│  └── AWS Audit Manager (optional, root account only)                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-    Add the following service principals to the `aws_service_access_principals` variable of the `account` in
-    `stacks/catalog/account.yaml`:
+:::tip Workflow Recovery
 
-    - `config.amazonaws.com`
-    - `config-multiaccountsetup.amazonaws.com`
-    - `guardduty.amazonaws.com`
-    - `securityhub.amazonaws.com`
-
-    <Note title="Reminder">
-      The following command requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/). Ensure the `plan` output only touches service principals.
-    </Note>
-
-    ```bash
-    atmos terraform plan account -s core-gbl-root
-    ```
-
-    The output of `plan` should look similar to the following:
-
-    ```1vRLXlhggjCF4VZ09qvOF9nLoxi__0EVFgDjgtfLlSRZfzPbd5ZhvzOLSVHECM015A7SCNPJoCeXPb3X
-      # aws_organizations_organization.this[0] will be updated in-place
-      ~ resource "aws_organizations_organization" "this" {
-          ~ aws_service_access_principals = [
-              + "config-multiaccountsetup.amazonaws.com",
-              + "config.amazonaws.com",
-                # (8 unchanged elements hidden)
-            ]
-            id                            = "[random string]"
-            # (9 unchanged attributes hidden)
-        }
-
-    Plan: 0 to add, 1 to change, 0 to destroy.
-    ```
-
-    Apply the changes with:
-
-    ```bash
-    atmos terraform apply account -s core-gbl-root
-    ```
-
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Deploy `config-bucket`
-
-    <Note title="Important">
-    There should only be a single bucket that will act as a store for AWS Config data across all regions
-    </Note>
-
-    The `config-bucket` is required for storing `AWS Config` data and is a pre-requisite for deploying AWS Config. See
-    [config-bucket](https://github.com/cloudposse/terraform-aws-config-storage)
-
-    ```bash
-    atmos terraform plan config-bucket --stack core-use1-audit
-    atmos terraform apply config-bucket --stack core-use1-audit
-    ```
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Deploy `cloudtrail-bucket`
-
-    <Note title="Important">
-    There should only be a single bucket that will act as a store for AWS CloudTrail data across all regions
-    </Note>
-
-    Deploying the `cloudtrail-bucket` to the Audit account allows the Organization to isolate audit data and permissions
-    from other environments (production, staging, development) and is a requirement for deploying Security Hub. See
-    [cloudtrail-bucket](https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket)
-
-    <Admonition type="info">
-      This bucket has likely been provisioned by the [Cold Start](/layers/accounts/account-baseline/). Run the following `terraform plan` to ensure the bucket exists. If it doesn't, create it with `terraform apply`.
-    </Admonition>
-
-    ```bash
-    atmos terraform plan cloudtrail-bucket --stack core-use1-audit
-    atmos terraform apply cloudtrail-bucket --stack core-use1-audit
-    ```
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Deploy IAM Role for CIS Benchmark
-
-    Part of the benchmark rules for CIS AWS Foundations includes deploying a support role to manage incidents with AWS
-    Support. See
-    [CIS Benchmark 1.20](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#securityhub-cis-controls-1.20)
-    and [IAM.18](https://docs.aws.amazon.com/securityhub/latest/userguide/iam-controls.html#iam-18).
-
-    These roles are managed from the [Identity Workflow](/layers/identity/deploy/)
-    using `aws-teams` and `aws-team-roles` components.
-  </Step>
-</Steps>
-
-
-## AWS Config
-
-:::info
-
-If a step in one of the following workflows fails you can restart from that failed step by using the following command:
+If a step in any workflow fails, you can restart from that failed step:
 
 ```bash
 atmos workflow deploy/aws-config/global-collector -f compliance --from-step step4
@@ -136,150 +66,433 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
 
 :::
 
+---
+
+## Phase 1: Organization-Level Configuration
+
+These steps are required once for the entire organization.
+
 <Steps>
   <Step>
-    ### <StepNumber/> Set up AWS Config globally
+    ### <StepNumber/> Vendor Components
 
-    Deploy AWS Config to each region in order to collect data for global resources such as IAM.
+    Vendor all security and compliance components:
 
-    <AtmosWorkflow workflow="deploy/aws-config/global-collector" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="vendor" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Add Service Principals
+
+    Add the following service principals to the `aws_service_access_principals` variable of the `account` component
+    in `stacks/catalog/account.yaml`:
+
+    ```yaml
+    # stacks/catalog/account.yaml
+    components:
+      terraform:
+        account:
+          vars:
+            aws_service_access_principals:
+              # Existing principals...
+              - access-analyzer.amazonaws.com
+              - cloudtrail.amazonaws.com
+              - config.amazonaws.com
+              - config-multiaccountsetup.amazonaws.com
+              - guardduty.amazonaws.com
+              - inspector2.amazonaws.com
+              - macie.amazonaws.com
+              - securityhub.amazonaws.com
+    ```
 
     <Note title="Reminder">
-      This command requires [`SuperAdmin`](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/). Ensure the `plan` output
+      only modifies service principals.
+    </Note>
+
+    ```bash
+    atmos terraform plan account -s core-gbl-root
+    atmos terraform apply account -s core-gbl-root
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Config Bucket
+
+    Deploy the S3 bucket for AWS Config data storage. This bucket stores configuration snapshots and history
+    for compliance auditing.
+
+    <Note title="Important">
+    Deploy only one config-bucket per organization. It stores data from all accounts and regions.
+    </Note>
+
+    ```bash
+    atmos terraform apply config-bucket -s core-use1-audit
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy CloudTrail Bucket
+
+    Deploy the S3 bucket for CloudTrail logs. This bucket stores API activity logs from all accounts
+    in the organization.
+
+    <Note title="Important">
+    Deploy only one cloudtrail-bucket per organization. It may already exist from the
+    [Account Baseline](/layers/accounts/account-baseline/).
+    </Note>
+
+    ```bash
+    # Verify bucket exists or create it
+    atmos terraform plan cloudtrail-bucket -s core-use1-audit
+    atmos terraform apply cloudtrail-bucket -s core-use1-audit
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy CIS Benchmark IAM Role
+
+    CIS AWS Foundations Benchmark requires a support role for managing incidents with AWS Support.
+    See [CIS Benchmark 1.20](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#securityhub-cis-controls-1.20).
+
+    This role is managed through the [Identity Layer](/layers/identity/deploy/) using `aws-teams` and `aws-team-roles`.
+  </Step>
+</Steps>
+
+---
+
+## Phase 2: Foundational Services
+
+### AWS CloudTrail
+
+[AWS CloudTrail](/layers/security-and-compliance/aws-cloudtrail/) records API activity across your organization.
+Deploy the organization trail to capture events from all accounts.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Deploy Organization Trail
+
+    Deploy CloudTrail to create an organization-wide trail that automatically logs API activity from all accounts.
+
+    <AtmosWorkflow workflow="deploy/aws-cloudtrail" fileName="compliance" />
+
+    Or manually:
+
+    ```bash
+    atmos terraform apply cloudtrail -s core-use1-audit
+    ```
+  </Step>
+</Steps>
+
+### AWS Config
+
+[AWS Config](/layers/security-and-compliance/aws-config/) provides configuration compliance monitoring and resource
+inventory. It must be deployed to every account and region.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Deploy AWS Config Globally
+
+    Deploy AWS Config to each region to collect data for global resources (IAM, etc.) and regional resources.
+
+    <AtmosWorkflow workflow="deploy/aws-config/global-collector" fileName="compliance" />
+
+    <Note title="Reminder">
+      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/) for root account deployments.
     </Note>
   </Step>
 
   <Step>
-    ### <StepNumber/> Set up AWS Config for SuperAdmin accounts
+    ### <StepNumber/> Deploy AWS Config for SuperAdmin Accounts
 
-    Deploy AWS Config into accounts that require SuperAdmin to apply.
+    Deploy AWS Config to accounts that require SuperAdmin to apply (root, security).
 
-    <AtmosWorkflow workflow="deploy/aws-config/superadmin" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="deploy/aws-config/superadmin" fileName="compliance" />
   </Step>
 </Steps>
 
-## Security Hub
+---
+
+## Phase 3: Threat Detection & Vulnerability Scanning
+
+### AWS GuardDuty
+
+[AWS GuardDuty](/layers/security-and-compliance/aws-guardduty/) provides intelligent threat detection using ML-based
+analysis. It uses a 3-step delegated administrator deployment model.
 
 <Steps>
   <Step>
-    ### <StepNumber/> Set up the Delegated Administrator account
+    ### <StepNumber/> Deploy to Delegated Administrator (Step 1)
 
-    First, deploy to each region of the Delegated Administrator account.
+    First, deploy to the security account to create the GuardDuty detector.
 
-    <AtmosWorkflow workflow="deploy/security-hub/step1" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="deploy/guardduty/step1" fileName="compliance" />
   </Step>
 
   <Step>
-    ### <StepNumber/> Set up the Organization Management account
+    ### <StepNumber/> Delegate from Organization Management (Step 2)
 
-    Next, using
-    [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/),
-    deploy to the Organization Management (root) account in order to designate the `security` account as the Organization
-    Delegated Administrator account.
+    Deploy to the root account to designate the security account as the delegated administrator.
 
-    <AtmosWorkflow workflow="deploy/security-hub/step2" fileName="quickstart/monitor/compliance" />
+    <Note title="Reminder">
+      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+    </Note>
+
+    <AtmosWorkflow workflow="deploy/guardduty/step2" fileName="compliance" />
   </Step>
 
   <Step>
-    ### <StepNumber/> Assume the identity role
+    ### <StepNumber/> Configure Organization Settings (Step 3)
 
-    `assume-role acme-identity`
-  </Step>
+    Deploy to the security account again to enable GuardDuty organization-wide with all protection features.
 
-  <Step>
-    ### <StepNumber/> Configure Security Hub organization-wide
-
-    Finally, deploy the `security-hub/org-settings` component to the `security` account in order to enable and configure
-    Security Hub in all other accounts and regions.
-
-    <AtmosWorkflow workflow="deploy/security-hub/step3" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="deploy/guardduty/step3" fileName="compliance" />
   </Step>
 </Steps>
 
-## GuardDuty
+### AWS Inspector
+
+[AWS Inspector](/layers/security-and-compliance/aws-inspector2/) provides automated vulnerability scanning for EC2,
+ECR, and Lambda. It uses a 2-step delegated administrator deployment model.
 
 <Steps>
   <Step>
-    ### <StepNumber/> Set up the Delegated Administrator account
+    ### <StepNumber/> Delegate from Organization Management (Step 1)
 
-    First, deploy to each region of the Delegated Administrator account.
+    Deploy to the root account to designate the security account as the delegated administrator.
 
-    <AtmosWorkflow workflow="deploy/guardduty/step1" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="deploy/aws-inspector2/step1" fileName="compliance" />
   </Step>
 
   <Step>
-    ### <StepNumber/> Set up the Organization Management account
+    ### <StepNumber/> Configure Organization Settings (Step 2)
 
-    Next, deploy to the Organization Management (root) account in order to designate the `security` account as the
-    Organization Delegated Administrator account.
+    Deploy to the security account to enable Inspector organization-wide.
 
-    <AtmosWorkflow workflow="deploy/guardduty/step2" fileName="quickstart/monitor/compliance" />
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Configure GuardDuty organization-wide
-
-    Finally, deploy to the `security` account in order to enable and configure GuardDuty in all other accounts and regions.
-
-    <AtmosWorkflow workflow="deploy/guardduty/step3" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="deploy/aws-inspector2/step2" fileName="compliance" />
   </Step>
 </Steps>
 
-## Route53 DNS Resolver Firewall
+### Amazon Macie
+
+[Amazon Macie](/layers/security-and-compliance/aws-macie/) discovers sensitive data in S3 using ML-based classification.
+It uses a 3-step delegated administrator deployment model.
 
 <Steps>
   <Step>
-    ### <StepNumber/> Set up DNS Firewall buckets
+    ### <StepNumber/> Deploy to Delegated Administrator (Step 1)
 
-    Deploy the required S3 buckets for Route53 DNS Resolver Firewall logging.
+    First, deploy to the security account to create the Macie account.
 
-    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall-buckets" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="deploy/macie/step1" fileName="compliance" />
   </Step>
 
   <Step>
-    ### <StepNumber/> Configure the DNS Firewall
+    ### <StepNumber/> Delegate from Organization Management (Step 2)
+
+    Deploy to the root account to designate the security account as the delegated administrator.
+
+    <Note title="Reminder">
+      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+    </Note>
+
+    <AtmosWorkflow workflow="deploy/macie/step2" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Organization Settings (Step 3)
+
+    Deploy to the security account again to enable Macie organization-wide.
+
+    <AtmosWorkflow workflow="deploy/macie/step3" fileName="compliance" />
+  </Step>
+</Steps>
+
+### IAM Access Analyzer
+
+[IAM Access Analyzer](/layers/security-and-compliance/aws-access-analyzer/) identifies resources shared with external
+entities and unused access. It uses a 2-step delegated administrator deployment model.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Delegate from Organization Management (Step 1)
+
+    Deploy to the root account to designate the security account as the delegated administrator.
+
+    <AtmosWorkflow workflow="deploy/access-analyzer/step1" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Organization Settings (Step 2)
+
+    Deploy to the security account to create organization and account analyzers.
+
+    <AtmosWorkflow workflow="deploy/access-analyzer/step2" fileName="compliance" />
+  </Step>
+</Steps>
+
+---
+
+## Phase 4: Aggregation & Protection
+
+### AWS Security Hub
+
+[AWS Security Hub](/layers/security-and-compliance/aws-security-hub/) aggregates findings from all security services
+into a centralized dashboard. It uses a 3-step delegated administrator deployment model.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Deploy to Delegated Administrator (Step 1)
+
+    First, deploy to the security account to enable Security Hub and configure product subscriptions.
+
+    <AtmosWorkflow workflow="deploy/security-hub/step1" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Delegate from Organization Management (Step 2)
+
+    Deploy to the root account to designate the security account as the delegated administrator.
+
+    <Note title="Reminder">
+      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+    </Note>
+
+    <AtmosWorkflow workflow="deploy/security-hub/step2" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Assume Identity Role
+
+    Switch from SuperAdmin back to your identity role:
+
+    ```bash
+    assume-role acme-identity
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Organization Settings (Step 3)
+
+    Deploy to the security account again to enable Security Hub organization-wide with compliance standards.
+
+    <AtmosWorkflow workflow="deploy/security-hub/step3" fileName="compliance" />
+  </Step>
+</Steps>
+
+### AWS Shield
+
+[AWS Shield](/layers/security-and-compliance/aws-shield/) provides DDoS protection for critical resources.
+Unlike other services, Shield is deployed per-resource rather than organization-wide.
+
+<Note title="Subscription Required">
+AWS Shield Advanced requires a subscription ($3,000/month per organization) in each account before deployment.
+See [Subscribing to Shield Advanced](https://docs.aws.amazon.com/waf/latest/developerguide/enable-ddos-prem.html).
+</Note>
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Deploy AWS Shield Advanced
+
+    Deploy Shield protection to accounts and resources that need DDoS protection.
+
+    <AtmosWorkflow workflow="deploy/aws-shield" fileName="compliance" />
+
+    Or deploy manually to specific stacks:
+
+    ```bash
+    # Global resources (Route53, CloudFront)
+    atmos terraform apply aws-shield -s plat-gbl-prod
+
+    # Regional resources (ALBs, Elastic IPs)
+    atmos terraform apply aws-shield -s plat-use1-prod
+    ```
+  </Step>
+</Steps>
+
+### AWS Audit Manager (Optional)
+
+[AWS Audit Manager](/layers/security-and-compliance/aws-audit-manager/) automates compliance evidence collection.
+It is deployed only to the root account.
+
+<Note title="GovCloud Limitation">
+AWS Audit Manager has limited framework availability in GovCloud. Consider using AWS Config conformance packs
+as an alternative for compliance monitoring.
+</Note>
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Deploy AWS Audit Manager
+
+    Deploy Audit Manager to the root account to enable compliance evidence collection.
+
+    ```bash
+    atmos terraform apply audit-manager -s core-gbl-root
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Optional: DNS Firewall
+
+Route53 DNS Resolver Firewall provides DNS-level security to block malicious domains.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Deploy DNS Firewall Buckets
+
+    Deploy S3 buckets for DNS Firewall logging.
+
+    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall-buckets" fileName="compliance" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure DNS Firewall
 
     Deploy and configure the Route53 DNS Resolver Firewall.
 
-    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall" fileName="quickstart/monitor/compliance" />
+    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall" fileName="compliance" />
   </Step>
 </Steps>
 
-## AWS Shield
+---
 
-<Steps>
-  <Step>
-    ### <StepNumber/> Set up AWS Shield Advanced
+## Verification
 
-    :::info
+After deployment, verify all services are properly configured:
 
-    An [AWS Shield Advanced subscription](https://docs.aws.amazon.com/waf/latest/developerguide/enable-ddos-prem.html) is
-    required in each `plat` AWS account before running this workflow.
+### Check Security Hub Dashboard
 
-    :::
+1. Open the AWS Console in the security account
+2. Navigate to Security Hub
+3. Verify findings are being aggregated from all services
 
-    Deploy AWS Shield Advanced protection.
+### Verify Service Status
 
-    <AtmosWorkflow workflow="deploy/aws-shield" fileName="quickstart/monitor/compliance" />
-  </Step>
-</Steps>
+```bash
+# Check GuardDuty status
+aws guardduty list-detectors --region us-east-1
 
-## AWS Inspector v2
+# Check Security Hub status
+aws securityhub describe-hub --region us-east-1
 
-<Steps>
-  <Step>
-    ### <StepNumber/> Set up the Delegated Administrator account
+# Check Inspector status
+aws inspector2 list-delegated-admin-accounts --region us-east-1
 
-    Delegate Administration account for [AWS Inspector v2](https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html) to `core-security` for all regions.
+# Check Config status
+aws configservice describe-configuration-recorders --region us-east-1
+```
 
-    <AtmosWorkflow workflow="deploy/aws-inspector2/step1" fileName="quickstart/monitor/compliance" />
-  </Step>
+### Review Compliance
 
-  <Step>
-    ### <StepNumber/> Configure Inspector organization-wide
+1. Open Security Hub in the security account
+2. Navigate to "Security standards"
+3. Review compliance scores for enabled standards (CIS, PCI DSS, AWS Foundational)
 
-    Enable Inspector in all regions across accounts.
+---
 
-    <AtmosWorkflow workflow="deploy/aws-inspector2/step2" fileName="quickstart/monitor/compliance" />
-  </Step>
-</Steps>
+## Troubleshooting
+
+See the [FAQ](/layers/security-and-compliance/faq/) for common issues and solutions, or consult the individual
+component documentation for service-specific troubleshooting.

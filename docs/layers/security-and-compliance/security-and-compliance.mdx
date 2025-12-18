@@ -2,52 +2,235 @@
 title: "Security and Compliance"
 sidebar_label: "Security and Compliance"
 sidebar_class_name: hidden
+description: "Deploy AWS security services and compliance monitoring across your AWS Organization"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
 
-## Problem
+<Intro>
+Learn Cloud Posse's approach to deploying AWS security services and compliance monitoring across your AWS Organization.
+We cover essential topics such as threat detection, vulnerability scanning, configuration compliance, sensitive data
+discovery, and centralized security findings aggregation.
+</Intro>
 
-We need to ensure your AWS Organization meets certain benchmarks for compliance (e.g. HIPAA, PCI/DSS, etc). Your AWS
-accounts contain thousands of resources, making it impossible to audit without automation. Setting up the automation by
-hand is tedious and error-prone.
+## The Problem
 
-## Solution
+Ensuring your AWS Organization meets compliance benchmarks (e.g., SOC2, HIPAA, PCI/DSS, CIS) requires comprehensive
+security monitoring across all accounts and regions. Your AWS accounts contain thousands of resources, making manual
+auditing impossible. Each security service has its own deployment model, regional requirements, and configuration
+complexity. Setting up this automation by hand is tedious, error-prone, and difficult to maintain at scale.
 
-Deploy a set of Cloud Posse components to enable SecurityHub, GuardDuty, AWS Config, and more!
+## Our Solution
 
-:::caution
+Deploy a comprehensive set of Cloud Posse components to enable security monitoring and compliance across your entire
+AWS Organization. Our approach uses the **delegated administrator** pattern, where a central `security` account manages
+organization-wide security services, while logs are stored in an isolated `audit` account.
 
-It is very important that you read these docs and follow all of the steps carefully and in order. Failure to do so may
-result in a condition that needs to be manually cleaned up across tens of regions in each of your accounts.
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         AWS Organization                                    │
+│                                                                             │
+│  ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐      │
+│  │   Root Account   │    │  Security Account │    │   Audit Account  │      │
+│  │                  │    │ (Delegated Admin) │    │                  │      │
+│  │ • Delegates      │───▶│ • GuardDuty      │    │ • CloudTrail     │      │
+│  │   administration │    │ • Security Hub   │    │   logs bucket    │      │
+│  │ • Enables org    │    │ • Inspector      │    │ • Config         │      │
+│  │   service access │    │ • Macie          │    │   snapshots      │      │
+│  │                  │    │ • Access Analyzer│    │                  │      │
+│  └──────────────────┘    └────────┬─────────┘    └──────────────────┘      │
+│                                   │                                         │
+│                    ┌──────────────┴──────────────┐                         │
+│                    ▼                             ▼                          │
+│  ┌──────────────────────────┐  ┌──────────────────────────┐                │
+│  │     Member Accounts      │  │     Member Accounts      │                │
+│  │  (prod, staging, dev)    │  │    (workload accounts)   │                │
+│  │  • Auto-enrolled         │  │  • Findings → Security   │                │
+│  │  • Monitored by security │  │  • Logs → Audit          │                │
+│  └──────────────────────────┘  └──────────────────────────┘                │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-:::
+## Security Components Overview
 
-### Related Components
+Cloud Posse provides 9 Terraform components for comprehensive AWS security and compliance:
 
-- [aws-config](/components/library/aws/aws-config/)
-- [guardduty](/components/library/aws/guardduty/)
-- [security-hub](/components/library/aws/security-hub/)
+| Component | Purpose | Deployment Model |
+|-----------|---------|------------------|
+| [AWS Config](/layers/security-and-compliance/aws-config/) | Configuration compliance and resource inventory | Per-account + Org conformance packs |
+| [AWS CloudTrail](/layers/security-and-compliance/aws-cloudtrail/) | API activity logging and audit trail | Organization trail |
+| [AWS GuardDuty](/layers/security-and-compliance/aws-guardduty/) | Intelligent threat detection | 3-step delegated admin |
+| [AWS Security Hub](/layers/security-and-compliance/aws-security-hub/) | Centralized security findings aggregation | 3-step delegated admin |
+| [AWS Inspector](/layers/security-and-compliance/aws-inspector2/) | Automated vulnerability scanning | 2-step delegated admin |
+| [Amazon Macie](/layers/security-and-compliance/aws-macie/) | Sensitive data discovery in S3 | 3-step delegated admin |
+| [IAM Access Analyzer](/layers/security-and-compliance/aws-access-analyzer/) | External and unused access detection | 2-step delegated admin |
+| [AWS Shield](/layers/security-and-compliance/aws-shield/) | DDoS protection | Per-resource |
+| [AWS Audit Manager](/layers/security-and-compliance/aws-audit-manager/) | Compliance evidence collection | Single-step (root) |
 
-<Note title="Note">
-The older `compliance` and `compliance-root` components are deprecated as of July 2023. We recommend moving to our new
-[`aws-config`](/components/library/aws/aws-config/), [`guardduty`](/components/library/aws/guardduty/), and
-[`security-hub`](/components/library/aws/security-hub/) components.
+### AWS Config
+
+[**AWS Config**](/layers/security-and-compliance/aws-config/) provides configuration compliance monitoring and resource
+inventory across your AWS Organization. It continuously evaluates resources against compliance rules (conformance packs)
+and maintains a configuration history for auditing.
+
+**Key Features:**
+- Continuous configuration recording and compliance evaluation
+- CMMC Level 2, CIS, and custom conformance packs
+- Central aggregation in the security account
+- Configuration snapshots stored in the audit account
+
+### AWS CloudTrail
+
+[**AWS CloudTrail**](/layers/security-and-compliance/aws-cloudtrail/) records API activity across your AWS Organization,
+providing an audit trail for security analysis, compliance auditing, and operational troubleshooting.
+
+**Key Features:**
+- Organization-wide trail covering all accounts automatically
+- Log file validation with cryptographic signatures
+- CloudWatch Logs integration for real-time analysis
+- Centralized storage in the audit account with lifecycle policies
+
+### AWS GuardDuty
+
+[**AWS GuardDuty**](/layers/security-and-compliance/aws-guardduty/) is an intelligent threat detection service that
+continuously monitors for malicious activity and unauthorized behavior across your AWS accounts.
+
+**Key Features:**
+- ML-based threat detection for account compromise, instance compromise, and reconnaissance
+- S3 data event protection and EKS audit log monitoring
+- EBS malware scanning and Lambda network activity analysis
+- Runtime monitoring with agent management for EKS, ECS, and EC2
+
+### AWS Security Hub
+
+[**AWS Security Hub**](/layers/security-and-compliance/aws-security-hub/) provides a centralized dashboard for
+aggregating, organizing, and prioritizing security findings from AWS services and third-party tools.
+
+**Key Features:**
+- Aggregates findings from GuardDuty, Inspector, Macie, Config, and Access Analyzer
+- Compliance checks against CIS, PCI DSS, AWS Foundational Security Best Practices
+- Cross-region finding aggregation
+- Custom insights and automated remediation via EventBridge
+
+### AWS Inspector
+
+[**AWS Inspector**](/layers/security-and-compliance/aws-inspector2/) provides automated vulnerability scanning for
+EC2 instances, container images in ECR, and Lambda functions.
+
+**Key Features:**
+- Continuous CVE detection with risk-based prioritization
+- EC2 scanning (requires SSM Agent), ECR image scanning, Lambda function scanning
+- Network reachability analysis
+- Automatic enablement for new organization members
+
+### Amazon Macie
+
+[**Amazon Macie**](/layers/security-and-compliance/aws-macie/) is a data security service that uses machine learning
+to discover, classify, and protect sensitive data stored in Amazon S3.
+
+**Key Features:**
+- ML-based detection of PII, financial data, credentials, and other sensitive information
+- Automated S3 bucket inventory with security posture assessment
+- Policy findings for publicly accessible buckets and encryption issues
+- Custom data identifiers with regex patterns
+
+### IAM Access Analyzer
+
+[**IAM Access Analyzer**](/layers/security-and-compliance/aws-access-analyzer/) helps identify resources shared with
+external entities and detects unused access permissions.
+
+**Key Features:**
+- External access detection for S3, IAM, KMS, Lambda, SQS, Secrets Manager
+- Unused access analysis for identifying overly permissive policies
+- Policy validation before deployment
+- Archive rules for known external access patterns
+
+### AWS Shield
+
+[**AWS Shield**](/layers/security-and-compliance/aws-shield/) provides DDoS protection for your applications.
+Shield Advanced offers enhanced protection with 24/7 DDoS Response Team access.
+
+**Key Features:**
+- Layer 3/4/7 DDoS protection for ALBs, CloudFront, Elastic IPs, Route53
+- DDoS cost protection (credits for scaling during attacks)
+- 24/7 DDoS Response Team (DRT) access
+- Advanced CloudWatch metrics and WAF integration
+
+### AWS Audit Manager
+
+[**AWS Audit Manager**](/layers/security-and-compliance/aws-audit-manager/) automates evidence collection for
+compliance audits using prebuilt frameworks.
+
+**Key Features:**
+- Prebuilt frameworks for SOC 2, HIPAA, PCI DSS, GDPR, FedRAMP
+- Automated evidence collection from AWS services
+- Assessment reports for auditors
+- Custom framework support
+
+<Note title="GovCloud Consideration">
+AWS Audit Manager has limited framework availability in GovCloud. Many prebuilt frameworks (HIPAA, PCI DSS, GDPR, SOC 2)
+are not available in the GovCloud partition. Consider using AWS Config conformance packs as an alternative.
 </Note>
 
-### Background Info
+## Deployment Models
 
-The AWS Config, Security Hub, and GuardDuty services must be configured in every enabled region in each of your AWS
-accounts. Unfortunately, [AWS does not support](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html)
-disabling regions which were introduced prior to March 20, 2019. These regions are enabled by default. The table below
-lists the regions that cannot be disabled.
+The components use different deployment patterns based on AWS service requirements:
 
-:::info
+### 3-Step Delegated Administrator
 
-In addition to the regions below, the AWS services listed above must also be deployed to any regions you opted into.
+Used by: **GuardDuty**, **Security Hub**, **Macie**
 
-:::
+```text
+Step 1: Security Account → Create service account (admin_delegated: false)
+Step 2: Root Account     → Delegate administration (privileged: true)
+Step 3: Security Account → Configure org settings (admin_delegated: true)
+```
+
+### 2-Step Delegated Administrator
+
+Used by: **Inspector**, **Access Analyzer**
+
+```text
+Step 1: Root Account     → Delegate administration (privileged: true)
+Step 2: Security Account → Configure org settings (admin_delegated: true)
+```
+
+### Per-Account Deployment
+
+Used by: **Config**, **CloudTrail**
+
+```text
+Deploy to each account with central aggregation in security/audit accounts
+```
+
+### Per-Resource Deployment
+
+Used by: **Shield**
+
+```text
+Deploy to each account/resource that needs protection (not organization-wide)
+```
+
+## Integration Architecture
+
+All security services integrate through AWS Security Hub for centralized visibility:
+
+```text
+CloudTrail ──────────────────────────────────▶ Audit Account S3
+Config ─────▶ Snapshots ─────────────────────▶ Audit Account S3 + Aggregator
+                                                     │
+GuardDuty ─────▶ Findings ──────────────────┐       │
+Inspector ─────▶ Findings ──────────────────┼──────▶ Security Hub
+Macie ─────────▶ Findings ──────────────────┤
+Access Analyzer ▶ Findings ─────────────────┘
+```
+
+## Regional Deployment
+
+All AWS security services are regional. You must deploy to:
+
+1. **All regions enabled by default** (cannot be disabled):
 
 |                |                |           |           |
 | -------------- | -------------- | --------- | --------- |
@@ -57,14 +240,18 @@ In addition to the regions below, the AWS services listed above must also be dep
 | ap-south-1     | eu-north-1     | us-east-1 |           |
 | ap-southeast-1 | eu-west-1      | us-east-2 |           |
 
-The Cloud Posse AWS Config, Guard Duty, and Security Hub components (the "Components") are responsible for deploying
-these AWS services in a sane way. At the AWS Organizational level, the Components designate an account to be the primary
-account within the AWS Organization responsible for configuring the service. This is referred to as the Delegated
-Administrator account. In addition, where possible, the Components designate a single region to be the “central
-collection region” so that compliance information can be aggregated into a single region.
+2. **Any additional regions** you have opted into
 
-In a typical REFARCH setup, the logs are written to the `audit` account, the AWS services (Config, Security Hub, and
-GuardDuty) are deployed to the `security` account, and the Organizational management account (`root` account) is used to
-delegate `security` as the Delegated Administrator account. The central collection region is usually the same as the
-primary region used in your platform accounts for hosting your application workloads.
+## Getting Started
 
+1. Review the [Setup Guide](/layers/security-and-compliance/setup/) for step-by-step deployment instructions
+2. Explore individual component documentation for detailed configuration options
+3. Check the [Design Decisions](/layers/security-and-compliance/design-decisions/) for architectural considerations
+4. Review the [FAQ](/layers/security-and-compliance/faq/) for common issues and solutions
+
+:::caution Important
+
+Follow the deployment steps carefully and in order. Incorrect deployment order may result in a condition that requires
+manual cleanup across multiple regions in each of your accounts.
+
+:::
