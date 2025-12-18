@@ -38,7 +38,7 @@ In `dev` for example, you will have Hosted Zones for `dev-acme.com` and `dev.pla
 You should also have an ACM certificate that registers `*.dev-acme.com` and `*.dev.platform.acme.com`.
 
 We also should've deployed applications to your EKS cluster and have an ALB for service discovery. For example the
-[`echo-server`](https://github.com/cloudposse-terraform-components/aws-eks-echo-server) component.
+[`echo-server`](/components/library/aws/eks/echo-server) component.
 
 Now we want to set up a vanity subdomain for `dev-acme.com` that will point to the ALB used for service discovery. This
 saves us money by not requiring a new ALB for each vanity domain.

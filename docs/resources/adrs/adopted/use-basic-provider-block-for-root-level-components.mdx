@@ -19,7 +19,7 @@ The content in this ADR may be out-of-date and needing an update. For questions,
 
 We [Use Terraform Provider Block with compatibility for Role ARNs and Profiles](/resources/adrs/adopted/use-terraform-provider-block-with-compatibility-for-role-arns-an) in all components other than the root-level components. By _root-level_ we are referring to components that are provisioned in the top-level AWS account that we generally refer to as the `root` account.
 
-The problem arises when working with the `root` account during a cold-start when there’s no SSO, Federated IAM or IAM roles provisioned, so if we used the `role_arn` or `profile` it would not work. That’s why we assume the administrator will use their current AWS session to provision these components, which is why we do not define the `role_arn` or `profile` in `provider { ... }` block for the components like [sso](https://github.com/cloudposse-terraform-components/aws-sso) or [account](https://github.com/cloudposse-terraform-components/aws-account) .
+The problem arises when working with the `root` account during a cold-start when there’s no SSO, Federated IAM or IAM roles provisioned, so if we used the `role_arn` or `profile` it would not work. That’s why we assume the administrator will use their current AWS session to provision these components, which is why we do not define the `role_arn` or `profile` in `provider { ... }` block for the components like [sso](/components/library/aws/identity-center/) or [account](/components/library/aws/account/) .
 
 ## Decision
 

@@ -560,7 +560,7 @@ atmos terraform deploy account-map --stack gbl-root
 One of the outputs of `account-map` is `full_account_map`. It lists the name and corresponding account number for each
 account. Save that somewhere, you will need it later.
 
-Learn more about the [account-map](https://github.com/cloudposse-terraform-components/aws-account-map) component.
+Learn more about the [account-map](/components/library/aws/account-map/) component.
 
 ### Provision `account-settings` component
 
@@ -587,7 +587,7 @@ for stack in ./stacks/gbl*yaml; do \
 done
 ```
 
-Learn more about the [account-settings](https://github.com/cloudposse-terraform-components/aws-account-settings) component.
+Learn more about the [account-settings](/components/library/aws/account-settings/) component.
 
 ### Provision `aws-saml` component
 
@@ -617,11 +617,11 @@ The following guidance provides clarity on the security of the metadata files.
 ### Provision `aws-teams` component
 
 This component is responsible for provisioning all primary user and system roles into the centralized identity account.
-This is expected to be used alongside the [aws-team-roles](https://github.com/cloudposse-terraform-components/aws-team-roles) component to provide
+This is expected to be used alongside the [aws-team-roles](/components/library/aws/aws-team-roles/) component to provide
 fine-grained role delegation across the account hierarchy. This component was previously name `iam-primary-roles`, but
 was renamed as part of refactoring to better convey how it should be used.
 
-**NOTE:** [aws-saml](https://github.com/cloudposse-terraform-components/aws-saml) project must be completed so the identity providers exist. If
+**NOTE:** [aws-saml](/components/library/aws/aws-saml/) project must be completed so the identity providers exist. If
 identity providers are added or deleted.
 
 This component requires `SuperAdmin` role to run. Use `assume-role` (or `assume-role-saml` for SAML auth) to assume the
@@ -725,8 +725,8 @@ The `aws-team-roles`
 component creates the delegated IAM roles in the member accounts allowing the `identity` account to assume roles into
 the member accounts.
 
-**NOTE:** [aws-saml](https://github.com/cloudposse-terraform-components/aws-saml) must be completed so the identity providers exist.
-[aws-teams](https://github.com/cloudposse-terraform-components/aws-teams) must be completed to generate the primary roles in the `identity`
+**NOTE:** [aws-saml](/components/library/aws/aws-saml/) must be completed so the identity providers exist.
+[aws-teams](/components/library/aws/aws-teams/) must be completed to generate the primary roles in the `identity`
 account.
 
 In the Geodesic shell, execute the following commands for each account except for `identity`:

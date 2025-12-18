@@ -71,7 +71,7 @@ There are a few suggested shared catalog configurations that we recommend adopti
 
 - **Base Components**: For any configuration that you want to share across all instances of a component.
 
-- For example, you’re using the `eks` component and you want to ensure all of your EKS clusters are using the same Kubernetes version, you create a `stacks/catalog/component/eks.yaml` file which specifies the `eks` component’s `vars.kubernetes_version`. You can then `import` that base component configuration in any stack file that uses the [eks/cluster](https://github.com/cloudposse-terraform-components/aws-eks-cluster) component.
+- For example, you’re using the `eks` component and you want to ensure all of your EKS clusters are using the same Kubernetes version, you create a `stacks/catalog/component/eks.yaml` file which specifies the `eks` component’s `vars.kubernetes_version`. You can then `import` that base component configuration in any stack file that uses the [eks/cluster](/components/library/aws/eks/cluster/) component.
 
 - More information in the below section.
 

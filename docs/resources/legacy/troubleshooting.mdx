@@ -94,7 +94,7 @@ We are considering making it standard on our closed-source installations where w
 
 ### Error: `Kubernetes cluster unreachable: Get "https://xyz.gr7.region.eks.amazonaws.com/version?timeout=32s": dial tcp a.b.c.d:443: i/o timeout`
 
-This error is most likely due to a security group issue. The [transit-gateway](https://github.com/cloudposse-terraform-components/aws-transit-gateway) component controls ingress from `auto` and `corp` into the other accounts. Check the `transit-gateway`'s input var `accounts_with_eks` is filled in correctly and redeploy the component.
+This error is most likely due to a security group issue. The [transit-gateway](/components/library/aws/tgw/) component controls ingress from `auto` and `corp` into the other accounts. Check the `transit-gateway`'s input var `accounts_with_eks` is filled in correctly and redeploy the component.
 
 ### Error: `Post "http://localhost/api/v1/namespaces/kube-system/configmaps": dial tcp 127.0.0.1:80: connect: connection refused`
 

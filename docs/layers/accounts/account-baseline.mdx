@@ -31,7 +31,7 @@ Now that all the accounts have been deployed, we need to finalize the setup of t
   <Step>
   ## <StepNumber/> (Optional) Deploy Account Budgets
 
-  Budgets are an optional feature that can be enabled with [the `account-settings` component](https://github.com/cloudposse-terraform-components/aws-account-settings) for the Organization as a whole or for individual accounts. Budgets *do not restrict spending* but provide visibility into spending and can be used to set alerts when spending exceeds a certain threshold. We recommend using a dedicated Slack channel for these alerts, which we will set up with a webhook.
+  Budgets are an optional feature that can be enabled with [the `account-settings` component](/components/library/aws/account-settings/) for the Organization as a whole or for individual accounts. Budgets *do not restrict spending* but provide visibility into spending and can be used to set alerts when spending exceeds a certain threshold. We recommend using a dedicated Slack channel for these alerts, which we will set up with a webhook.
 
   <Steps>
   1. [Create a Slack Webhook](https://api.slack.com/messaging/webhooks). Take note of the Webhook URL and the final name of the Slack channel. The Slack channel is case-sensitive and needs to match the name of the channel exactly as the name appears in owning Slack server (not the name if changed as a shared channel).

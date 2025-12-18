@@ -22,7 +22,7 @@ Use [External Secrets Operator](https://external-secrets.io/latest/) with AWS SS
 
 External Secrets Operator is a Kubernetes operator that manages and stores sensitive information in external secret management systems like AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, HashiCorp Vault, and more. It allows you to use these external secret management systems to securely add secrets in your Kubernetes cluster.
 
-Cloud Posse historically recommends using External Secrets Operator with AWS SSM Parameter Store and has existing Terraform modules to support this solution. See the [eks/external-secrets-operator](https://github.com/cloudposse-terraform-components/aws-eks-external-secrets-operator) component.
+Cloud Posse historically recommends using External Secrets Operator with AWS SSM Parameter Store and has existing Terraform modules to support this solution. See the [eks/external-secrets-operator](/components/library/aws/eks/external-secrets-operator/) component.
 
 ### Option 2: AWS Secrets Manager secrets with Kubernetes Secrets Store CSI Driver
 

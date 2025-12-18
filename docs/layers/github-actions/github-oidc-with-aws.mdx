@@ -78,7 +78,7 @@ sequenceDiagram
 
 <KeyPoints title="Overview">
 
-1. Install the [GitHub OIDC Provider component](https://github.com/cloudposse-terraform-components/aws-github-oidc-provider) in each account where GitHub Actions need to assume a role.
+1. Install the [GitHub OIDC Provider component](/components/library/aws/github-oidc-provider/) in each account where GitHub Actions need to assume a role.
 2. Create the role that GitHub Actions Workflows will assume
 3. Configure the GitHub Actions Workflow to assume the role
 </KeyPoints>
@@ -87,7 +87,7 @@ sequenceDiagram
   <Step>
   ### <StepNumber/> Deploy GitHub OIDC Provider Component
 
-  After deploying the [GitHub OIDC Provider component](https://github.com/cloudposse-terraform-components/aws-github-oidc-provider) into an account, you should see the Identity Provider in IAM in the AWS Web Console.
+  After deploying the [GitHub OIDC Provider component](/components/library/aws/github-oidc-provider/) into an account, you should see the Identity Provider in IAM in the AWS Web Console.
 
   Deploy this component in each account where GitHub Actions need to assume a role.
 
@@ -110,7 +110,7 @@ sequenceDiagram
   <Step>
   ### <StepNumber/> Option 2: Deploy GitHub OIDC Role Component
 
-  Deploy the [GitHub OIDC Role component](https://github.com/cloudposse-terraform-components/aws-github-oidc-role) to create a generalized role for GitHub to access several resources in AWS.
+  Deploy the [GitHub OIDC Role component](/components/library/aws/github-oidc-role/) to create a generalized role for GitHub to access several resources in AWS.
   </Step>
 
   <Step>
