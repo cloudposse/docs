@@ -1,0 +1,127 @@
+---
+title: "Comprehensive Security and Compliance Components for AWS Organizations"
+slug: security-compliance-components
+authors: [cloudposse]
+tags: [security, compliance, aws, components, guardduty, security-hub, inspector, macie]
+date: 2025-12-18
+---
+
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+  We're excited to announce comprehensive documentation for our suite of security and compliance Terraform components.
+  These components enable you to deploy AWS security services across your entire AWS Organization using the delegated
+  administrator pattern, providing centralized security monitoring and compliance assessment.
+</Intro>
+
+Hello SweetOps!
+
+Security and compliance are critical for any organization running workloads on AWS.
+Whether you're pursuing SOC2, HIPAA, PCI DSS, FedRAMP, or CIS benchmarks, you need comprehensive visibility into threats,
+vulnerabilities, and configuration drift across all your accounts.
+
+We've updated and documented our security and compliance components to make deploying these services straightforward and
+maintainable at scale.
+
+## What's Included
+
+Our security and compliance framework includes 9 Terraform components:
+
+| Component | Purpose |
+|-----------|---------|
+| [AWS Config](/layers/security-and-compliance/aws-config/) | Configuration compliance and resource inventory |
+| [AWS CloudTrail](/layers/security-and-compliance/aws-cloudtrail/) | API activity logging and audit trail |
+| [AWS GuardDuty](/layers/security-and-compliance/aws-guardduty/) | Intelligent threat detection |
+| [AWS Security Hub](/layers/security-and-compliance/aws-security-hub/) | Centralized security findings aggregation |
+| [AWS Inspector](/layers/security-and-compliance/aws-inspector2/) | Automated vulnerability scanning |
+| [Amazon Macie](/layers/security-and-compliance/aws-macie/) | Sensitive data discovery in S3 |
+| [IAM Access Analyzer](/layers/security-and-compliance/aws-access-analyzer/) | External and unused access detection |
+| [AWS Shield](/layers/security-and-compliance/aws-shield/) | DDoS protection |
+| [AWS Audit Manager](/layers/security-and-compliance/aws-audit-manager/) | Compliance evidence collection |
+
+## Key Architecture Decisions
+
+Our approach uses the **delegated administrator** pattern, centralizing security management while maintaining proper separation of concerns:
+
+<Steps>
+  - **Security Account**: Acts as the delegated administrator for threat detection and security monitoring services
+  - **Audit Account**: Stores immutable logs (CloudTrail) and configuration snapshots (Config)
+  - **Root Account**: Delegates administration but doesn't manage day-to-day security operations
+  - **Member Accounts**: Automatically enrolled and monitored by the security account
+</Steps>
+
+## Deployment Models
+
+Different AWS services require different deployment approaches. We've documented each pattern:
+
+### 3-Step Delegated Administrator
+Used by GuardDuty, Security Hub, and Macie:
+1. Deploy to security account (creates the service)
+2. Deploy to root account (delegates administration)
+3. Deploy org settings to security account (configures organization-wide settings)
+
+### 2-Step Delegated Administrator
+Used by Inspector and Access Analyzer:
+1. Deploy to root account (delegates administration)
+2. Deploy org settings to security account
+
+### Per-Account Deployment
+Used by Config and CloudTrail, with central aggregation in security/audit accounts.
+
+### Per-Resource Deployment
+Used by Shield Advanced for protecting specific resources like ALBs, CloudFront distributions, and Route53 hosted zones.
+
+## Compliance Framework Support
+
+These components support multiple compliance frameworks out of the box:
+
+- **CIS AWS Foundations Benchmark** (v1.4, v1.5)
+- **AWS Foundational Security Best Practices**
+- **PCI DSS** (Payment Card Industry)
+- **HIPAA** (Healthcare)
+- **SOC 2** (Service Organization Control)
+- **NIST 800-53** (Federal)
+- **FedRAMP** (Federal Risk and Authorization)
+- **CMMC** (Cybersecurity Maturity Model Certification)
+
+## Getting Started
+
+We've created comprehensive documentation to help you deploy these components:
+
+1. **[Security and Compliance Overview](/layers/security-and-compliance/)** - Architecture and component descriptions
+2. **[Setup Guide](/layers/security-and-compliance/setup/)** - Step-by-step deployment instructions
+3. **[FAQ](/layers/security-and-compliance/faq/)** - Common issues and troubleshooting
+
+Each component also has its own detailed documentation page with stack configurations, deployment commands, and key variables.
+
+## Component Repositories
+
+All components are available in the [`cloudposse-terraform-components`](https://github.com/cloudposse-terraform-components) GitHub organization:
+
+- [aws-config](https://github.com/cloudposse-terraform-components/aws-config)
+- [aws-cloudtrail](https://github.com/cloudposse-terraform-components/aws-cloudtrail)
+- [aws-guardduty](https://github.com/cloudposse-terraform-components/aws-guardduty)
+- [aws-security-hub](https://github.com/cloudposse-terraform-components/aws-security-hub)
+- [aws-inspector2](https://github.com/cloudposse-terraform-components/aws-inspector2)
+- [aws-macie](https://github.com/cloudposse-terraform-components/aws-macie)
+- [aws-access-analyzer](https://github.com/cloudposse-terraform-components/aws-access-analyzer)
+- [aws-shield](https://github.com/cloudposse-terraform-components/aws-shield)
+- [aws-audit-manager](https://github.com/cloudposse-terraform-components/aws-audit-manager)
+
+## What's Next
+
+We're continuing to improve our security and compliance components:
+
+- Additional conformance pack templates for common compliance frameworks
+- Enhanced integration between services
+- More automated remediation patterns via EventBridge
+- Expanded documentation for GovCloud deployments
+
+:::tip Need Help?
+If you have questions about deploying security and compliance components, reach out in the [SweetOps Slack](https://cloudposse.com/slack)
+or check our [FAQ](/layers/security-and-compliance/faq/) for common issues.
+:::
+
+We'd love to hear your feedback on these components. Let us know what compliance frameworks you're targeting and how we
+can make these components work better for your organization!
