@@ -10,3 +10,39 @@
 [data-theme='dark'] .docusaurus-mermaid-container .nodeLabel img {
     background: #21262d;
 }
+
+/* Add padding to mermaid diagrams */
+.docusaurus-mermaid-container svg {
+    max-width: 100%;
+    padding: 1em;
+}
+
+/* Subgraph styling for better margins */
+.docusaurus-mermaid-container .cluster rect {
+    rx: 8px;
+    ry: 8px;
+}
+
+/* Light mode - default colors work fine */
+
+/* Dark mode color overrides for subgraphs and nodes */
+[data-theme='dark'] .docusaurus-mermaid-container .node rect,
+[data-theme='dark'] .docusaurus-mermaid-container .node polygon {
+    stroke-width: 2px;
+}
+
+/* Override inline styles in dark mode for better visibility */
+[data-theme='dark'] .docusaurus-mermaid-container .flowchart-link {
+    stroke: #8b949e !important;
+}
+
+[data-theme='dark'] .docusaurus-mermaid-container .marker {
+    fill: #8b949e !important;
+    stroke: #8b949e !important;
+}
+
+/* Improve text contrast in dark mode */
+[data-theme='dark'] .docusaurus-mermaid-container .nodeLabel,
+[data-theme='dark'] .docusaurus-mermaid-container .cluster-label .nodeLabel {
+    color: #c9d1d9;
+}

@@ -28,6 +28,7 @@ AWS Organization. Our approach uses the **delegated administrator** pattern, whe
 organization-wide security services, while logs are stored in an isolated `audit` account.
 
 ```mermaid
+%%{init: {'flowchart': {'padding': 40, 'nodeSpacing': 30, 'rankSpacing': 50}}}%%
 flowchart TB
     subgraph org["AWS Organization"]
         subgraph root["Root Account"]
