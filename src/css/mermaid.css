@@ -14,7 +14,8 @@
 /* Add padding to mermaid diagrams */
 .docusaurus-mermaid-container svg {
     max-width: 100%;
-    padding: 1em;
+    padding: 2em;
+    box-sizing: content-box;
 }
 
 /* Subgraph styling for better margins */
