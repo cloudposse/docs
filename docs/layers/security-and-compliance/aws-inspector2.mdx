@@ -34,28 +34,22 @@ AWS Inspector 2 provides:
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph root["Organization Management Account (root)"]
-            step1["STEP 1: Delegate Administration<br/>Creates: aws_inspector2_delegated_admin_account<br/>Requires: SuperAdmin (privileged: true)"]
-        end
-
-        subgraph security["Delegated Administrator Account (security)"]
-            step2["STEP 2: Configure Org Settings<br/>Creates: aws_inspector2_organization_configuration<br/>admin_delegated: true"]
-            subgraph dashboard["Inspector Dashboard"]
-                ec2["EC2<br/>Findings"]
-                ecr["ECR<br/>Findings"]
-                lambda["Lambda<br/>Findings"]
-            end
-        end
-
-        subgraph members["Member Accounts"]
-            member["Auto-enrolled accounts<br/>EC2, ECR, Lambda scanned<br/>Findings sent to security"]
-        end
+flowchart LR
+    subgraph root["Root Account"]
+        step1["STEP 1: Delegate"]
     end
 
-    step1 -->|"Delegation"| security
-    member -->|"Findings"| dashboard
+    subgraph security["Security Account"]
+        step2["STEP 2: Configure Org"]
+        dashboard["Inspector Dashboard"]
+    end
+
+    subgraph members["Member Accounts"]
+        member["Auto-enrolled"]
+    end
+
+    root -->|"Delegation"| security
+    members -->|"Findings"| dashboard
 ```
 
 ## Deployment

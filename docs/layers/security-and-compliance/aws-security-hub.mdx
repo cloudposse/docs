@@ -49,30 +49,23 @@ Security Hub integrates with these AWS services:
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph root["Organization Management Account (root)"]
-            step2["STEP 2: Delegate Administration"]
-        end
-
-        subgraph security["Delegated Administrator Account (security)"]
-            step1["STEP 1 (FIRST): Enable Security Hub"]
-            step3["STEP 3 (LAST): Configure Org Settings"]
-            subgraph dashboard["Security Hub Dashboard"]
-                guardduty["GuardDuty<br/>Findings"]
-                inspector["Inspector<br/>Findings"]
-                macie["Macie<br/>Findings"]
-                config["Config<br/>Findings"]
-            end
-        end
-
-        subgraph members["Member Accounts"]
-            member["Auto-enrolled accounts<br/>Security services send findings"]
-        end
+flowchart LR
+    subgraph root["Root Account"]
+        step2["STEP 2: Delegate"]
     end
 
-    step2 -->|"Delegation"| security
-    member -->|"Findings"| dashboard
+    subgraph security["Security Account"]
+        step1["STEP 1: Enable"]
+        step3["STEP 3: Configure"]
+        dashboard["Security Hub Dashboard"]
+    end
+
+    subgraph members["Member Accounts"]
+        member["Auto-enrolled"]
+    end
+
+    root -->|"Delegation"| security
+    members -->|"Findings"| dashboard
 ```
 
 ## Deployment

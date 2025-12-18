@@ -51,27 +51,22 @@ External access analyzer monitors:
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph root["Organization Management Account (root)"]
-            step1["STEP 1: Delegate Administration<br/>Creates: aws_organizations_delegated_administrator<br/>Creates: aws_iam_service_linked_role"]
-        end
-
-        subgraph security["Delegated Administrator Account (security)"]
-            step2["STEP 2: Create Organization Analyzers"]
-            subgraph dashboard["Access Analyzer Dashboard"]
-                external["External Access<br/>Findings"]
-                unused["Unused Access<br/>Findings"]
-            end
-        end
-
-        subgraph members["Member Accounts"]
-            member["Auto-analyzed resources<br/>No per-account config needed<br/>Findings sent to security"]
-        end
+flowchart LR
+    subgraph root["Root Account"]
+        step1["STEP 1: Delegate"]
     end
 
-    step1 -->|"Delegation"| security
-    member -->|"Resource Analysis"| dashboard
+    subgraph security["Security Account"]
+        step2["STEP 2: Create Analyzers"]
+        dashboard["Access Analyzer Dashboard"]
+    end
+
+    subgraph members["Member Accounts"]
+        member["Auto-analyzed"]
+    end
+
+    root -->|"Delegation"| security
+    members -->|"Findings"| dashboard
 ```
 
 ## Deployment

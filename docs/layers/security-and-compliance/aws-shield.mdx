@@ -40,21 +40,19 @@ Shield Advanced protects:
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph subscription["Shield Advanced Subscription"]
-            sub_info["$3,000/month - covers all accounts<br/>Manual subscription required"]
-        end
+flowchart LR
+    subgraph subscription["Shield Subscription"]
+        sub_info["$3,000/month"]
+    end
 
-        subgraph global["Global Resources (Global Stack)"]
-            route53["Route53 Zones<br/>example.com"]
-            cloudfront["CloudFront<br/>E1ABCDEFG123"]
-        end
+    subgraph global["Global Resources"]
+        route53["Route53"]
+        cloudfront["CloudFront"]
+    end
 
-        subgraph regional["Regional Resources (us-east-1)"]
-            albs["Application Load Balancers<br/>k8s-common, api-gateway"]
-            eips["Elastic IPs<br/>NAT Gateway, Bastion"]
-        end
+    subgraph regional["Regional Resources"]
+        albs["ALBs"]
+        eips["Elastic IPs"]
     end
 
     subscription -->|"Protects"| global

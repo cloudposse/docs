@@ -42,28 +42,21 @@ Audit Manager provides:
 Audit Manager uses a **unique single-step deployment model**:
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph root["Organization Management Account (root)"]
-            single_step["SINGLE STEP: Enable + Delegate<br/>Requires: SuperAdmin (privileged: true)"]
-        end
-
-        subgraph security["Delegated Administrator Account (security)"]
-            admin_info["Receives delegation automatically<br/>Creates and manages assessments"]
-            subgraph dashboard["Audit Manager Dashboard"]
-                assessments["Assessments"]
-                evidence["Evidence"]
-                reports["Reports"]
-            end
-        end
-
-        subgraph members["Member Accounts"]
-            member["Auto-collected evidence<br/>CloudTrail, Config, Security Hub"]
-        end
+flowchart LR
+    subgraph root["Root Account"]
+        single_step["Enable + Delegate"]
     end
 
-    single_step -->|"Automatic Delegation"| security
-    member -->|"Evidence Collection"| dashboard
+    subgraph security["Security Account"]
+        dashboard["Audit Manager Dashboard"]
+    end
+
+    subgraph members["Member Accounts"]
+        member["Auto-collected evidence"]
+    end
+
+    root -->|"Delegation"| security
+    members -->|"Evidence"| dashboard
 ```
 
 ## Deployment Model Comparison

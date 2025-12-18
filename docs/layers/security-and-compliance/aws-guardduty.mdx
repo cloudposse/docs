@@ -36,24 +36,22 @@ GuardDuty provides:
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph root["Organization Management Account (root)"]
-            step2["STEP 2: Delegate Administration<br/>Creates: aws_guardduty_organization_admin_account<br/>Requires: SuperAdmin (privileged: true)"]
-        end
-
-        subgraph security["Delegated Administrator Account (security)"]
-            step1["STEP 1 (FIRST): Create Detector<br/>Creates: aws_guardduty_detector<br/>admin_delegated: false"]
-            step3["STEP 3 (LAST): Configure Org Settings<br/>Creates: aws_guardduty_organization_configuration<br/>admin_delegated: true"]
-        end
-
-        subgraph members["Member Accounts"]
-            member["All other accounts<br/>Auto-enrolled by delegated admin<br/>Findings sent to security account"]
-        end
+flowchart LR
+    subgraph root["Root Account"]
+        step2["STEP 2: Delegate"]
     end
 
-    step2 -->|"Delegation"| security
-    member -->|"Findings"| step3
+    subgraph security["Security Account"]
+        step1["STEP 1: Create Detector"]
+        step3["STEP 3: Configure Org"]
+    end
+
+    subgraph members["Member Accounts"]
+        member["Auto-enrolled"]
+    end
+
+    root -->|"Delegation"| security
+    members -->|"Findings"| security
 ```
 
 ## Deployment

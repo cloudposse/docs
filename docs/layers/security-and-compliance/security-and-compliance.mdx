@@ -28,23 +28,21 @@ AWS Organization. Our approach uses the **delegated administrator** pattern, whe
 organization-wide security services, while logs are stored in an isolated `audit` account.
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph root["Root Account"]
-            root_tasks["• Delegates administration<br/>• Enables org service access"]
-        end
+flowchart LR
+    subgraph root["Root Account"]
+        root_tasks["Delegates admin"]
+    end
 
-        subgraph security["Security Account (Delegated Admin)"]
-            sec_services["• GuardDuty<br/>• Security Hub<br/>• Inspector<br/>• Macie<br/>• Access Analyzer"]
-        end
+    subgraph security["Security Account"]
+        sec_services["GuardDuty, Security Hub<br/>Inspector, Macie, Access Analyzer"]
+    end
 
-        subgraph audit["Audit Account"]
-            audit_storage["• CloudTrail logs bucket<br/>• Config snapshots"]
-        end
+    subgraph audit["Audit Account"]
+        audit_storage["CloudTrail logs<br/>Config snapshots"]
+    end
 
-        subgraph members["Member Accounts (prod, staging, dev)"]
-            member_info["• Auto-enrolled<br/>• Monitored by security"]
-        end
+    subgraph members["Member Accounts"]
+        member_info["Auto-enrolled"]
     end
 
     root -->|"Delegates"| security

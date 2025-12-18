@@ -36,29 +36,23 @@ Macie provides:
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph root["Organization Management Account (root)"]
-            step2["STEP 2: Delegate Administration<br/>Creates: aws_macie2_organization_admin_account<br/>Requires: SuperAdmin (privileged: true)"]
-        end
-
-        subgraph security["Delegated Administrator Account (security)"]
-            step1["STEP 1 (FIRST): Create Macie Account<br/>Creates: aws_macie2_account<br/>admin_delegated: false"]
-            step3["STEP 3 (LAST): Configure Org Settings<br/>Creates: awsutils_macie2_organization_settings<br/>admin_delegated: true"]
-            subgraph dashboard["Macie Dashboard"]
-                inventory["S3 Inventory"]
-                policy["Policy Findings"]
-                data["Data Findings"]
-            end
-        end
-
-        subgraph members["Member Accounts"]
-            member["Auto-enabled accounts<br/>S3 buckets inventoried & monitored<br/>Findings sent to security"]
-        end
+flowchart LR
+    subgraph root["Root Account"]
+        step2["STEP 2: Delegate"]
     end
 
-    step2 -->|"Delegation"| security
-    member -->|"S3 Data + Findings"| dashboard
+    subgraph security["Security Account"]
+        step1["STEP 1: Create Macie"]
+        step3["STEP 3: Configure Org"]
+        dashboard["Macie Dashboard"]
+    end
+
+    subgraph members["Member Accounts"]
+        member["Auto-enabled"]
+    end
+
+    root -->|"Delegation"| security
+    members -->|"S3 Findings"| dashboard
 ```
 
 ## Deployment

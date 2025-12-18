@@ -31,29 +31,21 @@ Before deploying security and compliance components, ensure:
 The security components have dependencies and must be deployed in a specific order:
 
 ```mermaid
-flowchart TB
-    subgraph phase1["Phase 1: Prerequisites (one-time setup)"]
-        p1a["Service Principals<br/>(account component)"]
-        p1b["config-bucket<br/>(audit account)"]
-        p1c["cloudtrail-bucket<br/>(audit account)"]
+flowchart LR
+    subgraph phase1["Phase 1: Prerequisites"]
+        p1["Service Principals<br/>Config Bucket<br/>CloudTrail Bucket"]
     end
 
-    subgraph phase2["Phase 2: Foundational Services"]
-        p2a["AWS CloudTrail<br/>(organization trail)"]
-        p2b["AWS Config<br/>(all accounts, all regions)"]
+    subgraph phase2["Phase 2: Foundational"]
+        p2["CloudTrail<br/>Config"]
     end
 
-    subgraph phase3["Phase 3: Threat Detection & Scanning"]
-        p3a["AWS GuardDuty<br/>(3-step)"]
-        p3b["AWS Inspector 2<br/>(2-step)"]
-        p3c["Amazon Macie<br/>(3-step)"]
-        p3d["IAM Access Analyzer<br/>(2-step)"]
+    subgraph phase3["Phase 3: Detection"]
+        p3["GuardDuty<br/>Inspector<br/>Macie<br/>Access Analyzer"]
     end
 
-    subgraph phase4["Phase 4: Aggregation & Protection"]
-        p4a["AWS Security Hub<br/>(3-step)"]
-        p4b["AWS Shield<br/>(per-resource)"]
-        p4c["AWS Audit Manager<br/>(root only, optional)"]
+    subgraph phase4["Phase 4: Aggregation"]
+        p4["Security Hub<br/>Shield<br/>Audit Manager"]
     end
 
     phase1 --> phase2 --> phase3 --> phase4

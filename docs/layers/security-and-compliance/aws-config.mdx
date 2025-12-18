@@ -26,36 +26,26 @@ AWS Config is responsible for:
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph org["AWS Organization"]
-        subgraph mgmt["Management Account"]
-            mgmt_packs["Organization Conformance Packs<br/>Deploys org-wide compliance rules"]
-        end
-
-        subgraph security["Security Account (Central Aggregator)"]
-            aggregator["AWS Config Aggregator<br/>Collects from ALL accounts"]
-            dashboard["Centralized Compliance Dashboard"]
-        end
-
-        subgraph audit["Audit Account"]
-            bucket["S3 Bucket (aws-config-bucket)<br/>Stores ALL Config data"]
-        end
-
-        subgraph members["Member Accounts"]
-            subgraph global_region["Global Collector Region (us-east-1)"]
-                recorder1["Configuration Recorder + IAM Role<br/>Tracks IAM, Route53, etc."]
-            end
-            subgraph other_regions["Additional Regions"]
-                recorder2["Configuration Recorder<br/>Tracks EC2, VPC, RDS, etc."]
-            end
-        end
+flowchart LR
+    subgraph mgmt["Root Account"]
+        mgmt_packs["Conformance Packs"]
     end
 
-    mgmt_packs -->|"Applies to all"| members
-    recorder1 -->|"Aggregate Authorization"| aggregator
-    recorder2 -->|"Aggregate Authorization"| aggregator
-    recorder1 -->|"Delivers snapshots"| bucket
-    recorder2 -->|"Delivers snapshots"| bucket
+    subgraph security["Security Account"]
+        aggregator["Config Aggregator"]
+    end
+
+    subgraph audit["Audit Account"]
+        bucket["Config S3 Bucket"]
+    end
+
+    subgraph members["Member Accounts"]
+        recorder["Config Recorders"]
+    end
+
+    mgmt -->|"Applies packs"| members
+    members -->|"Aggregates"| security
+    members -->|"Snapshots"| audit
 ```
 
 ## Deployment
