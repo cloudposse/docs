@@ -17,7 +17,7 @@ Provision monitors by layer and vary the configurations by stage.
 
 :::
 
-Monitoring happens at every layer of your infrastructure. We should strive to push as many monitors as possible to the lower levels so that the benefits are realized by all higher layers. The manner of monitoring each layer varies. For example, the _Infrastructure_ layer is best monitored using the [datadog-integration](/components/library/aws/datadog-integration/) provisioned per AWS account. While the _Application_ layer may be better suited by provisioning monitors defined within the application repo itself or using custom resources to manage the monitors via Kubernetes.
+Monitoring happens at every layer of your infrastructure. We should strive to push as many monitors as possible to the lower levels so that the benefits are realized by all higher layers. The manner of monitoring each layer varies. For example, the _Infrastructure_ layer is best monitored using the [datadog-integration](https://github.com/cloudposse-terraform-components/aws-datadog-integration) provisioned per AWS account. While the _Application_ layer may be better suited by provisioning monitors defined within the application repo itself or using custom resources to manage the monitors via Kubernetes.
 
 <a href="https://lucid.app/publicSegments/view/612ad71e-3a0a-4dcb-872a-f9b0bbd0f65d/image.png" target="_blank"><img src="https://lucid.app/publicSegments/view/612ad71e-3a0a-4dcb-872a-f9b0bbd0f65d/image.png" width="960px"/></a>
 

@@ -62,7 +62,7 @@ Either `profile` or `role_arn` can be used here
 
 ### S3 Backend
 
-The S3 bucket is created in the cold start using the [tfstate-backend](/components/library/aws/tfstate-backend/)
+The S3 bucket is created in the cold start using the [tfstate-backend](https://github.com/cloudposse-terraform-components/aws-tfstate-backend)
 component provisioned in the root account.
 
 The state format is `s3://{bucket_name}/{component}/{stack}/terraform.tfstate`
@@ -95,7 +95,7 @@ To better visualize what’s going on, we recommend running the commands below t
 to use the correct `profile` for your organization (`acme-gbl-root-admin` is just a placeholder).
 
 Find the bucket. It should contain `tfstate` in its name. In the example below, we can see the
-[vpc](/components/library/aws/vpc/) component is deployed to `use2-auto`, `use2-corp`, `use2-dev`, `use2-qa`,
+[vpc](https://github.com/cloudposse-terraform-components/aws-vpc) component is deployed to `use2-auto`, `use2-corp`, `use2-dev`, `use2-qa`,
 `use2-sbx01`, `use2-staging`. As you can see, the `workspace` is constructed as the `{environment}-{stage}`. This
 setting is defined in the `atmos.yaml` config with the `stacks.name_pattern` setting (see [Atmos](/resources/legacy/fundamentals/atmos)
 for all settings).

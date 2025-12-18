@@ -30,10 +30,10 @@ ramifications as to IP/trademark defense.
 
     The DNS stacks are broken up into primary and delegated deployments. Primary DNS zones only start with an `NS` record
     among other defaults and expect the the owner of their associated domain to add these `NS` records to whatever console manages the respective domain.
-    Consult the [dns-primary component documentation](/components/library/aws/dns-primary/) for more information.
+    Consult the [dns-primary component documentation](https://github.com/cloudposse-terraform-components/aws-dns-primary) for more information.
 
     The delegated DNS zones insert their `NS` records into the primary DNS zone; thus they are mostly automated.
-    Consult the [dns-delegated component documentation](/components/library/aws/dns-delegated/) for more information.
+    Consult the [dns-delegated component documentation](https://github.com/cloudposse-terraform-components/aws-dns-delegated) for more information.
 
     To start the dns setup, run the following. This will go through creating primaries, and then
     follow up with establishing the delegates.

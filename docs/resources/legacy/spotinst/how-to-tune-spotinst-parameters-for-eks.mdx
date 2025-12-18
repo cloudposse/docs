@@ -38,7 +38,7 @@ Some workloads are mission-critical and are not resilient to spot instance inter
 ### Option 2: Tune Parameters in Stack Configuration
 
 :::tip
-The [eks/cluster](/components/library/aws/eks/cluster/) component supports exposes most (but maybe not all) parameters of the [https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool](https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool) module. Before setting any variables make sure your component is passing those variables through to the upstream `terraform-aws-eks-spotinst-ocean-nodepool` module, or they will have no effect.
+The [eks/cluster](https://github.com/cloudposse-terraform-components/aws-eks-cluster) component supports exposes most (but maybe not all) parameters of the [https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool](https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool) module. Before setting any variables make sure your component is passing those variables through to the upstream `terraform-aws-eks-spotinst-ocean-nodepool` module, or they will have no effect.
 
 :::
 

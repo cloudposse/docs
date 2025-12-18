@@ -21,10 +21,10 @@ When looking at a Datadog monitor, anything with `${foo}` is Terraform interpola
 
 First off, we need to figure out where **should** the metrics be coming from.
 
-If you are trying to receive metrics or logs from an EKS deployment or service, check if the [`datadog-agent`](/components/library/aws/eks/datadog-agent/) is deployed and its logs look healthy.
+If you are trying to receive metrics or logs from an EKS deployment or service, check if the [`datadog-agent`](https://github.com/cloudposse-terraform-components/aws-eks-datadog-agent) is deployed and its logs look healthy.
 
-If you are trying to receive metrics or logs from an ECS service, check the datadog agent sidecar container is deployed to your [`ecs-service`](/components/library/aws/ecs-service/).
+If you are trying to receive metrics or logs from an ECS service, check the datadog agent sidecar container is deployed to your [`ecs-service`](https://github.com/cloudposse-terraform-components/aws-ecs-service).
 
-If you are trying to receive metrics from an AWS Service, first check if the [Datadog AWS Integration](https://app.datadoghq.com/integrations/amazon-web-services) is deployed via [`datadog-integration`](/components/library/aws/datadog-integration/) and that the tile is working. Then check if the Datadog AWS Integration is enabled for the service you are trying to monitor. You can often find the metric is under the integration tiles' **metrics** tab. If it is enabled and working and you are not receiving metrics, check the integration role has the right permissions.
+If you are trying to receive metrics from an AWS Service, first check if the [Datadog AWS Integration](https://app.datadoghq.com/integrations/amazon-web-services) is deployed via [`datadog-integration`](https://github.com/cloudposse-terraform-components/aws-datadog-integration) and that the tile is working. Then check if the Datadog AWS Integration is enabled for the service you are trying to monitor. You can often find the metric is under the integration tiles' **metrics** tab. If it is enabled and working and you are not receiving metrics, check the integration role has the right permissions.
 
-If you are trying to receive logs from an AWS Service, check the [`datadog-lambda-forwarder`](/components/library/aws/datadog-lambda-forwarder/) is deployed and working
+If you are trying to receive logs from an AWS Service, check the [`datadog-lambda-forwarder`](https://github.com/cloudposse-terraform-components/aws-datadog-lambda-forwarder) is deployed and working
