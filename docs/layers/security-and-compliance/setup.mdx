@@ -32,19 +32,19 @@ The security components have dependencies and must be deployed in a specific ord
 
 ```mermaid
 flowchart LR
-    subgraph phase1["Phase 1: Prerequisites"]
+    subgraph phase1["Phase 1: Org-Level Config"]
         p1["Service Principals<br/>Config Bucket<br/>CloudTrail Bucket"]
     end
 
-    subgraph phase2["Phase 2: Foundational"]
+    subgraph phase2["Phase 2: Foundational Services"]
         p2["CloudTrail<br/>Config"]
     end
 
-    subgraph phase3["Phase 3: Detection"]
+    subgraph phase3["Phase 3: Threat Detection"]
         p3["GuardDuty<br/>Inspector<br/>Macie<br/>Access Analyzer"]
     end
 
-    subgraph phase4["Phase 4: Aggregation"]
+    subgraph phase4["Phase 4: Aggregation & Protection"]
         p4["Security Hub<br/>Shield<br/>Audit Manager"]
     end
 
@@ -118,11 +118,11 @@ These steps are required once for the entire organization.
     for compliance auditing.
 
     <Note title="Important">
-    Deploy only one config-bucket per organization. It stores data from all accounts and regions.
+    Deploy only one aws-config-bucket per organization. It stores data from all accounts and regions.
     </Note>
 
     ```bash
-    atmos terraform apply config-bucket -s core-use1-audit
+    atmos terraform apply aws-config-bucket -s core-use1-audit
     ```
   </Step>
 
