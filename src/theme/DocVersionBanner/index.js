@@ -1,18 +1,17 @@
 import React from 'react';
-import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import {useDocsVersion} from '@docusaurus/plugin-content-docs/client';
+import {useActiveDocContext} from '@docusaurus/plugin-content-docs/client';
 import Admonition from '@theme/Admonition';
 
 export default function DocVersionBanner() {
-  const version = useDocsVersion();
+  const {activeVersion} = useActiveDocContext();
 
   // No banner needed if version info is not available
-  if (!version) {
+  if (!activeVersion) {
     return null;
   }
 
-  const {label, isLast} = version;
+  const {label, isLast} = activeVersion;
 
   // Latest version (v2) - green tip admonition
   if (isLast) {
