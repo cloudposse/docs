@@ -7,13 +7,20 @@ description:
 
 # Developing Components
 
+> **Scope:** This skill is generic and applies to any Cloud Posse reference architecture project. It covers patterns for
+> vendoring and creating Terraform components that are consistent across all customers.
+
 Components are opinionated Terraform root modules that implement a specific AWS resource with predefined conventions.
 
 ## Before Creating a New Component
 
 **Always check for existing components first.** Creating new components adds maintenance burden.
 
-### 1. Check Local Generic Components
+### 1. Check Local Components
+
+```bash
+ls components/terraform/
+```
 
 Many use cases can be solved by configuring existing generic components via catalog:
 
@@ -29,12 +36,58 @@ Browse https://docs.cloudposse.com/components/library/ for pre-built components.
 - `aurora-postgres`, `rds` - Databases
 - `elasticache-redis` - Caching
 - `ecs`, `ecs-service` - Container workloads
-- `cloudwatch-logs`, `sns-topic`, `sqs-queue` - AWS services
+- `s3-bucket`, `dynamodb`, `sqs-queue` - Storage and messaging
+- `cloudwatch-logs`, `sns-topic` - Monitoring and notifications
 
-To vendor a Cloud Posse component:
+#### Cloud Posse Component Sources
+
+| Resource               | Location                                                   |
+| ---------------------- | ---------------------------------------------------------- |
+| Component Library Docs | https://docs.cloudposse.com/components/library/            |
+| Component Repositories | `github.com/cloudposse-terraform-components/aws-<service>` |
+| Mixins Repository      | `github.com/cloudposse-terraform-components/mixins`        |
+
+**Find latest version:**
 
 ```bash
-# Add to component.yaml in the component directory, then:
+gh release view --repo cloudposse-terraform-components/aws-<component> --json tagName
+```
+
+#### Vendoring a Cloud Posse Component
+
+1. Create the component directory and `component.yaml`:
+
+```bash
+mkdir -p components/terraform/<component-name>
+```
+
+2. Create `components/terraform/<component-name>/component.yaml`:
+
+<!-- prettier-ignore-start -->
+
+```yaml
+apiVersion: atmos/v1
+kind: ComponentVendorConfig
+spec:
+  source:
+    uri: github.com/cloudposse-terraform-components/aws-<component>.git//src?ref={{ .Version }}
+    version: <latest-version>  # Use gh release view to find this
+    included_paths:
+      - "**/**"
+    excluded_paths:
+      - "providers.tf"
+  mixins:
+    # Use provider mixin without account-map dependency (for single-account deployments)
+    - uri: https://raw.githubusercontent.com/cloudposse-terraform-components/mixins/{{ .Version }}/src/mixins/provider-without-account-map.tf
+      version: v0.3.2
+      filename: providers.tf
+```
+
+<!-- prettier-ignore-end -->
+
+3. Pull the component:
+
+```bash
 atmos vendor pull -c <component-name>
 ```
 
