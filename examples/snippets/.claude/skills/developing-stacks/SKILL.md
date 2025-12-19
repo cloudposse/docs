@@ -7,32 +7,61 @@ description: >-
 
 # Developing Stacks
 
+> **Scope:** This skill is specific to the **acme** infrastructure repository. It documents the
+> stack structure, naming conventions, and deployment patterns used here. For generic component development, see
+> `developing-components`.
+
 Guide for configuring Atmos stacks to deploy Terraform components across environments.
 
 ## Stack Architecture Overview
 
-Stacks follow a hierarchical structure with inheritance at multiple levels:
+This repository uses a multi-tenant, multi-stage stack structure:
 
 ```
 stacks/
-├── orgs/acme/                    # Organization root
-│   ├── _defaults.yaml           # Org-wide defaults (namespace, backend, account_map)
-│   ├── plat/                    # Platform tenant
-│   │   ├── _defaults.yaml       # Tenant defaults (tenant: plat)
-│   │   ├── dev/                 # Dev stage
-│   │   │   ├── _defaults.yaml   # Stage defaults + auth identity
-│   │   │   └── us-east-2/       # Region
-│   │   │       ├── foundation.yaml
-│   │   │       ├── platform.yaml
-│   │   │       └── app.yaml
-├── catalog/                     # Component defaults library
+├── orgs/acme/                         # Organization root (namespace: acme)
+│   ├── _defaults.yaml                # Org-wide defaults (namespace, backend, account_map)
+│   ├── core/                         # Core tenant (shared infrastructure)
+│   │   ├── _defaults.yaml            # Tenant defaults (tenant: core)
+│   │   ├── root/                     # Root account stage
+│   │   │   ├── _defaults.yaml        # Stage defaults + auth identity
+│   │   │   └── global-region/        # Global region (us-east-1)
+│   │   │       └── foundation.yaml
+│   │   ├── auto/                     # Automation account
+│   │   ├── artifacts/                # Artifacts account (ECR, S3)
+│   │   ├── audit/                    # Audit/logging account
+│   │   ├── dns/                      # DNS account
+│   │   ├── network/                  # Network account (TGW, VPN)
+│   │   └── security/                 # Security account
+│   └── plat/                         # Platform tenant (workloads)
+│       ├── _defaults.yaml            # Tenant defaults (tenant: plat)
+│       ├── dev/                      # Dev stage
+│       │   ├── _defaults.yaml        # Stage defaults + auth identity
+│       │   ├── global-region/        # Global resources (IAM)
+│       │   │   └── foundation.yaml
+│       │   └── us-east-1/              # Primary region
+│       │       ├── foundation.yaml   # VPC, networking
+│       │       ├── platform.yaml     # ECS/EKS, databases
+│       │       └── app.yaml          # Application resources
+│       ├── staging/                  # Staging stage
+│       ├── prod/                     # Production stage
+│       └── sandbox/                  # Sandbox stage
+├── catalog/                          # Component defaults library
 │   ├── vpc/defaults.yaml
 │   ├── ecs/defaults.yaml
+│   ├── eks/cluster/defaults.yaml
 │   └── ...
-└── mixins/                      # Reusable fragments
-    ├── region/us-east-2.yaml
+└── mixins/                           # Reusable fragments
+    ├── region/us-east-1.yaml
     └── stage/dev.yaml
 ```
+
+**Stack name format:** `{namespace}-{tenant}-{region_short}-{stage}`
+
+Examples for this repository:
+- `acme-core-use1-root` - Core root account in us-east-1
+- `acme-plat-use1-dev` - Platform dev in us-east-1
+- `acme-plat-use1-prod` - Platform prod in us-east-1
 
 ## Core Patterns
 
@@ -66,10 +95,10 @@ components:
 Import the catalog and inherit from the abstract component in your target stack:
 
 ```yaml
-# stacks/orgs/acme/plat/dev/us-east-2/foundation.yaml
+# stacks/orgs/acme/plat/dev/us-east-1/foundation.yaml
 import:
   - orgs/acme/plat/dev/_defaults
-  - mixins/region/us-east-2
+  - mixins/region/us-east-1
   - catalog/vpc/defaults
 
 components:
@@ -80,7 +109,7 @@ components:
         inherits:
           - vpc/defaults # Inherits from the abstract component
       vars:
-        ipv4_primary_cidr_block: 10.0.0.0/16 # Override for this environment
+        ipv4_primary_cidr_block: 10.2.0.0/16 # Dev environment CIDR
 ```
 
 **Inheritance merging:**
@@ -146,7 +175,7 @@ terraform:
   backend_type: s3
   backend:
     s3:
-      bucket: acme-core-use2-root-tfstate
+      bucket: acme-core-use1-root-tfstate
       # ...
 
 # stacks/orgs/acme/plat/_defaults.yaml (tenant level)
@@ -215,11 +244,11 @@ components:
 # Validate the stack configuration
 atmos validate stacks
 
-# See the resolved configuration
-atmos describe component <component> -s <stack>
+# See the resolved configuration (example for dev)
+atmos describe component <component> -s acme-plat-use1-dev
 
 # Plan the deployment
-atmos terraform plan <component> -s <stack>
+atmos terraform plan <component> -s acme-plat-use1-dev
 ```
 
 ## Stack File Organization
@@ -236,6 +265,64 @@ Stack files are organized by layer:
 
 ## Common Patterns
 
+### Catalog Organization for Multiple Purposes
+
+When deploying multiple instances of the same component for different purposes, organize the catalog with abstract
+defaults and purpose-specific files that inherit from them:
+
+```
+stacks/catalog/
+└── <component>/
+    ├── defaults.yaml    # Abstract base component (not deployed directly)
+    └── <purpose>.yaml   # Purpose-specific configuration
+```
+
+**Abstract defaults file** (`stacks/catalog/<component>/defaults.yaml`):
+
+```yaml
+components:
+  terraform:
+    <component>/defaults:
+      metadata:
+        type: abstract # Not deployed directly
+        component: <component> # Points to Terraform component
+      vars:
+        enabled: true
+        # Organization-wide defaults for this component
+```
+
+**Purpose-specific catalog file** (`stacks/catalog/<component>/<purpose>.yaml`):
+
+```yaml
+import:
+  - catalog/<component>/defaults
+
+components:
+  terraform:
+    <component>/<purpose>:
+      metadata:
+        component: <component> # Points to Terraform component
+        inherits:
+          - <component>/defaults # Inherits from abstract component
+      vars:
+        # Only include values that differ from defaults (keep it DRY)
+        name: <purpose>-specific-name
+        some_setting: override-value # Overrides default
+```
+
+**Import in target stack:**
+
+```yaml
+import:
+  - catalog/<component>/<purpose>
+```
+
+**Deploy:**
+
+```bash
+atmos terraform plan <component>/<purpose> -s acme-plat-use1-dev
+```
+
 ### Environment-Specific CIDR Blocks
 
 ```yaml
@@ -248,7 +335,16 @@ components:
       vars:
         # No CIDR here - must be specified per environment
 
-# stacks/orgs/acme/plat/dev/us-east-2/foundation.yaml
+# stacks/orgs/acme/plat/dev/us-east-1/foundation.yaml
+components:
+  terraform:
+    vpc:
+      metadata:
+        inherits: [vpc/defaults]
+      vars:
+        ipv4_primary_cidr_block: 10.2.0.0/16
+
+# stacks/orgs/acme/plat/prod/us-east-1/foundation.yaml
 components:
   terraform:
     vpc:
@@ -256,15 +352,6 @@ components:
         inherits: [vpc/defaults]
       vars:
         ipv4_primary_cidr_block: 10.0.0.0/16
-
-# stacks/orgs/acme/plat/prod/us-east-2/foundation.yaml
-components:
-  terraform:
-    vpc:
-      metadata:
-        inherits: [vpc/defaults]
-      vars:
-        ipv4_primary_cidr_block: 10.1.0.0/16
 ```
 
 ### Cross-Component Dependencies
@@ -314,10 +401,10 @@ components:
 
 ```bash
 # See fully resolved configuration
-atmos describe component <component> -s <stack>
+atmos describe component <component> -s acme-plat-use1-dev
 
 # See all components in a stack
-atmos describe stacks -s <stack>
+atmos describe stacks -s acme-plat-use1-dev
 
 # Validate all stacks
 atmos validate stacks

@@ -72,6 +72,7 @@ atmos terraform clean <component> -s <stack>     # Destroys local .terraform and
 ## Important Notes
 
 - Uses **OpenTofu** (not Terraform) - `command: "tofu"` in atmos.yaml
+- **Never run `tofu init` or `terraform init` directly** in component directories. Atmos handles initialization automatically when running `atmos terraform plan/apply`.
 - Prefer `!terraform.state` in stack YAML over `remote-state.tf` files
 - Prefer existing generic components (`iam-role`, `s3-bucket`, `lambda`) over creating new ones
 - Set `account_map_enabled: false` - uses static `account_map` variable, not account-map component
