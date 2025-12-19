@@ -157,8 +157,7 @@ async function createConfig() {
             onInlineTags: 'ignore',
             tags: 'tags.yml',
             include: ['**/*.md', '**/*.mdx'],
-            // Versioning configuration - versions are created automatically on major releases
-            // See .github/workflows/docs-version-on-release.yml
+            // Versioning configuration - see internal/docs-versioning.md for how to create new versions
             includeCurrentVersion: true,
             // Custom paths for versioned docs
             path: 'docs',
