@@ -1,0 +1,291 @@
+---
+title: "How to Create and Setup AWS Accounts"
+sidebar_label: "Create AWS Accounts"
+sidebar_position: 24
+description: Guide for creating and setting up new AWS accounts
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+<Intro>
+This guide covers the process of creating and setting up new AWS accounts. It includes detailed instructions for updating account catalogs, configuring stack settings, deploying necessary components, and managing AWS account profiles.
+</Intro>
+
+## Problem
+
+Setting up new AWS accounts can be complex and error-prone without proper guidance and tooling.
+
+## Solution
+
+This guide provides a step-by-step approach to create and configure new AWS accounts using Cloud Posse's reference architecture components and conventions.
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Update Account Catalog
+
+    First, add the new account to your account catalog configuration. This defines the account structure within your AWS Organization.
+
+    Navigate to your account catalog file (typically `stacks/catalog/account.yaml`) and add the new account under the appropriate Organizational Unit (OU).
+
+    **Example for a new account named `foobar`:**
+
+    ```yaml
+    organizational_units:
+      - name: core
+        accounts:
+          # ... existing accounts ...
+          - name: foobar
+            stage: foobar
+            tags:
+              eks: false
+    ```
+
+    <Note title="Important">
+      Choose the appropriate OU based on your organization's account strategy. Common OUs include `core` for core infrastructure and `plat` for platform accounts.
+    </Note>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Create Stack Configuration Files
+
+    Create the corresponding stack configuration files for your new account in the `stacks/orgs/<namespace>/<tenant>/<stage>` folder (or follow the convention your organization uses). See the following example where the namespace is `acme`, the tenant is `core`, and the stage is `foobar`.
+
+    **Example Directory Structure:**
+
+    For a new account `foobar` in the `core` tenant under namespace `acme`:
+
+    ```
+    stacks/orgs/acme/core/foobar/
+    ├── _defaults.yaml
+    ├── global-region/
+    │   ├── baseline.yaml          # Account settings
+    │   └── identity.yaml          # AWS Team Roles
+    └── us-east-1/
+        ├── baseline.yaml          # Regional baseline
+        └── app.yaml               # Regional application platform
+    ```
+
+    <Note title="Recommendation">
+      Start with a basic global-region stack for account settings and create placeholder regional stacks for future expansion. You can add more regional stacks and components as your account requirements grow.
+    </Note>
+
+    <Steps>
+      <Step>
+        ### <StepNumber/> Define Stage Mixin
+  By convention, we treat every account as an operating stage. Stages are configured as mixins, so that each stack operating in that stage can import that mixin to have a consistent stage name.
+        **For example:** `stacks/mixins/stage/foobar.yaml`
+
+        Create a mixin file for your stage to keep configuration DRY. This file contains only variables.
+
+        ```yaml
+        # This file is for vars only; do not import components here
+        # For more information, see "Mixins and Imports with Atmos" in the baseline documentation
+        vars:
+          stage: foobar
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> Configure Account Defaults
+
+        **For example:** `stacks/orgs/acme/core/foobar/_defaults.yaml`
+
+        This file is necessary for keeping configuration DRY and establishing common settings to be imported in all subsequent files.
+
+        ```yaml
+        import:
+          - orgs/acme/core/_defaults
+          - mixins/stage/foobar
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> Configure Account Settings
+
+        **For example:** `stacks/orgs/acme/core/foobar/global-region/baseline.yaml`
+
+        This file configures account-level settings and policies.
+
+        ```yaml
+        import:
+          - orgs/acme/core/foobar/_defaults
+          - mixins/region/global-region
+          - catalog/account-settings
+
+        components:
+          terraform:
+            account-settings:
+              vars:
+                # Allow creating public S3 buckets in this account
+                # Public buckets are used, for example, to deploy documentation websites into preview environments and serve them via Lambda@Edge
+                block_public_acls: false
+                ignore_public_acls: false
+                block_public_policy: false
+                restrict_public_buckets: false
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> Configure AWS Team Roles
+
+        **For example:** `stacks/orgs/acme/core/foobar/global-region/identity.yaml`
+
+        This file configures cross-account IAM roles and team access permissions.
+
+        ```yaml
+        import:
+          - orgs/acme/core/foobar/_defaults
+          - mixins/region/global-region
+          - catalog/aws-team-roles
+
+        components:
+          terraform:
+            aws-team-roles:
+              vars:
+                roles:
+                  reader:
+                    trusted_teams:
+                      - devops
+                      - developers
+                      - managers
+                  poweruser:
+                    trusted_teams:
+                      - devops
+                      - developers
+                      - managers
+                  terraform:
+                    trusted_teams:
+                      - devops
+                      - developers
+                      - managers
+                      - gitops
+        ```
+      </Step>
+
+      <Step>
+        ### <StepNumber/> Regional Stack
+
+        **For example:** `stacks/orgs/acme/core/foobar/us-east-1/baseline.yaml`
+
+        Create regional stacks based on your specific needs. Start with a basic placeholder that you can expand later.
+
+        ```yaml
+        import:
+          - orgs/acme/core/foobar/_defaults
+          - mixins/region/us-east-1
+
+        components:
+          terraform: {}
+        ```
+      </Step>
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Submit and Merge Configuration PR
+
+    Create a pull request with your configuration changes. This is a critical step because once the account is created, it's difficult to reverse the process.
+
+    <Note title="Best Practice">
+      Always review configuration changes carefully before merging, as account creation is irreversible and affects your AWS Organization structure.
+    </Note>
+
+    Once the PR is reviewed, approved, and merged, proceed to the next step.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Account Infrastructure
+
+    Deploy the necessary components to create and configure your new account. Use `plan` and `apply` commands without `-auto-approve` for safety.
+
+    **Prerequisites:**
+    - Ensure you have `SuperAdmin`, `managers`, or appropriate elevated permissions
+
+    **Deploy Components:**
+
+    ```bash
+    # Create the new account
+    atmos terraform apply account --stack core-gbl-root
+
+    # Update account map to include the new account
+    atmos terraform apply account-map --stack core-gbl-root
+
+    # Configure account settings for the new account
+    atmos terraform apply account-settings --stack core-gbl-foobar
+
+    # Deploy AWS Team Roles to enable cross-account access
+    atmos terraform apply aws-team-roles --stack core-gbl-foobar
+    ```
+
+    <Note title="Component Order">
+      The order of deployment is important. The `account` component creates the account, `account-map` updates the account mapping required to map accounts to IAM roles, `account-settings` configures the account, and `aws-team-roles` enables cross-account role assumption.
+    </Note>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Complete Account Setup via ClickOps
+
+    After deploying the account infrastructure, you need to perform some manual configurations to finalize the account setup.
+
+    **Recommended Steps:**
+    <Steps>
+    - Reset the root user password and set up MFA
+    - Enable any necessary optional AWS regions
+    - Unsubscribe the account's email address from marketing emails
+    </Steps>
+
+    <Note title="Important">
+      Save the root credentials, MFA TOTP key, and account number in 1Password. Use a highly restricted vault, and only share access on a strict need-to-know basis.
+    </Note>
+
+    For detailed step-by-step instructions, see [Complete Account Setup via ClickOps](/layers/accounts/deploy-accounts/#step-number-clickops-to-complete-account-setup).
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Update AWS Configuration
+
+    After deploying the infrastructure components, update your AWS configuration files to include the new account.
+
+    **Generate AWS Configuration Files:**
+
+    <AtmosWorkflow workflow="update-aws-config" fileName="quickstart/foundation/identity" />
+
+    **Commit and Push Changes!**
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Verify Account Setup
+
+    Verify that your new account has been properly configured and is accessible.
+
+    **Check Account Creation:**
+    <Steps>
+    - Verify the account appears in your AWS Organization console
+    - Confirm the account has the correct email address and tags
+    - Ensure the account is in the correct Organizational Unit
+    </Steps>
+
+    <Steps>
+    **Test Cross-Account Access:**
+    - Verify you can assume roles in the new account from your identity account
+    - Test Terraform operations in the new account
+    - Confirm AWS Team Roles are properly configured
+    </Steps>
+
+    <Note title="Troubleshooting">
+      If you encounter issues, check the Terraform outputs from each component deployment for error messages and configuration details.
+    </Note>
+  </Step>
+</Steps>
+
+## References
+
+- [How to Delete AWS Accounts](/layers/accounts/tutorials/how-to-delete-aws-accounts) (in case a mistake was made)
+- [AWS Teams and Team Roles](/layers/identity/centralized-terraform-access)
+- [Account Management](/layers/accounts)
+- [Identity and Access Management](/layers/identity)

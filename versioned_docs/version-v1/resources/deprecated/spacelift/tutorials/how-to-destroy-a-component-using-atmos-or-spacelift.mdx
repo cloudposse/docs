@@ -1,0 +1,190 @@
+---
+title: "How to Destroy a Component using `atmos` or Spacelift"
+sidebar_label: "Destroy a Component"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+You want to destroy a component that was provisioned with terraform (i.e. its is no longer needed or for development purposes want to destroy and recreate it).
+
+There are a few different ways to destroy a component in a stack using `atmos` or Spacelift, depending on what you want to achieve. It’s important to understand the tradeoffs and why there isn’t just one way of doing it.
+
+In this guide, we explain the various options and the gotchas you might encounter along the way.
+
+## Considerations
+- **Auto destruction.** If we simply remove the component from the stack configuration, it will orphan resources whether or not auto destruction is enabled.
+
+- **Guard rails.** If we enable auto destruction across the board, it too easy for accidental deletion of production resources.
+
+- **Audit trails.** If we use `atmos` on the command line, the space lift audit trail is bypassed (there’s still cloud trail logs)
+
+- **Component dependencies.** If we destroy a component that other components depend on via remote-state, then when the component is destroyed the remote-state will be lost and those dependent components will be unable to plan (or destroy). This means the order of operations is very important.
+
+## Solution
+These are the main ways of destroying a component in a stack (each one described in more details in its own section below):
+
+:::tip
+- Run `atmos terraform destroy <component> -s <stack>` in `geodesic` on local computer
+
+- Run `terraform apply -destroy -auto-approve` from the Spacelift “Tasks” tab for the corresponding stack
+
+- Set `enabled: false` in the component YAML config and run `atmos terraform apply <component> -s <stack>` in `geodesic` on local computer
+
+- Set `enabled: false` in the component YAML config and run `terraform apply -auto-approve` from the Spacelift “Tasks” tab for the corresponding stack
+
+- A (potentially) 2-step process:
+
+- Set `settings.spacelift.stack_destructor_enabled: true` in the component YAML config if it was not set already, then open and merge a PR with that change and update the administrative stack.
+
+- In a subsequent PR, set `settings.spacelift.workspace_enabled: false` in the component YAML config to destroy the Spacelift stack and the component at the same time
+
+**IMPORTANT NOTES:**
+
+1. In all of the above scenarios, the component configuration must remain present in the stack. This is a requirement of Terraform: all the required variables must have values supplied, even when destroying a component. Only after following the above steps to destroy the components can you then remove the component configuration.
+
+2. You may choose to set `settings.spacelift.stack_destructor_enabled: true` in the stacks in advance, perhaps at a global level. If you do so, you still must merge and apply a PR setting `settings.spacelift.workspace_enabled: false` before removing the component from the stack, or else Spacelift will try to destroy the resources (even if none exist) and be unable to, which will block the deletion of the Spacelift stack.
+
+:::
+
+### **Option 1**: Run `atmos terraform destroy <component> -s <stack>` in `geodesic` on local computer
+In `geodesic`, run the following command:
+
+```
+atmos terraform destroy <component> -s <stack>
+```
+
+#### Pros
+1. One of the fastest ways of destroying a component in a stack
+
+#### Cons
+1. No audit records at all of who did what, when and why
+
+2. Someone can accidentally run the command and destroy the component without other people knowing about it, reviewing and approving it
+
+Not recommended.
+
+### **Option 2**: Run `terraform destroy -auto-approve` from the Spacelift “Tasks” tab for the corresponding stack
+From the Spacelift “Tasks” tab for the corresponding stack, run the following command:
+
+```
+terraform destroy -auto-approve
+```
+
+#### Pros
+1. One of the fastest ways of destroying a component in a stack
+
+2. The record (who did it and the result of the command execution) will remain in Spacelift UI
+
+#### Cons
+1. Disconnect from the Source Control System, no audit records in Git/GitHub - this will create a situation when the component is destroyed, but the repository has no corresponding record about it, which will force Terraform to recreate the component again on `terraform plan`
+
+2. Someone (with Spacelift access) can accidentally run the command and destroy the component without other people knowing about it, reviewing and approving it
+
+Not recommended.
+
+### **Option 3**: Set `enabled: false` in the component YAML config and run `atmos terraform apply <component> -s <stack>` in `geodesic` on local computer
+Open a pull request and set the variable `enabled: false` in the component YAML config:
+
+```
+components:
+  terraform:
+    my-component:
+      settings:
+        spacelift:
+          workspace_enabled: true
+      vars:
+        enabled: false   # set this to `false`
+```
+After the PR is reviewed, approved and merged, run the following command from `geodesic`:
+
+```
+atmos terraform apply <component> -s <stack>
+```
+Note that the component needs to support the `enabled` variable on all modules and resources to be able to destroy it by setting `enabled` to `false`.
+
+#### Pros
+1. There will be an audit record in Git of who did it, when, and the most importantly, why the component was destroyed
+
+2. Can be easily reverted by reviewing the pull request that destroyed the component, and then setting `enabled` back to `true` and running `terraform apply` again
+
+#### Cons
+1. It’s a multi-step process: 1) open a PR with the change; 2) wait for the PR review and approval; 3) merge the PR; 4) apply the change
+
+2. The component needs to support the `enabled` pattern on all modules and resources
+
+### **Option 4**: Set `enabled: false` in the component YAML config and run `terraform apply -auto-approve` from the Spacelift “Tasks” tab for the corresponding stack
+Open a pull request and set the variable `enabled: false` in the component YAML config:
+
+```
+components:
+  terraform:
+    my-component:
+      settings:
+        spacelift:
+          workspace_enabled: true
+      vars:
+        enabled: false   # set this to `false`
+```
+
+After the change has been pushed to the PR, Spacelift will trigger a proposed run on the stack, and you can review the result of `terraform plan`  in the “PRs” tab for the corresponding stack in the Spacelift UI. Note that since the component has been disabled, the plan should show all the steps Terraform would take to destroy all the resources for the component.
+
+After `terraform plan` is reviewed in the Spacelift UI, and the PR is reviewed, approved and merged into the default branch, Spacelift will trigger a tracked run on the stack which will run `terraform apply` (you can view it in the "Runs" tab), and will destroy the component.
+
+#### Pros
+1. There will be an audit record in Git of who did it, when, and the most importantly, why the component was destroyed
+
+2. There will be an audit record in Spacelift of who triggered the stack and when, and from what Git commit
+
+3. Can be easily reverted by setting `enabled` back to `true` and running the steps described above again
+
+#### Cons
+1. It’s a multi-step process: 1) open a PR with the change; 2) review the result of `terraform plan` in Spacelift “PRs” tab; 3) wait for the PR review and approval; 4) merge the PR; 5) review the result of `terraform apply` in the “Runs” tab of the Spacelift UI
+
+2. The component needs to support the `enabled` pattern on all modules and resources
+
+### **Option 5**: Set `settings.spacelift.workspace_enabled: false` in the component YAML config to destroy the Spacelift stack and the component at the same time
+If you want to destroy a component and the corresponding Spacelift stack at the same time, you can set `settings.spacelift.workspace_enabled: false` in the component YAML config.
+
+Note that for this to work, Spacelift stack destructor ([https://registry.terraform.io/providers/spacelift-io/spacelift/latest/docs/reference/stack_destructor](https://registry.terraform.io/providers/spacelift-io/spacelift/latest/docs/reference/stack_destructor)) must have  been already enabled on the component by setting `settings.spacelift.stack_destructor_enabled` to `true` in YAML config (or alternatively, the destructor can be enabled on all stacks by setting the variable `stack_destructor_enabled` to `true` in the `spacelift` component). If the stack destructor was not enabled before, you can do so by setting `stack_destructor_enabled` to `true` in a separate PR.
+
+Open a pull request and set `settings.spacelift.workspace_enabled: false` in the component YAML config:
+
+```
+components:
+  terraform:
+    my-component:
+      settings:
+        spacelift:
+          stack_destructor_enabled: true   # this must have been already set to `true`
+          workspace_enabled: false   # set this to `false`
+```
+
+After the change has been pushed to the PR, Spacelift will trigger a proposed run on the admin `infrastructure` stack, and you can review the result of `terraform plan`  in the “PRs” tab for the corresponding stack in the Spacelift UI. Note that it will show a `tarrform plan` to destroy the component’s Spacelift stack, not the component itself.
+
+After `terraform plan` is reviewed in the Spacelift UI, and the PR is reviewed, approved and merged into the default branch, Spacelift will trigger a tracked run on the `infrastructure` stack which will run `terraform apply` (you can view it in the "Runs" tab), and will destroy the Spacelift stack. After that, Spacelift will trigger the component’s stack and destroy the component itself and all the compoenet’s resources.
+
+#### Pros
+1. There will be an audit record in Git of who did it, when, and the most importantly, why the component was destroyed
+
+2. There will be an audit record in Spacelift of who triggered the stack and when, and from what Git commit
+
+3. Can be easily reverted by setting `settings.spacelift.workspace_enabled` back to `true` and running the steps described above again
+
+#### Cons
+1. It’s a multi-step process: 1) open a PR with the change; 2) review the result of `terraform plan` in Spacelift “PRs” tab for the `infrastructure` stack; 3) wait for the PR review and approval; 4) merge the PR; 5) review the result of `terraform apply` in the “Runs” tab of the Spacelift UI or the `infrastructure` stack; 6) review the component’s stack triggered run in the “Runs” tab of the component’s stack
+
+2. Spacelift stack destructor must have  been already enabled on the component
+
+## Additional Notes
+Pay attention to the following:
+
+1. If the component you want to destroy has dependencies (other components that depend on it), destroying the component will throw an error. For example, if you try to destroy a VPC and you have other resources deployed into it (e.g. EKS or Aurora Postgres clusters), destroying the VPC will fail. Likewise, if you have a Security Group that is already attached to the ENIs of some EC2 instances, destroying the Security Group will fail.
+
+2. Components can be divided into two categories: 1) AWS resources (e.g. EKS or database clusters); 2) internal resources that are deployed inside AWS resources (e.g. `helm` or `kubernetes` releases deployed into the EKS clusters using Terraform `helm` and `kubernetes` providers, or additional users and databases deployed to Aurora Postgres clusters using the Terraform `postgres` provider). If you destroy the AWS resources (EKS or Aurora clusters), the internal resources will be destroyed as well, but they will remain in the Terraform state of the corresponding components. To get around this, when you destroy AWS resources like EKS or Aurora clusters, destroy the internal components (helm/kubernetes releases, additional databases and users) first. If you don’t destroy the internal components first, you’ll have to manually fix the Terraform state.
+
+3. If you have AWS resources deployed into VPC private subnets (for example, Aurora Postgres clusters), and you use a VPN to access them (for example, to access databases in the cluster), make sure you are on the VPN before attempting to destroy the resources. Otherwise, Terraform will not be able to access the resources in the private subnets, and any attempt to destroy will fail (in this case, `terraform plan` will fail as well).
+
+

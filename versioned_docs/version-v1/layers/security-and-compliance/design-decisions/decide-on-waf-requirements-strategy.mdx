@@ -1,0 +1,42 @@
+---
+title: "Decide on WAF Requirements/Strategy"
+sidebar_label: "WAF Requirements"
+sidebar_position: 100
+refarch_id: REFARCH-384
+description: "Decide on WAF requirements and strategy"
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+## Problem
+
+ALBs have very limited capabilities to fend off attacks by themselves. Using Security Groups is not a scalable solution. [The number of inbound/outbound rules is limited to a max of 120 (60 ea)](https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html#vpc-limits-security-groups). To thwart any sort of Denial of Service (DoS) attack, more tools are required. Moreover, not all attacks are as easily identified as DoS attacks. Other threat vectors include SQL injection, XSS, etc. The older your applications, the more external dependencies you have, the greater the attack surface area.
+
+## Solution
+
+Deploy a Web Application Firewall (WAF) capable of performing Layer-7 inspection and mitigation.
+
+:::info
+Our recommendation is to deploy the AWS WAF with the AWS Managed Rules for the [https://owasp.org/www-project-top-ten/](https://owasp.org/www-project-top-ten/).
+[https://aws.amazon.com/marketplace/solutions/security/waf-managed-rules](https://aws.amazon.com/marketplace/solutions/security/waf-managed-rules)
+
+:::
+
+## Considerations
+
+- ALB/NLB won’t provide TLS in-transit with nitro instances
+
+- AWS WAF only works with ALBs
+
+- We need to terminate TLS at the Kubernetes ingress layer (e.g. with cert-manager and ZeroSSL) in order to deliver end to end encryption
+
+- Cloudflare Argo tunnel will work without exposing the cluster endpoints directly to the internet
+
+Our recommendation is to use AWS WAF with ALB load balancers, then use AWS Nitro instances for e2e encryption inside EKS, and self-signed certs between the ALB and the pods.
+
+## References
+
+- [https://github.com/cloudposse/terraform-aws-waf](https://github.com/cloudposse/terraform-aws-waf)

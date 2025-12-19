@@ -1,0 +1,70 @@
+---
+title: "Security and Compliance"
+sidebar_label: "Security and Compliance"
+sidebar_class_name: hidden
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+
+## Problem
+
+We need to ensure your AWS Organization meets certain benchmarks for compliance (e.g. HIPAA, PCI/DSS, etc). Your AWS
+accounts contain thousands of resources, making it impossible to audit without automation. Setting up the automation by
+hand is tedious and error-prone.
+
+## Solution
+
+Deploy a set of Cloud Posse components to enable SecurityHub, GuardDuty, AWS Config, and more!
+
+:::caution
+
+It is very important that you read these docs and follow all of the steps carefully and in order. Failure to do so may
+result in a condition that needs to be manually cleaned up across tens of regions in each of your accounts.
+
+:::
+
+### Related Components
+
+- [aws-config](/components/library/aws/aws-config/)
+- [guardduty](/components/library/aws/guardduty/)
+- [security-hub](/components/library/aws/security-hub/)
+
+<Note title="Note">
+The older `compliance` and `compliance-root` components are deprecated as of July 2023. We recommend moving to our new
+[`aws-config`](/components/library/aws/aws-config/), [`guardduty`](/components/library/aws/guardduty/), and
+[`security-hub`](/components/library/aws/security-hub/) components.
+</Note>
+
+### Background Info
+
+The AWS Config, Security Hub, and GuardDuty services must be configured in every enabled region in each of your AWS
+accounts. Unfortunately, [AWS does not support](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html)
+disabling regions which were introduced prior to March 20, 2019. These regions are enabled by default. The table below
+lists the regions that cannot be disabled.
+
+:::info
+
+In addition to the regions below, the AWS services listed above must also be deployed to any regions you opted into.
+
+:::
+
+|                |                |           |           |
+| -------------- | -------------- | --------- | --------- |
+| ap-northeast-1 | ap-southeast-2 | eu-west-2 | us-west-1 |
+| ap-northeast-2 | ca-central-1   | eu-west-3 | us-west-2 |
+| ap-northeast-3 | eu-central-1   | sa-east-1 |           |
+| ap-south-1     | eu-north-1     | us-east-1 |           |
+| ap-southeast-1 | eu-west-1      | us-east-2 |           |
+
+The Cloud Posse AWS Config, Guard Duty, and Security Hub components (the "Components") are responsible for deploying
+these AWS services in a sane way. At the AWS Organizational level, the Components designate an account to be the primary
+account within the AWS Organization responsible for configuring the service. This is referred to as the Delegated
+Administrator account. In addition, where possible, the Components designate a single region to be the “central
+collection region” so that compliance information can be aggregated into a single region.
+
+In a typical REFARCH setup, the logs are written to the `audit` account, the AWS services (Config, Security Hub, and
+GuardDuty) are deployed to the `security` account, and the Organizational management account (`root` account) is used to
+delegate `security` as the Delegated Administrator account. The central collection region is usually the same as the
+primary region used in your platform accounts for hosting your application workloads.
+

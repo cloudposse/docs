@@ -1,0 +1,119 @@
+---
+title: "AWS Feature Requests and Limitations"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+# AWS Feature Requests and Limitations
+
+### ALB/ELB Default TLS Support
+**Use-case:** e2e encryption behind CDN (E.g. CloudFlare)
+
+**Use-case:** turnkey CloudFormation template to create a secure stack without requiring DNS or email validation (difficult to obtain in enterprise environments)
+
+Resources like RDS clusters/instances and Elasticache Redis support TLS out-of-the-box without a dependency on ACM. Load balancers should support the same to facilitate end-to-end encryption by default. For example, origins fronted by a CDN do not need any sort of branded/vanity hostnames and would suffice with an [amazonaws.com](http://amazonaws.com) TLS certificate.
+
+### Facilitate AWS Account Automation
+**Use-case:** e2e automation of AWS accounts (full SDLC)
+
+AWS accounts are today treated as scarce quantities and pets. Net-new AWS accounts are not permitted to raise the limit, yet a standard well-architected infrastructure includes about a dozen accounts (master, identity, prod, staging, uat, dev, network, workspaces, sandbox, audit, security, data, etc)
+
+<i>Once accounts are created, they cannot be easily destroyed and require human intervention.</i> This precludes e2e CI/CD testing of account automation.
+
+Account email addresses are one-time-use. After destroying an account, it cannot be recreated using the same email address, requiring a roundabout way of first renaming the address on-file before destroying.
+
+AWS already has the concept of Organizations with master accounts and child accounts. This could be extended to allow for automation accounts, which would inherit limits from parent accounts (or perhaps take a fraction of the parent account’s limit) when they are created and restore the limits to the parent account when they are deleted. Similar to KMS keys, they could pass through a frozen stage where they have a limited lifespan where they can be revived, but preferably, accounts less than 1 day old could be deleted immediately.
+
+### [Launched] Managed Prometheus-compatible Time Series Database
+
+:::info
+AWS Launched Amazon Managed Service for Prometheus which provides highly available, secure, and managed monitoring for your containers [https://aws.amazon.com/prometheus/](https://aws.amazon.com/prometheus/)
+
+:::
+
+~~AWS provides a time series service called Timestream, but it does not support a format compatible with Prometheus. Prometheus~~ [~~<i>won’t support it</i>~~](https://github.com/prometheus/prometheus/issues/5086) ~~out-of-the-box. Given that Prometheus is the most popular open source monitoring framework, this would be a big win and a great way to increase adoption for Timestream.~~
+
+<img src="/assets/refarch/hqgln2qu-n3ghkdsczbcbruu0ucd24smrhugyw9xpxivusnxd7eeqwd6gjzotwe5" /><br/>
+
+### More flexible high-level CDK constructs
+
+We were severely hampered in our use of high-level CDK constructs because we wanted to create an environment-agnostic CFT that deploys into an existing VPC. We created the CFT using low level constructs that took VPC ID and subnets as parameters, but it would have been much easier for us if we could have fed those parameters into the high level constructs where they currently require a full VPC object created at synth time.
+
+One specific example, we cannot create CloudWatch Metrics or Alarms on the Application Load Balancer we create in our CFT because that requires text processing of the Load Balancer ARN, which the CDK’s `Arn.parse` method is [<i>explicitly documented as being unable to do</i>](https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.core/Arn.html#aws_cdk.core.Arn.parse). If we used the high-level `ApplicationLoadBalancer` construct, it would provide us with `Metric` objects, but we cannot use it because [<i>it requires an</i>](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-elasticloadbalancingv2.ApplicationLoadBalancer.html#metricmetricname-props) `IVpc` <i>object</i>.
+
+### Better CDK documentation
+
+We understand documentation is hard, and there is voluminous documentation for the CDK, but at the same time, the documentation is largely at a very low level that leaves a lot of gaps. For example [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html)  explains that `AWS::EC2::Volume` supports a DeletionPolicy of Snapshot, but we have been stumped about how to use that in conjunction with an EC2 instance set to “delete on termination” an EBS data volume, to the point where we are not even sure it is truly supported.
+
+Similarly, we could not find examples about how to set up, using the Python CDK, a stack that has CloudWatch metrics and alarms that would monitor instance metrics for EC2 instances launched as part of an AutoScaling Group. All we could find were alarms on the AutoScaling Group itself, such as `autoscaling:EC2_INSTANCE_LAUNCH_ERROR`.
+
+We found [<i>this note</i>](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-autoscaling-readme.html#future-work) but disagreed about what it means:
+
+`Future Work: CloudWatch Events (impossible to add currently as the AutoScalingGroup ARN is necessary to make this rule and this cannot be accessed from CloudFormation).`
+
+Does that mean we also cannot set up CloudWatch Metrics and Alarms?
+
+Here is another [<i>random example</i>](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.CreateAlarmOptions.html#evaluatelowsamplecountpercentile): `evaluateLowSampleCountPercentile` is a `string` that “specifies whether to evaluate the data and potentially change the alarm state if there are too few data points to be statistically significant.” Why is that a `string`? How is the string interpreted? I would expect it to be a boolean given the variable name.
+
+### Account Limit operations should be available via API
+
+Currently, AWS does not provide a generally available way to alert when limits are reached. This is adverse to providing an ultimately stable platform for your customers. Reaching limits is something that can happen when you least expect it and lead to forced outages. AWS needs to make it easier to programmatically increase these limits (e.g. via an API we can call from terraform) and trigger alerts when thresholds are met.
+
+[<i>https://aws.amazon.com/solutions/implementations/limit-monitor/</i>](https://aws.amazon.com/solutions/implementations/limit-monitor/)
+
+[https://github.com/awslabs/aws-limit-monitor](https://github.com/awslabs/aws-limit-monitor)
+
+<img src="/assets/refarch/bv36idevyp2qbdm8iatxgiahrx-aod2z94hwqtlm4iwv4ngao1mqet9q9ho7eaa3" /><br/>
+
+### [Launched] EKS Managed Node Groups Custom Userdata support
+
+**~~Use-case~~**~~: building containers with “Docker in Docker” with Jenkins on managed node groups~~
+
+~~[https://github.com/aws/containers-roadmap/issues/596](https://github.com/aws/containers-roadmap/issues/596)~~
+
+~~Also want to be able to set Kubernetes node labels and taints at instance launch.~~
+
+### Next Generation AWS VPC CNI Plugin
+
+**Use-case:** achieve higher container density per node
+
+[https://github.com/aws/containers-roadmap/issues/398](https://github.com/aws/containers-roadmap/issues/398)
+
+The problem is that our customers frequently run less CPU-intensive workloads and could achieve greater efficiency and economies of scale by packing more containers on an instance. EKS restricts the number of pods per node implicitly by limiting the number of ENIs. In order to run more pods, a larger instance is required that supports more ENIs, but then the instances are underutilized. In the end, it feels like a backhanded way of forcing customers to pay for more than they need - like enterprise software licensing charging per core.
+
+No updates on this issue for over a year.
+
+### CloudFront Distributions with EdgeLambdas take too long to destroy
+
+**Use-case**: e2e automation testing
+
+The problem is that Edge Lambdas once provisioned can take hours if not days to destroy. Implementing any kind of automated testing (e.g. using [<i>terratest</i>](https://github.com/gruntwork-io/terratest)) for this is complicated then by the fact we cannot iterate. Infrastructure on Amazon must be considered ephemeral and be built with testing in mind from the ground up, especially as Infrastructure as Code is becoming more mainstream.
+
+### CloudFront Distributions are Too Slow to Modify
+
+Use-case:
+
+### [Launched] DNSSEC on Route53
+
+[https://aws.amazon.com/about-aws/whats-new/2020/12/announcing-amazon-route-53-support-dnssec/](https://aws.amazon.com/about-aws/whats-new/2020/12/announcing-amazon-route-53-support-dnssec/)
+
+<img src="/assets/refarch/icwozs7v9hubtfjy7bytlksfxyao1quol5vfkgfmwivgibgptdocmapm5dyec1ne" /><br/>
+
+### NLB Health Checks Overwhelm Origins
+
+Something needs to be done with Network Load Balancer TCP health checks. The health checks easily overload origin servers when they fail. It is bad enough that the health check interval cannot be configured and that when healthy we are getting an average of 120 health checks per minute, but when they fail the number skyrockets to ~3,000 per minute. The linked issue has details.
+
+[https://github.com/kubernetes/ingress-nginx/issues/5425](https://github.com/kubernetes/ingress-nginx/issues/5425)
+
+## Bugs
+
+These are some bugs that affect us. The bugs might be mitigated by the Terraform providers or are upstream and may not be AWS bugs.
+
+`Error: Creating CloudWatch Log Group failed: ResourceAlreadyExistsException: The specified log group already exists:  The CloudWatch Log Group '/aws/eks/eg-test-eks-cluster/cluster' already exists`
+
+[https://github.com/cloudposse/terraform-aws-eks-cluster/issues/67](https://github.com/cloudposse/terraform-aws-eks-cluster/issues/67)
+
+This is happening because EKS Cluster gets destroyed after Terraform deletes the Cloudwatch Log Group. The `AmazonEKSServicePolicy` IAM policy (that is assigned to EKS Cluster role by default within this module) has permissions to `CreateLogGroup` and anything else needed to continue logging correctly. When the Terraform destroys the Cloudwatch Log Group, the EKS Cluster that is running recreates it. Then, when you run Terraform Apply again, the Cloudwatch Log Group doesn't exist in your state anymore (because the Terraform actually destroyed it) and the Terraform doesn't know this resource created outside him.
+
+

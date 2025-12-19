@@ -1,0 +1,82 @@
+---
+title: "Provision Example Services on the ECS Platform"
+sidebar_label: "Provision Examples"
+sidebar_position: 20
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+<Intro>
+  Provision an example service like the Echo server to test your cluster’s functionality. This will ensure you can access the service remotely via the load balancer, both publicly and privately through the VPN.
+</Intro>
+
+## Quick Start
+
+| Steps              | Example                                    |
+| :----------------- | :----------------------------------------- |
+| Deploy Echo Server | `atmos workflow deploy/echo-server -f quickstart/platform/ecs` |
+
+Once the cluster is up and running, continue with the first ECS service deployment. We deploy Echo Server as an example and to validate a given cluster. This deploys two ECS services: one private and one public. The private deployment should only be accessible by VPN.
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Deploy Echo Server
+
+    Run the following to deploy `ecs/platform/service/echo-server` and
+    `ecs/platform/service/echo-server-private` to every cluster.
+
+    <AtmosWorkflow workflow="deploy/echo-server" fileName="quickstart/platform/ecs" />
+
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Verify the Deployment of Public Endpoints
+
+    In your browser, go to each of the following URLs. Make sure to use your service discovery domain and not the example.
+
+    <dl>
+      <dt>plat-sandbox</dt>
+      <dd>Go to `https://echo-server.public-platform.use1.sandbox.plat.acme-svc.com/`</dd>
+
+      <dt>plat-dev</dt>
+      <dd>Go to `https://echo-server.public-platform.use1.dev.plat.acme-svc.com/`</dd>
+
+      <dt>plat-staging</dt>
+      <dd>Go to `https://echo-server.public-platform.use1.staging.plat.acme-svc.com/`</dd>
+
+      <dt>plat-prod</dt>
+      <dd>Go to `https://echo-server.public-platform.use1.prod.plat.acme-svc.com/`</dd>
+    </dl>
+
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Verify the Deployment of Private Endpoints
+
+    Verify these are not publicly accessible. Each of the following should time out if not connected to the VPN.
+
+    <dl>
+      <dt>plat-sandbox</dt>
+      <dd>Go to `https://echo-server.private-platform.use1.sandbox.plat.acme-svc.com/`</dd>
+
+      <dt>plat-dev</dt>
+      <dd>Go to `https://echo-server.private-platform.use1.dev.plat.acme-svc.com/`</dd>
+
+      <dt>plat-staging</dt>
+      <dd>Go to `https://echo-server.private-platform.use1.staging.plat.acme-svc.com/`</dd>
+
+      <dt>plat-prod</dt>
+      <dd>Go to `https://echo-server.private-platform.use1.prod.plat.acme-svc.com/`</dd>
+    </dl>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Test Private Endpoints using VPN
+
+    Then connect to the VPN to successfully, and retry the previous step.
+  </Step>
+</Steps>

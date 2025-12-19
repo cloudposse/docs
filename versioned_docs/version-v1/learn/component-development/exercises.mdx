@@ -1,0 +1,42 @@
+---
+title: Exercises
+sidebar_label: Exercises
+sidebar_position: 2
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+
+<Intro>
+Exercises are a great way to get hands-on with the code. None of these are necessary, but if you would like to take the
+initiative, feel free to complete any or all of these exercises.
+</Intro>
+
+If you have questions or would like Cloud Posse to review your solution, please reach out!
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Exercise: Add a component from Cloud Posse to your library
+
+    This exercise is intended to demonstrate how to pull an existing component that is already upstream and supported by
+    Cloud Posse into your environment. For the sake of this exercise, let's create an SQS Queue component. This component is
+    supported by Cloud Posse, find and deploy that component into your sandbox environment.
+
+    When this component is deployed, you should have a single new Spacelift stack (if you're using Spacelift) and have
+    created a new SQS queue in your sandbox environment. This queue should be logically named following Cloud Posse naming
+    standards, and that name should be easily retrievable with Terraform state.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Exercise: Create a new custom component not supported by Cloud Posse
+
+    This exercise is intended to practice creating a new component that is not supported by Cloud Posse. Cloud Posse does
+    not currently have a component for a static website. For this exercise, use the
+    [`cloudposse/cloudfront-s3-cdn/aws` module](https://github.com/cloudposse/terraform-aws-cloudfront-cdn) to deploy a
+    basic static website to your sandbox environment.
+
+    When this exercise is complete, you should have a new component, a new component catalog, and an import into sandbox.
+    This component should follow Cloud Posse convention outlined above and be maintained with GitOps (if applicable).
+  </Step>
+</Steps>

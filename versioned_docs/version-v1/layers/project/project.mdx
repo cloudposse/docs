@@ -1,0 +1,86 @@
+---
+title: Getting Started
+sidebar_class_name: hidden
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import ReactPlayer from "react-player";
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import SecondaryCTA from '@site/src/components/SecondaryCTA';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import CategoryList from '@site/src/components/CategoryList';
+import TaskList from '@site/src/components/TaskList';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+## Problem
+
+As a new engineer joining the project, you are familiar with AWS, Terraform, Kubernetes, Docker, etc, but you're not familiar with the opinionated way that Cloud Posse does it — what we call the _SweetOps_ method. There are so many tools, conventions, components, stacks, that you don't know where to get started.
+
+## Solution
+
+:::tip
+
+Review the documentation, then start by getting your hands dirty with your first project. Don't be afraid to reach out and ask for help, if you get stuck. You'll learn much faster this way and be less overwhelmed trying to master the concepts that have taken us the better part of 7 years to develop.
+
+:::
+
+Here you will find a quick start document for each layer of infrastructure. These documents are intended to present a common problem and a Cloud Posse solution to that problem.
+
+Also included here are common tools for Cloud Posse as well as pertinent Design Decisions with context of every decision behind the Reference Architecture.
+
+# Checklist
+
+:::info Documentation is our top priority
+
+Please let us know if anything is missing or holding you up. We'll make sure to prioritize it.
+
+:::
+
+This guide assumes you have the following:
+
+- Terraform experience working with modules, providers, public registry, state backends, etc
+- AWS experience including a firm understanding of IAM, the web console, etc
+- Comfortable using the command line, docker, git, terraform, etc
+- Starting from scratch, with a new AWS account, and that you have the root account credentials
+
+If this all sounds a little bit daunting, you may want to start by reviewing the [Learning Resources](/resources/legacy/learning-resources).
+
+<Steps>
+
+  <Step>
+    ### <StepNumber/> Review Foundational Design Decisions
+
+    [Review Design Decisions](/layers/project/design-decisions) and record your decisions now. You will need the results of these decisions going forward.
+    <TaskList>
+      <CategoryList path="/layers/project/design-decisions/" />
+    </TaskList>
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Create a Repository
+
+    Follow our guide on [Creating a Repository](/layers/project/create-repository) to set up your GitHub repository with the proper settings, branch protection, and team access. This repository will serve as the foundation for your infrastructure code and configurations.
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Set up your toolbox container
+
+    Set up your development environment by following our [Prepare the Toolbox Image](/layers/project/toolbox/) guide. Geodesic is our infrastructure automation toolbox that packages all the necessary tools into a convenient Docker image.
+
+  </Step>
+
+</Steps>
+
+<ActionCard title="What comes next?">
+  Let's get started by creating the repository and importing the configurations provided by Cloud Posse as part of the Quickstart. If you don't have a Quickstart, consider learning more about its benefits.
+
+  <div>
+    <PrimaryCTA to="/layers/project/create-repository">Next Step</PrimaryCTA>
+    <SecondaryCTA to="/quickstart">Learn More</SecondaryCTA >
+  </div>
+</ActionCard>

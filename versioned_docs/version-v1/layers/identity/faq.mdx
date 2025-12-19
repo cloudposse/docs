@@ -1,0 +1,49 @@
+---
+title: FAQ
+sidebar_label: FAQ
+sidebar_position: 10
+---
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+Frequently asked questions about identity and authentication with Cloud Posse's reference architecture.
+</Intro>
+
+## How do I create new teams?
+
+Follow the docs in the readme of the [`aws-teams` component](/components/library/aws/aws-teams/).
+
+## How do I set up Leapp?
+
+See [How to Log into AWS](/layers/identity/how-to-log-into-aws/)
+
+## Known Leapp Limitation with Windows and WSL
+
+Leapp sets AWS credentials to the home directory wherever it is running. So if you run Leapp on Windows, that will be
+set to the Windows home directory. Then when you start WSL2, that will have a different home directory. The workaround
+is to copy AWS credentials from the Windows home directory over to the WSL2 home directory.
+[ref](https://github.com/Noovolari/leapp/issues/153)
+
+```bash
+cp -r /mnt/c/Users/<username>/.aws ~/.aws
+```
+
+## How can I set varying permission for a role in several accounts?
+
+Keep in mind that Team Roles are designed to identical in all delegated accounts. However, you can still modify
+permission on an account-by-account basis if required.
+
+Override your [`aws-team-roles` component](/components/library/aws/aws-team-roles/) stack configuration to include different permissions when deployed to a given account.
+
+## Why not use AWS Control Tower?
+
+AWS Control Tower until recently, did not support Terraform. Additionally, using Terraform, we have complete control over the Organization,
+Organizational Unit, and Account provisioning process.
+
+## Why not just use AWS SSO?
+
+The primary reason to not rely solely on AWS SSO, is that cross-account terraform is not supported with AWS SSO Permission Sets. We cannot apply
+Terraform across the account hierarchy with a single Permission Set, so instead we combine AWS SSO with our AWS Teams
+and Team Roles.
+
+AWS SSO is fine for business users but less so for DevOps teams.

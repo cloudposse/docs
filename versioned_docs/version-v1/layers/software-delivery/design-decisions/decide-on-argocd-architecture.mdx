@@ -1,0 +1,70 @@
+---
+title: "Decide on Argo CD Architecture"
+sidebar_label: "Argo CD Architecture"
+sidebar_position: 100
+refarch_id: REFARCH-420
+description: Considerations for deploying Argo CD
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+<Intro>
+  Deciding on the architecture for Argo CD involves considering multiple
+  clusters, plugin management, and Kubernetes integration. This document
+  presents recommended strategies, potential risks, and common deployment
+  patterns for Argo CD.
+</Intro>
+
+## Context
+
+Argo CD is a specialized tool for continuous delivery to Kubernetes, akin to how Terraform Cloud focuses on Terraform deployments. Argo CD does not support deployments outside of Kubernetes (e.g., uploading files to a bucket). While it supports plugins, these are not intended to extend its capabilities beyond Kubernetes.
+
+## Considerations
+
+- Deploy multiple Argo CD instances across clusters to facilitate systematic upgrades in different environments.
+- Argo CD operates as a single pod, requiring disruptive restarts to add or upgrade plugins.
+- Restarts of Argo CD are disruptive to deployments.
+- Increasing the number of Argo CD servers complicates visualizing the delivery process.
+- Each Argo CD server must integrate with every cluster it deploys to.
+- Argo CD can deploy to the local cluster by using a service account.
+
+### Pros
+
+- Simplifies dependency management across components.
+- Protects the KubeAPI by reducing public access requirements.
+- Provides a powerful CD tool for Kubernetes with multiple pod rollout strategies.
+- Offers a user-friendly UI and supports diverse deployment toolchains within the Argo CD Docker image.
+- Enables faster deployments and "backup Kubernetes cluster" capabilities.
+- Establishes a consistent framework for continuous deployment independent of the CI platform.
+
+### Cons
+
+- Asynchronous deployments can break the immediate feedback loop from commit to deployment.
+- Application CRDs must reside in the namespace where Argo CD runs.
+- Application names must be unique per Argo CD instance.
+- Custom toolchains require custom Docker images, necessitating Argo CD redeployment.
+- Redeploying Argo CD can disrupt active deployments.
+- Plugin updates require redeployment since tools must be included in the Docker image.
+- Access management involves multiple levels (e.g., GitHub repo access, Argo CD projects, RBAC), introducing complexity.
+- Requires additional self-hosted solutions compared to simpler CI-based deployments with Helm 3.
+- Repository management for private repos in Argo CD lacks a declarative approach, needing research for potential patterns.
+- Argo CD's lifecycle becomes part of the critical path for deployments.
+
+## Recommendations
+
+- **Deploy one Argo CD instance per cluster** to simplify upgrades and manage disruptions effectively.
+- **Use a single Argo CD instance for all namespaces within a cluster** to centralize deployment management and reduce complexity.
+- **Adopt a dedicated repository strategy** managed by Terraform via the GitHub Terraform provider:
+  - One repository for production environments.
+  - One repository for non-production environments.
+  - One repository for preview environments.
+- **Avoid using plugins**:
+  - Commit raw manifests (e.g., rendered from Helm templates or Kustomize) directly to the repository.
+  - Shift manifest rendering to CI to ensure predictable, verifiable deployments.
+  - This approach simplifies troubleshooting, avoids plugin upgrade issues, and ensures complete visibility into what is deployed.
+- **Deploy operators that require IAM roles and backing services with Terraform**, not Argo CD, to ensure proper role management and infrastructure provisioning.
+- **Use Argo CD for application deployments** in combination with GitHub Actions to streamline deployment pipelines and align with CI/CD best practices.
+- **Use Helm to Provision Argo CD** with Terraform

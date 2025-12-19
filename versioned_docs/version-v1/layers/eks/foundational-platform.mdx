@@ -1,0 +1,97 @@
+---
+title: "EKS as a Foundational Platform"
+sidebar_label: "Foundational Platform"
+sidebar_position: 10
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+<img
+  src="https://lucid.app/publicSegments/view/3aaf739b-2eed-4bdd-bd11-bb340b38ce90/image.png"
+  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
+/>
+<br />
+
+We first deploy the foundation for the cluster. The `eks/cluster` component deploys the initial EKS resources to AWS,
+including Auth Config mapping. We do not deploy any nodes with the cluster initially. Then once EKS is available, we
+connect to the cluster and start deploying resources. First is Karpenter. We deploy the Karpenter chart on a Fargate
+node and the IAM service role to allow Karpenter to purchase Spot Instances. Karpenter is the only resources that will
+be deployed to Fargate. Then we deploy Karpenter Node Pools using the CRD created by the initial Karpenter component.
+These provisioners will automatically launch and scale the cluster to meet our demands. Next we deploy `idp-roles` to
+manage custom roles for the cluster, and deploy `metrics-server` to provide access to resource metrics.
+
+Then we connect the cluster to our network. First we must deploy the `cert-manager` component to provision X.509
+certificates on the cluster. Then we deploy the `alb-controller` component to provision and associate ALBs or NLBs based
+on `Ingress` annotations that route traffic to the cluster. Then we deploy the `alb-controller-ingress-group` to
+actually create that ALB. Next, we deploy `external-dns` which will look for annotations to make services discoverable,
+and then create records in our Route 53 Hosted Zones mapping to the cluster. Finally we deploy `echo-server` to validate
+the complete setup.
+
+:::info
+
+Connecting to an EKS cluster requires a VPN connection! See [ec2-client-vpn](/components/library/aws/ec2-client-vpn/)
+for details.
+
+:::
+
+Depending on your application requirements we can also deploy a number of operators. The most common is the
+`efs-controller`, which we use to provide encrypted block storage that is not zone-locked. Other operators are
+optionally but often include the `external-secrets-operator` to automatically sync secrets from AWS SSM Parameter Store.
+
+Monitoring and release engineering are handled separately from the components mentioned here, and we will expand of
+those implementations in follow up topics. For details, see the
+[Monitoring](/layers/monitoring/) and
+[Release Engineering](/layers/software-delivery/fundamentals/) quick start documents.
+
+#### Foundation
+
+- [`eks/cluster`](/components/library/aws/eks/cluster/): This component is responsible for provisioning an end-to-end
+  EKS Cluster, including IAM role to Kubernetes Auth Config mapping.
+- [`eks/karpenter`](/components/library/aws/eks/karpenter-controller/): Installs the Karpenter chart on the EKS cluster and
+  prepares the environment for provisioners.
+  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-node-pool/): Deploys Karpenter Node Pools
+    using CRDs made available by `eks/karpenter`
+  - [`iam-service-linked-roles`](/components/library/aws/iam-service-linked-roles/): Provisions
+    [IAM Service-Linked](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html) roles. These
+    are required for Karpenter to purchase Spot instances.
+- [`idp-roles`](/components/library/aws/eks/idp-roles): These identity provider roles specify several pre-determined
+  permission levels for cluster users and come with bindings that make them easy to assign to Users and Groups. Use this
+  component to define custom permission within EKS.
+- [`metrics-server`](/components/library/aws/eks/metrics-server): A Kubernetes addon that provides resource usage
+  metrics used in particular by other addons such Horizontal Pod Autoscaler. For more, see
+  [metrics-server](https://github.com/kubernetes-sigs/metrics-server).
+- [`reloader`](/components/library/aws/eks/reloader): Installs the
+  [Stakater Reloader](https://github.com/stakater/Reloader) for EKS clusters. `reloader` can watch `ConfigMaps` and
+  `Secrets` for changes and use these to trigger rolling upgrades on pods and their associated `DeploymentConfigs`,
+  `Deployments`, `Daemonsets` `Statefulsets` and `Rollouts`.
+
+#### Network
+
+- [`cert-manager`](/components/library/aws/eks/cert-manager): A Kubernetes addon that provisions X.509 certificates.
+- [`alb-controller`](/components/library/aws/eks/alb-controller): A Kubernetes addon that, in the context of AWS,
+  provisions and manages ALBs and NLBs based on `Service` and `Ingress` annotations. This module is also provision a
+  default `IngressClass`.
+  - [`alb-controller-ingress-group`](/components/library/aws/eks/alb-controller-ingress-group): A Kubernetes Service
+    that creates an ALB for a specific `IngressGroup`. An `IngressGroup` is a feature of the `alb-controller` which
+    allows multiple Kubernetes Ingresses to share the same Application Load Balancer.
+- [`external-dns`](/components/library/aws/eks/external-dns): A Kubernetes addon that configures public DNS servers with
+  information about exposed Kubernetes services to make them discoverable. This component is responsible for adding DNS
+  records to your Route 53 Hosted Zones.
+- [`echo-server`](/components/library/aws/eks/echo-server): The echo server is a server that sends it back to the client
+  a JSON representation of all the data the server received. We use this component is validate a cluster deployment.
+
+#### Storage
+
+- [`efs`](/components/library/aws/efs/): Deploys an [EFS](https://aws.amazon.com/efs/) Network File System with KMS
+  encryption-at-rest. EFS is an excellent choice as the default block storage for EKS clusters so that volumes are not
+  zone-locked.
+  - [`eks/efs-controller`](/components/library/aws/eks/storage-class/): Deploys
+    [the Amazon Elastic File System Container Storage Interface (CSI) Driver controller](https://github.com/kubernetes-sigs/aws-efs-csi-driver)
+    to EKS. The Amazon EFS CSI Driver implements the CSI specification for container orchestrators to manage the
+    lifecycle of Amazon EFS file systems.
+
+#### Additional Operators
+
+- [`external-secrets-operator`](/components/library/aws/eks/external-secrets-operator/): This component (ESO) is used to
+  create an external `SecretStore` configured to synchronize secrets from AWS SSM Parameter store as Kubernetes Secrets
+  within the cluster.
