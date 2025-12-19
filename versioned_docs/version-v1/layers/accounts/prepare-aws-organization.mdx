@@ -7,7 +7,7 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 
-The Cold Start involves more manual steps than other layers. Read through the following steps and see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/) for edge cases.
+The Cold Start involves more manual steps than other layers. Read through the following steps and see [the detailed documentation](/layers/accounts/tutorials/legacy-account-map/) for edge cases.
 
 In short, the steps are...
 
@@ -56,7 +56,7 @@ From the root account:
    [open up the account settings for AWS Billing](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account),
    then scroll to the section "IAM user and role access to Billing information" and enable it.
 1. ### Enable Regions (Optional)
-   The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to take extra steps. For details, see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/#optional-enable-regions)
+   The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to take extra steps. For details, see [the detailed documentation](/layers/accounts/tutorials/legacy-account-map/)
 1. ### Prepare for Account Quota Increase
    In order to deploy all accounts, you need to request an increase of the Account Quota from AWS support. This requires an AWS Organization to be created first, which we will create with Terraform in the [Deploy Accounts guide](/layers/accounts/deploy-accounts/#-prepare-account-deployment). This request can take a few days to process, so it's important to get it started early so that it doesn't become a blocker.
 
@@ -65,6 +65,6 @@ From the root account:
 </Steps>
 
 For more details, see
-[the detailed documentation](/layers/accounts/tutorials/manual-configuration/#provision-account-settings-component).
+[the detailed documentation](/layers/accounts/tutorials/legacy-account-map/).
 
 
