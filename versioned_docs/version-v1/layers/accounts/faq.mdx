@@ -1,0 +1,143 @@
+---
+title: FAQ
+sidebar_label: FAQ
+sidebar_position: 10
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+Frequently asked questions about managing AWS accounts with Cloud Posse's reference architecture.
+</Intro>
+
+### Why not use Control Tower?
+
+AWS Control Tower cannot be managed with Terraform. Depending on the Scope of Work, Cloud Posse is usually responsible
+for provisioning accounts with terraform which requires all the same access as Control Tower.
+
+### Why are there so many accounts?
+
+Leveraging multiple AWS accounts within an AWS Organization is the only way to satisfy IAM level isolation. Each account
+has a very specific purpose, that all associated resources are isolated in that given account.
+
+### How we can set budgets?
+
+Create budgets with the `account-settings` component. For more, see
+[the `account-settings` component documentation](/components/library/aws/account-settings/)
+
+:::info
+
+Budgets created for the `root` account apply to the AWS Organization as a whole
+
+:::
+
+### How do you add or remove Service Control Policies?
+
+Service Control Policies are managed with the `account` component variable, `service_control_policies_config_paths`. For
+more, see [the `account` component documentation](/components/library/aws/account/)
+
+:::caution
+
+This component manages the state of all AWS accounts, so apply with extreme caution!
+
+:::
+
+### How can you create an Account?
+
+[Follow the documentation for creating and setting up AWS Accounts](/layers/accounts/tutorials/how-to-create-and-setup-aws-accounts/)
+
+### How do you delete an Account?
+
+[Follow the documentation for deleting AWS Accounts](/layers/accounts/tutorials/how-to-delete-aws-accounts/)
+
+### How can you create a Tenant?
+
+[Follow the documentation for creating a new Organizational Unit](/layers/accounts/tutorials/how-to-add-a-new-organizational-unit/)
+
+### How do I use mixins and imports with Atmos
+
+As infrastructure grows, we end up with hundreds or thousands of settings for components and stack configurations. If we
+copy and paste these settings everywhere, it’s error-prone and not DRY. What we really want to do is to define a sane
+set of defaults and override those defaults when we need them to change.
+
+We accomplish this with Mixins. Mixins are imported into all stacks and each follow a set of rules. We use the
+`mixins/region` and `mixins/account` configurations to define common **variables** for all stacks. For example,
+`mixins/region/us-east-1.yaml` will define the variable `region: us-east-1`.
+
+**Note.** Do not import components into the account or region mixins. These are imported multiple times to define common
+variables, so any component imports would be duplicated and cause an Atmos error such as this:
+
+```
+Executing command:
+/usr/bin/atmos terraform deploy account-settings -s core-gbl-artifacts
+
+Found duplicate config for the component 'account-settings' for the stack 'core-gbl-artifacts' in the files: orgs/cch/core/artifacts/global-region/baseline, orgs/cch/core/artifacts/global-region/monitoring, orgs/cch/core/artifacts/global-region/identity.
+Check that all context variables in the stack name pattern '{tenant}-{environment}-{stage}' are correctly defined in the files and not duplicated.
+Check that all imports are valid.
+
+exit status 1
+```
+
+### Why does `account-map` fail with "The given key does not identify an element in this collection value"?
+
+This is a common error you may encounter when reading from `account-map`:
+
+```bash
+Acquiring state lock. This may take a few moments...
+module.iam_roles.module.account_map.data.utils_component_config.config[0]: Reading...
+module.iam_roles.module.account_map.data.utils_component_config.config[0]: Read complete after 0s [id=xyx]
+module.iam_roles.module.account_map.data.terraform_remote_state.data_source[0]: Reading...
+module.iam_roles.module.account_map.data.terraform_remote_state.data_source[0]: Read complete after 5s
+module.iam_roles.data.awsutils_caller_identity.current[0]: Reading...
+module.iam_roles.data.awsutils_caller_identity.current[0]: Read complete after 1s [id=123]
+
+Planning failed. Terraform encountered an error while generating this plan.
+
+╷
+│ Error: Invalid index
+│ 
+│   on ../account-map/modules/iam-roles/main.tf line 46, in locals:
+│   46:   is_root_user   = local.current_identity_account == local.account_map.full_account_map[local.root_account_name]
+│     ├────────────────
+│     │ local.account_map.full_account_map is map of string with 12 elements
+│     │ local.root_account_name is "core-root"
+│ 
+│ The given key does not identify an element in this collection value.
+╵
+Releasing state lock. This may take a few moments...```
+```
+
+This error typically occurs when the `root_account_aws_name` is not correctly configured in the `account-map` component. The root account has two different names:
+
+<Steps>
+- **AWS Account Name**: The name you typed when originally creating the AWS account (often "root" but can be different)
+- **Account Alias**: The deterministic name set in the account configuration (e.g., "core-root")
+</Steps>
+
+To fix this:
+
+<Steps>
+1. Find your root account name using AWS Organizations:
+   ```bash
+   aws organizations list-accounts \
+     --query "Accounts[?Id=='$(aws organizations describe-organization --query 'Organization.MasterAccountId' --output text)'].Name" \
+     --output text
+   ```
+
+2. Update `stacks/catalog/account-map.yaml`:
+   ```yaml
+   components:
+     terraform:
+       account-map:
+         vars:
+           root_account_aws_name: "your-actual-root-account-name"  # The name from step 1
+           root_account_account_name: "core-root"  # This should always be "core-root"
+   ```
+
+3. Reapply the account-map:
+   ```bash
+   atmos terraform apply account-map -s core-gbl-root
+   ```
+</Steps>
+
+For more details, see [the account deployment documentation](/layers/accounts/deploy-accounts/#confirm-root-account-name).

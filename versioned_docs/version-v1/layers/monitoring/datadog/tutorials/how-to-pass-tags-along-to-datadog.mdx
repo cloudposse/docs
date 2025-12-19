@@ -1,0 +1,57 @@
+---
+title: "How to Pass Tags Along to Datadog"
+sidebar_label: "Passing Tags"
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+Tags are a great approach to describing who owns what services, and who should respond to different incidents related to those services. In order for to be able to act on the information, we need to ensure it’s passed along to datadog. Depending on if something is running on Kubernetes or infrastructure like RDS or an ALB, the way we tag (or label) things will differ.
+
+## Solution
+
+:::tip
+**TL;DR**
+
+**AWS**
+
+The Datadog integration for AWS allows us to specify tags we apply to the integration, since this is per account we can ensure tags are applied for everything imported from that integration.
+
+**Kubernetes**
+
+The datadog agent has configuration that allows us to map labels or annotations to specific datadog tags. Those labels can even be set on the namespace so that they apply to all services within the namespace.
+
+:::
+
+There are two main ways that events get generated:
+
+1. AWS
+
+2. Kubernetes Clusters
+
+### AWS
+
+With several different AWS accounts, we want to make sure that every resource monitored through datalog has the right tags per account, such as `stage`, `environment`, and possibly `tenant`.
+
+Default tags fetched are found [here](https://docs.datadoghq.com/integrations/amazon_web_services/?tab=roledelegation#tags). Our [datadog-integration](https://github.com/cloudposse/terraform-aws-components/tree/master/modules/datadog-integration) component also provides a variable `host_tags` which allows us to specify additional tags per account to help ensure all tags are assigned, such as `tenant`, `stage`, and `environment`.
+
+E.g.
+
+```
+components:
+  terraform:
+    datadog-integration:
+      [...]
+      vars:
+        host_tags:
+          - "stage:dev"
+          - "tenant:platform"
+```
+
+### Kubernetes
+
+With Kubernetes, we need to make sure that the right tags are fetched from either the namespace it was deployed or the labels attached to individual pods. As we may want one app to be monitored by team-a and another app in the same cluster to be monitored by team-b.
+
+By default, the datadog agent does not map kubernetes labels and annotations to datadog tags. We recommend setting default tags that you can add to your apps to map to datadog tags. this allows either namespace bound tags or app-specific tags to be set. These [values](https://github.com/DataDog/helm-charts/blob/main/charts/datadog/values.yaml#L147-L167) in the datadog helm chart can be set to create a mapping to your datadog account. Take a look at Datadogs documentation for further details: [https://docs.datadoghq.com/agent/kubernetes/tag/?tab=containerizedagent](https://docs.datadoghq.com/agent/kubernetes/tag/?tab=containerizedagent) .

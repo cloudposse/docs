@@ -1,0 +1,69 @@
+---
+title: Setup Databases
+sidebar_label: Setup
+sidebar_position: 2
+description: Provision databases in AWS using Atmos
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps'
+import Note from '@site/src/components/Note'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+## Quick Start
+
+| Steps                     | Example                             |
+| :------------------------ | :---------------------------------- |
+| 1. Vendor data components | `atmos workflow vendor -f quickstart/app/data`     |
+| 2. Connect to the VPN     | Click Ops                           |
+| 3. Deploy clusters        | `atmos workflow deploy/all -f quickstart/app/data` |
+
+## Requirements
+
+In order to deploy Data layer components, Networking must be fully deployed and functional. See [the network documentation](/layers/network) for details.
+
+All deployment steps below assume that the environment has been successfully set up with the following steps.
+
+<Steps>
+  1. Sign into AWS via Leapp
+  2. Connect to the VPN
+  3. Open Geodesic
+</Steps>
+
+## Supported databases
+
+At the moment we have support for:
+
+- [Aurora PostgreSQL](/components/library/aws/aurora-postgres/)
+- [Aurora PostgreSQL Resources](/components/library/aws/aurora-postgres-resources/)
+- [Aurora MySQL](/components/library/aws/aurora-mysql/)
+- [Aurora MySQL Resources](/components/library/aws/aurora-mysql-resources/)
+- [AWS Backup](/components/library/aws/aws-backup/)
+- [DocumentDB](/components/library/aws/documentdb/)
+- [DynamoDB](/components/library/aws/dynamodb/)
+- [Elasticsearch Cluster](/components/library/aws/elasticsearch/)
+- [RDS](/components/library/aws/rds/)
+- [RedShift](/components/library/aws/redshift/)
+- [ElastiCache Redis](/components/library/aws/elasticache-redis/)
+
+### Vendor
+
+Vendor all data components with the following workflow:
+
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/app/data" />
+
+These run several vendor commands for each included component. You can always run these commands individually to update
+any single component. For example:
+
+<Note title="Note">We're using `aurora-postgres` for this example. Your database selection may differ.</Note>
+
+```bash
+atmos vendor pull -c aurora-postgres
+```
+
+### Deploy
+
+In order to deploy database, deploy both the cluster and the resources component (if applicable). Applying changes to
+the resources component requires a VPN connection. For example,
+
+    <AtmosWorkflow workflow="deploy/all" fileName="quickstart/app/data" />

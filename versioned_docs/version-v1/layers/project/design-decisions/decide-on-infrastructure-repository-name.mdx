@@ -1,0 +1,26 @@
+---
+title: "Decide on Infrastructure Repository Name"
+sidebar_label: "Repository Name"
+sidebar_position: 3
+refarch_id: REFARCH-52
+description: "Decide on where to keep your infrastructure code"
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+We highly recommend using a mono-repo for your foundational infrastructure. This doesn’t preclude introducing other
+infrastructure repositories in the future.
+
+Suggestions:
+
+- `infrastructure`
+- `infra`
+- `$namespace-infra` (e.g. `cpco-infra`)
+- `cloud-infrastructure`
+- `ops`
+- `cloud-ops`
+
+If you already have a repo by any of these names, we suggest you create a new one so we can start with a clean history.

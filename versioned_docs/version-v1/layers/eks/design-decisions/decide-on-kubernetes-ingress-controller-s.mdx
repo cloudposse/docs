@@ -1,0 +1,28 @@
+---
+title: "Decide on Kubernetes Ingress Controller(s)"
+sidebar_label: "Kubernetes Ingress Controller(s)"
+refarch_id: REFARCH-300
+description: Decide which Kubernetes Ingress Controller(s) to use with EKS
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+## Considerations
+
+Kubernetes supports any number of ingress controllers deployed multiple times. The choice of Ingress controller will
+determine which AWS features we can natively support (e.g. WAF requires an ALB).
+
+Our recommendation is to use the `aws-loadbalancer-controller` (aka `aws-alb-ingress-controller` v2) with ACM
+certificates provisioned by terraform.
+
+:::caution TLS terminates at the ALB. It’s then _optionally_ unencrypted if the downstream services support it, such as
+with self-signed certificates and a TLS sidecar like Envoy or Nginx. Without this, traffic is in clear-text between the
+ALB and the downstream service or pod.
+
+:::
+
+Historically, we’ve recommended `ingress-nginx` (formerly `nginx-ingress`), but prefer to use the AWS load balancer
+controller due to it’s native support by AWS.

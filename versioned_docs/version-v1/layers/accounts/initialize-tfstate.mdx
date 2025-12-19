@@ -1,0 +1,83 @@
+---
+title: "Initializing the Terraform State S3 Backend"
+sidebar_label: "Initialize Terraform Backend"
+sidebar_position: 3
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+<Intro>
+Follow these steps to configure and initialize the Terraform state backend using Atmos, ensuring proper setup of the infrastructure components and state management.
+</Intro>
+
+| Steps                     | Actions                                   |
+| ------------------------- | ----------------------------------------- |
+| Configure Terraform state | `atmos workflow init/tfstate -f quickstart/foundation/baseline` |
+
+## Setting up the Terraform State Backend
+
+This is where we configure and run Atmos. Atmos is a workflow automation tool that we will use to call Terraform which
+will provision all the accounts and resources you need to create and manage infrastructure. The Atmos configuration can
+be found in the `atmos.yaml`.
+
+If you're unfamiliar with atmos, you can read more about it [here](https://atmos.tools).
+
+If you look at `components/terraform/`, you'll see a bunch of directories. These contain Terraform "root modules" that are provisioned with Atmos. At first they'll only have their vendor files, such as `components/terraform/tfstate-backend/component.yaml`.
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Vendor the Terraform State Backend component
+
+    Vendor the Terraform State Backend component by running the following command. The steps here require the `tfstate-backend` and `account-map` components.
+
+    :::tip What is Vendoring?
+
+    Vendoring downloads the upstream component files from a central repository at a specified version. In this case, we are pulling the baseline components, which include all account components, the Terraform State component, and other necessary files for setting up the account foundation. 
+    
+    This step only downloads the files to your local project - it does not deploy or make any changes to your infrastructure.
+
+    [Read more about vendoring with Atmos](https://atmos.tools/core-concepts/vendor/)
+
+    :::
+
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/baseline" />
+
+  </Step>
+  <Step>
+    ## <StepNumber/> Initialize the Terraform State Backend
+
+    Run the following command to initialize the Terraform State Backend. This workflow has two steps:
+    - Create the backend using a local Terraform state
+    - Once the backend bucket exists, migrate the state file into the newly created S3 bucket
+
+    <AtmosWorkflow workflow="init/tfstate" fileName="quickstart/foundation/baseline" />
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Migrate all workspaces to S3
+
+    When prompted, type `yes` to migrate all workspaces to S3.
+
+    ```shell
+    Initializing the backend...
+    Do you want to migrate all workspaces to "s3"?
+    ```
+  </Step>
+</Steps>
+
+:::info Granting SuperAdmin Access to Terraform State
+
+The IAM User for SuperAdmin will be granted access to Terraform State by principal ARN. This ARN is passed to the
+`tfstate-backend` stack catalog under `allowed_principal_arns`. Verify that this ARN is correct now. You may need to
+update the root account ID.
+
+:::
+
+## References
+
+- Review the [Structure of Terraform S3 State Backend Bucket](/layers/accounts/tutorials/terraform-s3-state/)

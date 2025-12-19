@@ -1,0 +1,187 @@
+---
+title: "Deploy AWS Teams and Team Roles across your AWS Organization"
+sidebar_label: "Deploy Roles"
+sidebar_position: 4
+description: Provision AWS teams, integrate SSO, generate role configurations.
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import TaskList from '@site/src/components/TaskList';
+
+<Intro>
+  Learn how to provision AWS teams and team roles across an AWS Organization using Atmos workflows, integrate them with AWS SSO, and generate AWS configuration files for role assumption with profiles.
+</Intro>
+
+| Steps                         |                                             |
+| ----------------------------- | ------------------------------------------- |
+| Install requirements          |                                             |
+| Vendor components             | `atmos workflow vendor -f quickstart/foundation/identity`         |
+| [Setup Identity Center](/layers/identity/aws-sso/) | Click Ops |
+| Add your SAML provider        | Click Ops                                   |
+| Deploy identity components    | `atmos workflow deploy/all -f quickstart/foundation/identity`     |
+| Reconfigure Terraform Backend | `atmos workflow deploy/tfstate -f quickstart/foundation/baseline` |
+| Deploy baseline components    | `atmos workflow deploy -f quickstart/foundation/baseline`         |
+
+The identity components are designed to provision all primary user and system roles into a centralized identity account.
+These components are expected to be used together to provide fine-grained role delegation across the account hierarchy.
+
+:::tip
+All identity components in this guide required elevated permissions to deploy, and in particular require Administrator access in `core-root` and `core-identity`. Assume the `SuperAdmin` IAM user role before continuing.
+
+For more on SuperAdmin, see [How to Create SuperAdmin user](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+:::
+
+<Steps>
+
+  <Step>
+    ### <StepNumber/> Vendor Identity Components
+
+    Pull the Identity components into your local repository.
+
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/identity" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Setup Identity Center
+
+    Follow the [Setup Identity Center](/layers/identity/aws-sso/) guide to enable AWS IAM Identity Center and connect your IdP.
+
+    <Note title="Tip">
+
+    Once you've deployed Identity Center, take note of the AWS access portal URL and region. You can find this in the "Settings Summary" of the AWS Identity Center dashboard. We will need this to sign into AWS.
+
+    </Note>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Setup AWS SAML
+
+    The majority of users prefer to solely use AWS Identity Center (`aws-sso`) to manage user integrations. If you are not using AWS SAML, then the `aws-saml` should be disabled. Verify that it's disabled in the stack catalog for `aws-saml` and move on:
+
+    ```yaml
+    # stacks/catalog/aws-saml/defaults.yaml
+    components:
+      terraform:
+        aws-saml:
+          vars:
+            enabled: false # <---- Disable the component
+    ```
+
+    Read more with [Why use AWS SAML?](/layers/identity/centralized-terraform-access/#why-use-aws-saml) and [Setup AWS SAML](/layers/identity/optional/aws-saml/)
+
+    _If you are using `aws-saml`_, generate the metadata to connect your IdP with the federated identity in AWS. Once you have generated the metadata, store the file with the component's directory (`components/terraform/aws-saml`) in your repository and add the integration to your `aws-saml` stack catalog:
+
+    ```yaml
+    # stacks/catalog/aws-saml/defaults.yaml
+    components:
+      terraform:
+        aws-saml:
+          vars:
+            enabled: true
+            saml_providers:
+              # Specify a descriptive key. This can be any arbitrary value.
+              # Then set the value to the name of the metadata file. This must exist in the component's directory.
+              # You might add something like this:
+              acme-okta: OktaMetadata-acme.com.xml
+              # For example, at Cloud Posse we use GSuite:
+              cloudposse-gsuite: GoogleIDPMetadata-cloudposse.com.xml
+    ```
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Review AWS Teams Allowed GitHub Repositories
+
+    There should be no action required for this step, but this is a very common issue.
+
+    In the `aws-teams` component, we specify a map of trusted GitHub repositories with `var.trusted_github_repos`. This will connect a given AWS Team to the GitHub OIDC Provider. However, at this point, the GitHub OIDC provider is not provisioned. We need to comment out that variable until the provider is ready. Once ready, we will reapply the `aws-teams` component.
+
+    ```yaml
+    # stacks/catalog/aws-teams/defaults.yaml
+    components:
+      terraform:
+        aws-teams:
+          vars:
+            #
+            # Uncomment the following to enable GitOps for the GitHub Actions workflow.
+            # This requires the `github-oidc-provider` to be deployed.
+            #
+            # trusted_github_repos:
+            #   gitops:
+            #     - "cloudposse-sandbox/infra-train:main"
+            #   planners:
+            #     - "cloudposse-sandbox/infra-train"
+    ```
+
+    For more details, see [How to use GitHub OIDC with AWS](/layers/github-actions/github-oidc-with-aws/) and [Setup GitHub Actions](/layers/gitops/setup/).
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Identity Components
+    Now that we have AWS Identity Center groups available, AWS SAML Metadata ready, and `vars.trusted_github_repos disabled`, deploy these components across all accounts by running the following command. Note that if any AWS Identity Center groups are missing, `aws-sso` will fail.
+
+    <AtmosWorkflow workflow="deploy/all" fileName="quickstart/foundation/identity" />
+
+    After deploying the identity components, the above workflow will attempt to create local AWS configuration for all new roles and profiles. This will be generated with the `update-aws-config` workflow and stored in the `rootfs` directory locally.
+
+    Everything included in the `rootfs` directory is passed to the Geodesic image when it is built. This will include the AWS configuration files, included with the `aws-config-teams` file, that are needed to assume roles across the AWS Organization. In particular, we recommend setting a common AWS profile, such as `acme-identity`, as the entry-point for all role assumption. That way all users can configure the same AWS profile name and be allowed to assume roles that they can access.
+
+    <Note title="Tip">
+      The AWS config script requires local files, which are generated during the deployment of the AWS Team and Team Roles components.
+
+      If you did not run these steps yourself and they are not committed to git, then you will need to rerun those components to generate these local files. For this reason, we recommend committing these generated files to git so that they are available for future use.
+    </Note>
+
+    <Note title="FAQ">
+    If the `aws-config` executable fails, try exiting and rebuilding the Geodesic image!
+
+    <Steps>
+      1. ```bash
+         Executing command: `atmos workflow update-aws-config -f quickstart/foundation/identity`
+         Updating AWS Config files in /workspace/rootfs/etc/aws-config
+         "aws-config": executable file not found in $PATH
+         ```
+      2. ```bash
+         exit
+         ```
+      2. ```bash
+         make all
+         ```
+      3. ```bash
+         √ : [cptrain-SuperAdmin] (HOST) workspace ⨠ atmos workflow update-aws-config -f quickstart/foundation/identity
+         Updating AWS Config files in /workspace/rootfs/etc/aws-config
+         No changes
+         ```
+    </Steps>
+    </Note>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Reconfigure Terraform State Backend
+    Apply the changes from the previous step to the Terraform State Backend by running the following commands. This will grant permission for your newly deployed AWS Teams and Team Roles to access the Terraform State Backend.
+
+    <AtmosWorkflow workflow="deploy/tfstate" fileName="quickstart/foundation/baseline" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Apply Changes to Geodesic
+
+    To apply these updates to your Geodesic image, exit the image and rerun `make all`.
+
+    Among the generated configuration files is `aws-config-teams`, which contains AWS authentication settings for all local users. This file is shared across SAML and SSO users, as well as all teams. It references a specific AWS profile for your namespace (e.g., `acme-identity`) and uses that profile as the entry point for role assumption. Users with appropriate permissions can then execute Terraform or assume other roles across the AWS Organization.
+
+    Moving forward, you'll use your newly configured AWS Team instead of the `SuperAdmin` user. Continue with [Log into AWS](/layers/identity/how-to-log-into-aws/)
+
+    <Note title="Important">
+    Anytime that teams or roles are changed, rebuild AWS config
+    </Note>
+
+    <AtmosWorkflow workflow="update-aws-config" fileName="quickstart/foundation/identity" />
+  </Step>
+</Steps>
+

@@ -1,0 +1,29 @@
+---
+title: "Decide on Customer Apps for Migration"
+sidebar_label: "App Migration"
+sidebar_position: 100
+refarch_id: REFARCH-256
+description: Identify applications that should migrate to the new platform
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+We need to identify an application and its associated services that are suitable as the first candidate for migration to the new platform. This is an application that will be targeted by all the release engineering work.
+
+We can pretty much handle anything, but ideal candidates have these characteristics: [https://cloudposse.com/12-factor-app/](https://cloudposse.com/12-factor-app/)
+
+:::tip
+Our recommendation is to start with a model application template repository so we do not impact any current CI/CD processes during the development of GitHub Action workflows.
+
+:::
+
+Apps that do not have these characteristics may require more engineering effort.
+
+Using any existing repository will pose a risk of triggering GitHub events (E.g. pull requests, releases, etc) that other existing CI/CD systems (e.g. Jenkins, CircleCI, etc) will respond to. Furthermore, several GitHub Action events only work on the default branch (e.g. `main`) and for this reason, we will need to merge to PRs to test the end-to-end process. For this reason, we recommend starting with a model application template repository that your team can use to document and train others on your CI/CD process.
+
+Completing the migration workbook will help identify suitable applications. Our workbook template is here [https://docs.google.com/spreadsheets/d/1CDcJosaqoby2Fq2AmZnf-xRizI4pcc-sqpi04ggHqSI/edit#gid=863544204](https://docs.google.com/spreadsheets/d/1CDcJosaqoby2Fq2AmZnf-xRizI4pcc-sqpi04ggHqSI/edit#gid=863544204) and can be copied and shared.
+
+Our goal is to migrate a couple of apps within the allotted Sprint(s), however, we highly recommend leaving some for homework.

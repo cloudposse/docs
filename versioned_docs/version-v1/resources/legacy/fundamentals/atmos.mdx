@@ -1,0 +1,476 @@
+---
+title: "Atmos"
+sidebar_position: 110
+---
+
+`atmos` is both a command-line tool and Golang module for provisioning, managing and orchestrating workflows across various toolchains including `terraform` and `helmfile`.
+
+The `atmos` tool is part of the SweetOps toolchain and was built to make DevOps and Cloud automation easier across multiple tools. It has direct support for automating Terraform, Helmfile. By utilizing [Stacks](/resources/legacy/fundamentals/stacks), `atmos` enable you to effortlessly manage your Terraform and Helmfile [Components](/components) from your local machine, in your CI/CD pipelines, or using [spacelift](//components/library/aws/spacelift/).
+
+## Problem
+A modern infrastructure depends on lots of various tools like terraform, packer, helmfile, helm, kubectl, docker, etc. All these tools have varying degrees of configuration support, but most are not optimized for defining DRY configurations across dozens or hundreds of environments. Moreover, the configuration format is very different between the tools, but usually, boils down to some kind of key-value configuration in either JSON or YAML. This lack of configuration consistency poses a problem when we want to make it easy to declaratively define the settings that end-users should care about.
+
+## Solution
+We defined a “universal” configuration format that works for all the tools we use. When using terarform, helmfile, etc we design our components as reusable building blocks that accept simple declarative parameters and offload all business logic to the tools themselves.
+
+[We designed this configuration schema in YAML](https://learningactors.com/what-is-infrastructure-as-code-automating-your-infrastructure-builds/#:~:text=Infrastructure%20as%20code%20defined,a%20vastly%20larger%20scale.) and added convenient and robust deep-merging strategies that allow configurations to extend to other configurations. As part of this, we support OOP concepts of mixins, inheritance, and multiple inheritances - but all applied to the configuration. We support YAML anchors to clean up complex blocks of configuration, folder structures, environment variables, and all kinds of tool-specific settings.
+
+## Alternatives
+There are a number of alternative tools to atmos, that accomplish some aspect of it.
+
+| **Tool**                   | **Description**                                                                                                                                                                                                                                                                                                                                               | **Website**                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| terragrunt                 |                                                                                                                                                                                                                                                                                                                                                               | [https://github.com/gruntwork-io/terragrunt](https://github.com/gruntwork-io/terragrunt)                       |
+| astro                      |                                                                                                                                                                                                                                                                                                                                                               | [https://github.com/uber/astro](https://github.com/uber/astro)                                                 |
+| terraspace                 |                                                                                                                                                                                                                                                                                                                                                               | [https://github.com/boltops-tools/terraspace](https://github.com/boltops-tools/terraspace)                     |
+| leverage                   | The Leverage CLI intended to orchestrate Leverage Reference Architecture for AWS                                                                                                                                                                                                                                                                              | [https://github.com/binbashar/leverage](https://github.com/binbashar/leverage)                                 |
+| opta                       | The next generation of Infrastructure-as-Code. Work with high-level constructs instead of getting lost in low-level cloud configuration                                                                                                                                                                                                                       | [https://github.com/run-x/opta](https://github.com/run-x/opta)[https://docs.opta.dev/](https://docs.opta.dev/) |
+| pterradactyl               | Pterradactyl is a library developed to abstract Terraform configuration from the Terraform environment setup.                                                                                                                                                                                                                                                 | [https://github.com/nike-inc/pterradactyl](https://github.com/nike-inc/pterradactyl)                           |
+| terramate                  | Terramate is a tool for managing multiple terraform stacks                                                                                                                                                                                                                                                                                                    | [https://github.com/mineiros-io/terramate](https://github.com/mineiros-io/terramate)                           |
+| `make` (honorable mention) | Many companies (including cloudposse) start by leveraging `make` with `Makefile` and targets to call terraform. This is a tried and true way, but at the scale we help our customer operate didn’t work. We know, because we tried it for ~3 years and suffocated under the weight of environment variables and stink of complexity only a mother could love. | [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)                                       |
+
+What `atmos` is not:
+
+- An alternative to chef, puppet, or ansible. Instead, `atmos` is the type of tool that would call these tools.
+
+- An alternative to CI or CD systems. If anything, those systems will call `atmos`.
+
+## Design Considerations
+- Keep it strictly declarative (no concept of iterators or interpolations)
+
+- Offload all imperative design to the underlying tools
+
+- Do not write a programming language in YAML (e.g. CloudFormation) or JSON (e.g. terraform or JSONNET, KSONNET)
+
+- Do not use any esoteric expressions (e.g. JSONNET)
+
+- Keep it Simple Stupid (KISS)
+
+- Ensure compatibility with multiple tools, not just `terraform`
+
+- Define all configuration in files and not based on filesystem conventions.
+
+## Usage
+
+`atmos help` (actually, we still need to implement this 😵  after porting to golang)
+
+:::info
+**IMPORTANT**
+
+Atmos underwent a complete rewrite from an esoteric task runner framework called `variant2` into native Golang as of version 1.0. The documentation is not updated everywhere. The interface is identical/backward compatible (and enhanced), but some references to `variant2` are inaccurate. You can assume this documentation is for the latest version of atmos.
+
+:::
+
+Subcommands are positional arguments passed to the `atmos` command.
+
+### Subcommand: `version`
+Show the current version
+
+### Subcommand: `describe`
+Show the deep-merged configuration for stacks and components.
+
+### Subcommand: `terraform`
+- Supports all built-in [Terraform Subcommands](https://www.terraform.io/docs/cli/commands/index.html) (we essentially pass them through to the `terraform` command)
+
+- `deploy` is equivalent to `atmos terraform apply -auto-approve`
+
+- `generate backend` is used to generate the static `backend.tf.json` file that should be committed to VCS
+
+- `generate varfile` (deprecated command: `write varfile`) — This command generates a varfile for a terraform component: `atmos terraform generate varfile <component> -s <stack> -f <file>`
+
+- `clean` deletes any orphaned varfiles or planfiles
+
+### Subcommand: `helmfile`
+- Supports all `helmfile` subcommands
+
+- `describe`
+
+- `generate varfile`  — This command generates a varfile for a helmfile component: `atmos helmfile generate varfile <component> -s <stack> -f <file>`
+
+### Subcommand: `workflow`
+This subcommand is temporarily unavailable as a result of a major refactor from variant2 to golang. We will reintroduce the subcommand and it **has not** been _officially_ deprecated.
+
+[https://github.com/cloudposse/atmos](https://github.com/cloudposse/atmos)
+
+**Latest Releases**
+
+[https://github.com/cloudposse/atmos/releases](https://github.com/cloudposse/atmos/releases)
+
+**Open Issues**
+
+[https://github.com/cloudposse/atmos/issues](https://github.com/cloudposse/atmos/issues)
+
+## Examples
+
+### Provision Terraform Component
+
+To provision a Terraform component using the `atmos` CLI, run the following commands in the `geodesic` container shell:
+
+```
+atmos terraform plan eks --stack=ue2-dev
+atmos terraform apply eks --stack=ue2-dev
+```
+
+Where:
+
+- `eks` is the Terraform component to provision (from the `components/terraform` folder) that is defined in the stack. If the component is not defined in the stack, it will error.
+
+- `--stack=ue2-dev` is the stack to provision the component into (or in other words, where to read the configuration)
+
+:::info
+You can pass _any_ argument supported by `terraform` and it will be passed through to the system call to `terraform`.
+e.g. We can pass the `-destroy` flag to `terraform plan` by running  `atmos terraform plan -destroy --stack=uw2-dev`
+
+:::
+
+Short versions of the command-line arguments can also be used:
+
+```
+atmos terraform plan eks -s ue2-dev
+atmos terraform apply eks -s ue2-dev
+```
+
+To execute `plan` and `apply` in one step, use `terrafrom deploy` command:
+
+```
+atmos terraform deploy eks -s ue2-dev
+```
+
+### Provision Terraform Component with Planfile
+
+You can use a terraform `planfile` (previously generated with `atmos terraform plan`) in `atmos terraform apply/deploy` commands by running the following:
+
+```
+atmos terraform plan test/test-component-override -s tenant1/ue2/dev
+atmos terraform apply test/test-component-override -s tenant1-ue2-dev --from-plan
+atmos terraform deploy test/test-component-override -s tenant1-ue2-dev --from-plan
+```
+
+### Provision Helmfile Component
+
+To provision a helmfile component using the `atmos` CLI, run the following commands in the container shell:
+
+```
+atmos helmfile diff nginx-ingress --stack=ue2-dev
+atmos helmfile apply nginx-ingress --stack=ue2-dev
+```
+
+Where:
+
+- `nginx-ingress` is the helmfile component to provision (from the `components/helmfile` folder)
+
+- `--stack=ue2-dev` is the stack to provision the component into
+
+Short versions of the command-line arguments can be used:
+
+```
+atmos helmfile diff nginx-ingress -s ue2-dev
+atmos helmfile apply nginx-ingress -s ue2-dev
+```
+
+To execute `diff` and `apply` in one step, use `helmfile deploy` command:
+
+```
+atmos helmfile deploy nginx-ingress -s ue2-dev
+```
+
+### View Deep-merged CLI Configs
+
+Use `atmos describe config` command to show the effective CLI configuration. Use `--format` of `json` or `yaml` to alter the output to structured data.
+
+The deep-merge processes files from these locations:
+
+- system dir (`/usr/local/etc/atmos/atmos.yaml` on Linux, `%LOCALAPPDATA%/atmos/atmos.yaml` on Windows)
+
+- home dir (`~/.atmos/atmos.yaml`)
+
+- `atmos.yaml` in the current directory
+
+Here are some more examples:
+
+```
+atmos describe config -help
+atmos describe config
+
+atmos describe config --format=json
+atmos describe config --format json
+atmos describe config -f=json
+atmos describe config -f json
+
+atmos describe config --format=yaml
+atmos describe config --format yaml
+atmos describe config -f=yaml
+atmos describe config -f yaml
+```
+
+### Example Commands
+
+```
+atmos version
+atmos describe config
+
+# Describe components and stacks
+atmos describe component <component> -s <stack>
+atmos describe component <component> --stack <stack>
+
+# Generate
+atmos terraform generate backend <component> -s <stack>
+atmos terraform write varfile <component> -s <stack>   # this command will be changed to `terraform generate varfile`
+atmos terraform write varfile <component> -s <stack> -f ./varfile.json  # supports output file
+
+# Terraform
+# (almost) all native Terraform commands supported
+# https://www.terraform.io/docs/cli/commands/index.html
+atmos terraform plan <component> -s <stack>
+atmos terraform apply <component> -s <stack> -auto-approve
+atmos terraform apply <component> -s <stack> --from-plan
+atmos terraform deploy <component> -s <stack>
+atmos terraform deploy <component> -s <stack> --from-plan
+atmos terraform deploy <component> -s <stack> -deploy-run-init=true
+atmos terraform workspace <component> -s <stack>
+atmos terraform validate <component> -s <stack>
+atmos terraform output <component> -s <stack>
+atmos terraform graph <component> -s <stack>
+atmos terraform show <component> -s <stack>
+atmos terraform clean <component> -s <stack>
+
+# Helmfile
+# All native helmfile commands supported including [global options]
+# https://github.com/roboll/helmfile#cli-reference
+atmos helmfile diff <component> -s <stack>
+atmos helmfile apply <component> -s <stack>
+
+# Helmfile with [global options]
+atmos helmfile diff <component> -s <stack> --global-options "--no-color --namespace=test"
+atmos helmfile diff <component> -s <stack> --global-options="--no-color --namespace test"
+```
+
+### Workflows
+
+:::danger
+**IMPORTANT**
+This is in atmos 0.x and while this functionality has not been deprecated, it also **has not** been ported over to atmos 1.x yet.
+
+:::
+
+Workflows are a way of combining multiple commands into one executable unit of work, kind of like a basic task-runner.
+
+In the CLI, workflows can be defined using two different methods:
+
+- In the configuration file for a stack (see [workflows in dev/us-east-2.yaml](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/orgs/cp/tenant1/dev/us-east-2.yaml) for an example)
+
+- In a separate file (see [workflows.yaml](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/workflows/workflow1.yaml)
+
+In the first case, we define workflows in the configuration file for the stack (which we specify on the command line). To execute the workflows from [workflows in dev/us-east-2.yaml](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/orgs/cp/tenant1/dev/us-east-2.yaml), run the following commands:
+
+```
+atmos workflow deploy-all -s ue2-dev
+```
+
+Note that workflows defined in the stack config files can be executed only for the particular stack (environment and stage). It's not possible to provision resources for multiple stacks this way.
+
+In the second case (defining workflows in a separate file), a single workflow can be created to provision resources into different stacks. The stacks for the workflow steps can be specified in the workflow config.
+
+For example, to run `terraform plan` and `helmfile diff` on all terraform and helmfile components in the example, execute the following command:
+
+```
+atmos workflow plan-all -f workflows
+```
+
+where the command-line option `-f` (`--file` for long version) instructs the `atmos` CLI to look for the `plan-all` workflow in the file [workflows](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/workflows/workflow1.yaml).
+
+As we can see, in multi-environment workflows, each workflow job specifies the stack it's operating on:
+
+```
+workflows:
+  plan-all:
+    description: Run 'terraform plan' and 'helmfile diff' on all components for all stacks
+    steps:
+      - job: terraform plan vpc
+        stack: ue2-dev
+      - job: terraform plan eks
+        stack: ue2-dev
+      - job: helmfile diff nginx-ingress
+        stack: ue2-dev
+      - job: terraform plan vpc
+        stack: ue2-staging
+      - job: terraform plan eks
+        stack: ue2-staging
+```
+
+You can also define a workflow in a separate file without specifying the stack in the workflow's job config. In this case, the stack needs to be provided on the command line.
+
+For example, to run the `deploy-all` workflow from the [workflows](https://github.com/cloudposse/atmos/blob/master/examples/complete/stacks/workflows/workflow1.yaml) file for the `ue2-dev` stack, execute the following command:
+
+```
+atmos workflow deploy-all -f workflows -s ue2-dev
+```
+
+## Recommended Filesystem Layout
+
+:::info
+For an example of what this looks like within [Geodesic](/resources/legacy/fundamentals/geodesic) see the section on “Filesystem Layout”
+
+:::
+
+Our general recommended filesystem layout looks like this. It can be customized using the CLI Configuration file.
+
+```
+# Your infratructure repository
+infrastructure/
+   │
+   │   # Centralized components configuration
+   ├── stacks/
+   │   │   └── catalog/
+   │   │
+   │   └── $stack.yaml
+   │
+   │   # Components are broken down by tool
+   ├── components/
+   │   │
+   │   ├── terraform/   # root modules in here
+   │   │   ├── vpc/
+   │   │   ├── eks/
+   │   │   ├── rds/
+   │   │   ├── iam/
+   │   │   ├── dns/
+   │   │   └── sso/
+   │   │
+   │   └── helmfile/  # helmfiles are organized by chart
+   │       ├── cert-manager/helmfile.yaml
+   │       └── external-dns/helmfile.yaml
+   │
+   │   # Makefile for building the CLI
+   ├── Makefile
+   │
+   │   # Docker image for shipping the CLI and all dependencies
+   └── Dockerfile (optional)
+
+```
+
+## CLI Configuration
+
+Atmos supports a CLI configuration to define configure the behavior working with stacks and components.
+
+In [Geodesic](/resources/legacy/fundamentals/geodesic) we typically put this in `/usr/local/etc/atmos/atmos.yaml` (e.g. in `rootfs/...` in the `infrastructure` repository). Note this file uses the stack config format for consistency, but we do not consider it a stack configuration.
+
+The CLI config is loaded from the following locations (from lowest to highest priority):
+
+- system dir (`/usr/local/etc/atmos` on Linux, `%LOCALAPPDATA%/atmos` on Windows)
+
+- home dir (`~/.atmos`)
+
+- current directory (`./`)
+
+- ENV vars
+
+- Command-line arguments
+
+It supports [POSIX-style Globs for file names/paths](https://en.wikipedia.org/wiki/Glob_(programming)) (double-star `**` is supported)
+
+### Environment Variables
+
+Most YAML settings can be defined also as environment variables. This is helpful while doing local development. For example, setting `ATMOS_STACKS_BASE_PATH` to a path in `/localhost` to your local development folder, will enable you to rapidly iterate.
+
+| **Variable**                                         | **YAML Path**                                  | **Description**                                                                                                                      |
+| ---------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `ATMOS_COMPONENTS_TERRAFORM_BASE_PATH`               | `components.terraform.base_path`               |                                                                                                                                      |
+| `ATMOS_COMPONENTS_TERRAFORM_APPLY_AUTO_APPROVE`      | `components.terraform.apply_auto_approve`      |                                                                                                                                      |
+| `ATMOS_COMPONENTS_TERRAFORM_DEPLOY_RUN_INIT`         | `components.terraform.deploy_run_init`         |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_BASE_PATH`                | `components.helmfile.base_path`                |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_KUBECONFIG_PATH`          | `components.helmfile.aws_profile_pattern`      |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_HELM_AWS_PROFILE_PATTERN` | `components.helmfile.helm_aws_profile_pattern` |                                                                                                                                      |
+| `ATMOS_COMPONENTS_HELMFILE_CLUSTER_NAME_PATTERN`     | `components.helmfile.cluster_name_pattern`     |                                                                                                                                      |
+| `ATMOS_STACKS_BASE_PATH`                             | `stacks.base_path`                             |                                                                                                                                      |
+| `ATMOS_STACKS_INCLUDED_PATHS`                        | `stacks.included_paths`                        |                                                                                                                                      |
+| `ATMOS_STACKS_EXCLUDED_PATHS`                        | `stacks.excluded_paths`                        |                                                                                                                                      |
+| `ATMOS_STACKS_NAME_PATTERN`                          | `stacks.name_pattern`                          |                                                                                                                                      |
+| `ATMOS_LOGS_VERBOSE`                                 |                                                | For more verbose output,  set this environment variable to `true` to see the logs how the CLI finds the configs and performs merges. |
+
+### Example `atmos.yaml` Configuration File
+
+(see: [https://github.com/cloudposse/atmos/blob/master/examples/complete/atmos.yaml#L30](https://github.com/cloudposse/atmos/blob/master/examples/complete/atmos.yaml#L30))
+
+```
+
+components:
+  # Settings for all terraform components
+  terraform:
+    # Can also be set using `ATMOS_COMPONENTS_TERRAFORM_BASE_PATH` ENV var, or `--terraform-dir` command-line argument
+    # Supports both absolute and relative paths
+    base_path: "/atmos_root/components/terraform"
+    # Can also be set using `ATMOS_COMPONENTS_TERRAFORM_APPLY_AUTO_APPROVE` ENV var
+    apply_auto_approve: false
+    # Can also be set using `ATMOS_COMPONENTS_TERRAFORM_DEPLOY_RUN_INIT` ENV var, or `--deploy-run-init` command-line argument
+    deploy_run_init: true
+    # Can also be set using `ATMOS_COMPONENTS_TERRAFORM_AUTO_GENERATE_BACKEND_FILE` ENV var, or `--auto-generate-backend-file` command-line argument
+    auto_generate_backend_file: false
+
+  # Settings for all helmfile components
+  helmfile:
+    # Can also be set using `ATMOS_COMPONENTS_HELMFILE_BASE_PATH` ENV var, or `--helmfile-dir` command-line argument
+    # Supports both absolute and relative paths
+    base_path: "/atmos_root/components/helmfile"
+    # Can also be set using `ATMOS_COMPONENTS_HELMFILE_KUBECONFIG_PATH` ENV var
+    kubeconfig_path: "/dev/shm"
+    # Can also be set using `ATMOS_COMPONENTS_HELMFILE_HELM_AWS_PROFILE_PATTERN` ENV var
+    helm_aws_profile_pattern: "{namespace}-{tenant}-gbl-{stage}-helm"
+    # Can also be set using `ATMOS_COMPONENTS_HELMFILE_CLUSTER_NAME_PATTERN` ENV var
+    cluster_name_pattern: "{namespace}-{tenant}-{environment}-{stage}-eks-cluster"
+
+# Settings for all stacks
+stacks:
+  # Can also be set using `ATMOS_STACKS_BASE_PATH` ENV var, or `--config-dir` and `--stacks-dir` command-line arguments
+  # Supports both absolute and relative paths
+  base_path: "/atmos_root/stacks"
+  # Can also be set using `ATMOS_STACKS_INCLUDED_PATHS` ENV var (comma-separated values string)
+  included_paths:
+    - "**/*"
+  # Can also be set using `ATMOS_STACKS_EXCLUDED_PATHS` ENV var (comma-separated values string)
+  excluded_paths:
+    - "globals/**/*"
+    - "catalog/**/*"
+    - "**/*globals*"
+  # Can also be set using `ATMOS_STACKS_NAME_PATTERN` ENV var
+  name_pattern: "{tenant}-{environment}-{stage}"
+
+logs:
+  verbose: false
+  colors: true
+```
+
+## Troubleshooting
+
+:::info
+For more verbose output, you can always set the environment variable `ATMOS_LOGS_VERBOSE=true` to see the logs how the CLI finds the configs and performs merges.
+
+:::
+
+### **Error:** `stack name pattern must be provided in 'stacks.name_pattern' config or 'ATMOS_STACKS_NAME_PATTERN' ENV variable`
+
+This means that you are probably missing a section like this in your `atmos.yml`. See the instructions on CLI Configuration for more details.
+
+```
+stacks:
+  name_pattern: "{tenant}-{environment}-{stage}"
+```
+
+### **Error:** `The stack name pattern '{tenant}-{environment}-{stage}' specifies 'tenant`, but the stack ue1-prod does not have a tenant defined`
+
+This means that your `name_pattern` declares a `tenant` is required, but not specified. Either specify a `tenant` in your `vars` for the stack configuration, or remove the `{tenant}` from the `name_pattern`
+
+```
+stacks:
+  name_pattern: "{tenant}-{environment}-{stage}"
+```
+
+## How-to Guides
+
+- [How to Upgrade Atmos](/learn/maintenance/upgrades/how-to-upgrade-atmos)
+- [How to use Atmos](/learn/maintenance/tutorials/how-to-use-atmos)
+
+## Concepts
+
+- [Stacks](/resources/legacy/fundamentals/stacks)
+
+- [Components](/components)

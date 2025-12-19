@@ -1,0 +1,165 @@
+---
+title: "How to Sign Up for Spacelift"
+sidebar_label: "How to Sign Up"
+sidebar_position: 0
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+
+## Problem
+
+You’ve been asked to signup for the Spacelift service and you’re not sure which plan to choose or where to go next. You have questions on pricing and want to better understand your options. You already use GitHub Actions, or some other CI/CD platform and want to understand why you need yet another platform.
+
+## Solution
+
+:::tip
+Signup for any trial Spacelift account and it will automatically be enabled as an **Enterprise Trial**. We’ll request via our partern-channel that Spacelift bump it up to an extended **Enterprise Trial**, while you work with them to reach a fair price.
+
+:::
+
+
+#### GitHub Organizations
+
+<img src="/assets/refarch/cleanshot-2021-10-25-at-16.54.34@2x-20211025-215448.png" /><br/>
+
+[https://spacelift.io/free-trial](https://spacelift.io/free-trial)
+
+After signing up using your GitHub account, you should be prompted to install the Spacelift GitHub App.
+
+Or install it by going here:
+
+[https://github.com/apps/spacelift-io/installations/new](https://github.com/apps/spacelift-io/installations/new)
+
+[https://github.com/apps/spacelift-io](https://github.com/apps/spacelift-io)
+
+#### GitLab Organizations
+
+<img src="/assets/refarch/cleanshot-2021-10-25-at-16.52.11@2x-20211025-215322.png" /><br/>
+
+For organizations running GitLab, register with your work email address instead.
+
+[https://spacelift.io/free-trial](https://spacelift.io/free-trial)
+
+Once you’ve signed up for the Spacelift trial, we’ll configure GitLab as source control integration. To learn more about setting up the GitLab integration, see the [https://docs.spacelift.io/integrations/source-control/gitlab](https://docs.spacelift.io/integrations/source-control/gitlab) integration documentation.
+
+
+## Signup Process
+
+:::info
+Sign up for Spacelift after the cold start components and `vpc` component have been provisioned in the automation account
+
+:::
+
+<Steps>
+1. Sign up [https://spacelift.io/free-trial](https://spacelift.io/free-trial)
+
+2. Install [Spacelift GitHub app](https://github.com/apps/spacelift-io/installations/new) into the customer GitHub organization
+
+1. Once the app is installed into the customer GitHub organization, the GitHub organization admin will receive an email from Spacelift
+
+3. Click on the link in the email from Spacelift
+
+1. After the Spacelift app has been installed and enabled, only the integration creator (the admin of the customer GitHub org) gets administrative permissions by default, so all other users and administrators must be granted their access using a login policy.
+
+4. Add the following login policy.
+
+1. Click `Policies` at the top
+
+2. Click `Add Policies`
+
+3. Set a name like `Login Policy`
+
+4. Change the policy type to `Login policy`
+
+5. Copy and paste the policy below
+
+6. Change the `user_collaborators` to the customer github org
+
+7. Add any additional `admin_collaborators` from the Cloud Posse team
+
+8. Add the names of the Cloud Posse `CLOUDPOSSE-CASE-SENSITIVE-TEAM-NAME` and non cloudposse `YOUR-CASE-SENSITIVE-TEAM-NAME` team names.
+
+9. Finally, click `Create Policy`
+
+    ```rego
+    package spacelift
+    # See https://docs.spacelift.io/concepts/policy/login-policy for implementation details.
+    # Note: Login policies don't affect GitHub organization or SSO admins.
+    # Note 2: Enabling SSO requires that all users have an IdP (G Suite) account, so we'll just use
+    #          GitHub authentication in the meantime while working with external collaborators.
+    # Map session input data to human friendly variables to use in policy evaluation
+    username	:= input.session.login
+    member_of   := input.session.teams
+
+    github_org   := input.session.member
+
+    # Define GitHub usernames of non-github_org org external collaborators with admin vs. user access
+    admin_collaborators := { "osterman", "aknysh", "Nuru", "nitrocode" } # case sensitive names of collaborators
+
+    user_collaborators  := { "Customer Github Org" } # case sensitive name of the github org
+
+    # Grant admin access to github_org org members in the non cloud posse case-sensitive team
+    # Do not use the slug here, use the name shown in github.com/org/teams
+    admin {
+      github_org
+      member_of[_] == "YOUR-CASE-SENSITIVE-TEAM-NAME"
+    }
+
+    # Grant admin access to github_org org members in the Cloud Posse group
+    # Do not use the slug here, use the name shown in github.com/org/teams
+    admin {
+      github_org
+      member_of[_] == "CLOUDPOSSE-CASE-SENSITIVE-TEAM-NAME"
+    }
+
+    # Grant admin access to non-github_org org accounts in the admin_collaborators set
+    admin {
+      # not github_org
+      admin_collaborators[username]
+    }
+
+    # Grant user access to accounts in the user_collaborators set
+    allow {
+      # not github_org
+      user_collaborators[username]
+    }
+
+    # Deny access to any non-github_org org accounts who aren't defined in external collaborators sets
+    deny {
+      not github_org
+      not user_collaborators[username]
+      not admin_collaborators[username]
+    }
+    ```
+
+5. Verify Cloud Posse users have administrative access
+
+6. Create an administrative api key
+
+1. Click the three horizontal bars on the top right hand corner
+
+2. Click `Settings`
+
+3. Click `API KEYS`
+
+4. Click `Add new API Key`
+
+5. Give it a name like `Spacelift worker pool API admin key`
+
+6. Enable `Admin`
+
+7. Click `Add Key`
+
+8. A file will download. Save the contents to our shared 1Password vault. This will give us the `key_secret` and the `token`.
+
+9. Also share the 16 character string next to the name of the key which gives us the `key_id`.
+
+</Steps>
+
+:::important
+
+After signing up and following the above steps, let our team know what your Spacelift account slug is and we’ll get it upgraded to an Enterprise trial via our partner channels with Spacelift.
+
+:::
+

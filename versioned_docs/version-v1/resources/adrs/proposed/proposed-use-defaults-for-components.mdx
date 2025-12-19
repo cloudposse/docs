@@ -1,0 +1,97 @@
+---
+title: "Proposed: Use Defaults for Components"
+sidebar_label: "Use Defaults for Components"
+sidebar_position: 200
+---
+
+:::info Needs Update!
+
+The content in this ADR may be out-of-date and needing an update. For questions, please reach out to Cloud Posse
+
+- The proposal has already been adopted, and this ADR needs to be updated to reflect the final decision.
+
+:::
+
+
+## Status
+**DRAFT**
+
+## Problem
+There are many places to set configurations with various levels of prescedence:
+
+- As defaults to `variables { ... }` in `.tf` files
+
+- As `defaults.auto.tfvars` (or similar file `.tfvars` file)
+
+- As configuration in `stacks/` or catalogs  like`stacks/catalog/...`
+
+- As environment variables (e.g. `TF_VAR_...`)
+
+- As arguments to `terraform plan` or `terraform apply` (e.g. `terraform plan -var foo=bar`
+
+Developers are confused about where to set variables without a consistent, opinionated convention on how to do it.
+
+Running `atmos describe` it’s easy to see the deep-merged configuration after all imports have been consumed, however, it doesn’t show what defaults are set in `variables { ... }` or `.tfvars` files.
+
+```
+# Ideal outcome (not yet supported)
+vars:
+  enabled: true     # default.auto.tfvars
+  nodes: 10         # stacks/catalog/eks/defaults.yaml
+  min_size: 3       # stacks/uw2-prod.yaml
+  name: eks         # components/terraform/variables.tf
+```
+
+## Context
+In Terraform 0.11, regular `*.tf` files were [loaded in alphabetical order](https://www.terraform.io/docs/configuration-0-11/load.html), and then override files were applied.
+
+When invoking any command that loads the Terraform configuration, Terraform loads all configuration files within the directory specified in alphabetical order. Override files are the exception, as they're loaded after all non-override files, in alphabetical order.
+
+In the newer Terraform 0.12, the load order of `*.tf` files is [no longer specified](https://www.terraform.io/docs/configuration/index.html#configuration-ordering). Behind the scenes (in both versions), Terraform reads all of the files in a directory and then determines a resource order that makes sense ignoring the order the files were actually read.
+
+Terraform automatically processes resources in the correct order based on relationships defined between them in configuration, and so you can organize resources into source files in whatever way makes sense for your infrastructure.
+
+In TT 0.11, the `auto.tfvars` files were loaded in alphabetical order.
+
+In TF 0.12 and newer, it says they are loaded in random order, but that depends on many things, depends on the file system, and we can assume that they can be loaded in the alphabetical order as well.
+
+**NOTE:** This is a convincing reason to define ALL config in YAML files and not to have `default.auto.tfvars` at all, especially not to have many `auto.tfvars` in the same folder with different names and conflicting settings inside them.
+
+Because in this case, the order of operations is NOT defined, and it could succeed in one place (`atmos`), but fail in another (Spacelift).
+
+Thus our current recommendation is to remove all `*.auto.tfvars` (e.g.  `default.auto.tfvars` and `variables-helm.auto.tfvars`) and put all the configuration for the component into the YAML stack config. This does not only solve the issue described above but allows seeing ALL variables for the component when executing the `atmos describe component argo-workflows --stack mgmt-uw2-sandbox` command (if some variables are in `auto.tfvars` files, the command will not see them)
+
+## Considered Options
+
+### Option 1: Only use Stacks and Catalogs
+Avoid all use of `.tfvars` and just use stacks and catalogs. Avoid any defaults in `variable { ... }` blocks. Default enabled in `default.auto.tfvars` to `false`.
+
+### Option 2: Use Stacks, Catalogs and `.tfvars`
+Place the majority defaults in `.tfvars` with sane defaults and only create archetypes in catalogs. Default archetypes to be `enabled`.
+
+## Decision
+- Do not put defaults in `defaults.auto.tfvars`
+
+- **Exception**: The `spacelift` component which requires it
+
+- **Exception**: Helm releases should have chart name, repo and version in `default.auto.tfvars`
+
+- Add defaults to `catalog/$component/baseline.yaml` where `$component` usually refers to a component in `components/terraform/$component`
+
+- These would generally be of `metadata.type=abstract`
+
+- Every component needs an `enabled` flag which gets passed to all modules as well as toggles any resources in the component itself
+
+- The `enabled` flag should be set to `true` in the `catalog/$component/baseline.yaml`
+
+### Consequences
+- Provide a way to generate the baseline configurations from the `.tfvars` and/or the `variables { ... }`
+
+- Provide a way to visualize where all the imports happen (almost like a `git blame`)
+
+### References
+- [https://stackoverflow.com/questions/59515702/multiple-tf-files-in-a-folder](https://stackoverflow.com/questions/59515702/multiple-tf-files-in-a-folder)
+
+- [https://www.terraform.io/language/configuration-0-11/load#load-order-and-semantics](https://www.terraform.io/language/configuration-0-11/load#load-order-and-semantics)
+
+

@@ -1,0 +1,169 @@
+---
+title: "Troubleshooting"
+sidebar_position: 100
+---
+
+# Troubleshooting
+
+Here are some common errors and fixes.
+
+## Terraform
+
+### Error: `Could not retrieve the list of available versions for provider`
+
+If you get an error like this one, it’s usually because of the `.terraform.lock.hcl` file.
+
+:::tip
+Either run `terraform init -upgrade` to upgrade pinning for all providers or simply run `rm -f .terraform.lock.hcl` to have the file rereated on next run of `terraform init`.
+
+:::
+
+```
+Error: Failed to query available provider packages
+
+Could not retrieve the list of available versions for provider
+cloudposse/utils: locked provider registry.terraform.io/cloudposse/utils 0.3.1
+does not match configured version constraint >= 0.8.0, ~> 0.11.0; must use
+terraform init -upgrade to allow selection of new versions
+
+Error: 1 error occurred:
+	* step "plan init": job "terraform init": job "terraform subcommand": command "terraform init" in "./components/terraform/foobar": exit status 1
+```
+
+### Error: `ResourceNotFoundException: Requested resource not found`
+
+:::tip
+This usually happens when the `role_arn: null` still exists in the stack and/or `backend.tf.json` files from the cold start.
+
+:::
+
+_If using the_ `aws-sso` _component, then:_
+
+1. remove `role_arn: null` from all the stack yaml
+
+2. replace `"role_arn": null,` with `"profile": "<namespace>-gbl-root-terraform",` in the `backend.tf.json`
+
+_If not using the_ `aws-sso` _component:_
+
+1. replace `"role_arn": null` with the full role arn of `<namespace>-gbl-root-terraform` in the `backend.tf.json`
+
+:::caution
+ You may have to run a `atmos terraform plan clean <component> -s <stack>` or it may complain that the state needs to be migrated.
+
+:::
+
+### Error: `The security token included in the request is invalid`
+
+:::tip
+If using **Leapp during the cold-start process**, first try settings the environment variables in the shell (e.g. AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) instead of using config file with session token.
+
+:::
+
+If you see this error during the **cold-start** process. This usually means one of the following:
+
+1. Terraform is trying to assume a role while targeting the **root** account
+
+2. Terraform is not properly assuming the **OrganizationAccountAccessRole** when targeting a **non-root** account
+
+3. The session token that **Leapp** generates for the AWS config file does not play well with Terraform
+
+Make sure that the **Leapp** credentials are not a problem by using the environment variables (e.g. AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY). If that doesn’t work, **org_role_arn** (returned by account-map.modules.iam-roles) should empty for the **root** account or populated with the **OrganinizationAccountAccessRole** ARN when targeting a **non-root** account.
+
+## Kubernetes
+
+### Error: `Kubernetes cluster unreachable: the server has asked for the client to provide credentials`
+
+> `Error: Kubernetes cluster unreachable: the server has asked for the client to provide credentials`
+
+:::tip
+**If you see this error on Spacelift**, it probably means the plan was created some time ago, so the EKS token has already expired. Simply retrigger the stack and it should work.
+
+:::
+
+This is almost certainly due to Kubernetes Terraform Provider issues. There are various subtle problems with how it handles EKS authentication. The long-term solution will be for the provider to fix the problems. In the short term, retriggering the stack usually works.
+
+##### Background
+
+An EKS cluster, like any Kubernetes cluster, has its own authentication mechanism (known in Kubernetes as Role-Based Access Control) to limit who can take what actions. In EKS, the mechanism for authentication, in brief, is that the user presents IAM authentication credentials to a special API endpoint, and receives a short-lived token that it can present to EKS for authentication. Because this API call is expensive, the token is cached somewhere, and authentication operations use the cached token. In a normal operation under `kubectl`, you create a so-called `KUBECONFIG` file that instructs `kubectl` how to get this token, and `kubectl` will respond to an authentication failure (which happens regularly when the cached token expires) by asking for another token.
+
+In Terraform, the mainstream way to get this authentication token is by directly calling the API via the `aws_eks_cluster_auth` Data Source. Then Terraform caches the token in its state file. The problem here is that Terraform is a general-purpose resource manager, and is not equipped with a retry mechanism to refresh the token after it expires. The current workaround is to execute some command which causes Terraform to re-read the Data Source rather than use the cached token.
+
+At Cloud Posse, we have developed an alternative mechanism that leverages `kubectl`, but it requires that the `aws` CLI be installed, which is not something we want to require for our open source modules for various reasons.
+
+We are considering making it standard on our closed-source installations where we use Spacelift and can require `aws`. Inquire about it if you run into this problem.
+
+### Error: `Kubernetes cluster unreachable: Get "https://xyz.gr7.region.eks.amazonaws.com/version?timeout=32s": dial tcp a.b.c.d:443: i/o timeout`
+
+This error is most likely due to a security group issue. The [transit-gateway](/components/library/aws/tgw/) component controls ingress from `auto` and `corp` into the other accounts. Check the `transit-gateway`'s input var `accounts_with_eks` is filled in correctly and redeploy the component.
+
+### Error: `Post "http://localhost/api/v1/namespaces/kube-system/configmaps": dial tcp 127.0.0.1:80: connect: connection refused`
+
+This could also be a `Error: Get`
+
+Do not remove the kubeconfig map from the state as that will cause a cluster recreation
+
+Instead, run a `deploy` to refresh the token and then a `plan` will work on the eks cluster. The `deploy` may fail but try a `plan` after and it should work.
+
+```
+atmos terraform deploy eks --stack ue1-auto
+atmos terraform plan eks --stack ue1-auto
+```
+
+This may also be an issue with using only private subnets and not using the vpn.
+
+### Error: `initContainers` does not accept `imagePullSecrets`
+
+This issue is **CLOSED** but still affects versions of Kubernetes up to 1.22.0.
+
+[https://github.com/kubernetes/kubernetes/issues/70732](https://github.com/kubernetes/kubernetes/issues/70732)
+
+### Error: configmaps "aws-auth" is forbidden: User "system:anonymous" cannot get resource "configmaps" in API group "" in the namespace "kube-system"
+
+This input for the eks module should fix it
+
+```
+  kube_exec_auth_enabled = !var.kubeconfig_file_enabled
+```
+
+And/or use all the best practices for the eks module in the eks component
+
+```
+  kube_data_auth_enabled = false
+  # exec_auth is more reliable than data_auth when the aws CLI is available
+  # Details at https://github.com/cloudposse/terraform-aws-eks-cluster/releases/tag/0.42.0
+  kube_exec_auth_enabled = !var.kubeconfig_file_enabled
+  # If using `exec` method (recommended) for authentication, provide an explicit
+  # IAM role ARN to exec as for authentication to EKS cluster.
+  kube_exec_auth_role_arn         = coalesce(var.import_role_arn, module.iam_roles.terraform_role_arn)
+  kube_exec_auth_role_arn_enabled = true
+  # Path to KUBECONFIG file to use to access the EKS cluster
+  kubeconfig_path         = var.kubeconfig_file
+  kubeconfig_path_enabled = var.kubeconfig_file_enabled
+```
+
+## Other
+
+### Error: `pre-commit` hook for `terraform-docs` is not working
+
+:::tip
+Try running `precommit autoupdate` to fix the issue.
+
+:::
+
+When `pre-commit` fails, it doesn’t produce much output to `stdout`.
+
+```
+Terraform docs...........................................................Failed
+```
+
+Instead, `pre-commit` will direct the output to a logfile, `$HOME/.cache/pre-commit/pre-commit.log`.
+
+To re-run the `terraform-docs` pre-commit hook, run `pre-commit run terraform_docs -a`.
+
+Others have reported that errors were caused by a local version of `terraform-docs` that was ahead of our `pre-commit` version in the infrastructure repository. Running `precommit autoupdate` fixed the issue.
+
+### Error: Leapp is Unstable on Windows
+
+If Leapp is unstable on Windows, the workaround, for the time being, may be to use WSL and copy over the `.aws` directory from Windows home user to Linux home user.
+
+

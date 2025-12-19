@@ -1,0 +1,137 @@
+---
+title: "Runs On - Self-Hosted Runners"
+sidebar_label: "Runs On"
+sidebar_position: 12
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Admonition from '@theme/Admonition';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import File from '@site/src/components/File';
+
+<Intro>
+  This guide explains how to set up and manage self-hosted runners using the Runs On component. Self-hosted runners provide more control over the execution environment, allowing you to run workflows on your own infrastructure.
+</Intro>
+
+<Admonition type="note">
+  [GitHub-OIDC](/layers/github-actions/github-oidc-with-aws/) is not required to deploy Runs On, but it is required for several components to be deployed on or to via SelfHosted Runners.
+  For example, your runners cannot push to ECR without GitHub-OIDC.
+</Admonition>
+
+<KeyPoints title="Quick Start">
+
+1. Vendor the required components
+2. Deploy the Runs On component
+3. Install the GitHub App
+4. Configure your workflows to use the runners
+
+</KeyPoints>
+
+<Steps>
+  <Step>
+  ## <StepNumber/> Vendor Runs On Component
+
+  Vendor the required components using the included Atmos workflow:
+
+      <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/github" />
+
+  </Step>
+
+  <Step>
+  ## <StepNumber/> Deploy Runs On Component
+
+  Deploy the Runs On component using the included Atmos workflow:
+
+      <AtmosWorkflow workflow="deploy/runs-on" fileName="quickstart/foundation/github" />
+
+  </Step>
+
+  <Step>
+  ## <StepNumber/> Install GitHub App
+
+  After deployment, follow these steps to install the GitHub App:
+
+  1. Check the Terraform outputs for `RunsOnEntryPoint` 
+  2. Use the provided URL to install the GitHub App 
+  3. Follow the prompts to complete the installation in your GitHub Organization 
+  4. Ensure you have the necessary permissions in GitHub to install the app 
+
+  </Step>
+
+  <Step>
+  ### <StepNumber/> Configure Workflows
+
+  Update your GitHub Actions workflow files to use the self-hosted runners:
+
+  ```yaml
+  jobs:
+    build:
+      runs-on: 
+        - "runs-on=${{ github.run_id }}"
+        - "runner=terraform" # Note `terraform` is a runner group name defined by a RunsOn configuration
+        ## If no configuration is present, use
+        # - "runner=2cpu-linux-x64"
+        ## Optional Tags
+        # - "tag=${{ inputs.component }}-${{ inputs.stack }}"
+      steps:
+        - uses: actions/checkout@v3
+        # Add your build steps here
+  ```
+
+  For more information on available runner types and configurations, check the [RunsOn: Runner Types documentation](https://runs-on.com/runners/linux/).
+  </Step>
+
+  <Step>
+  ### <StepNumber/> (Optional) Setup a RunsOn Repo or Organization Configuration
+
+    In your Repository you can add a file to configure Runs On. This can also extend the configuration for the Organization.
+
+  <Admonition type="note">
+    <br/>
+    Please note this snippet below is an extremely simplified example
+    <br/>
+    <br/>
+    If you want to see what Cloud Posse uses as a starting point checkout our configuration [here](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml)
+  </Admonition>
+
+  Here's a sample configuration. We recommend storing this in a centralized `.github` repository so you can define a shared `runs-on` configuration that you can use across all repositories, without duplicating it in each one. This is especially useful when managing many repositories.
+  <File title="MyOrg/.github/.github/runs-on.yml">
+    ```yaml
+    runners:
+      terraform:
+        image: ubuntu22-full-x64
+        disk: default
+        spot: price-capacity-optimized
+        retry: when-interrupted
+        private: false
+        ssh: false
+        cpu: [2, 32]
+        ram: [8, 64]
+        tags:
+          - "gha-runner:runs-on/terraform"
+    ```
+  </File>
+
+  To use your organization's shared configuration in an individual repository, you need to define a local configuration that uses the `_extends` keyword to inherit from the centralized setup — it won’t be applied automatically.
+  <File title="MyOrg/MyInfraRepo/.github/runs-on.yml">
+    ```yaml
+    # See https://runs-on.com/configuration/repo-config/
+    _extends: .github
+    terraform:
+      cpu: [4, 32] # example override
+    ```
+  </File>
+  </Step>
+</Steps>
+
+
+## Troubleshooting
+
+### GitHub Action Runner Not Found
+
+First determine if the Workflow or the Runner is the issue, sometimes the workflow doesn't kick off because it is on a feature branch and not on the default.
+
+If the workflow kicks off but is waiting on a runner, checkout [Runs On Troubleshooting](https://runs-on.com/guides/troubleshoot/) as they have great docs on figuring out why a runner is not available.

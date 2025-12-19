@@ -1,0 +1,150 @@
+---
+title: GitHub Contributors FAQ
+sidebar_label: FAQ
+description: 'GitHub Contributors FAQ'
+tags:
+  - faq
+  - contribute
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+Welcome to the Cloud Posse Contributors FAQ! This guide answers common questions about contributing to our open source projects. Whether you're a first-time contributor or a seasoned maintainer, you'll find helpful information about our processes, best practices, and community guidelines. If you don't find what you're looking for here, feel free to reach out through our community channels.
+</Intro>
+
+
+## How do I ask questions?
+
+There are several ways to get help and ask questions:
+
+<Steps>
+1. GitHub Discussions
+   <Steps>
+      - Visit our [GitHub Discussions](https://github.com/orgs/cloudposse/discussions)
+      - Search existing discussions to see if your question has already been answered
+      - Create a new discussion if you can't find an answer
+   </Steps>
+
+2. SweetOps Slack
+   <Steps>
+      - Join our [SweetOps Slack workspace](https://slack.sweetops.com/)
+      - Recommended channels:
+         - `#terraform` - For Terraform-related questions
+         - `#aws` - For AWS-specific questions
+         - `#cloudposse` - For general Cloud Posse questions
+         - `#atmos` - For Atmos-related questions
+      - Please search the channel history before asking questions
+   </Steps>
+
+3. **GitHub Issues**
+   <Steps>
+      - For bug reports or feature requests, create an issue in the relevant repository
+      - Make sure to follow the issue template and provide all requested information
+   </Steps>
+
+4. **Documentation**
+   <Steps>
+      - Check our [documentation](/learn/) for answers to common questions
+      - Many questions can be answered by reading the relevant documentation
+   </Steps>
+</Steps>
+
+## How do I see all open Pull Requests?
+
+You can find all open Pull Requests by going to [GitHub and searching for open PRs](https://github.com/pulls?q=is%3Apr+is%3Aopen+org%3Acloudposse).
+
+## What if we approve and merge a Pull Request with a problem?
+
+We encourage everyone who uses our modules to practice version pinning. So while we try to ensure `master` is always stable,
+we're not concerned if we occasionally break things. Also, we believe in a blameless culture. We rather figure out and fix
+why something happened than blame or chastise our volunteers.
+
+## What are your best-practices we should follow?
+
+ See our  [Terraform Best Practices](/best-practices/terraform) and [Best Practices](/best-practices/). These are just some guidelines to follow and we're open to your feedback!
+
+## What benefits do I receive as a contributor?
+
+As a contributor, you'll be able to expedite the reviews of Pull Requests for your organization by having a direct
+line of communication with our community of volunteers.
+
+## Are contributors paid?
+
+All of our contributors are volunteers. Granted, some of our "volunteers" happen to work for Cloud Posse. They get paid! =)
+
+## How do contributors collaborate?
+
+Contributors participate in a private Slack channel on the [SweetOps Slack team](https://slack.sweetops.com/) and via GitHub on issues and pull requests.
+
+## When do we cut new releases?
+
+We cut a release every single merge to `master`.
+
+## What is our versioning strategy?
+
+We practice [`semver`](https://semver.org).
+
+Our versioning strategy allows us to systematically and consistently increase patch, minor and major releases. When in doubt, bump the minor release.
+Following this strategy allows us to move quickly, release often while enabling our community to version pin for stability, and still convey the *semantics* of the kind of change that happened.
+
+1. **Patch Releases** We bump the patch release for bug fixes of *existing* functionality or small updates to documentation
+2. **Minor Releases** Projects that are `< 1.x`, every merge to `master` else is a minor release. This is the proper [semver convention](https://semver.org/#spec-item-4) for `0.x.y` releases.
+   - While we always try to ensure the interfaces won't change radically, we cannot promise that will remain the case, especially when the tool itself (e.g. `terraform` is not yet `1.0`).
+   - Once the interface is more or less guaranteed to be stable we will release a 1.0.
+3. **Major Releases** The major version is milestone-driven (e.g. `> 1.x`). The first milestone is always stability. A major release will correspond to the previous minor release that closes out that milestone.
+    - The 1.0 milestone doesn’t happen until we have had a very long burn-in period where it is stable and the interface works. For comparison, the `terraform` language is still `0.x` since July 28, 2014.
+   -  **After 1.0** all major releases are driven by achieving a particular feature set
+
+A common strategy practiced by other organizations is to bump the major release when there's a “known breaking change” and usually includes many changes all at once. This is typically practiced post-1.0 and it's still somewhat arbitrary and difficult to verify. Philosophically speaking, every change is breaking for somebody.
+For example, if a project has a bug, chances are that someone has implemented a workaround for that bug. If we release a bug fix as a patch release, that could very well be a breaking change for anyone who had a workaround. By releasing frequently on every commit to `master`,
+we allow the greatest number of users to benefit from the work we do. If we break something, no big deal. Users should always practice strict version pinning - never using `master` directly. That way, users can just pin to the previous release of of a module. As a small organization managing *hundreds* of projects, attempting a formal release schedule for each project is not feasible.
+
+## How do we create a new release?
+
+As a member of the `@cloudposse/contributors` team, create a new release, use the [built-in GitHub release functionality](https://help.github.com/en/enterprise/2.13/user/articles/creating-releases). Please do not create releases manually by creating tags and pushing them as this lacks all the metadata associated with a release, which can have a rich markdown description. All GitHub releases also have tags, but not all tags have a GitHub release.
+
+
+:::caution
+Versions must follow the [`semver`](https://semver.org) convention. Do not prefix releases with a version specifier (e.g. a *good* version is `0.1.0` and a *bad* version is `v0.1.0`).
+:::
+
+
+## Why are releases not always in sequential order?
+
+Some of our `terraform` modules support backwards compatibility with HCLv1 (pre terraform 0.12). You'll notice these projects usually have a branch named `0.11/master`. When we accept a bugfix for one of these projects and merge to `master`, we will cut a patch release against the last minor release version for terraform 0.11.
+
+:::info
+We're not accepting new features for pre-terraform-0.12 modules.
+:::
+
+## Why is my Terraform Pull Request not yet reviewed or merged?
+
+If your Pull Request is to upgrade a Terraform module from HCLv1 to HCLv2, then chances are we haven't approved it because it does not have `terratest` integration tests. As a general policy, we're only upgrading modules to HCLv2 that have `terratest` integration tests. Attempting to maintain stability
+with hundreds of modules is only possible with integration testing.
+
+:::info
+All Terraform Modules updated to HCL2 **must** have `terratest` integration tests.
+:::
+
+## Do we have to update integration tests?
+
+We do not expect contributors to be experts at integration testing or writing Golang. For that reason, we do not require that Open Source community contributors update integration tests. However, if existing tests break due to changes in a Pull Request, we will not accept the contributions until the tests pass.
+
+## How are Pull Requests merged? Can I merge my own Pull Requests?
+
+Once a Pull Request is approved and tests pass, then it may be merged. Anyone with permissions to merge is permitted to merge. Note, if any changes are pushed to the branch, the approval is automatically dismissed. This is why we let you merge your own PRs. Approvers are free to leave a Pull Request open so that the originator of the PR may have the recourse to change things if something comes up.
+
+While we try to keep `master` stable, it's just a best-effort. If something goes wrong, it's better that we address what broke down procedurally (e.g. improving tests, communication, etc.), than micro-managing the merging process.
+
+We recommend users version pin to releases for stability and never pin to master.
+
+After merging a Pull Request to `master`, then cut a release. We cut a release for every merge to master. If it's a bug fix, bump the patch release (e.g. `0.0.x`). If it's a new feature, bump the minor (e.g. `0.x.0`). It's that easy! Review the rest of this FAQ for more details on our `semver` strategy.
+
+## What are the merge constraints?
+
+All of our GitHub repositories implement the following convention with branch protections:
+
+1. At least (1) approver determined by the [`CODEOWNER`](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners) file
+2. Required tests passing
+
