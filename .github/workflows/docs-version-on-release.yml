@@ -71,8 +71,7 @@ jobs:
 
           # Create versioned docs directory (Docusaurus requires version- prefix)
           mkdir -p "versioned_docs/version-${VERSION}"
-          # Copy docs but exclude tags.yml (it's a config file, not content)
-          rsync -a --exclude='tags.yml' docs/ "versioned_docs/version-${VERSION}/"
+          cp -r docs/* "versioned_docs/version-${VERSION}/"
 
           # Create versioned sidebar (Docusaurus requires version- prefix)
           mkdir -p versioned_sidebars
