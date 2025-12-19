@@ -167,6 +167,10 @@ async function createConfig() {
                 label: 'Latest',
                 path: '',
               },
+              v1: {
+                label: 'v1',
+                path: 'v1',
+              },
             },
           },
           blog: {
