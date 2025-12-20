@@ -1,33 +1,17 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import {useActiveDocContext} from '@docusaurus/plugin-content-docs/client';
+import {useLocation} from '@docusaurus/router';
 import Admonition from '@theme/Admonition';
 
 export default function DocVersionBanner() {
-  const {activeVersion} = useActiveDocContext();
+  const location = useLocation();
+  const pathname = location.pathname;
 
-  // No banner needed if version info is not available
-  if (!activeVersion) {
-    return null;
-  }
-
-  const {label, isLast} = activeVersion;
-
-  // Latest version (v2) - green tip admonition
-  if (isLast) {
-    return (
-      <div className="margin-bottom--md">
-        <Admonition type="tip" title="Latest Documentation">
-          This is the latest documentation for the Cloud Posse Reference Architecture.
-          To determine which version you're currently using, please see{' '}
-          <Link to="/resources/version-identification/">Version Identification</Link>.
-        </Admonition>
-      </div>
-    );
-  }
+  // Check if we're on a v1 page by looking at the URL path
+  const isV1 = pathname.startsWith('/v1/') || pathname === '/v1';
 
   // v1 version - yellow warning admonition
-  if (label === 'v1') {
+  if (isV1) {
     return (
       <div className="margin-bottom--md">
         <Admonition type="warning" title="Version 1 Documentation">
@@ -41,12 +25,12 @@ export default function DocVersionBanner() {
     );
   }
 
-  // Fallback for any other versions
+  // Latest/current version - green tip admonition
   return (
     <div className="margin-bottom--md">
-      <Admonition type="info" title={`Version ${label} Documentation`}>
-        This is {label} documentation for the Cloud Posse Reference Architecture.
-        To determine which version you're using, please see{' '}
+      <Admonition type="tip" title="Latest Documentation">
+        This is the latest documentation for the Cloud Posse Reference Architecture.
+        To determine which version you're currently using, please see{' '}
         <Link to="/resources/version-identification/">Version Identification</Link>.
       </Admonition>
     </div>
