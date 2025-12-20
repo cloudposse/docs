@@ -1,0 +1,60 @@
+---
+title: "Decide on Datadog Private Locations"
+sidebar_label: "Private Locations"
+sidebar_position: 100
+refarch_id: REFARCH-499
+description: Decide whether to use Datadog Private Locations
+tags:
+- datadog
+- design-decision
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Problem
+
+Datadog Private Locations are a feature that needs to be enabled in your datadog account that allows monitoring applications that aren’t accessible to the open internet.
+
+To enable private locations, we need to:
+
+- Enable the feature in each datadog account.
+
+- Deploy the Private Location Docker Image.
+
+We can deploy the private location container to EKS. This leads to another decision: Do we deploy it once with the capability to ping the rest of the clusters' internal addresses, or do we deploy it to every cluster?
+
+## Cost
+
+According to [https://www.datadoghq.com/pricing/?product=synthetic-monitoring#synthetic-monitoring-is-there-any-extra-charge-for-using-private-locations](https://www.datadoghq.com/pricing/?product=synthetic-monitoring#synthetic-monitoring-is-there-any-extra-charge-for-using-private-locations), registering a new Private Location is not at an additional cost; the regular costs for synthetics still apply.
+
+> [**Is there any extra charge for using private locations?**](https://www.datadoghq.com/pricing/?product=synthetic-monitoring#synthetic-monitoring-is-there-any-extra-charge-for-using-private-locations)
+> No. There are no additional costs to set up a private location. All test runs to a private location are billed just as they are to a managed location.
+
+## Solution
+
+### Option 1: Enable Private Locations, and deploy to every cluster  (Recommended)
+
+:::tip
+Our Recommendation is to use Option 1 because it enables private location features and provides a consistent way to scale.
+
+:::
+
+:heavy_plus_sign: Private Location Monitoring
+
+:heavy_plus_sign: One helm chart per cluster via a component installation
+
+:heavy_minus_sign: Must run an additional container per cluster
+
+### Option 2: Don’t Use Private Locations
+
+:heavy_plus_sign: Ever So Slightly Cheaper (We don’t run the container)
+
+:heavy_minus_sign: Monitoring Only Publicly accessible services
+
+## References
+
+- [https://www.datadoghq.com/pricing/?product=synthetic-monitoring#synthetic-monitoring-is-there-any-extra-charge-for-using-private-locations](https://www.datadoghq.com/pricing/?product=synthetic-monitoring#synthetic-monitoring-is-there-any-extra-charge-for-using-private-locations)
+
+- [https://docs.datadoghq.com/synthetics/private_locations/?tab=helmchart#overview](https://docs.datadoghq.com/synthetics/private_locations/?tab=helmchart#overview)
+
+

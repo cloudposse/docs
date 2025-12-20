@@ -1,6 +1,6 @@
 ---
 title: "Identity and Authentication"
-sidebar_label: "Identity and Authentication"
+sidebar_label: "Understand Identity"
 sidebar_class_name: hidden
 description: Setup fine-grained access control for an entire organization
 ---
@@ -12,17 +12,15 @@ import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import SecondaryCTA from '@site/src/components/SecondaryCTA';
 
-There are several methods available to sign in to AWS through a browser or terminal, such as AWS SAML or IAM Identity
-Center (successor to AWS Single Sign-On). Various tooling has been tried to support AWS SAML, like "saml2aws," and
-others to support AWS SSO, such as "aws sso login" and "aws configure," to manage terminal access. However, these tools
-often had issues, such as not handling all methods of login with different IdPs and using screenscraping, which caused
-anti-bot measures to block them, for example, Google Workspaces.
+Cloud Posse's identity architecture provides fine-grained access control for AWS organizations using **AWS IAM Identity Center** (formerly AWS SSO) with **Permission Sets** for human users and **IAM roles** for machine users (CI/CD).
 
-Cloud Posse's approach involves using IAM roles that provide highly precise control to different user groups. These
-groups are assigned to users through AWS SAML Apps or AWS SSO Groups ("Groups") and enable the user to assume roles into
-any allowed accounts. A significant advantage of this approach is the availability of an easy-to-use tool that works
-with all AWS sign-in methods. In the following pages, the Cloud Posse strategy will be explained in detail,
-demonstrating how it can be used to establish fine-grained access control for an entire organization.
+<Steps>
+  1. **Centralized Identity** — Users managed via your IdP (Okta, Google Workspace, Azure AD) and synced to IAM Identity Center
+  1. **Permission Sets** — Define what users can do in each account, assigned to SSO Groups
+  1. **Atmos Profiles** — Role-based access patterns for different user types (devops, developers, CI/CD)
+  1. **Atmos Auth** — Seamless CLI authentication with automatic credential refresh
+  1. **Static Configuration** — Account mappings as static YAML, no dynamic lookups or circular dependencies
+</Steps>
 
 <figure>
   <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/identity-and-authentication.mp4" />
@@ -104,71 +102,80 @@ Ultimately, AWS does not provide a single solution that meets all our requiremen
 flowchart LR
     user["User"] --> idp["Identity Provider"]
     idp --> identity_center["AWS IAM\nIdentity Center"]
-    identity_center --> aws_team["AWS Team"]
-    aws_team --> aws_team_role["AWS\nTeam Role"]
+    identity_center --> permission_set["Permission Set"]
+    permission_set --> account["AWS Account"]
+
+    style user fill:#9b59b6,color:#fff
+    style idp fill:#3578e5,color:#fff
+    style identity_center fill:#e67e22,color:#fff
+    style permission_set fill:#28a745,color:#fff
+    style account fill:#2c3e50,color:#fff
 ```
 
-We use Identity Center to easily manage users and groups. These are connected with your Identity provider, such as Okta or GSuite.
+We use IAM Identity Center to manage users and groups, connected to your Identity Provider (Okta, Google Workspace, Azure AD, etc.).
 
-Users can sign into Identity Center to access any account they have access to with fine grained access controls. Administrators have a single place to manage users and can use Terraform to define those fine grained access controls. Then we’ve bridged the gap between Identity Center and IAM roles
+Users sign into Identity Center to access any account they're authorized for. Administrators manage access through **Permission Sets** that define what actions users can perform. All access control is defined in Terraform, providing a complete audit trail and infrastructure-as-code management.
 
-### Team Oriented
+### Permission Set Based Access
 
 ```mermaid
 flowchart LR
-    subgraph identity_teams["Identity Teams"]
-        devops["devops"]
+    subgraph sso_groups["SSO Groups"]
+        devops["DevOps"]
+        developers["Developers"]
     end
 
-    subgraph dev_team_roles["Dev Team Roles"]
-        terraform_dev["terraform"]
+    subgraph prod_account["Prod Account"]
+        prod_apply["TerraformApplyAccess"]
+        prod_plan["TerraformPlanAccess"]
     end
 
-    subgraph staging_team_roles["Staging Team Roles"]
-        terraform_staging["terraform"]
+    subgraph dev_account["Dev Account"]
+        dev_apply["TerraformApplyAccess"]
+        dev_plan["TerraformPlanAccess"]
     end
 
-    subgraph prod_team_roles["Prod Team Roles"]
-        terraform_prod["terraform"]
-    end
+    devops --> prod_apply
+    devops --> dev_apply
+    developers --> prod_plan
+    developers --> dev_apply
 
-    devops --> terraform_dev
-    devops --> terraform_staging
-    devops --> terraform_prod
+    style prod_apply fill:#28a745,color:#fff
+    style dev_apply fill:#28a745,color:#fff
+    style prod_plan fill:#3578e5,color:#fff
+    style dev_plan fill:#3578e5,color:#fff
 ```
 
-To simplify managing IAM access roles, we’ve created two concepts. AWS Teams and AWS Team Roles.
+Access is managed through **Permission Sets** assigned to SSO Groups:
 
-All access in AWS is “Team” oriented. A “Team” is a group of users that we deploy into a central “identity” account. Then we deploy a number of “Team Roles” into every single account. A “Team” can assume any “Team Role” across the organization.
+| Permission Set | Purpose |
+|----------------|---------|
+| `TerraformPlanAccess` | Read-only access for running `terraform plan` |
+| `TerraformApplyAccess` | Full access for running `terraform apply` |
+| `TerraformStateAccess` | Read access to Terraform state for Atmos functions |
 
-We’ll explain in detail in the following pages.
+Users are assigned to SSO Groups in your Identity Provider, and those groups are mapped to Permission Sets. This provides a clean separation between identity management (in your IdP) and access control (in AWS).
 
-### Highly Accessible
+### CLI Authentication with Atmos Auth
 
-Then to make it incredibly easy for users to log in, we recommend using Leapp to manage local AWS sessions. Leap supports all Identity Providers and can automatically refresh credentials when they expire.
+For command-line access, we use **Atmos Auth** which provides seamless authentication:
 
-Plus, it’s open source and free to use.
+```bash
+# Login to AWS
+atmos auth login
 
-### Pre-Configured for your Team
+# Use a specific profile for operations
+ATMOS_PROFILE=devops atmos terraform plan vpc -s plat-ue1-dev
+```
 
-Finally, to get everyone up and running on your Team, we preconfigured a single, common AWS config for all users.
-
-All users connect to AWS using the same AWS profile name. Then we can use the same AWS config to assume any other role from that given AWS profile if their team has permission. This way, users can quickly apply Terraform across accounts and assume roles directly in the accounts they have access.
-
-:::tip Using Dynamic Terraform Roles
-
-With dynamic Terraform roles, we can choose to deploy a `terraform` and a `planner` role into any given account. The `terraform` role is used to apply changes, and the `planner` role is used to plan changes. For more on dynamic Terraform roles, see the [Dynamic Terraform Roles](/layers/identity/docs/dynamic-terraform-roles/) documentation.
-
-:::
+Atmos Auth integrates with IAM Identity Center and handles credential refresh automatically. See [Atmos Auth](/layers/identity/atmos-auth) for setup details.
 
 ## Next Steps
 
-<ActionCard title="How is this implemented?">
-  Next, we'll explain how we've implemented this solution in detail.
-
-  If you're curious about the thought that went into this process, please review the design decisions documentation.
+<ActionCard title="Setup Identity Center">
+  Start by configuring AWS Identity Center with your IdP and deploying Permission Sets for your team.
   <div>
-    <PrimaryCTA to="/layers/identity/centralized-terraform-access/">Next Step</PrimaryCTA>
-    <SecondaryCTA to="/layers/identity/design-decisions">Review Design Decisions</SecondaryCTA >
+    <PrimaryCTA to="/layers/identity/aws-sso/">Setup Identity Center</PrimaryCTA>
+    <SecondaryCTA to="/layers/identity/how-to-log-into-aws/">How to Log into AWS</SecondaryCTA>
   </div>
 </ActionCard>

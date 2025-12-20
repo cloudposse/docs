@@ -1,0 +1,248 @@
+---
+title: Setup Argo CD
+sidebar_label: Setup
+sidebar_position: 10
+description: Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
+import Admonition from '@theme/Admonition'
+import TaskList from '@site/src/components/TaskList'
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Intro>
+ This setup guide will walk you through the process of setting up Argo CD in your environment.
+</Intro>
+
+## Requirements
+
+In order to deploy Argo CD, EKS must be fully deployed and functional. In particular, the user deploying the cluster must
+have a working VPN connection to the targeted account. See
+[the EKS documentation](/layers/eks/deploy-clusters/) for details.
+
+All deployment steps below assume that the environment has been successfully set up with the following steps.
+
+### Authentication
+
+<Steps>
+  1. Sign into AWS via Leapp
+  1. Connect to the VPN
+  1. Open Geodesic
+</Steps>
+
+## Setup Steps
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Vendor Argo CD components
+
+    First vendor all related components for the Argo CD layer:
+
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/platform/argocd" />
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Create Argo CD GitHub Repositories
+
+    <Steps>
+      - Create the two required Argo CD GitHub repos:
+        <TaskList>
+        - [acme/argocd-deploy-non-prod](https://github.com/acme/argocd-deploy-non-prod)
+        - [acme/argocd-deploy-prod](https://github.com/acme/argocd-deploy-prod)
+        </TaskList>
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Prepare Authentication
+
+    Argo CD can be integrated with GitHub using either GitHub Apps (recommended) or Personal Access Tokens (PATs). GitHub Apps provide more granular permissions, better security, and improved audit capabilities.
+
+    Argo CD requires several different types of GitHub authentication for various components and workflows. While these could be combined, we follow the principle of least privilege by creating separate authentication credentials for each specific purpose. The following authentication methods are required:
+
+    <Steps>
+    1. #### Terraform `argocd-repo` Access
+
+        First we will need to apply the Argo CD desired state repositories configuration with Terraform. By default, we use local access to apply the component. This requires an engineer to locally authenticate with GitHub and apply this component locally. Since this component is rarely updated, this can be a reasonable trade-off.
+
+    2. #### Argo CD Instance
+
+        Next, we need a GitHub App for Terraform and the `eks/argocd` component. This app is used to register the webhook in GitHub for the Argo CD Application created with this given component. 
+
+        After creating the GitHub App, add the app's private key to AWS SSM Parameter Store in each account with Argo CD, typically the `plat-dev`, `plat-staging`, and `plat-prod` accounts, and add the App ID to the stack catalog. Detailed instructions linked below.
+
+    3. #### Argo CD Desired State Repository Access (2)
+
+        We will need two more GitHub Apps for accessing the ArgoCD desired state repositories _from GitHub Actions_. GitHub Actions running for an application repositories will build and update application manifests in the Argo CD desired state repositories and therefore will need write access to that respective non-prod or prod repository.
+
+        This GitHub App does not need to be added to the stack catalog or SSM since it will be used by GitHub Actions, not Terraform.
+
+    4. #### Argo CD GitHub Notification Access
+
+        The last GitHub App is used by the Argo CD notifications system to update the GitHub commit status on deployments. This is stored in SSM and pulled by the `eks/argocd` component. That component will pass the ID and private key to the Argo CD instance in the given EKS cluster. That Argo CD instance uses that app _only when synchronous mode is enabled_.
+
+        After creating the GitHub App, add the app's private key to AWS SSM Parameter Store in each account with Argo CD, typically the `plat-dev`, `plat-staging`, and `plat-prod` accounts, and add the App ID to the stack catalog. Detailed instructions linked below.
+
+    </Steps>
+
+    Follow the instructions in [Argo CD Integrations: How to set up Authorization for Argo CD with GitHub Apps](/layers/software-delivery/eks-argocd/tutorials/github-apps) to create and configure all GitHub Apps for Argo CD. Once completed, you should have 4 GitHub Apps:
+
+    <TaskList>
+      - `Argo CD Instance`
+      - `Argo CD Deploy Non-Prod`
+      - `Argo CD Deploy Prod`
+      - `Argo CD Notifications`
+    </TaskList>
+
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Deploy the Argo CD Desired State Repositories
+
+    Deploy the Argo CD configuration for the two Argo CD desired state GitHub repositories with the following workflow:
+
+    <AtmosWorkflow workflow="deploy/argocd-repos" fileName="quickstart/platform/argocd" />
+
+    Once this finishes, review the two repos in your GitHub Organization. These should both be fully configured at this point.
+
+    - [acme/argocd-deploy-non-prod](https://github.com/acme/argocd-deploy-non-prod)
+    - [acme/argocd-deploy-prod](https://github.com/acme/argocd-deploy-prod)
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Create AWS Identity Center Applications
+
+    In order to authenticate with Argo CD, we recommend using an AWS IAM Identity Center SAML Application. These apps can use existing Identity Center groups that we've already setup as part of the [Identity layer](/layers/identity/).
+
+    Please see [Argo CD Integrations: How to create an AWS Identity Center Application](/layers/software-delivery/eks-argocd/tutorials/identity-center-apps) and follow all steps.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Deploy the Argo CD Instances to each EKS Cluster
+
+    Once the GitHub repositories are in place and the SAML applications have been created and configuration uploaded to SSM,
+    we're ready to deploy Argo CD to each cluster.
+
+    Deploy `eks/argocd` to each cluster with the following workflow:
+
+    <AtmosWorkflow workflow="deploy/argocd" fileName="quickstart/platform/argocd" />
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Validation
+
+    Once all deployment steps are completed, Argo CD should be accessible at the following URLs. Please note that you must be
+    able to authenticate with AWS Identity Center to access any given app.
+    <TaskList>
+      - https://argocd.use1.dev.plat.acme-svc.com
+      - https://argocd.use1.staging.plat.acme-svc.com
+      - https://argocd.use1.prod.plat.acme-svc.com
+    </TaskList>
+  </Step>
+</Steps>
+
+## Next Steps
+
+Assuming login goes well, here's a checklist of GitHub repos needed to connect Argo CD:
+
+<TaskList>
+  - [ ] `acme/infra-acme` repo (Should already exist!)
+    - [ ] `acme/infra-acme/.github/environments` private
+          workflows. This directory stores private environment configurations. Primarily, that is the
+          [`cloudposse/github-action-yaml-config-query`](https://github.com/cloudposse/github-action-yaml-config-query)
+          action used to get role, namespace, and cluster mapping for each environment.
+  - [ ] (2) Argo CD deploy nonprod and prod (Should already be created by `argocd-repo` component in earlier step)
+    - [ ] `argocd-deploy-non-prod`
+    - [ ] `argocd-deploy-prod`
+  - [ ] `acme/example-app` repo should be private repo generated from the
+        [app-on-eks-with-argocd](https://github.com/cloudposse-examples/app-on-eks-with-argocd) template
+</TaskList>
+
+:::info Sensitive Log Output
+
+Note that all of these workflow runs run from within your private app repo, so any sensitive log output will not be
+public.
+
+:::
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Environment Configuration
+
+    Update the `cloudposse/github-action-interface-environment` action to point to your infrastructure repository.
+
+    1. Set `implementation_repository` to `acme/infra-acme`
+    2. Verify `implementation_path`, `implementation_file`, and `implementation_ref` match your local configuration.
+
+    [Example app reference](https://github.com/cloudposse-examples/app-on-eks-with-argocd/blob/1abe260c7f43dde1c6610845e5a64a9d08eb8856/.github/workflows/workflow-cd-preview-argocd.yml#L167-L178)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Verify GitHub OIDC Access Roles
+
+    <Admonition type="warning" title="Capitalization Matters!">
+      The IDP permissions in IAM will be sensitive to capitalization, and yet the docker image must -not- have uppercase letters!
+    </Admonition>
+
+    Make sure that your repo is allowed to assume roles for all relevant clusters and ECR repos:
+    <Steps>
+      1. Update the `github_actions_allowed_repos` variable in `ecr`, `eks/cluster`, or any other relevant components with
+        GitHub OIDC access.
+      2. If your GitHub Organization has mixed capitalization cases, make sure these entries are case-sensitive
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> GitHub Environment Secrets
+
+    Add each of the following secrets to the `acme/example-app` repo:
+
+    <Steps>
+      1. `github-private-actions-pat`: `${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}`
+      2. `registry`: `${{ secrets.ECR_REGISTRY }}`
+      3. `secret-outputs-passphrase`: `${{ secrets.GHA_SECRET_OUTPUT_PASSPHRASE }}`
+      4. `ecr-region`: `${{ secrets.ECR_REGION }}`
+      5. `ecr-iam-role`: `${{ secrets.ECR_IAM_ROLE }}`
+    </Steps>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Specify Ingress Group
+
+    <Steps>
+      1. Update the `deploy/releases/app.yaml`
+      2. Make sure the ingress is not set to `default`. It should likely be `alb-controller-ingress-group`. you can read more
+        about this
+        [from our docs on the alb controller component](/layers/eks/faq/#how-does-the-alb-controller-ingress-group-determine-the-name-of-the-alb)
+      3. Set the domain accordingly. Each environment will need the service domain + environment.stage.tenant (ie.
+        `use2.staging.plat.acme-svc.com` )
+      4. If your organization has mixed case, you'll need to edit the `organization` parameter to be lowercased in the GitHub
+        workflows: `feature-branch.yml`, `main-branch.yaml`, and `release.yaml`
+    </Steps>
+  </Step>
+</Steps>
+
+## FAQ
+
+### GitHub Apps vs Personal Access Tokens
+
+We recommend using GitHub Apps for Argo CD integration with GitHub. GitHub Apps offer several advantages over Personal Access Tokens:
+
+1. **Granular Permissions**: GitHub Apps can be granted access to specific repositories rather than requiring organization-wide access.
+
+2. **Better Security**: GitHub Apps use JWT authentication and short-lived tokens, reducing the risk of token exposure.
+
+3. **Improved Audit Capabilities**: Actions performed by GitHub Apps are clearly identified in audit logs.
+
+4. **Rate Limiting**: GitHub Apps have their own rate limits, separate from user-based limits.
+
+5. **Webhook Support**: GitHub Apps can receive webhooks for events in repositories they have access to.
+
+6. **Multiple Installations**: The same GitHub App can be installed on different repositories with different permissions.
+
+For more information on setting up Argo CD with GitHub Apps, see [Argo CD Integrations: How to set up Authorization for Argo CD with GitHub Apps](/layers/software-delivery/eks-argocd/tutorials/github-apps).

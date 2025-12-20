@@ -147,7 +147,7 @@ async function createConfig() {
             routeBasePath: '/',
             sidebarPath: require.resolve('./sidebars.js'),
             editUrl: ({ versionDocsDirPath, docPath, locale }) => {
-              return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
+              return `https://github.com/cloudposse/docs/edit/master/${versionDocsDirPath}/${docPath}`;
             },
             exclude: ['README.md'],
             showLastUpdateTime: true,
@@ -156,7 +156,21 @@ async function createConfig() {
             // There are many from components and GHA, it's too much noise without being helpful
             onInlineTags: 'ignore',
             tags: 'tags.yml',
-            include: ['**/*.md', '**/*.mdx']
+            include: ['**/*.md', '**/*.mdx'],
+            // Versioning configuration - see internal/docs-versioning.md for how to create new versions
+            includeCurrentVersion: true,
+            // Custom paths for versioned docs
+            path: 'docs',
+            versions: {
+              current: {
+                label: 'Latest',
+                path: '',
+              },
+              v1: {
+                label: 'v1',
+                path: 'v1',
+              },
+            },
           },
           blog: {
             showReadingTime: false,
@@ -224,6 +238,11 @@ async function createConfig() {
               to: '/blog',
               label: 'Blog',
               position: 'left',
+            },
+            {
+              type: 'docsVersionDropdown',
+              position: 'right',
+              dropdownActiveClassDisabled: true,
             },
             {
               type: 'search',

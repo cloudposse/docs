@@ -1,0 +1,50 @@
+---
+title: "Decide on Self-Hosted Runner Placement"
+sidebar_label: Runner Placement
+description: Decide where to place self-hosted runners in your AWS organization
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+
+<Intro>
+  Self-hosted runners are custom runners that we use to run GitHub Actions
+  workflows. We can use these runners to access resources in our private
+  networks and reduce costs by using our own infrastructure. We need to decide
+  where to place these runners in your AWS organization.
+</Intro>
+
+## Problem
+
+We need to decide where to place self-hosted runners in your AWS organization.
+
+We support multiple options for deploying self-hosted runners. We can deploy runners with EKS, Philips Labs, or with an ASG. For this decision, we will focus on the placement of the runners themselves.
+
+## Considered Options
+
+### Option 1: Deploy the runners in an `auto` account
+
+The first option is to deploy the controller in the `auto` (Automation) account. This account would be dedicated to automation tasks and would have access to all other accounts. We can use this account to deploy the controller and manage the runners in a centralized location.
+
+However, compliance is complicated because the `auto` cluster would have access to all environments.
+
+### Option 2: Deploy the runners in each account
+
+The second option is to deploy the controller in each account. This option sounds great from a compliance standpoint. Jobs running in each account are scoped to that account, each account has its own controller, and we can manage the runners independently.
+
+This might seem like a simplification from a compliance standpoint, but it creates complexity from an implementation standpoint. We would need to carefully consider the following:
+
+1. Scaling runners can inadvertently impact IP space available to production workloads
+2. Many accounts do not have a VPC or EKS Cluster (for EKS/ARC solutions). So, we would need to decide how to manage those accounts.
+3. We would need to manage the complexity of dynamically selecting the right runner pool when a workflow starts. While this might seem straightforward, it can get tricky in cases like promoting an ECR image from staging to production, where it’s not always clear-cut which runners should be used.
+
+## Recommendation
+
+_Option 1: Deploy the runners in an `auto` account_
+
+We will deploy the runners in an `auto` account. This account will be connected to the private network and will have access to all other accounts where necessary. This will simplify the management of the runners and ensure that they are available when needed.
+
+## Consequences
+
+We will create an `auto` account and deploy the runners there.

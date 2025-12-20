@@ -1,0 +1,50 @@
+---
+id: reference
+title: Infrastructure as Code Library
+sidebar_label: Library
+sidebar_position: 0
+sidebar_class_name: hidden
+---
+import DocCardList from '@theme/DocCardList';
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+Welcome to the Cloud Posse Library, your one-stop resource for all our open source infrastructure projects. Whether you're looking to deploy production-grade infrastructure, automate your workflows, or learn best practices, you'll find everything you need here. Our library is built on years of experience managing cloud infrastructure at scale, and we're excited to share these tools with you.
+</Intro>
+
+The Cloud Posse Library is a comprehensive collection of our open source projects designed to help you build, deploy, and manage cloud infrastructure. This library contains everything you need to implement Infrastructure as Code (IaC) best practices, including:
+
+- **Terraform Components**: Production-grade, reusable "root" modules for AWS that provide complete solutions for common infrastructure patterns
+- **Terraform Modules**: Reusable "child" modules that can be composed together to build custom infrastructure
+- **GitHub Actions**: Automated workflows for continuous integration and delivery (CI/CD)
+- **Resources**: Additional tools, scripts, and documentation to support your cloud infrastructure journey
+
+All our projects are built with best practices in mind, including security, scalability, and maintainability. They are designed to be modular, composable, and follow the principle of least privilege.
+
+<DocCardList items={[
+  {
+    type: 'link',
+    label: 'Terraform Components',
+    description: 'Reusable Terraform "Root" Modules for AWS',
+    href: '/components'
+  },
+  {
+    type: 'link',
+    label: 'Terraform Modules',
+    description: 'Reusable Terraform "Child" Modules',
+    href: '/modules'
+  },
+  {
+    type: "link",
+    label: 'GitHub Actions',
+    description: 'GitHub Actions for Software Delivery',
+    href: '/github-actions'
+  },
+  {
+    type: "link",
+    label: 'Resources',
+    description: 'Library of Other Resources',
+    href: '/resources'
+  }
+]}
+/>

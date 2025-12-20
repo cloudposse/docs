@@ -6,5 +6,117 @@
   {
     "from": "/layers/alerting/",
     "to": "/resources/deprecated/alerting/"
+  },
+  {
+    "from": "/layers/identity/centralized-terraform-access/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/atmos-profiles/",
+    "to": "/layers/identity/atmos-auth/"
+  },
+  {
+    "from": "/layers/identity/tutorials/migrate-from-account-map/",
+    "to": "/layers/project/tutorials/migrate-from-account-map/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-access-control-architecture/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-access-control-evolution/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-access-control/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/docs/aws-restricting-admin-access/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/docs/dynamic-terraform-roles/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/optional/aws-saml/",
+    "to": "/layers/identity/tutorials/aws-saml/"
+  },
+  {
+    "from": "/layers/identity/faq/",
+    "to": "/layers/identity/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-access-control/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-access-control-architecture/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-access-control-evolution/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/aws-restricting-admin-access/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/dynamic-terraform-roles/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/centralized-terraform-access/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/expanding-iam-roles/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/how-to-easily-switch-aws-account-roles/",
+    "to": "/layers/identity/how-to-log-into-aws/"
+  },
+  {
+    "from": "/layers/identity/tutorials/faq/",
+    "to": "/layers/identity/"
+  },
+  {
+    "from": "/layers/identity/tutorials/how-to-create-a-delegated-role-for-assumption-by-one-or-more-pri/",
+    "to": "/layers/identity/tutorials/access-control-evolution/"
+  },
+  {
+    "from": "/layers/identity/tutorials/leapp/",
+    "to": "/layers/identity/how-to-log-into-aws/"
+  },
+  {
+    "from": "/layers/identity/tutorials/leapp/how-to-setup-windows/",
+    "to": "/layers/identity/how-to-log-into-aws/"
+  },
+  {
+    "from": "/layers/accounts/account-baseline/",
+    "to": "/layers/accounts/setup-cloudtrail/"
+  },
+  {
+    "from": "/layers/accounts/tutorials/cold-start/",
+    "to": "/layers/accounts/tutorials/legacy-account-map/"
+  },
+  {
+    "from": "/layers/accounts/tutorials/manual-configuration/",
+    "to": "/layers/accounts/tutorials/legacy-account-map/"
+  },
+  {
+    "from": "/layers/accounts/tutorials/deprecated-cold-start-components/",
+    "to": "/layers/accounts/tutorials/legacy-account-map/"
+  },
+  {
+    "from": "/layers/github-actions/philips-labs-github-runners/",
+    "to": "/layers/github-actions/tutorials/philips-labs-github-runners/"
+  },
+  {
+    "from": "/layers/github-actions/eks-github-actions-controller/",
+    "to": "/layers/github-actions/tutorials/eks-github-actions-controller/"
   }
 ]

@@ -1,0 +1,69 @@
+---
+title: "ECS Foundational Platform"
+sidebar_label: "ECS"
+sidebar_class_name: hidden
+---
+import ReactPlayer from "react-player";
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+Elastic Container Service (ECS) is a fully-managed container orchestration service provided by Amazon Web Services (AWS) that simplifies the process of deploying, managing, and scaling containerized applications. ECS makes it easy to run and manage Docker containers on AWS infrastructure, providing a secure and scalable platform for your applications.
+
+<figure>
+  <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/ecs.mp4" />
+  <figcaption>AI generated voice</figcaption>
+</figure>
+
+## The Problem
+
+The emergence of Docker necessitated the development of container management solutions, with Kubernetes being one of the most widely adopted options. However, Kubernetes is often considered overly complex for smaller scale operations, akin to using a nuclear reactor to charge a phone. In such scenarios, Elastic Container Service (ECS) is a more practical choice for deploying applications with speed and efficiency.
+
+With ECS there is no need to upgrade the underlying platform. Unlike EKS which requires consistent upgrades to stay
+current, ECS is a managed service that is always up to date. This means that you can focus on your application and not the underlying platform.
+
+## Our Solution
+
+We have developed a set of Terraform modules that can be used to deploy ECS clusters and services.
+
+### ECS Cluster Component
+
+The [`ecs` component] is used to deploy an ECS cluster and an associated load balancer.
+
+#### Application Load Balancer (ALB)
+
+Through stack configuration you can determine your domains, subdomains, and the number of instances to deploy. The component also supports the deployment of a bastion host, which can be used to access containers on the ECS Cluster.
+
+```yaml
+alb_configuration:
+  public: # name of the ALB to be referred to by other configurations
+    internal_enabled: false # sets it to public
+    # resolves to *.public-platform.<environment>.<stage>.<tenant>.<domain>.<tld>
+    route53_record_name: "*.public-platform"
+  private:
+    internal_enabled: true
+    route53_record_name: "*.private-platform"
+```
+
+#### Autoscaling
+
+The cluster component has the ability to scale with a variety of options. Fargate provides a serverless way of scaling. Spot instances provide a cheaper way to run instances than on demand ec2. you can mix these options to provide a cost effective and scalable solution.
+
+```yaml
+name: ecs
+capacity_providers_fargate: true
+capacity_providers_fargate_spot: true
+capacity_providers_ec2:
+  default:
+    instance_type: t3.medium
+    max_size: 2
+```
+
+### ECS Service
+
+The [`ecs-service` component] is used to deploy an ECS service. This includes the task and the service definition.
+
+By default we also support datadog logging and metrics. This can be disabled by setting `datadog_agent_sidecar_enabled` to false.
+
+```yaml
+datadog_agent_sidecar_enabled: false
+```

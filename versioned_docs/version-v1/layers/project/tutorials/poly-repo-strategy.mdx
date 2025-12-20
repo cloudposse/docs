@@ -1,0 +1,113 @@
+---
+title: Poly-Repo Strategy with account-map
+sidebar_label: Poly-Repo Strategy
+sidebar_position: 2
+description: Learn how to manage multiple repositories with Terraform and Atmos while using account-map for dynamic role selection
+---
+import Intro from '@site/src/components/Intro';
+import Note from '@site/src/components/Note';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+
+<Intro>
+When managing multiple repositories with Terraform and Atmos, you need a strategy to handle `account-map` configurations effectively. This tutorial shows you how to implement a poly-repo strategy that maintains consistency across your infrastructure while leveraging `account-map` for dynamic role selection.
+</Intro>
+
+## Problem
+
+You want many repositories to deploy infrastructure as code with Terraform and Atmos. However, the standard `providers.tf` configuration with Cloud Posse components requires `account-map` to dynamically select Terraform roles and target accounts.
+
+## Solution
+
+The poly-repo strategy with `account-map` involves maintaining a central infrastructure repository as the source of truth for account mappings, while configuring service repositories to use static `account-map` configurations. This approach enables team autonomy while ensuring consistent account mappings across your infrastructure.
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Use the infrastructure Repo for core services
+
+    Use the primary infrastructure repository to deploy all accounts, Terraform state, and core services:
+
+    <Steps>
+      - Deploy `account-map` here
+      - Download the `account-map` Terraform output to use later
+      - Optional, highly recommended: Use a custom atmos command to download the `account-map` output as an artifact
+    </Steps>
+
+    ```yaml
+    # atmos.yaml
+    commands:
+      - name: download-account-map
+        description: This command downloads the Terraform output for account-map.
+        env:
+          - key: AWS_PROFILE
+            value: cptest-core-gbl-root-admin # change this to a role you can assume with access to account-map
+        steps:
+          # initialize terraform and selects workspace
+          - "atmos terraform workspace account-map core-gbl-root -s core-gbl-root"
+          # download the terraform output for account-map. limit atmos to only the JSON output
+          - "atmos terraform output account-map -s core-gbl-root --logs-level Off --redirect-stderr=/dev/null --skip-init -- -json | jq 'map_values(.value)' | yq -P -oy > components/terraform/account-map/account-map-output.{{ now | date \"2006-01-02\" }}.yaml"
+    ```
+
+    <Note>
+      You will need to update this artifact each time `account-map` changes. This is fairly infrequent, and there are potential solutions for optimization yet to be considered.
+    </Note>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Mock `account-map` in each poly-repos
+
+    In each of the poly-repos, we need to configure `account-map` to use a static backend. We want remote-state to read a static YAML configuration when referring to `account-map`, rather than reading the terraform backend.
+
+    <Steps>
+      1. Download the `account-map` component (vendoring recommended). We do not need to apply this component, but we do need the submodules included with the component for the common `providers.tf` configuration in all other components
+      2. Create a component instance for `account-map` -- typically with the stack catalog `stacks/catalog/account-map.yaml`
+      3. Set `remote_state_backend_type: static`
+      4. Paste the `account-map` YAML output under `remote_state_backend.static`. I'd recommend using imports to manage the output artifact separately or other ways to make it easier to understand and update.
+    </Steps>
+
+    Done! Now when remote-state refers to the `account-map` component, it will instead check the static remote state backend rather than S3.
+
+    ```yaml
+    components:
+      terraform:
+        account-map:
+          remote_state_backend_type: static
+          remote_state_backend:
+            static:
+              PASTE OR INCLUDE YAML HERE
+              (make sure to set indentation)
+    ```
+  </Step>
+</Steps>
+
+## Frequently Asked Questions
+
+<Note>
+  This tutorial is based on a [GitHub discussion](https://github.com/orgs/cloudposse/discussions/49) about splitting up Atmos and Terraform into service repos.
+</Note> 
+
+### How do you run the components used within the non-infrastructure repos? Is the directory format the same?
+
+You can use components in the same way as the infrastructure repo, but this would be dependent on your atmos configuration. You will need to set the base paths for components and stacks, then you execute atmos as usual.
+
+### Is it possible to reuse components in the infrastructure repo?
+
+At the moment no. However, we are developing just-in-time vendoring for components where you would be able to specify a remote source for a component in stack config. It's not generally available yet -- stay tuned.
+
+### How does the GitHub action run? Does it assume the same terraform IAM role?
+
+We usually deploy an aws-teams role (typically called gitops) for GitHub actions. That team is able to plan and/or apply Terraform by assuming the standard terraform from aws-team-roles. The infrastructure repo assumes the gitops team using GitHub OIDC.
+
+You have a few options. You could reuse the same gitops role by adding the new repos to that allowed repos list. However, you may want finer scoped privileges in the alternate repos. In which case you could create an additional AWS Team with limited access.
+
+### What about guardrails? How do you only allow updates to specific components or resources?
+
+Both by included components and AWS Team permission. The repo would only include components it is responsible for managing, and therefore would only be aware of that set of components.
+
+However, you should still scope the AWS Team to least privilege required for that set of resources. You could separate the Terraform state backend as well to create an additional boundary between the sets of resources.
+
+### How do you prevent conflicts with the same component deployed in the same stack across multiple repos?
+
+We don't recommend deploying the same component from the same stack across repos. The idea with poly-repos is that an app team can manage their own infrastructure independently. We wouldn't recommend controlling the same infrastructure with 2 separate sources of code.

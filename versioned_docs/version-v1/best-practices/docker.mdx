@@ -1,0 +1,67 @@
+---
+title: Docker Best Practices
+sidebar_label: Docker
+description: "Collection of some of our docker-specific best practices."
+tags:
+- docker
+- best-practices
+---
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+  Docker best practices that we follow are listed here. Note that this is not an exhaustive list, but rather some of the ones that have stood out for us as practical ways of leveraging Docker together with the Cloud Posse reference architecture.
+</Intro>
+
+## Inheritance
+
+Inheritance is when you use `FROM some-image:1.2.3` (vs `FROM scratch`) in a `Dockerfile`. We recommend to leverage lean base images (E.g. `alpine` or `busybox`).
+
+Try to leverage the same base image in as many of your images as possible for faster `docker pulls`.
+
+:::info
+
+- https://docs.docker.com/engine/reference/builder/#from
+
+:::
+
+## Multi-stage Builds
+
+There are two ways to leverage multi-stage builds:
+
+1. *Build-time Environments* The most common application of multi-stage builds is for using a build-time environment for compiling apps, and then a minimal image (E.g. `alpine` or `scratch`) for distributing the resultant artifacts (e.g. statically-linked `go` binaries).
+2. *Multiple-Inheritance* We like to think of "multi-stage builds" as a mechanism for "multiple inheritance" as it relates to docker images. While not technically the same thing, using multi-stage images makes it possible to `COPY --from=other-image` to keep things very DRY.
+
+:::info
+- https://docs.docker.com/develop/develop-images/multistage-build/
+- https://blog.alexellis.io/mutli-stage-docker-builds/
+:::
+
+## Use Scratch Base Image
+
+One often overlooked, ultimately lean base-image is the `scratch` image. This is an empty filesystem which allows one to copy/distribute the minimal set of artifacts. For languages that can compile statically linked binaries, using the `scratch` base image (e.g. `FROM scratch`) is the most secure way as there will be no other exploitable packages bundled in the image.
+
+We use this pattern for our [`terraform-root-modules`](https://github.com/cloudposse/terraform-root-modules) distribution of terraform reference architectures.
+
+## Configure Cache Storage Backends
+
+When using BuildKit, you should configure a [cache storage backend](https://docs.docker.com/build/cache/backends/) that is suitable for your build environment. Layer caching significantly speeds up builds by reusing layers from previous builds, and is enabled by default as BuildKit has a dedicated local cache. However, in a CI/CD build environment such as GitHub Actions, an external cache storage backend is essential as there is little to no persistence between builds.
+
+Fortunately, Cloud Posse's [cloudposse/github-action-docker-build-push](https://github.com/cloudposse/github-action-docker-build-push) action uses `gha` (the [GitHub Actions Cache](https://docs.github.com/en/rest/actions/cache)) by default. Thus, even without any additional configuration, the action will automatically cache layers between builds.
+
+When using self-hosted GitHub Actions Runners in an AWS environment, however, we recommend using [ECR as a remote cache storage backend](https://aws.amazon.com/blogs/containers/announcing-remote-cache-support-in-amazon-ecr-for-buildkit-clients/). Using ECR as the remote cache backend—especially in conjunction with a [VPC endpoint for ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html)—results in reduced NAT Gateway costs and faster layered cache imports when compared to the GitHub Actions Cache.
+
+The following example demonstrates how to configure the [cloudposse/github-action-docker-build-push](https://github.com/cloudposse/github-action-docker-build-push) action to use ECR as the remote cache storage backend:
+
+```diff
+    - name: Build
+      id: build
+      uses: cloudposse/github-action-docker-build-push@main
+      with:
+        registry: registry.hub.docker.com
+        organization: "${{ github.event.repository.owner.login }}"
+        repository: "${{ github.event.repository.name }}"
++     cache-from: "type=registry,ref=registry.hub.docker.com/${{ github.event.repository.owner.login }}/${{ github.event.repository.name }}:cache"
++     cache-to: "mode=max,image-manifest=true,oci-mediatypes=true,type=registry,ref=registry.hub.docker.com/${{ github.event.repository.owner.login }}/${{ github.event.repository.name }}:cache"
+```
+
+For more information with regards to the `cache-from` and `cache-to` options, please refer to the [docker buildx documentation](https://docs.docker.com/reference/cli/docker/buildx/build/#options).

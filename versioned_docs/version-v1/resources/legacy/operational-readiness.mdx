@@ -1,0 +1,115 @@
+---
+title: "Operational Readiness"
+sidebar_position: 100
+---
+**WORK IN PROGRESS**
+
+This is an estimation of the operational readiness required to claim ownership over the systems and processes. Depending on your roles and responsibilities, the level of ownership changes.
+
+:::info
+If you’re new to all of this, you will want to start with [Choose Your Path](/intro/path/).
+
+:::
+
+## Organization
+As an organization, you’ve conducted the following
+
+- Production Readiness Review (PRR) [https://sre.google/sre-book/evolving-sre-engagement-model/#the-prr-model-DVsGhWZ](https://sre.google/sre-book/evolving-sre-engagement-model/#the-prr-model-DVsGhWZ)
+
+- Roles, Responsibilities, & Ownership  (RACI) for all [Components](/components) in-use
+
+- Ensure you’ve validated all playbooks (especially important for certain compliance frameworks)
+
+- You have established SLOs in Datadog for all mission-critical business functions and educated the teams on their value
+
+- You are aware of your AWS spend and have budgets in place
+
+- You have a process in place for managing all SaaS/Vendor relationships, enterprise agreements
+
+- You have a formalized incident response process for Application, Infrastructure and Security
+
+- You have a post-mortem review process
+
+## Developer
+- You are comfortable with adding new services to the CI/CD pipeline
+
+- You are leveraging preview environments (if applicable) as part of your development workflow
+
+- You know where to look for logs emitted from your service
+
+- You know how to add telemetry to your services
+
+- You are able to debug/triage services without direct access to the cluster or pods
+
+- You are able to login to AWS using Leapp and experiment in the sandbox account
+
+- You are familiar with the [https://cloudposse.com/12-factor-app/](https://cloudposse.com/12-factor-app/)
+
+- You have developed a `Dockerfile` for your service(s) and understand what every line in that file does
+
+- You have developed a [Helm](/resources/legacy/helm) chart (if you’re using EKS)
+
+## Operations
+- You are able to debug/triage services without direct access to the cluster or pods
+
+- You are able to find the logs for services and filter for what you need
+
+- You are comfortable upgrading EKS with Addons
+
+- You know how to develop (and have developed) a new terraform component and add them to stacks
+
+- You can explain the core [Concepts](/resources/legacy/fundamentals/concepts) and use them as part of your design process
+
+- You are current on all of the [Conventions](/learn/conventions) used
+
+- You are familiar with all the backup policies and how to restore backups
+
+- You are familiar with the upgrade process for all managed services (E.g. RDS, MSK, etc)
+
+- You are regularly performing upgrades to keep everything current (see [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date))
+
+- You are using Spacelift on a daily basis as part of your job
+
+- You are able to define new IAM roles and configure/manage AWS SSO/SAML
+
+- You are able to authenticate with all required systems (E.g. AWS, Datadog, OpsGenie, Spacelift).
+
+- You are familiar with the DNS architecture and how to work with vanity domains and service discovery domains
+
+## SRE
+- You are able to debug/triage services without direct access to the cluster or pods
+
+- You are able to authenticate with all required systems (E.g. AWS, Datadog, OpsGenie, Spacelift).
+
+- You are able to open up AWS support tickets as needed
+
+- You are able to open up support tickets with all external vendors
+
+- You are able to open up internal support tickets and know how to triage them
+
+- You are aware of and help maintain SLOs
+
+- You are writing RCA and post mortems for incidents
+
+- You are able to develop new monitors, dashboards, SLOs, synthetics in Datadog
+
+- You are able to configure incident management in OpsGenie IaC configurations to control escalation paths
+
+## Security
+- You are able to ingest cloudtrail logs and identify, classify and attribute events
+
+- You are familiar with the IAM architecture and implementation of custom roles
+
+- You are aware of and able to manage AWS SSO or AWS Federated IAM with integrations to your IdP
+
+- You know where to look and are able to respond to events surfaced by AWS SecurityHub, GuardDuty, etc
+
+## Release Engineer
+- You are able to debug/triage workflows
+
+- You are able to tune and optimize Github Actions (if applicable)
+
+## QA
+-
+
+

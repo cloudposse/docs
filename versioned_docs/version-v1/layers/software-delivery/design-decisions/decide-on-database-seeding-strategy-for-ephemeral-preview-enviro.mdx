@@ -1,0 +1,65 @@
+---
+title: "Decide on Database Seeding Strategy for Ephemeral Preview Environments"
+sidebar_label: "Database Seeding Strategy"
+sidebar_position: 100
+refarch_id: REFARCH-144
+description: What data should be used in preview environments
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+## Problem
+
+We need to decide how to provision databases for use with preview environments. These databases must come up very quickly (e.g. 10-20 seconds rather than 20-30 minutes it takes for RDS). Once these databases come online, we need to have data staged for them to be useful. Restoring very large database dumps can be very slow and we need to update database dumps and scrub them. We typically cannot (and should not) use snapshots directly from production due to constraints around how we must handle PII, PHI, CDH, etc.
+
+:::caution
+As a general best practice, we should never use production data in non-production environments to avoid accidental leakage or usage of data.
+
+:::
+
+## Considerations
+
+We prefer to include the DBA in these conversations.
+
+Suggested requirements:
+
+- They should come online very fast, so the process of bringing up new environments is not slowed down.
+
+- They should be easily destroyed
+
+- They should be inexpensive to operate because there will be many of them
+
+- They should have realistic data, so the environments are testing something closer to staging/production
+
+## Considered Options
+
+**Option 1:** Seed data (fixtures) - **recommended**
+
+- Most database migration tools support something like this (e.g. `rake db:fixtures:load`)
+
+- This is the easiest to implement
+
+**Option 2:** Docker Image with Preloaded Dataset
+
+- Advisable if the dataset is large enough that loading dump would take too long, but the dataset isn’t so large that sticking it in a docker image is not unreasonable
+
+- Implementation will require additional scope for automating the creation of the docker image
+
+**Option 3:** Shared RDS cluster, Preloaded Shared database
+
+- A shared database preloaded with sanitized seeded data can be shared across preview environments
+
+- No ability to test migrations using this approach
+
+**Option 4:** Shared RDS cluster, one database per env, with seed data
+
+- Greater economies of scale are achieved by sharing the database
+
+- Custom process of hydrating the database for each preview environment will need to be implemented
+
+**Option 5:** Dedicated cluster (not advised)
+
+- Too slow to launch (e.g. +30-40 minutes), expensive, complicated to implement
