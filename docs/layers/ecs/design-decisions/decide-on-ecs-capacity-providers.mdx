@@ -1,0 +1,48 @@
+---
+title: "Decide on the ECS Capacity providers"
+sidebar_label: "Capacity providers"
+sidebar_position: 2
+description: Decide what capacity providers to provision
+refarch_id: ????
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## Context and Problem Statement
+
+Should the ECS cluster provision EC2 capacity providers in addition to the default `Fargate` and `Fargate Spot` providers?
+
+## Considered Options
+
+<Tabs queryString="option">
+
+  <TabItem label="Option 1" value="option-1">
+    ### Option 1. Fluent Bit sidecar is required for ECS Fargate
+
+    > In addition to your application container, your task definition needs to specify a Fluent Bit sidecar container that’s
+    > responsible for routing logs to Datadog. AWS provides an `aws-for-fluent-bit` Docker image you can use to create the
+    > sidecar container.([source](https://www.datadoghq.com/blog/aws-fargate-monitoring-with-datadog/))
+
+    #### Pros
+
+    - Recommended by Datadog
+
+    - Works without much configuration
+
+    - Prior art for this
+
+    #### Cons
+
+    - Sidecar required
+
+    - Fargate cpu/mem requirements would go up per task
+
+    - More expensive due to fargate pricing is by cpu/memory
+
+  </TabItem>
+</Tabs>
