@@ -7,6 +7,7 @@ description: "API activity logging and audit trail across your AWS Organization"
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
 AWS CloudTrail records API activity across your AWS Organization, providing an audit trail for security analysis,
@@ -46,8 +47,10 @@ CloudTrail uses a simple deployment model - deploy the organization trail once, 
 
 ### Prerequisites
 
-1. **CloudTrail Bucket**: Deploy `cloudtrail-bucket` component in the audit account
-2. **Service Access Principal**: Enable `cloudtrail.amazonaws.com` in AWS Organizations
+<TaskList>
+  - Deploy `cloudtrail-bucket` component in the audit account
+  - Enable `cloudtrail.amazonaws.com` service access principal in AWS Organizations
+</TaskList>
 
 ### Stack Configuration
 

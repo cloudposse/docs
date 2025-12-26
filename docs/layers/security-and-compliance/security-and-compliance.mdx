@@ -7,6 +7,7 @@ description: "Deploy AWS security services and compliance monitoring across your
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
 Learn Cloud Posse's approach to deploying AWS security services and compliance monitoring across your AWS Organization.
@@ -245,24 +246,28 @@ flowchart LR
 
 All AWS security services are regional. You must deploy to:
 
-1. **All regions enabled by default** (cannot be disabled):
+<Steps>
+  1. **All regions enabled by default** (cannot be disabled):
 
-|                |                |           |           |
-| -------------- | -------------- | --------- | --------- |
-| ap-northeast-1 | ap-southeast-2 | eu-west-2 | us-west-1 |
-| ap-northeast-2 | ca-central-1   | eu-west-3 | us-west-2 |
-| ap-northeast-3 | eu-central-1   | sa-east-1 |           |
-| ap-south-1     | eu-north-1     | us-east-1 |           |
-| ap-southeast-1 | eu-west-1      | us-east-2 |           |
+     |                |                |           |           |
+     | -------------- | -------------- | --------- | --------- |
+     | ap-northeast-1 | ap-southeast-2 | eu-west-2 | us-west-1 |
+     | ap-northeast-2 | ca-central-1   | eu-west-3 | us-west-2 |
+     | ap-northeast-3 | eu-central-1   | sa-east-1 |           |
+     | ap-south-1     | eu-north-1     | us-east-1 |           |
+     | ap-southeast-1 | eu-west-1      | us-east-2 |           |
 
-2. **Any additional regions** you have opted into
+  1. **Any additional regions** you have opted into
+</Steps>
 
 ## Getting Started
 
-1. Review the [Setup Guide](/layers/security-and-compliance/setup/) for step-by-step deployment instructions
-2. Explore individual component documentation for detailed configuration options
-3. Check the [Design Decisions](/layers/security-and-compliance/design-decisions/) for architectural considerations
-4. Review the [FAQ](/layers/security-and-compliance/faq/) for common issues and solutions
+<Steps>
+  1. Review the [Setup Guide](/layers/security-and-compliance/setup/) for step-by-step deployment instructions
+  1. Explore individual component documentation for detailed configuration options
+  1. Check the [Design Decisions](/layers/security-and-compliance/design-decisions/) for architectural considerations
+  1. Review the [FAQ](/layers/security-and-compliance/faq/) for common issues and solutions
+</Steps>
 
 :::caution Important
 

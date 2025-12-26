@@ -7,6 +7,7 @@ description: "Configuration compliance monitoring and resource inventory across 
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
 AWS Config provides configuration compliance monitoring and resource inventory across your AWS Organization.
@@ -54,8 +55,10 @@ AWS Config uses a **per-account** deployment model with organization conformance
 
 ### Prerequisites
 
-1. **AWS Config Bucket**: Deploy `aws-config-bucket` component in the audit account
-2. **Service Access Principals**: Enable `config.amazonaws.com` and `config-multiaccountsetup.amazonaws.com`
+<TaskList>
+  - Deploy `config-bucket` component in the audit account
+  - Enable `config.amazonaws.com` and `config-multiaccountsetup.amazonaws.com` service access principals
+</TaskList>
 
 ### Stack Configuration
 
@@ -78,7 +81,7 @@ components:
         global_environment: gbl
         global_resource_collector_region: us-east-1
         central_resource_collector_account: security
-        config_bucket_component_name: aws-config-bucket
+        config_bucket_component_name: config-bucket
         config_bucket_tenant: core
         config_bucket_env: ue1
         config_bucket_stage: audit

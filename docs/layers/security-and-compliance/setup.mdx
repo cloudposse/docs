@@ -11,20 +11,20 @@ import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
 import Admonition from '@theme/Admonition';
 import Note from '@site/src/components/Note';
-import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
 This guide walks you through deploying AWS security and compliance services across your AWS Organization.
 Follow the steps in order to ensure proper configuration of all services.
 </Intro>
 
-## Prerequisites
-
-Before deploying security and compliance components, ensure:
-
-1. **AWS Organizations** is configured with your account structure
-2. **Account baseline** has been deployed (see [Deploy Accounts](/layers/accounts/deploy-accounts/))
-3. **SuperAdmin user** is available for root account deployments (see [How to Create SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/))
+<KeyPoints title="Before You Begin">
+  <TaskList>
+    - AWS Organizations is configured with your account structure
+    - Account baseline has been deployed (see [Deploy Accounts](/layers/accounts/deploy-accounts/))
+    - Root account access is available for root account deployments (such as with the `managers` profile)
+  </TaskList>
+</KeyPoints>
 
 ## Deployment Order
 
@@ -32,7 +32,7 @@ The security components have dependencies and must be deployed in a specific ord
 
 ```mermaid
 flowchart LR
-    subgraph phase1["Phase 1: Org-Level Config"]
+    subgraph phase1["Phase 1: Organization-Level Configuration"]
         p1["Service Principals<br/>Config Bucket<br/>CloudTrail Bucket"]
     end
 
@@ -40,7 +40,7 @@ flowchart LR
         p2["CloudTrail<br/>Config"]
     end
 
-    subgraph phase3["Phase 3: Threat Detection"]
+    subgraph phase3["Phase 3: Threat Detection & Vulnerability Scanning"]
         p3["GuardDuty<br/>Inspector<br/>Macie<br/>Access Analyzer"]
     end
 
@@ -56,7 +56,7 @@ flowchart LR
 If a step in any workflow fails, you can restart from that failed step:
 
 ```bash
-atmos workflow deploy/aws-config/global-collector -f compliance --from-step step4
+atmos workflow deploy/aws-config/global-collector -f quickstart/monitor/security-and-compliance --from-step step4
 ```
 
 :::
@@ -67,13 +67,24 @@ atmos workflow deploy/aws-config/global-collector -f compliance --from-step step
 
 These steps are required once for the entire organization.
 
+### Quick Start
+
+```bash
+# Vendor all security components
+atmos workflow vendor -f quickstart/monitor/security-and-compliance
+```
+
+### Detailed Steps
+
 <Steps>
   <Step>
     ### <StepNumber/> Vendor Components
 
     Vendor all security and compliance components:
 
-    <AtmosWorkflow workflow="vendor" fileName="compliance" />
+    ```bash
+    atmos workflow vendor -f quickstart/monitor/security-and-compliance
+    ```
   </Step>
 
   <Step>
@@ -101,7 +112,7 @@ These steps are required once for the entire organization.
     ```
 
     <Note title="Reminder">
-      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/). Ensure the `plan` output
+      This requires root account access (such as with the `managers` profile). Ensure the `plan` output
       only modifies service principals.
     </Note>
 
@@ -118,11 +129,11 @@ These steps are required once for the entire organization.
     for compliance auditing.
 
     <Note title="Important">
-    Deploy only one aws-config-bucket per organization. It stores data from all accounts and regions.
+    Deploy only one config-bucket per organization. It stores data from all accounts and regions.
     </Note>
 
     ```bash
-    atmos terraform apply aws-config-bucket -s core-use1-audit
+    atmos terraform apply config-bucket -s core-use1-audit
     ```
   </Step>
 
@@ -158,6 +169,16 @@ These steps are required once for the entire organization.
 
 ## Phase 2: Foundational Services
 
+### Quick Start
+
+```bash
+# Deploy AWS Config to all regions (security account)
+atmos workflow deploy/aws-config/global-collector -f quickstart/monitor/security-and-compliance
+
+# Deploy AWS Config to root accounts (requires root access)
+atmos workflow deploy/aws-config/superadmin -f quickstart/monitor/security-and-compliance
+```
+
 ### AWS CloudTrail
 
 [AWS CloudTrail](/layers/security-and-compliance/aws-cloudtrail/) records API activity across your organization.
@@ -168,10 +189,6 @@ Deploy the organization trail to capture events from all accounts.
     ### <StepNumber/> Deploy Organization Trail
 
     Deploy CloudTrail to create an organization-wide trail that automatically logs API activity from all accounts.
-
-    <AtmosWorkflow workflow="deploy/aws-cloudtrail" fileName="compliance" />
-
-    Or manually:
 
     ```bash
     atmos terraform apply cloudtrail -s core-use1-audit
@@ -190,25 +207,61 @@ inventory. It must be deployed to every account and region.
 
     Deploy AWS Config to each region to collect data for global resources (IAM, etc.) and regional resources.
 
-    <AtmosWorkflow workflow="deploy/aws-config/global-collector" fileName="compliance" />
+    ```bash
+    # Deploy to all regions in the security account
+    atmos workflow deploy/aws-config/global-collector -f quickstart/monitor/security-and-compliance
+    ```
 
-    <Note title="Reminder">
-      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/) for root account deployments.
-    </Note>
+    Or deploy manually to specific regions:
+
+    ```bash
+    atmos terraform apply aws-config-use1 -s core-use1-security
+    atmos terraform apply aws-config-use2 -s core-use2-security
+    atmos terraform apply aws-config-usw2 -s core-usw2-security
+    # ... repeat for each region
+    ```
   </Step>
 
   <Step>
-    ### <StepNumber/> Deploy AWS Config for SuperAdmin Accounts
+    ### <StepNumber/> Deploy AWS Config for Root Accounts
 
-    Deploy AWS Config to accounts that require SuperAdmin to apply (root, security).
+    Deploy AWS Config to accounts that require root access to apply (root, security).
 
-    <AtmosWorkflow workflow="deploy/aws-config/superadmin" fileName="compliance" />
+    <Note title="Reminder">
+      This requires root account access (such as with the `managers` profile).
+    </Note>
+
+    ```bash
+    # Deploy to all regions in the root account
+    atmos workflow deploy/aws-config/superadmin -f quickstart/monitor/security-and-compliance
+    ```
+
+    Or deploy manually:
+
+    ```bash
+    atmos terraform apply aws-config-use1 -s core-use1-root
+    atmos terraform apply aws-config-use2 -s core-use2-root
+    # ... repeat for each region
+    ```
   </Step>
 </Steps>
 
 ---
 
 ## Phase 3: Threat Detection & Vulnerability Scanning
+
+### Quick Start
+
+```bash
+# GuardDuty (3 steps)
+atmos workflow deploy/guardduty/step1 -f quickstart/monitor/security-and-compliance
+atmos workflow deploy/guardduty/step2 -f quickstart/monitor/security-and-compliance  # requires root access
+atmos workflow deploy/guardduty/step3 -f quickstart/monitor/security-and-compliance
+
+# Inspector (2 steps)
+atmos workflow deploy/aws-inspector2/step1 -f quickstart/monitor/security-and-compliance  # requires root access
+atmos workflow deploy/aws-inspector2/step2 -f quickstart/monitor/security-and-compliance
+```
 
 ### AWS GuardDuty
 
@@ -221,7 +274,9 @@ analysis. It uses a 3-step delegated administrator deployment model.
 
     First, deploy to the security account to create the GuardDuty detector.
 
-    <AtmosWorkflow workflow="deploy/guardduty/step1" fileName="compliance" />
+    ```bash
+    atmos terraform apply guardduty/delegated-administrator/ue1 -s core-ue1-security
+    ```
   </Step>
 
   <Step>
@@ -230,10 +285,12 @@ analysis. It uses a 3-step delegated administrator deployment model.
     Deploy to the root account to designate the security account as the delegated administrator.
 
     <Note title="Reminder">
-      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+      This requires root account access (such as with the `managers` profile).
     </Note>
 
-    <AtmosWorkflow workflow="deploy/guardduty/step2" fileName="compliance" />
+    ```bash
+    atmos terraform apply guardduty/root/ue1 -s core-ue1-root
+    ```
   </Step>
 
   <Step>
@@ -241,7 +298,9 @@ analysis. It uses a 3-step delegated administrator deployment model.
 
     Deploy to the security account again to enable GuardDuty organization-wide with all protection features.
 
-    <AtmosWorkflow workflow="deploy/guardduty/step3" fileName="compliance" />
+    ```bash
+    atmos terraform apply guardduty/org-settings/ue1 -s core-ue1-security
+    ```
   </Step>
 </Steps>
 
@@ -256,7 +315,13 @@ ECR, and Lambda. It uses a 2-step delegated administrator deployment model.
 
     Deploy to the root account to designate the security account as the delegated administrator.
 
-    <AtmosWorkflow workflow="deploy/aws-inspector2/step1" fileName="compliance" />
+    <Note title="Reminder">
+      This requires root account access (such as with the `managers` profile).
+    </Note>
+
+    ```bash
+    atmos terraform apply aws-inspector2/delegate-orgadmin/ue1 -s core-ue1-root
+    ```
   </Step>
 
   <Step>
@@ -264,7 +329,9 @@ ECR, and Lambda. It uses a 2-step delegated administrator deployment model.
 
     Deploy to the security account to enable Inspector organization-wide.
 
-    <AtmosWorkflow workflow="deploy/aws-inspector2/step2" fileName="compliance" />
+    ```bash
+    atmos terraform apply aws-inspector2/org-settings/ue1 -s core-ue1-security
+    ```
   </Step>
 </Steps>
 
@@ -279,7 +346,9 @@ It uses a 3-step delegated administrator deployment model.
 
     First, deploy to the security account to create the Macie account.
 
-    <AtmosWorkflow workflow="deploy/macie/step1" fileName="compliance" />
+    ```bash
+    atmos terraform apply macie/delegated-administrator/ue1 -s core-ue1-security
+    ```
   </Step>
 
   <Step>
@@ -288,10 +357,12 @@ It uses a 3-step delegated administrator deployment model.
     Deploy to the root account to designate the security account as the delegated administrator.
 
     <Note title="Reminder">
-      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+      This requires root account access (such as with the `managers` profile).
     </Note>
 
-    <AtmosWorkflow workflow="deploy/macie/step2" fileName="compliance" />
+    ```bash
+    atmos terraform apply macie/root/ue1 -s core-ue1-root
+    ```
   </Step>
 
   <Step>
@@ -299,7 +370,9 @@ It uses a 3-step delegated administrator deployment model.
 
     Deploy to the security account again to enable Macie organization-wide.
 
-    <AtmosWorkflow workflow="deploy/macie/step3" fileName="compliance" />
+    ```bash
+    atmos terraform apply macie/org-settings/ue1 -s core-ue1-security
+    ```
   </Step>
 </Steps>
 
@@ -314,7 +387,13 @@ entities and unused access. It uses a 2-step delegated administrator deployment 
 
     Deploy to the root account to designate the security account as the delegated administrator.
 
-    <AtmosWorkflow workflow="deploy/access-analyzer/step1" fileName="compliance" />
+    <Note title="Reminder">
+      This requires root account access (such as with the `managers` profile).
+    </Note>
+
+    ```bash
+    atmos terraform apply aws-access-analyzer/root -s core-gbl-root
+    ```
   </Step>
 
   <Step>
@@ -322,13 +401,27 @@ entities and unused access. It uses a 2-step delegated administrator deployment 
 
     Deploy to the security account to create organization and account analyzers.
 
-    <AtmosWorkflow workflow="deploy/access-analyzer/step2" fileName="compliance" />
+    ```bash
+    atmos terraform apply aws-access-analyzer/delegated-administrator/ue1 -s core-ue1-security
+    ```
   </Step>
 </Steps>
 
 ---
 
 ## Phase 4: Aggregation & Protection
+
+### Quick Start
+
+```bash
+# Security Hub (3 steps)
+atmos workflow deploy/security-hub/step1 -f quickstart/monitor/security-and-compliance
+atmos workflow deploy/security-hub/step2 -f quickstart/monitor/security-and-compliance  # requires root access
+atmos workflow deploy/security-hub/step3 -f quickstart/monitor/security-and-compliance
+
+# Shield (requires subscription)
+atmos workflow deploy/aws-shield -f quickstart/monitor/security-and-compliance
+```
 
 ### AWS Security Hub
 
@@ -341,7 +434,9 @@ into a centralized dashboard. It uses a 3-step delegated administrator deploymen
 
     First, deploy to the security account to enable Security Hub and configure product subscriptions.
 
-    <AtmosWorkflow workflow="deploy/security-hub/step1" fileName="compliance" />
+    ```bash
+    atmos terraform apply security-hub/delegated-administrator/ue1 -s core-ue1-security
+    ```
   </Step>
 
   <Step>
@@ -350,16 +445,18 @@ into a centralized dashboard. It uses a 3-step delegated administrator deploymen
     Deploy to the root account to designate the security account as the delegated administrator.
 
     <Note title="Reminder">
-      This requires [SuperAdmin](/layers/accounts/tutorials/how-to-create-superadmin-user/).
+      This requires root account access (such as with the `managers` profile).
     </Note>
 
-    <AtmosWorkflow workflow="deploy/security-hub/step2" fileName="compliance" />
+    ```bash
+    atmos terraform apply security-hub/root/ue1 -s core-ue1-root
+    ```
   </Step>
 
   <Step>
     ### <StepNumber/> Assume Identity Role
 
-    Switch from SuperAdmin back to your identity role:
+    Switch back to your default identity role:
 
     ```bash
     assume-role acme-identity
@@ -371,7 +468,9 @@ into a centralized dashboard. It uses a 3-step delegated administrator deploymen
 
     Deploy to the security account again to enable Security Hub organization-wide with compliance standards.
 
-    <AtmosWorkflow workflow="deploy/security-hub/step3" fileName="compliance" />
+    ```bash
+    atmos terraform apply security-hub/org-settings/ue1 -s core-ue1-security
+    ```
   </Step>
 </Steps>
 
@@ -390,10 +489,6 @@ See [Subscribing to Shield Advanced](https://docs.aws.amazon.com/waf/latest/deve
     ### <StepNumber/> Deploy AWS Shield Advanced
 
     Deploy Shield protection to accounts and resources that need DDoS protection.
-
-    <AtmosWorkflow workflow="deploy/aws-shield" fileName="compliance" />
-
-    Or deploy manually to specific stacks:
 
     ```bash
     # Global resources (Route53, CloudFront)
@@ -433,13 +528,27 @@ as an alternative for compliance monitoring.
 
 Route53 DNS Resolver Firewall provides DNS-level security to block malicious domains.
 
+### Quick Start
+
+```bash
+atmos workflow deploy/route53-resolver-dns-firewall-buckets -f quickstart/monitor/security-and-compliance
+atmos workflow deploy/route53-resolver-dns-firewall -f quickstart/monitor/security-and-compliance
+```
+
+### Detailed Steps
+
 <Steps>
   <Step>
     ### <StepNumber/> Deploy DNS Firewall Buckets
 
     Deploy S3 buckets for DNS Firewall logging.
 
-    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall-buckets" fileName="compliance" />
+    ```bash
+    atmos terraform apply route53-resolver-dns-firewall-logs -s plat-use1-dev
+    atmos terraform apply route53-resolver-dns-firewall-logs -s plat-use1-prod
+    atmos terraform apply route53-resolver-dns-firewall-logs -s plat-use1-sandbox
+    atmos terraform apply route53-resolver-dns-firewall-logs -s plat-use1-staging
+    ```
   </Step>
 
   <Step>
@@ -447,7 +556,12 @@ Route53 DNS Resolver Firewall provides DNS-level security to block malicious dom
 
     Deploy and configure the Route53 DNS Resolver Firewall.
 
-    <AtmosWorkflow workflow="deploy/route53-resolver-dns-firewall" fileName="compliance" />
+    ```bash
+    atmos terraform apply route53-resolver-dns-firewall/dev -s plat-use1-dev
+    atmos terraform apply route53-resolver-dns-firewall/prod -s plat-use1-prod
+    atmos terraform apply route53-resolver-dns-firewall/sandbox -s plat-use1-sandbox
+    atmos terraform apply route53-resolver-dns-firewall/staging -s plat-use1-staging
+    ```
   </Step>
 </Steps>
 
@@ -459,9 +573,11 @@ After deployment, verify all services are properly configured:
 
 ### Check Security Hub Dashboard
 
-1. Open the AWS Console in the security account
-2. Navigate to Security Hub
-3. Verify findings are being aggregated from all services
+<Steps>
+  1. Open the AWS Console in the security account
+  1. Navigate to Security Hub
+  1. Verify findings are being aggregated from all services
+</Steps>
 
 ### Verify Service Status
 
@@ -481,9 +597,11 @@ aws configservice describe-configuration-recorders --region us-east-1
 
 ### Review Compliance
 
-1. Open Security Hub in the security account
-2. Navigate to "Security standards"
-3. Review compliance scores for enabled standards (CIS, PCI DSS, AWS Foundational)
+<Steps>
+  1. Open Security Hub in the security account
+  1. Navigate to "Security standards"
+  1. Review compliance scores for enabled standards (CIS, PCI DSS, AWS Foundational)
+</Steps>
 
 ---
 

@@ -3,6 +3,8 @@ title: FAQ
 sidebar_label: FAQ
 sidebar_position: 20
 ---
+import Steps from '@site/src/components/Steps';
+import TaskList from '@site/src/components/TaskList';
 
 ## Deployment Order Issues
 
@@ -12,13 +14,19 @@ sidebar_position: 20
 [Setup Guide](/layers/security-and-compliance/setup) for the complete deployment sequence.
 
 **General pattern for 3-step services (GuardDuty, Security Hub, Macie):**
-1. Deploy to security account first (`admin_delegated: false`)
-2. Deploy to root account (`privileged: true`)
-3. Deploy org settings to security account (`admin_delegated: true`)
+
+<Steps>
+  1. Deploy to security account first (`admin_delegated: false`)
+  1. Deploy to root account (`privileged: true`)
+  1. Deploy org settings to security account (`admin_delegated: true`)
+</Steps>
 
 **General pattern for 2-step services (Inspector, Access Analyzer):**
-1. Deploy to root account first
-2. Deploy org settings to security account
+
+<Steps>
+  1. Deploy to root account first
+  1. Deploy org settings to security account
+</Steps>
 
 ### Q: Why must I deploy to the security account before the root account?
 
@@ -40,9 +48,11 @@ is not subscribed to AWS Security Hub
 **A:** This error occurs when trying to configure Security Hub before it's fully enabled. Ensure you've completed
 all three deployment steps:
 
-1. `security-hub/delegated-administrator` to security account
-2. `security-hub/root` to root account
-3. `security-hub/org-settings` to security account
+<Steps>
+  1. `security-hub/delegated-administrator` to security account
+  1. `security-hub/root` to root account
+  1. `security-hub/org-settings` to security account
+</Steps>
 
 If you skipped Step 3, the organization settings (including control configurations) won't work.
 
@@ -55,9 +65,11 @@ Account 123456789012 is not an administrator for this organization
 
 **A:** This means the delegation from root to security hasn't been completed. Check:
 
-1. Verify you deployed `security-hub/root` to the root account with `privileged: true`
-2. Ensure the `delegated_administrator_account_name` matches your security account name
-3. Re-deploy the root component if needed
+<Steps>
+  1. Verify you deployed `security-hub/root` to the root account with `privileged: true`
+  1. Ensure the `delegated_administrator_account_name` matches your security account name
+  1. Re-deploy the root component if needed
+</Steps>
 
 ### Q: "Organization master must first enable SecurityHub"
 
@@ -125,8 +137,11 @@ conformance packs.
 ### Q: Organization conformance packs fail to deploy
 
 **A:** Organization conformance packs require:
-1. All member accounts must have configuration recorders already set up
-2. Deploy `aws-config` to **all member accounts first**, then deploy to root account last
+
+<Steps>
+  1. All member accounts must have configuration recorders already set up
+  1. Deploy `aws-config` to **all member accounts first**, then deploy to root account last
+</Steps>
 
 ```bash
 # Deploy to members first

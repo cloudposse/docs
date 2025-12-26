@@ -7,6 +7,7 @@ description: "Continuous compliance auditing and evidence collection"
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
 
 <Intro>
 AWS Audit Manager helps you continuously audit your AWS usage to simplify compliance assessment with regulations
@@ -71,8 +72,8 @@ flowchart LR
 
 Audit Manager uses a **single-step** deployment from the root account.
 
-<Note title="SuperAdmin Required">
-This deployment requires SuperAdmin permissions for the root account.
+<Note title="Root Access Required">
+This deployment requires root account access (such as with the `managers` profile).
 </Note>
 
 ### Stack Configuration
@@ -145,9 +146,11 @@ atmos terraform apply audit-manager-reports-bucket -s core-ue1-security
 
 After deployment, create assessments in the delegated administrator account:
 
-1. **Via Console**: AWS Audit Manager → Assessments → Create assessment
-2. **Via CLI**: Use `aws auditmanager` CLI commands
-3. **Via Terraform**: Use `aws_auditmanager_assessment` resource
+<Steps>
+  1. **Via Console** — AWS Audit Manager → Assessments → Create assessment
+  1. **Via CLI** — Use `aws auditmanager` CLI commands
+  1. **Via Terraform** — Use `aws_auditmanager_assessment` resource
+</Steps>
 
 ### Assessment Components
 
