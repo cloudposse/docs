@@ -83,9 +83,9 @@ This step requires SuperAdmin permissions to deploy to the root account.
 # core-gbl-root
 components:
   terraform:
-    access-analyzer/root:
+    aws-access-analyzer/root:
       metadata:
-        component: access-analyzer
+        component: aws-access-analyzer
       backend:
         s3:
           role_arn: null
@@ -100,7 +100,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply access-analyzer/root -s core-gbl-root
+atmos terraform apply aws-access-analyzer/root -s core-gbl-root
 ```
 
 ### Step 2: Deploy Organization Analyzers
@@ -109,9 +109,9 @@ atmos terraform apply access-analyzer/root -s core-gbl-root
 # core-ue1-security
 components:
   terraform:
-    access-analyzer/delegated-administrator/ue1:
+    aws-access-analyzer/delegated-administrator/ue1:
       metadata:
-        component: access-analyzer
+        component: aws-access-analyzer
       vars:
         enabled: true
         delegated_administrator_account_name: core-security
@@ -126,7 +126,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply access-analyzer/delegated-administrator/ue1 -s core-ue1-security
+atmos terraform apply aws-access-analyzer/delegated-administrator/ue1 -s core-ue1-security
 ```
 
 ## Multi-Region Deployment
@@ -135,11 +135,11 @@ Access Analyzer is a regional service. Deploy analyzers to each region:
 
 ```bash
 # Delegation (once, globally)
-atmos terraform apply access-analyzer/root -s core-gbl-root
+atmos terraform apply aws-access-analyzer/root -s core-gbl-root
 
 # Analyzers per region
-atmos terraform apply access-analyzer/delegated-administrator/ue1 -s core-ue1-security
-atmos terraform apply access-analyzer/delegated-administrator/uw2 -s core-uw2-security
+atmos terraform apply aws-access-analyzer/delegated-administrator/ue1 -s core-ue1-security
+atmos terraform apply aws-access-analyzer/delegated-administrator/uw2 -s core-uw2-security
 ```
 
 ## Unused Access Configuration
@@ -149,7 +149,7 @@ Configure the threshold for unused access findings:
 ```yaml
 components:
   terraform:
-    access-analyzer/delegated-administrator/ue1:
+    aws-access-analyzer/delegated-administrator/ue1:
       vars:
         accessanalyzer_organization_unused_access_enabled: true
         # Days without use before generating findings (default: 30)
@@ -174,6 +174,12 @@ components:
 ## Security Hub Integration
 
 Access Analyzer findings are automatically sent to Security Hub when both services are enabled.
+
+## See Also
+
+- [AWS Security Hub](/layers/security-and-compliance/aws-security-hub/) - Aggregates Access Analyzer findings
+- [AWS Config](/layers/security-and-compliance/aws-config/) - Monitors IAM policy configurations
+- [Setup Guide](/layers/security-and-compliance/setup/) - Complete deployment instructions
 
 ## References
 
