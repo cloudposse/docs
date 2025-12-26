@@ -1,0 +1,195 @@
+---
+title: "[EKS] GitHub Action Runner Controller"
+sidebar_label: "Actions Runner Controller (EKS)"
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+<Intro>
+The GitHub Action Runner Controller (ARC) is a Kubernetes operator that automates the management of self-hosted GitHub Actions runners in a Kubernetes cluster, that works very well together with Karpenter for EKS.
+</Intro>
+
+<Note title="Important">We recommend using ARC only if your organization uses Kubernetes, otherwise we recommend the [Philips Labs GitHub Runner](/layers/github-actions/tutorials/philips-labs-github-runners/) approach instead.</Note>
+
+By default, GitHub Actions are run in the cloud on hosted machines, but we can opt to use "Self-Hosted" GitHub Action
+Runners instead. Historically, we've deployed an Auto Scaling Group that gives each run a dedicated and customized
+instance. Now that we've deployed EKS, we can save money by utilizing the `actions-runner-controller` to deploy
+virtual-machines inside of EKS, and run GitHub Actions from these containers. These virtual-machines will be fully
+customizable, scale automatically, and be cheaper than both GitHub hosted runners and ASG instances.
+
+## Quick Start
+
+| Steps                                                 | Example                                                                               |
+| :---------------------------------------------------- | :------------------------------------------------------------------------------------ |
+| 1. Generate GitHub Private Key                        | `ssm_github_secret_path: "/github_runners/controller_github_app_secret"`              |
+| 2. Generate GitHub Webhook Secret Token               | `ssm_github_webhook_secret_token_path: "/github_runners/github_webhook_secret_token"` |
+| 3. Connect to the VPN                                 |                                                                                       |
+| 4. Deploy cluster and resources into the `auto` stack | `atmos workflow deploy/github-runners -f quickstart/foundation/github`                |
+| 5. Set up Webhook Driven Scaling                      | Click Ops                                                                             |
+
+## Requirements
+
+In order to deploy Self-Hosted GitHub Runners on EKS, follow the steps outlined in the [EKS setup doc](/layers/eks). Those steps will complete the EKS requirements.
+
+<KeyPoints title="Overview">
+  - We'll begin by generating the required secrets, which is a manual process.
+  - AWS SSM will be used to store and retrieve secrets.
+  - Then we need to decide on the SSM path for the GitHub secret (Application private key) and GitHub webhook secret.
+</KeyPoints>
+
+<Steps>
+  <Step>
+    ### <StepNumber/> GitHub Application Private Key
+
+    Since the secret is automatically scoped by AWS to the account and region where the secret is stored, we recommend the
+    secret be stored at `/github/acme/github_token`.
+
+    `stacks/catalog/eks/actions-runner-controller.yaml`:
+
+    ```yaml
+    ssm_github_secret_path: "/github_runners/controller_github_app_secret"
+    ```
+
+    The preferred way to authenticate is by _creating_ and _installing_ a GitHub App. This is the recommended approach as it
+    allows for more much more restricted access than using a personal access token, at least until
+    [fine-grained personal access token permissions](https://github.blog/2022-10-18-introducing-fine-grained-personal-access-tokens-for-github/)
+    are generally available. Follow the instructions
+    [here](https://github.com/actions/actions-runner-controller/blob/master/docs/authenticating-to-the-github-api.md) to
+    create and install the GitHub App.
+
+    At the creation stage, you will be asked to generate a private key. This is the private key that will be used to
+    authenticate the Action Runner Controller. Download the file and store the contents in SSM using the following command,
+    adjusting the profile and file name. The profile should be the `admin` role in the account to which you are deploying
+    the runner controller. The file name should be the name of the private key file you downloaded.
+
+    ```
+    AWS_PROFILE=acme-core-use1-auto-admin chamber write github_runners controller_github_app_secret -- "$(cat APP_NAME.DATE.private-key.pem)"
+    ```
+
+    You can verify the file was correctly written to SSM by matching the private key fingerprint reported by GitHub with:
+
+    ```
+    AWS_PROFILE=acme-core-use1-auto-admin chamber read -q github_runners controller_github_app_secret | openssl rsa -in - -pubout -outform DER | openssl sha256 -binary | openssl base64
+    ```
+
+    At this stage, record the Application ID and the private key fingerprint in your secrets manager (e.g. 1Password). You
+    will need the Application ID to configure the runner controller, and want the fingerprint to verify the private key.
+
+    Proceed to install the GitHub App in the organization or repository you want to use the runner controller for, and
+    record the Installation ID (the final numeric part of the URL, as explained in the instructions linked above) in your
+    secrets manager. You will need the Installation ID to configure the runner controller.
+
+    In your stack configuration, set the following variables, making sure to quote the values so they are treated as
+    strings, not numbers.
+
+    ```
+    github_app_id: "12345"
+    github_app_installation_id: "12345"
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> GitHub Webhook Secret Token
+
+    If using the Webhook Driven autoscaling (recommended), generate a random string to use as the Secret when creating the
+    webhook in GitHub.
+
+    Generate the string using 1Password (no special characters, length 45) or by running
+
+    ```bash
+    dd if=/dev/random bs=1 count=33  2>/dev/null | base64
+    ```
+
+    Store this key in AWS SSM under the same path specified by `ssm_github_webhook_secret_token_path`
+
+    `stacks/catalog/eks/actions-runner-controller.yaml`:
+
+    ```yaml
+    ssm_github_webhook_secret_token_path: "/github_runners/github_webhook_secret_token"
+    ```
+  </Step>
+
+  ## Deploy
+
+  Automation has an unique set of components from the `plat` clusters and therefore has its own Atmos Workflow. Notably,
+  `auto` includes the `eks/actions-runner-controller` component, which is used to create the `self-hosted` runners for the
+  GitHub Repository or Organization
+
+  <Note title="Tip">
+    The first three steps before are all included in the following workflow:
+
+    <AtmosWorkflow workflow="deploy/arc-github-runners" fileName="quickstart/foundation/github" />
+  </Note>
+
+  <Step>
+    ### <StepNumber/> `iam-service-linked-roles` Component
+
+    At this point we assume that the `iam-service-linked-roles` component is already deployed for `core-auto`. If not,
+    deploy this component now with the following command:
+
+    ```bash
+    atmos terraform apply iam-service-linked-roles -s core-gbl-auto
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Automation Cluster and Resources
+
+    Deploy the cluster with the same commands as `plat` cluster deployments:
+
+    <AtmosWorkflow workflow="deploy/cluster" fileName="quickstart/platform/eks" stack="core-use1-auto"/>
+    <AtmosWorkflow workflow="deploy/resources" fileName="quickstart/platform/eks" stack="core-use1-auto"/>
+
+    Validate the `core-auto` deployment using Echo Server. For example: https://echo.use1.auto.core.acme-svc.com/
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy the Actions Runner Controller
+
+    Finally, deploy the `actions-runner-controller` component with the following command:
+
+    ```bash
+    atmos terraform deploy eks/actions-runner-controller -s core-use1-auto
+    ```
+
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Using Webhook Driven Autoscaling (Click Ops)
+
+    To use the Webhook Driven autoscaling, you must also install the GitHub organization-level webhook after deploying the
+    component (specifically, the webhook server). The URL for the webhook is determined by the `webhook.hostname_template`
+    and where it is deployed. Recommended URL is
+    `https://gha-webhook.[environment].[stage].[tenant].[service-discovery-domain]`, which for this organization would be
+    `https://gha-webhook.use1.auto.core.acme-svc.com`
+
+    As a GitHub organization admin, go to
+    `https://github.com/organizations/acme/settings/hooks`, and then:
+
+    - Click "Add webhook" and create a new webhook with the following settings:
+      - Payload URL: copy from Terraform output `webhook_payload_url`
+      - Content type: `application/json`
+      - Secret: whatever you configured in the secret above
+      - Which events would you like to trigger this webhook:
+        - Select "Let me select individual events"
+        - Uncheck everything ("Pushes" is likely the only thing already selected)
+        - Check "Workflow jobs"
+      - Ensure that "Active" is checked (should be checked by default)
+      - Click "Add webhook" at the bottom of the settings page
+
+    After the webhook is created, select "edit" for the webhook and go to the "Recent Deliveries" tab and verify that there
+    is a delivery (of a "ping" event) with a green check mark. If not, verify all the settings and consult the logs of the
+    `actions-runner-controller-github-webhook-server` pod.
+  </Step>
+</Steps>
+
+# Related Topics
+
+- [EKS Documentation](/layers/eks/)
+- [Decision on Self Hosted GitHub Runner Strategy](/layers/software-delivery/design-decisions/decide-on-self-hosted-github-runner-strategy#self-hosted-runners-on-kubernetes)
+- [Karpenter Documentation](https://karpenter.sh/)

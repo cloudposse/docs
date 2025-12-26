@@ -1,0 +1,63 @@
+---
+title: Toolchain
+sidebar_label: Toolchain
+sidebar_position: 3
+description: "Learn the tools that help you manage your infrastructure as code."
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import ReactPlayer from 'react-player';
+
+<Intro>
+  Learn about the essential tools Cloud Posse uses to manage infrastructure as code. This guide covers the Geodesic Toolbox Container for standardizing development environments, the Atmos framework for implementing conventions and workflows, Terraform for managing cloud infrastructure, and GitHub Actions for CI/CD automation.
+</Intro>
+
+<Steps>
+
+  <Step>
+    ## <StepNumber/> Geodesic Toolbox Container for DevOps
+
+    We run most of our tools inside of this container. It's a great way to standardize your development environment and tooling across your team.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Atmos Framework
+
+    Atmos brings the framework and conventions. Learn more about Atmos, by visiting the [Atmos Documentation](https://atmos.tools/).
+
+    <Steps>
+      - Components
+      - Stacks
+      - Vendoring
+      - Workflows
+    </Steps>
+
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Terraform
+
+    Terraform is the infrastructure as code tool used to manage your cloud infrastructure, called by Atmos.
+
+    <Steps>
+      - Terraform Providers
+      - Terraform Modules
+      - Terraform "Root Modules" (aka "Components")
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> GitHub Actions
+
+    GitHub Actions is the CI/CD tool that we use to automate everything.
+
+    <Steps>
+      - Self-hosted Runners
+      - GitHub Actions
+      - GitHub Actions Workflows
+    </Steps>
+  </Step>
+
+</Steps>

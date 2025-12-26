@@ -16,7 +16,7 @@ Now that the GitHub OIDC Provider has been deployed, we can proceed with setting
 
 | Steps                      | Actions                             |
 | -------------------------- | ----------------------------------- |
-| Deploy ECR repositories    | `atmos workflow deploy/ecr -f quickstart/foundation/baseline`      |
+| Deploy ECR repositories    | `atmos workflow deploy/ecr -f quickstart/foundation/accounts`      |
 
 <Steps>
   <Step>
@@ -24,7 +24,7 @@ Now that the GitHub OIDC Provider has been deployed, we can proceed with setting
 
   Deploy the ECR repositories that will be used by GitHub Actions workflows:
 
-  <AtmosWorkflow workflow="deploy/ecr" fileName="quickstart/foundation/baseline" />
+  <AtmosWorkflow workflow="deploy/ecr" fileName="quickstart/foundation/accounts" />
 
   We use ECR for two main purposes:
   <Steps>

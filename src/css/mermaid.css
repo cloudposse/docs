@@ -11,6 +11,19 @@
     background: #21262d;
 }
 
+/* Mermaid color theme variables - matches site colors */
+:root {
+    --mermaid-primary: #3578e5;           /* Site primary blue */
+    --mermaid-primary-dark: #2554a0;      /* Darker blue */
+    --mermaid-secondary: #6c757d;         /* Gray */
+    --mermaid-success: #28a745;           /* Green - apply/write access */
+    --mermaid-danger: #dc3545;            /* Red - destructive/admin */
+    --mermaid-warning: #e67e22;           /* Orange - caution */
+    --mermaid-info: #17a2b8;              /* Teal - info */
+    --mermaid-user: #9b59b6;              /* Purple - user/identity */
+    --mermaid-account: #2c3e50;           /* Dark slate - AWS accounts */
+}
+
 /* Add padding to mermaid diagrams */
 .docusaurus-mermaid-container svg {
     max-width: 100%;

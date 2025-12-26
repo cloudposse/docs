@@ -8,18 +8,20 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
 <Intro>
-This guide explains the structure of a Terraform S3 state backend bucket, including the use of workspaces, key prefixes, and buckets. It details how the `backend.tf.json` file is used to configure the S3 backend for storing Terraform state, and how DynamoDB is used for state locking and consistency checking. The document provides examples and best practices for managing and accessing the Terraform state backend.
+This guide explains the structure of a Terraform S3 state backend bucket, including the use of workspaces, key prefixes, and buckets. It details how the `backend.tf.json` file is used to configure the S3 backend for storing Terraform state, and how S3 native state locking provides consistency checking. The document provides examples and best practices for managing and accessing the Terraform state backend.
 </Intro>
 
 Understand the anatomy of a Terraform S3 state backend bucket and how workspaces, key prefixes and buckets are used.
 
-From HashiCorp
+### S3 Native State Locking
 
-> Stores the state as a given key in a given bucket on [Amazon S3](https://aws.amazon.com/s3/). This backend also
-> supports state locking and consistency checking via [Dynamo DB](https://aws.amazon.com/dynamodb/), which can be
-> enabled by setting the `dynamodb_table` field to an existing DynamoDB table name. A single DynamoDB table can be used
-> to lock multiple remote state files. Terraform generates key names that include the values of the `bucket` and `key`
-> variables.
+As of Terraform 1.10 and OpenTofu 1.8, the S3 backend supports native state locking using S3's conditional writes feature. This eliminates the need for a separate DynamoDB table for state locking.
+
+To enable S3 native state locking, set `use_lockfile = true` in your backend configuration. This uses S3 conditional writes to create a `.tflock` file alongside your state file, providing the same consistency guarantees as DynamoDB locking without the additional infrastructure.
+
+:::tip
+S3 native state locking is the recommended approach for new deployments. It simplifies your infrastructure by removing the DynamoDB dependency while maintaining the same locking guarantees.
+:::
 
 ### The `backend.tf.json` File
 
@@ -35,18 +37,18 @@ An identical `backend.tf.json` file is used by all environments (stacks). Enviro
 
 For reference, this is the anatomy of the backend configuration: (note this is just a JSON representation of HCL)
 
-```
+```json
 {
   "terraform": {
     "backend": {
       "s3": {
         "acl": "bucket-owner-full-control",
         "bucket": "acme-ue2-root-tfstate",
-        "dynamodb_table": "acme-ue2-root-tfstate-lock",
         "encrypt": true,
         "key": "terraform.tfstate",
         "profile": "acme-gbl-root-terraform",
         "region": "us-east-2",
+        "use_lockfile": true,
         "workspace_key_prefix": "vpc"
       }
     }
@@ -55,9 +57,8 @@ For reference, this is the anatomy of the backend configuration: (note this is j
 ```
 
 :::note
-
-Either `profile` or `role_arn` can be used here
-
+- Either `profile` or `role_arn` can be used for authentication
+- The `use_lockfile` setting enables S3 native state locking (requires Terraform 1.10+ or OpenTofu 1.8+)
 :::
 
 ### S3 Backend
@@ -128,18 +129,41 @@ to determine where a component is deployed. Also, the S3 bucket has versioning e
 
 :::
 
-### DynamoDB Locking
+### DynamoDB Locking (Optional)
 
-Find the table. It should contain `tfstate-lock` in its name.
+:::info
+DynamoDB locking is optional and primarily retained for backwards compatibility with existing deployments. For new deployments, we recommend using S3 native state locking with `use_lockfile = true` instead.
+:::
 
+If you have an existing deployment using DynamoDB for state locking, or prefer to use DynamoDB, you can configure it by adding the `dynamodb_table` field to your backend configuration:
+
+```json
+{
+  "terraform": {
+    "backend": {
+      "s3": {
+        "bucket": "acme-ue2-root-tfstate",
+        "dynamodb_table": "acme-ue2-root-tfstate-lock",
+        "encrypt": true,
+        "key": "terraform.tfstate",
+        "region": "us-east-2",
+        "workspace_key_prefix": "vpc"
+      }
+    }
+  }
+}
 ```
+
+To find and inspect a DynamoDB lock table:
+
+```bash
+# Find the table (should contain `tfstate-lock` in its name)
 aws --profile acme-gbl-root-admin \
   dynamodb list-tables
 ```
 
-Get a LockID
-
-```
+```bash
+# Get a LockID
 aws --profile acme-gbl-root-admin \
   dynamodb get-item \
     --table-name {table_name} \

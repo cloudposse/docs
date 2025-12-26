@@ -13,14 +13,22 @@ import Admonition from '@theme/Admonition';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import CodeBlock from '@theme/CodeBlock';
 
+:::warning Deprecated
+This documentation describes the legacy GitHub Actions GitOps setup.
+
+**The recommended approach now uses [Atmos Pro](/layers/atmos-pro/)**, which provides integrated Terraform automation with no custom workflow configuration required.
+
+This content is preserved for users with existing GitHub Actions GitOps deployments.
+:::
+
 ## Quick Start
 
 | Steps                           |                                                        |
 | :------------------------------ | :----------------------------------------------------- |
 | 1. Verify Identity requirements |                                                        |
-| 2. Expand GitHub OIDC           | `atmos workflow deploy/github-oidc-provider -f quickstart/foundation/gitops` |
-| 2. Vendor                       | `atmos workflow vendor -f quickstart/foundation/gitops`                      |
-| 3. Deploy                       | `atmos workflow deploy/gitops -f quickstart/foundation/gitops`               |
+| 2. Expand GitHub OIDC           | `atmos workflow deploy/github-oidc-provider -f quickstart/foundation/identity` |
+| 2. Vendor                       | `atmos workflow vendor -f quickstart/foundation/atmos-pro`                      |
+| 3. Deploy                       | `atmos workflow deploy -f quickstart/foundation/atmos-pro`               |
 
 ## Requirements
 
@@ -28,7 +36,7 @@ import CodeBlock from '@theme/CodeBlock';
   <Step>
     ### <StepNumber/> Self-Hosted Runners
 
-    Although not required, we recommend first deploying Self-Hosted GitHub runners if you need to manage any resources inside of a VPC (e.g. RDS Users). For more information on setting up runners, see the [Philips Labs GitHub Runners](/layers/github-actions/philips-labs-github-runners) or the [GitHub Action Runner Controller (EKS)](/layers/github-actions/eks-github-actions-controller) setup documentation.
+    Although not required, we recommend deploying Self-Hosted GitHub runners if you need to manage any resources inside of a VPC (e.g. RDS Users). We recommend [Runs On](/layers/github-actions/runs-on/) for self-hosted runners.
 
     If you do not wish to use Self Hosted runners, simply change the `runs-on` option for all included workflows in
     `.github/workflows`
@@ -128,7 +136,7 @@ import CodeBlock from '@theme/CodeBlock';
     `dynamodb`) and adds one new component (`gitops`) to manage the GitHub OIDC access. Vendor these components either with
     the included Atmos Workflows or using [Atmos Vendoring](https://atmos.tools/core-concepts/components/vendoring).
 
-    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/gitops" />
+    <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/atmos-pro" />
   </Step>
 
   <Step>
@@ -137,7 +145,7 @@ import CodeBlock from '@theme/CodeBlock';
 
     Deploy the GitOps prerequisite components, `gitops/s3-bucket`, `gitops/dynamodb`, and `gitops` with the following workflow
 
-    <AtmosWorkflow workflow="deploy/gitops" fileName="quickstart/foundation/gitops" />
+    <AtmosWorkflow workflow="deploy" fileName="quickstart/foundation/atmos-pro" />
 
   </Step>
   <Step>

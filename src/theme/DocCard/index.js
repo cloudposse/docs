@@ -99,7 +99,7 @@ function CardCategory({item}) {
       href={href}
       icon="🗃️"
       title={`${item.label} (${item.items.length})`}
-      description={item.description ?? category.description ?? categoryItemsPlural(item.items.length)}
+      description={item.description ?? category?.description ?? categoryItemsPlural(item.items.length)}
     />
   );
 }

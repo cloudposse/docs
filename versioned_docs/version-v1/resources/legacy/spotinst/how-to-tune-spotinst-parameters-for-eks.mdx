@@ -1,0 +1,107 @@
+---
+title: "Tune SpotInst Parameters for EKS"
+sidebar_position: 100
+---
+
+## Problem
+
+<img src="/assets/refarch/cleanshot-2022-01-26-at-10.39.03-20220126-163928.png" /><br/>
+
+SpotInst (SaaS) replaces the need to deploy the [standard kubernetes cluster auto-scaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler), so the mechanisms of tuning the scaling parameters are different than out-of-the-box EKS clusters.  The autoscaling capability is handled by the `ocean-controller` together with the Spot platform, and not by Auto Scale Groups, so there’s no ASG parameters that we can toggle.
+
+Autoscaling is further constrained to by the number of spot instances of a given instance type in AWS as well as [Spot.io](http://Spot.io) has limits on your account.
+
+While SpotInst (aka [http://spot.io](http://spot.io) ) is responsible for efficiently managing Spot Instances, it can actually manage on-demand and reserved instances as well. Spot Instances can sometimes cause problems for workloads that are more sensitive to interruptions, such as CI/CD (GitHub Action Runners) and WebSockets.
+
+:::caution
+AWS Reserved Instances are not a “type” of instance like Spot. AWS Reserved Instances are a billing arrangement that reduces costs for on-demand instance types. So to leverage “reserved instances”, simply launch on-demand instances of the type you have purchased through the RI marketplace.
+[https://aws.amazon.com/ec2/pricing/reserved-instances/](https://aws.amazon.com/ec2/pricing/reserved-instances/)
+
+:::
+
+## Solution
+
+### Option 1: Tune Pod Annotations
+
+See: [https://docs.spot.io/ocean/features/labels-and-taints](https://docs.spot.io/ocean/features/labels-and-taints)
+
+#### `spotinst.io/restrict-scale-down`
+
+Some workloads are not as resilient to spot instance replacements as others, so you may wish to lower the frequency of replacing the nodes they are running on as much as possible, while still getting the benefit of spot instance pricing. For these workloads, use the `spotinst.io/restrict-scale-down` label (set to `true`) to block the proactive scaling down of the instance for the purposes of more efficient bin packing. This will leave the instance running as long as possible. The instance will be replaced only if it goes into an unhealthy state or if forced by a cloud provider interruption.
+
+#### `spotinst.io/node-lifecycle`
+
+Ocean labels all nodes it manages with a label key `spotinst.io/node-lifecycle`. The label value is either `od` (on-demand) or `spot`, according to the lifecycle of the instance, and can assist when monitoring the cluster’s nodes in different scenarios.
+
+Some workloads are mission-critical and are not resilient to spot instance interruptions. These workloads have to run on on-demand instances at all times. To ensure that, apply node affinity to the `spotinst.io/node-lifecycle` label with value `od`.
+
+### Option 2: Tune Parameters in Stack Configuration
+
+:::tip
+The [eks/cluster](/components/library/aws/eks/cluster/) component supports exposes most (but maybe not all) parameters of the [https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool](https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool) module. Before setting any variables make sure your component is passing those variables through to the upstream `terraform-aws-eks-spotinst-ocean-nodepool` module, or they will have no effect.
+
+:::
+
+```
+components:
+  terraform:
+
+    eks:
+      settings:
+        spacelift:
+          workspace_enabled: true
+          terraform_version: "1"
+      command: "/usr/bin/terraform-1"
+      vars:
+        aws_ssm_enabled: true
+        cluster_encryption_config_enabled: true
+        cluster_kubernetes_version: "1.18"
+        spotinst_oceans:
+          main:
+            max_group_size: 20
+            min_group_size: 3
+            desired_group_size: 3
+            disk_size: 200
+            # Can only set one of ami_release_version or kubernetes_version
+            # Leave both null to use latest AMI for Cluster Kubernetes version
+            kubernetes_version: null # use cluster Kubernetes version
+            ami_release_version: null # use latest AMI for Kubernetes version
+            attributes: null
+            ami_type: null # use "AL2_x86_64" for standard instances, "AL2_x86_64_GPU" for GPU instances
+            tags: null
+            instance_types:
+            # m5n.large and r5n.large equivalents according to ec2-instance-selector ~8 GiB memory and 2 vCPUs
+            # ec2-instance-selector --hypervisor nitro --memory-min 7GiB --memory-max 25GiB -a amd64 --network-performance-min 25 --vcpus-min 2 -g 0
+            # Limited to Nitro Instances with Transit Encryption (not all nitro instances support it)
+            # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html
+            - "c5n.2xlarge"
+            - "c5n.xlarge"
+            # d3en not available in ue2
+            # - "d3en.xlarge"
+            - "i3en.large"
+            # inf1 does not support network encryption
+            # - "inf1.2xlarge"
+            # - "inf1.xlarge"
+            - "m5dn.large"
+            - "m5dn.xlarge"
+            - "m5n.large"
+            - "m5n.xlarge"
+            - "m5zn.large"
+            - "m5zn.xlarge"
+            - "r5dn.large"
+            - "r5n.large"
+
+    # The metrics server is needed by the `ocean-controller`
+    metrics-server:
+      vars:
+        installed: true
+    # The `ocean-controller` is what feeds spotinst (SaaS) the information it needs to make informed decisions on scaling your cluster
+    ocean-controller:
+      vars:
+        installed: true
+        chart_version: "1.0.85"
+        ssm_region: "us-west-2"
+
+```
+
+

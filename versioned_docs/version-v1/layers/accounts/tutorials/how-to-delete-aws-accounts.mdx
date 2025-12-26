@@ -1,0 +1,197 @@
+---
+title: "How to Delete AWS Accounts"
+sidebar_label: "Delete AWS Accounts"
+sidebar_position: 29
+description: Step-by-step guide for deleting AWS accounts
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
+import Admonition from '@theme/Admonition';
+
+<Intro>
+Learn the step-by-step instructions for deleting AWS accounts that are no longer needed or were provisioned by accident. We cover renaming email addresses to avoid future conflicts, using cloud-nuke to delete all resources, and manually closing the account through the AWS Console. It also includes recommendations for renaming or repurposing accounts to avoid the overhead of deletion.
+</Intro>
+
+## Problem
+
+Sometimes accounts are provisioned that are no longer needed or were provisioned by accident. AWS provides no easy programmatic way to destroy accounts. The following ClickOps method is required to destroy the account.
+
+<Admonition type="caution" title="Email Address Reuse">
+Email addresses associated with AWS accounts are globally unique and cannot be reused even after the account deletion. If you ever intend to use the email address again with AWS on another account, we strongly recommend that you first rename the email address on record before proceeding to delete the account.
+</Admonition>
+
+## Solution
+
+<Admonition type="caution" title="Consider Alternatives">
+We recommend renaming or repurposing accounts rather than deleting them due to the overhead and complexity of the deletion process.
+</Admonition>
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Delete All Account Resources
+
+    Closing an account might not automatically terminate all active resources. You may continue to incur charges for active resources even after closing the account. To avoid tedious manual steps, leverage [cloud-nuke](https://github.com/gruntwork-io/cloud-nuke) to delete all resources.
+
+    **Install cloud-nuke:**
+    ```bash
+    brew install cloud-nuke
+    ```
+
+    **Dry run to see what will be deleted:**
+    ```bash
+    cloud-nuke aws --dry-run
+    ```
+
+    **Delete all resources (WARNING: This will delete ALL resources in the account):**
+    ```bash
+    cloud-nuke aws
+    ```
+
+    **Export required AWS config for running cloud-nuke:**
+
+    Save the following in `.envrc`:
+    ```bash
+    # or wherever the configuration file is
+    export AWS_CONFIG_FILE=rootfs/etc/aws-config/aws-config-teams
+    # This is necessary for cloud-nuke
+    export AWS_SDK_LOAD_CONFIG=true
+    AWS_PROFILE=core-gbl-root-admin cloud-nuke aws --dry-run
+    ```
+
+    <Note title="Alternative: Use SuperAdmin">
+      Instead of using the AWS profile, you can also use the SuperAdmin user credentials directly. This is often simpler for one-off operations like account deletion.
+    </Note>
+
+    **Create a shell script to automate cloud-nuke across accounts:**
+
+    Create `nuke-echo.sh`:
+    ```bash
+    #!/usr/bin/env bash
+    cat rootfs/etc/aws-config/aws-config-teams | grep '\[profile' | cut -d' ' -f2 | cut -d']' -f1 | grep admin | while read profile; do echo AWS_PROFILE=$profile cloud-nuke aws $@; done
+    ```
+
+    **Run with specific regions and exclusions:**
+    ```bash
+    ./nuke-echo.sh --region us-east-2 --region us-west-2 --region eu-west-3 --exclude-resource-type s3 --exclude-resource-type guardduty --exclude-resource-type transit-gateway
+    ```
+
+    <Note title="Resource Deletion Order">
+      Delete resources in the following order for best results:
+      - Security accounts
+      - Audit accounts  
+      - Platform accounts (dev, staging, qa, prod, perf, sandbox)
+      - Corp accounts
+      - Auto accounts
+      - Network accounts (due to transit gateway)
+      
+      Consider skipping:
+      - DNS accounts
+      - Identity accounts
+      - Root accounts
+    </Note>
+
+    <Note title="Resources to Skip">
+      Skip the following resources until the very end:
+      - `iam` - due to IAM roles used to initiate cloud-nuke
+      - `s3` - due to the time it takes to delete S3 objects
+      - `guardduty` - controlled by security account across all accounts
+      - `asg` - can fail to destroy EKS ASGs
+      - `transit-gateway` - controlled by network account
+    </Note>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Handle Manual Deletions
+
+    Some resources are not covered by cloud-nuke and require manual deletion:
+
+    **GuardDuty:**
+    - Navigate to the security account in AWS console
+    - Go to GuardDuty settings, disassociate all members, then suspend and disable
+    - Go to root account and remove security from being the GuardDuty delegate
+
+    **Per-region resources:**
+    - AWS Backup
+    - MWAA (Managed Workflows for Apache Airflow)
+    - MSK (Managed Streaming for Apache Kafka)
+    - ElastiCache
+    - EFS (Elastic File System)
+    - EC2 Client VPN
+    - Transit Gateway attachments in network account
+    - Any other resources that use EC2 Network Interfaces (ENI)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Prepare Account for Deletion
+
+    **Remove Organization Restrictions:**
+    - In the root account, remove the `DenyLeavingOrganization` SCP from the account to be deleted
+
+    **Update Account Configuration:**
+    - Comment out the account line in `stacks/catalog/account.yaml`
+    - Apply changes to the account component:
+      ```bash
+      atmos terraform apply account -s core-gbl-root
+      ```
+
+    **Access the Account:**
+    - Look up the account's root user email address and password in 1Password
+    - If no password exists, request a password reset
+    - Open the email (accessible via `#aws-notifications` Slack channel) and click the reset link
+    - Set a new password and save it in 1Password
+
+    **Rename Email Address (Recommended):**
+    - Change the email address to something disposable by appending "deleted" and the date
+    - Use a "plus address" if not already using one
+    - Example: `aws+prod@cpco.co` → `aws+prod-deleted-2024-01-01@cpco.co`
+    - Navigate to Account Settings > Edit > Edit Email in the AWS console
+    - Validate the email address from the account dashboard
+
+    **Complete Account Setup:**
+    - Set account contact information (if not inherited from Organizations)
+    - Accept the AWS Customer Agreement (if not inherited from Organizations)
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Delete the Account
+
+    <Admonition type="caution" title="Account Closure Limits">
+      You can only close up to 10% of accounts per month. A valid payment method is no longer required to close an account, but the API does not support this feature yet. Each account must be manually closed.
+    </Admonition>
+
+    **Close Account in AWS Console:**
+    - Open the AWS Console and go to the root account for the Organization
+    - Navigate to Organizations > AWS accounts > select account > Close
+    - Check all boxes and enter Account ID > Close account
+
+    **Clean Up Infrastructure Configuration:**
+    - Remove the account from Terraform state for the account component
+    - Remove the account from `stacks/catalog/account.yaml`
+    - Follow standard process for opening a pull request and updating the codebase
+    - Apply changes to the account component:
+      ```bash
+      atmos terraform apply account -s core-gbl-root
+      ```
+
+    **Update AWS Configuration:**
+    - Regenerate AWS configuration files to remove the deleted account:
+      ```bash
+      aws-config teams > rootfs/etc/aws-config/aws-config-teams
+      aws-config switch-roles > rootfs/etc/aws-config/aws-extend-switch-roles
+      ```
+    - Commit and push the updated configuration files
+  </Step>
+</Steps>
+
+## References
+
+- [AWS Account Closure Guide](https://aws.amazon.com/premiumsupport/knowledge-center/close-aws-account/)
+- [Terminate Resources Before Account Closure](https://aws.amazon.com/premiumsupport/knowledge-center/terminate-resources-account-closure/)
+- [AWS Organizations Account Management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html)
+- [Automating AWS Account Deletion](https://onecloudplease.com/blog/automating-aws-account-deletion#deleting-an-aws-account) (including for comedic value) 🤣
+- [How to Create and Setup AWS Accounts](/layers/accounts/tutorials/how-to-create-and-setup-aws-accounts)
+- [cloud-nuke GitHub Repository](https://github.com/gruntwork-io/cloud-nuke)

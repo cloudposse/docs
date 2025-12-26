@@ -1,0 +1,131 @@
+---
+title: "Decide on Repositories Strategy"
+sidebar_label: "Repositories Strategy"
+sidebar_position: 100
+description: "Decide whether to use monorepos or polyrepos"
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+## Context and Problem Statement
+
+## Problem Statement
+
+Deciding repository strategies for your codebase is a crucial choice because it can significantly
+impact your development processes, collaboration effectiveness, tooling, and architectural decisions.
+There are two main strategies for organizing source code repositories:
+[monorepo](https://en.wikipedia.org/wiki/Monorepo) and `polyrepo`.
+In a middle there can be a hybrid strategies:
+
+- `multi monorepos`
+- `monorepo as read-only proxy`
+- `polyrepos & monorepos`
+
+The hybrid strategies inherit gains and loss of the main two.
+That's why focus on pros and const for the main repository structures.
+
+## Poly repo
+
+In a polyrepo structure, each project, service, or library has its own repository.
+
+### Benefits
+
+#### Isolation
+
+Each project is isolated from others, reducing the risk of a change in one project inadvertently affecting others.
+
+#### Scalability
+
+Polyrepos can scale more effectively as each repository can be managed separately.
+
+#### Simple and fast CI/CD Pipelines
+
+CI/CD pipelines contains less logic and works faster because it only has to process the relevant parts of the codebase.
+
+### Challenges
+
+#### Code Duplication
+
+Code that's shared between projects might have to be duplicated in each repository.
+
+#### Increased Management Overhead
+
+Managing multiple repositories can be more complex and time-consuming.
+
+#### Complex Dependency Management
+
+If libraries have interdependencies, it can be harder to manage versioning across multiple repositories.
+
+## Monorepo
+
+Monorepos hold all of an organization's code in a single repository. All projects, libraries, and services
+live together.
+
+### Benefits
+
+#### Code Sharing and Reuse
+
+With all the code in one place, it's easy to share and reuse code across multiple projects.
+This can lead to more consistent code, reduce duplication, and enhance productivity.
+
+#### Unified Versioning
+
+A monorepo has a single source of truth for the current state of the system.
+
+#### Collaboration and Code Review
+
+Developers can work together on code, have visibility of changes across the entire project, and
+perform code reviews more effectively.
+
+#### Simplified Dependency Management
+
+All projects use the same version of third-party dependencies, which can make managing those dependencies easier.
+
+### Challenges
+
+#### Scalability
+
+As a codebase grows, it can become more challenging to manage and navigate a monorepo.
+
+#### Complex and slower CI/CD Pipelines
+
+Continuous integration and deployment can become slower as your codebase grows because the pipeline
+may need to compile and test the entire codebase for every change.
+CI/CD pipelines for monorepo are complex and required special tooling such as
+[Bazel](https://bazel.build/), [Pants](https://www.pantsbuild.org/), [Please](https://please.build/) or [Buck](https://buck2.build/).
+
+#### Risk of Breaking Changes
+
+A small change in one part of the codebase might break something else unexpectedly since everything is interconnected.
+
+#### Dummy Versioning
+
+Whenever the entire monorepo is tagged, it automatically assigns this new tag to all code inside, including
+all hosted libraries. This could lead to the release of all these libraries under the new version number,
+even if many of these libraries have not been updated or modified in any way.
+
+## Recommendation
+
+We recommend using `Polyrepo` as a basic repository organization strategy because it leads to faster development cycle,
+simplify CI/CD pipelines, do not require additional tooling.
+
+Active usage of preview (ephemeral) and QA environments, testing automation,
+deployment on multiple stages (dev -> staging -> prod) during release workflow and implementing of a particular deployment
+patterns (Blue/Green, Canary, Rolling) allow catching integration issues before the code goes on production.
+
+The repository strategy does not have to be the same across the whole organization - different teams can
+use different patterns, but that lead to the complexity of the CI/CD pipelines and reduce reusability.
+
+That's why we recommend having a consistent repository strategy, at least on a team level.
+
+## References
+
+- [Monorepo vs. polyrepo](https://github.com/joelparkerhenderson/monorepo-vs-polyrepo)
+- [From a Single Repo, to Multi-Repos, to Monorepo, to Multi-Monorepo](https://css-tricks.com/from-a-single-repo-to-multi-repos-to-monorepo-to-multi-monorepo/)
+- [Monorepo vs Polyrepo](https://earthly.dev/blog/monorepo-vs-polyrepo/)
+- [Polyrepo vs. Monorepo - How does it impact dependency management?](https://www.endorlabs.com/blog/polyrepo-vs-monorepo-how-does-it-impact-dependency-management)
+- [Monorepo Vs Polyrepo Architecture: A Comparison For Effective Software Development](https://webo.digital/blog/monorepo-vs-polyrepo-architecture/)
+-

@@ -1,0 +1,75 @@
+---
+title: "Decide on Spacelift Administrative Stack Auto-deployment"
+sidebar_label: "Stack Auto-deployment"
+sidebar_position: 100
+refarch_id: REFARCH-410
+description: Balance auto-deployment with manual confirmation
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+<Intro>
+  Spacelift administrative stacks support auto-deployment to streamline the
+  process of provisioning new component stacks, but the ease of use and
+  automation must be balanced against the risk of accidental deletions due to
+  misconfiguration. Reviewing these considerations will help decide the best
+  approach for your organization’s needs.
+</Intro>
+
+## Problem
+
+Spacelift (and for that matter, pretty much any CI/CD platform including Atlantis) will only run workflows that have been configured to run on the platform (e.g. there is no auto-discovery of stacks). While systems like GitHub Actions will automatically run workflows in a branch or Pull Request from any repo, Spacelift by design does not do this for security reasons, since that would mean any rogue repo or branch could modify infrastructure.
+
+In order for the stack to run in spacelift, the configuration needs to be merged into `main` and confirmed (e.g. applied). Frequently, users forget about this, so after merging to main the infrastructure stack is not confirmed and then they are left scratching their heads why their stack didn’t run.
+
+## Context
+
+There are 2 kinds of Spacelift stacks: administrative stacks and component stacks (which are created by an admin stack).
+
+The “infrastructure” stack is an _administrative stack_ that deploys and manages component stacks. This means this stack has special permissions to manage spacelift itself, but actually no credentials to manage AWS (or other services). In the screenshot, you can see that the stack is _Administrative_ on the status line under Resources.
+
+This admin stack is manually created in Spacelift (it’s how it knows about your infrastructure repository) and it runs the Terraform code in the `components/terraform/spacelift` component to create all your other component stacks.
+
+When making changes or adding a new component to a stack configuration in Spacelift, those changes must be applied first by the administrative stack before Spacelift can do anything with it (e.g. show a terraform plan of this stack).
+
+<img src="/assets/refarch/cleanshot-2021-11-24-at-14.59.56@2x-20211124-210413.png" />
+<br />
+
+## Considered Options
+
+### Option 1: Autodeploy Spacelift Administrative Stack
+
+Usually, CloudPosse sets this admin stack to `autodeploy=true` for customers so that new stacks are provisioned when detected otherwise the risk is that the admin stack is unconfirmed and forgotten about.
+
+:::note
+Note that by turning on auto deploy on the admin stack, it does not turn auto deploy on the component stacks. We default component stacks to be manually confirmed before the changes are applied.
+
+:::
+
+#### Pros
+
+- Adding stacks feels more natural. As soon as you merge the PR with the new stack, Spacelift will configure it without further intervention by users.
+
+#### Cons
+
+- Stacks can be accidentally deleted by misconfiguration (E.g. user error) in a PR. When that happens, the history of that stack will be lost in the Spacelift UI. The AWS stacks themselves are not affected at all. We are working with Spacelift to add a deletion protection flag to avoid this from happening.
+
+### Option 2: Manually Confirm Spacelift Administrative Stack
+
+:::caution
+If `autodeploy=false` on the admin stack, then new stacks will have to be manually confirmed after each PR merge before any changes are planned, which is frequently confusing for developers.
+
+:::
+
+#### Pros
+
+- The risk of accidentally deleting a stack configuration in the UI is reduced
+
+#### Cons
+
+- Users are frequently confused why their stack does not show any plans or why nothing is terraformed.
+
+- Users forget to confirm the changes to the Spacelift configuration because this implementation detail is not obvious to them.

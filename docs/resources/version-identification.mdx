@@ -1,0 +1,153 @@
+---
+title: "Determine Your Reference Architecture Version"
+sidebar_label: "Version Identification"
+sidebar_position: 0
+description: How to identify which version of the Cloud Posse Reference Architecture you are using
+---
+import Steps from '@site/src/components/Steps';
+
+The Cloud Posse Reference Architecture has evolved significantly over time. This guide helps you identify which version of the architecture your infrastructure uses, so you can follow the appropriate documentation.
+
+## Quick Version Check
+
+The easiest way to determine your version is to check which components exist in your infrastructure repository.
+
+### Version 1
+
+You are using **Version 1** if your infrastructure includes any of the following components:
+
+| Component | Purpose |
+|-----------|---------|
+| `account-map` | Dynamically looks up AWS account IDs via Terraform remote state |
+| `aws-teams` | Creates IAM roles for teams in the identity account |
+| `aws-team-roles` | Creates assumable IAM roles in each account |
+
+Check for these components:
+
+```bash
+# Check if you have the account-map component
+ls components/terraform/account-map/
+
+# Check for aws-teams and aws-team-roles
+ls components/terraform/aws-teams/
+ls components/terraform/aws-team-roles/
+```
+
+If these directories exist and are actively used in your stack configurations, you are on **Version 1**.
+
+### Version 2
+
+You are using **Version 2** if your infrastructure:
+
+<Steps>
+  1. Does **not** have `account-map`, `aws-teams`, or `aws-team-roles` components
+  1. Uses Atmos Auth profiles for identity management
+  1. Uses static account mappings in stack configuration
+  1. Uses the `iam-role` component for machine (CI/CD) access
+</Steps>
+
+Check for these indicators:
+
+```bash
+# Check for Atmos profiles directory
+ls profiles/
+
+# Check for static account_map in org defaults
+grep -r "account_map:" stacks/orgs/
+
+# Check for iam-role component
+ls components/terraform/iam-role/
+```
+
+## Detailed Comparison
+
+### Identity and Authentication
+
+| Aspect | Version 1 | Version 2 |
+|--------|-----------|-----------|
+| **Account ID Lookup** | `account-map` component with Terraform remote state | Static `account_map` variable in stack config |
+| **Human Access** | IAM roles via `aws-teams`/`aws-team-roles` | AWS SSO Permission Sets via Atmos Auth profiles |
+| **Machine Access** | `github-oidc-role` component | `iam-role` component with GitHub OIDC support |
+| **Cross-Account Roles** | Dynamic provider configuration from `account-map` | Atmos Auth profiles with Permission Sets |
+| **Identity Account** | Dedicated `core-identity` account | Uses `core-root` for identity management |
+
+### Configuration Patterns
+
+| Pattern | Version 1 | Version 2 |
+|---------|-----------|-----------|
+| **Terraform Remote State** | Used extensively for account lookups | Minimized; uses YAML and Atmos functions |
+| **Provider Configuration** | Dynamic via `account-map` outputs | Static via Atmos Auth profiles |
+| **Cross-Component Data** | `terraform_remote_state` data sources | `!terraform.output` Atmos function or YAML |
+| **Account Mapping** | Terraform outputs from `account-map` | Static YAML in `stacks/orgs/<namespace>/_defaults.yaml` |
+
+### File Structure Differences
+
+**Version 1** typically includes:
+
+```
+components/terraform/
+├── account-map/
+├── aws-teams/
+├── aws-team-roles/
+└── github-oidc-role/
+
+stacks/catalog/
+├── account-map/
+├── aws-teams/
+└── aws-team-roles/
+```
+
+**Version 2** typically includes:
+
+```
+profiles/
+├── superadmin/
+├── managers/
+├── devops/
+├── developers/
+└── github/
+
+components/terraform/
+└── iam-role/
+
+stacks/catalog/
+└── iam-role/
+    ├── terraform.yaml
+    ├── planner.yaml
+    └── gitops.yaml
+```
+
+## Why the Architecture Changed
+
+Version 2 simplifies the reference architecture by:
+
+<Steps>
+  1. **Reducing Terraform Dependencies** — Removing `account-map` eliminates a critical dependency that had to be deployed before most other components and required careful ordering. This also better supports brownfield deployments and alternate architectures.
+  1. **Simplifying Authentication** — Atmos Auth profiles provide a cleaner, more maintainable approach to identity management than the complex web of IAM roles. This also removes usage of Leapp, which is deprecated.
+  1. **Better Separation of Concerns** — Static account mappings in YAML keep configuration visible and auditable without requiring Terraform state access.
+</Steps>
+
+## Migration Path
+
+If you are on Version 1 and want to migrate to Version 2, this is a significant undertaking that requires careful planning. The migration involves:
+
+<Steps>
+  1. **Set up AWS SSO Permission Sets** — Configure Identity Center with appropriate permission sets for your teams.
+  1. **Create Atmos Auth profiles** — Define profiles for different user roles (managers, devops, developers, github).
+  1. **Deploy `iam-role` components** — Set up IAM roles for machine (CI/CD) access via GitHub OIDC.
+  1. **Remove Version 1 components** — Delete `account-map`, `aws-teams`, and `aws-team-roles` from your infrastructure.
+  1. **Update component provider configurations** — Migrate all components to use the new mixin-based provider pattern.
+</Steps>
+
+Contact Cloud Posse for assistance with migration planning.
+
+## Documentation Versions
+
+This documentation site provides versioned documentation:
+
+<Steps>
+  1. **Latest** — Current documentation for Version 2 architecture
+  1. **v1** — Documentation for Version 1 architecture with `account-map`
+</Steps>
+
+Use the version selector in the navigation bar to switch between documentation versions.

@@ -1,0 +1,73 @@
+---
+title: "How to use Atmos"
+sidebar_label: "Use Atmos"
+sidebar_position: 100
+description: "Learn how to use Atmos"
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+## Getting Started
+
+To use [Atmos](https://atmos.tools) we recommend interacting with the `atmos` command via `geodesic`.
+
+:::info
+
+Run all the following commands in the geodesic container from the Project root. e.g the _infrastructure_ repository. To run the geodesic shell run `make run` from the project root.
+
+:::
+
+The following assumes `<component>` is a folder that exists in `<ProjectDir>/components/terraform/`that contains .tf files to be applied.
+e.g. `ecr`, `dns-primary`, `accounts` are examples of **components**.
+
+And that a `<stack>` is the name of a stack that exists in `<ProjectDir/stacks/` with `.yaml` not included.
+e.g. `gbl-security`, `uw2-audit` are examples of **stacks**
+
+## Terraform
+
+#### terraform plan
+
+```
+atmos terraform plan <component> -s <stack>
+```
+
+#### terraform apply
+
+```
+atmos terraform apply <component> -s <stack>
+```
+
+#### terraform destroy
+
+```
+atmos terraform destroy <component> -s <stack>
+```
+
+#### terraform force-unlock
+
+```
+cd components/terraform/<component>
+terraform force-unlock -force <LockID>
+cd ../../../
+```
+
+#### terraform apply -auto-approve
+This command is used for planning and applying in the same command.
+
+```
+atmos terraform deploy <component> -s <stack>
+```
+
+## Related Guides
+
+- [How to Upgrade Atmos](/learn/maintenance/upgrades/how-to-upgrade-atmos)
+- [How to Upgrade or Install Versions of Terraform](/learn/maintenance/upgrades/how-to-upgrade-or-install-versions-of-terraform)
+- [How to Manage Terraform Dependencies in Micro-service Repositories](/learn/maintenance/tutorials/how-to-manage-terraform-dependencies-in-micro-service-repositori)
+- [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date)
+- [How to Use Terraform Remote State](/learn/maintenance/tutorials/how-to-use-terraform-remote-state)
+- [How to Switch Versions of Terraform](/learn/maintenance/tutorials/how-to-switch-versions-of-terraform)
+- [How to support GovCloud and Other AWS Partitions with Terraform](/learn/maintenance/tutorials/how-to-support-govcloud-and-other-aws-partitions-with-terraform)
+- [How to terraform non-AWS infrastructure?](/learn/maintenance/tutorials/how-to-terraform-non-aws-infrastructure)
+- [How to use Atmos](/learn/maintenance/tutorials/how-to-use-atmos)
+
+

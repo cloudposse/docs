@@ -1,6 +1,6 @@
 ---
 title: "Setup Atmos Pro"
-sidebar_label: "Setup"
+sidebar_label: "Setup Atmos Pro"
 sidebar_position: 1
 ---
 import Intro from '@site/src/components/Intro';
@@ -12,6 +12,9 @@ import TaskList from '@site/src/components/TaskList';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import CollapsibleText from '@site/src/components/CollapsibleText';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import PartialAtmosPro from '@site/examples/snippets/.github/workflows/atmos-pro.yaml';
 import PartialAtmosProTerraformPlan from '@site/examples/snippets/.github/workflows/atmos-pro-terraform-plan.yaml';
 import PartialAtmosProTerraformApply from '@site/examples/snippets/.github/workflows/atmos-pro-terraform-apply.yaml';
@@ -21,6 +24,14 @@ import PartialAtmosProTerraformApply from '@site/examples/snippets/.github/workf
 </Intro>
 
 ## Setup Process
+
+<KeyPoints title="Before You Begin">
+  <TaskList>
+    - Admin access to both GitHub and AWS
+    - Familiarity with the detailed instructions in each linked guide
+    - A small test change ready to validate the setup
+  </TaskList>
+</KeyPoints>
 
 <Steps>
   <Step>
@@ -41,16 +52,21 @@ import PartialAtmosProTerraformApply from '@site/examples/snippets/.github/workf
   <Step>
     ### <StepNumber/> Grant Repository Permissions
 
-    The second step is to grant repository permissions in Atmos Pro to enable ordered deployments and other features.
+    Grant repository permissions in Atmos Pro to enable ordered deployments, drift detection, and other features.
 
-    <TaskList>
-      - Permission: `Affected Stacks Create`
-      - Workflow: `*`
-      - Branch: `*`
-      - Environment: `*`
-    </TaskList>
+    Navigate to your repository in the Atmos Pro dashboard, click **Quick Actions**, and select **Repository Permissions**. Add the following permissions:
 
-    For detailed instructions on repository permissions, see the [official Atmos Pro repository permissions guide](https://atmos-pro.com/docs/ordered-deployments/repository-permissions).
+    | Permission | Workflow | Branch | Environment |
+    | :--------- | :------- | :----- | :---------- |
+    | `Affected Stacks Create` | `*` | `*` | `*` |
+    | `Instances Create` | `*` | `*` | `*` |
+    | `Instances Update` | `*` | `*` | `*` |
+
+    - **Affected Stacks Create** — Required for PR workflows to report affected stacks
+    - **Instances Create** — Required for drift detection to register instances
+    - **Instances Update** — Required for drift detection to update instance status
+
+    For detailed instructions, see the [official Atmos Pro repository permissions guide](https://atmos-pro.com/docs/ordered-deployments/repository-permissions).
   </Step>
 
   <Step>
@@ -66,29 +82,39 @@ import PartialAtmosProTerraformApply from '@site/examples/snippets/.github/workf
 
     _The dispatched workflows need to exist in the default branch before they can be triggered!_
 
+    :::info
+    These workflows are already included with the reference architecture. Review them to ensure they meet your requirements.
+    :::
+
     The following workflows should be added to your repository:
 
     <Tabs>
       <TabItem value="atmos-pro" label="atmos-pro.yaml">
         This workflow is triggered by GitHub on pull request events (opened, synchronized, reopened) and when the PR is merged (closed). It uses the `atmos describe affected` command to identify affected components and upload them to Atmos Pro.
 
-        <CodeBlock language="yaml" title=".github/workflows/atmos-pro.yaml">
-          {PartialAtmosPro}
-        </CodeBlock>
+        <CollapsibleText type="medium">
+          <CodeBlock language="yaml" title=".github/workflows/atmos-pro.yaml">
+            {PartialAtmosPro}
+          </CodeBlock>
+        </CollapsibleText>
       </TabItem>
       <TabItem value="atmos-pro-terraform-plan" label="atmos-pro-terraform-plan.yaml">
         This workflow is dispatched by Atmos Pro to create Terraform plans for affected components. It is a reusable workflow that takes stack and component as inputs.
 
-        <CodeBlock language="yaml" title=".github/workflows/atmos-pro-terraform-plan.yaml">
-          {PartialAtmosProTerraformPlan}
-        </CodeBlock>
+        <CollapsibleText type="medium">
+          <CodeBlock language="yaml" title=".github/workflows/atmos-pro-terraform-plan.yaml">
+            {PartialAtmosProTerraformPlan}
+          </CodeBlock>
+        </CollapsibleText>
       </TabItem>
       <TabItem value="atmos-pro-terraform-apply" label="atmos-pro-terraform-apply.yaml">
         This workflow is dispatched by Atmos Pro to apply Terraform changes for affected components. It is a reusable workflow that takes stack and component as inputs.
 
-        <CodeBlock language="yaml" title=".github/workflows/atmos-pro-terraform-apply.yaml">
-          {PartialAtmosProTerraformApply}
-        </CodeBlock>
+        <CollapsibleText type="medium">
+          <CodeBlock language="yaml" title=".github/workflows/atmos-pro-terraform-apply.yaml">
+            {PartialAtmosProTerraformApply}
+          </CodeBlock>
+        </CollapsibleText>
       </TabItem>
     </Tabs>
 
@@ -102,20 +128,25 @@ import PartialAtmosProTerraformApply from '@site/examples/snippets/.github/workf
 
     <TaskList>
     - [x] **State Backend** (S3 + DynamoDB) to store Terraform state and enable state locking
+    - [x] **OIDC Integration** with GitHub for workflows to authenticate with your cloud provider
     - [ ] **Plan File Storage** (S3 + DynamoDB) to persist Terraform plan outputs for review and approvals
-    - [ ] **OIDC Integration** with GitHub for workflows to authenticate with your cloud provider
     </TaskList>
 
-    If you've been following along with the reference architecture, by now you should already have the Terraform State Backend provisioned. To complete the requirements for Atmos Pro and GitHub Actions, continue with the step-by-step instructions: 
-    [Atmos and Terraform deployment](/layers/atmos-pro/tutorials/deploy-with-terraform)
+    <ActionCard title="Deploy with Atmos and Terraform (Recommended)">
+      If you've been following along with the reference architecture, you should already have the Terraform State Backend provisioned. This guide walks through deploying the GitHub OIDC provider and IAM roles needed for GitHub Actions to authenticate with AWS.
+      <PrimaryCTA to="/layers/atmos-pro/deploy-with-terraform">Deploy AWS Infrastructure</PrimaryCTA>
+    </ActionCard>
+
+    :::tip Alternative: CloudFormation
+
+    All requirements can also be deployed with CloudFormation. This option is not included by default with the reference architecture but may be useful for organizations that prefer CloudFormation or need to bootstrap before Terraform is available.
+
+    See [Deploy with CloudFormation](/layers/atmos-pro/tutorials/deploy-with-cloudformation) for details.
+
+    :::
+
   </Step>
 </Steps>
-
-<KeyPoints title="Tips">
-  1. Make sure you have admin access to both GitHub and AWS before starting the setup
-  2. Follow the detailed instructions in each linked guide for specific steps
-  3. Test the setup with a small change before deploying major infrastructure changes
-</KeyPoints>
 
 ## Verification
 
@@ -146,7 +177,12 @@ After completing all four steps, you can verify the setup by:
     - Now try merging the PR
     - Again, the `atmos-pro.yaml` workflow will discover the affected stacks and trigger Atmos Pro.
     - This time Atmos Pro will determine this is a "merged" event and run Atmos Terraform Apply.
-    - Finally, Atmos Pro will update the comment on the PR will the apply status.
+    - Finally, Atmos Pro will update the comment on the PR with the apply status.
   </Step>
 
 </Steps>
+
+<ActionCard title="Next Steps">
+  With Atmos Pro configured and verified, enable drift detection to continuously monitor your infrastructure for unauthorized changes.
+  <PrimaryCTA to="/layers/atmos-pro/drift-detection/">Configure Drift Detection</PrimaryCTA>
+</ActionCard>

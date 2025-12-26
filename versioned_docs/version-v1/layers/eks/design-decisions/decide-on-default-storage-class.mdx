@@ -1,0 +1,101 @@
+---
+title: "Decide on Default Storage Class for EKS Clusters"
+sidebar_label: "Default Storage Class"
+description: Determine the default storage class for Kubernetes EKS clusters
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+<Intro>
+  When provisioning EKS (Kubernetes) clusters, there is no one-size-fits-all
+  recommendation for the default storage class. The right choice depends on your
+  workload’s specific requirements, such as performance, scalability, and
+  cost-efficiency. While only one storage class can be set as the default,
+  storage classes are not mutually exclusive, and the best solution may often
+  involve using a combination of classes to meet various needs.
+</Intro>
+
+A `StorageClass` in Kubernetes defines the type of storage (e.g., EBS, EFS, etc.) and its parameters (e.g., performance, replication) for dynamically provisioning Persistent Volumes. The default `StorageClass` is automatically used when a `PersistentVolumeClaim` (PVC) is created without specifying a specific storage class, but its configuration varies depending on the cluster setup and cloud provider. Storage classes available on AWS differ from other clouds.
+
+## Default Storage Class Options
+
+We need to decide between **Amazon EFS (Elastic File System)** and **Amazon EBS (Elastic Block Store)** as the default storage class for our EKS clusters.
+
+<KeyPoints title="Top Considerations">
+  - **Availability Zone Lock-in:** EBS volumes are restricted to a single
+  Availability Zone, which can impact high availability and disaster recovery
+  strategies. This is a key drawback of using EBS. If you need a Pod to recover
+  across multiple AZs, EFS is a more suitable option, though it comes at a
+  higher cost. - **Performance:** EFS generally offers lower performance when
+  compared to EBS. This can be mitigated by paying for additional bandwidth but
+  has routinely caused outages due to throttling even with low-performance
+  applications. Additionally, poor lock performance makes EFS completely
+  unsuitable for high-performance applications like RDBMS. - **Cost:** EFS is
+  significantly more expensive than EBS, at least 3x the price per GB and
+  potentially more depending on performance demands, although there may be some
+  savings from not having to reserve size for future growth. - **Concurrent
+  Access:** EBS volumes can only be attached to one instance at a time within
+  the same Availability Zone, making them unsuitable for scenarios that require
+  concurrent access from multiple instances. In contrast, EFS allows multiple
+  instances or Pods to access the same file system concurrently, which is useful
+  for distributed applications or workloads requiring shared storage across
+  multiple nodes.
+</KeyPoints>
+
+## Amazon EFS
+
+**Amazon EFS** provides a scalable, fully managed, elastic file system with NFS compatibility, designed for use with AWS Cloud services and on-premises resources.
+
+### Pros:
+
+- **Unlimited Disk Space:** Automatically scales storage capacity as needed without manual intervention.
+- **Shared Access:** Allows multiple pods to access the same file system concurrently, facilitating shared storage scenarios.
+- **Managed Service:** Fully managed by AWS, reducing operational overhead for maintenance and scaling.
+- **Availability Zone Failover**: For workloads that require failover across multiple Availability Zones, EFS is a more suitable option. It provides multi-AZ durability, ensuring that Pods can recover and access persistent storage seamlessly across different AZs.
+
+### Cons:
+
+- **Lower Performance:** Generally offers lower performance compared to EBS, with throughput as low as 100 MB/s, which may not meet the demands of even modestly demanding applications.
+- **Higher Cost:** Significantly more expensive than EBS, at least 3x the price per GB and potentially more depending on performance demands, although there may be some savings from not having to reserve size for future growth.
+- **Higher Latency:** Higher latency compared to EBS, which may impact performance-sensitive applications.
+- **No Native Backup Support:** EFS lacks a built-in, straightforward backup and recovery solution for EKS. Kubernetes-native tools don’t support EFS backups directly, requiring the use of alternatives like AWS Backup. Recovery, however, can be non-trivial and may involve complex configurations to restore data effectively.
+
+## Amazon EBS
+
+**Amazon EBS** provides high-performance block storage volumes for use with Amazon EC2 instances, suitable for a wide range of workloads.
+
+### Pros:
+
+- **Higher Performance:** Offers high IOPS and low latency, making it ideal for performance-critical applications.
+- **Cost-Effective:** Potentially lower costs for specific storage types and usage scenarios.
+- **Native EKS Integration:** Well-integrated with Kubernetes through the EBS CSI (Container Storage Interface) driver, facilitating seamless provisioning and management.
+- **Supports Snapshot and Backup:** Supports snapshotting for data backup, recovery, and cloning.
+
+### Cons:
+
+- **Single-Attach Limitation:** EBS volumes can only be attached to a single node at a time, limiting shared access across multiple Pods or instances. Additional configurations or alternative storage solutions are required for scenarios needing concurrent access.
+- **Availability Zones:** EBS volumes are confined to a single Availability Zone, limiting high availability and disaster recovery across zones. This limitation can be mitigated by configuring a `StatefulSet` with replicas spread across multiple AZs. However, for workloads using EBS-backed Persistent Volume Claims (PVCs), failover to a different AZ requires manual intervention, including provisioning a new volume in the target zone, as EBS volumes cannot be moved between zones.
+- **Non-Elastic Storage:** EBS volumes can be manually resized, but this process is not fully automated in EKS. After resizing an EBS volume, additional manual steps are required to expand the associated Persistent Volume (PV) and Persistent Volume Claim (PVC). This introduces operational complexity, especially for workloads with dynamic storage needs, as EBS lacks automatic scaling like EFS.
+
+## Recommendation
+
+Use **Amazon EBS** as the primary storage option when:
+
+- High performance, low-latency storage is required for workloads confined to a single Availability Zone.
+- The workload doesn’t require shared access across multiple Pods.
+- You need cost-effective storage with support for snapshots and backups.
+- Manual resizing of volumes is acceptable for capacity management, recognizing that failover across AZs requires manual intervention and provisioning.
+
+Consider **Amazon EFS** when:
+
+- Multiple Pods need concurrent read/write access to shared data across nodes.
+- Workloads must persist data across multiple Availability Zones for high availability, and the application does not support native replication.
+- Elastic, automatically scaling storage is necessary to avoid manual provisioning, especially for workloads with unpredictable growth.
+- You are willing to trade off higher costs and lower performance for multi-AZ durability and easier management of shared storage.
+
+:::important
+EFS should never be used as backend storage for performance-sensitive applications like databases, due to its high latency and poor performance under heavy load.
+:::

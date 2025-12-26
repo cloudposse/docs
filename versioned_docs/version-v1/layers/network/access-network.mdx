@@ -1,0 +1,89 @@
+---
+title: "Accessing the Network"
+sidebar_label: "Access the Network"
+sidebar_position: 5
+icon: 'carbon:vpn'
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+
+Lastly, configure the VPN. The VPN will be provisioned in the `network` account and will leverage Transit Gateway to
+connect various VPCs to the VPN client. VPN deployment consists of three parts: authentication, component deployment,
+and client setup.
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Set up authentication
+
+    First, set up authentication.
+    <Steps>
+      - We recommend [using AWS IAM Identity Center to authenticate users](https://aws.amazon.com/blogs/security/authenticate-aws-client-vpn-users-with-aws-single-sign-on/).
+      - Follow only the first section included in the linked AWS blog, _Create and configure the Client VPN SAML applications in AWS IAM Identity Center_, through downloading the _AWS IAM Identity Center SAML metadata_.
+      - Save that file under the `ec2-client-vpn` component (`components/terraform/ec2-client-vpn`) as "aws-sso-saml-app.xml". This should match the given document name for `saml_metadata_document` in the `ec2-client-vpn` stack catalog (`stacks/catalog/ec2-client-vpn.yaml`)
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Deploy the VPN
+    Next, deploy the `ec2-client-vpn` component. This is done by running the following:
+
+    <AtmosWorkflow workflow="deploy/vpn" fileName="quickstart/foundation/network" />
+
+    Depending on the given network configuration, you may run out of available Client VPN routes.
+
+    That error will look something like this:
+
+    ```console
+    ╷
+    │ Error: error creating EC2 Client VPN Route (cvpn-endpoint-0b7487fc0043a3df0,subnet-0b88f999578fd2340,10.101.96.0/19): ClientVpnRouteLimitExceeded: Limit exceeded
+    │       status code: 400, request id: 779f977b-2b31-490a-a4b1-2c8cb1da068d
+    │
+    │   with module.ec2_client_vpn.aws_ec2_client_vpn_route.default[40],
+    │   on .terraform/modules/ec2_client_vpn/main.tf line 245, in resource "aws_ec2_client_vpn_route" "default":
+    │  245: resource "aws_ec2_client_vpn_route" "default" {
+    │
+    ```
+    If this happens, you'll need to [increase the number of routes](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-401D78F7) allowed for the Client VPN endpoint. That said, you should already have a quota increase request ready for this in
+`stacks/orgs/acme/core/network/global-region/baseline.yaml`.
+You can apply that quota using `atmos terraform apply account-quotas -s core-gbl-network`.
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Download & Install VPN Client
+
+    <Steps>
+      - Finally, set up the AWS VPN Client to access the VPN.
+      - [Download the AWS VPN Client](https://aws.amazon.com/vpn/client-vpn-download/) and or install it by running `brew install aws-client-vpn` in a regular terminal. Follow the [AWS Documentation](https://docs.aws.amazon.com/vpn/latest/clientvpn-user/connect-aws-client-vpn-connect.html) to complete the VPN setup.
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Configure VPN Client
+
+    The Atmos Workflow `deploy/vpn` creates a local VPN configuration as `acme-core.ovpn` (`rootfs/etc/aws-config/acme-core.ovpn`) located in the aws-config dir of `rootfs/`.
+
+    If it doesn't exist, create this file using the `client_configuration` output of the `ec2-client-vpn` component, and commit it to the repo under `rootfs/etc/aws-config/acme-core.ovpn` for future reference.
+
+    ```shell
+    atmos terraform output ec2-client-vpn -s core-use1-network
+    ```
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Connect to VPN
+
+    Once you configure the AWS VPN Client, set the file as the config and connect. From there you should be able to access resources on any subnet in the VPCs you've provisioned.
+  </Step>
+</Steps>
+
+### Optional: Bastion hosts
+
+If you'd like to set up bastion hosts, you can do so by running the following. This would let you further evaluate the VPN.
+
+    <AtmosWorkflow workflow="deploy/bastion" fileName="quickstart/foundation/network" />
+
+By default, we deploy the bastion to all accounts connected to Transit Gateway.

@@ -1,0 +1,99 @@
+---
+title: "Use Environment Variables for Configuration (12 Factor)"
+sidebar_label: "Environment Variables for Configuration"
+---
+
+**Date**: **14 Dec 2021**
+
+:::info Needs Update!
+
+The content in this ADR may be out-of-date and needing an update. For questions, please reach out to Cloud Posse
+
+- This page is mostly correct but may not be entirely up-to-date.
+
+:::
+
+## Status
+**ACCEPTED**
+
+## Problem
+We need a simple way to pass parameters to applications without hardcoding the settings. Multiple approaches exist with tradeoffs.
+
+The 12 Factor pattern recommends using environment variables, but there are security implications everyone needs to be aware of.
+
+## Context
+
+## Considered Options
+
+### **Option 1**: Use Environment Variables
+
+#### Pros
+
+- Portable configuration format supported by every mainstream language
+
+- Easily understood (key/value) pairs
+
+- Easily implemented
+
+- Supported by Kubernetes, Docker, and ECS
+
+- Compatible with SSM (via `chamber` and `external-secrets` operator), ASM (`external-secrets` operator) and HashiCorp Vault (via envconsul)
+
+- The 12 Factor pattern recommends using environment variables [https://12factor.net/](https://12factor.net/)
+
+#### Cons
+
+- Environment variables are exposed via the /proc filesystem. any process on the system can read those settings
+
+- Environment variables are harder to validate (e.g. typo an ENV, you won't get a warning in most applications, especially for optional settings)
+
+- Environment variable sprawl: over time, you may end up with hundreds of ENVs as some of our customers have. they have products that have been around for a decade or longer and gone through generations of engineers
+
+- Environment variables are harder to update. E.g. What updates the environment variables, such as CD?
+
+- If your app still consumes configs, but you are parameterizing it with ENVS, it's tedious to update both the envs and the config file templating every time you add an env
+
+- Environment variables are really only convenient for scalars. Serializing structures in YAML/JSON is ugly
+
+- ECS task definitions are capped at 64K, meaning if you use a lot of ENVs (or long ENVs), you will hit this limit when you least expect it
+
+- Kubernetes ConfigMaps are capped at 1MB, so if using ConfigMaps for ENVs, there’s still a practical limit.
+
+- Legacy applications frequently do not support environment variables
+
+### **Option 2**: Use Configuration Files
+
+#### Pros
+
+- Compatible with Kubernetes ConfigMaps, making them easy to mount into containers
+[https://kubernetes.io/docs/concepts/storage/volumes/#configmap](https://kubernetes.io/docs/concepts/storage/volumes/#configmap)
+
+- Compatible even with legacy applications that depend on configuration files
+
+- Can use templates to generate configuration files from environment variables (e.g. not mutually exclusive)
+
+- Easily deployed as part of CI/CD workflow
+
+#### Cons
+
+- There are a million configuration file formats, and no standardized way of defining them
+
+- For ephemeral environments, configuration files need to be templatized, adding a layer of complexity
+
+- Configuration files should be encrypted (e.g. see `sops-operator` for kubernetes)
+
+## Decision
+
+**DECIDED**: Use environment variables as standardized means of configuration
+
+## Consequences
+
+- Use `external-secrets` operator with Kubernetes to mount SSM/ASM parameters as environment variables
+
+- Use ECS `envs` to pass environment variables to tasks in the service definition
+
+## References
+
+- See also [Use SSM over ASM for Infrastructure](/resources/adrs/adopted/use-ssm-over-asm-for-infrastructure)
+
+

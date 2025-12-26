@@ -1,0 +1,44 @@
+---
+title: "EKS Foundational Platform"
+sidebar_label: "EKS"
+sidebar_class_name: hidden
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+Amazon EKS is a managed Kubernetes service that allows you to run Kubernetes in AWS cloud and on-premises data centers. AWS handles the availability and scalability of the Kubernetes control plane, which oversees tasks such as scheduling containers, managing application availability, and storing cluster data. While AWS manages control plane upgrades, users are responsible for the worker nodes and the workloads running on them, including operators, controllers, and applications. We use Karpenter for managing node pools and support spot instances to optimize costs. Be aware that you'll need to upgrade the cluster quarterly due to the significant pace of Kubernetes innovation. Although EKS has a steeper learning curve compared to ECS, it offers greater flexibility and control, making it ideal for organizations already utilizing Kubernetes.
+
+
+## The Problem
+
+Although Amazon EKS is a managed service, there is still much that is needed to set up any given cluster. First of all,
+we must decide how we want to deploy Nodes for the cluster. EC2 instance backed nodes, Amazon Fargate, or Karpenter all
+provide solutions for the foundation of a cluster. Next we must provide a method to authenticate with the cluster.
+Amazon IAM roles can grant API access to the EKS service but do not grant control within Kubernetes. Kubernetes system
+roles are native to the cluster, but we need to be able to scope finer access of users and resources than what is
+provided natively. Furthermore, we need to connect each cluster to our network and DNS architecture. Clusters must be
+secure and protected from the public internet, yet developers still need to be able to connect and manage cluster
+resources. And finally, we need a place to storage application data.
+
+## Our Solution
+
+Cloud Posse deploys EKS through a number of components. Each component has a specific responsibility and works in
+harmony with the rest. We first deploy a nodeless EKS cluster and create an AWS Auth config mapping. This `ConfigMap`
+connects our existing AWS Teams architecture to the cluster and allows us to assign Kubernetes roles to a given Team
+Role. Next we use Karpenter to manage nodes on the cluster. Karpenter automatically launches compute resources to handle
+cluster applications and provides fast and simple compute provisioning for Kubernetes clusters. We then deploy a set of
+controllers and operators for the cluster. These controllers will automatically connect the cluster to our network and
+DNS architecture by annotations and manage storage within the cluster. Simply adding the relevant annotation to a given
+resources triggers the creation and management of Load Balancers in AWS, adds routing to the relevant Route 53 Hosted
+Zone, provisions certificates, and more. These resources set the foundation for any application platform. From this
+foundation, your application will be fully secure, scalable, and resilient.
+
+## References
+
+- [Decide on EKS Node Pool Architecture](/layers/eks/design-decisions/decide-on-eks-node-pool-architecture)
+- [Decide on Kubernetes Ingress Controller(s)](/layers/eks/design-decisions/decide-on-kubernetes-ingress-controller-s)
+- [How to Load Test in AWS](/learn/maintenance/tutorials/how-to-load-test-in-aws)
+- [How to Keep Everything Up to Date](/learn/maintenance/upgrades/how-to-keep-everything-up-to-date)
+- [How to Upgrade EKS Cluster Addons](/learn/maintenance/upgrades/how-to-upgrade-eks-cluster-addons)
+- [How to Upgrade EKS](/learn/maintenance/upgrades/how-to-upgrade-eks)
+
