@@ -15,7 +15,7 @@
     "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
-    "@babel/runtime": "^7.24.8",
+    "@babel/runtime": "^7.28.4",
     "@codesweetly/react-youtube-playlist": "^3.0.0",
     "@docusaurus/core": "^3.4.0",
     "@docusaurus/mdx-loader": "^3.4.0",
@@ -51,7 +51,7 @@
     "html-loader": "^5.0.0",
     "iconify-icon": "^2.1.0",
     "js-cookie": "^3.0.5",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "marked": "^13.0.2",
     "node-fetch": "^3.3.2",
     "posthog-docusaurus": "^2.0.4",

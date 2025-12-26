@@ -3,27 +3,205 @@ title: "Enable GuardDuty for EKS Protection"
 sidebar_label: "GuardDuty for EKS"
 sidebar_position: 100
 refarch_id: REFARCH-516
-description: "Learn how to enable GuardDuty for EKS Protection"
+description: "Learn how to enable GuardDuty EKS Runtime Monitoring and Kubernetes Audit Log analysis"
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
 import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
 
-## Problem
+<Intro>
+GuardDuty for EKS Protection provides threat detection for your Amazon EKS clusters by analyzing Kubernetes audit logs
+and monitoring runtime activity in your containerized workloads.
+</Intro>
 
-The new feature, GuardDuty for EKS Protection, expands coverage to continuously monitor and profile Amazon Elastic Kubernetes Service (EKS) workload activity to identify malicious or suspicious behavior representing potential threats to container workloads.
+## Overview
 
-## Solution
+GuardDuty EKS Protection includes two key features:
 
-Enable GuardDuty for EKS Protection in the `security` account via ClickOps.
+| Feature | Description |
+|---------|-------------|
+| **Kubernetes Audit Log Monitoring** | Analyzes EKS audit logs to detect suspicious API activity |
+| **EKS Runtime Monitoring** | Monitors container runtime behavior to detect threats |
 
-<Note title="TL;DR">
-  Under Guard Duty in the AWS Console, go to “Kubernetes Protection” and enable “Kubernetes Audit Logs Monitoring” for both (1) this account **and** for (2) all your active member accounts
-</Note>
+## Prerequisites
+
+Before enabling EKS protection:
+
+1. **GuardDuty enabled**: Follow the [GuardDuty setup guide](/layers/security-and-compliance/aws-guardduty/)
+2. **EKS clusters deployed**: Have at least one EKS cluster running
+3. **Delegated administrator configured**: GuardDuty organization settings deployed
+
+## Method 1: Enable via Terraform (Recommended)
+
+The recommended approach is to enable EKS protection through the GuardDuty component configuration.
 
 <Steps>
-  - <img src="/assets/refarch/screen-shot-2022-02-22-at-10.46.16-am.png" />
-  - <img src="/assets/refarch/screen-shot-2022-02-22-at-10.46.29-am.png" />
-  - <img src="/assets/refarch/screen-shot-2022-02-22-at-2.13.04-pm.png" />
+  <Step>
+    ### <StepNumber/> Update GuardDuty Organization Settings
+
+    Add the EKS protection settings to your `guardduty/org-settings` component:
+
+    ```yaml
+    # stacks/catalog/guardduty/org-settings.yaml
+    components:
+      terraform:
+        guardduty/org-settings/ue1:
+          metadata:
+            component: guardduty
+          vars:
+            enabled: true
+            admin_delegated: true
+            # Enable EKS protection features
+            kubernetes_audit_logs_enabled: true
+            runtime_monitoring_enabled: true
+            runtime_monitoring_additional_config:
+              eks_addon_management_enabled: true
+              ecs_fargate_agent_management_enabled: true
+              ec2_agent_management_enabled: true
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Apply the Configuration
+
+    Deploy the updated GuardDuty settings:
+
+    ```bash
+    atmos terraform apply guardduty/org-settings/ue1 -s core-ue1-security
+    ```
+
+    This will:
+    - Enable Kubernetes Audit Log Monitoring for all member accounts
+    - Enable Runtime Monitoring with automatic agent management
+    - Deploy the GuardDuty agent to EKS clusters via the EKS add-on
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Verify Agent Deployment
+
+    Check that the GuardDuty agent is deployed to your EKS clusters:
+
+    ```bash
+    # List EKS add-ons
+    aws eks list-addons --cluster-name <cluster-name> --region us-east-1
+
+    # Check agent status
+    kubectl get pods -n amazon-guardduty
+    ```
+  </Step>
 </Steps>
+
+## Method 2: Enable via AWS Console
+
+If you need to enable EKS protection manually for testing or troubleshooting:
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Navigate to GuardDuty
+
+    Open the AWS Console and navigate to **GuardDuty** in the security account.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Enable Kubernetes Protection
+
+    1. In the left navigation, select **Kubernetes Protection**
+    2. Click **Configure** or **Edit**
+    3. Enable **Kubernetes Audit Logs Monitoring**
+    4. Click **Save**
+
+    <img src="/assets/refarch/screen-shot-2022-02-22-at-10.46.16-am.png" alt="GuardDuty Kubernetes Protection settings" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Enable for Member Accounts
+
+    1. Select **Accounts** in the left navigation
+    2. Select all member accounts
+    3. Click **Actions** → **Enable Kubernetes Audit Logs Monitoring**
+    4. Confirm the action
+
+    <img src="/assets/refarch/screen-shot-2022-02-22-at-10.46.29-am.png" alt="Enable for member accounts" />
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Verify Configuration
+
+    Check the configuration status shows as enabled for all accounts:
+
+    <img src="/assets/refarch/screen-shot-2022-02-22-at-2.13.04-pm.png" alt="Verification of enabled status" />
+  </Step>
+</Steps>
+
+## EKS Runtime Monitoring Agent
+
+When Runtime Monitoring is enabled with `eks_addon_management_enabled: true`, GuardDuty automatically:
+
+1. Creates the `amazon-guardduty` namespace in your EKS clusters
+2. Deploys the GuardDuty agent as an EKS add-on
+3. Manages agent updates automatically
+
+### Manual Agent Installation
+
+If automatic management is disabled, install the agent manually:
+
+```bash
+# Create the add-on
+aws eks create-addon \
+  --cluster-name <cluster-name> \
+  --addon-name aws-guardduty-agent \
+  --region us-east-1
+```
+
+## Finding Types
+
+GuardDuty EKS Protection detects these threat categories:
+
+| Category | Example Findings |
+|----------|------------------|
+| **Privilege Escalation** | Container escape attempts, privileged container launches |
+| **Credential Access** | Kubernetes secrets access, service account token theft |
+| **Execution** | Cryptomining, reverse shells, malicious binary execution |
+| **Persistence** | Unauthorized service creation, DaemonSet deployment |
+| **Discovery** | Kubernetes API enumeration, network scanning |
+
+## Troubleshooting
+
+### Agent Not Deploying
+
+If the GuardDuty agent doesn't deploy automatically:
+
+1. Verify Runtime Monitoring is enabled in GuardDuty settings
+2. Check the EKS cluster has the required IAM permissions
+3. Verify the cluster is in a supported region
+
+```bash
+# Check add-on status
+aws eks describe-addon \
+  --cluster-name <cluster-name> \
+  --addon-name aws-guardduty-agent \
+  --region us-east-1
+```
+
+### No Findings Appearing
+
+If no findings appear after enabling:
+
+1. Allow 15-30 minutes for initial data collection
+2. Verify the EKS cluster is actively running workloads
+3. Check CloudWatch Logs for agent errors
+
+## See Also
+
+- [AWS GuardDuty](/layers/security-and-compliance/aws-guardduty/) - Complete GuardDuty documentation
+- [AWS Security Hub](/layers/security-and-compliance/aws-security-hub/) - View aggregated GuardDuty findings
+- [Setup Guide](/layers/security-and-compliance/setup/) - Complete deployment instructions
+
+## References
+
+- [GuardDuty EKS Protection](https://docs.aws.amazon.com/guardduty/latest/ug/kubernetes-protection.html)
+- [EKS Runtime Monitoring](https://docs.aws.amazon.com/guardduty/latest/ug/runtime-monitoring.html)
+- [GuardDuty EKS Finding Types](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-kubernetes.html)
