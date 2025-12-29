@@ -7,7 +7,7 @@ import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import ReactPlayer from 'react-player';
+import Slides from '@site/src/components/Slides';
 import CodeBlock from '@theme/CodeBlock';
 
 :::warning Deprecated
@@ -25,10 +25,10 @@ This content is preserved for users with existing GitHub Actions GitOps deployme
   GitOps is a cloud-native continuous deployment methodology that uses Git as the single source of truth for declarative infrastructure and applications. Changes to infrastructure or applications are made through Git commits, and the actual state is automatically adjusted to match the desired state expressed in the Git repository. This approach provides an audit trail for changes, simplifies rollback, and enhances collaboration and visibility across teams.
 </Intro>
 
-<figure>
-  <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/gitops.mp4' />
-  <figcaption>AI generated voice</figcaption>
-</figure>
+<Slides
+  title="GitOps with Terraform"
+  videoUrl="https://docs.cloudposse.com/assets/refarch/handoffs/gitops.mp4"
+/>
 
 ## The Problem
 

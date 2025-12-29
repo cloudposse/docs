@@ -6,17 +6,225 @@ import Intro from '@site/src/components/Intro';
 import Steps from '@site/src/components/Steps';
 import StepNumber from '@site/src/components/StepNumber';
 import Step from '@site/src/components/Step';
-import ReactPlayer from 'react-player';
+import Slides, { Slide } from '@site/src/components/Slides';
 
 <Intro>
   Your platform ensures consistent service delivery every time. A well-designed platform seamlessly integrates with your monitoring, security, and compliance systems, building on your established foundation. Automated software delivery pipelines deploy new services quickly and easily. The reference architecture supports AWS EKS, Amazon ECS, and Lambda functions.
 </Intro>
 
 
-<figure>
-  <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/introduction-to-toolchain.mp4" />
-  <figcaption>AI generated voice</figcaption>
-</figure>
+<Slides title="Introduction to Toolchain">
+  <Slide title="Title" variant="title" notes="Welcome to the introduction to the Cloud Posse toolchain. In this handoff, we'll go over the big picture of the Cloud Posse reference architecture.">
+    ## Introduction to Toolchain
+
+    **The "Big Picture" Overview**
+
+    Learn the fundamentals of Cloud Posse's reference architecture, terminology, conventions, and toolset.
+  </Slide>
+
+  <Slide title="Goals for Today" notes="We'll cover the basics of Cloud Posse's toolchain and the structure of these handoffs, including the recommended listening order.">
+    ## Goals for Today
+
+    - **Terminology** — Learn Cloud Posse's unique terms
+    - **Conventions** — Understand our naming patterns
+    - **Repository Layout** — Navigate your infrastructure repo
+    - **Toolbox** — Get started with Geodesic
+  </Slide>
+
+  <Slide title="Stacks" notes="Stacks are a way to express the complete infrastructure needed for a deployment. Think of a Stack like an architectural 'Blueprint' composed of one or more Components and defined using a standardized YAML configuration. This abstraction layer helps orchestrate loosely coupled components. They enable scalable infrastructure-as-code configurations that can inherit and deep-merge settings to minimize config duplication.">
+    ## Stacks
+
+    Written as **YAML** configuration that defines instances of Components.
+
+    ```yaml
+    components:
+      terraform:
+        cloudtrail:
+          vars:
+            enabled: true
+            name: cloudtrail
+            is_organization_trail: true
+    ```
+
+    Found under `stacks/` in your infrastructure repository.
+  </Slide>
+
+  <Slide title="Components" notes="A Terraform root module is a top-level module that specifies a state backend and is typically the location where you would run Terraform commands. Components are opinionated, self-contained, reusable blocks of Infrastructure-as-Code designed to address specific problems or use cases.">
+    ## Components
+
+    Reusable building blocks of Infrastructure-as-Code (Terraform root modules).
+
+    ```
+    components/terraform/
+    ├── account
+    ├── acm
+    ├── aurora-postgres
+    └── datadog-monitor/
+        ├── main.tf
+        ├── variables.tf
+        └── outputs.tf
+    ```
+
+    Configured within one or more Stacks.
+  </Slide>
+
+  <Slide title="Modules" notes="Modules are like packages that group multiple resources used together, consisting of collections of Terraform files organized within a single source. They can call other modules, and unlike terraform root modules or components, they don't have state because they don't define provider configuration.">
+    ## Modules
+
+    Any Terraform module called from another module (child modules).
+
+    ```hcl
+    module "eks" {
+      source  = "cloudposse/stack-config/yaml//modules/remote-state"
+      version = "1.3.1"
+      component = var.eks_component_name
+      context = module.this.context
+    }
+    ```
+
+    Cloud Posse maintains open source modules at [github.com/cloudposse](https://github.com/cloudposse).
+  </Slide>
+
+  <Slide title="Environment" notes="The term 'Environment' is frequently overloaded. At Cloud Posse, an Environment is the location where resources are deployed. In most cases this is an AWS region. Specifically, an environment uses the shorthand notation for a region.">
+    ## Environment
+
+    Shorthand notation for the AWS Region where resources are deployed.
+
+    | Region | Short | Fixed |
+    |--------|-------|-------|
+    | us-east-1 | use1 | ue1 |
+    | us-west-2 | usw2 | uw2 |
+    | eu-west-1 | euw1 | ew1 |
+
+    We recommend **short** notation (3-4 characters).
+  </Slide>
+
+  <Slide title="Stage" notes="A stage at Cloud Posse is a classification for different life cycles in infrastructure management, such as the typical Development, Production, Staging, or QA. But also stages like 'audit' or 'security'. It is recommended to allocate at least one account per stage.">
+    ## Stage
+
+    A classification for different life cycles in infrastructure management.
+
+    - **core:** audit, identity, network, security, dns
+    - **plat:** dev, staging, prod, sandbox
+
+    In our industry, "Environment" frequently describes what Cloud Posse refers to as "Stage."
+  </Slide>
+
+  <Slide title="Tenant" notes="A tenant consists of a logical group of stages. By convention, a tenant is almost always 1 to 1 with an AWS Organizational Unit (OU). With our reference architecture, we deploy 2 tenants: core and platform.">
+    ## Tenant
+
+    A logical grouping of stages (typically mirrors AWS Organizational Units).
+
+    - **core** — Management accounts (singletons)
+    - **plat** — Application platform accounts (dynamic)
+
+    You can create multiple platform tenants for different teams or applications.
+  </Slide>
+
+  <Slide title="Repository Layout" notes="The README includes a quick start guide and basic usage of our toolset. We include Architecture Design Records (ADRs) under docs/adr. Setup documentation has the specific values used in your organization. Component READMEs describe the purpose and usage for each component.">
+    ## Repository Layout
+
+    ```
+    infrastructure/
+    ├── README.md
+    ├── components/
+    │   └── terraform/
+    ├── docs/
+    │   ├── adr/
+    │   └── setup/
+    ├── rootfs/
+    └── stacks/
+    ```
+
+    Configuration lives in `stacks/`, Terraform code in `components/terraform/`.
+  </Slide>
+
+  <Slide title="Stack Layout" notes="The Stack Catalog is used to define a component's default configuration for a specific organization. Think of it as where to store the baseline configurations. Import a stack catalog into the stack manifest for a given account to deploy that component.">
+    ## Stack Layout
+
+    ```
+    stacks/
+    ├── catalog/
+    └── orgs/
+        └── acme/
+            ├── core/
+            └── plat/
+                ├── dev/
+                ├── staging/
+                └── prod/
+    ```
+
+    **catalog/** defines baselines, **orgs/** defines deployments.
+  </Slide>
+
+  <Slide title="Atmos" notes="We recommend getting started by reviewing the official documentation for Atmos at atmos.tools. Atmos is designed to be tool-agnostic, yet it also offers native integrations with tools like Terraform and Helmfile.">
+    ## Atmos
+
+    Manage environments easily in Terraform with DRY configuration.
+
+    - Simplify complex architectures
+    - Free and Open Source
+    - Native Terraform integration
+
+    [atmos.tools](https://atmos.tools/)
+  </Slide>
+
+  <Slide title="Atmos Workflows" notes="Workflows combine multiple commands into a single executable unit of work, which we rely on heavily when deploying the initial infrastructure. They are excellent for documenting the steps or process to bring up some infrastructure.">
+    ## Atmos Workflows
+
+    Combine multiple commands into one executable unit of work.
+
+    ```bash
+    atmos workflow deploy/eks -s acme-ue1-dev
+    ```
+
+    ```yaml
+    workflows:
+      deploy/eks:
+        steps:
+          - command: terraform deploy vpc
+          - command: terraform deploy eks
+    ```
+  </Slide>
+
+  <Slide title="Atmos Vendoring" notes="Vendoring is the process of pulling in some version of a given component from our upstream library of components. We reuse the same components across all engagements, ensuring reusability. These are free and open source.">
+    ## Atmos Vendoring
+
+    Keep Components up to date with the latest reference architecture.
+
+    ```bash
+    atmos vendor pull -c foobar
+    ```
+
+    The `component.yaml` file defines which upstream component and version to pull.
+  </Slide>
+
+  <Slide title="Geodesic" notes="Geodesic is a universal toolbox distributed as a Docker image, designed to solve the common issue of 'it works on my machine'. When every developer uses Geodesic, every developer has the same tools pre-installed.">
+    ## Geodesic
+
+    Universal DevOps toolbox (Docker image with pre-installed toolset).
+
+    ```bash
+    make all && make run
+    ```
+
+    | Host | Container |
+    |------|-----------|
+    | ~/ | /localhost/ |
+    | rootfs/ | / |
+
+    Allows customization with aliases, commands, and startup scripts.
+  </Slide>
+
+  <Slide title="References" notes="Please take the time to review our documentation at atmos.tools and at docs.cloudposse.com. You can now start getting hands on with the code. Try out 'make all'. Try out some Atmos commands.">
+    ## References
+
+    - [Atmos](https://atmos.tools/)
+    - [Geodesic](https://github.com/cloudposse/geodesic)
+    - [Cloud Posse Docs](https://docs.cloudposse.com/reference-architecture)
+    - [Support](https://docs.cloudposse.com/reference-architecture/support/)
+  </Slide>
+</Slides>
 
 <Steps>
 
