@@ -7,6 +7,7 @@ description: "Intelligent threat detection service for your AWS accounts"
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Note from '@site/src/components/Note';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
 AWS GuardDuty is a managed threat detection service that continuously monitors for malicious activity and unauthorized
@@ -60,13 +61,15 @@ GuardDuty uses a **3-step delegated administrator** deployment model.
 
 ### Prerequisites
 
-Enable GuardDuty trusted access in AWS Organizations:
+<TaskList>
+  - Enable GuardDuty trusted access in AWS Organizations by adding `guardduty.amazonaws.com` to `aws_service_access_principals` in your `account` component
+</TaskList>
+
+Or enable via AWS CLI:
 
 ```bash
 aws organizations enable-aws-service-access --service-principal guardduty.amazonaws.com
 ```
-
-Or add `guardduty.amazonaws.com` to `aws_service_access_principals` in your `account` component.
 
 ### Step 1: Deploy to Delegated Administrator Account
 

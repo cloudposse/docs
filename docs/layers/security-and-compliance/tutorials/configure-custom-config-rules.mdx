@@ -10,6 +10,7 @@ import Note from '@site/src/components/Note';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
 AWS Config rules evaluate resource configurations for compliance. While AWS provides many managed rules, you may need
@@ -27,9 +28,11 @@ AWS Config supports two types of rules:
 
 ## Prerequisites
 
-1. **AWS Config deployed**: Follow the [AWS Config setup guide](/layers/security-and-compliance/aws-config/)
-2. **Conformance packs configured**: Organization-level Config enabled
-3. **Lambda permissions**: Ability to deploy Lambda functions (for custom rules)
+<TaskList>
+  - AWS Config deployed — Follow the [AWS Config setup guide](/layers/security-and-compliance/aws-config/)
+  - Conformance packs configured — Organization-level Config enabled
+  - Lambda permissions — Ability to deploy Lambda functions (for custom rules)
+</TaskList>
 
 ## Using AWS Managed Rules
 
