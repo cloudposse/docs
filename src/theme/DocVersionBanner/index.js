@@ -10,13 +10,18 @@ export default function DocVersionBanner() {
   // Check for isLast OR version === 'current' (unreleased but still the latest)
   const isLatestVersion = versionMetadata.isLast || versionMetadata.version === 'current';
 
+  // Construct versioned path for internal doc links
+  // versionMetadata.path is '' for current/latest or '/v1' for v1
+  const versionPath = versionMetadata.path || '';
+  const versionIdentificationLink = `${versionPath}/resources/version-identification/`;
+
   if (isLatestVersion) {
     return (
       <div className="margin-bottom--md">
         <Admonition type="tip" title="Latest Documentation">
           This is the latest documentation for the Cloud Posse Reference Architecture.
           To determine which version you're currently using, please see{' '}
-          <Link to="/resources/version-identification/">Version Identification</Link>.
+          <Link to={versionIdentificationLink}>Version Identification</Link>.
         </Admonition>
       </div>
     );
@@ -28,7 +33,7 @@ export default function DocVersionBanner() {
       <Admonition type="warning" title={`Version ${versionMetadata.label} Documentation`}>
         This is Version {versionMetadata.label} documentation for the Cloud Posse Reference Architecture.
         To determine which version you're using, please see{' '}
-        <Link to="/resources/version-identification/">Version Identification</Link>.
+        <Link to={versionIdentificationLink}>Version Identification</Link>.
         To understand why this version changed, please see the{' '}
         <Link to="/blog/deprecate-account-map/">blog post</Link>.
       </Admonition>
