@@ -1,0 +1,406 @@
+---
+title: "Configure Custom AWS Config Rules"
+sidebar_label: "Custom Config Rules"
+sidebar_position: 102
+description: "Learn how to create and deploy custom AWS Config rules and conformance packs"
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import TaskList from '@site/src/components/TaskList';
+
+<Intro>
+AWS Config rules evaluate resource configurations for compliance. While AWS provides many managed rules, you may need
+custom rules for organization-specific requirements. This tutorial covers creating and deploying custom Config rules.
+</Intro>
+
+## Overview
+
+AWS Config supports two types of rules:
+
+| Type | Description | Use Case |
+|------|-------------|----------|
+| **Managed Rules** | AWS-provided, ready to use | Standard compliance checks |
+| **Custom Rules** | User-defined using Lambda | Organization-specific requirements |
+
+## Prerequisites
+
+<TaskList>
+  - AWS Config deployed — Follow the [AWS Config setup guide](/layers/security-and-compliance/aws-config/)
+  - Conformance packs configured — Organization-level Config enabled
+  - Lambda permissions — Ability to deploy Lambda functions (for custom rules)
+</TaskList>
+
+## Using AWS Managed Rules
+
+AWS provides 300+ managed rules for common compliance scenarios.
+
+### Add Managed Rules to Conformance Pack
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Create Custom Conformance Pack File
+
+    Create a conformance pack YAML file in your component directory:
+
+    ```yaml
+    # components/terraform/aws-config/conformance-packs/custom-security-pack.yaml
+    Resources:
+      S3BucketPublicReadProhibited:
+        Type: AWS::Config::ConfigRule
+        Properties:
+          ConfigRuleName: s3-bucket-public-read-prohibited
+          Description: Checks that S3 buckets do not allow public read access
+          Source:
+            Owner: AWS
+            SourceIdentifier: S3_BUCKET_PUBLIC_READ_PROHIBITED
+          Scope:
+            ComplianceResourceTypes:
+              - AWS::S3::Bucket
+
+      S3BucketSSLRequestsOnly:
+        Type: AWS::Config::ConfigRule
+        Properties:
+          ConfigRuleName: s3-bucket-ssl-requests-only
+          Description: Checks that S3 bucket policies require SSL
+          Source:
+            Owner: AWS
+            SourceIdentifier: S3_BUCKET_SSL_REQUESTS_ONLY
+          Scope:
+            ComplianceResourceTypes:
+              - AWS::S3::Bucket
+
+      RDSEncryptionEnabled:
+        Type: AWS::Config::ConfigRule
+        Properties:
+          ConfigRuleName: rds-storage-encrypted
+          Description: Checks that RDS instances have encryption enabled
+          Source:
+            Owner: AWS
+            SourceIdentifier: RDS_STORAGE_ENCRYPTED
+          Scope:
+            ComplianceResourceTypes:
+              - AWS::RDS::DBInstance
+
+      IAMPasswordPolicy:
+        Type: AWS::Config::ConfigRule
+        Properties:
+          ConfigRuleName: iam-password-policy
+          Description: Checks that IAM password policy meets requirements
+          Source:
+            Owner: AWS
+            SourceIdentifier: IAM_PASSWORD_POLICY
+          InputParameters:
+            RequireUppercaseCharacters: "true"
+            RequireLowercaseCharacters: "true"
+            RequireSymbols: "true"
+            RequireNumbers: "true"
+            MinimumPasswordLength: "14"
+            PasswordReusePrevention: "24"
+            MaxPasswordAge: "90"
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Reference in Stack Configuration
+
+    Add the custom conformance pack to your AWS Config stack:
+
+    ```yaml
+    # stacks/catalog/aws-config/organization.yaml
+    components:
+      terraform:
+        aws-config:
+          vars:
+            default_scope: organization
+            conformance_packs:
+              # AWS-managed CIS pack
+              - name: CIS-AWS-v1.4-Level2
+                conformance_pack: "https://raw.githubusercontent.com/awslabs/aws-config-rules/master/aws-config-conformance-packs/Operational-Best-Practices-for-CIS-AWS-v1.4-Level2.yaml"
+                parameter_overrides: {}
+              # Custom pack from local file
+              - name: Custom-Security-Pack
+                conformance_pack: "conformance-packs/custom-security-pack.yaml"
+                scope: organization
+                parameter_overrides: {}
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy the Configuration
+
+    Apply the AWS Config changes:
+
+    ```bash
+    atmos terraform apply aws-config -s core-ue1-root
+    ```
+  </Step>
+</Steps>
+
+## Creating Custom Lambda Rules
+
+For requirements not covered by managed rules, create custom rules with Lambda.
+
+### Example: Require Specific Tags
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Create Lambda Function
+
+    Create a Lambda function to check for required tags:
+
+    ```python
+    # lambda/config-rules/required-tags/handler.py
+    import json
+    import boto3
+
+    def lambda_handler(event, context):
+        """Check that resources have required tags."""
+        config = boto3.client('config')
+
+        # Parse the invoking event
+        invoking_event = json.loads(event['invokingEvent'])
+        configuration_item = invoking_event['configurationItem']
+
+        # Get rule parameters
+        rule_parameters = json.loads(event.get('ruleParameters', '{}'))
+        required_tags = rule_parameters.get('requiredTags', 'Environment,Owner,CostCenter').split(',')
+
+        # Get resource tags
+        resource_tags = configuration_item.get('tags', {})
+        tag_keys = list(resource_tags.keys())
+
+        # Check for missing required tags
+        missing_tags = [tag for tag in required_tags if tag not in tag_keys]
+
+        if missing_tags:
+            compliance_type = 'NON_COMPLIANT'
+            annotation = f'Missing required tags: {", ".join(missing_tags)}'
+        else:
+            compliance_type = 'COMPLIANT'
+            annotation = 'All required tags present'
+
+        # Report evaluation result
+        config.put_evaluations(
+            Evaluations=[
+                {
+                    'ComplianceResourceType': configuration_item['resourceType'],
+                    'ComplianceResourceId': configuration_item['resourceId'],
+                    'ComplianceType': compliance_type,
+                    'Annotation': annotation,
+                    'OrderingTimestamp': configuration_item['configurationItemCaptureTime']
+                },
+            ],
+            ResultToken=event['resultToken']
+        )
+
+        return {
+            'compliance_type': compliance_type,
+            'annotation': annotation
+        }
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy Lambda Function
+
+    Deploy the Lambda function using Terraform:
+
+    ```hcl
+    # components/terraform/config-rules-lambda/main.tf
+    resource "aws_lambda_function" "required_tags" {
+      function_name = "${var.namespace}-config-required-tags"
+      role          = aws_iam_role.config_rule_lambda.arn
+      handler       = "handler.lambda_handler"
+      runtime       = "python3.11"
+      timeout       = 60
+
+      filename         = data.archive_file.required_tags.output_path
+      source_code_hash = data.archive_file.required_tags.output_base64sha256
+    }
+
+    resource "aws_lambda_permission" "config" {
+      statement_id  = "AllowConfigInvoke"
+      action        = "lambda:InvokeFunction"
+      function_name = aws_lambda_function.required_tags.function_name
+      principal     = "config.amazonaws.com"
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Create Custom Config Rule
+
+    Add the custom rule to your conformance pack:
+
+    ```yaml
+    # conformance-packs/custom-tagging-pack.yaml
+    Resources:
+      RequiredTagsRule:
+        Type: AWS::Config::ConfigRule
+        Properties:
+          ConfigRuleName: required-tags-check
+          Description: Checks that resources have required tags
+          Source:
+            Owner: CUSTOM_LAMBDA
+            SourceIdentifier: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Namespace}-config-required-tags"
+            SourceDetails:
+              - EventSource: aws.config
+                MessageType: ConfigurationItemChangeNotification
+          Scope:
+            ComplianceResourceTypes:
+              - AWS::EC2::Instance
+              - AWS::RDS::DBInstance
+              - AWS::S3::Bucket
+          InputParameters:
+            requiredTags: "Environment,Owner,CostCenter"
+    ```
+  </Step>
+</Steps>
+
+## Common Rule Patterns
+
+### Check S3 Encryption
+
+```yaml
+S3BucketServerSideEncryptionEnabled:
+  Type: AWS::Config::ConfigRule
+  Properties:
+    ConfigRuleName: s3-bucket-server-side-encryption-enabled
+    Source:
+      Owner: AWS
+      SourceIdentifier: S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED
+```
+
+### Check EBS Encryption
+
+```yaml
+EBSEncryptionByDefault:
+  Type: AWS::Config::ConfigRule
+  Properties:
+    ConfigRuleName: ec2-ebs-encryption-by-default
+    Source:
+      Owner: AWS
+      SourceIdentifier: EC2_EBS_ENCRYPTION_BY_DEFAULT
+```
+
+### Check VPC Flow Logs
+
+```yaml
+VPCFlowLogsEnabled:
+  Type: AWS::Config::ConfigRule
+  Properties:
+    ConfigRuleName: vpc-flow-logs-enabled
+    Source:
+      Owner: AWS
+      SourceIdentifier: VPC_FLOW_LOGS_ENABLED
+    InputParameters:
+      trafficType: ALL
+```
+
+### Check Root Account MFA
+
+```yaml
+RootAccountMFAEnabled:
+  Type: AWS::Config::ConfigRule
+  Properties:
+    ConfigRuleName: root-account-mfa-enabled
+    Source:
+      Owner: AWS
+      SourceIdentifier: ROOT_ACCOUNT_MFA_ENABLED
+```
+
+## Remediating Non-Compliant Resources
+
+### Automatic Remediation
+
+Configure automatic remediation actions:
+
+```yaml
+# Add to conformance pack
+S3BucketPublicReadProhibited:
+  Type: AWS::Config::ConfigRule
+  Properties:
+    ConfigRuleName: s3-bucket-public-read-prohibited
+    Source:
+      Owner: AWS
+      SourceIdentifier: S3_BUCKET_PUBLIC_READ_PROHIBITED
+
+S3PublicReadRemediation:
+  Type: AWS::Config::RemediationConfiguration
+  Properties:
+    ConfigRuleName: s3-bucket-public-read-prohibited
+    TargetType: SSM_DOCUMENT
+    TargetId: AWS-DisableS3BucketPublicReadWrite
+    Parameters:
+      S3BucketName:
+        ResourceValue:
+          Value: RESOURCE_ID
+    Automatic: true
+    MaximumAutomaticAttempts: 3
+    RetryAttemptSeconds: 60
+```
+
+### Manual Remediation
+
+Query non-compliant resources and remediate:
+
+```bash
+# List non-compliant resources
+aws configservice get-compliance-details-by-config-rule \
+  --config-rule-name s3-bucket-public-read-prohibited \
+  --compliance-types NON_COMPLIANT \
+  --region us-east-1
+
+# Get remediation status
+aws configservice describe-remediation-execution-status \
+  --config-rule-name s3-bucket-public-read-prohibited \
+  --region us-east-1
+```
+
+## Troubleshooting
+
+### Rule Not Evaluating
+
+If rules aren't evaluating resources:
+
+1. Verify the resource type is in the rule's scope
+2. Check that Config recorder is enabled for the resource type
+3. Review Lambda function logs (for custom rules)
+
+```bash
+# Check recorder status
+aws configservice describe-configuration-recorder-status --region us-east-1
+
+# Check rule evaluation
+aws configservice describe-config-rule-evaluation-status \
+  --config-rule-names s3-bucket-public-read-prohibited \
+  --region us-east-1
+```
+
+### Lambda Errors
+
+For custom Lambda rules, check CloudWatch Logs:
+
+```bash
+aws logs filter-log-events \
+  --log-group-name "/aws/lambda/<function-name>" \
+  --filter-pattern "ERROR" \
+  --region us-east-1
+```
+
+## See Also
+
+- [AWS Config](/layers/security-and-compliance/aws-config/) - Complete Config documentation
+- [AWS Security Hub](/layers/security-and-compliance/aws-security-hub/) - View Config compliance findings
+- [Setup Guide](/layers/security-and-compliance/setup/) - Complete deployment instructions
+
+## References
+
+- [AWS Config Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html)
+- [AWS Managed Rules List](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html)
+- [Custom Config Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules.html)
+- [Conformance Packs](https://docs.aws.amazon.com/config/latest/developerguide/conformance-packs.html)
