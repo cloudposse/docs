@@ -65,7 +65,7 @@ Macie uses a **3-step delegated administrator** deployment model.
 # core-ue1-security
 components:
   terraform:
-    macie/delegated-administrator/ue1:
+    aws-macie/delegated-administrator:
       metadata:
         component: macie
       vars:
@@ -78,7 +78,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply macie/delegated-administrator/ue1 -s core-ue1-security
+atmos terraform apply aws-macie/delegated-administrator -s core-ue1-security
 ```
 
 ### Step 2: Deploy to Organization Management Account
@@ -91,7 +91,7 @@ This step requires root account access (such as with the `managers` profile).
 # core-ue1-root
 components:
   terraform:
-    macie/root/ue1:
+    aws-macie/root:
       metadata:
         component: macie
       backend:
@@ -106,7 +106,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply macie/root/ue1 -s core-ue1-root
+atmos terraform apply aws-macie/root -s core-ue1-root
 ```
 
 ### Step 3: Deploy Organization Settings
@@ -115,7 +115,7 @@ atmos terraform apply macie/root/ue1 -s core-ue1-root
 # core-ue1-security
 components:
   terraform:
-    macie/org-settings/ue1:
+    aws-macie/org-settings:
       metadata:
         component: macie
       vars:
@@ -128,7 +128,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply macie/org-settings/ue1 -s core-ue1-security
+atmos terraform apply aws-macie/org-settings -s core-ue1-security
 ```
 
 ## Multi-Region Deployment
@@ -137,14 +137,14 @@ Macie is a regional service. Deploy to each region where you have S3 buckets:
 
 ```bash
 # us-east-1
-atmos terraform apply macie/delegated-administrator/ue1 -s core-ue1-security
-atmos terraform apply macie/root/ue1 -s core-ue1-root
-atmos terraform apply macie/org-settings/ue1 -s core-ue1-security
+atmos terraform apply aws-macie/delegated-administrator -s core-ue1-security
+atmos terraform apply aws-macie/root -s core-ue1-root
+atmos terraform apply aws-macie/org-settings -s core-ue1-security
 
 # us-west-2
-atmos terraform apply macie/delegated-administrator/uw2 -s core-uw2-security
-atmos terraform apply macie/root/uw2 -s core-uw2-root
-atmos terraform apply macie/org-settings/uw2 -s core-uw2-security
+atmos terraform apply aws-macie/delegated-administrator -s core-uw2-security
+atmos terraform apply aws-macie/root -s core-uw2-root
+atmos terraform apply aws-macie/org-settings -s core-uw2-security
 ```
 
 ## Finding Publishing Frequency

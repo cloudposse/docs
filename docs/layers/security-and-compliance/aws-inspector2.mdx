@@ -66,7 +66,7 @@ This step requires root account access (such as with the `managers` profile).
 # core-ue1-root
 components:
   terraform:
-    inspector2/root/ue1:
+    aws-inspector2/root:
       metadata:
         component: aws-inspector2
       backend:
@@ -80,7 +80,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply inspector2/root/ue1 -s core-ue1-root
+atmos terraform apply aws-inspector2/root -s core-ue1-root
 ```
 
 ### Step 2: Deploy Organization Settings
@@ -89,7 +89,7 @@ atmos terraform apply inspector2/root/ue1 -s core-ue1-root
 # core-ue1-security
 components:
   terraform:
-    inspector2/org-settings/ue1:
+    aws-inspector2/org-settings:
       metadata:
         component: aws-inspector2
       vars:
@@ -105,7 +105,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply inspector2/org-settings/ue1 -s core-ue1-security
+atmos terraform apply aws-inspector2/org-settings -s core-ue1-security
 ```
 
 ## Multi-Region Deployment
@@ -114,12 +114,12 @@ Repeat both steps for each region:
 
 ```bash
 # us-east-1
-atmos terraform apply inspector2/root/ue1 -s core-ue1-root
-atmos terraform apply inspector2/org-settings/ue1 -s core-ue1-security
+atmos terraform apply aws-inspector2/root -s core-ue1-root
+atmos terraform apply aws-inspector2/org-settings -s core-ue1-security
 
 # us-west-2
-atmos terraform apply inspector2/root/uw2 -s core-uw2-root
-atmos terraform apply inspector2/org-settings/uw2 -s core-uw2-security
+atmos terraform apply aws-inspector2/root -s core-uw2-root
+atmos terraform apply aws-inspector2/org-settings -s core-uw2-security
 ```
 
 ## Scan Configuration
@@ -129,7 +129,7 @@ Configure which resource types to scan:
 ```yaml
 components:
   terraform:
-    inspector2/org-settings/ue1:
+    aws-inspector2/org-settings:
       vars:
         enabled: true
         admin_delegated: true

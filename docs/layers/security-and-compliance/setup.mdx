@@ -51,16 +51,6 @@ flowchart LR
     phase1 --> phase2 --> phase3 --> phase4
 ```
 
-:::tip Workflow Recovery
-
-If a step in any workflow fails, you can restart from that failed step:
-
-```bash
-atmos workflow deploy/aws-config/global-collector -f quickstart/monitor/security-and-compliance --from-step step4
-```
-
-:::
-
 ---
 
 ## Phase 1: Organization-Level Configuration
@@ -74,7 +64,15 @@ These steps are required once for the entire organization.
     Vendor all security and compliance components:
 
     ```bash
-    atmos workflow vendor -f quickstart/monitor/security-and-compliance
+    atmos vendor pull --component aws-config
+    atmos vendor pull --component aws-cloudtrail
+    atmos vendor pull --component aws-guardduty
+    atmos vendor pull --component aws-security-hub
+    atmos vendor pull --component aws-inspector2
+    atmos vendor pull --component aws-macie
+    atmos vendor pull --component aws-access-analyzer
+    atmos vendor pull --component aws-shield
+    atmos vendor pull --component aws-audit-manager
     ```
   </Step>
 
@@ -102,7 +100,7 @@ These steps are required once for the entire organization.
               - securityhub.amazonaws.com
     ```
 
-    <Note title="Reminder">
+    <Note title="Root Access Required">
       This requires root account access (such as with the `managers` profile). Ensure the `plan` output
       only modifies service principals.
     </Note>
@@ -172,7 +170,7 @@ Deploy the organization trail to capture events from all accounts.
     Deploy CloudTrail to create an organization-wide trail that automatically logs API activity from all accounts.
 
     ```bash
-    atmos terraform apply cloudtrail -s core-ue1-audit
+    atmos terraform apply aws-cloudtrail-s core-gbl-audit
     ```
   </Step>
 </Steps>
@@ -189,16 +187,9 @@ inventory. It must be deployed to every account and region.
     Deploy AWS Config to each region to collect data for global resources (IAM, etc.) and regional resources.
 
     ```bash
-    # Deploy to all regions in the security account
-    atmos workflow deploy/aws-config/global-collector -f quickstart/monitor/security-and-compliance
-    ```
-
-    Or deploy manually to specific regions:
-
-    ```bash
-    atmos terraform apply aws-config-ue1 -s core-ue1-security
-    atmos terraform apply aws-config-use2 -s core-use2-security
-    atmos terraform apply aws-config-usw2 -s core-usw2-security
+    atmos terraform apply aws-config -s core-ue1-security
+    atmos terraform apply aws-config -s core-ue2-security
+    atmos terraform apply aws-config -s core-uw2-security
     # ... repeat for each region
     ```
   </Step>
@@ -208,20 +199,14 @@ inventory. It must be deployed to every account and region.
 
     Deploy AWS Config to accounts that require root access to apply (root, security).
 
-    <Note title="Reminder">
+    <Note title="Root Access Required">
       This requires root account access (such as with the `managers` profile).
     </Note>
 
     ```bash
-    # Deploy to all regions in the root account
-    atmos workflow deploy/aws-config/superadmin -f quickstart/monitor/security-and-compliance
-    ```
-
-    Or deploy manually:
-
-    ```bash
-    atmos terraform apply aws-config-ue1 -s core-ue1-root
-    atmos terraform apply aws-config-use2 -s core-use2-root
+    atmos terraform apply aws-config -s core-ue1-root
+    atmos terraform apply aws-config -s core-ue2-root
+    atmos terraform apply aws-config -s core-uw2-root
     # ... repeat for each region
     ```
   </Step>
@@ -243,7 +228,7 @@ analysis. It uses a 3-step delegated administrator deployment model.
     First, deploy to the security account to create the GuardDuty detector.
 
     ```bash
-    atmos terraform apply guardduty/delegated-administrator/ue1 -s core-ue1-security
+    atmos terraform apply aws-guardduty/delegated-administrator -s core-ue1-security
     ```
   </Step>
 
@@ -252,12 +237,12 @@ analysis. It uses a 3-step delegated administrator deployment model.
 
     Deploy to the root account to designate the security account as the delegated administrator.
 
-    <Note title="Reminder">
+    <Note title="Root Access Required">
       This requires root account access (such as with the `managers` profile).
     </Note>
 
     ```bash
-    atmos terraform apply guardduty/root/ue1 -s core-ue1-root
+    atmos terraform apply aws-guardduty/root -s core-ue1-root
     ```
   </Step>
 
@@ -267,7 +252,7 @@ analysis. It uses a 3-step delegated administrator deployment model.
     Deploy to the security account again to enable GuardDuty organization-wide with all protection features.
 
     ```bash
-    atmos terraform apply guardduty/org-settings/ue1 -s core-ue1-security
+    atmos terraform apply aws-guardduty/org-settings -s core-ue1-security
     ```
   </Step>
 </Steps>
@@ -283,12 +268,12 @@ ECR, and Lambda. It uses a 2-step delegated administrator deployment model.
 
     Deploy to the root account to designate the security account as the delegated administrator.
 
-    <Note title="Reminder">
+    <Note title="Root Access Required">
       This requires root account access (such as with the `managers` profile).
     </Note>
 
     ```bash
-    atmos terraform apply aws-inspector2/delegate-orgadmin/ue1 -s core-ue1-root
+    atmos terraform apply aws-inspector2/root -s core-ue1-root
     ```
   </Step>
 
@@ -298,7 +283,7 @@ ECR, and Lambda. It uses a 2-step delegated administrator deployment model.
     Deploy to the security account to enable Inspector organization-wide.
 
     ```bash
-    atmos terraform apply aws-inspector2/org-settings/ue1 -s core-ue1-security
+    atmos terraform apply aws-inspector2/org-settings -s core-ue1-security
     ```
   </Step>
 </Steps>
@@ -315,7 +300,7 @@ It uses a 3-step delegated administrator deployment model.
     First, deploy to the security account to create the Macie account.
 
     ```bash
-    atmos terraform apply macie/delegated-administrator/ue1 -s core-ue1-security
+    atmos terraform apply aws-macie/delegated-administrator -s core-ue1-security
     ```
   </Step>
 
@@ -324,12 +309,12 @@ It uses a 3-step delegated administrator deployment model.
 
     Deploy to the root account to designate the security account as the delegated administrator.
 
-    <Note title="Reminder">
+    <Note title="Root Access Required">
       This requires root account access (such as with the `managers` profile).
     </Note>
 
     ```bash
-    atmos terraform apply macie/root/ue1 -s core-ue1-root
+    atmos terraform apply aws-macie/root -s core-ue1-root
     ```
   </Step>
 
@@ -339,7 +324,7 @@ It uses a 3-step delegated administrator deployment model.
     Deploy to the security account again to enable Macie organization-wide.
 
     ```bash
-    atmos terraform apply macie/org-settings/ue1 -s core-ue1-security
+    atmos terraform apply aws-macie/org-settings -s core-ue1-security
     ```
   </Step>
 </Steps>
@@ -355,7 +340,7 @@ entities and unused access. It uses a 2-step delegated administrator deployment 
 
     Deploy to the root account to designate the security account as the delegated administrator.
 
-    <Note title="Reminder">
+    <Note title="Root Access Required">
       This requires root account access (such as with the `managers` profile).
     </Note>
 
@@ -370,7 +355,7 @@ entities and unused access. It uses a 2-step delegated administrator deployment 
     Deploy to the security account to create organization and account analyzers.
 
     ```bash
-    atmos terraform apply aws-access-analyzer/delegated-administrator/ue1 -s core-ue1-security
+    atmos terraform apply aws-access-analyzer/org-settings -s core-ue1-security
     ```
   </Step>
 </Steps>
@@ -391,7 +376,7 @@ into a centralized dashboard. It uses a 3-step delegated administrator deploymen
     First, deploy to the security account to enable Security Hub and configure product subscriptions.
 
     ```bash
-    atmos terraform apply security-hub/delegated-administrator/ue1 -s core-ue1-security
+    atmos terraform apply aws-security-hub/delegated-administrator -s core-ue1-security
     ```
   </Step>
 
@@ -400,12 +385,12 @@ into a centralized dashboard. It uses a 3-step delegated administrator deploymen
 
     Deploy to the root account to designate the security account as the delegated administrator.
 
-    <Note title="Reminder">
+    <Note title="Root Access Required">
       This requires root account access (such as with the `managers` profile).
     </Note>
 
     ```bash
-    atmos terraform apply security-hub/root/ue1 -s core-ue1-root
+    atmos terraform apply aws-security-hub/root -s core-ue1-root
     ```
   </Step>
 
@@ -425,7 +410,7 @@ into a centralized dashboard. It uses a 3-step delegated administrator deploymen
     Deploy to the security account again to enable Security Hub organization-wide with compliance standards.
 
     ```bash
-    atmos terraform apply security-hub/org-settings/ue1 -s core-ue1-security
+    atmos terraform apply aws-security-hub/org-settings -s core-ue1-security
     ```
   </Step>
 </Steps>
@@ -473,7 +458,7 @@ as an alternative for compliance monitoring.
     Deploy Audit Manager to the root account to enable compliance evidence collection.
 
     ```bash
-    atmos terraform apply audit-manager -s core-gbl-root
+    atmos terraform apply aws-audit-manager/root -s core-ue1-root
     ```
   </Step>
 </Steps>

@@ -82,7 +82,7 @@ This deployment requires root account access (such as with the `managers` profil
 # core-ue1-root
 components:
   terraform:
-    audit-manager/root/ue1:
+    aws-audit-manager/root:
       metadata:
         component: audit-manager
       backend:
@@ -100,7 +100,7 @@ components:
 ### Provisioning
 
 ```bash
-atmos terraform apply audit-manager/root/ue1 -s core-ue1-root
+atmos terraform apply aws-audit-manager/root -s core-ue1-root
 ```
 
 This single deployment:
@@ -114,10 +114,10 @@ Deploy to each region where you want to run compliance assessments:
 
 ```bash
 # us-east-1
-atmos terraform apply audit-manager/root/ue1 -s core-ue1-root
+atmos terraform apply aws-audit-manager/root -s core-ue1-root
 
 # us-west-2
-atmos terraform apply audit-manager/root/uw2 -s core-uw2-root
+atmos terraform apply aws-audit-manager/root -s core-uw2-root
 ```
 
 ## Assessment Report S3 Buckets

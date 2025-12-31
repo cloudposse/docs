@@ -51,7 +51,7 @@ The recommended approach is to enable EKS protection through the GuardDuty compo
     # stacks/catalog/guardduty/org-settings.yaml
     components:
       terraform:
-        guardduty/org-settings/ue1:
+        aws-guardduty/org-settings:
           metadata:
             component: guardduty
           vars:
@@ -73,7 +73,7 @@ The recommended approach is to enable EKS protection through the GuardDuty compo
     Deploy the updated GuardDuty settings:
 
     ```bash
-    atmos terraform apply guardduty/org-settings/ue1 -s core-ue1-security
+    atmos terraform apply aws-guardduty/org-settings -s core-ue1-security
     ```
 
     This will:

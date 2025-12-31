@@ -109,7 +109,7 @@ atmos terraform apply aws-access-analyzer/root -s core-gbl-root
 # core-ue1-security
 components:
   terraform:
-    aws-access-analyzer/delegated-administrator/ue1:
+    aws-access-analyzer/org-settings:
       metadata:
         component: aws-access-analyzer
       vars:
@@ -126,7 +126,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply aws-access-analyzer/delegated-administrator/ue1 -s core-ue1-security
+atmos terraform apply aws-access-analyzer/org-settings -s core-ue1-security
 ```
 
 ## Multi-Region Deployment
@@ -138,8 +138,8 @@ Access Analyzer is a regional service. Deploy analyzers to each region:
 atmos terraform apply aws-access-analyzer/root -s core-gbl-root
 
 # Analyzers per region
-atmos terraform apply aws-access-analyzer/delegated-administrator/ue1 -s core-ue1-security
-atmos terraform apply aws-access-analyzer/delegated-administrator/uw2 -s core-uw2-security
+atmos terraform apply aws-access-analyzer/org-settings -s core-ue1-security
+atmos terraform apply aws-access-analyzer/org-settings -s core-uw2-security
 ```
 
 ## Unused Access Configuration
@@ -149,7 +149,7 @@ Configure the threshold for unused access findings:
 ```yaml
 components:
   terraform:
-    aws-access-analyzer/delegated-administrator/ue1:
+    aws-access-analyzer/org-settings:
       vars:
         accessanalyzer_organization_unused_access_enabled: true
         # Days without use before generating findings (default: 30)

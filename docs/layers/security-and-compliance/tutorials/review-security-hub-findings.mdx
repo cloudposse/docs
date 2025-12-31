@@ -205,7 +205,7 @@ Enable SNS notifications in Security Hub:
 ```yaml
 components:
   terraform:
-    security-hub/delegated-administrator/ue1:
+    aws-security-hub/delegated-administrator:
       vars:
         create_sns_topic: true
         # SNS topic receives all new findings
@@ -266,7 +266,7 @@ Enable finding aggregation to deduplicate:
 ```yaml
 components:
   terraform:
-    security-hub/delegated-administrator/ue1:
+    aws-security-hub/delegated-administrator:
       vars:
         finding_aggregator_enabled: true
         finding_aggregator_linking_mode: ALL_REGIONS

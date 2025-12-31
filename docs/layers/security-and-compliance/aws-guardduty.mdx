@@ -77,7 +77,7 @@ aws organizations enable-aws-service-access --service-principal guardduty.amazon
 # core-ue1-security
 components:
   terraform:
-    guardduty/delegated-administrator/ue1:
+    aws-guardduty/delegated-administrator:
       metadata:
         component: guardduty
       vars:
@@ -88,7 +88,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply guardduty/delegated-administrator/ue1 -s core-ue1-security
+atmos terraform apply aws-guardduty/delegated-administrator -s core-ue1-security
 ```
 
 ### Step 2: Deploy to Organization Management Account
@@ -101,7 +101,7 @@ This step requires root account access (such as with the `managers` profile).
 # core-ue1-root
 components:
   terraform:
-    guardduty/root/ue1:
+    aws-guardduty/root:
       metadata:
         component: guardduty
       backend:
@@ -116,7 +116,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply guardduty/root/ue1 -s core-ue1-root
+atmos terraform apply aws-guardduty/root -s core-ue1-root
 ```
 
 ### Step 3: Deploy Organization Settings
@@ -125,7 +125,7 @@ atmos terraform apply guardduty/root/ue1 -s core-ue1-root
 # core-ue1-security
 components:
   terraform:
-    guardduty/org-settings/ue1:
+    aws-guardduty/org-settings:
       metadata:
         component: guardduty
       vars:
@@ -148,7 +148,7 @@ components:
 ```
 
 ```bash
-atmos terraform apply guardduty/org-settings/ue1 -s core-ue1-security
+atmos terraform apply aws-guardduty/org-settings -s core-ue1-security
 ```
 
 ## Multi-Region Deployment
@@ -157,14 +157,14 @@ Repeat all 3 steps for each region:
 
 ```bash
 # us-east-1
-atmos terraform apply guardduty/delegated-administrator/ue1 -s core-ue1-security
-atmos terraform apply guardduty/root/ue1 -s core-ue1-root
-atmos terraform apply guardduty/org-settings/ue1 -s core-ue1-security
+atmos terraform apply aws-guardduty/delegated-administrator -s core-ue1-security
+atmos terraform apply aws-guardduty/root -s core-ue1-root
+atmos terraform apply aws-guardduty/org-settings -s core-ue1-security
 
 # us-west-2
-atmos terraform apply guardduty/delegated-administrator/uw2 -s core-uw2-security
-atmos terraform apply guardduty/root/uw2 -s core-uw2-root
-atmos terraform apply guardduty/org-settings/uw2 -s core-uw2-security
+atmos terraform apply aws-guardduty/delegated-administrator -s core-uw2-security
+atmos terraform apply aws-guardduty/root -s core-uw2-root
+atmos terraform apply aws-guardduty/org-settings -s core-uw2-security
 ```
 
 ## SNS Notifications
@@ -174,7 +174,7 @@ Enable SNS notifications for GuardDuty findings:
 ```yaml
 components:
   terraform:
-    guardduty/delegated-administrator/ue1:
+    aws-guardduty/delegated-administrator:
       vars:
         enabled: true
         create_sns_topic: true

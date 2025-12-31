@@ -49,9 +49,9 @@ is not subscribed to AWS Security Hub
 all three deployment steps:
 
 <Steps>
-  1. `security-hub/delegated-administrator` to security account
-  1. `security-hub/root` to root account
-  1. `security-hub/org-settings` to security account
+  1. `aws-security-hub/delegated-administrator` to security account
+  1. `aws-security-hub/root` to root account
+  1. `aws-security-hub/org-settings` to security account
 </Steps>
 
 If you skipped Step 3, the organization settings (including control configurations) won't work.
@@ -66,7 +66,7 @@ Account 123456789012 is not an administrator for this organization
 **A:** This means the delegation from root to security hasn't been completed. Check:
 
 <Steps>
-  1. Verify you deployed `security-hub/root` to the root account with `privileged: true`
+  1. Verify you deployed `aws-security-hub/root` to the root account with `privileged: true`
   1. Ensure the `delegated_administrator_account_name` matches your security account name
   1. Re-deploy the root component if needed
 </Steps>
@@ -198,7 +198,7 @@ atmos terraform apply aws-config -s core-ue1-root
 ```yaml
 components:
   terraform:
-    security-hub/delegated-administrator/ue1:
+    aws-security-hub/delegated-administrator/ue1:
       vars:
         finding_aggregator_enabled: true
         finding_aggregator_linking_mode: ALL_REGIONS
