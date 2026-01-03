@@ -1,4 +1,5 @@
 import OriginalDocBreadcrumbs from "@theme-original/DocBreadcrumbs";
+import DocVersionBadge from '@theme/DocVersionBadge';
 import GitHubButton from 'react-github-btn'
 import React from "react";
 import { useEffect, useState } from 'react';
@@ -34,6 +35,7 @@ export default function DocBreadcrumbs(props) {
     <>
       <div className="breadcrumbs-container">
         <OriginalDocBreadcrumbs {...props} />
+        <DocVersionBadge className="version-badge" />
         <div className="buttons">
           <GitHubButton data-icon="octicon-heart"
                       data-show-count="true"
