@@ -7,7 +7,7 @@ import StepNumber from '@site/src/components/StepNumber';
 import Step from '@site/src/components/Step';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import SecondaryCTA from '@site/src/components/SecondaryCTA';
-import ReactPlayer from 'react-player';
+import Slides from '@site/src/components/Slides';
 
 <Intro>
   To build a reliable infrastructure, we must start with a solid foundation. Our reference architecture is designed with best practices and consistent conventions to ensure it is well-architected from the ground up. As part of this process, you’ll make critical design decisions that will shape your infrastructure. Next, you’ll initialize your infrastructure repository and then begin by provisioning your AWS Organizations, accounts, networks, DNS, and fine-grained IAM roles and policies. Once your foundation is complete, you’ll be ready to build a platform to deliver your applications.
@@ -24,10 +24,10 @@ import ReactPlayer from 'react-player';
       3. Then import the Cloud Posse reference architecture and prepare the Geodesic toolbox image to get ready to provision your infrastructure.
     </Steps>
 
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/introduction-to-toolchain.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
+    <Slides
+      title="Introduction to Toolchain"
+      videoUrl="https://docs.cloudposse.com/assets/refarch/handoffs/introduction-to-toolchain.mp4"
+    />
 
     <PrimaryCTA to="/layers/project">Get Started</PrimaryCTA>
   </Step>
@@ -41,10 +41,10 @@ import ReactPlayer from 'react-player';
       3. Then proceed to organize the accounts into Organizational Units (OUs), apply Service Control Policies (SCPs), and configure account-level settings.
     </Steps>
 
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
+    <Slides
+      title="Account Management"
+      videoUrl="https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4"
+    />
 
     <PrimaryCTA to="/layers/accounts">Get Started</PrimaryCTA>
   </Step>
@@ -54,10 +54,10 @@ import ReactPlayer from 'react-player';
 
     Learn how Cloud Posse sets up fine-grained access control for an entire organization using Permission Sets, IAM roles, and AWS IAM Identity Center (SSO). It addresses the challenges of managing access across multiple AWS accounts with a solution that ensures precise control, easy role switching, and compatibility with different identity providers. This approach provides seamless authentication via Atmos Auth for CLI access, programmatic access for GitHub Actions via OIDC, and a user-friendly login experience with AWS Identity Center.
 
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/identity-and-authentication.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
+    <Slides
+      title="Identity and Authentication"
+      videoUrl="https://docs.cloudposse.com/assets/refarch/handoffs/identity-and-authentication.mp4"
+    />
 
     <PrimaryCTA to="/layers/identity">Get Started</PrimaryCTA>
   </Step>
@@ -67,10 +67,10 @@ import ReactPlayer from 'react-player';
 
     Finally, understand Cloud Posse’s approach to designing robust and scalable Network and DNS architectures on AWS, with a focus on symmetry, account-level isolation, security, and reusability. We cover essential topics such as account isolation, connecting multiple accounts together using Transit Gateways, deploying AWS Client VPN for remote network access by developers, and differentiating between DNS service discovery and branded vanity domains used by customers. The solution includes reusable network building blocks, ensuring consistent deployment of VPCs and subnets, accommodating multi-region global networks, and addressing special network design considerations depending on whether you'll use ECS or EKS.
 
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/network-and-dns.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
+    <Slides
+      title="Network and DNS"
+      videoUrl="https://docs.cloudposse.com/assets/refarch/handoffs/network-and-dns.mp4"
+    />
 
     <PrimaryCTA to="/layers/network">Get Started</PrimaryCTA>
   </Step>

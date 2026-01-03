@@ -2,115 +2,31 @@
 title: Watch All Handoffs
 sidebar_label: Watch All Handoffs
 sidebar_position: 5
-icon: false
 ---
-import Slider, { Slide } from '@site/src/components/Slider'
-import Steps from '@site/src/components/Steps'
-import Step from '@site/src/components/Step'
-import StepNumber from '@site/src/components/StepNumber'
-import PrimaryCTA from '@site/src/components/PrimaryCTA'
-import ReactPlayer from 'react-player'
-import Intro from '@site/src/components/Intro'
+import Intro from '@site/src/components/Intro';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import SecondaryCTA from '@site/src/components/SecondaryCTA';
+
+:::info Legacy Videos Available
+The original AI-narrated overview videos have been archived.
+Updated slide deck presentations are coming soon.
+:::
 
 <Intro>
-  We've organized everything into "layers" that represent the different concerns of our infrastructure. Watch these short videos to get an overview of each layer, the problems we faced, and how we solved them.
+We've organized everything into "layers" that represent the different concerns
+of our infrastructure. These overview materials help you understand each layer,
+the problems we faced, and how we solved them.
 </Intro>
 
-<div class="hidden">
-https://github.com/facebook/docusaurus/issues/6201
-## Placeholder {#hidden}
-</div>
+## Overview Materials
 
-<Slider>
-  <Slide title="Introduction to Toolchain">
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/introduction-to-toolchain.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
+<ActionCard title="View Legacy Setup Videos">
+  Watch the original AI-narrated overview videos that cover all layers of the
+  reference architecture, from foundation through platform and development.
 
-    Learn about the essential tools Cloud Posse uses to manage infrastructure as code. This guide covers the Geodesic Toolbox Container for standardizing development environments, the Atmos framework for implementing conventions and workflows, Terraform for managing cloud infrastructure, and GitHub Actions for CI/CD automation.
-
-    <PrimaryCTA to="/layers/project">Get Started</PrimaryCTA>
-  </Slide>
-
-  <Slide title="Account Management">
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    Review how Cloud Posse designs and manages AWS Account architectures using Atmos and Terraform, aligning with the AWS Well-Architected Framework.
-
-    <PrimaryCTA to="/layers/accounts">Get Started</PrimaryCTA>
-  </Slide>
-
-  <Slide title="Identity and Authentication">
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/identity-and-authentication.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    Learn how Cloud Posse sets up fine-grained access control for an entire organization using IAM roles, AWS SAML, and AWS IAM Identity Center (SSO). We addresses the challenges we encountered of using various login methods and tools and introduce our solution involving Teams and Team Roles to manage access across multiple AWS accounts.
-
-    <PrimaryCTA to="/layers/identity">Get Started</PrimaryCTA>
-  </Slide>
-
-  <Slide title="Network & DNS">
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/network-and-dns.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    Understand Cloud Posse’s approach to designing robust and scalable Network and DNS architectures on AWS, with a focus on symmetry, account-level isolation, security, and reusability. We cover essential topics such as account isolation, connecting multiple accounts together using Transit Gateways, deploying AWS Client VPN for remote network access by developers, and differentiating between DNS service discovery and branded vanity domains used by customers.
-
-    <PrimaryCTA to="/layers/network">Get Started</PrimaryCTA>
-
-  </Slide>
-
-  <Slide title="Software Delivery">
-    <figure>
-      <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/release-engineering.mp4' />
-
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    <PrimaryCTA to="/layers/software-delivery">Get Started</PrimaryCTA>
-  </Slide>
-
-  <Slide title="Terraform Automation with GitHub Actions">
-    <figure>
-      <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/gitops.mp4' />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    <PrimaryCTA to="/layers/atmos-pro">Get Started</PrimaryCTA>
-  </Slide>
-
-  <Slide title="ECS Platform">
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/ecs.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    <PrimaryCTA to="/layers/ecs">Get Started</PrimaryCTA>
-  </Slide>
-
-  <Slide title="Monitoring & SRE">
-    <figure>
-      <ReactPlayer controls url='https://docs.cloudposse.com/assets/refarch/handoffs/monitoring.mp4' />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    <PrimaryCTA to="/layers/observability">Get Started</PrimaryCTA>
-  </Slide>
-
-  <Slide title="Component Development">
-    <figure>
-      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/component-development.mp4" />
-      <figcaption>AI generated voice</figcaption>
-    </figure>
-
-    <PrimaryCTA to="/learn/component-development">Get Started</PrimaryCTA>
-  </Slide>
-
-</Slider>
+  <div>
+    <PrimaryCTA to="/resources/legacy/setup-videos/">View Legacy Videos</PrimaryCTA>
+    <SecondaryCTA to="/layers/foundation">Start with Foundation</SecondaryCTA>
+  </div>
+</ActionCard>
