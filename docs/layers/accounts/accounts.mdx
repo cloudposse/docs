@@ -5,7 +5,7 @@ sidebar_class_name: hidden
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
-import Slides from '@site/src/components/Slides';
+import ReactPlayer from "react-player";
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import SecondaryCTA from '@site/src/components/SecondaryCTA';
@@ -22,10 +22,10 @@ This chapter presents how Cloud Posse designs and manages AWS Account architectu
 - The set of components we use to provision, configure, and manage AWS accounts, including account-level settings, service control policies, and Terraform state backends, using native Terraform with Atmos
 </KeyPoints>
 
-<Slides
-  title="Account Management Overview"
-  videoUrl="https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4"
-/>
+<figure>
+  <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4" />
+  <figcaption>AI generated voice</figcaption>
+</figure>
 
 ## The Problem
 
