@@ -224,7 +224,6 @@ jobs:
           gh release create "library-docs-${VERSION}" \
             --title "Library Docs ${VERSION}" \
             --notes "Pre-built library documentation for fast preview builds. Generated $(date -u +'%Y-%m-%d %H:%M:%S UTC')." \
-            --latest \
             library-docs.tar.gz
 
       - name: Cleanup Old Releases
