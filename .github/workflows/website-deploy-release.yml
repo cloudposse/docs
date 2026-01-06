@@ -24,10 +24,15 @@ env:
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
+  generate-library-docs:
+    uses: ./.github/workflows/generate-library.yml
+    secrets: inherit
+
   deploy-release:
+    needs: generate-library-docs
     runs-on: ubuntu-latest
 
     environment:

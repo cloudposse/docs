@@ -1,0 +1,242 @@
+name: "📚 Generate Library"
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"  # Every Monday at 8am UTC
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches: [master, main]
+    paths:
+      - 'scripts/docs-collator/**'
+
+# These permissions are needed for creating releases and OIDC
+permissions:
+  id-token: write
+  contents: write
+
+env:
+  AWS_REGION: us-east-2
+  # Use dev account for library docs generation
+  IAM_ROLE_ARN: arn:aws:iam::068007702576:role/cplive-plat-ue2-dev-cloudposse-docs-gha
+  IAM_ROLE_SESSION_NAME: cloudposse-docs-library-docs
+
+concurrency:
+  group: "library-docs-generate"
+  cancel-in-progress: true
+
+jobs:
+  components:
+    name: Components
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.IAM_ROLE_ARN }}
+          role-session-name: ${{ env.IAM_ROLE_SESSION_NAME }}
+
+      - name: "Checkout 'terraform-aws-components' Repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          repository: cloudposse/terraform-aws-components
+          ref: main
+          path: tmp/components/terraform-aws-components
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Atmos
+        uses: cloudposse/github-action-setup-atmos@v2
+        with:
+          install-wrapper: false
+
+      - name: Install Python Dependencies
+        run: pip install -r scripts/docs-collator/requirements.txt
+
+      - name: Install terraform-docs
+        uses: jaxxstorm/action-install-gh-release@v1.12.0
+        with:
+          repo: terraform-docs/terraform-docs
+          tag: v0.18.0
+          cache: enable
+
+      - name: Render Documentation for Terraform Components
+        env:
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        run: ./scripts/render-docs-for-components.sh
+
+      - name: Upload Components Docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: library-docs-components
+          path: docs/components/library/
+          retention-days: 1
+
+  modules:
+    name: Modules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.IAM_ROLE_ARN }}
+          role-session-name: ${{ env.IAM_ROLE_SESSION_NAME }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Atmos
+        uses: cloudposse/github-action-setup-atmos@v2
+        with:
+          install-wrapper: false
+
+      - name: Install Python Dependencies
+        run: pip install -r scripts/docs-collator/requirements.txt
+
+      - name: Install terraform-docs
+        uses: jaxxstorm/action-install-gh-release@v1.12.0
+        with:
+          repo: terraform-docs/terraform-docs
+          tag: v0.18.0
+          cache: enable
+
+      - name: Render Documentation for Terraform Modules
+        env:
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        run: ./scripts/render-docs-for-modules.sh
+
+      - name: Upload Modules Docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: library-docs-modules
+          path: docs/modules/library/
+          retention-days: 1
+
+  github-actions:
+    name: GitHub Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.IAM_ROLE_ARN }}
+          role-session-name: ${{ env.IAM_ROLE_SESSION_NAME }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Atmos
+        uses: cloudposse/github-action-setup-atmos@v2
+        with:
+          install-wrapper: false
+
+      - name: Install Python Dependencies
+        run: pip install -r scripts/docs-collator/requirements.txt
+
+      - name: Install terraform-docs
+        uses: jaxxstorm/action-install-gh-release@v1.12.0
+        with:
+          repo: terraform-docs/terraform-docs
+          tag: v0.18.0
+          cache: enable
+
+      - name: Render Documentation for GitHub Actions
+        env:
+          PUBLIC_REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        run: ./scripts/render-docs-for-github-actions.sh
+
+      - name: Upload GitHub Actions Docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: library-docs-github-actions
+          path: docs/github-actions/library/
+          retention-days: 1
+
+  package-and-release:
+    name: Package and Release
+    needs: [components, modules, github-actions]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Download Components Docs
+        uses: actions/download-artifact@v4
+        with:
+          name: library-docs-components
+          path: docs/components/library/
+
+      - name: Download Modules Docs
+        uses: actions/download-artifact@v4
+        with:
+          name: library-docs-modules
+          path: docs/modules/library/
+
+      - name: Download GitHub Actions Docs
+        uses: actions/download-artifact@v4
+        with:
+          name: library-docs-github-actions
+          path: docs/github-actions/library/
+
+      - name: Create Library Docs Tarball
+        run: |
+          tar -czvf library-docs.tar.gz \
+            docs/components/library \
+            docs/modules/library \
+            docs/github-actions/library
+
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="0.0.$(date -u +'%Y%m%d%H%M%S')"
+          gh release create "library-docs-${VERSION}" \
+            --title "Library Docs ${VERSION}" \
+            --notes "Pre-built library documentation for fast preview builds. Generated $(date -u +'%Y-%m-%d %H:%M:%S UTC')." \
+            library-docs.tar.gz
+
+      - name: Cleanup Old Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Cleaning up old library-docs releases (keeping last 5)..."
+          gh release list --repo ${{ github.repository }} --limit 100 \
+            | grep "library-docs-" \
+            | tail -n +6 \
+            | awk '{print $1}' \
+            | while read tag; do
+                echo "Deleting release: ${tag}"
+                gh release delete "${tag}" --yes --cleanup-tag || true
+              done
+          echo "Cleanup complete"
