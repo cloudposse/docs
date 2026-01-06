@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: "0 8 * * 1"  # Every Monday at 8am UTC
   workflow_dispatch:
+  workflow_call:
   push:
     branches: [master, main]
     paths:

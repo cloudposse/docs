@@ -24,10 +24,15 @@ env:
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
+  generate-library-docs:
+    uses: ./.github/workflows/library-docs-generate.yml
+    secrets: inherit
+
   deploy-release:
+    needs: generate-library-docs
     runs-on: ubuntu-latest
 
     environment:
@@ -49,6 +54,7 @@ jobs:
           google_tag_manager: ${{ env.GOOGLE_TAG_MANAGER }}
           google_site_verification_id: ${{ env.GOOGLE_SITE_VERIFICATION_ID }}
           repo_access_token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          skip_library_docs: "true"
 
       # "assets/refarch/handoffs/*" are handled by cloudposse-corp/demos
       - name: Copy Website to S3 Bucket
