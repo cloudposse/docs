@@ -57,6 +57,7 @@ jobs:
           iam_role_arn: ${{ env.IAM_ROLE_ARN }}
           iam_role_session_name: ${{ env.IAM_ROLE_SESSION_NAME }}
           repo_access_token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          skip_library_docs: "true"
 
       - name: Copy Website to S3 Bucket PR Folder
         run: |

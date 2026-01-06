@@ -18,6 +18,9 @@ inputs:
   repo_access_token:
     description: "GitHub Token used to access private repos"
     required: true
+  skip_library_docs:
+    description: "Skip library doc generation and use pre-built docs from GitHub Release"
+    default: "false"
 
 runs:
   using: composite
@@ -34,8 +37,10 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
+        cache: 'npm'
 
     - name: "Checkout 'terraform-aws-components' Repository"
+      if: ${{ inputs.skip_library_docs != 'true' }}
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
@@ -44,6 +49,7 @@ runs:
         path: tmp/components/terraform-aws-components
 
     - name: "Setup Python"
+      if: ${{ inputs.skip_library_docs != 'true' }}
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
@@ -74,28 +80,43 @@ runs:
         make init
 
     - name: Install Atmos
+      if: ${{ inputs.skip_library_docs != 'true' }}
       uses: cloudposse/github-action-setup-atmos@v2
       with:
         install-wrapper: false
 
     - name: "Install Python Dependencies"
+      if: ${{ inputs.skip_library_docs != 'true' }}
       shell: bash
       run: |
         pip install -r scripts/docs-collator/requirements.txt
 
     - name: "Install terraform-docs"
+      if: ${{ inputs.skip_library_docs != 'true' }}
       uses: jaxxstorm/action-install-gh-release@v1.12.0
       with:
         repo: terraform-docs/terraform-docs
         tag: v0.18.0
         cache: enable
 
-    - name: Install Atmos
-      uses: cloudposse/github-action-setup-atmos@v2
-      with:
-        install-wrapper: false
+    # Download pre-built library docs for faster preview builds
+    - name: "Download Pre-built Library Docs"
+      if: ${{ inputs.skip_library_docs == 'true' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.repo_access_token }}
+      run: |
+        echo "Downloading pre-built library docs from GitHub Release..."
+        gh release download library-docs-latest \
+          --repo ${{ github.repository }} \
+          --pattern "library-docs.tar.gz" \
+          --dir /tmp
+        echo "Extracting library docs..."
+        tar -xzf /tmp/library-docs.tar.gz
+        echo "Library docs downloaded and extracted successfully"
 
     - name: "Render Documentation for Terraform Components"
+      if: ${{ inputs.skip_library_docs != 'true' }}
       shell: bash
       env:
         PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
@@ -103,6 +124,7 @@ runs:
         ./scripts/render-docs-for-components.sh
 
     - name: "Render Documentation for Terraform Modules"
+      if: ${{ inputs.skip_library_docs != 'true' }}
       shell: bash
       env:
         PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
@@ -110,6 +132,7 @@ runs:
         ./scripts/render-docs-for-modules.sh
 
     - name: "Render Documentation for GitHub Actions"
+      if: ${{ inputs.skip_library_docs != 'true' }}
       shell: bash
       env:
         PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
