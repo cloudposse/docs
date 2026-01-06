@@ -2,15 +2,15 @@
 .slide {
   width: 100% !important;
   height: 100% !important;
-  min-height: 300px !important;
+  min-height: 200px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 2rem 4rem !important;
+  padding: 0.75rem 1.5rem !important;
   box-sizing: border-box !important;
   background: #ffffff !important;
   color: #1c1e21 !important;
-  overflow-y: auto !important;
+  overflow: hidden !important;
   visibility: visible !important;
   opacity: 1 !important;
 }
@@ -55,15 +55,15 @@ html[data-theme='dark'] .slide--title {
 
 /* Split Layout - Two columns */
 .slide--split {
-  padding: 2rem 4rem;
+  padding: 0.75rem 1.5rem;
 }
 
 .slide--split .slide__inner {
   flex-direction: row;
-  gap: 3rem;
+  gap: 1.5rem;
   text-align: left;
-  align-items: center;
-  max-width: 1000px;
+  align-items: flex-start;
+  max-width: 100%;
 }
 
 .slide--split .slide__inner > *:first-child {
@@ -99,6 +99,16 @@ html[data-theme='dark'] .slide--title {
 
 /* Fullscreen adjustments - slides inherit normal theme styling */
 
+/* Desktop fullscreen - larger padding and allow overflow for more content */
+.slide-deck--fullscreen .slide {
+  padding: 2rem 4rem !important;
+  overflow-y: auto !important;
+}
+
+.slide-deck--fullscreen .slide--split {
+  padding: 2rem 4rem !important;
+}
+
 /* Desktop fullscreen - scale content to fill the larger slide area */
 .slide-deck--fullscreen .slide__inner {
   max-width: 85%;
@@ -106,6 +116,8 @@ html[data-theme='dark'] .slide--title {
 
 .slide-deck--fullscreen .slide--split .slide__inner {
   max-width: 90%;
+  gap: 3rem;
+  align-items: center;
 }
 
 .slide-deck--fullscreen .slide--code .slide__inner {
