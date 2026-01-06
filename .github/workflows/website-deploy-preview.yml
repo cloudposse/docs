@@ -27,14 +27,22 @@ env:
 # These permissions are needed to interact with the GitHub's OIDC Token endpoint
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 concurrency:
   group: "docs-preview-${{ github.event.pull_request.number }}"
   cancel-in-progress: true
 
 jobs:
+  # Optionally rebuild library docs when 'rebuild-library-docs' label is present
+  generate-library-docs:
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'rebuild-library-docs') }}
+    uses: ./.github/workflows/generate-library.yml
+    secrets: inherit
+
   deploy-preview:
+    needs: generate-library-docs
+    if: ${{ always() && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
 
     environment:

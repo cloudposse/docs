@@ -34,20 +34,7 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
-
-    - name: "Checkout 'terraform-aws-components' Repository"
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-        repository: cloudposse/terraform-aws-components
-        ref: main
-        path: tmp/components/terraform-aws-components
-
-    - name: "Setup Python"
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        cache: 'pip'
+        cache: 'npm'
 
     # Set same key to restore cache in all jobs
     # Update key once a week - TTL on unused cache is 7 days
@@ -65,7 +52,6 @@ runs:
       with:
         path: |
           .build-harness
-          .cache
         key: ${{ steps.cache-key.outputs.result }}
 
     - name: "Initialize Build Harness"
@@ -73,48 +59,27 @@ runs:
       run: |
         make init
 
-    - name: Install Atmos
-      uses: cloudposse/github-action-setup-atmos@v2
-      with:
-        install-wrapper: false
-
-    - name: "Install Python Dependencies"
-      shell: bash
-      run: |
-        pip install -r scripts/docs-collator/requirements.txt
-
-    - name: "Install terraform-docs"
-      uses: jaxxstorm/action-install-gh-release@v1.12.0
-      with:
-        repo: terraform-docs/terraform-docs
-        tag: v0.18.0
-        cache: enable
-
-    - name: Install Atmos
-      uses: cloudposse/github-action-setup-atmos@v2
-      with:
-        install-wrapper: false
-
-    - name: "Render Documentation for Terraform Components"
+    # Download pre-built library docs from the latest GitHub Release
+    # The generate-library.yml workflow must have run at least once
+    - name: "Download Pre-built Library Docs"
       shell: bash
       env:
-        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
+        GH_TOKEN: ${{ inputs.repo_access_token }}
       run: |
-        ./scripts/render-docs-for-components.sh
-
-    - name: "Render Documentation for Terraform Modules"
-      shell: bash
-      env:
-        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
-      run: |
-        ./scripts/render-docs-for-modules.sh
-
-    - name: "Render Documentation for GitHub Actions"
-      shell: bash
-      env:
-        PUBLIC_REPO_ACCESS_TOKEN: ${{ inputs.repo_access_token }}
-      run: |
-        ./scripts/render-docs-for-github-actions.sh
+        echo "Finding latest library-docs release..."
+        LATEST_TAG=$(gh release list --repo ${{ github.repository }} --limit 50 | grep "library-docs-" | head -1 | awk '{print $1}')
+        if [ -z "$LATEST_TAG" ]; then
+          echo "Error: No library-docs release found. Run the 'Generate Library' workflow first."
+          exit 1
+        fi
+        echo "Downloading from release: ${LATEST_TAG}"
+        gh release download "${LATEST_TAG}" \
+          --repo ${{ github.repository }} \
+          --pattern "library-docs.tar.gz" \
+          --dir /tmp
+        echo "Extracting library docs..."
+        tar -xzf /tmp/library-docs.tar.gz
+        echo "Library docs downloaded and extracted successfully"
 
     - name: Install Dependencies and Build Website
       shell: bash
