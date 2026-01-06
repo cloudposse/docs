@@ -216,19 +216,28 @@ jobs:
             docs/modules/library \
             docs/github-actions/library
 
-      - name: Delete Existing Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release delete library-docs-latest --yes || true
-          git push origin :refs/tags/library-docs-latest || true
-
       - name: Create Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create library-docs-latest \
-            --title "Library Docs (Latest)" \
+          VERSION="0.0.$(date -u +'%Y%m%d%H%M%S')"
+          gh release create "library-docs-${VERSION}" \
+            --title "Library Docs ${VERSION}" \
             --notes "Pre-built library documentation for fast preview builds. Generated $(date -u +'%Y-%m-%d %H:%M:%S UTC')." \
-            --prerelease \
+            --latest \
             library-docs.tar.gz
+
+      - name: Cleanup Old Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Cleaning up old library-docs releases (keeping last 5)..."
+          gh release list --repo ${{ github.repository }} --limit 100 \
+            | grep "library-docs-" \
+            | tail -n +6 \
+            | awk '{print $1}' \
+            | while read tag; do
+                echo "Deleting release: ${tag}"
+                gh release delete "${tag}" --yes --cleanup-tag || true
+              done
+          echo "Cleanup complete"

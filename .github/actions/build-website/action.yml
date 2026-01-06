@@ -59,15 +59,21 @@ runs:
       run: |
         make init
 
-    # Download pre-built library docs from GitHub Release
-    # The library-docs-generate.yml workflow must have run at least once
+    # Download pre-built library docs from the latest GitHub Release
+    # The generate-library.yml workflow must have run at least once
     - name: "Download Pre-built Library Docs"
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.repo_access_token }}
       run: |
-        echo "Downloading pre-built library docs from GitHub Release..."
-        gh release download library-docs-latest \
+        echo "Finding latest library-docs release..."
+        LATEST_TAG=$(gh release list --repo ${{ github.repository }} --limit 50 | grep "library-docs-" | head -1 | awk '{print $1}')
+        if [ -z "$LATEST_TAG" ]; then
+          echo "Error: No library-docs release found. Run the 'Generate Library' workflow first."
+          exit 1
+        fi
+        echo "Downloading from release: ${LATEST_TAG}"
+        gh release download "${LATEST_TAG}" \
           --repo ${{ github.repository }} \
           --pattern "library-docs.tar.gz" \
           --dir /tmp
