@@ -37,7 +37,7 @@ jobs:
   # Optionally rebuild library docs when 'rebuild-library-docs' label is present
   generate-library-docs:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'rebuild-library-docs') }}
-    uses: ./.github/workflows/library-docs-generate.yml
+    uses: ./.github/workflows/generate-library.yml
     secrets: inherit
 
   deploy-preview:
