@@ -2,7 +2,7 @@ name: "Generate Library Docs"
 
 on:
   schedule:
-    - cron: "0 */6 * * *"  # Every 6 hours
+    - cron: "0 8 * * 1"  # Every Monday at 8am UTC
   workflow_dispatch:
   push:
     branches: [master, main]
