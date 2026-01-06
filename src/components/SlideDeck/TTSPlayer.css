@@ -3,7 +3,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: var(--ifm-background-surface-color);
+  background: #f5f6f7;
+  background: var(--ifm-background-surface-color, #f5f6f7);
   border-top: 1px solid var(--ifm-color-emphasis-200);
 }
 

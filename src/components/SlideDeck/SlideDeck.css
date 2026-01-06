@@ -2,56 +2,26 @@
 .slide-deck {
   position: relative;
   width: 100%;
-  max-width: none;
+  max-width: 100%;
   margin: 0;
-  background: var(--ifm-background-color);
-  border-radius: 0;
+  background: var(--ifm-background-color, #ffffff);
+  border-radius: 8px;
   overflow: hidden;
-}
-
-/* Break out of Docusaurus content container to use full viewport width */
-.markdown .slide-deck,
-.theme-doc-markdown .slide-deck {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  padding-left: 2rem;
-  padding-right: 2rem;
-  box-sizing: border-box;
-  /* Limit height to keep controls visible - navbar ~60px, toolbar ~50px */
-  height: calc(100vh - 110px);
-  max-height: calc(100vh - 110px);
+  /* Use 16:9 aspect ratio */
+  aspect-ratio: 16 / 9;
+  max-height: calc(100vh - 250px);
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--ifm-color-emphasis-200);
 }
 
-/* Constrain the main area when in page mode */
-.markdown .slide-deck .slide-deck__main,
-.theme-doc-markdown .slide-deck .slide-deck__main {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
+/* Dark mode explicit styles */
+html[data-theme='dark'] .slide-deck {
+  background: var(--ifm-background-color, #1b1b1d);
+  border-color: var(--ifm-color-emphasis-300);
 }
 
-.markdown .slide-deck .slide-deck__container,
-.theme-doc-markdown .slide-deck .slide-deck__container {
-  padding-top: 0;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.markdown .slide-deck .slide-deck__slide-wrapper,
-.theme-doc-markdown .slide-deck .slide-deck__slide-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: calc((100vh - 160px) * 16 / 9);
-  aspect-ratio: 16 / 9;
-}
+/* Page mode styles - slides embedded in page content */
 
 /* Fullscreen Mode - z-index must be higher than Docusaurus navbar (var(--ifm-z-index-fixed) = 100) */
 .slide-deck--fullscreen {
@@ -141,6 +111,8 @@
   display: flex;
   align-items: stretch;
   position: relative;
+  flex: 1;
+  min-height: 400px;
 }
 
 /* Side navigation buttons */
@@ -181,20 +153,30 @@ html[data-theme='dark'] .slide-deck__side-nav:disabled {
   position: relative;
   flex: 1;
   min-width: 0;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
-  background: var(--ifm-background-color);
+  min-height: 400px;
+  background: var(--ifm-background-color, #ffffff);
   overflow: hidden;
-}
-
-.slide-deck__slide-wrapper {
-  position: absolute;
-  top: 0;
-  left: 2rem;
-  right: 2rem;
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+html[data-theme='dark'] .slide-deck__container {
+  background: var(--ifm-background-color, #1b1b1d);
+}
+
+.slide-deck__slide-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure the slide inside the wrapper fills it */
+.slide-deck__slide-wrapper > .slide {
+  width: 100%;
+  height: 100%;
 }
 
 /* Bottom Toolbar - minimal */
@@ -204,12 +186,15 @@ html[data-theme='dark'] .slide-deck__side-nav:disabled {
   align-items: center;
   gap: 1rem;
   padding: 0.5rem 1rem;
-  background: transparent;
+  background: #ffffff;
+  background: var(--ifm-background-color, #ffffff);
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 html[data-theme='dark'] .slide-deck__toolbar {
+  background: #1b1b1d;
+  background: var(--ifm-background-color, #1b1b1d);
   border-top-color: rgba(255, 255, 255, 0.06);
 }
 

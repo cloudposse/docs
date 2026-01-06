@@ -14,10 +14,16 @@
 /* Notes panel - base styles */
 .slide-notes {
   position: absolute;
-  background: var(--ifm-background-color);
+  background: #ffffff;
+  background: var(--ifm-background-color, #ffffff);
   z-index: 101;
   display: flex;
   flex-direction: column;
+}
+
+html[data-theme='dark'] .slide-notes {
+  background: #1b1b1d;
+  background: var(--ifm-background-color, #1b1b1d);
 }
 
 /* Right position (default) - slides in from right */

@@ -256,12 +256,18 @@ function SlideDeckInner({
       }
     }
 
-    if (e.key === 'ArrowRight' || e.key === ' ') {
+    // Only handle arrow keys for slide navigation in fullscreen mode.
+    // In non-fullscreen mode, let arrow keys perform default page navigation.
+    if (isFullscreen && (e.key === 'ArrowRight' || e.key === ' ')) {
       e.preventDefault();
+      e.stopPropagation();
       nextSlide();
-    } else if (e.key === 'ArrowLeft') {
+      return;
+    } else if (isFullscreen && e.key === 'ArrowLeft') {
       e.preventDefault();
+      e.stopPropagation();
       prevSlide();
+      return;
     } else if (e.key === 'f' || e.key === 'F') {
       e.preventDefault();
       toggleFullscreen();
@@ -281,8 +287,9 @@ function SlideDeckInner({
   }, [nextSlide, prevSlide, isFullscreen, toggleFullscreen, isDrawerOpen, closeDrawer, showControlsTemporarily, showNotes, toggleNotes, handleTTSPlayPause, tts]);
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    // Use capture phase to intercept keyboard events before other handlers.
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [handleKeyDown]);
 
   // Cleanup timeouts on unmount.

@@ -18,7 +18,8 @@
   left: 0;
   bottom: 0;
   width: 220px;
-  background: var(--ifm-background-color);
+  background: #ffffff;
+  background: var(--ifm-background-color, #ffffff);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   z-index: 101;
   display: flex;
@@ -27,6 +28,8 @@
 }
 
 html[data-theme='dark'] .slide-drawer {
+  background: #1b1b1d;
+  background: var(--ifm-background-color, #1b1b1d);
   border-right-color: rgba(255, 255, 255, 0.1);
   box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
 }

@@ -1,4 +1,7 @@
 // Main exports for SlideDeck component library.
+import './SlideDeck.css';
+import './Slide.css';
+import './SlideIndex.css';
 import './SlideContent.css';
 import './SlideDrawer.css';
 import './SlideImage.css';
