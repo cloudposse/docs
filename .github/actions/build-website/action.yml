@@ -67,7 +67,7 @@ runs:
         GH_TOKEN: ${{ inputs.repo_access_token }}
       run: |
         echo "Finding latest library-docs release..."
-        LATEST_TAG=$(gh release list --repo ${{ github.repository }} --limit 50 | grep "library-docs-" | head -1 | awk '{print $1}')
+        LATEST_TAG=$(gh release list --repo ${{ github.repository }} --limit 50 | grep "library-docs-" | head -1 | awk '{print $3}')
         if [ -z "$LATEST_TAG" ]; then
           echo "Error: No library-docs release found. Run the 'Generate Library' workflow first."
           exit 1
