@@ -12,6 +12,8 @@ import Intro from '@site/src/components/Intro';
 When simplicity meets automation, sometimes it's the hidden complexity that bites back.
 </Intro>
 
+<!--truncate-->
+
 For a while, running Karpenter on AWS Fargate sounded like a perfect solution. No nodes to manage, automatic scaling, and no EC2 lifecycle headaches. The [AWS EKS Best Practices Guide](https://aws.github.io/aws-eks-best-practices/karpenter/#run-the-karpenter-controller-on-eks-fargate-or-on-a-worker-node-that-belongs-to-a-node-group) and [Karpenter's official documentation](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/) both present Fargate as a viable option for running the Karpenter controller.
 
 But in practice, that setup started to cause problems for certain EKS add-ons. Over time, those lessons led us — and our customers — to recommend using a small managed node group (MNG) instead of relying solely on Fargate.

@@ -1,8 +1,30 @@
+.breadcrumbs-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .breadcrumbs-container .buttons {
-  float: right;
+  margin-left: auto;
+}
+
+.breadcrumbs-container .version-badge {
+  margin-left: 0.5rem;
+  margin-bottom: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
 }
 
 .breadcrumbs__link {
   vertical-align: middle;
   line-height: 1.7em;
+}
+
+/* Hide sponsor button on smaller screens */
+@media (max-width: 996px) {
+  .breadcrumbs-container .buttons {
+    display: none;
+  }
 }
