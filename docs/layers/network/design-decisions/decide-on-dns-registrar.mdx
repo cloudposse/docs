@@ -29,8 +29,8 @@ Domain registration (ownership) is different from DNS (nameserver delegation). O
 
 Once you own a domain, the NS records can be delegated to any account:
 
-- **Vanity domains** — We recommend delegating each stage's TLD (e.g., `acme-prod.com`, `acme-staging.com`) to the corresponding account. This lets each environment manage its own TLD, avoiding cross-account complexity.
-- **Service discovery domains** — There's typically one domain (e.g., `acme.net`) with zones delegated to each member account (e.g., `prod.acme.net`, `staging.acme.net`). This avoids ambiguity of ownership while enabling account-level DNS management.
+- **[Vanity domains](/layers/network/design-decisions/decide-on-vanity-branded-domain)** — We recommend delegating each stage's TLD (e.g., `acme-prod.com`, `acme-staging.com`) to the corresponding account. This lets each environment manage its own TLD, avoiding cross-account complexity.
+- **[Service discovery domains](/layers/network/design-decisions/decide-on-service-discovery-domain)** — There's typically one domain (e.g., `acme.net`) with zones delegated to each member account (e.g., `prod.acme.net`, `staging.acme.net`). This avoids ambiguity of ownership while enabling account-level DNS management.
 
 Centralizing registration in the `dns` account while delegating NS records provides clear ownership without operational bottlenecks.
 
