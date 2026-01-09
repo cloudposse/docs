@@ -23,6 +23,17 @@ Register domains directly through AWS Route 53 in the `dns` account. This is our
 
 The `dns` account (see [Decide on AWS Account Flavors and Organizational Units](/layers/accounts/design-decisions/decide-on-aws-account-flavors-and-organizational-units)) acts as your centralized registrar. This keeps domain ownership consolidated and simplifies management.
 
+### Domain Registration vs DNS Delegation
+
+Domain registration (ownership) is different from DNS (nameserver delegation). Organizations often maintain domain portfolios for multiple purposes: marketing domains, SEO, trademark defense, and branded properties. These portfolios can get large.
+
+Once you own a domain, the NS records can be delegated to any account:
+
+- **Vanity domains** — We recommend delegating each stage's TLD (e.g., `acme-prod.com`, `acme-staging.com`) to the corresponding account. This lets each environment manage its own TLD, avoiding cross-account complexity.
+- **Service discovery domains** — There's typically one domain (e.g., `acme.net`) with zones delegated to each member account (e.g., `prod.acme.net`, `staging.acme.net`). This avoids ambiguity of ownership while enabling account-level DNS management.
+
+Centralizing registration in the `dns` account while delegating NS records provides clear ownership without operational bottlenecks.
+
 ## Option 2: Use an Existing Registrar
 
 If you already have a domain portfolio managed elsewhere, you may prefer to keep registration consolidated with your existing registrar.
