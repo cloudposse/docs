@@ -76,6 +76,13 @@ The AWS provider includes an `aws_route53domains_registered_domain` resource, bu
 
 Domain registration is intentionally ClickOps. The reference architecture does not manage domain registration via Terraform—you must register domains manually through the AWS Console or your chosen registrar.
 
+### Route 53 Registrar Prerequisites
+
+If you choose AWS Route 53 as your registrar:
+
+- **The `dns` account must be provisioned first** — You cannot register domains until this account exists
+- **A credit card is required** — Route 53 domain registration requires a credit card added to the account, separate from your regular AWS billing arrangement (e.g., invoicing, consolidated billing)
+
 ### Legal Considerations
 
 We recommend checking with your legal department on where to consolidate domain ownership. Domain registration has implications for:
