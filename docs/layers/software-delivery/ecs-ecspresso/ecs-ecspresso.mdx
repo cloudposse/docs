@@ -10,14 +10,13 @@ import TabItem from '@theme/TabItem';
 import CollapsibleText from '@site/src/components/CollapsibleText';
 import Admonition from '@theme/Admonition';
 
-<Admonition type="warning" title="Deprecated">
-  This approach is deprecated. For new ECS deployments, we recommend using [ECS with Atmos](/layers/software-delivery/ecs-atmos/) which provides a simpler, more integrated deployment workflow using Atmos for configuration orchestration.
-</Admonition>
-
 <Intro>
   We use the [`ecspresso`](https://github.com/kayac/ecspresso) deployment tool for Amazon ECS to manage ECS services using a code-driven approach, alongside reusable GitHub Action workflows. This setup allows tasks to be defined with Terraform within the infrastructure repository, and task definitions to reside alongside the application code. Ecspresso provides extensive configuration options via YAML, JSON, and Jsonnet, and includes plugins for enhanced functionality such as Terraform state lookups.
 </Intro>
 
+<Admonition type="warning" title="Deprecated">
+  This approach is deprecated. For new ECS deployments, we recommend using [ECS with Atmos](/layers/software-delivery/ecs-atmos/) which provides a simpler, more integrated deployment workflow using Atmos for configuration orchestration.
+</Admonition>
 
 ```mermaid
 ---
