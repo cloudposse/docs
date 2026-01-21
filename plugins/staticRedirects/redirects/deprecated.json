@@ -4,6 +4,10 @@
     "to": "/resources/deprecated/spacelift/"
   },
   {
+    "from": "/layers/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift/"
+  },
+  {
     "from": "/layers/alerting/",
     "to": "/resources/deprecated/alerting/"
   },
