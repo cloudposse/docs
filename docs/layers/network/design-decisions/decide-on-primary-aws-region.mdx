@@ -68,17 +68,13 @@ should factor into your primary region decision.
 
 Notably, **`us-west-1` does not support App Runner**, and therefore RunsOn cannot be deployed there directly.
 
-If your primary region doesn't support App Runner, you have two options:
+If your primary region doesn't support App Runner but you still want to use that region, you'll need to deploy RunsOn
+in a supported region and connect it to your primary region. We recommend using Transit Gateway with a cross-region
+peering connection for this, though other connectivity options exist. This adds approximately **$80/month** in Transit
+Gateway cross-region data transfer costs.
 
-1. **Deploy RunsOn in a supported region** and connect it to your primary region via Transit Gateway with a cross-region
-   peering connection. This adds approximately **$80/month** in Transit Gateway cross-region data transfer costs.
-
-2. **Use an alternative self-hosted runner solution** such as
-   [Actions Runner Controller (ARC)](/layers/github-actions/tutorials/eks-github-actions-controller/) which runs on EKS
-   and doesn't have the same regional constraints.
-
-For most deployments, we recommend choosing a primary region that supports App Runner to avoid the additional
-complexity and cost of cross-region connectivity.
+For most deployments, we recommend choosing a primary region that supports App Runner to avoid this additional
+complexity and cost.
 
 ### Instance Types
 
