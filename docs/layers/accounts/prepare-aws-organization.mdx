@@ -17,6 +17,19 @@ The set up process for the "baseline" or "account" layer is commonly referred to
 
 :::
 
+:::info About Placeholder Values
+
+The reference architecture includes placeholder values that you'll need to replace with your actual configuration. Common placeholders include:
+
+- **Account IDs** like `111111111111`, `123456789012`, or `000000000000` — Replace with your actual AWS account IDs after creating accounts
+- **Underscored values** like `_example_` or `__REPLACE_ME__` — These indicate values that require your input
+- **Example domains** like `example.com` or `acme.com` — Replace with your actual domain names
+- **Sample ARNs** — Update with ARNs from your environment
+
+You'll update these values at different points during setup. Each guide will call out when specific replacements are needed.
+
+:::
+
 ## Before Running Terraform (ClickOps)
 
 First, you'll need to perform some ClickOps to ensure things are set up before we use Terraform to manage AWS accounts.
@@ -42,6 +55,34 @@ From the root account:
    1. Create a single Access Key
    1. Store credentials in 1Password: Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key
    </Steps>
+1. ### Configure Atmos Auth for SuperAdmin
+   Configure the `superadmin` profile to authenticate via Atmos during cold start. This allows you to run Atmos commands to deploy the foundation.
+   <Steps>
+   1. Set the `ATMOS_PROFILE` environment variable:
+      ```bash
+      export ATMOS_PROFILE=superadmin
+      ```
+   1. Create a `.env` file in your project root with the SuperAdmin credentials from 1Password:
+      ```bash
+      # .env (do NOT commit this file)
+      AWS_ACCESS_KEY_ID=<your-access-key-id>
+      AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
+      AWS_MFA_SERIAL=arn:aws:iam::<root-account-id>:mfa/SuperAdmin
+      ```
+   1. Test the connection by running:
+      ```bash
+      atmos auth login
+      ```
+   1. Verify you can access the root account:
+      ```bash
+      aws sts get-caller-identity
+      ```
+   </Steps>
+   :::tip Atmos Profile Persistence
+   Add `export ATMOS_PROFILE=superadmin` to your shell configuration (`~/.zshrc` or `~/.bashrc`) to persist the setting across terminal sessions during cold start.
+
+   After cold start is complete and Identity Center is configured, you'll switch to a different profile (e.g., `devops` or `managers`) as described in [Configure Atmos Auth](/layers/identity/atmos-auth/).
+   :::
 1. ### Enable IAM Access for Billing
    For billing users, you need to enable IAM access to billing information.
    <Steps>
