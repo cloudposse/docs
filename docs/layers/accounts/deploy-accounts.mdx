@@ -115,11 +115,11 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
        atmos terraform output account -s core-gbl-root
        ```
     1. Update account IDs in your stack configuration files. Common locations include:
-       <Steps>
-       1. `stacks/orgs/<namespace>/_defaults.yaml` — The `account_map` variable
-       1. `stacks/catalog/tfstate-backend.yaml` — The `allowed_principal_arns` if referencing specific accounts
-       1. Any component configurations referencing account IDs directly
-       </Steps>
+       <TaskList>
+       - `stacks/orgs/<namespace>/_defaults.yaml` — The `account_map` variable
+       - `stacks/catalog/tfstate-backend.yaml` — The `allowed_principal_arns` if referencing specific accounts
+       - Any component configurations referencing account IDs directly
+       </TaskList>
     1. Verify your changes by running a plan:
        ```bash
        atmos terraform plan tfstate-backend -s core-gbl-root
