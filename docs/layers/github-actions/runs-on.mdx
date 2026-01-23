@@ -68,14 +68,16 @@ If you opt to deploy RunsOn into a separate VPC, you will need to connect that V
 
   | License | Cost | Use Case |
   |---------|------|----------|
-  | [Demo License](https://runs-on.lemonsqueezy.com/checkout/buy/216f5675-ac9d-4668-b6a0-629377f5b770) | Free (15 days) | Evaluation and testing |
-  | [Commercial License](https://runs-on.lemonsqueezy.com/checkout/buy/f97e3140-ef59-4084-b28b-e55aa2b64b1f) (recommended) | $300/year | Production deployments |
-  | [Sponsorship License](https://runs-on.lemonsqueezy.com/checkout/buy/f97e3140-ef59-4084-b28b-e55aa2b64b1f) | $1,500/year | Source code access + dedicated support |
+  | Demo | Free (15 days) | Evaluation and testing |
+  | Commercial (recommended) | $300/year | Production deployments |
+  | Sponsorship | $1,500/year | Source code access + dedicated support |
 
   Non-profit organizations qualify for free non-commercial licenses.
 
+  Once you have your license key, add it to your Atmos stack catalog at `stacks/catalog/runs-on/defaults.yaml` in the `LicenseKey` parameter.
+
   <Note title="Working with Cloud Posse?">
-  Share your RunsOn license key via 1Password. We'll add it to your Atmos stack catalog at `stacks/catalog/runs-on/defaults.yaml` in the `LicenseKey` parameter.
+  Share your RunsOn license key via 1Password and we'll add it to your stack catalog for you.
   </Note>
 
   For more details, see the [RunsOn Pricing](https://runs-on.com/pricing/) page.
