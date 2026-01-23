@@ -216,27 +216,19 @@ jobs:
             docs/modules/library \
             docs/github-actions/library
 
-      - name: Create Release
+      - name: Upload to Draft Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="0.0.$(date -u +'%Y%m%d%H%M%S')"
-          gh release create "library-docs-${VERSION}" \
-            --title "Library Docs ${VERSION}" \
-            --notes "Pre-built library documentation for fast preview builds. Generated $(date -u +'%Y-%m-%d %H:%M:%S UTC')." \
-            library-docs.tar.gz
+          echo "Finding draft release..."
+          DRAFT_TAG=$(gh release list --exclude-drafts=false --limit 20 | grep "Draft" | head -1 | awk -F'\t' '{print $3}')
 
-      - name: Cleanup Old Releases
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Cleaning up old library-docs releases (keeping last 5)..."
-          gh release list --repo ${{ github.repository }} --limit 100 \
-            | grep "library-docs-" \
-            | tail -n +6 \
-            | awk '{print $1}' \
-            | while read tag; do
-                echo "Deleting release: ${tag}"
-                gh release delete "${tag}" --yes --cleanup-tag || true
-              done
-          echo "Cleanup complete"
+          if [ -z "$DRAFT_TAG" ]; then
+            echo "No draft release found. Library docs will be uploaded when a draft release is created (on next PR merge)."
+            echo "Skipping upload."
+            exit 0
+          fi
+
+          echo "Uploading library-docs.tar.gz to draft release: ${DRAFT_TAG}"
+          gh release upload "${DRAFT_TAG}" library-docs.tar.gz --clobber
+          echo "Upload complete"

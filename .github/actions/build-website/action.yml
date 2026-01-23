@@ -59,24 +59,46 @@ runs:
       run: |
         make init
 
-    # Download pre-built library docs from the latest GitHub Release
-    # The generate-library.yml workflow must have run at least once
+    # Download pre-built library docs from draft release or latest published release
     - name: "Download Pre-built Library Docs"
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.repo_access_token }}
       run: |
-        echo "Finding latest library-docs release..."
-        LATEST_TAG=$(gh release list --repo ${{ github.repository }} --limit 50 | grep "library-docs-" | head -1 | awk -F'\t' '{print $3}')
-        if [ -z "$LATEST_TAG" ]; then
-          echo "Error: No library-docs release found. Run the 'Generate Library' workflow first."
-          exit 1
+        DOWNLOADED=false
+
+        # Try draft release first
+        echo "Checking for draft release..."
+        DRAFT_TAG=$(gh release list --repo ${{ github.repository }} --exclude-drafts=false --limit 20 | grep "Draft" | head -1 | awk -F'\t' '{print $3}')
+
+        if [ -n "$DRAFT_TAG" ]; then
+          echo "Found draft release: ${DRAFT_TAG}"
+          if gh release download "${DRAFT_TAG}" \
+               --repo ${{ github.repository }} \
+               --pattern "library-docs.tar.gz" \
+               --dir /tmp 2>/dev/null; then
+            echo "Downloaded library docs from draft release"
+            DOWNLOADED=true
+          else
+            echo "Draft release exists but has no library-docs.tar.gz asset"
+          fi
+        else
+          echo "No draft release found"
         fi
-        echo "Downloading from release: ${LATEST_TAG}"
-        gh release download "${LATEST_TAG}" \
-          --repo ${{ github.repository }} \
-          --pattern "library-docs.tar.gz" \
-          --dir /tmp
+
+        # Fall back to latest published release
+        if [ "$DOWNLOADED" = false ]; then
+          echo "Downloading from latest published release..."
+          if ! gh release download \
+                 --repo ${{ github.repository }} \
+                 --pattern "library-docs.tar.gz" \
+                 --dir /tmp; then
+            echo "Error: No library-docs.tar.gz found in any release. Run the 'Generate Library' workflow first."
+            exit 1
+          fi
+          echo "Downloaded library docs from latest published release"
+        fi
+
         echo "Extracting library docs..."
         tar -xzf /tmp/library-docs.tar.gz
         echo "Library docs downloaded and extracted successfully"
