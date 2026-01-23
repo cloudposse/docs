@@ -69,7 +69,7 @@ runs:
 
         # Try draft release first
         echo "Checking for draft release..."
-        DRAFT_TAG=$(gh release list --repo ${{ github.repository }} --exclude-drafts=false --limit 20 | grep "Draft" | head -1 | awk -F'\t' '{print $3}')
+        DRAFT_TAG=$(gh release list --repo ${{ github.repository }} --exclude-drafts=false --limit 20 | { grep "Draft" || true; } | head -1 | awk -F'\t' '{print $3}')
 
         if [ -n "$DRAFT_TAG" ]; then
           echo "Found draft release: ${DRAFT_TAG}"

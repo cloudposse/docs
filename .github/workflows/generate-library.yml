@@ -221,7 +221,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Finding draft release..."
-          DRAFT_TAG=$(gh release list --exclude-drafts=false --limit 20 | grep "Draft" | head -1 | awk -F'\t' '{print $3}')
+          DRAFT_TAG=$(gh release list --exclude-drafts=false --limit 20 | { grep "Draft" || true; } | head -1 | awk -F'\t' '{print $3}')
 
           if [ -z "$DRAFT_TAG" ]; then
             echo "No draft release found. Library docs will be uploaded when a draft release is created (on next PR merge)."
