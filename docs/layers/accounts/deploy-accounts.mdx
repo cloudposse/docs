@@ -105,6 +105,22 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
   </Step>
 
   <Step>
+    ## <StepNumber/> Update Account ID Placeholders
+
+    Now that accounts are created, you have real account IDs to work with. The reference architecture may contain placeholder account IDs (like `111111111111` or `000000000000`) that need to be replaced with your actual values.
+
+    To get your account IDs, run:
+
+    ```bash
+    atmos terraform output account -s core-gbl-root
+    ## or if on the latest version with instanced components:
+    atmos terraform output aws-account/core-artifacts -s core-gbl-root
+    ```
+
+    As you continue through the setup process, keep an eye out for placeholder values in your stack configurations and replace them with the actual account IDs as needed.
+  </Step>
+
+  <Step>
     ## <StepNumber/> Deploy Accounts Settings
 
     Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves. Run the following:
