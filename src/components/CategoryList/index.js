@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDocsSidebar } from '@docusaurus/theme-common/internal';
-import { useDocById } from '@docusaurus/theme-common/internal';
+import { useDocsSidebar, useDocById } from '@docusaurus/plugin-content-docs/client';
 
 const CategoryList = ({ path }) => {
   const sidebar = useDocsSidebar();
