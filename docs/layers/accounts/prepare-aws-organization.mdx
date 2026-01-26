@@ -61,26 +61,26 @@ From the root account:
 1. ### Configure Atmos Auth for SuperAdmin
    Configure the `superadmin` profile to authenticate via Atmos during cold start. This allows you to run Atmos commands to deploy the foundation.
    <Steps>
-   1. Set the `ATMOS_PROFILE` environment variable:
+   1. Set the `ATMOS_PROFILE` environment variable to select the superadmin profile:
       ```bash
       export ATMOS_PROFILE=superadmin
       ```
-   1. Create a `.env` file in your project root with the SuperAdmin credentials from 1Password:
+   1. Configure your user credentials by running the following command. You'll be prompted to enter your Access Key ID, Secret Access Key, and MFA ARN from 1Password:
       ```bash
-      # .env (do NOT commit this file)
-      AWS_ACCESS_KEY_ID=<your-access-key-id>
-      AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
-      AWS_MFA_SERIAL=arn:aws:iam::<root-account-id>:mfa/SuperAdmin
+      atmos auth user configure
       ```
-   1. Test the connection by running:
+   1. Start an authenticated session. You'll be prompted to enter a one-time MFA token:
       ```bash
       atmos auth login
       ```
    1. Verify you can access the root account:
       ```bash
-      aws sts get-caller-identity
+      atmos auth exec -- aws sts get-caller-identity
       ```
    </Steps>
+   :::note Daily Usage
+   Once the profile is set and user credentials are configured, you only need to run `atmos auth login` each day to start a new authenticated session.
+   :::
    :::tip Atmos Profile Persistence
    Add `export ATMOS_PROFILE=superadmin` to your shell configuration (`~/.zshrc` or `~/.bashrc`) to persist the setting across terminal sessions during cold start.
 
