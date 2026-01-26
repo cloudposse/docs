@@ -14,52 +14,93 @@ import Admonition from '@theme/Admonition'
 import TaskList from '@site/src/components/TaskList'
 
 <Intro>
-  This setup guide will help you get started deploying containerized applications to AWS ECS Fargate using Atmos for configuration orchestration and OpenTofu
-  for infrastructure-as-code. The setup uses a self-contained approach where all workflows and infrastructure definitions (except dependencies) reside in the application repository.
+  This setup guide walks you through deploying containerized applications to AWS ECS Fargate using Atmos for configuration orchestration and OpenTofu for infrastructure-as-code. The setup uses a self-contained approach where application infrastructure definitions and workflows reside in the application repository, while shared infrastructure is managed in the infra repository.
 </Intro>
 
-| Steps                                                | Actions                                                                             |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| 1. Deploy supporting infrastructure                  | Deploy VPC, ECS cluster, Github OIDC Provider, ALB, etc. with `infra` repository    |
-| 2. Create a repository from the Example App template | [cloudposse-examples/app-on-ecs-v2](https://github.com/cloudposse-examples/app-on-ecs-v2) |
-| 3. Provision IAM roles for the app repo              | IAM role                           |
-| 4. Provision ECR registry image for the app          | Deploy VPC, ECS cluster, ALB, etc. with `infra` repository                          |
-| 2. Configure ECR access                              | Update `ecr` component with new repository                                          |
-| 3. Configure GitHub repository variables             | Add `ECR_REGISTRY` variable                                                         |
-| 4. Configure Atmos authentication                    | Set up `atmos auth` for GitHub Actions                                              |
-| 6. Trigger workflows                                 | Push to main branch to deploy                                                       |
+## Overview
 
-## Requirements
-
-Before setting up ECS deployments with Atmos, ensure the following prerequisites are met:
-
-<TaskList>
-- [ ] AWS accounts provisioned (dev, staging, prod)
-- [ ] VPC deployed in target accounts
-- [ ] ECS cluster deployed in target accounts
-- [ ] Application Load Balancer (ALB) deployed
-- [ ] ECR registry available for container images
-- [ ] GitHub OIDC configured for AWS access
-- [ ] Atmos installed locally
-- [ ] OpenTofu installed locally
-</TaskList>
-
-## Setup Steps
+| Step | Action | Repository |
+| ---- | ------ | ---------- |
+| 1. Deploy platform infrastructure | Deploy VPC, ECS cluster, GitHub OIDC Provider, ALB, etc. | `infra` |
+| 2. Provision tfstate-bucket-app | Create Terraform state bucket for app repos (if not exists) | `infra` |
+| 3. Create application repository | Create repo from [cloudposse-examples/app-on-ecs-v2](https://github.com/cloudposse-examples/app-on-ecs-v2) template | GitHub |
+| 4. Provision ECR registry | Add ECR image repository for the app | `infra` |
+| 5. Provision IAM roles | Create IAM roles for the app to assume | `infra` |
+| 6. Update tfstate-bucket-app access | Grant IAM roles access to state bucket | `infra` |
+| 7. Update profiles/github | Configure GitHub OIDC roles in app repo | `app` |
+| 8. Configure GitHub repository | Add `ECR_REGISTRY` variable | GitHub UI |
+| 9. Provision shared dependencies | Deploy app dependencies (databases, queues, etc.) | `infra` |
+| 10. Configure dependencies | Set up remote state for infra components | `app` |
+| 11. Configure container definitions | Define ECS task and container settings | `app` |
+| 12. Test configuration | Run `atmos terraform plan app -s preview` | `app` |
 
 <Steps>
   <Step>
-    ### <StepNumber/> Create the Application Repository
+    ### <StepNumber/> Deploy Platform Infrastructure
 
-    <Admonition type="info" title="Customer Requirement">
-      This step requires access to the GitHub Organization.
+    Deploy the foundational infrastructure components in your `infra` repository.
+
+    Ensure the following components are deployed in your target AWS accounts:
+
+    ```bash
+    # Deploy VPC
+    atmos terraform deploy vpc -s plat-use1-dev
+    atmos terraform deploy vpc -s plat-use1-staging
+    atmos terraform deploy vpc -s plat-use1-prod
+
+    # Deploy ECS Cluster
+    atmos terraform deploy ecs/cluster -s plat-use1-dev
+    atmos terraform deploy ecs/cluster -s plat-use1-staging
+    atmos terraform deploy ecs/cluster -s plat-use1-prod
+
+    # Deploy Github OIDC Provider
+    atmos terraform deploy github-oidc-provider -s plat-gbl-dev
+    atmos terraform deploy github-oidc-provider -s plat-gbl-staging
+    atmos terraform deploy github-oidc-provider -s plat-gbl-prod
+    ```
+
+    <Admonition type="info" title="Platform Infrastructure">
+      These components are typically deployed once and shared across multiple applications. See the [ECS Cluster](/library/aws/ecs/) documentation for detailed setup instructions.
     </Admonition>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Provision tfstate-bucket-app
+
+    Create a Terraform state bucket for application repositories if one doesn't exist.
+
+    In your `infra` repository, add the tfstate bucket configuration:
+
+    ```yaml title="stacks/catalog/tfstate-backend/apps.yaml"
+    components:
+      terraform:
+        tfstate-backend-apps:
+          metadata:
+            component: tfstate-backend
+          vars:
+            enabled: true
+            name: tfstate-backend-apps
+            # Additional configuration as needed
+    ```
+
+    Deploy tfstate bucket:
+
+    ```bash
+    atmos terraform deploy tfstate-bucket-apps -s plat-use1-dev
+    atmos terraform deploy tfstate-bucket-apps -s plat-use1-staging
+    atmos terraform deploy tfstate-bucket-apps -s plat-use1-prod
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Create Application Repository
 
     Create a new repository from the [cloudposse-examples/app-on-ecs-v2](https://github.com/cloudposse-examples/app-on-ecs-v2) template.
 
     <Steps>
       1. Navigate to [cloudposse-examples/app-on-ecs-v2](https://github.com/cloudposse-examples/app-on-ecs-v2)
       2. Click "Use this template" → "Create a new repository"
-      3. Choose a name for the repository (e.g., `acme/example-app-on-ecs`)
+      3. Choose a name for the repository (e.g., `acme/example-app`)
       4. Select "Private" for repository visibility
       5. Click "Create repository"
     </Steps>
@@ -72,35 +113,182 @@ Before setting up ECS deployments with Atmos, ensure the following prerequisites
   </Step>
 
   <Step>
-    ### <StepNumber/> Configure ECR Access
+    ### <StepNumber/> Provision ECR Registry
 
-    The application workflows will build and push Docker images to Amazon ECR. Update your `ecr` component to allow access from the new repository.
+    Add an ECR image repository for the new application.
 
-    Add the following to your ECR component configuration:
+    In your `infra` repository, update the ECR component configuration:
 
-    ```yaml
+    ```yaml title="stacks/catalog/ecr.yaml"
     components:
       terraform:
         ecr:
           vars:
-            github_actions_allowed_repos:
-              - acme/example-app-on-ecs
-            # ECR image names must be lowercase
             images:
-              - acme/example-app-on-ecs
+              - acme/example-app
+            # Additional configuration as needed
     ```
 
-    Apply the updated configuration:
-
     ```bash
-    atmos terraform apply ecr -s core-use1-artifacts
+    atmos terraform deploy ecr -s core-use1-artifacts
     ```
   </Step>
 
   <Step>
-    ### <StepNumber/> Configure GitHub Repository Variables
+    ### <StepNumber/> Provision IAM Roles
 
-    The GitHub Actions workflows require a repository variable for the ECR registry. Add the following variable to your repository:
+    Create IAM roles that the application will assume for deployments.
+
+    Create an IAM role configuration for the application:
+
+    ```yaml title="stacks/catalog/iam-role/example-app.yaml"
+    import:
+      - catalog/iam-role/defaults
+
+    components:
+      terraform:
+        example-app/iam-role:
+          metadata:
+            component: iam-role
+            inherits:
+              - iam-role/defaults
+          vars:
+            name: example-app
+            attributes:
+              - "terraform"
+            role_description: |
+              Role for GitHub Actions to access the GitOps resources, such as the S3 Bucket and DynamoDB Table.
+            github_oidc_provider_enabled: true
+            github_oidc_provider_arn: !terraform.state github-oidc-provider oidc_provider_arn
+            trusted_github_org: acme
+            trusted_github_repos:
+              - example-app
+            policy_statements:
+              AllowECRAccess:
+                effect: "Allow"
+                actions:
+                  - "ecr:GetAuthorizationToken"
+                  - "ecr:BatchCheckLayerAvailability"
+                  - "ecr:GetDownloadUrlForLayer"
+                  - "ecr:BatchGetImage"
+                  - "ecr:InitiateLayerUpload"
+                  - "ecr:UploadLayerPart"
+                  - "ecr:CompleteLayerUpload"
+                  - "ecr:PutImage"
+                  - "ecr:CreatePullThroughCacheRule"
+                  - "ecr:BatchImportUpstreamImage"
+                  - "ecr:CreateRepository"
+                resources:
+                  - "*"
+              AllowAssumeRole:
+                effect: "Allow"
+                actions:
+                  - "sts:AssumeRole"
+                  - "sts:TagSession"
+                  - "sts:SetSourceIdentity"
+                resources:
+                  - "*"
+              AllowServicesAccess:
+                effect: "Allow"
+                actions:
+                  - "s3:*"
+                  - "iam:*"
+                  - "ecs:*"
+                  - "ecr:*"
+                  - "logs:*"
+                  - "ssm:*"
+                  - "ec2:*"
+                  - "elasticloadbalancing:*"
+                  - "application-autoscaling:*"
+                  - "cloudwatch:*"
+                  - "kms:Decrypt"
+                resources:
+                  - "*"
+    ```
+
+    ```bash
+    atmos terraform deploy example-app/iam-role -s plat-gbl-dev
+    atmos terraform deploy example-app/iam-role -s plat-gbl-staging
+    atmos terraform deploy example-app/iam-role -s plat-gbl-prod
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Update tfstate-bucket-app Access
+
+    Grant the newly created IAM roles access to the Terraform state bucket.
+
+    Add the IAM role ARN references to your tfstate backend configuration:
+
+    ```yaml title="stacks/catalog/tfstate-backend/apps.yaml"
+    components:
+      terraform:
+        tfstate-backend-apps:
+          vars:
+            privileged_principal_arns:
+              - !terraform.state example-app/iam-role .role.arn
+    ```
+
+    ```bash
+    atmos terraform deploy tfstate-backend-apps -s plat-gbl-dev
+    atmos terraform deploy tfstate-backend-apps -s plat-gbl-staging
+    atmos terraform deploy tfstate-backend-apps -s plat-gbl-prod
+    ```
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Update profiles/github
+
+    Configure the app repository with the IAM roles provisioned in the previous steps.
+
+    In your **application repository**, update the Atmos auth configuration with the provisioned IAM roles:
+
+    ```yaml title="profiles/github/atmos.yaml"
+    # ...
+
+    auth:
+      providers:
+        github-oidc:
+          kind: github/oidc
+          region: us-west-1
+          spec:
+            audience: sts.amazonaws.com
+
+      identities:
+        plat-dev/terraform:
+          kind: aws/assume-role
+          via:
+            provider: github-oidc
+          principal:
+            assume_role: arn:aws:iam::111111111111:role/acme-plat-gbl-dev-example-app-terraform
+
+        plat-staging/terraform:
+          kind: aws/assume-role
+          via:
+            provider: github-oidc
+          principal:
+            assume_role: arn:aws:iam::222222222222:role/acme-plat-gbl-dev-example-app-terraform
+
+        plat-prod/terraform:
+          kind: aws/assume-role
+          via:
+            provider: github-oidc
+          principal:
+            assume_role: arn:aws:iam::333333333333:role/acme-plat-gbl-dev-example-app-terraform
+    ```
+
+    <Admonition type="tip" title="IAM Role ARNs">
+      Get the role ARNs from the outputs of the IAM role deployments in step 5:
+      ```bash
+      atmos terraform output example-app/iam-role -s plat-gbl-dev -- -raw role_arn
+      ```
+    </Admonition>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure GitHub Repository
+
+    Add repository `ECR_REGISTRY` variable required by the GitHub Actions workflows.
 
     <Steps>
       1. Navigate to your repository → Settings → Secrets and variables → Actions
@@ -110,7 +298,7 @@ Before setting up ECS deployments with Atmos, ensure the following prerequisites
 
          | Name | Value |
          |------|-------|
-         | `ECR_REGISTRY` | `public.ecr.aws` (or your private ECR registry URL) |
+         | `ECR_REGISTRY` | Your ECR registry URL (e.g., `444444444444.dkr.ecr.us-east-1.amazonaws.com`) |
     </Steps>
 
     <Admonition type="tip" title="Organization Variables">
@@ -119,189 +307,186 @@ Before setting up ECS deployments with Atmos, ensure the following prerequisites
   </Step>
 
   <Step>
-    ### <StepNumber/> Configure Atmos Authentication
+    ### <StepNumber/> Provision Shared Dependencies
 
-    The workflows use `atmos auth exec` to obtain AWS credentials for deployments. This requires an Atmos configuration in the `.github` directory of your repository.
+    Deploy application dependencies that have a different lifecycle than the application itself (e.g., databases, message queues, caches).
 
-    The template includes a sample configuration at `.github/atmos.yaml`. Update this file to match your infrastructure:
-
-    ```yaml title=".github/atmos.yaml"
-    base_path: "terraform"
-
-    components:
-      terraform:
-        base_path: "components"
-
-    stacks:
-      base_path: "stacks"
-      name_pattern: "{stage}"
-
-    # Authentication configuration
-    integrations:
-      github:
-        gitops:
-          opentofu-version: "1.8.1"
-          terraform-version: "1.5.7"
-          infracost-enabled: false
-          artifact-storage:
-            region: "us-east-1"
-            bucket: "acme-gitops-artifacts"
-            table: "acme-gitops-artifacts-lock"
-            role: "arn:aws:iam::111111111111:role/acme-gitops"
-    ```
-
-    <Admonition type="info" title="Atmos Auth">
-      The `atmos auth exec` command uses AWS IAM Identity Center (SSO) or GitHub OIDC to obtain temporary credentials. Ensure your AWS accounts are configured to allow GitHub Actions to assume the necessary roles.
+    <Admonition type="info" title="Optional Step">
+      Skip this step if your application doesn't require external dependencies like databases or caches.
     </Admonition>
   </Step>
 
   <Step>
-    ### <StepNumber/> Configure Atmos Stacks
+    ### <StepNumber/> Configure Dependencies
 
-    Update the Atmos stack configurations in `terraform/stacks/` to match your environment:
+    Configure the application to read from infrastructure components' remote state.
 
-    ```yaml title="terraform/stacks/dev.yaml"
-    import:
-      - catalog/defaults
+    In your **application repository**, create dependency stack files:
 
-    vars:
-      stage: dev
-      environment: dev
+    ```yaml title="terraform/stacks/deps/vpc.yaml"
+    components:
+      terraform:
+        vpc:
+          metadata:
+            component: vpc
+            type: abstract
+            terraform_workspace: "{{ .vars.tenant }}-{{ .vars.environment }}-{{ .vars.deps_stage }}"
+          backend_type: s3
+          backend:
+            s3:
+              bucket: "acme-core-gbl-root-tfstate"
+              region: "us-east-1"
+              encrypt: true
+              key: terraform.tfstate
+              acl: bucket-owner-full-control
+              assume_role:
+                role_arn: "arn:aws:iam::111111111111:role/acme-core-gbl-root-tfstate-ro"
+    ```
 
+    ```yaml title="terraform/stacks/deps/ecs-cluster.yaml"
+    components:
+      terraform:
+        vpc:
+          metadata:
+            component: vpc
+            type: abstract
+            terraform_workspace: "{{ .vars.tenant }}-{{ .vars.environment }}-{{ .vars.deps_stage }}"
+          backend_type: s3
+          backend:
+            s3:
+              bucket: "acme-core-gbl-root-tfstate"
+              region: "us-east-1"
+              encrypt: true
+              key: terraform.tfstate
+              acl: bucket-owner-full-control
+              assume_role:
+                role_arn: "arn:aws:iam::111111111111:role/acme-core-gbl-root-tfstate-ro"
+    ```
+
+    And any other external dependencies like databases or caches.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Configure Container Definitions
+
+    Define the ECS task and container settings for your application.
+
+    ```yaml title="terraform/stacks/default/app.yaml"
     components:
       terraform:
         app:
           vars:
-            cluster_name: "acme-plat-use1-dev-ecs-cluster"
-            vpc_id: "vpc-xxxxxxxxx"
-            subnet_ids:
-              - "subnet-xxxxxxxxx"
-              - "subnet-yyyyyyyyy"
-            alb_arn: "arn:aws:elasticloadbalancing:..."
             desired_count: 1
             cpu: 256
             memory: 512
+            container_definitions:
+              app:
+                image: !env APP_IMAGE
+                port_mappings:
+                  - containerPort: 8080
+                    hostPort: 8080
+                    protocol: "tcp"
+                environment:
+                  - name: "APP_ENV"
+                    value: "production"
+                secrets:
+                  - name: "DATABASE_URL"
+                    valueFrom: !terraform.state rds .database_url
     ```
 
-    Repeat for `staging.yaml`, `prod.yaml`, and `preview.yaml` with appropriate values for each environment.
+    And/or update Terraform component (if needed). Modify the ECS task component in `terraform/components/ecs-task/` to match your application requirements:
+
+    - Add additional IAM permissions
+    - Configure health check settings
+    - Set up log configuration
+    - Add sidecar containers
   </Step>
 
   <Step>
-    ### <StepNumber/> Configure GitHub Environments
+    ### <StepNumber/> Test Configuration
 
-    Set up GitHub Environments for deployment approvals and environment-specific settings:
-
-    <Steps>
-      1. Navigate to your repository → Settings → Environments
-      2. Create the following environments:
-         - `dev` - Auto-deploy on main branch
-         - `staging` - Deploy on release
-         - `prod` - Deploy on release with required reviewers
-         - `preview` - Auto-deploy on PR with `deploy` label
-      3. For production, add required reviewers for deployment approval
-    </Steps>
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Deploy Supporting Infrastructure
-
-    Ensure the supporting infrastructure is deployed in your target AWS accounts. At minimum, you need:
-
-    <TaskList>
-      - [ ] VPC with public and private subnets
-      - [ ] ECS Cluster
-      - [ ] Application Load Balancer
-      - [ ] Route 53 hosted zone (for DNS)
-      - [ ] ACM certificate (for HTTPS)
-    </TaskList>
-
-    If using the Cloud Posse reference architecture, deploy these components:
+    Verify the Atmos configuration works correctly.
 
     ```bash
-    # Deploy VPC
-    atmos terraform apply vpc -s plat-use1-dev
-
-    # Deploy ECS Cluster
-    atmos terraform apply ecs-cluster -s plat-use1-dev
-
-    # Deploy ALB
-    atmos terraform apply alb -s plat-use1-dev
+    atmos terraform plan app -s preview
     ```
+
+    Check that:
+    - All remote state references resolve correctly
+    - Container definitions are valid
+    - IAM roles and permissions are configured
+    - No errors in the plan output
   </Step>
 </Steps>
+
+## Quick Checklist
+
+<TaskList>
+- [ ] Platform infrastructure deployed (VPC, ECS cluster, GitHub OIDC Provider)
+- [ ] `tfstate-bucket-apps` provisioned in dev/staging/prod
+- [ ] Application repository created from template
+- [ ] ECR registry provisioned (`core-use1-artifacts`)
+- [ ] IAM roles provisioned in dev/staging/prod
+- [ ] `tfstate-backend-apps` updated with IAM role access
+- [ ] `profiles/github/atmos.yaml` configured with IAM role ARNs
+- [ ] GitHub repo variable `ECR_REGISTRY` configured
+- [ ] Shared dependencies provisioned (if applicable)
+- [ ] Dependencies configured in `terraform/stacks/deps/`
+- [ ] Container definitions configured in `terraform/stacks/default/app.yaml`
+- [ ] `atmos terraform plan app -s preview` runs successfully
+</TaskList>
+
+---
 
 ## Triggering Workflows
 
 Once setup is complete, validate the workflows:
 
 <Steps>
-  1. ### Push to Main Branch
+  <Step>
+    ### <StepNumber/> Create a Pull Request
 
-     Push any change to the `main` branch to trigger the main branch workflow:
+    Create a PR and add the `deploy` label to deploy a preview environment:
 
-     ```bash
-     git add .
-     git commit -m "Initial setup"
-     git push origin main
-     ```
+    ```bash
+    git checkout -b feature/test-preview
+    # Make changes
+    git push origin feature/test-preview
+    ```
 
-     This will:
-     - Build and push a Docker image to ECR
-     - Deploy to the `dev` environment
-     - Create a draft release
+    Then add the `deploy` label to the PR in GitHub.
+  </Step>
 
-  2. ### Create a Pull Request
+  <Step>
+    ### <StepNumber/> Merge PR into Main Branch
 
-     Create a PR and add the `deploy` label to deploy a preview environment:
+    Push any change to the `main` branch to trigger the main branch workflow:
 
-     ```bash
-     git checkout -b feature/test-preview
-     # Make changes
-     git push origin feature/test-preview
-     ```
+    ```bash
+    git add .
+    git commit -m "Initial setup"
+    git push origin main
+    ```
 
-     Then add the `deploy` label to the PR in GitHub.
+    This will:
+    - Build and push a Docker image to ECR
+    - Deploy to the `dev` environment
+    - Create a draft release
+  </Step>
 
-  3. ### Publish a Release
 
-     Edit the draft release created by the main branch workflow and click "Publish release". This will:
-     - Promote the Docker image tag
-     - Deploy to `staging`
-     - Wait for approval (if configured)
-     - Deploy to `prod`
+  <Step>
+    ### <StepNumber/> Publish a Release
+
+    Edit the draft release created by the main branch workflow and click "Publish release". This will:
+    - Promote the Docker image tag
+    - Deploy to `staging`
+    - Wait for approval (if configured)
+    - Deploy to `prod`
+  </Step>
 </Steps>
 
-## Local Development
-
-Run the application locally using Podman Compose:
-
-```bash
-# Build and run on http://localhost:8080
-atmos up
-
-# Stop the application
-atmos down
-```
-
-Deploy manually using Atmos:
-
-```bash
-# Deploy to dev
-atmos terraform deploy app -s dev
-
-# View deployment URL
-atmos terraform output app -s dev --skip-init -- -raw url
-```
-
-## Next Steps
-
-<TaskList>
-  - [ ] Customize the application code in the `app/` directory
-  - [ ] Update Terraform components for your specific requirements
-  - [ ] Configure monitoring and alerting
-  - [ ] Set up log aggregation
-  - [ ] Configure auto-scaling policies
-</TaskList>
+---
 
 ## References
 
