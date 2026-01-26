@@ -4,6 +4,42 @@
     "to": "/resources/deprecated/spacelift/"
   },
   {
+    "from": "/layers/spacelift/tutorials/",
+    "to": "/resources/deprecated/spacelift/tutorials/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-destroy-a-component-using-atmos-or-spacelift/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-develop-with-spacelift-and-atmos/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-develop-with-spacelift-and-atmos/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-enable-spacelift-drift-detection/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-enable-spacelift-drift-detection/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-manage-explicit-component-dependencies-with-spacelift/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-manage-explicit-component-dependencies-with-spacelift/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-scale-spacelift-runners/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-scale-spacelift-runners/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-sign-up/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-sign-up/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-use-multiple-infrastructure-repositories-with-spacelift/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-use-multiple-infrastructure-repositories-with-spacelift/"
+  },
+  {
+    "from": "/layers/spacelift/tutorials/how-to-use-spacectl/",
+    "to": "/resources/deprecated/spacelift/tutorials/how-to-use-spacectl/"
+  },
+  {
     "from": "/layers/alerting/",
     "to": "/resources/deprecated/alerting/"
   },
