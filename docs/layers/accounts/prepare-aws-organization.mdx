@@ -6,6 +6,7 @@ sidebar_position: 2
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
+import TaskList from '@site/src/components/TaskList';
 import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
@@ -14,6 +15,21 @@ The Cold Start involves more manual steps than other layers. Read through the fo
 :::tip Cold Start
 
 The set up process for the "baseline" or "account" layer is commonly referred to as the Cold Start.
+
+:::
+
+:::info About Placeholder Values
+
+The reference architecture includes placeholder values that you'll need to replace with your actual configuration. Common placeholders include:
+
+<TaskList>
+- **Account IDs** like `111111111111`, `123456789012`, or `000000000000` — Replace with your actual AWS account IDs after creating accounts
+- **Underscored values** like `_example_` or `__REPLACE_ME__` — These indicate values that require your input. Search for `_ACCOUNT_NUMBER__` to find items to replace like `__DEV_ACCOUNT_NUMBER__`
+- **Example domains** like `example.com` or `acme.com` — Replace with your actual domain names
+- **Sample ARNs** — Update with ARNs from your environment
+</TaskList>
+
+You'll update these values at different points during setup. Each guide will call out when specific replacements are needed.
 
 :::
 
@@ -42,6 +58,34 @@ From the root account:
    1. Create a single Access Key
    1. Store credentials in 1Password: Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key
    </Steps>
+1. ### Configure Atmos Auth for SuperAdmin
+   Configure the `superadmin` profile to authenticate via Atmos during cold start. This allows you to run Atmos commands to deploy the foundation.
+   <Steps>
+   1. Set the `ATMOS_PROFILE` environment variable to select the superadmin profile:
+      ```bash
+      export ATMOS_PROFILE=superadmin
+      ```
+   1. Configure your user credentials by running the following command. You'll be prompted to enter your Access Key ID, Secret Access Key, and MFA ARN from 1Password:
+      ```bash
+      atmos auth user configure
+      ```
+   1. Start an authenticated session. You'll be prompted to enter a one-time MFA token:
+      ```bash
+      atmos auth login
+      ```
+   1. Verify you can access the root account:
+      ```bash
+      atmos auth exec -- aws sts get-caller-identity
+      ```
+   </Steps>
+   :::note Daily Usage
+   Once the profile is set and user credentials are configured, you only need to run `atmos auth login` each day to start a new authenticated session.
+   :::
+   :::tip Atmos Profile Persistence
+   Add `export ATMOS_PROFILE=superadmin` to your shell configuration (`~/.zshrc` or `~/.bashrc`) to persist the setting across terminal sessions during cold start.
+
+   After cold start is complete and Identity Center is configured, you'll switch to a different profile (e.g., `devops` or `managers`) as described in [Configure Atmos Auth](/layers/identity/atmos-auth/).
+   :::
 1. ### Enable IAM Access for Billing
    For billing users, you need to enable IAM access to billing information.
    <Steps>
