@@ -40,6 +40,7 @@ We evaluated multiple self-hosted runner solutions and recommend RunsOn for most
 
 <KeyPoints title="Quick Start">
 <TaskList>
+- Acquire a RunsOn license
 - Vendor the required components
 - Deploy the RunsOn component
 - Install the GitHub App
@@ -58,6 +59,31 @@ If you opt to deploy RunsOn into a separate VPC, you will need to connect that V
 </Note>
 
 <Steps>
+  <Step>
+  ## <StepNumber/> Acquire a RunsOn License
+
+  RunsOn requires a license key to operate. We recommend the **Commercial License** for production deployments. A free 15-day trial is available if you need to evaluate RunsOn first.
+
+  **License Options:**
+
+  | License | Cost | Use Case |
+  |---------|------|----------|
+  | Demo | Free (15 days) | Evaluation and testing |
+  | Commercial (recommended) | $300/year | Production deployments |
+  | Sponsorship | $1,500/year | Source code access + dedicated support |
+
+  Non-profit organizations qualify for free non-commercial licenses.
+
+  Once you have your license key, add it to your Atmos stack catalog at `stacks/catalog/runs-on/defaults.yaml` in the `LicenseKey` parameter.
+
+  <Note title="Working with Cloud Posse?">
+  Share your RunsOn license key via 1Password and we'll add it to your stack catalog for you.
+  </Note>
+
+  For more details, see the [RunsOn Pricing](https://runs-on.com/pricing/) page.
+
+  </Step>
+
   <Step>
   ## <StepNumber/> Vendor RunsOn Component
 
