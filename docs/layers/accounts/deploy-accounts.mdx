@@ -113,6 +113,8 @@ This step-by-step process outlines how to deploy AWS accounts using `atmos` work
 
     ```bash
     atmos terraform output account -s core-gbl-root
+    ## or if on the latest version with instanced components:
+    atmos terraform output aws-account/core-artifacts -s core-gbl-root
     ```
 
     As you continue through the setup process, keep an eye out for placeholder values in your stack configurations and replace them with the actual account IDs as needed.
