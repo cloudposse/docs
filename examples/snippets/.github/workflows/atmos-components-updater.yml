@@ -19,7 +19,7 @@ jobs:
 
       - name: Generate a token
         id: github-app
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.ATMOS_APP_ID }}
           private-key: ${{ secrets.ATMOS_PRIVATE_KEY }}
