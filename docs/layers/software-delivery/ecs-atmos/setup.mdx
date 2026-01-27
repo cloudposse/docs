@@ -10,8 +10,11 @@ import Steps from '@site/src/components/Steps'
 import Step from '@site/src/components/Step'
 import StepNumber from '@site/src/components/StepNumber'
 import Note from '@site/src/components/Note'
-import Admonition from '@theme/Admonition'
 import TaskList from '@site/src/components/TaskList'
+import CollapsibleText from '@site/src/components/CollapsibleText';
+import Admonition from '@theme/Admonition'
+import CodeBlock from '@theme/CodeBlock';
+import ApplicationIAMRole from '@site/examples/snippets/stacks/catalog/iam-role/example-app.yaml';
 
 <Intro>
   This setup guide walks you through deploying containerized applications to AWS ECS Fargate using Atmos for configuration orchestration and OpenTofu for infrastructure-as-code. The setup uses a self-contained approach where application infrastructure definitions and workflows reside in the application repository, while shared infrastructure is managed in the infra repository.
@@ -21,75 +24,34 @@ import TaskList from '@site/src/components/TaskList'
 
 | Step | Action | Repository |
 | ---- | ------ | ---------- |
-| 1. Deploy platform infrastructure | Deploy VPC, ECS cluster, GitHub OIDC Provider, ALB, etc. | `infra` |
-| 2. Provision tfstate-bucket-app | Create Terraform state bucket for app repos (if not exists) | `infra` |
-| 3. Create application repository | Create repo from [cloudposse-examples/app-on-ecs-v2](https://github.com/cloudposse-examples/app-on-ecs-v2) template | GitHub |
-| 4. Provision ECR registry | Add ECR image repository for the app | `infra` |
-| 5. Provision IAM roles | Create IAM roles for the app to assume | `infra` |
-| 6. Update tfstate-bucket-app access | Grant IAM roles access to state bucket | `infra` |
-| 7. Update profiles/github | Configure GitHub OIDC roles in app repo | `app` |
-| 8. Configure GitHub repository | Add `ECR_REGISTRY` variable | GitHub UI |
-| 9. Provision shared dependencies | Deploy app dependencies (databases, queues, etc.) | `infra` |
-| 10. Configure dependencies | Set up remote state for infra components | `app` |
-| 11. Configure container definitions | Define ECS task and container settings | `app` |
-| 12. Test configuration | Run `atmos terraform plan app -s preview` | `app` |
+| 1. Verify platform infrastructure | Confirm VPC, ECS cluster, GitHub OIDC Provider, TFstate bucket app are deployed | `infra` |
+| 2. Create application repository | Create repo from [cloudposse-examples/app-on-ecs-v2](https://github.com/cloudposse-examples/app-on-ecs-v2) template | GitHub |
+| 3. Provision ECR registry | Add ECR image repository for the app | `infra` |
+| 4. Provision IAM roles | Create IAM roles for the app to assume | `infra` |
+| 5. Update tfstate-bucket-app access | Grant IAM roles access to state bucket | `infra` |
+| 6. Update profiles/github | Configure GitHub OIDC roles in app repo | `app` |
+| 7. Configure GitHub repository | Add `ECR_REGISTRY` variable | GitHub UI |
+| 8. Provision shared dependencies | Deploy app dependencies (databases, queues, etc.) | `infra` |
+| 9. Configure dependencies | Set up remote state for infra components | `app` |
+| 10. Configure container definitions | Define ECS task and container settings | `app` |
+| 11. Test configuration | Run `atmos terraform plan app -s preview` | `app` |
 
 <Steps>
   <Step>
-    ### <StepNumber/> Deploy Platform Infrastructure
+    ### <StepNumber/> Verify Platform Infrastructure
 
-    Deploy the foundational infrastructure components in your `infra` repository.
+    Before deploying an ECS application, verify that the following platform infrastructure components are already deployed in your target AWS accounts:
 
-    Ensure the following components are deployed in your target AWS accounts:
-
-    ```bash
-    # Deploy VPC
-    atmos terraform deploy vpc -s plat-use1-dev
-    atmos terraform deploy vpc -s plat-use1-staging
-    atmos terraform deploy vpc -s plat-use1-prod
-
-    # Deploy ECS Cluster
-    atmos terraform deploy ecs/cluster -s plat-use1-dev
-    atmos terraform deploy ecs/cluster -s plat-use1-staging
-    atmos terraform deploy ecs/cluster -s plat-use1-prod
-
-    # Deploy Github OIDC Provider
-    atmos terraform deploy github-oidc-provider -s plat-gbl-dev
-    atmos terraform deploy github-oidc-provider -s plat-gbl-staging
-    atmos terraform deploy github-oidc-provider -s plat-gbl-prod
-    ```
+    <TaskList>
+      - [ ] VPC deployed in each environment (`vpc` component)
+      - [ ] ECS cluster deployed in each environment (`ecs/cluster` component)
+      - [ ] GitHub OIDC Provider deployed in each environment (`github-oidc-provider` component)
+      - [ ] TFstate bucket app deployed in each environment (`tfstate-bucket-app` component)
+    </TaskList>
 
     <Admonition type="info" title="Platform Infrastructure">
-      These components are typically deployed once and shared across multiple applications. See the [ECS Cluster](/components/library/aws/ecs/) documentation for detailed setup instructions.
+      These components are typically deployed once and shared across multiple applications. See the [ECS](/layers/ecs/) documentation for detailed setup instructions.
     </Admonition>
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Provision tfstate-bucket-app
-
-    Create a Terraform state bucket for application repositories if one doesn't exist.
-
-    In your `infra` repository, add the tfstate bucket configuration:
-
-    ```yaml title="stacks/catalog/tfstate-backend/apps.yaml"
-    components:
-      terraform:
-        tfstate-backend-apps:
-          metadata:
-            component: tfstate-backend
-          vars:
-            enabled: true
-            name: tfstate-backend-apps
-            # Additional configuration as needed
-    ```
-
-    Deploy tfstate bucket:
-
-    ```bash
-    atmos terraform deploy tfstate-bucket-apps -s plat-use1-dev
-    atmos terraform deploy tfstate-bucket-apps -s plat-use1-staging
-    atmos terraform deploy tfstate-bucket-apps -s plat-use1-prod
-    ```
   </Step>
 
   <Step>
@@ -106,10 +68,12 @@ import TaskList from '@site/src/components/TaskList'
     </Steps>
 
     The template includes:
-    - Sample Go application with Dockerfile
-    - GitHub Actions workflows for CI/CD
-    - Terraform/OpenTofu components for ECS task definitions
-    - Atmos stack configurations for each environment
+    <TaskList>
+      - [ ] Sample Go application with Dockerfile
+      - [ ] GitHub Actions workflows for CI/CD
+      - [ ] Terraform/OpenTofu components for ECS task definitions
+      - [ ] Atmos stack configurations for each environment
+    </TaskList>
   </Step>
 
   <Step>
@@ -139,72 +103,10 @@ import TaskList from '@site/src/components/TaskList'
 
     Create IAM roles that the application will assume for deployments.
 
-    Create an IAM role configuration for the application:
+    <CollapsibleText type="medium">
+      <CodeBlock language="yaml" title="stacks/catalog/iam-role/example-app.yaml">{ApplicationIAMRole}</CodeBlock>
+    </CollapsibleText>
 
-    ```yaml title="stacks/catalog/iam-role/example-app.yaml"
-    import:
-      - catalog/iam-role/defaults
-
-    components:
-      terraform:
-        example-app/iam-role:
-          metadata:
-            component: iam-role
-            inherits:
-              - iam-role/defaults
-          vars:
-            name: example-app
-            attributes:
-              - "terraform"
-            role_description: |
-              Role for GitHub Actions to access the GitOps resources, such as the S3 Bucket and DynamoDB Table.
-            github_oidc_provider_enabled: true
-            github_oidc_provider_arn: !terraform.state github-oidc-provider oidc_provider_arn
-            trusted_github_org: acme
-            trusted_github_repos:
-              - example-app
-            policy_statements:
-              AllowECRAccess:
-                effect: "Allow"
-                actions:
-                  - "ecr:GetAuthorizationToken"
-                  - "ecr:BatchCheckLayerAvailability"
-                  - "ecr:GetDownloadUrlForLayer"
-                  - "ecr:BatchGetImage"
-                  - "ecr:InitiateLayerUpload"
-                  - "ecr:UploadLayerPart"
-                  - "ecr:CompleteLayerUpload"
-                  - "ecr:PutImage"
-                  - "ecr:CreatePullThroughCacheRule"
-                  - "ecr:BatchImportUpstreamImage"
-                  - "ecr:CreateRepository"
-                resources:
-                  - "*"
-              AllowAssumeRole:
-                effect: "Allow"
-                actions:
-                  - "sts:AssumeRole"
-                  - "sts:TagSession"
-                  - "sts:SetSourceIdentity"
-                resources:
-                  - "*"
-              AllowServicesAccess:
-                effect: "Allow"
-                actions:
-                  - "s3:*"
-                  - "iam:*"
-                  - "ecs:*"
-                  - "ecr:*"
-                  - "logs:*"
-                  - "ssm:*"
-                  - "ec2:*"
-                  - "elasticloadbalancing:*"
-                  - "application-autoscaling:*"
-                  - "cloudwatch:*"
-                  - "kms:Decrypt"
-                resources:
-                  - "*"
-    ```
 
     ```bash
     atmos terraform deploy example-app/iam-role -s plat-gbl-dev
@@ -226,7 +128,7 @@ import TaskList from '@site/src/components/TaskList'
         tfstate-backend-apps:
           vars:
             privileged_principal_arns:
-              - !terraform.state example-app/iam-role .role.arn
+              - !terraform.state example-app/iam-role .role_arn
     ```
 
     ```bash
@@ -395,11 +297,12 @@ import TaskList from '@site/src/components/TaskList'
     ```
 
     And/or update Terraform component (if needed). Modify the ECS task component in `terraform/components/ecs-task/` to match your application requirements:
-
-    - Add additional IAM permissions
-    - Configure health check settings
-    - Set up log configuration
-    - Add sidecar containers
+    <Steps>
+      1. Add additional IAM permissions
+      2. Configure health check settings
+      3. Set up log configuration
+      4. Add sidecar containers
+    </Steps>
   </Step>
 
   <Step>
@@ -412,17 +315,19 @@ import TaskList from '@site/src/components/TaskList'
     ```
 
     Check that:
-    - All remote state references resolve correctly
-    - Container definitions are valid
-    - IAM roles and permissions are configured
-    - No errors in the plan output
+    <TaskList>
+    - [ ] All remote state references resolve correctly
+    - [ ] Container definitions are valid
+    - [ ] IAM roles and permissions are configured
+    - [ ] No errors in the plan output
+    </TaskList>
   </Step>
 </Steps>
 
 ## Quick Checklist
 
 <TaskList>
-- [ ] Platform infrastructure deployed (VPC, ECS cluster, GitHub OIDC Provider)
+- [ ] Platform infrastructure verified (VPC, ECS cluster, GitHub OIDC Provider)
 - [ ] `tfstate-bucket-apps` provisioned in dev/staging/prod
 - [ ] Application repository created from template
 - [ ] ECR registry provisioned (`core-use1-artifacts`)
@@ -435,58 +340,6 @@ import TaskList from '@site/src/components/TaskList'
 - [ ] Container definitions configured in `terraform/stacks/default/app.yaml`
 - [ ] `atmos terraform plan app -s preview` runs successfully
 </TaskList>
-
----
-
-## Triggering Workflows
-
-Once setup is complete, validate the workflows:
-
-<Steps>
-  <Step>
-    ### <StepNumber/> Create a Pull Request
-
-    Create a PR and add the `deploy` label to deploy a preview environment:
-
-    ```bash
-    git checkout -b feature/test-preview
-    # Make changes
-    git push origin feature/test-preview
-    ```
-
-    Then add the `deploy` label to the PR in GitHub.
-  </Step>
-
-  <Step>
-    ### <StepNumber/> Merge PR into Main Branch
-
-    Push any change to the `main` branch to trigger the main branch workflow:
-
-    ```bash
-    git add .
-    git commit -m "Initial setup"
-    git push origin main
-    ```
-
-    This will:
-    - Build and push a Docker image to ECR
-    - Deploy to the `dev` environment
-    - Create a draft release
-  </Step>
-
-
-  <Step>
-    ### <StepNumber/> Publish a Release
-
-    Edit the draft release created by the main branch workflow and click "Publish release". This will:
-    - Promote the Docker image tag
-    - Deploy to `staging`
-    - Wait for approval (if configured)
-    - Deploy to `prod`
-  </Step>
-</Steps>
-
----
 
 ## References
 
