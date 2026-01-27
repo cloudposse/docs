@@ -103,15 +103,73 @@ From the root account:
    For more details, see [Centralized Root Access](/layers/identity/centralized-root-access/).
 1. ### Enable Regions (Optional)
    The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to [enable it in your AWS account settings](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html).
-1. ### Prepare for Account Quota Increase
-   In order to deploy all accounts, you need to request an increase of the Account Quota from AWS support. This requires an AWS Organization to be created first, which we will create with Terraform in the [Deploy Accounts guide](/layers/accounts/deploy-accounts/#-prepare-account-deployment). This request can take a few days to process, so it's important to get it started early so that it doesn't become a blocker.
+1. ### Create the AWS Organization
+   Create the AWS Organization from the existing root account. This will convert your standalone account into an organization management account.
+   <Steps>
+   1. Navigate to [AWS Organizations](https://console.aws.amazon.com/organizations/v2/home)
+   1. Click **Create an organization**
+   1. Select **Create an organization with all features enabled** (this enables AWS RAM for Organizations)
+   1. Confirm the organization creation
+   </Steps>
 
-   At this time we don't need to request the increase, but we should be prepared to do so as soon as the AWS Organization is created.
+   :::tip Verify Organization Creation
+   After creating the organization, verify it was created successfully:
+   ```bash
+   aws organizations describe-organization
+   ```
+   The `FeatureSet` should return `ALL` if all features are enabled.
+   :::
+
+1. ### Confirm Root Account Name
+   Verify the root account name matches your expected naming convention (typically `core-root` or similar). This is important for consistency across your infrastructure.
+   <Steps>
+   1. Navigate to [AWS Organizations → AWS accounts](https://console.aws.amazon.com/organizations/v2/home/accounts)
+   1. Locate the management account (marked with a star)
+   1. Verify the account name matches your expected root account name
+   1. If needed, rename the account by clicking the account and selecting **Edit**
+   </Steps>
+
+1. ### Enable AWS RAM Sharing with AWS Organization
+   Enable AWS Resource Access Manager (RAM) sharing for your organization. This is required for sharing resources like Transit Gateway, VPC subnets, and other resources across accounts.
+   <Steps>
+   1. Navigate to [AWS RAM Settings](https://console.aws.amazon.com/ram/home#Settings:)
+   1. Enable **Enable sharing with AWS Organizations**
+   1. Confirm the setting is enabled
+   </Steps>
+
+   **Alternative: Use AWS CLI**
+   ```bash
+   aws ram enable-sharing-with-aws-organization
+   ```
+
+   Verify the setting:
+   ```bash
+   aws organizations describe-organization --query 'Organization.FeatureSet'
+   ```
+   This should return `ALL`.
+
+1. ### Raise Account Limits
+   Request an increase of the Account Quota from AWS support. This request can take a few days to process, so it's important to submit it early to avoid blockers during account deployment.
+
+   From the `root` account (not `SuperAdmin`), increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case.
+
+   **Alternative: Use AWS CLI**
+   ```bash
+   aws service-quotas request-service-quota-increase \
+     --service-code organizations \
+     --quota-code L-E619E033 \
+     --desired-value 20
+   ```
+   Where `L-E619E033` is the quota code for "Default maximum number of accounts" under "AWS Organizations" in "us-east-1".
+
+   :::caution Processing Time
+   Account quota increases can take several days to be approved. Plan accordingly and submit this request as early as possible.
+   :::
 
 </Steps>
 
 <ActionCard title="Next Steps">
-  Now that your AWS Organization is prepared with MFA, SuperAdmin credentials, and billing access configured,
-  you're ready to initialize the Terraform state backend that will store all infrastructure state.
+  Now that your AWS Organization is prepared with MFA, SuperAdmin credentials, billing access configured,
+  and the organization created with proper account limits, you're ready to initialize the Terraform state backend that will store all infrastructure state.
   <PrimaryCTA to="/layers/accounts/initialize-tfstate">Initialize Terraform Backend</PrimaryCTA>
 </ActionCard>
