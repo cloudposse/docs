@@ -71,7 +71,7 @@ jobs:
           echo "parent_commit=$PARENT" >> "$GITHUB_OUTPUT"
 
       - name: Assume Planner Role
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-region: "us-east-1"
           role-to-assume: "arn:aws:iam::333333333333:role/acme-core-gbl-auto-planner"
