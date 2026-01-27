@@ -37,4 +37,4 @@ workflows:
     steps:
       - command: terraform deploy gitops/s3-bucket --stack core-use1-auto
       - command: terraform deploy gitops/dynamodb --stack core-use1-auto
-      - command: terraform deploy iam-role/gitops --stack core-use1-auto
+      - command: terraform deploy iam-role/gitops --stack core-gbl-auto
