@@ -18,6 +18,9 @@ inputs:
   repo_access_token:
     description: "GitHub Token used to access private repos"
     required: true
+  skip_library_download:
+    description: "Skip downloading library docs from release (use when docs are already present)"
+    default: "false"
 
 runs:
   using: composite
@@ -61,6 +64,7 @@ runs:
 
     # Download pre-built library docs from draft release or latest published release
     - name: "Download Pre-built Library Docs"
+      if: ${{ inputs.skip_library_download != 'true' }}
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.repo_access_token }}
