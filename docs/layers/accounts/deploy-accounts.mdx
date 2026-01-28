@@ -22,7 +22,7 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
 | Steps                        | Actions                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------- |
 | Validate prerequisites       | Review account configuration                                                |
-| Import AWS Organization      | `atmos workflow deploy/organization -f quickstart/foundation/accounts`      |
+| Import AWS Organization      | `atmos terraform import account -s core-gbl-root ...`                       |
 | Deploy accounts              | `atmos workflow deploy/accounts -f quickstart/foundation/accounts`          |
 | Deploy accounts settings     | `atmos workflow deploy/account-settings -f quickstart/foundation/accounts`  |
 | Finalize account setup       | Click Ops (optional)                                                        |
@@ -56,14 +56,23 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
 
     The AWS Organization was created manually as part of the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide. Now we need to import this existing organization into Terraform so it can be managed as infrastructure-as-code.
 
-    Run the organization workflow, which will import the existing AWS Organization into Terraform state:
+    Import the existing AWS Organization into Terraform state using the following command. Replace `ORG_ID` with your AWS Organization ID (e.g., `o-abc123def4`):
 
-    <AtmosWorkflow workflow="deploy/organization" fileName="quickstart/foundation/accounts" />
+    ```bash
+    atmos terraform import account -s core-gbl-root "aws_organizations_organization.this[0]" ORG_ID
+    ```
 
-    This workflow runs `terraform import` to bring the existing AWS Organization under Terraform management. After this step, all organization-level changes will be managed through Atmos and Terraform.
+    :::info Finding Your Organization ID
+    You can find your Organization ID in the AWS Console under **AWS Organizations** → **Settings**, or by running:
+    ```bash
+    aws organizations describe-organization --query 'Organization.Id' --output text
+    ```
+    :::
+
+    This command runs `terraform import` to bring the existing AWS Organization under Terraform management. After this step, all organization-level changes will be managed through Atmos and Terraform.
 
     :::tip Verify Import
-    After the workflow completes, verify the organization was imported successfully:
+    After the import completes, verify the organization was imported successfully:
     ```bash
     atmos terraform plan account -s core-gbl-root
     ```
