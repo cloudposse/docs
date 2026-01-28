@@ -1,0 +1,133 @@
+---
+title: Onboarding as a New Developer
+sidebar_label: Developer Onboarding
+sidebar_position: 2
+description: Onboarding New Developers
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import TaskList from '@site/src/components/TaskList';
+import ReactPlayer from 'react-player';
+
+<Intro>
+  This guide is intended to help new developers get up to speed with the Cloud Posse reference architecture. It covers the basics of the architecture, how to get started, and how to contribute. We assume you have a basic understanding of Terraform and AWS. We assume you are joining a team that is already using the Cloud Posse reference architecture that's been fully implemented in your AWS organization.
+</Intro>
+
+This guide assumes you have the following:
+
+- Terraform experience working with modules, providers, public registry, state backends, etc
+- AWS experience including a firm understanding of general concepts, IAM, the web console, etc
+- Existing AWS environment utilizing Cloud Posse's reference architecture
+
+If this all sounds a little bit daunting, you may want to start by reviewing the [Learning Resources](/resources/legacy/learning-resources).
+
+If you're new to Terraform, we recommend starting with the [Terraform documentation](https://learn.hashicorp.com/collections/terraform/aws-get-started).
+
+## Quickstart
+
+<Steps>
+  1. Review the Toolchain
+  2. AWS Access
+  3. Setup Leapp
+  4. Repository Access
+  5. Configure Local Workstation
+  7. Checkout Repository
+  8. Build Geodesic
+  9. Run the Container
+  10. Test Atmos
+</Steps>
+
+## Getting Started
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Learn the Cloud Posse Toolchain
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/introduction-to-toolchain.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <TaskList>
+      - [ ] Review the Introduction to Toolset video and become familiar with the concepts
+            of [Components](/components), [Stacks](https://atmos.tools/core-concepts/stacks/), and
+            [Stack Catalogs](https://atmos.tools/core-concepts/stacks/catalogs)
+      - [ ] Review [Geodesic](https://github.com/cloudposse/geodesic/) docker toolbox and
+            [How to Customize the Geodesic Shell](/learn/maintenance/tutorials/how-to-customize-the-geodesic-shell)
+            to your liking.
+      - [ ] Review [atmos.tools](https://atmos.tools/)
+      - [ ] Review our [Conventions](/learn/conventions) (there are a lot of them)
+      - [ ] Review the Architectural Design Records (ADRs) for your organization; these are typically in `docs/adr` within the
+            infrastructure repository
+      - [ ] Review Cloud Posse’s [Architectural Design Records (ADRs)](/resources/adrs), which may not
+            be the same as your organization's practices
+      - [ ] Check out the [Learning Resources](/resources/legacy/learning-resources) that have been curated
+            from our weekly office hours
+    </TaskList>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Review our AWS Toolchain
+
+    <TaskList>
+      - [ ] Review [Leapp](/layers/identity/how-to-log-into-aws/) and
+            [How to Use Leapp to Authenticate with AWS](/layers/identity/how-to-log-into-aws/)
+      - [ ] Review why we
+            [Use Spacelift for GitOps with Terraform](/resources/adrs/adopted/use-spacelift-for-gitops-with-terraform)
+    </TaskList>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Review our Kubernetes Toolchain (for EKS users)
+
+    <TaskList>
+      - [ ] [Helm](/resources/legacy/helm)
+      - [ ] [Kubernetes](/resources/legacy/kubernetes)
+      - [ ] [Lens](/resources/legacy/lens)
+    </TaskList>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> How we Use Terraform (for developers)
+
+    <TaskList>
+      - [ ] Review [Terraform](/best-practices/terraform/) conventions used by Cloud Posse
+      - [ ] We store all the terraform states in S3. Make sure you understand the [Structure of Terraform S3 State Backend Bucket](/layers/accounts/tutorials/terraform-s3-state)
+      - [ ] Learn
+            [How to Use Terraform Remote State](/learn/maintenance/tutorials/how-to-use-terraform-remote-state) -
+            we make it easy to read the state of any component in any account.
+      - [ ] Review [Component Development](/learn/component-development/).
+      - [ ] [How to Switch Versions of Terraform](/learn/maintenance/tutorials/how-to-switch-versions-of-terraform)
+      - [ ] [How to Use Atmos with Existing Terraform](/learn/maintenance/tutorials/how-to-use-atmos-with-existing-terraform)
+    </TaskList>
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Try a Training Exercise
+
+    <TaskList>
+      - [ ] Clone your company’s infrastructure repository
+      - [ ] Review the components in your company’s infrastructure repository (e.g. `infrastructure/components/terraform`)
+      - [ ] Review the stack configurations in your company’s infrastructure repository (e.g. `infrastructure/stacks/`)
+      - [ ] Review the catalog configurations in your company’s infrastructure repository (e.g.
+            `infrastructure/stacks/catalog`)
+    </TaskList>
+  </Step>
+
+</Steps>
+
+## Developer Workflow
+
+<Steps>
+  1. Start a new feature branch
+  2. Develop and test your changes locally in the sandbox account
+  3. Push your changes to the feature branch
+  4. Create a pull request
+  5. Review the pull request
+  6. Wait for tests to pass  (or fix them)
+  7. Seek approval from the team
+  8. Merge the pull request
+  9. Deploy the changes
+</Steps>

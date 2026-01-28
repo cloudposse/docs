@@ -1,0 +1,579 @@
+---
+title: "How to Adopt/Import Legacy AWS Accounts for Management with Atmos"
+sidebar_label: "Adopt Legacy Accounts"
+sidebar_position: 26
+---
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+Sometimes provisioning a new account and migrating resources isn’t an option. Adopting a legacy account into your new organization allows you to manage new resources using Atmos and Terraform while leaving old ones unmanaged. This guide provides step-by-step instructions for importing legacy AWS accounts into the Infrastructure Monorepo, updating account configurations, and integrating with Atmos and Spacelift for automation.
+</Intro>
+
+## Problem
+
+Legacy AWS accounts may be owned by an organization (the company, not the AWS organization) but not part of the AWS
+Organization provisioned by the Infrastructure Monorepo via Atmos. This process is meant to “adopt” or “import” the
+accounts in question for use with the Infrastructure Monorepo, so that their infrastructure may be automated via Atmos and Spacelift.
+
+## Solution
+
+:::caution
+
+When you remove a member account from an Organization, the member account’s access to AWS services that are integrated
+with the Organization are lost. In some cases, resources in the member account might be deleted. For example, when an
+account leaves the Organization, the AWS CloudFormation stacks created using StackSets are removed from the management
+of StackSets. You can choose to either delete or retain the resources managed by the stack. For a list of AWS services
+that can be integrated with Organizations, see [AWS services that you can use with AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html). ([source](https://aws.amazon.com/premiumsupport/knowledge-center/organizations-move-accounts/))
+
+:::
+
+:::tip
+
+Legacy AWS Accounts must be invited to the AWS Organization managed by the Infrastructure Monorepo, and imported into
+the `account` component. From there, the Geodesic image and the Atmos stacks must be updated to reflect the presence of
+the new accounts.
+
+:::
+
+### Invite the AWS Account(s) Into the Organization Managed by the Infrastructure Monorepo
+
+Before the AWS account(s) can be managed by Terraform + Atmos in the Infrastructure Monorepo, they need to invited to
+the AWS Organization managed by the Infrastructure Monorepo.
+
+From the management account (usually named `root` or `mgmt-root`), navigate to `AWS Organizations` → `AWS Accounts` →
+`Add an AWS Account` → `Invite an existing AWS account`. Enter the ID of the AWS account that is to be invited, then
+`Send Invitation`.
+
+This step does **not** have to be done (and in terms of best-practices **should not** be done) via the root user. It can
+be done via an assumed role provisioned by `iam-delegated-roles` that has the `organizations:DescribeOrganization` and
+`organizations:InviteAccountToOrganization` permissions — i.e. the `admin` delegated role.
+
+The email address of the management account must be verified, if not already done so. Otherwise, the invitation cannot
+be sent.
+
+<img src="/assets/refarch/cleanshot-2022-01-11-at-14.21.39@2x-20220111-122144.png" /><br/>
+
+An email will be sent to the email address(es) associated with the AWS account(s) in question. The link leads to the AWS
+console where the invitation can be accepted or denied. Once again, this step does **not** have to be done (and in terms
+of best-practices **should not** be done) via the root user. However, since this is a legacy account, it does not have
+the roles deployed by `iam-delegated-roles`. Thus, ensure that the assumed role used to accept the invitation has the
+`organizations:ListHandshakesForAccount`, `organizations:AcceptHandshake` and `iam:CreateServiceLinkedRole` permissions,
+for example via the built-in `AdministratorAccess` policy.
+
+### Add the Account(s) to the `account` Component Configuration
+
+:::info
+
+The OU that you are adding the legacy AWS accounts to needs to be adjusted to match your business use case. Some
+organizations may choose to employ a “legacy” OU. Others, as in the example below, have an OU for each “tenant” within
+the organization, and legacy AWS accounts will live alongside current AWS accounts within a single OU.
+
+:::
+
+Your existing `account` component configuration should look something like this:
+
+```yaml
+components:
+  terraform:
+    account:
+      backend:
+        s3:
+          workspace_key_prefix: account
+          role_arn: null
+      vars:
+        enabled: true
+        account_email_format: aws+%s@acme.com
+        account_iam_user_access_to_billing: DENY
+        organization_enabled: true
+        aws_service_access_principals:
+          - cloudtrail.amazonaws.com
+          - ram.amazonaws.com
+          - sso.amazonaws.com
+        enabled_policy_types:
+          - SERVICE_CONTROL_POLICY
+          - TAG_POLICY
+        organization_config:
+          root_account:
+            name: mgmt-root
+            stage: root
+            tenant: mgmt
+            tags:
+              eks: false
+          accounts: []
+          organization:
+            service_control_policies: []
+          organizational_units:
+            - name: mgmt
+              accounts:
+                - name: mgmt-artifacts
+                  stage:  artifacts
+                  tenant: mgmt
+                  tags:
+                    eks: false
+                - name: mgmt-audit
+                  stage:  audit
+                  tenant: mgmt
+                  tags:
+                    eks: false
+                - name: mgmt-automation
+                  stage:  automation
+                  tenant: mgmt
+                  tags:
+                    eks: true
+                - name: mgmt-corp
+                  stage:  corp
+                  tenant: mgmt
+                  tags:
+                    eks: true
+                - name: mgmt-dns
+                  stage:  dns
+                  tenant: mgmt
+                  tags:
+                    eks: false
+                - name: mgmt-identity
+                  stage:  identity
+                  tenant: mgmt
+                  tags:
+                    eks: false
+                - name: mgmt-network
+                  stage:  network
+                  tenant: mgmt
+                  tags:
+                    eks: false
+                - name: mgmt-sandbox
+                  stage:  sandbox
+                  tenant: mgmt
+                  tags:
+                    eks: true
+                - name: mgmt-security
+                  stage:  security
+                  tenant: mgmt
+                  tags:
+                    eks: false
+              service_control_policies:
+                - DenyLeavingOrganization
+            - name: core
+              accounts:
+                - name: core-dev
+                  stage: dev
+                  tenant: core
+                  tags:
+                    eks: true
+                - name: core-staging
+                  stage: staging
+                  tenant: core
+                  tags:
+                    eks: true
+                - name: core-prod
+                  stage: prod
+                  tenant: core
+                  tags:
+                    eks: true
+              service_control_policies:
+                - DenyLeavingOrganization
+        service_control_policies_config_paths:
+          - "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/0.9.1/catalog/cloudwatch-logs-policies.yaml"
+          - "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/0.9.1/catalog/deny-all-policies.yaml"
+          - "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/0.9.1/catalog/iam-policies.yaml"
+          - "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/0.9.1/catalog/kms-policies.yaml"
+          - "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/0.9.1/catalog/organization-policies.yaml"
+          - "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/0.9.1/catalog/route53-policies.yaml"
+          - "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/0.9.1/catalog/s3-policies.yaml
+```
+
+Entries corresponding to the legacy AWS accounts need to be added before the accounts can be imported:
+
+```
+...
+                - name: core-legacydev
+                  stage: dev
+                  tenant: core
+                  tags:
+                    eks: true
+                - name: core-legacystaging
+                  stage: staging
+                  tenant: core
+                  tags:
+                    eks: true
+                - name: core-legacyprod
+                  stage: prod
+                  tenant: core
+                  tags:
+                    eks: true
+...
+```
+
+Once entries are created, a Terraform plan can be run against the `account` component when assuming the `admin`
+delegated role in `mgmt-root`:
+
+:::caution
+
+If the Terraform plan attempts to destroy the newly-added legacy account, do not apply it! See section on working around
+destructive Terraform plans for newly-added legacy accounts.
+
+:::
+
+```
+√ : [eg-mgmt-gbl-root-admin] (HOST) infrastructure ⨠ atmos terraform plan account -s mgmt-gbl-root
+```
+
+```
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_organizations_account.organizational_units_accounts["core-legacydev"] will be created
+  + resource "aws_organizations_account" "organizational_units_accounts" {
+      + arn                        = (known after apply)
+      + email                      = "aws+core-legacydev@acme.com"
+      + iam_user_access_to_billing = "DENY"
+      + id                         = (known after apply)
+      + joined_method              = (known after apply)
+      + joined_timestamp           = (known after apply)
+      + name                       = "core-legacydev"
+      + parent_id                  = "ou-[REDACTED]"
+      + status                     = (known after apply)
+      + tags                       = {
+          + "Environment" = "gbl"
+          + "Name"        = "core-legacydev"
+          + "Namespace"   = "eg"
+          + "Stage"       = "root"
+          + "Tenant"      = "mgmt"
+          + "eks"         = "true"
+        }
+      + tags_all                   = {
+          + "Environment" = "gbl"
+          + "Name"        = "core-legacydev"
+          + "Namespace"   = "eg"
+          + "Stage"       = "root"
+          + "Tenant"      = "mgmt"
+          + "eks"         = "true"
+        }
+    }
+
+  # aws_organizations_account.organizational_units_accounts["core-legacyprod"] will be created
+  + resource "aws_organizations_account" "organizational_units_accounts" {
+      + arn                        = (known after apply)
+      + email                      = "aws+core-legacyprod@acme.com"
+      + iam_user_access_to_billing = "DENY"
+      + id                         = (known after apply)
+      + joined_method              = (known after apply)
+      + joined_timestamp           = (known after apply)
+      + name                       = "core-legacyprod"
+      + parent_id                  = "ou-[REDACTED]"
+      + status                     = (known after apply)
+      + tags                       = {
+          + "Environment" = "gbl"
+          + "Name"        = "core-legacyprod"
+          + "Namespace"   = "eg"
+          + "Stage"       = "root"
+          + "Tenant"      = "mgmt"
+          + "eks"         = "true"
+        }
+      + tags_all                   = {
+          + "Environment" = "gbl"
+          + "Name"        = "core-legacyprod"
+          + "Namespace"   = "eg"
+          + "Stage"       = "root"
+          + "Tenant"      = "mgmt"
+          + "eks"         = "true"
+        }
+    }
+
+  # aws_organizations_account.organizational_units_accounts["core-legacystaging"] will be created
+  + resource "aws_organizations_account" "organizational_units_accounts" {
+      + arn                        = (known after apply)
+      + email                      = "aws+core-legacystaging@acme.com"
+      + iam_user_access_to_billing = "DENY"
+      + id                         = (known after apply)
+      + joined_method              = (known after apply)
+      + joined_timestamp           = (known after apply)
+      + name                       = "core-legacystaging"
+      + parent_id                  = "ou-[REDACTED]"
+      + status                     = (known after apply)
+      + tags                       = {
+          + "Environment" = "gbl"
+          + "Name"        = "core-legacystaging"
+          + "Namespace"   = "eg"
+          + "Stage"       = "root"
+          + "Tenant"      = "mgmt"
+          + "eks"         = "true"
+        }
+      + tags_all                   = {
+          + "Environment" = "gbl"
+          + "Name"        = "core-legacystaging"
+          + "Namespace"   = "eg"
+          + "Stage"       = "root"
+          + "Tenant"      = "mgmt"
+          + "eks"         = "true"
+        }
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+...
+```
+
+##### Workaround for Destructive Terraform Plans for Legacy Accounts
+
+Terraform will sometimes try to destroy a legacy account because the `iam_user_access_to_billing` attribute is not
+modifiable via Terraform (or the AWS CLI, for that matter):
+
+[https://github.com/hashicorp/terraform-provider-aws/issues/12959](https://github.com/hashicorp/terraform-provider-aws/issues/12959)
+
+[https://github.com/hashicorp/terraform-provider-aws/issues/12585](https://github.com/hashicorp/terraform-provider-aws/issues/12585)
+
+[https://github.com/aws/aws-cli/issues/6252](https://github.com/aws/aws-cli/issues/6252)
+
+The workaround for this is to edit the `iam_user_access_to_billing` attribute manually in the Terraform state:
+
+1. Download the Terraform state locally in Geodesic via
+   `assume-role aws s3 cp s3://eg-mgmt-ue1-root-admin-tfstate/account/mgmt-root/terraform.tfstate ./terraform.tfstate`
+
+2. Find the `iam_user_access_to_billing` attribute for the account in question and change it to either `ENABLE` or
+   `DENY`, depending on whether or not IAM access to billing is enabled for the account in question. Ensure that the
+   value inputted into the state manually reflects the actual state of the AWS account in question.
+
+<img src="/assets/refarch/cleanshot-2022-01-23-at-17.34.32@2x-20220123-154819.png" /><br/>
+
+Overwrite the Terraform state via
+`assume-role aws s3 cp --sse AES256 ./terraform.tfstate s3://eg-mgmt-ue1-root-admin-tfstate/account/mgmt-root/terraform.tfstate`.
+
+1. Run the same Terraform plan and copy the expected MD5 digest for the Terraform state.
+
+<img src="/assets/refarch/cleanshot-2022-01-23-at-17.52.48@2x-20220123-155328.png" /><br/>
+
+2. In DynamoDB, find the MD5 digest item for the Terraform state for the workspace in question (e.g. `mgmt-root` in
+   `eg-mgmt-ue1-root`) and overwrite the current digest value with the expected digest value.
+
+<img src="/assets/refarch/cleanshot-2022-01-23-at-17.54.50@2x-20220123-155507.png" /><br/>
+
+### Import Legacy AWS Account(s) Into the `account` Component Workspace and Update Legacy Account Attributes
+
+Using the resources address from the Terraform plan, the AWS account(s) can now be imported:
+
+```
+$ cd components/terraform/account
+$ terraform import 'aws_organizations_account.organizational_units_accounts["core-legacydev"]' 123456789024
+$ terraform import 'aws_organizations_account.organizational_units_accounts["core-legacystaging"]' 123456789025
+$ terraform import 'aws_organizations_account.organizational_units_accounts["core-legacyprod"]' 123456789026
+```
+
+Once the legacy accounts have been imported to the `account` component workspace, their attributes can be updated by
+running a Terraform apply.
+
+```
+$ cd ../../../ # go back to the root of the infrastructure monoorepo
+$ atmos terraform plan account -s mgmt-gbl-root
+... # verify that there are no destructive changes, and that all of the intended attributes are correct, especially the email address associated with each account
+$ atmos terraform apply account -s mgmt-gbl-root
+```
+
+### Update Geodesic Image
+
+The Geodesic container image contains an `aws-accounts` script that is responsible for creating the AWS CLI profile used
+within the image both by users and Spacelift. It needs to be updated to reflect the newly-added AWS accounts.
+
+The existing `rootfs/usr/local/bin/aws-accounts` script should have a section with an associative array representing the
+account names and their IDs, and a list representing the order of profiles corresponding to each AWS account:
+
+```
+...
+
+declare -A accounts
+# root account intentionally omitted
+accounts=(
+  [mgmt-artifacts]="123456789012"
+  [mgmt-audit]="123456789013"
+  [mgmt-automation]="123456789014"
+  [mgmt-corp]="123456789015"
+  [mgmt-dns]="123456789016"
+  [mgmt-identity]="123456789017"
+  [mgmt-network]="123456789018"
+  [mgmt-sandbox]="123456789019"
+  [mgmt-security]="123456789020"
+  [core-dev]="123456789021"
+  [core-prod]="123456789022"
+  [core-staging]="123456789023"
+)
+
+# When choosing a profile, the users will be presented with a
+# list of profiles in this order
+readonly profile_order=(
+  mgmt-artifacts
+  mgmt-audit
+  mgmt-automation
+  mgmt-corp
+  mgmt-dns
+  mgmt-identity
+  mgmt-network
+  mgmt-sandbox
+  mgmt-security
+  mgmt-root
+  core-dev
+  core-prod
+  core-staging
+)
+
+...
+```
+
+Both the associative array and the list need to be updated to reflect the newly added legacy AWS accounts:
+
+```
+...
+
+declare -A accounts
+# root account intentionally omitted
+accounts=(
+...
+  [core-legacydev]="123456789024"
+  [core-legacyprod]="123456789025"
+  [core-legacystaging]="123456789026"
+)
+
+# When choosing a profile, the users will be presented with a
+# list of profiles in this order
+readonly profile_order=(
+...
+  core-legacydev
+  core-legacyprod
+  core-legacystaging
+)
+
+...
+```
+
+The script then needs to be re-run to update both the local AWS CLI config and the versioned CI/CD AWS CLI config:
+
+```
+$ aws-accounts config-saml >> ~/.aws/config
+$ aws-accounts config-cicd > rootfs/etc/aws-config/aws-config-cicd # (and commit this change upstream)
+```
+
+### Add and Deploy Atmos Stacks for Newly-added Legacy AWS Accounts
+
+Once the Geodesic image has been updated, global and regional stacks for the newly-added legacy accounts need to be
+added. These stacks should also contain core components for the newly-added accounts.
+
+```
+...
+core-gbl-legacydev.yaml
+core-gbl-legacyprod.yaml
+core-gbl-legacystaging.yaml
+core-uw2-legacydev.yaml
+core-uw2-legacyprod.yaml
+core-uw2-legacystaging.yaml
+...
+```
+
+The global stacks should contain the `iam-delegated-roles` and `dns-delegated` components:
+
+```
+import:
+  - core-gbl-globals
+  - catalog/iam-delegated-roles
+  - catalog/dns-delegated
+
+vars:
+  stage: legacydev
+
+terraform:
+  vars: {}
+
+components:
+  terraform:
+    dns-delegated:
+      vars:
+        zone_config:
+          - subdomain: legacydev
+            zone_name: core.acme-infra.net
+```
+
+The regional stacks should contain `dns-delegated` and `vpc` components:
+
+```
+import:
+  - core-uw2-globals
+  - catalog/dns-delegated
+  - catalog/vpc
+
+vars:
+  stage: legacydev
+
+terraform:
+  vars: {}
+
+helmfile:
+  vars: {}
+
+components:
+  terraform:
+    dns-delegated:
+      vars:
+        zone_config:
+          - subdomain: uw2.legacydev
+            zone_name: core.acme-infra.net
+    vpc:
+      vars:
+        cidr_block: 172.2.0.0/18 # change this to the VPC CIDR block in the legacy account
+```
+
+The `vpc` component will need to have the existing VPC in the legacy account imported to the component’s workspace:
+
+```
+$ atmos terraform plan vpc -s core-uw2-legacydev
+... # copy resource ID of VPC
+$ cd components/terraform/vpc
+$ terraform import ... # import VPC and subnets
+```
+
+Once the stacks are added, deploy the following components:
+
+:::info
+
+If AWS SSO is being used via the `aws-sso` component, the configuration of the aforementioned component needs to be
+updated in order to configure permission sets for the newly added accounts. Then, the component needs to be redeployed.
+
+:::
+
+- `account-map` (in `mgmt-gbl-root`)
+
+- `iam-primary-roles` (in `mgmt-gbl-identity`)
+
+- `iam-delegated-roles` (in each new global stack)
+
+- `dns-delegated` (in each new global and regional stack)
+
+- `vpc` (in each new regional stack)
+
+- `compliance` (if being used)
+
+### Validate Access
+
+:::info
+
+Existing AWS Accounts invited to an AWS organization lack the OrganizationAccountAccessRole IAM role created
+automatically when creating the account with the AWS Organizations service. The role grants admin permissions to the
+member account to delegated IAM users in the master account.
+
+Thus the
+[https://github.com/cloudposse/terraform-aws-organization-access-role](https://github.com/cloudposse/terraform-aws-organization-access-role)
+module should be leveraged as part of the `account-settings` component in order to deploy this IAM role.
+
+:::
+
+Finally, validate access to the newly-added legacy accounts via the delegated IAM roles by signing into the AWS console
+and also running `assume-role eg-core-gbl-legacydev-admin aws sts get-caller-identity` (for each newly added account)
+within Geodesic.
+
+### References
+
+- [https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_invites.html](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_invites.html)
+
+- [account](/components/library/aws/account/)
+
+- [Implement AWS Cold Start](/layers/accounts/tutorials/legacy-account-map/)

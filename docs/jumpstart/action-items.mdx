@@ -78,24 +78,23 @@ Before we can get started, here's the minimum information we need from you.
 
     Please see the following guide and follow the steps to export metadata for your Identity Provider integration. All steps in AWS will be handled by Cloud Posse.
 
-    - [Setup AWS SAML](/layers/identity/optional/aws-saml/)
+    - [Setup AWS SAML](/layers/identity/tutorials/aws-saml/)
   </Step>
 </Steps>
 
 ## GitHub Self-Hosted Runners
 
-### Self-Hosted Github Runners on EKS
+We recommend [Runs On](/layers/github-actions/runs-on/) for self-hosted GitHub runners. It provides zero infrastructure management, simple setup, and cost-effective pricing.
 
-If you are deploying the Actions Runner Controller solution for Self-Hosted Github Runners, please generate the required secrets following the
-[GitHub Action Runner Controller setup docs](/layers/github-actions/eks-github-actions-controller#requirements).
+### Purchase a RunsOn License
 
-Feel free to store these secrets in 1Password if you do not have AWS access yet. Cloud Posse can complete the setup from there.
+RunsOn requires a license to operate. We recommend purchasing the **Commercial License** ($300/year) for production deployments. A free 15-day trial is available if you need to evaluate first.
 
-### Self-Hosted Github Runners with Philips Labs (ECS)
+Please [purchase a RunsOn license](/layers/github-actions/runs-on/#-acquire-a-runson-license) and share the license key with Cloud Posse via 1Password.
 
-If you have chosen ECS as a platform, we recommend deploying Philips Labs GitHub Action Runners. Please read through the [Philips Labs GitHub Action Runners Setup Requirements](/layers/github-actions/philips-labs-github-runners#requirements).
-
-In particular, we will need a new GitHub App including a Private Key, an App ID, and an App Installation ID. Please store these secrets in 1Password.
+If you have an existing deployment using a legacy approach, see:
+- [Actions Runner Controller (EKS)](/layers/github-actions/tutorials/eks-github-actions-controller/)
+- [Philips Labs GitHub Runners](/layers/github-actions/tutorials/philips-labs-github-runners/)
 
 
 ## Atmos Component Updater Requirements

@@ -108,12 +108,26 @@ If we are not deploying EKS, it's not worth the additional effort to set up Self
 
 For more on this option, see the [Philips Labs GitHub Runner](https://philips-labs.github.io/terraform-aws-github-runner/) documentation.
 
-### Option 5: Managed Runners
+### Option 5: RunsOn (Recommended)
 
-There are a number of services that offer managed runners. These still have the advantage over GitHub Cloud hosted runners as the can be managed within you private VPCs.
+[RunsOn](https://runs-on.com/) is a managed self-hosted runner solution that provides the benefits of self-hosted runners without the operational overhead. This is our latest preferred approach for most deployments.
 
-One option to consider is [runs-on.com](https://runs-on.com/) which provides a very inexpensive option.
+**Key Benefits:**
+- **Zero Infrastructure Management**: No EC2 instances, Lambda functions, or Kubernetes clusters to maintain
+- **Simple Setup**: Deploy a single Terraform component, install a GitHub App, and start using immediately
+- **Cost Effective**: Pay only for compute time with automatic spot instance pricing—no idle infrastructure costs
+- **No Kubernetes Required**: Works without EKS, making it ideal for organizations that don't need Kubernetes
+- **VPC Access**: Runners operate within your AWS account and can access private VPC resources
+- **Organization-Wide Configuration**: Define runner configurations once in a central `.github` repository
+
+For setup instructions, see [Setup RunsOn](/layers/github-actions/runs-on/).
+
+### Option 6: Other Managed Runners
+
+There are a number of third-party services that offer managed runners. These still have the advantage over GitHub Cloud hosted runners as they can be deployed within your private VPCs.
 
 ## Recommendation
 
-At this time Cloud Posse recommends the Actions Runner Controller on EKS (`eks/actions-runner-controller`) if you are using EKS and the Philips Labs Runners (`philips-labs-github-runners`) if you are not using EKS.
+**Cloud Posse recommends [RunsOn](/layers/github-actions/runs-on/)** for most deployments. It provides the simplest setup with the lowest operational overhead while still offering VPC access and cost savings through spot instances.
+
+For organizations with existing investments in Kubernetes-based runners or specific requirements not met by RunsOn, the legacy options (Actions Runner Controller, Philips Labs) remain available in our [Additional Tutorials](/layers/github-actions/tutorials/).

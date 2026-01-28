@@ -1,0 +1,290 @@
+# Security and Compliance Layer Workflows
+#
+# These workflows are used for the quickstart setup of security and compliance.
+# They automate the deployment of AWS Config, Security Hub, GuardDuty,
+# AWS Inspector, and other compliance tooling.
+#
+# Documentation: https://docs.cloudposse.com/layers/security-and-compliance/
+#
+# Usage:
+#   atmos workflow vendor -f quickstart/monitor/security-and-compliance
+#   atmos workflow deploy/security-hub/step1 -f quickstart/monitor/security-and-compliance
+#
+# Available workflows:
+#   - vendor: Pull required components
+#   - deploy/aws-config/global-collector: Deploy AWS Config
+#   - deploy/aws-config/superadmin: Deploy AWS Config to root (requires SuperAdmin)
+#   - deploy/security-hub/step1-3: Deploy Security Hub (3 steps)
+#   - deploy/guardduty/step1-3: Deploy GuardDuty (3 steps)
+#   - deploy/aws-inspector2/step1-2: Deploy AWS Inspector (2 steps)
+#workflows:
+  vendor:
+    description: Vendor compliance layer components and scripts.
+    steps:
+      - command: vendor pull --component config-bucket
+      - command: vendor pull --component cloudtrail-bucket
+      - command: vendor pull --component aws-config
+      - command: vendor pull --component security-hub
+      - command: vendor pull --component guardduty
+      - command: vendor pull --component s3-bucket
+      - command: vendor pull --component route53-resolver-dns-firewall
+      - command: vendor pull --component aws-shield
+      - command: vendor pull --component aws-inspector2
+
+  deploy/aws-config/global-collector:
+    description: Deploy AWS Config into main global collector account
+    steps:
+      # Note that central region 'use1' and central account 'security' should be the first one created
+      - command: terraform deploy aws-config-use1 -s core-use1-security
+      - command: terraform deploy aws-config-use2 -s core-use2-security
+      - command: terraform deploy aws-config-usw1 -s core-usw1-security
+      - command: terraform deploy aws-config-usw2 -s core-usw2-security
+      - command: terraform deploy aws-config-aps1 -s core-aps1-security
+      - command: terraform deploy aws-config-apne3 -s core-apne3-security
+      - command: terraform deploy aws-config-apne2 -s core-apne2-security
+      - command: terraform deploy aws-config-apne1 -s core-apne1-security
+      - command: terraform deploy aws-config-apse1 -s core-apse1-security
+      - command: terraform deploy aws-config-apse2 -s core-apse2-security
+      - command: terraform deploy aws-config-cac1 -s core-cac1-security
+      - command: terraform deploy aws-config-euc1 -s core-euc1-security
+      - command: terraform deploy aws-config-euw1 -s core-euw1-security
+      - command: terraform deploy aws-config-euw2 -s core-euw2-security
+      - command: terraform deploy aws-config-euw3 -s core-euw3-security
+      - command: terraform deploy aws-config-eun1 -s core-eun1-security
+      - command: terraform deploy aws-config-sae1 -s core-sae1-security
+
+  deploy/aws-config/superadmin:
+    description: Deploy AWS Config into accounts that require SuperAdmin to apply
+    steps:
+      - command: terraform deploy aws-config-use1 -s core-use1-root
+      - command: terraform deploy aws-config-use2 -s core-use2-root
+      - command: terraform deploy aws-config-usw1 -s core-usw1-root
+      - command: terraform deploy aws-config-usw2 -s core-usw2-root
+      - command: terraform deploy aws-config-aps1 -s core-aps1-root
+      - command: terraform deploy aws-config-apne3 -s core-apne3-root
+      - command: terraform deploy aws-config-apne2 -s core-apne2-root
+      - command: terraform deploy aws-config-apne1 -s core-apne1-root
+      - command: terraform deploy aws-config-apse1 -s core-apse1-root
+      - command: terraform deploy aws-config-apse2 -s core-apse2-root
+      - command: terraform deploy aws-config-cac1 -s core-cac1-root
+      - command: terraform deploy aws-config-euc1 -s core-euc1-root
+      - command: terraform deploy aws-config-euw1 -s core-euw1-root
+      - command: terraform deploy aws-config-euw2 -s core-euw2-root
+      - command: terraform deploy aws-config-euw3 -s core-euw3-root
+      - command: terraform deploy aws-config-eun1 -s core-eun1-root
+      - command: terraform deploy aws-config-sae1 -s core-sae1-root
+
+  deploy/security-hub/step1:
+    description: Deploy Security Hub to Delegated Administrator account (core-security)
+    steps:
+      - command: terraform deploy security-hub/delegated-administrator/use1 -s core-use1-security
+      - command: terraform deploy security-hub/delegated-administrator/use2 -s core-use2-security
+      - command: terraform deploy security-hub/delegated-administrator/usw1 -s core-usw1-security
+      - command: terraform deploy security-hub/delegated-administrator/usw2 -s core-usw2-security
+      - command: terraform deploy security-hub/delegated-administrator/aps1 -s core-aps1-security
+      - command: terraform deploy security-hub/delegated-administrator/apne3 -s core-apne3-security
+      - command: terraform deploy security-hub/delegated-administrator/apne2 -s core-apne2-security
+      - command: terraform deploy security-hub/delegated-administrator/apne1 -s core-apne1-security
+      - command: terraform deploy security-hub/delegated-administrator/apse1 -s core-apse1-security
+      - command: terraform deploy security-hub/delegated-administrator/apse2 -s core-apse2-security
+      - command: terraform deploy security-hub/delegated-administrator/cac1 -s core-cac1-security
+      - command: terraform deploy security-hub/delegated-administrator/euc1 -s core-euc1-security
+      - command: terraform deploy security-hub/delegated-administrator/euw1 -s core-euw1-security
+      - command: terraform deploy security-hub/delegated-administrator/euw2 -s core-euw2-security
+      - command: terraform deploy security-hub/delegated-administrator/euw3 -s core-euw3-security
+      - command: terraform deploy security-hub/delegated-administrator/eun1 -s core-eun1-security
+      - command: terraform deploy security-hub/delegated-administrator/sae1 -s core-sae1-security
+
+  deploy/security-hub/step2:
+    description: Deploy Security Hub to AWS Organizations Management Account (core-root). You must be SuperAdmin to run this workflow.
+    steps:
+      - command: terraform deploy security-hub/root/use1 -s core-use1-root
+      - command: terraform deploy security-hub/root/use2 -s core-use2-root
+      - command: terraform deploy security-hub/root/usw1 -s core-usw1-root
+      - command: terraform deploy security-hub/root/usw2 -s core-usw2-root
+      - command: terraform deploy security-hub/root/aps1 -s core-aps1-root
+      - command: terraform deploy security-hub/root/apne3 -s core-apne3-root
+      - command: terraform deploy security-hub/root/apne2 -s core-apne2-root
+      - command: terraform deploy security-hub/root/apne1 -s core-apne1-root
+      - command: terraform deploy security-hub/root/apse1 -s core-apse1-root
+      - command: terraform deploy security-hub/root/apse2 -s core-apse2-root
+      - command: terraform deploy security-hub/root/cac1 -s core-cac1-root
+      - command: terraform deploy security-hub/root/euc1 -s core-euc1-root
+      - command: terraform deploy security-hub/root/euw1 -s core-euw1-root
+      - command: terraform deploy security-hub/root/euw2 -s core-euw2-root
+      - command: terraform deploy security-hub/root/euw3 -s core-euw3-root
+      - command: terraform deploy security-hub/root/eun1 -s core-eun1-root
+      - command: terraform deploy security-hub/root/sae1 -s core-sae1-root
+
+  deploy/security-hub/step3:
+    description: Deploy Security Hub Organization Settings to Delegated Administrator account (core-security)
+    steps:
+      - command: terraform deploy security-hub/org-settings/use1 -s core-use1-security
+      - command: terraform deploy security-hub/org-settings/use2 -s core-use2-security
+      - command: terraform deploy security-hub/org-settings/usw1 -s core-usw1-security
+      - command: terraform deploy security-hub/org-settings/usw2 -s core-usw2-security
+      - command: terraform deploy security-hub/org-settings/aps1 -s core-aps1-security
+      - command: terraform deploy security-hub/org-settings/apne3 -s core-apne3-security
+      - command: terraform deploy security-hub/org-settings/apne2 -s core-apne2-security
+      - command: terraform deploy security-hub/org-settings/apne1 -s core-apne1-security
+      - command: terraform deploy security-hub/org-settings/apse1 -s core-apse1-security
+      - command: terraform deploy security-hub/org-settings/apse2 -s core-apse2-security
+      - command: terraform deploy security-hub/org-settings/cac1 -s core-cac1-security
+      - command: terraform deploy security-hub/org-settings/euc1 -s core-euc1-security
+      - command: terraform deploy security-hub/org-settings/euw1 -s core-euw1-security
+      - command: terraform deploy security-hub/org-settings/euw2 -s core-euw2-security
+      - command: terraform deploy security-hub/org-settings/euw3 -s core-euw3-security
+      - command: terraform deploy security-hub/org-settings/eun1 -s core-eun1-security
+      - command: terraform deploy security-hub/org-settings/sae1 -s core-sae1-security
+
+  deploy/guardduty/step1:
+    description: Deploy GuardDuty to Delegated Administrator account (core-security)
+    steps:
+      - command: terraform deploy guardduty/delegated-administrator/use1 -s core-use1-security
+      - command: terraform deploy guardduty/delegated-administrator/use2 -s core-use2-security
+      - command: terraform deploy guardduty/delegated-administrator/usw1 -s core-usw1-security
+      - command: terraform deploy guardduty/delegated-administrator/usw2 -s core-usw2-security
+      - command: terraform deploy guardduty/delegated-administrator/aps1 -s core-aps1-security
+      - command: terraform deploy guardduty/delegated-administrator/apne3 -s core-apne3-security
+      - command: terraform deploy guardduty/delegated-administrator/apne2 -s core-apne2-security
+      - command: terraform deploy guardduty/delegated-administrator/apne1 -s core-apne1-security
+      - command: terraform deploy guardduty/delegated-administrator/apse1 -s core-apse1-security
+      - command: terraform deploy guardduty/delegated-administrator/apse2 -s core-apse2-security
+      - command: terraform deploy guardduty/delegated-administrator/cac1 -s core-cac1-security
+      - command: terraform deploy guardduty/delegated-administrator/euc1 -s core-euc1-security
+      - command: terraform deploy guardduty/delegated-administrator/euw1 -s core-euw1-security
+      - command: terraform deploy guardduty/delegated-administrator/euw2 -s core-euw2-security
+      - command: terraform deploy guardduty/delegated-administrator/euw3 -s core-euw3-security
+      - command: terraform deploy guardduty/delegated-administrator/eun1 -s core-eun1-security
+      - command: terraform deploy guardduty/delegated-administrator/sae1 -s core-sae1-security
+
+  deploy/guardduty/step2:
+    description: Deploy GuardDuty to AWS Organizations Management Account (core-root). You must be SuperAdmin to run this workflow.
+    steps:
+      - command: terraform deploy guardduty/root/use1 -s core-use1-root
+      - command: terraform deploy guardduty/root/use2 -s core-use2-root
+      - command: terraform deploy guardduty/root/usw1 -s core-usw1-root
+      - command: terraform deploy guardduty/root/usw2 -s core-usw2-root
+      - command: terraform deploy guardduty/root/aps1 -s core-aps1-root
+      - command: terraform deploy guardduty/root/apne3 -s core-apne3-root
+      - command: terraform deploy guardduty/root/apne2 -s core-apne2-root
+      - command: terraform deploy guardduty/root/apne1 -s core-apne1-root
+      - command: terraform deploy guardduty/root/apse1 -s core-apse1-root
+      - command: terraform deploy guardduty/root/apse2 -s core-apse2-root
+      - command: terraform deploy guardduty/root/cac1 -s core-cac1-root
+      - command: terraform deploy guardduty/root/euc1 -s core-euc1-root
+      - command: terraform deploy guardduty/root/euw1 -s core-euw1-root
+      - command: terraform deploy guardduty/root/euw2 -s core-euw2-root
+      - command: terraform deploy guardduty/root/euw3 -s core-euw3-root
+      - command: terraform deploy guardduty/root/eun1 -s core-eun1-root
+      - command: terraform deploy guardduty/root/sae1 -s core-sae1-root
+
+  deploy/guardduty/step3:
+    description: Deploy GuardDuty Organization Settings to Delegated Administrator account (core-security)
+    steps:
+      - command: terraform deploy guardduty/org-settings/use1 -s core-use1-security
+      - command: terraform deploy guardduty/org-settings/use2 -s core-use2-security
+      - command: terraform deploy guardduty/org-settings/usw1 -s core-usw1-security
+      - command: terraform deploy guardduty/org-settings/usw2 -s core-usw2-security
+      - command: terraform deploy guardduty/org-settings/aps1 -s core-aps1-security
+      - command: terraform deploy guardduty/org-settings/apne3 -s core-apne3-security
+      - command: terraform deploy guardduty/org-settings/apne2 -s core-apne2-security
+      - command: terraform deploy guardduty/org-settings/apne1 -s core-apne1-security
+      - command: terraform deploy guardduty/org-settings/apse1 -s core-apse1-security
+      - command: terraform deploy guardduty/org-settings/apse2 -s core-apse2-security
+      - command: terraform deploy guardduty/org-settings/cac1 -s core-cac1-security
+      - command: terraform deploy guardduty/org-settings/euc1 -s core-euc1-security
+      - command: terraform deploy guardduty/org-settings/euw1 -s core-euw1-security
+      - command: terraform deploy guardduty/org-settings/euw2 -s core-euw2-security
+      - command: terraform deploy guardduty/org-settings/euw3 -s core-euw3-security
+      - command: terraform deploy guardduty/org-settings/eun1 -s core-eun1-security
+      - command: terraform deploy guardduty/org-settings/sae1 -s core-sae1-security
+
+  destroy/aws-config/global-collector:
+    description: Destroy AWS Config from accounts that require superadmin to apply
+    steps:
+      # Note that central region 'use1' and central account 'security' should be the last one destroyed
+      - command: terraform destroy aws-config-use2 -s core-use2-security -auto-approve
+      - command: terraform destroy aws-config-usw1 -s core-usw1-security -auto-approve
+      - command: terraform destroy aws-config-usw2 -s core-usw2-security -auto-approve
+      - command: terraform destroy aws-config-aps1 -s core-aps1-security -auto-approve
+      - command: terraform destroy aws-config-apne3 -s core-apne3-security -auto-approve
+      - command: terraform destroy aws-config-apne2 -s core-apne2-security -auto-approve
+      - command: terraform destroy aws-config-apne1 -s core-apne1-security -auto-approve
+      - command: terraform destroy aws-config-apse1 -s core-apse1-security -auto-approve
+      - command: terraform destroy aws-config-apse2 -s core-apse2-security -auto-approve
+      - command: terraform destroy aws-config-cac1 -s core-cac1-security -auto-approve
+      - command: terraform destroy aws-config-euc1 -s core-euc1-security -auto-approve
+      - command: terraform destroy aws-config-euw1 -s core-euw1-security -auto-approve
+      - command: terraform destroy aws-config-euw2 -s core-euw2-security -auto-approve
+      - command: terraform destroy aws-config-euw3 -s core-euw3-security -auto-approve
+      - command: terraform destroy aws-config-eun1 -s core-eun1-security -auto-approve
+      - command: terraform destroy aws-config-sae1 -s core-sae1-security -auto-approve
+      - command: terraform destroy aws-config-use1 -s core-use1-security -auto-approve
+
+  deploy/audit-manager-bucket:
+    description: Deploy bucket to hold Audit Manager finders
+    steps:
+      - command: terraform deploy s3-bucket/audit-manager -s core-use1-security
+
+  deploy/route53-resolver-dns-firewall-buckets:
+    description: Deploy Route53 Firewall S3 Buckets
+    steps:
+      - command: terraform deploy route53-resolver-dns-firewall-logs -s plat-use1-dev
+      - command: terraform deploy route53-resolver-dns-firewall-logs -s plat-use1-prod
+      - command: terraform deploy route53-resolver-dns-firewall-logs -s plat-use1-sandbox
+      - command: terraform deploy route53-resolver-dns-firewall-logs -s plat-use1-staging
+
+  deploy/route53-resolver-dns-firewall:
+    description: Deploy Route53 Firewall
+    steps:
+      - command: terraform deploy route53-resolver-dns-firewall/dev -s plat-use1-dev
+      - command: terraform deploy route53-resolver-dns-firewall/prod -s plat-use1-prod
+      - command: terraform deploy route53-resolver-dns-firewall/sandbox -s plat-use1-sandbox
+      - command: terraform deploy route53-resolver-dns-firewall/staging -s plat-use1-staging
+
+  deploy/aws-shield:
+    description: Deploys AWS Shield
+    steps:
+      - command: terraform deploy aws-shield -s plat-use1-dev
+      - command: terraform deploy aws-shield -s plat-use1-prod
+      - command: terraform deploy aws-shield -s plat-use1-sandbox
+      - command: terraform deploy aws-shield -s plat-use1-staging
+
+  deploy/aws-inspector2/step1:
+    description: Configure AWS Delegated Administrator account across all regions for AWS Inspector
+    steps:
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/use1 -s core-use1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/use2 -s core-use2-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/usw1 -s core-usw1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/usw2 -s core-usw2-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/aps1 -s core-aps1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/apne3 -s core-apne3-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/apne2 -s core-apne2-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/apne1 -s core-apne1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/apse1 -s core-apse1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/apse2 -s core-apse2-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/cac1 -s core-cac1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/euc1 -s core-euc1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/euw1 -s core-euw1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/euw2 -s core-euw2-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/euw3 -s core-euw3-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/eun1 -s core-eun1-root
+      - command: terraform deploy aws-inspector2/delegate-orgadmin/sae1 -s core-sae1-root
+
+  deploy/aws-inspector2/step2:
+    description: Deploy to the Delegated Administrator account to establish organization wide configuration
+    steps:
+      # There is a bug that tries to deploy Lambda Code scanning even though it's not enabled
+      # https://github.com/hashicorp/terraform-provider-aws/issues/34039
+      # For now, we'll enable Inspector only in regions that support Lambda Code scanning
+      - command: terraform deploy aws-inspector2/org-settings/use1 -s core-use1-security
+      - command: terraform deploy aws-inspector2/org-settings/use2 -s core-use2-security
+      - command: terraform deploy aws-inspector2/org-settings/usw2 -s core-usw2-security
+      - command: terraform deploy aws-inspector2/org-settings/apne1 -s core-apne1-security
+      - command: terraform deploy aws-inspector2/org-settings/apse1 -s core-apse1-security
+      - command: terraform deploy aws-inspector2/org-settings/apse2 -s core-apse2-security
+      - command: terraform deploy aws-inspector2/org-settings/euc1 -s core-euc1-security
+      - command: terraform deploy aws-inspector2/org-settings/euw1 -s core-euw1-security
+      - command: terraform deploy aws-inspector2/org-settings/euw2 -s core-euw2-security
+      - command: terraform deploy aws-inspector2/org-settings/eun1 -s core-eun1-security

@@ -45,14 +45,16 @@ jobs:
       - "runs-on=${{ github.run_id }}"
       - "runner=terraform"
       - "tag=${{ inputs.component }}-${{ inputs.stack }}"
-      - "private=false"
+      - "private=true"
 
     steps:
       - uses: runs-on/action@v1
       - uses: unfor19/install-aws-cli-action@v1
 
       - name: Apply Atmos Component
-        uses: cloudposse/github-action-atmos-terraform-apply@v4
+        uses: cloudposse/github-action-atmos-terraform-apply@v7
+        env:
+          ATMOS_PROFILE: "github-apply"
         with:
           # Atmos Pro args
           component: ${{ inputs.component }}

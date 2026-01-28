@@ -1,0 +1,71 @@
+---
+title: "Create Account Root Users"
+sidebar_label: "Create Account Root Users"
+sidebar_position: 20
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import Note from '@site/src/components/Note';
+
+<Intro>
+This tutorial explains how to create and configure root user credentials for individual AWS accounts. With centralized root access enabled, this is typically not required for member accounts.
+</Intro>
+
+## Do You Need Per-Account Root Credentials?
+
+With [centralized root access](/layers/identity/centralized-root-access/) enabled, member accounts do not require individual root credentials. The management account can perform privileged root operations on any member account using the `RootAccess` permission set.
+
+**You only need per-account root credentials if:**
+
+<Steps>
+1. You have not enabled centralized root access
+1. You need to perform recovery operations that cannot be done through centralized root access
+1. Compliance requirements mandate individual root credentials for each account
+</Steps>
+
+:::tip Recommended Approach
+For most organizations, we recommend using [centralized root access](/layers/identity/centralized-root-access/) instead of managing individual root credentials for each account. This reduces operational overhead and improves security.
+:::
+
+## Creating Root User Credentials
+
+If you need to create root user credentials for an account, follow these steps for each account:
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Reset the Root User Password
+
+    <Steps>
+    1. Attempt to log in to the AWS console as a "root user" using the account's email address
+    1. Click the "Forgot password?" link
+    1. You will receive a password reset link via email (forwarded to your shared Slack channel if configured)
+    1. Click the link and enter a new password
+
+       <Note title="Tip">
+       Use 1Password to create a password 26-38 characters long, including at least 3 of each class of character: lower case, uppercase, digit, and symbol
+       </Note>
+
+    1. Save the email address and generated password as web login credentials in 1Password
+    1. Record the account number in a separate field of the 1Password item (optional but recommended)
+    </Steps>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Configure MFA
+
+    <Steps>
+    1. Log in to the AWS console using the new password
+    1. Choose "My Security Credentials" from the account dropdown menu
+    1. Set up Multi-Factor Authentication (MFA) to use a Virtual MFA device
+    1. Save the MFA TOTP key in 1Password using 1Password's "One-Time Password" field
+    1. Enter the generated MFA codes in AWS to verify the MFA device
+    1. Save the Virtual MFA ARN in the same 1Password entry
+    </Steps>
+  </Step>
+</Steps>
+
+## References
+
+- [Centralized Root Access](/layers/identity/centralized-root-access/)

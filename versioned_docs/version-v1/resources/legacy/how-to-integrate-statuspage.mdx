@@ -1,0 +1,63 @@
+---
+title: "Provision Status Page"
+sidebar_position: 100
+---
+
+## Problem
+
+Statuspage provides either a private or public endpoint that shows incidents relating to SLOs. With an internal page, developers and engineers within an organization can see any incidents that are affecting SLOs. With a public page, users can see these incidents as well, which means that if they are experiencing issues with the organization’s services, they can validate that the issue is indeed acknowledged and is being remediated. For Statuspage to work seamlessly, it needs to be updated it automatically.
+
+## Solution
+
+:::tip
+Create Statuspage Components in relation to SLOs, integrate OpsGenie with Statuspage, and then create OpsGenie Integration Actions to tag Datadog Synthetics alerts when they come in from Datadog, such that Statuspage will create incidents for its corresponding components.
+
+:::
+
+### Use of Datadog Synthetics Alerts
+Datadog Synthetics are the preferable Datadog alerts to integrate with OpsGenie and Statuspage. This is because Datadog Synthetics are directly related to Datadog SLOs, and because Datadog Synthetics tests check for uptime, which is closer to any disruption in functionality that a user might experience, when compared to things such as Kubernetes pods being down (Datadog Monitors). This matches the “alert at the faucet” principle described in the [Google SRE Handbook](https://sre.google/sre-book/table-of-contents/).
+
+In order for these Datadog alerts to affect Statuspage components, a `cmp_[Component Name]:[Component Status]` tag must be set in the Datadog Synthetics.
+
+For Datadog Synthetics, the component status should be either `partial_outage` or `major_outage`. It’s safer to choose the former when in doubt, because usually these components are part of larger system, and hence their outage is only a partial outage. The Major Outage status in Statuspage can be set for a component by an operator manually, at their discretion, whenever it is necessary to convey a major service disruption.
+
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.53.52@2x-20220302-125417.png" /><br/>
+
+For example, within `datadog-synthetics/catalog/example-api.yaml`:
+
+```
+example-api:
+  name: "Example API"
+  message: "Example API is not reachable"
+  type: api
+  subtype: http
+  tags:
+    managed-by: Terraform
+    tenant: conch
+    "cmp_Example API": partial_outage
+...
+```
+
+### Integrate OpsGenie with Statuspage
+Follow the official [documentation for integrating OpsGenie and Statuspage](https://support.atlassian.com/opsgenie/docs/integrate-opsgenie-with-statuspage/). This enables bi-directional communication between OpsGenie and Statuspage. Once the two are integrated, configure the Statuspage Integration as follows:
+
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.11.32@2x-20220302-121138.png" /><br/>
+
+This step is done via “ClickOps”, because there is no Terraform resource for managing the Statuspage integration.
+
+The aforementioned settings allow for the Statuspage incident to be updated when the alert is modified on the OpsGenie side.
+
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.03.29@2x-20220302-123033.png" /><br/>
+
+Once the alert is closed in OpsGenie, the corresponding event is resolved in Statuspage.
+
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.03.45@2x-20220302-121407.png" /><br/>
+
+### Create OpsGenie Integration Actions for Datadog Synthetics Alerts
+In order for the Statuspage integration to function correctly, Integration Actions must be in place to clean up the alert message and description, and also prevent Datadog from inserting a large number of tags (in particular, since we are ) into the alert that will cause the tag count limit to be exceeded and preventing the Statuspage integration
+
+<img src="/assets/refarch/cleanshot-2022-03-02-at-14.15.18@2x-20220302-121525.png" /><br/>
+
+This should not be manually configured via “ClickOps”, and is instead configured using the `opsgenie-team` component (`integration` submodule).
+
+

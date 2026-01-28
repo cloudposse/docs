@@ -49,6 +49,33 @@ certain regions receive platform infrastructure updates slower than others. Also
 [Local Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#AWS_Local_Zones) (e.g.
 `us-west-2-lax-1a`) which operate a subset of AWS services.
 
+See [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) for
+a complete breakdown of service availability by region.
+
+### Reference Architecture Component Availability
+
+Beyond standard AWS services, certain components in the reference architecture have their own regional constraints that
+should factor into your primary region decision.
+
+#### RunsOn (Self-Hosted GitHub Runners)
+
+[RunsOn](/layers/github-actions/runs-on/) is our recommended solution for self-hosted GitHub runners. It relies on
+[AWS App Runner](https://aws.amazon.com/apprunner/), which is only available in a subset of AWS regions:
+
+- `us-east-1`, `us-east-2`, `us-west-2`
+- `eu-central-1`, `eu-west-1`, `eu-west-2`, `eu-west-3`
+- `ap-south-1`, `ap-southeast-1`, `ap-southeast-2`, `ap-northeast-1`
+
+Notably, **`us-west-1` does not support App Runner**, and therefore RunsOn cannot be deployed there directly.
+
+If your primary region doesn't support App Runner but you still want to use that region, you'll need to deploy RunsOn
+in a supported region and connect it to your primary region. We recommend using Transit Gateway with a cross-region
+peering connection for this, though other connectivity options exist. This adds approximately **$80/month** in Transit
+Gateway cross-region data transfer costs.
+
+For most deployments, we recommend choosing a primary region that supports App Runner to avoid this additional
+complexity and cost.
+
 ### Instance Types
 
 Not all instance types are available in all regions

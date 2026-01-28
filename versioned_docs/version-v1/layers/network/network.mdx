@@ -1,0 +1,116 @@
+---
+title: "Network and DNS"
+sidebar_label: "Network and DNS"
+sidebar_class_name: hidden
+description: "Build a robust, scalable AWS Network and DNS architectures"
+---
+import ReactPlayer from "react-player";
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+
+<Intro>
+  Learn Cloud Posse’s approach to designing robust and scalable Network and DNS architectures on AWS. We discuss our solutions to common challenges in network design, focusing on maintainability, security, and scalability. We cover essential topics such as account isolation, connecting accounts using Transit Gateway, deploying AWS Client VPN for network access, and differentiating between service and vanity domains.
+</Intro>
+
+This document is intended to present Cloud Posse's approach to designing Network and DNS architectures. The contents of this document assume that the reader is familiar with the basics of [networking and content delivery services in AWS](https://aws.amazon.com/products/networking/).
+
+<figure>
+  <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/network-and-dns.mp4" />
+  <figcaption>AI generated voice</figcaption>
+</figure>
+
+## The Problem
+
+There is no single solution for Network and DNS architecture. Ultimately, the right network architecture may come down to your individual business needs. Yet often too much thought in design leads to snowflake designs that are specific to a given business but are entirely unique, overly complex, and difficult to maintain.
+
+However, all network designs have a fundamental set of requirements that we can define. All networks need some private subnets and some public subnets. All networks need to be able to restrict access and enforce boundaries externally and internally, and finally all networks need some way to discover services inside the network.
+
+When it comes to DNS, often there is no design consideration for domain management. Companies may have hundreds or
+thousands of marketing domains, e.g. for SEO, and yet have no sane method for services to discover each other using DNS. At the same time, DNS needs some of the same boundaries as the network: services should be isolated and secure.
+
+Furthermore, networking in a cloud environment is entirely software defined. We have the ability to do things that would be too tedious or too difficult to achieve in physical environments. Companies still largely rely on IPv4 networks, which have limited IP space, and we need to ensure that how we allocate networks can scale with your business and even integrate with other third party providers.
+
+Networking and content delivery is far from trivial. There are countless designs and architectures that accomplish
+similar outcomes. Ultimately our goal is to ensure that whatever we implement will enable your success.
+
+## Our Solution
+
+As with all infrastructure design, Cloud Posse has an opinionated solution. We aim to reduce complexity where possible, while providing secure and robust networks that are maintainable and scalable.
+
+We have identified the most common and reusable pattern for network architecture, so that we can define reusable
+building blocks for a network. We've standardized the definition of a VPC, provided distinction between marketing and
+service domains for discovering services, and created a secure and reliable way for services to communicate with each
+other across the accounts.
+
+<img
+  src="https://lucid.app/publicSegments/view/8b69815f-3b33-4ea1-8abb-cf3c52ae704c/image.png"
+  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
+/>
+<br />
+
+### Account Isolation
+
+As a foundational design with the AWS Organization, we have already isolated resources into accounts. This separation creates a physical boundary between resources in AWS, including VPCs. Therefore, we can deploy a single or multiple VPCs in an account and guarantee that resources in those subnets will not be able to access resources in other accounts.
+
+Because of this design, we recommend deploying a single VPC per account (that needs a network). Production resources
+will only live in the VPC in the `plat-prod` account, and unless connected, no other VPC will be able to access those
+resources. Similarly, you could deploy a `data` account (or several) with a VPC to isolate data resources further.
+
+### Connecting Accounts
+
+Now that we have separated networks in each account, we need to be able to connect the account networks as required. We
+do this with Transit Gateway. We deploy a Transit Gateway hub and route table to the central Network account, and then
+deploy Transit Gateway spokes to all other accounts. The route table in the Network account specifies which accounts are
+able to access others, and the Transit Gateway spokes provide that connection.
+
+### Accessing the Network
+
+In order for a user to connect to the Network, we deploy an AWS Client VPN. This VPN is deployed to the Network account,
+which already has access to all other account networks. Then we define a set of rules for the VPN itself to specify
+where we want this VPN to be able to connect.
+
+### Service Domains
+
+We recommend deploying a Service Domain in the DNS account and then connecting all app (platform) accounts to this
+service domain via subdomains. We delegate a single Host Zone for each account's subdomain. Since DNS is global,
+multi-resource records or resources in other regions will all be included in this same zone. This is why we consider the
+`dns` components as global. Furthermore, any services added has a logically defined record in the delegated zone.
+
+Consider the diagram below. Here `acme-svc.com` would be deployed with `dns-primary` in the DNS account, and all
+subdomains would be deployed in the respective app accounts with `dns-delegated` and use logically defined and
+hierarchical subdomains. For example, `echo.use1.dev.plat.acme-svc.com`, `echo.use1.prod.plat.acme-svc.com`, and
+`echo.use1.auto.core.acme-svc.com`. These domains are logically creating following the service, region, stage, tenant,
+and then finally the service domain.
+
+<img
+  src="https://lucid.app/publicSegments/view/ce2727a8-09a3-43d6-8bd9-47222bba7c1e/image.png"
+  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
+/>
+<br />
+
+_The `echo.use1` resource record (CNAME) is created in the `dev.plat` hosted zone with `dns-delegated`, which is
+delegated from primary hosted zone, acme-svc.com, in the DNS account with `dns-primary`_
+
+### Vanity Domains
+
+Vanity domains are commonly referred to as "branded" or "marketing" domains and are used to meet the requirements of
+your individual business. A business may have any number of vanity domains as required, and that list of domains will
+grow as your business expands.
+
+Unlike service domains, we do not recommend delegatation on vanity domains. We do not want to share stages for vanity
+domains, because we must ensure total isolation between domains in each stage. To do this, we recommend deploying at
+least one domain per app account. By doing so, we can create symmetry between prod and non-prod environments and avoid
+cross-site scripting. This enables properly testing of an apex or root domain, so that we can fully validate a
+configuration before deploying to production.
+
+In the diagram below, we have many domains deploy across the organization. The DNS account holds only the root service
+domain deployed by `dns-primary`. All other stages control their respective vanity domains with a single `dns-primary`
+component. For example, we deploy a single vanity domain to dev, `acme-dev.com`, single vanity domain to staging,
+`acme-staging.com`, and many vanity domains to production, `acme.com`, `acme-prod.com`, `acme-marketing.com`, or even
+`alternate-brand.com`. These domains can be whatever your business requires.
+
+<img
+  src="https://lucid.app/publicSegments/view/2240707a-a123-4c3c-98ba-6fd0d4e7b143/image.png"
+  style={{ width: "100%", minHeight: "480", height: "auto", margin: "10", position: "relative" }}
+/>
+<br />

@@ -1,0 +1,99 @@
+---
+title: "Decide on DNS Registrar"
+sidebar_label: "DNS Registrar"
+description: Choose where to register domains for your AWS infrastructure
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+
+When setting up DNS for the reference architecture, you need to decide where to register your domains. This is separate from where DNS is hosted—Route 53 will host your zones, but the domain registration (the purchase and ownership) can be done through various registrars.
+
+We recommend registering [dedicated vended domains per stage](/layers/network/design-decisions/decide-on-vanity-branded-domain), such as `acme-prod.com`, `acme-staging.com`, and `acme-dev.com`. This is practical guidance for companies with a simple dev/staging/prod SDLC. If you have a large number of stages or accounts, adapt accordingly.
+
+## Option 1: Use AWS Route 53 Registrar (Recommended)
+
+Register domains directly through AWS Route 53 in the `dns` account. This is our recommended approach for most organizations.
+
+- **Fully AWS-native** — Domain registration and DNS hosting in one place
+- **Consolidated billing** — Domain costs appear on your AWS bill (requires a credit card on the account)
+- **No lock-in** — Standard domain transfers available if you change your mind later
+- **No downsides** — There are no real trade-offs compared to third-party registrars
+
+The `dns` account (see [Decide on AWS Account Flavors and Organizational Units](/layers/accounts/design-decisions/decide-on-aws-account-flavors-and-organizational-units)) acts as your centralized registrar. This keeps domain ownership consolidated and simplifies management.
+
+### Domain Registration vs DNS Delegation
+
+Domain registration (ownership) is different from DNS (nameserver delegation). Organizations often maintain domain portfolios for multiple purposes: marketing domains, SEO, trademark defense, and branded properties. These portfolios can get large.
+
+Once you own a domain, the NS records can be delegated to any account:
+
+- **[Vanity domains](/layers/network/design-decisions/decide-on-vanity-branded-domain)** — We recommend delegating each stage's TLD (e.g., `acme-prod.com`, `acme-staging.com`) to the corresponding account. This lets each environment manage its own TLD, avoiding cross-account complexity.
+- **[Service discovery domains](/layers/network/design-decisions/decide-on-service-discovery-domain)** — There's typically one domain (e.g., `acme.net`) with zones delegated to each member account (e.g., `prod.acme.net`, `staging.acme.net`). This avoids ambiguity of ownership while enabling account-level DNS management.
+
+Centralizing registration in the `dns` account while delegating NS records provides clear ownership without operational bottlenecks. It also creates clear IAM boundaries—you can grant domain management permissions (e.g., to legal, procurement) in the `dns` account while day-to-day DNS operations happen in separate accounts.
+
+## Option 2: Use an Existing Registrar
+
+If you already have a domain portfolio managed elsewhere, you may prefer to keep registration consolidated with your existing registrar.
+
+Common registrars include:
+- **GoDaddy** — Popular general-purpose registrar
+- **Squarespace Domains** — Formerly Google Domains
+- **Cloudflare** — Registrar with integrated CDN and security features
+- **MarkMonitor** — Enterprise-grade registrar for large domain portfolios
+
+This approach makes sense when you have many existing domains and want to avoid managing registrations in multiple places.
+
+## Considerations
+
+### Cloudflare Limitation
+
+:::caution
+
+Cloudflare (non-Enterprise plans) cannot delegate top-level NS records. The apex domain NS always remains on Cloudflare.
+
+:::
+
+This is problematic if you want a fully AWS-native DNS architecture. Your top-level domain would be managed out-of-band, separately from the rest of your infrastructure. For many organizations this is acceptable, but if you want complete control of NS delegation, use Route 53 or another registrar that supports apex NS delegation.
+
+### Enterprise Registrars (MarkMonitor)
+
+Enterprise-scale organizations often use MarkMonitor or similar services to manage large domain portfolios. If your organization uses one of these services:
+
+- Consult your legal department on domain ownership consolidation
+- Consider IP and trademark defense implications
+- Follow your organization's existing domain governance policies
+
+### Terraform Support
+
+The AWS provider includes an `aws_route53domains_registered_domain` resource, but it has significant limitations:
+
+- **Cannot register new domains** — Only manages existing registrations
+- **Cannot import domains** — No `terraform import` support
+- **Limited operations** — Can update nameservers and contact info, but not create or delete registrations
+
+Domain registration is intentionally ClickOps. The reference architecture does not manage domain registration via Terraform—you must register domains manually through the AWS Console or your chosen registrar.
+
+### Route 53 Registrar Prerequisites
+
+If you choose AWS Route 53 as your registrar:
+
+- **The `dns` account must be provisioned first** — You cannot register domains until this account exists
+- **A credit card is required** — Route 53 domain registration requires a credit card added to the account, separate from your regular AWS billing arrangement (e.g., invoicing, consolidated billing)
+
+### Legal Considerations
+
+We recommend checking with your legal department on where to consolidate domain ownership. Domain registration has implications for:
+
+- IP and trademark defense
+- Corporate governance requirements
+- Regulatory compliance
+
+## Related
+
+- [Decide on Vanity (Branded) Domains](/layers/network/design-decisions/decide-on-vanity-branded-domain)
+- [Decide on Service Discovery Domain](/layers/network/design-decisions/decide-on-service-discovery-domain)
+- [Decide on AWS Account Flavors and Organizational Units](/layers/accounts/design-decisions/decide-on-aws-account-flavors-and-organizational-units)
+- [AWS Route 53 Domain Registration](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html)

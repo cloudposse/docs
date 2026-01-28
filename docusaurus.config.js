@@ -147,7 +147,7 @@ async function createConfig() {
             routeBasePath: '/',
             sidebarPath: require.resolve('./sidebars.js'),
             editUrl: ({ versionDocsDirPath, docPath, locale }) => {
-              return `https://github.com/cloudposse/docs/edit/master/docs/${docPath}`;
+              return `https://github.com/cloudposse/docs/edit/master/${versionDocsDirPath}/${docPath}`;
             },
             exclude: ['README.md'],
             showLastUpdateTime: true,
@@ -156,7 +156,21 @@ async function createConfig() {
             // There are many from components and GHA, it's too much noise without being helpful
             onInlineTags: 'ignore',
             tags: 'tags.yml',
-            include: ['**/*.md', '**/*.mdx']
+            include: ['**/*.md', '**/*.mdx'],
+            // Versioning configuration - see internal/docs-versioning.md for how to create new versions
+            includeCurrentVersion: true,
+            // Custom paths for versioned docs
+            path: 'docs',
+            versions: {
+              current: {
+                label: 'Latest',
+                path: '',
+              },
+              v1: {
+                label: 'v1',
+                path: 'v1',
+              },
+            },
           },
           blog: {
             showReadingTime: false,
@@ -206,17 +220,20 @@ async function createConfig() {
           },
           items: [
             {
-              to: '/learn',
+              type: 'doc',
+              docId: 'learn/concepts',
               position: 'left',
               label: 'Learn',
             },
             {
-              to: '/reference',
+              type: 'doc',
+              docId: 'reference/reference',
               position: 'left',
               label: 'Reference',
             },
             {
-              to: '/community',
+              type: 'doc',
+              docId: 'community/community',
               label: 'Community',
               position: 'left',
             },
@@ -224,6 +241,11 @@ async function createConfig() {
               to: '/blog',
               label: 'Blog',
               position: 'left',
+            },
+            {
+              type: 'docsVersionDropdown',
+              position: 'right',
+              dropdownActiveClassDisabled: true,
             },
             {
               type: 'search',
@@ -235,7 +257,8 @@ async function createConfig() {
               position: 'right',
             },
             {
-              to: '/support',
+              type: 'doc',
+              docId: 'support/index',
               label: 'Get Support',
               position: 'right',
               className: 'button button--primary navbar-cta-button'
@@ -282,7 +305,7 @@ async function createConfig() {
                 to: '/learn/',
               },
               {
-                label: 'Reference',
+                label: 'Reference Architecture',
                 to: '/reference/',
               }
             ],
@@ -295,7 +318,7 @@ async function createConfig() {
               },
               {
                 label: 'Slack Community',
-                to: '/community/slack',
+                to: '/community/slack/',
               },
               {
                 label: 'Slack Archives',
@@ -311,7 +334,7 @@ async function createConfig() {
             items: [
               {
                 label: 'Support',
-                to: '/support',
+                to: '/support/',
               },
               {
                 label: 'Our GitHub',

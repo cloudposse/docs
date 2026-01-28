@@ -1,0 +1,40 @@
+# Atmos Pro Layer Workflows
+#
+# These workflows are used for the quickstart setup of Atmos Pro integration.
+# They automate the deployment of S3 bucket for plan storage, DynamoDB for
+# plan tracking, and IAM roles for GitOps automation.
+#
+# Documentation: https://docs.cloudposse.com/layers/atmos-pro/
+#
+# Usage:
+#   atmos workflow all -f quickstart/foundation/atmos-pro
+#   atmos workflow deploy -f quickstart/foundation/atmos-pro
+#
+# Prerequisites:
+#   - GitHub OIDC Provider must be deployed (see identity layer)
+#
+# Available workflows:
+#   - all: Deploy complete Atmos Pro integration
+#   - vendor: Pull required components
+#   - deploy: Deploy all GitOps infrastructure
+#
+workflows:
+  all:
+    description: Run all Atmos Pro workflows
+    steps:
+      - command: workflow vendor -f quickstart/foundation/atmos-pro
+      - command: workflow deploy -f quickstart/foundation/atmos-pro
+
+  vendor:
+    description: Vendor Atmos Pro required components.
+    steps:
+      - command: vendor pull --component iam-role
+      - command: vendor pull --component dynamodb
+      - command: vendor pull --component s3-bucket
+
+  deploy:
+    description: Deploy Atmos Pro infrastructure (S3, DynamoDB, IAM role)
+    steps:
+      - command: terraform deploy gitops/s3-bucket --stack core-use1-auto
+      - command: terraform deploy gitops/dynamodb --stack core-use1-auto
+      - command: terraform deploy iam-role/gitops --stack core-gbl-auto

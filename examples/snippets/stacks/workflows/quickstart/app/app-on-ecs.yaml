@@ -1,22 +1,11 @@
 workflows:
-  all:
-    steps:
-      - command: workflow verify/github-oidc-providers -f quickstart/app/app-on-ecs
-      - command: workflow deploy/app-on-ecs -f quickstart/app/app-on-ecs
-
-  verify/github-oidc-providers:
+  deploy:
     description: |
-      This workflow ensures all Github OIDC Provider Configuration deployed.
+      Deploy Terraform state backend and IAM role for example-app-on-ecs
     steps:
-      - command: workflow deploy/github-oidc-provider -f quickstart/foundation/github
-
-  deploy/app-on-ecs:
-    description: |
-      This workflow deploys `app-on-ecs` stacks
-    steps:
-      - command: terraform deploy ecs-services/example-app-on-ecs -s plat-use1-sandbox
-      - command: terraform deploy ecs-services/example-app-on-ecs/dev -s plat-use1-dev
-      - command: terraform deploy ecs-services/example-app-on-ecs/qa1 -s plat-use1-dev
-      - command: terraform deploy ecs-services/example-app-on-ecs/qa2 -s plat-use1-dev
-      - command: terraform deploy ecs-services/example-app-on-ecs -s plat-use1-staging
-      - command: terraform deploy ecs-services/example-app-on-ecs -s plat-use1-prod
+      - command: terraform deploy tfstate-backend-apps -s plat-gbl-dev
+      - command: terraform deploy tfstate-backend-apps -s plat-gbl-staging
+      - command: terraform deploy tfstate-backend-apps -s plat-gbl-prod
+      - command: terraform deploy iam-role/example-app-on-ecs -s plat-gbl-dev
+      - command: terraform deploy iam-role/example-app-on-ecs -s plat-gbl-staging
+      - command: terraform deploy iam-role/example-app-on-ecs -s plat-gbl-prod

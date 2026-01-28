@@ -1,0 +1,177 @@
+---
+title: "Reference Architecture v2: Deprecating Account-Map"
+slug: deprecate-account-map
+authors: [milldr]
+tags: [reference-architecture, identity, deprecation]
+date: 2025-12-19
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+We're releasing Version 2 of the Cloud Posse Reference Architecture, which removes the `account-map` component and related identity components in favor of a simpler, more flexible approach using Atmos Auth profiles and static configuration.
+</Intro>
+
+<!--truncate-->
+
+## What's Changing
+
+Version 2 of the Reference Architecture removes several components that were central to Version 1:
+
+| Removed Component | Replacement |
+|-------------------|-------------|
+| `account-map` | Static `account_map` variable in stack configuration |
+| `aws-teams` | AWS SSO Permission Sets |
+| `aws-team-roles` | AWS SSO Permission Sets |
+| `github-oidc-role` | `iam-role` component with GitHub OIDC support |
+| Leapp | Atmos Auth profiles |
+
+Additionally, the `core-identity` account is no longer used. Identity management is now centralized in `core-root`.
+
+## Why We Made This Change
+
+### Reducing Terraform Dependencies
+
+The `account-map` component was a critical dependency that had to be deployed before most other components. It required careful ordering during cold starts and created circular dependency challenges. By replacing it with a static YAML configuration, we eliminate this complexity entirely.
+
+This change also better supports **brownfield deployments** and **alternate architectures** where the full reference architecture isn't being adopted.
+
+### Simplifying Authentication
+
+Version 1 relied on a complex web of IAM roles created by `aws-teams` and `aws-team-roles`, which users accessed via Leapp. Version 2 uses:
+
+<Steps>
+  1. **AWS SSO Permission Sets** — Native AWS Identity Center integration for human users
+  1. **Atmos Auth profiles** — Simple profile-based authentication that replaces Leapp
+  1. **`iam-role` component** — Flexible IAM roles for machine users (CI/CD)
+</Steps>
+
+This also removes our dependency on Leapp, which is deprecated.
+
+### Better Separation of Concerns
+
+With static account mappings defined in YAML, configuration is:
+
+<Steps>
+  1. **Visible** — No need to query Terraform state to see account IDs
+  1. **Auditable** — Changes are tracked in version control
+  1. **Portable** — Works without access to Terraform state backend
+</Steps>
+
+## Version 2 Architecture
+
+### For Human Users
+
+Human users authenticate via AWS SSO Permission Sets, accessed through Atmos Auth profiles:
+
+```bash
+# Select your profile based on your role
+export ATMOS_PROFILE=devops
+
+# Authenticate to AWS
+atmos auth login
+
+# Run Terraform commands
+atmos terraform plan vpc -s plat-ue1-dev
+```
+
+Profiles map to different Permission Sets based on user role and target environment:
+
+| Profile | Core Accounts | Dev/Sandbox | Staging/Prod |
+|---------|---------------|-------------|--------------|
+| `managers` | TerraformApplyAccess | TerraformApplyAccess | TerraformApplyAccess |
+| `devops` | TerraformApplyAccess | TerraformApplyAccess | TerraformApplyAccess |
+| `developers` | TerraformPlanAccess | TerraformApplyAccess | TerraformPlanAccess |
+
+### For Machine Users (CI/CD)
+
+GitHub Actions and other CI/CD systems use the `iam-role` component with GitHub OIDC:
+
+<Steps>
+  1. **`iam-role/terraform`** — Full admin access for applying changes
+  1. **`iam-role/planner`** — Read-only access for planning
+  1. **`iam-role/gitops`** — Access to GitOps resources (S3, DynamoDB)
+</Steps>
+
+### Static Account Mapping
+
+Instead of the `account-map` component, account IDs are defined statically in your stack configuration:
+
+```yaml
+# stacks/orgs/acme/_defaults.yaml
+terraform:
+  vars:
+    account_map:
+      root_account_account_name: core-root
+      audit_account_account_name: core-audit
+      full_account_map:
+        core-root: "123456789012"
+        core-artifacts: "234567890123"
+        core-audit: "345678901234"
+        core-auto: "456789012345"
+        plat-dev: "567890123456"
+        plat-staging: "678901234567"
+        plat-prod: "789012345678"
+```
+
+## Determining Your Version
+
+Not sure which version you're using? Check for these components in your infrastructure repository:
+
+**Version 1 indicators:**
+
+<Steps>
+  1. `components/terraform/account-map/` exists
+  1. `components/terraform/aws-teams/` exists
+  1. `components/terraform/aws-team-roles/` exists
+</Steps>
+
+**Version 2 indicators:**
+
+<Steps>
+  1. `profiles/` directory with Atmos Auth profiles
+  1. Static `account_map` in `stacks/orgs/<namespace>/_defaults.yaml`
+  1. `components/terraform/iam-role/` exists
+</Steps>
+
+For detailed guidance, see [Version Identification](/resources/version-identification/).
+
+## Migration Path
+
+Migrating from Version 1 to Version 2 is a significant undertaking. The high-level steps are:
+
+<Steps>
+  1. **Set up AWS SSO Permission Sets** — Configure TerraformPlanAccess, TerraformApplyAccess, and TerraformStateAccess
+  1. **Create Atmos Auth profiles** — Define profiles for managers, devops, developers, and github
+  1. **Deploy `iam-role` components** — Set up terraform and planner roles in each account
+  1. **Create static account map** — Add account IDs to your org defaults
+  1. **Update component vendoring** — Use new mixins that don't require account-map
+  1. **Remove Version 1 components** — Delete account-map, aws-teams, and aws-team-roles
+</Steps>
+
+:::warning Migration Assistance
+This migration affects core identity and authentication infrastructure. We recommend working with Cloud Posse for migration planning and execution. Contact us via the [SweetOps Slack](https://cloudposse.com/slack) or [support channels](/support/).
+:::
+
+## Documentation
+
+This documentation site now supports versioned documentation:
+
+<Steps>
+  1. **Latest** — Documentation for Version 2 (current)
+  1. **v1** — Documentation for Version 1 with account-map
+</Steps>
+
+Use the version selector in the navigation bar to switch between versions.
+
+For a comprehensive history of how our identity architecture has evolved over time, see [AWS Access Control Evolution](/layers/identity/tutorials/access-control-evolution/).
+
+## Questions?
+
+If you have questions about this change or need migration assistance:
+
+<Steps>
+  1. Join the [SweetOps Slack](https://cloudposse.com/slack) community
+  1. Open a [GitHub Discussion](https://github.com/orgs/cloudposse/discussions)
+  1. Contact Cloud Posse [support](/support/)
+</Steps>

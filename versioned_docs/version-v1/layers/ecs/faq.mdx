@@ -1,0 +1,38 @@
+---
+title: FAQ
+sidebar_label: FAQ
+sidebar_position: 100
+---
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+Frequently asked questions about ECS with Cloud Posse's reference architecture.
+</Intro>
+
+## How do I add a new service to an existing ECS cluster?
+
+Add a new instance of the `ecs-service` component to your stack configuration. The component will automatically detect the ECS cluster and add the service to it.
+
+## How can I add AWS Policies to my ECS Tasks?
+
+Use the `task_policy_arns` to attach policies to individual tasks, this allows those tasks to access AWS resources.
+
+```yaml
+task_policy_arns:
+  - arn:aws:iam::aws:policy/AmazonS3FullAccess
+```
+
+## How can I inject secrets into my ECS Service?
+
+Use the `map_secrets` variable which maps a environment variable key to an SSM param store key. This will inject the value of the SSM param store key into the environment variable.
+
+```yaml
+map_secrets:
+  SECRET_KEY: /my/secret/key
+```
+
+## How can we create Self Hosted Runners for GitHub with ECS?
+
+If we are not deploying EKS for our platform, it doesn't make much sense to configure EKS solely for self-hosted runners. Instead, we deploy the [Philips Labs Action Runners](/layers/github-actions/tutorials/philips-labs-github-runners/) and connect those instances to GitHub.
+
+For more on self-hosted GitHub Runners, see [`github-runners`](/layers/github-actions).

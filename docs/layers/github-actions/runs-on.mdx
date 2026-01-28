@@ -1,51 +1,104 @@
 ---
-title: "Runs On - Self-Hosted Runners"
-sidebar_label: "Runs On"
-sidebar_position: 12
+title: "Setup RunsOn"
+sidebar_label: "Setup RunsOn"
+sidebar_position: 3
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
 import Step from '@site/src/components/Step';
 import StepNumber from '@site/src/components/StepNumber';
-import Admonition from '@theme/Admonition';
+import Note from '@site/src/components/Note';
 import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
 import File from '@site/src/components/File';
+import TaskList from '@site/src/components/TaskList';
 
 <Intro>
-  This guide explains how to set up and manage self-hosted runners using the Runs On component. Self-hosted runners provide more control over the execution environment, allowing you to run workflows on your own infrastructure.
+RunsOn is our recommended solution for self-hosted GitHub runners. It provides zero-infrastructure runner management with simple setup and cost-effective pay-per-use pricing.
 </Intro>
 
-<Admonition type="note">
-  [GitHub-OIDC](/layers/github-actions/github-oidc-with-aws/) is not required to deploy Runs On, but it is required for several components to be deployed on or to via SelfHosted Runners.
-  For example, your runners cannot push to ECR without GitHub-OIDC.
-</Admonition>
+## Why RunsOn?
+
+We evaluated multiple self-hosted runner solutions and recommend RunsOn for most deployments:
+
+<dl>
+<dt>Zero Infrastructure Management</dt>
+<dd>No EC2 instances, Lambda functions, or Kubernetes clusters to maintain. RunsOn handles all infrastructure automatically.</dd>
+
+<dt>Simple Setup</dt>
+<dd>Deploy a single Terraform component, install a GitHub App, and you're ready to go. No complex configurations or ongoing maintenance.</dd>
+
+<dt>Cost Effective</dt>
+<dd>Pay only for compute time you use. Automatic spot instance pricing keeps costs low with no idle infrastructure.</dd>
+
+<dt>No Kubernetes Required</dt>
+<dd>Unlike Actions Runner Controller (ARC), RunsOn works without EKS. Perfect for organizations that don't need Kubernetes.</dd>
+
+<dt>Organization-Wide Configuration</dt>
+<dd>Define runner configurations once in a central `.github` repository and inherit across all repos.</dd>
+</dl>
 
 <KeyPoints title="Quick Start">
-
-1. Vendor the required components
-2. Deploy the Runs On component
-3. Install the GitHub App
-4. Configure your workflows to use the runners
-
+<TaskList>
+- Acquire a RunsOn license
+- Vendor the required components
+- Deploy the RunsOn component
+- Install the GitHub App
+- Configure your workflows to use the runners
+</TaskList>
 </KeyPoints>
+
+## Network Requirements
+
+RunsOn runners need network access to deploy resources in your private network, such as EKS clusters, Aurora databases, or any other VPC-based resources.
+
+With the reference architecture, we deploy RunsOn into the existing VPC in the `core-auto` account. This VPC is already configured with Transit Gateway and has access to the private network across all accounts.
+
+<Note>
+If you opt to deploy RunsOn into a separate VPC, you will need to connect that VPC to Transit Gateway in order to access the private network.
+</Note>
 
 <Steps>
   <Step>
-  ## <StepNumber/> Vendor Runs On Component
+  ## <StepNumber/> Acquire a RunsOn License
 
-  Vendor the required components using the included Atmos workflow:
+  RunsOn requires a license key to operate. We recommend the **Commercial License** for production deployments. A free 15-day trial is available if you need to evaluate RunsOn first.
 
-      <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/github" />
+  **License Options:**
+
+  | License | Cost | Use Case |
+  |---------|------|----------|
+  | Demo | Free (15 days) | Evaluation and testing |
+  | Commercial (recommended) | $300/year | Production deployments |
+  | Sponsorship | $1,500/year | Source code access + dedicated support |
+
+  Non-profit organizations qualify for free non-commercial licenses.
+
+  Once you have your license key, add it to your Atmos stack catalog at `stacks/catalog/runs-on/defaults.yaml` in the `LicenseKey` parameter.
+
+  <Note title="Working with Cloud Posse?">
+  Share your RunsOn license key via 1Password and we'll add it to your stack catalog for you.
+  </Note>
+
+  For more details, see the [RunsOn Pricing](https://runs-on.com/pricing/) page.
 
   </Step>
 
   <Step>
-  ## <StepNumber/> Deploy Runs On Component
+  ## <StepNumber/> Vendor RunsOn Component
 
-  Deploy the Runs On component using the included Atmos workflow:
+  Vendor the required components using the included Atmos workflow:
 
-      <AtmosWorkflow workflow="deploy/runs-on" fileName="quickstart/foundation/github" />
+      <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/runs-on" />
+
+  </Step>
+
+  <Step>
+  ## <StepNumber/> Deploy RunsOn Component
+
+  Deploy the RunsOn component using the included Atmos workflow:
+
+      <AtmosWorkflow workflow="deploy/runs-on" fileName="quickstart/foundation/runs-on" />
 
   </Step>
 
@@ -54,22 +107,28 @@ import File from '@site/src/components/File';
 
   After deployment, follow these steps to install the GitHub App:
 
-  1. Check the Terraform outputs for `RunsOnEntryPoint` 
-  2. Use the provided URL to install the GitHub App 
-  3. Follow the prompts to complete the installation in your GitHub Organization 
-  4. Ensure you have the necessary permissions in GitHub to install the app 
+  <Steps>
+    1. Check the Terraform outputs for `RunsOnEntryPoint`
+    1. Use the provided URL to install the GitHub App
+    1. Follow the prompts to complete the installation in your GitHub Organization
+    1. Ensure you have the necessary permissions in GitHub to install the app
+  </Steps>
 
   </Step>
 
   <Step>
   ### <StepNumber/> Configure Workflows
 
+  <Note>
+  These workflows should already be configured as part of the reference architecture package. You can confirm the following configuration is in place.
+  </Note>
+
   Update your GitHub Actions workflow files to use the self-hosted runners:
 
   ```yaml
   jobs:
     build:
-      runs-on: 
+      runs-on:
         - "runs-on=${{ github.run_id }}"
         - "runner=terraform" # Note `terraform` is a runner group name defined by a RunsOn configuration
         ## If no configuration is present, use
@@ -87,15 +146,13 @@ import File from '@site/src/components/File';
   <Step>
   ### <StepNumber/> (Optional) Setup a RunsOn Repo or Organization Configuration
 
-    In your Repository you can add a file to configure Runs On. This can also extend the configuration for the Organization.
+    In your Repository you can add a file to configure RunsOn. This can also extend the configuration for the Organization.
 
-  <Admonition type="note">
-    <br/>
-    Please note this snippet below is an extremely simplified example
-    <br/>
-    <br/>
-    If you want to see what Cloud Posse uses as a starting point checkout our configuration [here](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml)
-  </Admonition>
+  <Note>
+  This snippet below is an extremely simplified example. If you want to see what Cloud Posse uses as a starting point, checkout our configuration [here](https://github.com/cloudposse/.github/blob/main/.github/runs-on.yml).
+
+  Reference architecture users should see an included default configuration in their `.github` folder in the infrastructure repository.
+  </Note>
 
   Here's a sample configuration. We recommend storing this in a centralized `.github` repository so you can define a shared `runs-on` configuration that you can use across all repositories, without duplicating it in each one. This is especially useful when managing many repositories.
   <File title="MyOrg/.github/.github/runs-on.yml">
@@ -115,7 +172,7 @@ import File from '@site/src/components/File';
     ```
   </File>
 
-  To use your organization's shared configuration in an individual repository, you need to define a local configuration that uses the `_extends` keyword to inherit from the centralized setup — it won’t be applied automatically.
+  To use your organization's shared configuration in an individual repository, you need to define a local configuration that uses the `_extends` keyword to inherit from the centralized setup — it won't be applied automatically.
   <File title="MyOrg/MyInfraRepo/.github/runs-on.yml">
     ```yaml
     # See https://runs-on.com/configuration/repo-config/
@@ -134,4 +191,4 @@ import File from '@site/src/components/File';
 
 First determine if the Workflow or the Runner is the issue, sometimes the workflow doesn't kick off because it is on a feature branch and not on the default.
 
-If the workflow kicks off but is waiting on a runner, checkout [Runs On Troubleshooting](https://runs-on.com/guides/troubleshoot/) as they have great docs on figuring out why a runner is not available.
+If the workflow kicks off but is waiting on a runner, checkout [RunsOn Troubleshooting](https://runs-on.com/guides/troubleshoot/) as they have great docs on figuring out why a runner is not available.

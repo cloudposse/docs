@@ -1,0 +1,91 @@
+---
+title: "Decide on EKS Node Pool Architecture"
+sidebar_label: "Node Pool Architecture"
+refarch_id: REFARCH-236
+description: Decide on the architecture of the EKS node pools
+tags:
+  - design-decision
+---
+
+import Intro from "@site/src/components/Intro";
+import KeyPoints from "@site/src/components/KeyPoints";
+
+Kubernetes has a concept of Node Pools, which are basically pools of computing resources. Node pools are where the
+scheduler dispatches workloads based on the taints/tolerations of nodes and pods.
+
+## Types of Node Pools
+
+At a minimum recommend one node pool per availability zone to work optimally with the cluster autoscaler. 1 Node Group
+per AZ is required by the Kubernetes Cluster Autoscaler to effectively scale up nodes in the appropriate AZs.
+
+- [https://docs.aws.amazon.com/eks/latest/userguide/cluster-autoscaler.html#ca-ng-considerations](https://docs.aws.amazon.com/eks/latest/userguide/cluster-autoscaler.html#ca-ng-considerations)
+
+:::caution **Important**
+
+If you are running a stateful application across multiple Availability Zones that is backed by Amazon EBS volumes and
+using the Kubernetes [Cluster Autoscaler](https://docs.aws.amazon.com/eks/latest/userguide/cluster-autoscaler.html), you
+should configure multiple node groups, each scoped to a single Availability Zone. In addition, you should enable the
+`--balance-similar-node-groups` feature.
+
+:::
+
+After that, we should decide the kinds of node pools. Typically a node pool is associated with an instance type. Also,
+since certain instance types are more expensive than others (e.g. GPU support), creating different pools of resources is
+suggested. We can create pools with multiple cores, high memory, or GPU. There’s no one-size-fits-all approach with
+this. The requirements are determined by your applications. If you don’t know the answer right now, we’ll start with a
+standard node pool and grow from there. This is an easily reversible decision.
+
+## Provisioning of Node Pools
+
+We have a few ways that we can provision node pools.
+
+1. Use
+   [https://github.com/cloudposse/terraform-aws-eks-node-group](https://github.com/cloudposse/terraform-aws-eks-node-group)
+   (Fully-managed)
+
+2. Use
+   [https://github.com/cloudposse/terraform-aws-eks-workers](https://github.com/cloudposse/terraform-aws-eks-workers)
+   (Self-managed in Auto Scale Groups)
+
+3. Use
+   [https://github.com/cloudposse/terraform-aws-eks-fargate-profile](https://github.com/cloudposse/terraform-aws-eks-fargate-profile)
+   (Fully-managed serverless)
+
+4. Use
+   [https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool](https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool)
+   ([Spot.io](http://Spot.io) managed node pools - most cost-effective)
+
+## Fargate Node Limitations
+
+Currently, EKS Fargate has a lot of limitations
+[https://docs.aws.amazon.com/eks/latest/userguide/fargate.html](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html)
+
+- Classic Load Balancers and Network Load Balancers are not supported on pods running on Fargate. For ingress, we
+  recommend that you use the ALB Ingress Controller on Amazon EKS (minimum version v1.1.4).
+
+- Pods must match a Fargate profile at the time that they are scheduled in order to run on Fargate. Pods that do not
+  match a Fargate profile may be stuck as Pending. If a matching Fargate profile exists, you can delete pending pods
+  that you have created to reschedule them onto Fargate.
+
+- Daemonsets are not supported on Fargate. If your application requires a daemon, you should reconfigure that daemon to
+  run as a sidecar container in your pods.
+
+- Privileged containers are not supported on Fargate.
+
+- Pods running on Fargate cannot specify HostPort or HostNetwork in the pod manifest.
+
+- GPUs are currently not available on Fargate.
+
+- Pods running on Fargate are not assigned public IP addresses, so only private subnets (with no direct route to an
+  Internet Gateway) are supported when you create a Fargate profile.
+
+- We recommend using the Vertical Pod Autoscaler with pods running on Fargate to optimize the CPU and memory used for
+  your applications. However, because changing the resource allocation for a pod requires the pod to be restarted, you
+  must set the pod update policy to either Auto or Recreate to ensure correct functionality.
+
+- Stateful applications are not recommended for pods running on Fargate. Instead, we recommend that you use AWS
+  solutions such as Amazon S3 or DynamoDB for pod data storage.
+
+- Fargate runs each pod in a VM-isolated environment without sharing resources with other pods. However, because
+  Kubernetes is a single-tenant orchestrator, Fargate cannot guarantee pod-level security isolation. You should run
+  sensitive workloads or untrusted workloads that need complete security isolation using separate Amazon EKS clusters.

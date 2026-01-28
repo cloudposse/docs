@@ -6,17 +6,11 @@ sidebar_position: 2
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 import Steps from '@site/src/components/Steps';
+import TaskList from '@site/src/components/TaskList';
+import ActionCard from '@site/src/components/ActionCard';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
-The Cold Start involves more manual steps than other layers. Read through the following steps and see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/) for edge cases.
-
-In short, the steps are...
-
-| Steps                     | Actions                             |
-| ------------------------- | ----------------------------------- |
-| Install requirements      |                                     |
-| Build Geodesic            | `make all`                          |
-| Vendor components         | `atmos workflow vendor -f quickstart/foundation/baseline` |
-| Configure root SuperAdmin | Click Ops                           |
+The Cold Start involves more manual steps than other layers. Read through the following steps carefully.
 
 :::tip Cold Start
 
@@ -24,13 +18,20 @@ The set up process for the "baseline" or "account" layer is commonly referred to
 
 :::
 
+:::info About Placeholder Values
 
-## Prerequisites
+The reference architecture includes placeholder values that you'll need to replace with your actual configuration. Common placeholders include:
 
-Follow the [prerequisites steps in the How-to Get Started guide](/layers/project/#0-prerequisites).
+<TaskList>
+- **Account IDs** like `111111111111`, `123456789012`, or `000000000000` — Replace with your actual AWS account IDs after creating accounts
+- **Underscored values** like `_example_` or `__REPLACE_ME__` — These indicate values that require your input. Search for `_ACCOUNT_NUMBER__` to find items to replace like `__DEV_ACCOUNT_NUMBER__`
+- **Example domains** like `example.com` or `acme.com` — Replace with your actual domain names
+- **Sample ARNs** — Update with ARNs from your environment
+</TaskList>
 
-Start your Geodesic shell before continuing.
+You'll update these values at different points during setup. Each guide will call out when specific replacements are needed.
 
+:::
 
 ## Before Running Terraform (ClickOps)
 
@@ -43,28 +44,132 @@ From the root account:
    Enable [business support](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_support.html) in
    the `root` account (in order to expedite requests to raise the AWS member account limits)
 1. ### Set up MFA on Root Account
-   Set up up the Virtual MFA device on the root account, following
-   [the instructions in the AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root) for enabling a virtual MFA device for an AWS account root user. Save the MFA TOTP key in 1Password by using
-   1Password's TOTP field and built-in screen scanner to scan the QR code presented on the web page.
+   Set up the Virtual MFA device on the root account following [the AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root).
+   <Steps>
+   1. Navigate to the root account's security credentials
+   1. Set up a Virtual MFA device
+   1. Save the MFA TOTP key in 1Password using 1Password's TOTP field and built-in screen scanner to scan the QR code
+   </Steps>
 1. ### Create the `SuperAdmin` IAM User
-   [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/). Do not enable "console
-   login", do set up MFA, and then create a single Access key. Create an API Credential for the `SuperAdmin` credentials
-   in 1Password and store the Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key. This is the user
-   we will use until AWS Team Roles (`aws-team-roles` component) are provisioned.
-1. ### Enable IAM Access for Billing
-   For billing users, you need to enable IAM access. As the root user
-   [open up the account settings for AWS Billing](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account),
-   then scroll to the section "IAM user and role access to Billing information" and enable it.
-1. ### Enable Regions (Optional)
-   The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to take extra steps. For details, see [the detailed documentation](/layers/accounts/tutorials/manual-configuration/#optional-enable-regions)
-1. ### Prepare for Account Quota Increase
-   In order to deploy all accounts, you need to request an increase of the Account Quota from AWS support. This requires an AWS Organization to be created first, which we will create with Terraform in the [Deploy Accounts guide](/layers/accounts/deploy-accounts/#-prepare-account-deployment). This request can take a few days to process, so it's important to get it started early so that it doesn't become a blocker.
+   [Create a `SuperAdmin` IAM User](/layers/accounts/tutorials/how-to-create-superadmin-user/). This break-glass user is used during cold start bootstrapping before IAM Identity Center is provisioned. After cold start, it should only be used if your IdP is completely unavailable—otherwise, use Permission Sets.
+   <Steps>
+   1. Create the IAM user (do not enable "console login")
+   1. Set up MFA for the user
+   1. Create a single Access Key
+   1. Store credentials in 1Password: Access Key ID, Secret Access Key, Assigned MFA device ARN, and TOTP key
+   </Steps>
+1. ### Configure Atmos Auth for SuperAdmin
+   Configure the `superadmin` profile to authenticate via Atmos during cold start. This allows you to run Atmos commands to deploy the foundation.
+   <Steps>
+   1. Set the `ATMOS_PROFILE` environment variable to select the superadmin profile:
+      ```bash
+      export ATMOS_PROFILE=superadmin
+      ```
+   1. Configure your user credentials by running the following command. You'll be prompted to enter your Access Key ID, Secret Access Key, and MFA ARN from 1Password:
+      ```bash
+      atmos auth user configure
+      ```
+   1. Start an authenticated session. You'll be prompted to enter a one-time MFA token:
+      ```bash
+      atmos auth login
+      ```
+   1. Verify you can access the root account:
+      ```bash
+      atmos auth exec -- aws sts get-caller-identity
+      ```
+   </Steps>
+   :::note Daily Usage
+   Once the profile is set and user credentials are configured, you only need to run `atmos auth login` each day to start a new authenticated session.
+   :::
+   :::tip Atmos Profile Persistence
+   Add `export ATMOS_PROFILE=superadmin` to your shell configuration (`~/.zshrc` or `~/.bashrc`) to persist the setting across terminal sessions during cold start.
 
-   At this time we don't need to request the increase, but we should be prepared to do so as soon as the AWS Organization is created.
+   After cold start is complete and Identity Center is configured, you'll switch to a different profile (e.g., `devops` or `managers`) as described in [Configure Atmos Auth](/layers/identity/atmos-auth/).
+   :::
+1. ### Enable IAM Access for Billing
+   For billing users, you need to enable IAM access to billing information.
+   <Steps>
+   1. As the root user, open [AWS Billing Account Settings](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account)
+   1. Scroll to "IAM user and role access to Billing information"
+   1. Enable IAM access
+   </Steps>
+1. ### Enable Centralized Root Access
+   Enable centralized root access management to eliminate the need for per-account root credentials. This allows the management account to perform privileged root operations on member accounts without maintaining separate root passwords or MFA devices.
+   <Steps>
+   1. Navigate to [IAM → Root access management](https://console.aws.amazon.com/iam/home#/root-access-management)
+   1. Enable **Root credentials management**
+   1. Enable **Privileged root actions**
+   </Steps>
+   For more details, see [Centralized Root Access](/layers/identity/centralized-root-access/).
+1. ### Enable Regions (Optional)
+   The 17 original AWS regions are enabled by default. If you are using a region that is not enabled by default (such as Middle East/Bahrain), you need to [enable it in your AWS account settings](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html).
+1. ### Create the AWS Organization
+   Create the AWS Organization from the existing root account. This will convert your standalone account into an organization management account.
+   <Steps>
+   1. Navigate to [AWS Organizations](https://console.aws.amazon.com/organizations/v2/home)
+   1. Click **Create an organization**
+   1. Select **Create an organization with all features enabled** (this enables AWS RAM for Organizations)
+   1. Confirm the organization creation
+   </Steps>
+
+   :::tip Verify Organization Creation
+   After creating the organization, verify it was created successfully:
+   ```bash
+   aws organizations describe-organization
+   ```
+   The `FeatureSet` should return `ALL` if all features are enabled.
+   :::
+
+1. ### Confirm Root Account Name
+   Verify the root account name matches your expected naming convention (typically `core-root` or similar). This is important for consistency across your infrastructure.
+   <Steps>
+   1. Navigate to [AWS Organizations → AWS accounts](https://console.aws.amazon.com/organizations/v2/home/accounts)
+   1. Locate the management account (marked with a star)
+   1. Verify the account name matches your expected root account name
+   1. If needed, rename the account by clicking the account and selecting **Edit**
+   </Steps>
+
+1. ### Enable AWS RAM Sharing with AWS Organization
+   Enable AWS Resource Access Manager (RAM) sharing for your organization. This is required for sharing resources like Transit Gateway, VPC subnets, and other resources across accounts.
+   <Steps>
+   1. Navigate to [AWS RAM Settings](https://console.aws.amazon.com/ram/home#Settings:)
+   1. Enable **Enable sharing with AWS Organizations**
+   1. Confirm the setting is enabled
+   </Steps>
+
+   **Alternative: Use AWS CLI**
+   ```bash
+   aws ram enable-sharing-with-aws-organization
+   ```
+
+   Verify the setting:
+   ```bash
+   aws organizations describe-organization --query 'Organization.FeatureSet'
+   ```
+   This should return `ALL`.
+
+1. ### Raise Account Limits
+   Request an increase of the Account Quota from AWS support. This request can take a few days to process, so it's important to submit it early to avoid blockers during account deployment.
+
+   From the `root` account (not `SuperAdmin`), increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case.
+
+   **Alternative: Use AWS CLI**
+   ```bash
+   aws service-quotas request-service-quota-increase \
+     --service-code organizations \
+     --quota-code L-E619E033 \
+     --desired-value 20
+   ```
+   Where `L-E619E033` is the quota code for "Default maximum number of accounts" under "AWS Organizations" in "us-east-1".
+
+   :::caution Processing Time
+   Account quota increases can take several days to be approved. Plan accordingly and submit this request as early as possible.
+   :::
 
 </Steps>
 
-For more details, see
-[the detailed documentation](/layers/accounts/tutorials/manual-configuration/#provision-account-settings-component).
-
-
+<ActionCard title="Next Steps">
+  Now that your AWS Organization is prepared with MFA, SuperAdmin credentials, billing access configured,
+  and the organization created with proper account limits, you're ready to initialize the Terraform state backend that will store all infrastructure state.
+  <PrimaryCTA to="/layers/accounts/initialize-tfstate">Initialize Terraform Backend</PrimaryCTA>
+</ActionCard>

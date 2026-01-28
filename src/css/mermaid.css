@@ -10,3 +10,53 @@
 [data-theme='dark'] .docusaurus-mermaid-container .nodeLabel img {
     background: #21262d;
 }
+
+/* Mermaid color theme variables - matches site colors */
+:root {
+    --mermaid-primary: #3578e5;           /* Site primary blue */
+    --mermaid-primary-dark: #2554a0;      /* Darker blue */
+    --mermaid-secondary: #6c757d;         /* Gray */
+    --mermaid-success: #28a745;           /* Green - apply/write access */
+    --mermaid-danger: #dc3545;            /* Red - destructive/admin */
+    --mermaid-warning: #e67e22;           /* Orange - caution */
+    --mermaid-info: #17a2b8;              /* Teal - info */
+    --mermaid-user: #9b59b6;              /* Purple - user/identity */
+    --mermaid-account: #2c3e50;           /* Dark slate - AWS accounts */
+}
+
+/* Add padding to mermaid diagrams */
+.docusaurus-mermaid-container svg {
+    max-width: 100%;
+    padding: 2em;
+    box-sizing: content-box;
+}
+
+/* Subgraph styling for better margins */
+.docusaurus-mermaid-container .cluster rect {
+    rx: 8px;
+    ry: 8px;
+}
+
+/* Light mode - default colors work fine */
+
+/* Dark mode color overrides for subgraphs and nodes */
+[data-theme='dark'] .docusaurus-mermaid-container .node rect,
+[data-theme='dark'] .docusaurus-mermaid-container .node polygon {
+    stroke-width: 2px;
+}
+
+/* Override inline styles in dark mode for better visibility */
+[data-theme='dark'] .docusaurus-mermaid-container .flowchart-link {
+    stroke: #8b949e !important;
+}
+
+[data-theme='dark'] .docusaurus-mermaid-container .marker {
+    fill: #8b949e !important;
+    stroke: #8b949e !important;
+}
+
+/* Improve text contrast in dark mode */
+[data-theme='dark'] .docusaurus-mermaid-container .nodeLabel,
+[data-theme='dark'] .docusaurus-mermaid-container .cluster-label .nodeLabel {
+    color: #c9d1d9;
+}
