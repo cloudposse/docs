@@ -120,15 +120,6 @@ From the root account:
    The `FeatureSet` should return `ALL` if all features are enabled.
    :::
 
-1. ### Confirm Root Account Name
-   Verify the root account name matches your expected naming convention (typically `core-root` or similar). This is important for consistency across your infrastructure.
-   <Steps>
-   1. Navigate to [AWS Organizations → AWS accounts](https://console.aws.amazon.com/organizations/v2/home/accounts)
-   1. Locate the management account (marked with a star)
-   1. Verify the account name matches your expected root account name
-   1. If needed, rename the account by clicking the account and selecting **Edit**
-   </Steps>
-
 1. ### Enable AWS RAM Sharing with AWS Organization
    Enable AWS Resource Access Manager (RAM) sharing for your organization. This is required for sharing resources like Transit Gateway, VPC subnets, and other resources across accounts.
    <Steps>

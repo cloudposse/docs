@@ -96,7 +96,7 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
   <Step>
     ## <StepNumber/> Update Account ID Placeholders
 
-    Now that accounts are created, you have real account IDs to work with. The reference architecture may contain placeholder account IDs (like `111111111111` or `000000000000`) that need to be replaced with your actual values.
+    Now that accounts are created, you have real account IDs to work with. The reference architecture contains placeholder account IDs that need to be replaced with your actual values.
 
     To get your account IDs, run:
 
@@ -106,7 +106,55 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
     atmos terraform output aws-account/core-artifacts -s core-gbl-root
     ```
 
-    As you continue through the setup process, keep an eye out for placeholder values in your stack configurations and replace them with the actual account IDs as needed.
+    ### Update the Static Account Map
+
+    Update the static account map in your organization's defaults file (`stacks/orgs/acme/_defaults.yaml`). This configuration provides account ID lookups for components that need them:
+
+    ```yaml
+    vars:
+      # Static account-map variable to replace the account-map component
+      # This provides account ID lookups for components that need them (e.g., cloudtrail)
+      # Set to false since we're using static mapping instead of the account-map component
+      account_map_enabled: false
+      account_map:
+        # Name of AWS partition
+        aws_partition: aws
+        # Name of the root account (used for organization management)
+        root_account_account_name: core-root
+        # Name of the audit account (used by components like cloudtrail)
+        audit_account_account_name: core-audit
+        # Identity account name (used by components like ecr)
+        identity_account_account_name: core-root
+        # Map of all account names (tenant-stage format) to their account IDs
+        # TODO: Automate population of this map (e.g., from account component outputs)
+        full_account_map:
+          core-artifacts: "__ARTIFACTS_ACCOUNT_NUMBER__"
+          core-audit: "__AUDIT_ACCOUNT_NUMBER__"
+          core-auto: "__AUTO_ACCOUNT_NUMBER__"
+          core-dns: "__DNS_ACCOUNT_NUMBER__"
+          core-network: "__NETWORK_ACCOUNT_NUMBER__"
+          core-root: "__ROOT_ACCOUNT_NUMBER__"
+          core-security: "__SECURITY_ACCOUNT_NUMBER__"
+          plat-dev: "__DEV_ACCOUNT_NUMBER__"
+          plat-prod: "__PROD_ACCOUNT_NUMBER__"
+          plat-sandbox: "__SANDBOX_ACCOUNT_NUMBER__"
+          plat-staging: "__STAGING_ACCOUNT_NUMBER__"
+    ```
+
+    Replace each placeholder (e.g., `__ROOT_ACCOUNT_NUMBER__`) with the actual 12-digit AWS account ID from the output above.
+
+    :::caution Root Account Naming Convention
+    The `root_account_account_name` variable should always be set to `core-root` in your stack configuration, even if your actual AWS account has a different display name. This value is used internally by components for account lookups and must match the key in `full_account_map`.
+
+    To verify which account is your organization's management (root) account:
+    <Steps>
+    1. Navigate to [AWS Organizations → AWS accounts](https://console.aws.amazon.com/organizations/v2/home/accounts)
+    1. Look for the account labeled "Management account"
+    1. Use this account's ID for the `core-root` entry in `full_account_map`
+    </Steps>
+    :::
+
+    As you continue through the setup process, keep an eye out for other placeholder values in your stack configurations and replace them with actual values as needed.
   </Step>
 
   <Step>

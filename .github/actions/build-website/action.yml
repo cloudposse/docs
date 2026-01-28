@@ -63,11 +63,12 @@ runs:
         make init
 
     # Download pre-built library docs from the most recent release (draft or published) that has the asset
+    # Uses GITHUB_TOKEN (separate rate limits from PAT) for release downloads
     - name: "Download Pre-built Library Docs"
       if: ${{ inputs.skip_library_download != 'true' }}
       shell: bash
       env:
-        GH_TOKEN: ${{ inputs.repo_access_token }}
+        GH_TOKEN: ${{ github.token }}
       run: |
         DOWNLOADED=false
 
@@ -83,16 +84,17 @@ runs:
         # Iterate through releases until we find one with library-docs.tar.gz
         for TAG in $RELEASES; do
           echo "Checking release: ${TAG}"
-          if gh release download "${TAG}" \
+          DOWNLOAD_OUTPUT=$(gh release download "${TAG}" \
                --repo ${{ github.repository }} \
                --pattern "library-docs.tar.gz" \
-               --dir /tmp 2>/dev/null; then
+               --dir /tmp 2>&1) && {
             echo "Downloaded library docs from release: ${TAG}"
             DOWNLOADED=true
             break
-          else
+          } || {
             echo "  No library-docs.tar.gz in ${TAG}, trying next..."
-          fi
+            echo "  Debug: ${DOWNLOAD_OUTPUT}"
+          }
         done
 
         if [ "$DOWNLOADED" = false ]; then
