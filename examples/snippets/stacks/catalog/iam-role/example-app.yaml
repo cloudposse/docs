@@ -1,0 +1,62 @@
+    import:
+      - catalog/iam-role/defaults
+
+    components:
+      terraform:
+        example-app/iam-role:
+          metadata:
+            component: iam-role
+            inherits:
+              - iam-role/defaults
+          vars:
+            name: example-app
+            attributes:
+              - "terraform"
+            role_description: |
+              Role for GitHub Actions to access the GitOps resources, such as the S3 Bucket and DynamoDB Table.
+            github_oidc_provider_enabled: true
+            github_oidc_provider_arn: !terraform.state github-oidc-provider oidc_provider_arn
+            trusted_github_org: acme
+            trusted_github_repos:
+              - example-app
+            policy_statements:
+              AllowECRAccess:
+                effect: "Allow"
+                actions:
+                  - "ecr:GetAuthorizationToken"
+                  - "ecr:BatchCheckLayerAvailability"
+                  - "ecr:GetDownloadUrlForLayer"
+                  - "ecr:BatchGetImage"
+                  - "ecr:InitiateLayerUpload"
+                  - "ecr:UploadLayerPart"
+                  - "ecr:CompleteLayerUpload"
+                  - "ecr:PutImage"
+                  - "ecr:CreatePullThroughCacheRule"
+                  - "ecr:BatchImportUpstreamImage"
+                  - "ecr:CreateRepository"
+                resources:
+                  - "*"
+              AllowAssumeRole:
+                effect: "Allow"
+                actions:
+                  - "sts:AssumeRole"
+                  - "sts:TagSession"
+                  - "sts:SetSourceIdentity"
+                resources:
+                  - "*"
+              AllowServicesAccess:
+                effect: "Allow"
+                actions:
+                  - "s3:*"
+                  - "iam:*"
+                  - "ecs:*"
+                  - "ecr:*"
+                  - "logs:*"
+                  - "ssm:*"
+                  - "ec2:*"
+                  - "elasticloadbalancing:*"
+                  - "application-autoscaling:*"
+                  - "cloudwatch:*"
+                  - "kms:Decrypt"
+                resources:
+                  - "*"
