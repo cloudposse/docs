@@ -63,11 +63,12 @@ runs:
         make init
 
     # Download pre-built library docs from the most recent release (draft or published) that has the asset
+    # Uses GITHUB_TOKEN (separate rate limits from PAT) for release downloads
     - name: "Download Pre-built Library Docs"
       if: ${{ inputs.skip_library_download != 'true' }}
       shell: bash
       env:
-        GH_TOKEN: ${{ inputs.repo_access_token }}
+        GH_TOKEN: ${{ github.token }}
       run: |
         DOWNLOADED=false
 
