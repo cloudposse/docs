@@ -17,7 +17,7 @@
 #   - deploy/tfstate: Deploy Terraform state backend
 #   - deploy/organization: Create AWS Organization
 #   - deploy/accounts: Provision AWS accounts
-#   - deploy/account-settings: Configure account settings
+#   - deploy/aws-account-settings: Configure account settings
 #   - deploy/cloudtrail: Enable CloudTrail logging
 #   - deploy/ecr: Deploy ECR registry
 #
@@ -29,17 +29,24 @@ workflows:
       - command: workflow init/tfstate -f quickstart/foundation/accounts
       - command: workflow deploy/tfstate -f quickstart/foundation/accounts
       - command: workflow deploy/organization -f quickstart/foundation/accounts
+      - command: workflow deploy/organizational-units -f quickstart/foundation/accounts
       - command: workflow deploy/accounts -f quickstart/foundation/accounts
-      - command: workflow deploy/account-settings -f quickstart/foundation/accounts
+      - command: workflow deploy/scps -f quickstart/foundation/accounts
+      - command: workflow deploy/aws-account-settings -f quickstart/foundation/accounts
+      - command: workflow deploy/budgets -f quickstart/foundation/accounts
       - command: workflow deploy/cloudtrail -f quickstart/foundation/accounts
       - command: workflow deploy/ecr -f quickstart/foundation/accounts
 
   vendor:
     description: Vendor accounts layer components.
     steps:
-      - command: vendor pull --component account
+      - command: vendor pull --component aws-organization
+      - command: vendor pull --component aws-organizational-unit
+      - command: vendor pull --component aws-account
+      - command: vendor pull --component aws-scp
+      - command: vendor pull --component aws-budget
       - command: vendor pull --component account-quotas
-      - command: vendor pull --component account-settings
+      - command: vendor pull --component aws-account-settings
       - command: vendor pull --component cloudtrail
       - command: vendor pull --component cloudtrail-bucket
       - command: vendor pull --component ecr
@@ -62,29 +69,69 @@ workflows:
     description: |
       Deploy the AWS Organization. This is required before finishing the root account requirements.
     steps:
-      - command: terraform deploy account -target="aws_organizations_organization.this[0]" -s core-gbl-root
+      - command: terraform deploy aws-organization -s core-gbl-root
       - command: aws ram enable-sharing-with-aws-organization
         type: shell
+
+  deploy/organizational-units:
+    description: Deploy Organizational Units
+    steps:
+      - command: terraform deploy aws-organizational-unit/core -s core-gbl-root
+      - command: terraform deploy aws-organizational-unit/plat -s core-gbl-root
 
   deploy/accounts:
     description: Deploys all AWS Organization accounts
     steps:
-      - command: terraform apply account -s core-gbl-root
+      - command: terraform deploy aws-account/core-artifacts -s core-gbl-root
+      - command: terraform deploy aws-account/core-audit -s core-gbl-root
+      - command: terraform deploy aws-account/core-auto -s core-gbl-root
+      - command: terraform deploy aws-account/core-dns -s core-gbl-root
+      - command: terraform deploy aws-account/core-network -s core-gbl-root
+      - command: terraform deploy aws-account/core-security -s core-gbl-root
+      - command: terraform deploy aws-account/plat-dev -s core-gbl-root
+      - command: terraform deploy aws-account/plat-sandbox -s core-gbl-root
+      - command: terraform deploy aws-account/plat-staging -s core-gbl-root
+      - command: terraform deploy aws-account/plat-prod -s core-gbl-root
 
-  deploy/account-settings:
+  deploy/scps:
+    description: Deploy Service Control Policies
+    steps:
+      - command: terraform deploy aws-scp/deny-leaving-organization-core -s core-gbl-root
+      - command: terraform deploy aws-scp/deny-iam-root-account-core -s core-gbl-root
+      - command: terraform deploy aws-scp/deny-iam-creating-users-core -s core-gbl-root
+      - command: terraform deploy aws-scp/deny-leaving-organization-plat -s core-gbl-root
+      - command: terraform deploy aws-scp/deny-iam-root-account-plat -s core-gbl-root
+      - command: terraform deploy aws-scp/deny-iam-creating-users-plat -s core-gbl-root
+
+  deploy/aws-account-settings:
     description: Apply AWS Account settings for best practices.
     steps:
-      - command: terraform deploy account-settings -s core-gbl-artifacts
-      - command: terraform deploy account-settings -s core-gbl-audit
-      - command: terraform deploy account-settings -s core-gbl-auto
-      - command: terraform deploy account-settings -s core-gbl-dns
-      - command: terraform deploy account-settings -s core-gbl-network
-      - command: terraform deploy account-settings -s core-gbl-root
-      - command: terraform deploy account-settings -s core-gbl-security
-      - command: terraform deploy account-settings -s plat-gbl-dev
-      - command: terraform deploy account-settings -s plat-gbl-prod
-      - command: terraform deploy account-settings -s plat-gbl-sandbox
-      - command: terraform deploy account-settings -s plat-gbl-staging
+      - command: terraform deploy aws-account-settings -s core-gbl-artifacts
+      - command: terraform deploy aws-account-settings -s core-gbl-audit
+      - command: terraform deploy aws-account-settings -s core-gbl-auto
+      - command: terraform deploy aws-account-settings -s core-gbl-dns
+      - command: terraform deploy aws-account-settings -s core-gbl-network
+      - command: terraform deploy aws-account-settings -s core-gbl-root
+      - command: terraform deploy aws-account-settings -s core-gbl-security
+      - command: terraform deploy aws-account-settings -s plat-gbl-dev
+      - command: terraform deploy aws-account-settings -s plat-gbl-prod
+      - command: terraform deploy aws-account-settings -s plat-gbl-sandbox
+      - command: terraform deploy aws-account-settings -s plat-gbl-staging
+
+  deploy/budgets:
+    description: Deploy budgets to all accounts
+    steps:
+      - command: terraform deploy aws-budget -s core-gbl-root
+      - command: terraform deploy aws-budget -s core-gbl-artifacts
+      - command: terraform deploy aws-budget -s core-gbl-audit
+      - command: terraform deploy aws-budget -s core-gbl-auto
+      - command: terraform deploy aws-budget -s core-gbl-dns
+      - command: terraform deploy aws-budget -s core-gbl-network
+      - command: terraform deploy aws-budget -s core-gbl-security
+      - command: terraform deploy aws-budget -s plat-gbl-dev
+      - command: terraform deploy aws-budget -s plat-gbl-sandbox
+      - command: terraform deploy aws-budget -s plat-gbl-staging
+      - command: terraform deploy aws-budget -s plat-gbl-prod
 
   deploy/cloudtrail:
     description: Start AWS Cloudtrail in audit and root accounts to track changes across the org.
