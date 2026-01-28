@@ -216,6 +216,14 @@ jobs:
             docs/modules/library \
             docs/github-actions/library
 
+      # Upload as workflow artifact for use by calling workflows (e.g., website-deploy-release)
+      - name: Upload Library Docs Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: library-docs
+          path: library-docs.tar.gz
+          retention-days: 1
+
       - name: Upload to Draft Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

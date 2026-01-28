@@ -42,7 +42,7 @@ jobs:
       - "runs-on=${{ github.run_id }}"
       - "runner=terraform"
       - "tag=${{ inputs.component }}-${{ inputs.stack }}"
-      - "private=false"
+      - "private=true"
 
     steps:
       - uses: runs-on/action@v1

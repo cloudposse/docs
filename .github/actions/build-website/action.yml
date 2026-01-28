@@ -18,6 +18,9 @@ inputs:
   repo_access_token:
     description: "GitHub Token used to access private repos"
     required: true
+  skip_library_download:
+    description: "Skip downloading library docs from release (use when docs are already present)"
+    default: "false"
 
 runs:
   using: composite
@@ -59,44 +62,42 @@ runs:
       run: |
         make init
 
-    # Download pre-built library docs from draft release or latest published release
+    # Download pre-built library docs from the most recent release (draft or published) that has the asset
     - name: "Download Pre-built Library Docs"
+      if: ${{ inputs.skip_library_download != 'true' }}
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.repo_access_token }}
       run: |
         DOWNLOADED=false
 
-        # Try draft release first
-        echo "Checking for draft release..."
-        DRAFT_TAG=$(gh release list --repo ${{ github.repository }} --exclude-drafts=false --limit 20 | { grep "Draft" || true; } | head -1 | awk -F'\t' '{print $3}')
+        # Get all releases (drafts and published) ordered by most recent first
+        echo "Searching for library-docs.tar.gz in releases..."
+        RELEASES=$(gh release list --repo ${{ github.repository }} --exclude-drafts=false --limit 20 | awk -F'\t' '{print $3}')
 
-        if [ -n "$DRAFT_TAG" ]; then
-          echo "Found draft release: ${DRAFT_TAG}"
-          if gh release download "${DRAFT_TAG}" \
+        if [ -z "$RELEASES" ]; then
+          echo "Error: No releases found. Run the 'Generate Library' workflow first."
+          exit 1
+        fi
+
+        # Iterate through releases until we find one with library-docs.tar.gz
+        for TAG in $RELEASES; do
+          echo "Checking release: ${TAG}"
+          if gh release download "${TAG}" \
                --repo ${{ github.repository }} \
                --pattern "library-docs.tar.gz" \
                --dir /tmp 2>/dev/null; then
-            echo "Downloaded library docs from draft release"
+            echo "Downloaded library docs from release: ${TAG}"
             DOWNLOADED=true
+            break
           else
-            echo "Draft release exists but has no library-docs.tar.gz asset"
+            echo "  No library-docs.tar.gz in ${TAG}, trying next..."
           fi
-        else
-          echo "No draft release found"
-        fi
+        done
 
-        # Fall back to latest published release
         if [ "$DOWNLOADED" = false ]; then
-          echo "Downloading from latest published release..."
-          if ! gh release download \
-                 --repo ${{ github.repository }} \
-                 --pattern "library-docs.tar.gz" \
-                 --dir /tmp; then
-            echo "Error: No library-docs.tar.gz found in any release. Run the 'Generate Library' workflow first."
-            exit 1
-          fi
-          echo "Downloaded library docs from latest published release"
+          echo "Error: No library-docs.tar.gz found in any release. Run the 'Generate Library' workflow first."
+          exit 1
         fi
 
         echo "Extracting library docs..."

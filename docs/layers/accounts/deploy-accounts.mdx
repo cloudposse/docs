@@ -2,7 +2,7 @@
 title: "Deploying AWS Accounts"
 sidebar_label: "Deploy Accounts"
 sidebar_position: 4
-description: Deploy AWS accounts with `atmos` workflows and ClickOps.
+description: Deploy AWS accounts with `atmos` workflows.
 ---
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
@@ -16,79 +16,68 @@ import ActionCard from '@site/src/components/ActionCard';
 import PrimaryCTA from '@site/src/components/PrimaryCTA';
 
 <Intro>
-This step-by-step process outlines how to deploy AWS accounts using `atmos` workflows and ClickOps steps. It covers necessary preparations, such as configuring the AWS Organization, increasing account quotas, and verifying account configurations. The guide details the deployment processes and post-deployment configurations, including setting up account settings, enabling AWS RAM for Organizations, and performing certain manual configurations via ClickOps.
+This guide walks through deploying AWS accounts using `atmos` workflows. Before starting, ensure you have completed the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide, which creates the AWS Organization, enables AWS RAM sharing, and raises account limits.
 </Intro>
 
-| Steps                     | Actions                                              |
-| ------------------------- | ---------------------------------------------------- |
-| Deploy AWS Organization   | `atmos workflow deploy/organization -f quickstart/foundation/accounts`     |
-| Prepare accounts creation | Click Ops                                            |
-| Deploy accounts           | `atmos workflow deploy/accounts -f quickstart/foundation/accounts`         |
-| Deploy accounts settings  | `atmos workflow deploy/account-settings -f quickstart/foundation/accounts` |
-| Finalize account setup    | Click Ops                                            |
+| Steps                        | Actions                                                                     |
+| ---------------------------- | --------------------------------------------------------------------------- |
+| Validate prerequisites       | Review account configuration                                                |
+| Import AWS Organization      | `atmos terraform import account -s core-gbl-root ...`                       |
+| Deploy accounts              | `atmos workflow deploy/accounts -f quickstart/foundation/accounts`          |
+| Deploy accounts settings     | `atmos workflow deploy/account-settings -f quickstart/foundation/accounts`  |
+| Finalize account setup       | Click Ops (optional)                                                        |
 
 <Steps>
   <Step>
-    ## <StepNumber/> Prepare Account Deployment
+    ## <StepNumber/> Validate Prerequisites for Account Deployment
 
-    Review the "account" configuration in the stack catalog. **This is the hardest part to change/fix once the accounts are
-    provisioned**. If you aren't confident about the email configuration, account names, or anything else, now is the time
-    to make changes or ask for help.
+    Before deploying accounts, verify that you have completed all prerequisites from the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide:
+
+    <TaskList>
+    - AWS Organization has been created via ClickOps
+    - AWS RAM sharing with AWS Organization is enabled
+    - Account quota increase has been requested (and ideally approved)
+    - Terraform state backend has been initialized
+    </TaskList>
+
+    Next, review the "account" configuration in the stack catalog. **This is the hardest part to change/fix once the accounts are provisioned**. If you aren't confident about the email configuration, account names, or anything else, now is the time to make changes or ask for help.
 
     You should double-check the following:
 
     <TaskList>
     - Check that `stacks/catalog/account.yaml` has the values you expect, especially account email format
-    - Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_
-      all the mixins have been imported)
+    - Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_ all the mixins have been imported)
     - Plan the run with `atmos terraform plan account -s core-gbl-root`
     </TaskList>
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploy the AWS Organization
+    ## <StepNumber/> Import the AWS Organization
 
-    <AtmosWorkflow workflow="deploy/organization" fileName="quickstart/foundation/accounts" />
+    The AWS Organization was created manually as part of the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide. Now we need to import this existing organization into Terraform so it can be managed as infrastructure-as-code.
 
-  </Step>
-
-  <Step>
-    ## <StepNumber/> Confirm the Root Account is configured as an Organization
-
-    The previous step will create the AWS Organization and configure the `core-root` account as the "root" account. Take the time now to verify that the root account is configured as an AWS Organization and that [AWS RAM for Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_enable-ram.html) is enabled, which is required for connecting the Organization.
-
-    **Check Organization Status:**
+    Import the existing AWS Organization into Terraform state using the following command. Replace `ORG_ID` with your AWS Organization ID (e.g., `o-abc123def4`):
 
     ```bash
-    # Check if AWS Organization exists and get its details
-    aws organizations describe-organization
-
-    # Or specifically check if RAM for Organizations is enabled
-    aws organizations describe-organization --query 'Organization.FeatureSet'
+    atmos terraform import account -s core-gbl-root "aws_organizations_organization.this[0]" ORG_ID
     ```
 
-    The `FeatureSet` should return `ALL` if RAM for Organizations is enabled, or `CONSOLIDATED_BILLING` if it's not enabled.
-  </Step>
-
-  <Step>
-    ## <StepNumber/> Raise Account Limits
-
-    If you haven't already completed the Account Quota increase, now is the time to do so. To deploy all accounts, we need to request an increase of the Account Quota from AWS support, which requires an AWS Organization to be created first.
-
-    From the `root` account (not `SuperAdmin`), increase the [account quota to 20+](https://us-east-1.console.aws.amazon.com/servicequotas/home/services/organizations/quotas) for the Cloud Posse reference architecture, or more depending on your business use-case.
-
-    **Alternative: Use AWS CLI**
-
-    You can also use the AWS CLI to request the quota increase:
-
+    :::info Finding Your Organization ID
+    You can find your Organization ID in the AWS Console under **AWS Organizations** → **Settings**, or by running:
     ```bash
-    aws service-quotas request-service-quota-increase \
-      --service-code organizations \
-      --quota-code L-E619E033 \
-      --desired-value 20
+    aws organizations describe-organization --query 'Organization.Id' --output text
     ```
+    :::
 
-    Where `L-E619E033` is the quota code for "Default maximum number of accounts" under "AWS Organizations" in "us-east-1".
+    This command runs `terraform import` to bring the existing AWS Organization under Terraform management. After this step, all organization-level changes will be managed through Atmos and Terraform.
+
+    :::tip Verify Import
+    After the import completes, verify the organization was imported successfully:
+    ```bash
+    atmos terraform plan account -s core-gbl-root
+    ```
+    The plan should show no changes for the organization resource, indicating it was imported correctly.
+    :::
   </Step>
 
   <Step>
