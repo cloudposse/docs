@@ -69,10 +69,12 @@ workflows:
 
   deploy/iam-role:
     description: |
-      Deploy iam-role/terraform and iam-role/planner to all accounts (except root).
+      Deploy iam-role/terraform and iam-role/planner roles.
       These roles are used by GitHub Actions for CI/CD.
     steps:
-      # Core accounts (except root)
+      # Only deploy the planner role in the root account
+      - command: terraform deploy iam-role/planner -s core-gbl-root
+      # Core accounts
       - command: terraform deploy iam-role/terraform -s core-gbl-artifacts
       - command: terraform deploy iam-role/planner -s core-gbl-artifacts
       - command: terraform deploy iam-role/terraform -s core-gbl-audit
