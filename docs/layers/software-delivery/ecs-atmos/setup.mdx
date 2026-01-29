@@ -221,9 +221,13 @@ import ApplicationIAMRole from '@site/examples/snippets/stacks/catalog/iam-role/
   <Step>
     ### <StepNumber/> Configure Dependencies
 
-    Configure the application to read from infrastructure components' remote state.
+    Your application needs to reference infrastructure that was already deployed by your infrastructure repository — specifically the VPC and ECS cluster. These dependency files tell Atmos where to find the Terraform backend for those resources, allowing your application stacks to look up output values like VPC IDs, subnet IDs, and cluster ARNs.
 
-    In your **application repository**, create dependency stack files:
+    :::tip
+    These files don't deploy any infrastructure. They define how to read the remote state of existing infrastructure components.
+    :::
+
+    In your **application repository**, create dependency stack files for each infrastructure component you need to reference:
 
     ```yaml title="terraform/stacks/deps/vpc.yaml"
     components:
