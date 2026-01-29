@@ -1,0 +1,58 @@
+---
+title: "Triggering Workflows"
+sidebar_label: "Triggering Workflows"
+sidebar_position: 20
+description: "How to trigger CI/CD workflows for ECS deployments"
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
+
+<Intro>
+  Once the ECS application setup is complete, validate the CI/CD workflows by triggering deployments through pull requests and releases.
+</Intro>
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Create a Pull Request
+
+    Create a PR and add the `deploy` label to deploy a preview environment:
+
+    ```bash
+    git checkout -b feature/test-preview
+    # Make changes
+    git push origin feature/test-preview
+    ```
+
+    Then add the `deploy` label to the PR in GitHub.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Merge PR into Main Branch
+
+    Push any change to the `main` branch to trigger the main branch workflow:
+
+    ```bash
+    git add .
+    git commit -m "Initial setup"
+    git push origin main
+    ```
+
+    This will:
+    - Build and push a Docker image to ECR
+    - Deploy to the `dev` environment
+    - Create a draft release
+  </Step>
+
+
+  <Step>
+    ### <StepNumber/> Publish a Release
+
+    Edit the draft release created by the main branch workflow and click "Publish release". This will:
+    - Promote the Docker image tag
+    - Deploy to `staging`
+    - Wait for approval (if configured)
+    - Deploy to `prod`
+  </Step>
+</Steps>
