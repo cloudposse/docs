@@ -155,6 +155,15 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
     :::
 
     As you continue through the setup process, keep an eye out for other placeholder values in your stack configurations and replace them with actual values as needed.
+
+    :::note Stopgap: Deploy the Identity Layer Before Continuing
+    Before proceeding with the remaining account steps, you need to deploy the Identity layer. The Identity layer provisions permission sets with AWS Identity Center that allow you to access each member account, which is required for deploying account settings, CloudTrail, and ECR. We're working on improving this documentation flow and the SuperAdmin profile, but for now, the Identity layer must be deployed at this point.
+    :::
+
+    <ActionCard title="Deploy the Identity Layer">
+      Deploy the Identity layer to provision permission sets for accessing each member account. Return here to finish account settings, CloudTrail, and ECR after the Identity layer is deployed.
+      <PrimaryCTA to="/layers/identity">Deploy Identity Layer</PrimaryCTA>
+    </ActionCard>
   </Step>
 
   <Step>
