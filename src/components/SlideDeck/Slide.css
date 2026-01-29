@@ -1,0 +1,290 @@
+/* Base Slide */
+.slide {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 200px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.75rem 1.5rem !important;
+  box-sizing: border-box !important;
+  background: #ffffff !important;
+  color: #1c1e21 !important;
+  overflow: hidden !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Dark mode explicit styles */
+html[data-theme='dark'] .slide {
+  background: #1b1b1d !important;
+  color: #e3e3e3 !important;
+}
+
+.slide__inner {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Title Layout - Large centered title */
+.slide--title {
+  /* Subtle warm gradient for light mode */
+  background: linear-gradient(135deg, #f8f5f2 0%, var(--ifm-background-color) 100%);
+}
+
+html[data-theme='dark'] .slide--title {
+  background: linear-gradient(135deg, var(--ifm-color-primary-darkest) 0%, var(--ifm-background-color) 100%);
+}
+
+.slide--title .slide__inner {
+  text-align: center;
+  align-items: center;
+}
+
+/* Content Layout - Standard content */
+.slide--content .slide__inner {
+  text-align: left;
+  align-items: flex-start;
+}
+
+/* Split Layout - Two columns */
+.slide--split {
+  padding: 0.75rem 1.5rem;
+}
+
+.slide--split .slide__inner {
+  flex-direction: row;
+  gap: 1.5rem;
+  text-align: left;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.slide--split .slide__inner > *:first-child {
+  flex: 2;
+  min-width: 0;
+}
+
+.slide--split .slide__inner > *:last-child {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Code Layout - Optimized for code display */
+.slide--code {
+  padding: 1.5rem 2rem;
+}
+
+.slide--code .slide__inner {
+  max-width: 900px;
+  text-align: left;
+  align-items: flex-start;
+}
+
+/* Quote Layout - Large centered quote */
+.slide--quote .slide__inner {
+  text-align: center;
+  align-items: center;
+  max-width: 700px;
+}
+
+/* Fullscreen adjustments - slides inherit normal theme styling */
+
+/* Desktop fullscreen - larger padding and allow overflow for more content */
+.slide-deck--fullscreen .slide {
+  padding: 2rem 4rem !important;
+  overflow-y: auto !important;
+}
+
+.slide-deck--fullscreen .slide--split {
+  padding: 2rem 4rem !important;
+}
+
+/* Desktop fullscreen - scale content to fill the larger slide area */
+.slide-deck--fullscreen .slide__inner {
+  max-width: 85%;
+}
+
+.slide-deck--fullscreen .slide--split .slide__inner {
+  max-width: 90%;
+  gap: 3rem;
+  align-items: center;
+}
+
+.slide-deck--fullscreen .slide--code .slide__inner {
+  max-width: 90%;
+}
+
+/* Responsive */
+@media screen and (max-width: 996px) {
+  .slide {
+    padding: 1.5rem 2rem;
+  }
+
+  .slide--split {
+    padding: 1.5rem 2rem;
+  }
+
+  .slide--split .slide__inner {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .slide {
+    padding: 1rem 1.5rem;
+  }
+
+  .slide--code {
+    padding: 1rem;
+  }
+
+  .slide__inner {
+    max-width: 100%;
+  }
+}
+
+/* Small Mobile */
+@media screen and (max-width: 480px) {
+  .slide {
+    padding: 0.75rem 1rem;
+  }
+
+  .slide--title {
+    padding: 0.75rem 1rem;
+  }
+
+  .slide--code {
+    padding: 0.5rem;
+  }
+
+  .slide--split {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Mobile fullscreen - scale content to fit viewport */
+@media screen and (max-width: 996px) and (max-height: 500px),
+       screen and (max-width: 768px) {
+  .slide-deck--fullscreen .slide {
+    padding: 0 1.5rem !important;
+    overflow-y: auto;
+  }
+
+  .slide-deck--fullscreen .slide__inner {
+    max-width: 95vw;
+    width: 100%;
+    margin: auto;
+    padding: 0 1rem;
+  }
+
+  /* Override content layout for mobile fullscreen */
+  .slide-deck--fullscreen .slide--content .slide__inner {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  /* Scale text for mobile fullscreen */
+  .slide-deck--fullscreen .slide-title {
+    font-size: clamp(1.25rem, 6vw, 2rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .slide-deck--fullscreen .slide-subtitle {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+  }
+
+  .slide-deck--fullscreen .slide-content,
+  .slide-deck--fullscreen .slide-list {
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+  }
+
+  .slide-deck--fullscreen .slide-list li {
+    margin-bottom: 0.4em;
+  }
+
+  /* Scale images proportionally */
+  .slide-deck--fullscreen .slide-image img {
+    max-height: 40vh;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* For split layouts on mobile, keep 2-column layout */
+  .slide-deck--fullscreen .slide--split .slide__inner {
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .slide-deck--fullscreen .slide--split .slide__inner > *:first-child {
+    flex: 2;
+    min-width: 0;
+  }
+
+  .slide-deck--fullscreen .slide--split .slide__inner > *:last-child {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide-deck--fullscreen .slide--split .slide-image img,
+  .slide-deck--fullscreen .slide--split img {
+    max-height: 35vh;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Split layout text sizes */
+  .slide-deck--fullscreen .slide--split .slide-title {
+    font-size: clamp(1rem, 5vw, 1.75rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .slide-deck--fullscreen .slide--split .slide-list {
+    font-size: clamp(0.75rem, 3vw, 1rem);
+  }
+
+  .slide-deck--fullscreen .slide--split .slide-list li {
+    margin-bottom: 0.3em;
+  }
+}
+
+/* Mobile Portrait Fullscreen - adjust layout for narrow tall viewports */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  .slide-deck--fullscreen .slide {
+    padding: 2rem 1.5rem 5rem !important;
+    /* Center content vertically */
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide-deck--fullscreen .slide__inner {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* Content slides keep left text alignment */
+  .slide-deck--fullscreen .slide--content .slide__inner {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
