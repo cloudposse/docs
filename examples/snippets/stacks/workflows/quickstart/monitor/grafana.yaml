@@ -11,15 +11,20 @@ workflows:
     steps:
       - command: vendor pull --component managed-prometheus/workspace
       - command: vendor pull --component managed-grafana/workspace
+      - command: vendor pull --component managed-grafana/api-key
       - command: vendor pull --component managed-grafana/dashboard
-      - command: vendor pull --component managed-grafana/data-source/loki
       - command: vendor pull --component managed-grafana/data-source/managed-prometheus
+      - command: vendor pull --component managed-grafana/data-source/loki
       - command: vendor pull --component eks/prometheus-scraper
       - command: vendor pull --component eks/loki
       - command: vendor pull --component eks/promtail
+      - command: vendor pull --component managed-grafana/data-source/cloudwatch
+      - command: vendor pull --component managed-grafana/data-source/managed-prometheus
+      - command: vendor pull --component ecs-adot-collector
+      - command: vendor pull --component iam-role
 
   deploy:
-    description: deploys all Grafana data sources into plat accounts
+    description: deploys all monitoring components
     steps:
       - command: workflow deploy/prometheus -s plat-use1-dev -f quickstart/monitor/grafana
       - command: workflow deploy/prometheus -s plat-use1-staging -f quickstart/monitor/grafana
@@ -27,13 +32,14 @@ workflows:
       - command: workflow deploy/grafana -s core-use1-auto -f quickstart/monitor/grafana
 
   deploy/prometheus:
-    description: deploys all Grafana data sources into a given stack
+    description: deploys Prometheus and backing services into a given plat stack
     steps:
       - command: terraform deploy prometheus
       - command: terraform deploy eks/prometheus-scraper
       - command: terraform deploy eks/loki
       - command: terraform deploy eks/promtail
-      - command: terraform deploy eks/cluster
+      - command: terraform deploy ecs-adot-collector
+      - command: terraform deploy iam-role/grafana-cloudwatch-access
 
   deploy/grafana:
     description: deploys centralized Grafana and all sub components
@@ -42,13 +48,22 @@ workflows:
       - command: terraform deploy grafana/api-key -s core-use1-auto
       - command: terraform deploy grafana/datasource/plat-dev-prometheus -s core-use1-auto
       - command: terraform deploy grafana/datasource/plat-dev-loki -s core-use1-auto
-      - command: terraform deploy grafana/dashboard/plat-dev-prometheus -s core-use1-auto
-      - command: terraform deploy grafana/dashboard/plat-dev-loki -s core-use1-auto
+      - command: terraform deploy grafana/datasource/cloudwatch/plat-dev -s core-use1-auto
+      - command: terraform deploy grafana/datasource/prometheus/plat-dev -s core-use1-auto
       - command: terraform deploy grafana/datasource/plat-staging-prometheus -s core-use1-auto
       - command: terraform deploy grafana/datasource/plat-staging-loki -s core-use1-auto
-      - command: terraform deploy grafana/dashboard/plat-staging-prometheus -s core-use1-auto
-      - command: terraform deploy grafana/dashboard/plat-staging-loki -s core-use1-auto
+      - command: terraform deploy grafana/datasource/cloudwatch/plat-staging -s core-use1-auto
+      - command: terraform deploy grafana/datasource/prometheus/plat-staging -s core-use1-auto
       - command: terraform deploy grafana/datasource/plat-prod-prometheus -s core-use1-auto
       - command: terraform deploy grafana/datasource/plat-prod-loki -s core-use1-auto
+      - command: terraform deploy grafana/datasource/cloudwatch/plat-prod -s core-use1-auto
+      - command: terraform deploy grafana/datasource/prometheus/plat-prod -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-dev-prometheus -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-dev-loki -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-dev-ecs -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-staging-prometheus -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-staging-loki -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-staging-ecs -s core-use1-auto
       - command: terraform deploy grafana/dashboard/plat-prod-prometheus -s core-use1-auto
       - command: terraform deploy grafana/dashboard/plat-prod-loki -s core-use1-auto
+      - command: terraform deploy grafana/dashboard/plat-prod-ecs -s core-use1-auto
