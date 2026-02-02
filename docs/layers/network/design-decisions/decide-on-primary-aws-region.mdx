@@ -9,6 +9,7 @@ tags:
 
 import Intro from "@site/src/components/Intro";
 import KeyPoints from "@site/src/components/KeyPoints";
+import Steps from "@site/src/components/Steps";
 
 While the company might operate in multiple regions, one region should be selected as the primary region. There are
 certain resources that will not be geographically distributed and these should be provisioned in this default region.
@@ -44,36 +45,44 @@ Not all regions cost the same to operate.
 
 ### Service Availability
 
-Not all regions offer the full suite of AWS services or receive new services at the same rate as others. Other times,
-certain regions receive platform infrastructure updates slower than others. Also, recently AWS launched
+Not all regions offer the full suite of AWS services or receive new services at the same rate as others. Some regions
+receive platform infrastructure updates slower than others. AWS also offers
 [Local Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#AWS_Local_Zones) (e.g.
 `us-west-2-lax-1a`) which operate a subset of AWS services.
 
 See [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) for
 a complete breakdown of service availability by region.
 
-### Reference Architecture Component Availability
+Several services used in the reference architecture are only available in a subset of AWS regions:
 
-Beyond standard AWS services, certain components in the reference architecture have their own regional constraints that
-should factor into your primary region decision.
+<Steps>
+  1. **[AWS App Runner](https://aws.amazon.com/apprunner/)** is only available in these regions:
+     `us-east-1`, `us-east-2`, `us-west-2`,
+     `eu-central-1`, `eu-west-1`, `eu-west-2`, `eu-west-3`,
+     `ap-south-1`, `ap-southeast-1`, `ap-southeast-2`, `ap-northeast-1`.
+     We use App Runner for [RunsOn](/layers/github-actions/runs-on/), our recommended solution for self-hosted GitHub runners.
+     Notably, **`us-west-1` does not support App Runner**.
 
-#### RunsOn (Self-Hosted GitHub Runners)
+  1. **[Amazon Managed Grafana](https://aws.amazon.com/grafana/)** is only available in these regions:
+     `us-east-1`, `us-east-2`, `us-west-2`,
+     `eu-central-1`, `eu-west-1`, `eu-west-2`,
+     `ap-northeast-1`, `ap-northeast-2`, `ap-southeast-1`, `ap-southeast-2`.
+     We use Managed Grafana for centralized monitoring dashboards in the
+     [Grafana monitoring stack](/layers/monitoring/).
+</Steps>
 
-[RunsOn](/layers/github-actions/runs-on/) is our recommended solution for self-hosted GitHub runners. It relies on
-[AWS App Runner](https://aws.amazon.com/apprunner/), which is only available in a subset of AWS regions:
+#### Deploying in Unsupported Regions
 
-- `us-east-1`, `us-east-2`, `us-west-2`
-- `eu-central-1`, `eu-west-1`, `eu-west-2`, `eu-west-3`
-- `ap-south-1`, `ap-southeast-1`, `ap-southeast-2`, `ap-northeast-1`
+If your primary region doesn't support one of these services, you can still use that region by deploying the
+service in a supported region and connecting it back:
 
-Notably, **`us-west-1` does not support App Runner**, and therefore RunsOn cannot be deployed there directly.
+- **App Runner / RunsOn**: Deploy RunsOn in a supported region and connect it to your primary region using
+  [Transit Gateway](/components/library/aws/tgw/hub/) with a cross-region peering connection.
+  This adds approximately **$80/month** in Transit Gateway cross-region data transfer costs.
+- **Managed Grafana**: Deploy Grafana in a supported region and configure cross-region IAM roles to allow it
+  to query data sources in your primary region.
 
-If your primary region doesn't support App Runner but you still want to use that region, you'll need to deploy RunsOn
-in a supported region and connect it to your primary region. We recommend using Transit Gateway with a cross-region
-peering connection for this, though other connectivity options exist. This adds approximately **$80/month** in Transit
-Gateway cross-region data transfer costs.
-
-For most deployments, we recommend choosing a primary region that supports App Runner to avoid this additional
+For most deployments, we recommend choosing a primary region that supports all of these services to avoid additional
 complexity and cost.
 
 ### Instance Types
