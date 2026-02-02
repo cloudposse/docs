@@ -61,7 +61,6 @@ Several services used in the reference architecture are only available in a subs
      `eu-central-1`, `eu-west-1`, `eu-west-2`, `eu-west-3`,
      `ap-south-1`, `ap-southeast-1`, `ap-southeast-2`, `ap-northeast-1`.
      We use App Runner for [RunsOn](/layers/github-actions/runs-on/), our recommended solution for self-hosted GitHub runners.
-     Notably, **`us-west-1` does not support App Runner**.
 
   1. **[Amazon Managed Grafana](https://aws.amazon.com/grafana/)** is only available in these regions:
      `us-east-1`, `us-east-2`, `us-west-2`,
@@ -73,17 +72,11 @@ Several services used in the reference architecture are only available in a subs
 
 #### Deploying in Unsupported Regions
 
-If your primary region doesn't support one of these services, you can still use that region by deploying the
-service in a supported region and connecting it back:
-
-- **App Runner / RunsOn**: Deploy RunsOn in a supported region and connect it to your primary region using
-  [Transit Gateway](/components/library/aws/tgw/hub/) with a cross-region peering connection.
-  This adds approximately **$80/month** in Transit Gateway cross-region data transfer costs.
-- **Managed Grafana**: Deploy Grafana in a supported region and configure cross-region IAM roles to allow it
-  to query data sources in your primary region.
-
-For most deployments, we recommend choosing a primary region that supports all of these services to avoid additional
-complexity and cost.
+If your primary region doesn't support one of these services, you can still use that region by deploying the service
+in a supported region and connecting it back. Depending on the service, this may require connecting the alternate region
+via [Transit Gateway](/components/library/aws/tgw/hub/) with a cross-region peering connection, deploying cross-region
+IAM roles, or a combination of both. These workarounds add complexity and cost (e.g. Transit Gateway cross-region
+data transfer adds approximately **$80/month**).
 
 ### Instance Types
 
@@ -93,6 +86,24 @@ Not all instance types are available in all regions
 
 Latency between v1 infrastructure and v2 infrastructure could be a factor. See
 [cloudping.co/grid](https://www.cloudping.co/grid) for more information.
+
+### Recommendation
+
+Taking all of the above into consideration, we recommend choosing a primary region that supports the services you need,
+has at least 3 availability zones, and is not `us-east-1` (due to its history of service interruptions). The regions
+that support both App Runner and Managed Grafana while meeting these criteria are:
+
+- `us-east-2` (US East, Ohio)
+- `us-west-2` (US West, Oregon)
+- `eu-central-1` (Europe, Frankfurt)
+- `eu-west-1` (Europe, Ireland)
+- `eu-west-2` (Europe, London)
+- `ap-southeast-1` (Asia Pacific, Singapore)
+- `ap-southeast-2` (Asia Pacific, Sydney)
+- `ap-northeast-1` (Asia Pacific, Tokyo)
+
+For US-based organizations, `us-east-2` and `us-west-2` are both solid choices. They avoid the stability concerns of
+`us-east-1`, offer low latency to other US regions, and support the full reference architecture without workarounds.
 
 ### References
 
