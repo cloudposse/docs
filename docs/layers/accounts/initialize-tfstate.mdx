@@ -51,6 +51,33 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
 
   </Step>
   <Step>
+    ## <StepNumber/> Request S3 Bucket Policy Size Quota Increase
+
+    The reference architecture follows the principle of least privilege by listing every specific ARN explicitly in the
+    `tfstate-backend` S3 bucket policy. This ensures only known, authorized roles and permission sets can access
+    Terraform state. Because explicit ARNs produce a larger policy, the default S3 bucket policy size limit of 20KB may
+    be exceeded.
+
+    Before deploying the Terraform state backend, request a service quota increase for the S3 bucket policy size in the
+    **root** account:
+
+    ```bash
+    aws service-quotas request-service-quota-increase \
+      --service-code s3 \
+      --quota-code L-DC2B2D3D \
+      --desired-value 40
+    ```
+
+    This requests a 40KB limit, which provides sufficient headroom for organizations with many accounts.
+
+    :::note
+    Organizations preferring a smaller policy can substitute wildcard ARN patterns (e.g.
+    `arn:aws:iam::*:role/acme-*-gbl-*-terraform`) in the `tfstate-backend` catalog defaults instead. This trades
+    security for convenience and avoids the need for a quota increase.
+    :::
+
+  </Step>
+  <Step>
     ## <StepNumber/> Initialize the Terraform State Backend
 
     Run the following command to initialize the Terraform State Backend. This workflow has two steps:
