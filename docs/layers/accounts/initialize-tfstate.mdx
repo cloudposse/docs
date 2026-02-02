@@ -70,11 +70,16 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
 
     This requests a 40KB limit, which provides sufficient headroom for organizations with many accounts.
 
-    :::note
-    Organizations preferring a smaller policy can substitute wildcard ARN patterns (e.g.
-    `arn:aws:iam::*:role/acme-*-gbl-*-terraform`) in the `tfstate-backend` catalog defaults instead. This trades
-    security for convenience and avoids the need for a quota increase.
+    :::tip
+    The `deploy/s3-quota` workflow step in the accounts layer workflow already includes this quota request. If you are
+    following the quickstart and running `atmos workflow all -f quickstart/foundation/accounts`, this step is handled
+    automatically and you do not need to run the command manually.
     :::
+
+    Organizations preferring a smaller policy can substitute wildcard ARN patterns (e.g.
+    `arn:aws:iam::*:role/acme-*-gbl-*-terraform`) in the `tfstate-backend` catalog defaults, but additional changes
+    may also be needed to fit within the default 20KB limit. We recommend requesting the quota increase so the bucket
+    policy size is not a constraint.
 
   </Step>
   <Step>
