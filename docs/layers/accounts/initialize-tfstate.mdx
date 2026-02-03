@@ -51,37 +51,38 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
 
   </Step>
   <Step>
-    ## <StepNumber/> Request S3 Bucket Policy Size Quota Increase
+    ## <StepNumber/> Request IAM Role Trust Policy Size Quota Increase
 
     The reference architecture follows the principle of least privilege by listing every specific ARN explicitly in the
-    `tfstate-backend` S3 bucket policy. This ensures only known, authorized roles and permission sets can access
-    Terraform state. Because explicit ARNs produce a larger policy, the default S3 bucket policy size limit of 20KB may
-    be exceeded.
+    `tfstate-backend` IAM role trust policies. This ensures only known, authorized roles and permission sets can access
+    Terraform state. Because explicit ARNs produce larger trust policies, the default IAM role trust policy size limit
+    of 2048 characters may be exceeded.
 
-    Before deploying the Terraform state backend, request a service quota increase for the S3 bucket policy size in the
-    **root** account:
+    Before deploying the Terraform state backend, request a service quota increase for the IAM role trust policy size in
+    the **root** account. Since IAM is a global service, this request must be made in `us-east-1`:
 
     ```bash
     atmos auth exec --identity core-root/terraform -- \
       aws service-quotas request-service-quota-increase \
-        --service-code s3 \
-        --quota-code L-DC2B2D3D \
-        --desired-value 40
+        --service-code iam \
+        --quota-code L-C07B4B0D \
+        --desired-value 4096 \
+        --region us-east-1
     ```
 
-    This requests a 40KB limit, which provides sufficient headroom for organizations with many accounts.
+    This requests the maximum allowed limit of 4096 characters. Requests up to this limit are automatically approved.
 
     :::tip
-    The `deploy/s3-quota` workflow step in the accounts layer workflow already includes this quota request. If you are
+    The `deploy/iam-quota` workflow step in the accounts layer workflow already includes this quota request. If you are
     following the quickstart and running `atmos workflow all -f quickstart/foundation/accounts`, this step is handled
     automatically and you do not need to run the command manually.
     :::
 
     <Note title="Using Regex">
-    Organizations preferring a smaller policy can substitute wildcard ARN patterns (e.g.
+    Organizations preferring smaller trust policies can substitute wildcard ARN patterns (e.g.
     `arn:aws:iam::*:role/acme-*-gbl-*-terraform`) in the `tfstate-backend` catalog defaults, but additional changes
-    may also be needed to fit within the default 20KB limit. We recommend requesting the quota increase so the bucket
-    policy size is not a constraint.
+    may also be needed to fit within the default 2048 character limit. We recommend requesting the quota increase so
+    the trust policy size is not a constraint.
 
     If you use wildcard ARN patterns, ensure the `tfstate-backend` component is configured with
     `use_organization_id: true` to restrict access to principals within your AWS Organization. Without this restriction,
