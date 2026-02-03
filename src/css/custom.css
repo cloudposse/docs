@@ -377,3 +377,26 @@ table thead th {
 .tabs-container .theme-code-block {
   margin-top: 2em;
 }
+
+/* Restore list styling removed by Tailwind Preflight */
+.markdown ul,
+.theme-doc-markdown ul {
+  list-style-type: disc;
+  padding-left: 2em;
+}
+
+.markdown ol,
+.theme-doc-markdown ol {
+  list-style-type: decimal;
+  padding-left: 2em;
+}
+
+.markdown ul ul,
+.theme-doc-markdown ul ul {
+  list-style-type: circle;
+}
+
+.markdown ul ul ul,
+.theme-doc-markdown ul ul ul {
+  list-style-type: square;
+}
