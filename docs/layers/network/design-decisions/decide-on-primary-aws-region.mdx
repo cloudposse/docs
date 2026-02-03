@@ -17,6 +17,8 @@ certain resources that will not be geographically distributed and these should b
 When starting from scratch with a new AWS account, it's a good time to revisit decisions that might have been made
 decades ago. There are many new AWS regions that might be better suited for the business.
 
+## Considerations
+
 ### Customer Proximity
 
 One good option is picking a default region that is closest to the where the majority of end-users reside.
@@ -35,13 +37,14 @@ over `us-east-1` and the latencies between these regions is very minimal.
 
 ### High Availability / Availability Zones
 
-Not all AWS regions support the same number of availability zones.
-[Many regions only offer (2) availability zones](https://howto.lintel.in/list-of-aws-regions-and-availability-zones/)
-when a minimum of (3) is recommended when operating kubernetes to avoid "split-brain" problems.
+Not all AWS regions support the same number of availability zones. A minimum of 3 AZs is recommended when operating
+Kubernetes to avoid "split-brain" problems. Most AWS regions now have at least 3 AZs, but there are exceptions:
 
-### Cost
+- `us-west-1` (US West, N. California) — newer accounts only have access to 2 AZs
+- Some opt-in regions may have fewer AZs
 
-Not all regions cost the same to operate.
+See the [AWS Regions documentation](https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html)
+for the current AZ count per region.
 
 ### Service Availability
 
@@ -78,6 +81,10 @@ via [Transit Gateway](/components/library/aws/tgw/hub/) with a cross-region peer
 IAM roles, or a combination of both. These workarounds add complexity and cost (e.g. Transit Gateway cross-region
 data transfer adds approximately **$80/month**).
 
+### Cost
+
+Not all regions cost the same to operate.
+
 ### Instance Types
 
 Not all instance types are available in all regions
@@ -87,7 +94,7 @@ Not all instance types are available in all regions
 Latency between v1 infrastructure and v2 infrastructure could be a factor. See
 [cloudping.co/grid](https://www.cloudping.co/grid) for more information.
 
-### Recommendation
+## Recommendation
 
 Taking all of the above into consideration, we recommend choosing a primary region that supports the services you need,
 has at least 3 availability zones, and is not `us-east-1` (due to its history of service interruptions). The regions
@@ -105,7 +112,7 @@ that support both App Runner and Managed Grafana while meeting these criteria ar
 For US-based organizations, `us-east-2` and `us-west-2` are both solid choices. They avoid the stability concerns of
 `us-east-1`, offer low latency to other US regions, and support the full reference architecture without workarounds.
 
-### References
+## References
 
 - [https://www.geekwire.com/2017/analysis-rethinking-cloud-architecture-outage-amazon-web-services/](https://www.geekwire.com/2017/analysis-rethinking-cloud-architecture-outage-amazon-web-services/)
 - [https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/](https://www.concurrencylabs.com/blog/choose-your-aws-region-wisely/)
