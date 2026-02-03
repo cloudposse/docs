@@ -62,10 +62,11 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
     **root** account:
 
     ```bash
-    aws service-quotas request-service-quota-increase \
-      --service-code s3 \
-      --quota-code L-DC2B2D3D \
-      --desired-value 40
+    atmos auth exec --identity core-root/terraform -- \
+      aws service-quotas request-service-quota-increase \
+        --service-code s3 \
+        --quota-code L-DC2B2D3D \
+        --desired-value 40
     ```
 
     This requests a 40KB limit, which provides sufficient headroom for organizations with many accounts.
@@ -76,10 +77,17 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
     automatically and you do not need to run the command manually.
     :::
 
+    <Note title="Using Regex">
     Organizations preferring a smaller policy can substitute wildcard ARN patterns (e.g.
     `arn:aws:iam::*:role/acme-*-gbl-*-terraform`) in the `tfstate-backend` catalog defaults, but additional changes
     may also be needed to fit within the default 20KB limit. We recommend requesting the quota increase so the bucket
     policy size is not a constraint.
+
+    If you use wildcard ARN patterns, ensure the `tfstate-backend` component is configured with
+    `use_organization_id: true` to restrict access to principals within your AWS Organization. Without this restriction,
+    wildcard patterns like `arn:aws:iam::*:role/...` could potentially match roles in accounts outside your organization,
+    creating a security vulnerability.
+    </Note>
 
   </Step>
   <Step>
