@@ -30,6 +30,55 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
   Each workflow explicitly specifies which Atmos stack to deploy (e.g., `atmos terraform deploy app -s staging`). The stack configuration defines which ECS cluster and account to target. This approach makes environment selection fully customizable — you can add new environments, change cluster mappings, or adjust deployment targets without modifying the workflow logic.
 </Admonition>
 
+## Image Tagging Strategy
+
+The same Docker image flows through all environments — no rebuilding between stages. This ensures what you test is exactly what you deploy to production.
+
+```mermaid
+flowchart LR
+    subgraph CI["CI: Build Once"]
+        build[Build Image]
+        push[Push to ECR]
+    end
+
+    subgraph Tags["Image Tags"]
+        sha["sha-a1b2c3d"]
+        latest["latest"]
+        version["v1.2.3"]
+    end
+
+    subgraph CD["CD: Deploy Many"]
+        preview[Preview]
+        dev[Dev]
+        staging[Staging]
+        prod[Production]
+    end
+
+    build --> push
+    push --> sha
+    push --> latest
+
+    sha --> preview
+    sha --> dev
+    sha -.->|promote| version
+    version --> staging
+    version --> prod
+```
+
+**How it works:**
+
+1. **On PR/main push**: CI builds the image once and pushes it with a `sha-<commit>` tag (e.g., `sha-a1b2c3d`). Pushes to `main` also tag as `latest`.
+
+2. **Preview & Dev**: Deploy using the `sha-<commit>` tag. The exact commit being deployed is always traceable.
+
+3. **On release**: The existing image is **promoted** (re-tagged) with the release version (e.g., `v1.2.3`). No rebuild occurs — the identical image bytes are tagged with a new name.
+
+4. **Staging & Production**: Deploy using the version tag. Both environments run the exact same image that was tested in dev.
+
+<Admonition type="info" title="Why This Matters">
+  Rebuilding images between environments risks subtle differences (updated dependencies, timing issues, etc.). By promoting the same image, you guarantee that staging and production run identical code to what was tested in dev.
+</Admonition>
+
 <Steps>
   <Step>
     ### <StepNumber/> Deploy a Preview Environment
