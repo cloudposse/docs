@@ -27,7 +27,7 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
 | Production | `prod` cluster | `prod` | After staging (with approval) |
 
 <Admonition type="info" title="Cluster Selection">
-  The target ECS cluster is determined by the Atmos stack configuration. Each stack (e.g., `dev.yaml`, `staging.yaml`, `prod.yaml`) specifies its target cluster through the `vars.environment` setting, which maps to infrastructure deployed in your platform accounts.
+  The GitHub workflow specifies which Atmos stack to deploy with the `-s` flag (e.g., `atmos terraform deploy app -s staging`). Each stack configuration file defines which ECS cluster and account to target. This explicit stack selection in the workflow ensures the right environment is deployed at each stage.
 </Admonition>
 
 <Steps>
