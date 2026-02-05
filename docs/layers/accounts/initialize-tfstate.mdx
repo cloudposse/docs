@@ -66,11 +66,11 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
       aws service-quotas request-service-quota-increase \
         --service-code iam \
         --quota-code L-C07B4B0D \
-        --desired-value 10240 \
+        --desired-value 4096 \
         --region us-east-1
     ```
 
-    This requests an increase to 10KB, which provides ample room for organizations with many accounts. Requests are typically approved within minutes.
+    This requests an increase to the maximum allowed 4096 characters. Requests are typically approved within minutes.
 
     :::tip
     The `deploy/iam-quota` workflow step in the accounts layer workflow already includes this quota request. If you are
