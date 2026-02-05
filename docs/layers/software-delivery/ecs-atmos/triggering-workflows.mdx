@@ -26,8 +26,8 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
 | Staging | `staging` cluster | `staging` | Publish release |
 | Production | `prod` cluster | `prod` | After staging (with approval) |
 
-<Admonition type="info" title="Cluster Selection">
-  The GitHub workflow specifies which Atmos stack to deploy with the `-s` flag (e.g., `atmos terraform deploy app -s staging`). Each stack configuration file defines which ECS cluster and account to target. This explicit stack selection in the workflow ensures the right environment is deployed at each stage.
+<Admonition type="tip" title="Flexible Environment Targeting">
+  Each workflow explicitly specifies which Atmos stack to deploy (e.g., `atmos terraform deploy app -s staging`). The stack configuration defines which ECS cluster and account to target. This approach makes environment selection fully customizable — you can add new environments, change cluster mappings, or adjust deployment targets without modifying the workflow logic.
 </Admonition>
 
 <Steps>
