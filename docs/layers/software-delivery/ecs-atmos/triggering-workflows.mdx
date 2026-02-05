@@ -67,13 +67,15 @@ flowchart LR
 
 **How it works:**
 
-1. **On PR/main push**: CI builds the image once and pushes it with a `sha-<commit>` tag (e.g., `sha-a1b2c3d`). Pushes to `main` also tag as `latest`.
+<Steps>
+  1. **On PR/main push**: CI builds the image once and pushes it with a `sha-<commit>` tag (e.g., `sha-a1b2c3d`). Pushes to `main` also tag as `latest`.
 
-2. **Preview & Dev**: Deploy using the `sha-<commit>` tag. The exact commit being deployed is always traceable.
+  2. **Preview & Dev**: Deploy using the `sha-<commit>` tag. The exact commit being deployed is always traceable.
 
-3. **On release**: The existing image is **promoted** (re-tagged) with the release version (e.g., `v1.2.3`). No rebuild occurs — the identical image bytes are tagged with a new name.
+  3. **On release**: The existing image is **promoted** (re-tagged) with the release version (e.g., `v1.2.3`). No rebuild occurs — the identical image bytes are tagged with a new name.
 
-4. **Staging & Production**: Deploy using the version tag. Both environments run the exact same image that was tested in dev.
+  4. **Staging & Production**: Deploy using the version tag. Both environments run the exact same image that was tested in dev.
+</Steps>
 
 <Admonition type="info" title="Why This Matters">
   Rebuilding images between environments risks subtle differences (updated dependencies, timing issues, etc.). By promoting the same image, you guarantee that staging and production run identical code to what was tested in dev.
