@@ -12,7 +12,8 @@ import StepNumber from '@site/src/components/StepNumber'
 import Note from '@site/src/components/Note'
 import TaskList from '@site/src/components/TaskList'
 import CollapsibleText from '@site/src/components/CollapsibleText';
-import Admonition from '@theme/Admonition'
+import Admonition from '@theme/Admonition';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
 import CodeBlock from '@theme/CodeBlock';
 import ApplicationIAMRole from '@site/examples/snippets/stacks/catalog/iam-role/example-app.yaml';
 
@@ -252,9 +253,9 @@ import ApplicationIAMRole from '@site/examples/snippets/stacks/catalog/iam-role/
     ```yaml title="terraform/stacks/deps/ecs-cluster.yaml"
     components:
       terraform:
-        vpc:
+        ecs/cluster:
           metadata:
-            component: vpc
+            component: ecs/cluster
             type: abstract
             terraform_workspace: "{{ .vars.tenant }}-{{ .vars.environment }}-{{ .vars.deps_stage }}"
           backend_type: s3
@@ -344,6 +345,12 @@ import ApplicationIAMRole from '@site/examples/snippets/stacks/catalog/iam-role/
 - [ ] Container definitions configured in `terraform/stacks/default/app.yaml`
 - [ ] `atmos terraform plan app -s preview` runs successfully
 </TaskList>
+
+## Next Steps
+
+Now that your ECS application is configured, learn how to deploy through the CI/CD pipeline.
+
+<PrimaryCTA to="/layers/software-delivery/ecs-atmos/triggering-workflows">Trigger Deployments</PrimaryCTA>
 
 ## References
 
