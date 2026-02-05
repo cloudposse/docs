@@ -59,8 +59,10 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
     - **GitHub UI**: Click the "Deployments" section in your PR, or look for the environment link in the workflow summary
     - **AWS Console**: Navigate to ECS → Clusters → `dev` cluster → Services → look for service with PR number suffix
     - **Application URL**: The workflow outputs the URL — check the "Deploy" job summary
+  </Step>
 
-    **Cleanup:**
+  <Step>
+    ### <StepNumber/> Cleanup Preview Environments
 
     Preview environments are automatically destroyed when:
     - The PR is closed or merged
