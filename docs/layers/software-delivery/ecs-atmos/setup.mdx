@@ -261,7 +261,7 @@ import ApplicationIAMRole from '@site/examples/snippets/stacks/catalog/iam-role/
       terraform:
         ecs/cluster:
           metadata:
-            component: ecs/cluster
+            component: ecs
             type: abstract
             terraform_workspace: "{{ .vars.tenant }}-{{ .vars.environment }}-{{ .vars.deps_stage }}"
           backend_type: s3
