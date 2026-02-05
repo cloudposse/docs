@@ -51,44 +51,51 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
 
   </Step>
   <Step>
-    ## <StepNumber/> Request IAM Role Trust Policy Size Quota Increase
+    ## <StepNumber/> Understanding Trust Policy Security
 
-    The reference architecture follows the principle of least privilege by listing every specific ARN explicitly in the
-    `tfstate-backend` IAM role trust policies. This ensures only known, authorized roles and permission sets can access
-    Terraform state. Because explicit ARNs produce larger trust policies, the default IAM role trust policy size limit
-    of 2048 characters may be exceeded.
+    The `tfstate-backend` component creates IAM roles with trust policies that control which principals can assume them.
+    Understanding how these policies work is important for security.
 
-    Before deploying the Terraform state backend, request a service quota increase for the IAM role trust policy size in
-    the **root** account. Since IAM is a global service, this request must be made in `us-east-1`:
+    ### Why We Use Wildcard Patterns
+
+    IAM role trust policies have a **hard limit of 4096 characters** (after requesting a quota increase from the default
+    2048). For organizations with multiple accounts, listing every role and permission set by explicit ARN would easily
+    exceed this limit—even with the maximum quota.
+
+    Instead, the reference architecture uses wildcard ARN patterns like:
+    - `arn:aws:iam::*:role/acme-*-gbl-*-terraform` for Terraform execution roles
+    - `arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_Terraform*Access_*` for SSO permission sets
+
+    ### The Two-Way Security Handshake
+
+    Using wildcards in trust policies is secure because access requires a **two-way handshake**:
+
+    1. **Trust Policy (this side):** The tfstate role's trust policy allows principals matching the pattern to attempt
+       assumption, but only if they're within your AWS Organization (`aws:PrincipalOrgID` condition).
+
+    2. **Principal's Policy (other side):** The principal (e.g., a Terraform role or SSO permission set) must also have
+       an IAM policy granting `sts:AssumeRole` on the specific tfstate role ARN.
+
+    A role matching the wildcard pattern cannot access Terraform state unless it also has explicit permission to assume
+    the tfstate role. This defense-in-depth approach maintains security while staying within IAM limits.
+
+    ### Requesting a Quota Increase (If Needed)
+
+    If you customize the trust policies and approach the 2048 character default limit, you can request an increase up to
+    the maximum of 4096 characters. Requests within this limit are auto-approved instantly:
 
     ```bash
-    atmos auth exec --identity core-root/terraform -- \
-      aws service-quotas request-service-quota-increase \
-        --service-code iam \
-        --quota-code L-C07B4B0D \
-        --desired-value 4096 \
-        --region us-east-1
+    aws service-quotas request-service-quota-increase \
+      --service-code iam \
+      --quota-code L-C07B4B0D \
+      --desired-value 4096 \
+      --region us-east-1
     ```
 
-    This requests an increase to the maximum allowed 4096 characters. Requests within this limit are auto-approved instantly—no AWS support ticket required.
-
-    :::tip
-    The `deploy/iam-quota` workflow step in the accounts layer workflow already includes this quota request. If you are
-    following the quickstart and running `atmos workflow all -f quickstart/foundation/accounts`, this step is handled
-    automatically and you do not need to run the command manually.
+    :::note
+    This is only needed if you customize trust policies beyond the defaults. The reference architecture's wildcard
+    patterns fit comfortably within the default 2048 character limit.
     :::
-
-    <Note title="Using Regex">
-    Organizations preferring smaller trust policies can substitute wildcard ARN patterns (e.g.
-    `arn:aws:iam::*:role/acme-*-gbl-*-terraform`) in the `tfstate-backend` catalog defaults, but additional changes
-    may also be needed to fit within the default 2048 character limit. We recommend requesting the quota increase so
-    the trust policy size is not a constraint.
-
-    If you use wildcard ARN patterns, ensure the `tfstate-backend` component is configured with
-    `use_organization_id: true` to restrict access to principals within your AWS Organization. Without this restriction,
-    wildcard patterns like `arn:aws:iam::*:role/...` could potentially match roles in accounts outside your organization,
-    creating a security vulnerability.
-    </Note>
 
   </Step>
   <Step>
