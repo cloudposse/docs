@@ -85,11 +85,12 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
     the maximum of 4096 characters. Requests within this limit are auto-approved instantly:
 
     ```bash
-    aws service-quotas request-service-quota-increase \
-      --service-code iam \
-      --quota-code L-C07B4B0D \
-      --desired-value 4096 \
-      --region us-east-1
+    atmos auth exec --identity core-root/terraform -- \
+      aws service-quotas request-service-quota-increase \
+        --service-code iam \
+        --quota-code L-C07B4B0D \
+        --desired-value 4096 \
+        --region us-east-1
     ```
 
     :::note
