@@ -44,10 +44,15 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
       - [ ] Add the `deploy` label to the PR
     </TaskList>
 
-    **CI/CD steps that run:**
+    **CI steps:**
 
-    1. **Build** — Builds Docker image and pushes to ECR with tag `sha-<commit>`
-    2. **Deploy** — Runs `atmos terraform deploy app -s preview` to create/update the ECS service
+    1. **Build** — Builds the Docker image
+    2. **Test** — Runs any configured tests
+    3. **Push** — Pushes the image to your container registry (ECR by default) with tag `sha-<commit>`
+
+    **CD steps:**
+
+    1. **Deploy** — Runs Atmos to deploy the `app` [component](https://atmos.tools/core-concepts/components/). The component configuration specifies the Docker image to pull, using the [`!env` function](https://atmos.tools/core-concepts/stacks/yaml-functions/env) to read the image from the environment variable set by CI, with a fallback default.
 
     **Where to see your preview environment:**
 
@@ -75,11 +80,16 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
       - [ ] Merge your PR to `main` (or push directly to `main`)
     </TaskList>
 
-    **CI/CD steps that run:**
+    **CI steps:**
 
-    1. **Build** — Builds Docker image and pushes to ECR with tag `sha-<commit>`
-    2. **Deploy** — Runs `atmos terraform deploy app -s dev` to update the ECS service
-    3. **Release** — Creates a draft GitHub Release for promotion
+    1. **Build** — Builds the Docker image
+    2. **Test** — Runs any configured tests
+    3. **Push** — Pushes the image to your container registry (ECR by default) with tag `sha-<commit>`
+
+    **CD steps:**
+
+    1. **Deploy** — Runs Atmos to deploy the `app` component to the `dev` stack
+    2. **Release** — Creates a draft GitHub Release for promotion to staging/production
 
     **Where to see your dev deployment:**
 
@@ -101,10 +111,13 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
       - [ ] Click "Publish release"
     </TaskList>
 
-    **CI/CD steps that run:**
+    **CI steps:**
 
-    1. **Promote** — Tags the Docker image with the release version (e.g., `v1.2.3`)
-    2. **Deploy Staging** — Runs `atmos terraform deploy app -s staging` to update the ECS service
+    1. **Promote** — Tags the existing Docker image with the release version (e.g., `v1.2.3`). No rebuild occurs — the same tested image is promoted.
+
+    **CD steps:**
+
+    1. **Deploy** — Runs Atmos to deploy the `app` component to the `staging` stack
 
     **Where to see your staging deployment:**
 
@@ -118,10 +131,10 @@ Each environment maps to a specific ECS cluster and GitHub Environment:
 
     Production deployment happens automatically after staging, with an optional approval gate.
 
-    **CI/CD steps that run:**
+    **CD steps:**
 
-    1. **Wait for approval** (if configured)
-    2. **Deploy Production** — Runs `atmos terraform deploy app -s prod` to update the ECS service
+    1. **Approval** — Waits for manual approval (if configured)
+    2. **Deploy** — Runs Atmos to deploy the `app` component to the `prod` stack
 
     **Where to see your production deployment:**
 
