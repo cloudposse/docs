@@ -6,10 +6,15 @@ sidebar_position: 20
 
 import Intro from '@site/src/components/Intro';
 import Steps from '@site/src/components/Steps';
+import Admonition from '@theme/Admonition'
 
 <Intro>
   This document describes what partial task definitions are and how we can use them to set up ECS services using Terraform and GitHub Actions.
 </Intro>
+
+<Admonition type="warning" title="Deprecated">
+  This approach is deprecated. For new ECS deployments, we recommend using [ECS with Atmos](/layers/software-delivery/ecs-atmos/) which provides a simpler, more integrated deployment workflow.
+</Admonition>
 
 ## The Problem
 
