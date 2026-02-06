@@ -15,11 +15,11 @@ jobs:
       - "private=false"
     steps:
       - name: "Checkout source code at current commit"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Generate a token
         id: github-app
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.ATMOS_APP_ID }}
           private-key: ${{ secrets.ATMOS_PRIVATE_KEY }}
