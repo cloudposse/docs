@@ -50,13 +50,14 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
     <AtmosWorkflow workflow="vendor" fileName="quickstart/foundation/accounts" />
 
   </Step>
-  <Step>
-    ## <StepNumber/> Understanding Trust Policy Security
+
+  <details>
+    <summary>Why Do We Use Wildcard Patterns with IAM?</summary>
 
     The `tfstate-backend` component creates IAM roles with trust policies that control which principals can assume them.
     Understanding how these policies work is important for security.
 
-    ### Why We Use Wildcard Patterns
+    ### The Character Limit Problem
 
     IAM role trust policies have a **hard limit of 4096 characters** (after requesting a quota increase from the default
     2048). For organizations with multiple accounts, listing every role and permission set by explicit ARN would easily
@@ -98,7 +99,8 @@ If you look at `components/terraform/`, you'll see a bunch of directories. These
     patterns fit comfortably within the default 2048 character limit.
     :::
 
-  </Step>
+  </details>
+
   <Step>
     ## <StepNumber/> Initialize the Terraform State Backend
 
