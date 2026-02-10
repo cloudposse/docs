@@ -1,8 +1,8 @@
 # CLAUDE.md
 
 AWS infrastructure repository using Cloud Posse reference architecture with Atmos and OpenTofu. Manages multiple AWS
-accounts across core (root, audit, security, identity, network, dns, auto, artifacts) and platform (sandbox, dev,
-staging, prod) tenants.
+accounts across core (root, audit, security, network, auto, artifacts) and platform (sandbox, dev, staging, prod)
+tenants.
 
 ## Commands
 

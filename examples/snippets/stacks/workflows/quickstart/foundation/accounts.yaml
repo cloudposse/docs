@@ -85,7 +85,6 @@ workflows:
       - command: terraform deploy aws-account/core-artifacts -s core-gbl-root
       - command: terraform deploy aws-account/core-audit -s core-gbl-root
       - command: terraform deploy aws-account/core-auto -s core-gbl-root
-      - command: terraform deploy aws-account/core-dns -s core-gbl-root
       - command: terraform deploy aws-account/core-network -s core-gbl-root
       - command: terraform deploy aws-account/core-security -s core-gbl-root
       - command: terraform deploy aws-account/plat-dev -s core-gbl-root
@@ -109,7 +108,6 @@ workflows:
       - command: terraform deploy aws-account-settings -s core-gbl-artifacts
       - command: terraform deploy aws-account-settings -s core-gbl-audit
       - command: terraform deploy aws-account-settings -s core-gbl-auto
-      - command: terraform deploy aws-account-settings -s core-gbl-dns
       - command: terraform deploy aws-account-settings -s core-gbl-network
       - command: terraform deploy aws-account-settings -s core-gbl-root
       - command: terraform deploy aws-account-settings -s core-gbl-security
@@ -125,7 +123,6 @@ workflows:
       - command: terraform deploy aws-budget -s core-gbl-artifacts
       - command: terraform deploy aws-budget -s core-gbl-audit
       - command: terraform deploy aws-budget -s core-gbl-auto
-      - command: terraform deploy aws-budget -s core-gbl-dns
       - command: terraform deploy aws-budget -s core-gbl-network
       - command: terraform deploy aws-budget -s core-gbl-security
       - command: terraform deploy aws-budget -s plat-gbl-dev
