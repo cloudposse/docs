@@ -38,5 +38,25 @@
   {
     "from": "/components/library/aws/tgw/cross-region-hub-connector",
     "to": "/components/library/aws/tgw/hub-connector"
+  },
+  {
+    "from": "/components/library/aws/auditmanager/",
+    "to": "/components/library/aws/audit-manager/"
+  },
+  {
+    "from": "/components/library/aws/shield/",
+    "to": "/components/library/aws/aws-shield/"
+  },
+  {
+    "from": "/components/library/aws/inspector2/",
+    "to": "/components/library/aws/aws-inspector2/"
+  },
+  {
+    "from": "/components/library/aws/securityhub/",
+    "to": "/components/library/aws/security-hub/"
+  },
+  {
+    "from": "/components/library/aws/config/",
+    "to": "/components/library/aws/aws-config/"
   }
 ]
