@@ -28,10 +28,6 @@
     "to": "/components/library/aws/eks/karpenter-controller"
   },
   {
-    "from": "/components/library/aws/eks/karpenter/docs",
-    "to": "/components/library/aws/eks/karpenter-controller/docs"
-  },
-  {
     "from": "/components/library/aws/spacelift/worker-pool",
     "to": "/components/library/aws/spacelift/worker-pool-asg"
   },
