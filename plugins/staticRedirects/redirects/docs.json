@@ -10,5 +10,9 @@
   {
     "from": "/jumpstart/support/",
     "to": "/support"
-}
+  },
+  {
+    "from": "/blog/2025/12/19/deprecating-account-map-and-related-components/",
+    "to": "/blog/deprecate-account-map/"
+  }
 ]
