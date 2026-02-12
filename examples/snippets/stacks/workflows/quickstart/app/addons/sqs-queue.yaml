@@ -2,7 +2,7 @@ workflows:
   all:
     description: run all workflows
     steps:
-      - command: terraform deploy sqs-queue --stack plat-use1-sandbox
+      - command: terraform deploy sqs-queue/example --stack plat-use1-sandbox
 
   vendor:
     description: vendor all components required for this addon
