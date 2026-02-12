@@ -31,7 +31,7 @@ jobs:
       - uses: unfor19/install-aws-cli-action@v1
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -49,7 +49,7 @@ jobs:
 
       # We need to assume AWS credentials to read the Terraform state
       - name: Assume Planner Role
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: "us-east-1"
           role-to-assume: "arn:aws:iam::333333333333:role/acme-core-gbl-auto-planner"
