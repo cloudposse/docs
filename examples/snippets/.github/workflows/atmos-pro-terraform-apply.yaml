@@ -33,7 +33,7 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
 
-jobs: 
+jobs:
   atmos-apply:
     name: ${{ inputs.component }}-${{ inputs.stack }}
 
@@ -52,7 +52,7 @@ jobs:
       - uses: unfor19/install-aws-cli-action@v1
 
       - name: Apply Atmos Component
-        uses: cloudposse/github-action-atmos-terraform-apply@v7
+        uses: cloudposse/github-action-atmos-terraform-apply@v6
         env:
           ATMOS_PROFILE: "github-apply"
         with:

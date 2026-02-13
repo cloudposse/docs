@@ -90,7 +90,7 @@ workflows:
       - command: echo 'Creating primary dns zones'
         type: shell
         name: primary
-      - command: terraform deploy dns-primary -s core-gbl-dns
+      - command: terraform deploy dns-primary -s core-gbl-network
       - command: terraform deploy dns-primary -s plat-gbl-dev
       - command: terraform deploy dns-primary -s plat-gbl-staging
       - command: terraform deploy dns-primary -s plat-gbl-prod
@@ -114,7 +114,7 @@ workflows:
             terraform workspace select $1 > /dev/null
             terraform output -json zones
           }
-          for s in core-gbl-dns plat-gbl-{dev,staging,prod,sandbox} ; do
+          for s in core-gbl-network plat-gbl-{dev,staging,prod,sandbox} ; do
             output-dns $s
           done | jq 'to_entries[] | { (.key) : .value.name_servers }'
 
