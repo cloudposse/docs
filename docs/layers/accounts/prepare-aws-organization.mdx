@@ -71,15 +71,15 @@ From the root account:
       ```
    1. Start an authenticated session. You'll be prompted to enter a one-time MFA token:
       ```bash
-      atmos auth login
+      atmos auth login -i core-root/terraform
       ```
    1. Verify you can access the root account:
       ```bash
-      atmos auth exec -- aws sts get-caller-identity
+      atmos auth exec -i core-root/terraform -- aws sts get-caller-identity
       ```
    </Steps>
    :::note Daily Usage
-   Once the profile is set and user credentials are configured, you only need to run `atmos auth login` each day to start a new authenticated session.
+   Once the profile is set and user credentials are configured, you only need to run `atmos auth login -i core-root/terraform` each day to start a new authenticated session.
    :::
    :::tip Atmos Profile Persistence
    Add `export ATMOS_PROFILE=superadmin` to your shell configuration (`~/.zshrc` or `~/.bashrc`) to persist the setting across terminal sessions during cold start.
