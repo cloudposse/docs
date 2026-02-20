@@ -1,5 +1,6 @@
 ---
 title: Software Delivery
+sidebar_position: 1
 ---
 import Intro from '@site/src/components/Intro';
 import Steps from '@site/src/components/Steps';
@@ -30,10 +31,10 @@ import ReactPlayer from 'react-player';
     Choose a path for delivery of your services with GitHub Actions. The reference architecture supports deployment to AWS EKS, Amazon ECS, and Lambda functions.
 
     <Tabs queryString="app">
-      <TabItem value="ecs-ecspresso" label="Use ECS with ecspresso">
-        We use the `ecspresso` deployment tool for Amazon ECS to manage ECS services using a code-driven approach, alongside reusable GitHub Action workflows. This setup allows tasks to be defined with Terraform within the infrastructure repository, and task definitions to reside alongside the application code.
+      <TabItem value="ecs-atmos" label="Use ECS with Atmos">
+        Deploy containerized applications to AWS ECS Fargate using Atmos for configuration orchestration and OpenTofu for infrastructure-as-code. This approach provides a self-contained, elegant solution with automated CI/CD pipelines that leverage Atmos stack configurations for multi-environment deployments.
 
-        <PrimaryCTA to="/layers/software-delivery/ecs-ecspresso">Get Started</PrimaryCTA>
+        <PrimaryCTA to="/layers/software-delivery/ecs-atmos">Get Started</PrimaryCTA>
       </TabItem>
       <TabItem value="eks-argocd" label="Use EKS with Argo CD">
         Argo CD is an open-source declarative, GitOps continuous delivery tool for Kubernetes applications. It enables developers to manage and deploy applications on Kubernetes clusters using Git repositories as the source of truth for configuration and definitions. Our Argo CD implementation follows the GitOps methodology and integrates with GitHub Actions, ensuring that the entire application configuration, including manifests, parameters, and even application state, is stored in a Git repository.
@@ -41,9 +42,19 @@ import ReactPlayer from 'react-player';
         <PrimaryCTA to="/layers/software-delivery/eks-argocd">Get Started</PrimaryCTA>
       </TabItem>
 
-      <TabItem value="lambda" label="Use Lambas">
+      <TabItem value="lambda" label="Use Lambdas">
         Deploy Lambda functions using GitHub Workflows with a code-driven approach. The build process updates S3 with assets and SSM with the new version, requiring a Terraform run for promotion. GitHub Workflows manage the entire lifecycle, from building and packaging Lambda functions to deploying them, with reusable workflows.
         <PrimaryCTA to="/layers/software-delivery/lambda">Get Started</PrimaryCTA>
+      </TabItem>
+
+      <TabItem value="ecs-ecspresso" label="Use ECS with ecspresso (Deprecated)">
+        :::warning
+        This approach is deprecated. For new ECS deployments, we recommend using [ECS with Atmos](/layers/software-delivery/ecs-atmos/).
+        :::
+
+        We use the `ecspresso` deployment tool for Amazon ECS to manage ECS services using a code-driven approach, alongside reusable GitHub Action workflows. This setup allows tasks to be defined with Terraform within the infrastructure repository, and task definitions to reside alongside the application code.
+
+        <PrimaryCTA to="/layers/software-delivery/ecs-ecspresso">View Documentation</PrimaryCTA>
       </TabItem>
     </Tabs>
 
@@ -60,7 +71,51 @@ Once you're done deploying your apps, it's time to start monitoring everything. 
 <hr></hr>
 <h2>Our Examples</h2>
 
-### Reusable Workflows
+### ECS with Atmos (Recommended)
+
+The [app-on-ecs-v2](https://github.com/cloudposse-examples/app-on-ecs-v2) example demonstrates a self-contained approach where workflows are defined directly in the application repository. This approach uses Atmos for configuration orchestration and OpenTofu for infrastructure management.
+
+With this approach, you need only a few workflows in your application repository:
+
+  1. `feature-branch.yml` - Build and deploy to preview environments
+  2. `preview-cleanup.yml` - Clean up preview environments when PRs close
+  3. `main-branch.yaml` - Build, deploy to dev, and create draft release
+  4. `release.yaml` - Promote and deploy to staging/production
+  5. (optional) `validate.yml` - Run validation checks
+  6. (optional) `labeler.yaml` - Auto-label PRs
+
+```console
+app-on-ecs-v2/
+├── .github/
+│   └── workflows/
+│       ├── feature-branch.yml
+│       ├── preview-cleanup.yml
+│       ├── main-branch.yaml
+│       ├── release.yaml
+│       ├── validate.yml
+│       └── labeler.yaml
+├── app/
+│   ├── main.go
+│   └── Dockerfile
+├── terraform/
+│   ├── components/
+│   │   └── ecs-task/
+│   └── stacks/
+│       ├── dev.yaml
+│       ├── staging.yaml
+│       ├── prod.yaml
+│       └── preview.yaml
+└── .opentofu-version
+```
+
+### ECS with Ecspresso (Deprecated)
+
+:::warning
+The ecspresso-based approach is deprecated. For new projects, use [ECS with Atmos](/layers/software-delivery/ecs-atmos/) instead.
+:::
+
+<details>
+<summary>View deprecated ecspresso workflow structure</summary>
 
 We've consolidated all the workflows into the example applications,
 including the GitHub reusable workflows.
@@ -141,3 +196,5 @@ After moving to a centralized workflow repository, you should have a setup like 
   │       └── workflow-controller-hotfix-release.yml
   └── ...
   ```
+
+</details>

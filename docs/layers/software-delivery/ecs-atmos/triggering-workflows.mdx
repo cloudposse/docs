@@ -1,0 +1,257 @@
+---
+title: "Triggering Workflows"
+sidebar_label: "Triggering Workflows"
+sidebar_position: 20
+description: "How to trigger CI/CD workflows for ECS deployments"
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps'
+import Step from '@site/src/components/Step'
+import StepNumber from '@site/src/components/StepNumber'
+import Admonition from '@theme/Admonition'
+import TaskList from '@site/src/components/TaskList'
+
+<Intro>
+  Once the ECS application setup is complete, validate the CI/CD workflows by triggering deployments through pull requests and releases. This guide explains what happens at each stage and where to monitor your deployments.
+</Intro>
+
+## Deployment Environments
+
+Each environment maps to a specific ECS cluster and GitHub Environment:
+
+| Environment | ECS Cluster | GitHub Environment | Trigger |
+|-------------|-------------|-------------------|---------|
+| Preview | `dev` cluster | `preview` | PR with `deploy` label |
+| Dev | `dev` cluster | `dev` | Push to `main` |
+| Staging | `staging` cluster | `staging` | Publish release |
+| Production | `prod` cluster | `prod` | After staging (with approval) |
+
+<Admonition type="tip" title="Flexible Environment Targeting">
+  Each workflow explicitly specifies which Atmos stack to deploy (e.g., `atmos terraform deploy app -s staging`). The stack configuration defines which ECS cluster and account to target. This approach makes environment selection fully customizable — you can add new environments, change cluster mappings, or adjust deployment targets without modifying the workflow logic.
+</Admonition>
+
+## Image Tagging Strategy
+
+The same Docker image flows through all environments — no rebuilding between stages. This ensures what you test is exactly what you deploy to production.
+
+```mermaid
+flowchart LR
+    subgraph CI["CI: Build Once"]
+        build[Build Image]
+        push[Push to ECR]
+    end
+
+    subgraph Tags["Image Tags"]
+        sha["sha-a1b2c3d"]
+        latest["latest"]
+        version["v1.2.3"]
+    end
+
+    subgraph CD["CD: Deploy Many"]
+        preview[Preview]
+        dev[Dev]
+        staging[Staging]
+        prod[Production]
+    end
+
+    build --> push
+    push --> sha
+    push --> latest
+
+    sha --> preview
+    sha --> dev
+    sha -.->|promote| version
+    version --> staging
+    version --> prod
+```
+
+**How it works:**
+
+<Steps>
+  1. **On PR/main push**: CI builds the image once and pushes it with a `sha-<commit>` tag (e.g., `sha-a1b2c3d`). Pushes to `main` also tag as `latest`.
+
+  2. **Preview & Dev**: Deploy using the `sha-<commit>` tag. The exact commit being deployed is always traceable.
+
+  3. **On release**: The existing image is **promoted** (re-tagged) with the release version (e.g., `v1.2.3`). No rebuild occurs — the identical image bytes are tagged with a new name.
+
+  4. **Staging & Production**: Deploy using the version tag. Both environments run the exact same image that was tested in dev.
+</Steps>
+
+<Admonition type="info" title="Why This Matters">
+  Rebuilding images between environments risks subtle differences (updated dependencies, timing issues, etc.). By promoting the same image, you guarantee that staging and production run identical code to what was tested in dev.
+</Admonition>
+
+<Steps>
+  <Step>
+    ### <StepNumber/> Deploy a Preview Environment
+
+    Preview environments let you test changes before merging to `main`. They deploy to the `dev` cluster with isolated resources.
+
+    **To trigger a preview deployment:**
+
+    <TaskList>
+      - [ ] Create a feature branch and push changes
+      - [ ] Open a pull request targeting `main`
+      - [ ] Add the `deploy` label to the PR
+    </TaskList>
+
+    **CI steps:**
+
+    1. **Build** — Builds the Docker image
+    2. **Push** — Pushes the image to your container registry (ECR by default) with tag `sha-<commit>`
+
+    **CD steps:**
+
+    1. **Deploy** — Runs Atmos to deploy the `app` [component](https://atmos.tools/core-concepts/components/). The component configuration specifies the Docker image to pull, using the [`!env` function](https://atmos.tools/core-concepts/stacks/yaml-functions/env) to read the image from the environment variable set by CI, with a fallback default.
+
+    **Where to see your preview environment:**
+
+    - **GitHub UI**: Click the "Deployments" section in your PR, or look for the environment link in the workflow summary
+    - **AWS Console**: Navigate to ECS → Clusters → `dev` cluster → Services → look for service with PR number suffix
+    - **Application URL**: The workflow outputs the URL — check the "Deploy" job summary
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Cleanup Preview Environments
+
+    Preview environments are automatically destroyed when:
+    - The PR is closed or merged
+    - The `deploy` label is removed
+
+    The `preview-cleanup.yml` workflow runs `atmos terraform destroy app -s preview` to remove all resources.
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy to Dev
+
+    Merging to `main` automatically deploys to the `dev` environment.
+
+    **To trigger a dev deployment:**
+
+    <TaskList>
+      - [ ] Merge your PR to `main` (or push directly to `main`)
+    </TaskList>
+
+    **CI steps:**
+
+    1. **Build** — Builds the Docker image
+    2. **Push** — Pushes the image to your container registry (ECR by default) with tag `sha-<commit>`
+
+    **CD steps:**
+
+    1. **Deploy** — Runs Atmos to deploy the `app` component to the `dev` stack
+    2. **Release** — Creates a draft GitHub Release for promotion to staging/production
+
+    **Where to see your dev deployment:**
+
+    - **GitHub UI**: Go to Actions → "Main Branch" workflow → click the `dev` environment link
+    - **AWS Console**: ECS → Clusters → `dev` cluster → Services → your app service
+    - **Application URL**: Check the "Deploy" job output for the URL
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy to Staging
+
+    Staging deployments are triggered by publishing a GitHub Release.
+
+    **To trigger a staging deployment:**
+
+    <TaskList>
+      - [ ] Go to GitHub → Releases → find the draft release created by the main branch workflow
+      - [ ] Edit the release — add release notes if desired
+      - [ ] Click "Publish release"
+    </TaskList>
+
+    **CI steps:**
+
+    1. **Promote** — Tags the existing Docker image with the release version (e.g., `v1.2.3`). No rebuild occurs — the same tested image is promoted.
+
+    **CD steps:**
+
+    1. **Deploy** — Runs Atmos to deploy the `app` component to the `staging` stack
+
+    **Where to see your staging deployment:**
+
+    - **GitHub UI**: Actions → "Release" workflow → click the `staging` environment link
+    - **AWS Console**: ECS → Clusters → `staging` cluster → Services → your app service
+    - **Application URL**: Check the "deploy / staging" job output
+  </Step>
+
+  <Step>
+    ### <StepNumber/> Deploy to Production
+
+    Production deployment happens automatically after staging, with an optional approval gate.
+
+    **CD steps:**
+
+    1. **Approval** — Waits for manual approval (if configured)
+    2. **Deploy** — Runs Atmos to deploy the `app` component to the `prod` stack
+
+    **Where to see your production deployment:**
+
+    - **GitHub UI**: Actions → "Release" workflow → click the `prod` environment link
+    - **AWS Console**: ECS → Clusters → `prod` cluster → Services → your app service
+    - **Application URL**: Check the "deploy / production" job output
+
+    **Configuring approval gates:**
+
+    To require manual approval before production deployments:
+
+    1. Go to your repository → Settings → Environments
+    2. Click on the `prod` environment (create it if it doesn't exist)
+    3. Check "Required reviewers"
+    4. Add the users or teams who can approve deployments
+    5. Optionally set a "Wait timer" to add a delay before deployment
+
+    <Admonition type="tip" title="GitHub Enterprise">
+      Approval gates require GitHub Enterprise or a public repository. For GitHub Team plans, consider using a separate workflow with manual trigger (`workflow_dispatch`) for production.
+    </Admonition>
+  </Step>
+</Steps>
+
+## Monitoring Deployments
+
+### GitHub Actions
+
+All deployment status is visible in the GitHub Actions tab:
+
+- **Workflow runs**: See all triggered workflows and their status
+- **Environment deployments**: Each environment shows deployment history
+- **Job logs**: Click into any job to see detailed logs including Terraform output
+
+### AWS Console
+
+Monitor your ECS services directly:
+
+1. Navigate to **ECS** → **Clusters** → select your cluster
+2. Click on your **Service**
+3. View the **Deployments** tab to see rollout status
+4. Check **Tasks** tab to see running containers
+5. View **Logs** tab for application logs (if configured with CloudWatch)
+
+### Application Health
+
+After deployment, verify your application:
+
+<TaskList>
+  - [ ] Access the application URL from the workflow output
+  - [ ] Check health endpoint (typically `/health` or `/healthz`)
+  - [ ] Review CloudWatch logs for any startup errors
+  - [ ] Monitor CloudWatch metrics for CPU/memory usage
+</TaskList>
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Preview not deploying | Verify the `deploy` label is added to the PR |
+| "No changes" in Terraform | The image tag might be the same — push a new commit |
+| Deployment timeout | Check ECS service events for task startup failures |
+| Image not found | Verify ECR permissions and image tag exists |
+| Auth errors | Check IAM role trust policy includes your repository |
+
+## Next Steps
+
+- Review the [ECS with Atmos overview](/layers/software-delivery/ecs-atmos/) for architecture details
+- Learn about [GitHub OIDC with AWS](/layers/github-actions/github-oidc-with-aws) for authentication
+- Explore [ECS cluster setup](/layers/ecs/) for platform infrastructure
