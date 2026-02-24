@@ -81,8 +81,6 @@ workflows:
       - command: terraform deploy iam-role/planner -s core-gbl-audit
       - command: terraform deploy iam-role/terraform -s core-gbl-auto
       - command: terraform deploy iam-role/planner -s core-gbl-auto
-      - command: terraform deploy iam-role/terraform -s core-gbl-dns
-      - command: terraform deploy iam-role/planner -s core-gbl-dns
       - command: terraform deploy iam-role/terraform -s core-gbl-network
       - command: terraform deploy iam-role/planner -s core-gbl-network
       - command: terraform deploy iam-role/terraform -s core-gbl-security
@@ -107,7 +105,6 @@ workflows:
       - command: terraform deploy github-oidc-provider -s core-gbl-artifacts
       - command: terraform deploy github-oidc-provider -s core-gbl-audit
       - command: terraform deploy github-oidc-provider -s core-gbl-auto
-      - command: terraform deploy github-oidc-provider -s core-gbl-dns
       - command: terraform deploy github-oidc-provider -s core-gbl-network
       - command: terraform deploy github-oidc-provider -s core-gbl-security
       # Platform accounts
