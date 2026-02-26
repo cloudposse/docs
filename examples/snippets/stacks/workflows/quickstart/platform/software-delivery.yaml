@@ -15,7 +15,13 @@
 #   - deploy/argocd: Deploy ArgoCD to EKS clusters
 #   - deploy/argocd-repos: Deploy ArgoCD repository configurations
 #   - deploy/iam-identity-center-app/{stage}: Configure SSO SAML for ArgoCD
-#workflows:
+## NOTE: Use 'superadmin' profile for initial infrastructure setup.
+# After SSO is configured and IAM roles are deployed (via identity layer),
+# update this to 'managers' for day-to-day operations.
+env:
+  ATMOS_PROFILE: superadmin
+
+workflows:
   vendor:
     description: |
       This workflow vendors all ArgoCD related components to the latest provided version
