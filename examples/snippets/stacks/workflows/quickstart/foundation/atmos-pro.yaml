@@ -18,6 +18,12 @@
 #   - vendor: Pull required components
 #   - deploy: Deploy all GitOps infrastructure
 #
+# NOTE: Use 'superadmin' profile for initial infrastructure setup.
+# After SSO is configured and IAM roles are deployed (via identity layer),
+# update this to 'managers' for day-to-day operations.
+env:
+  ATMOS_PROFILE: superadmin
+
 workflows:
   all:
     description: Run all Atmos Pro workflows

@@ -21,10 +21,16 @@
 #   - deploy/cloudtrail: Enable CloudTrail logging
 #   - deploy/ecr: Deploy ECR registry
 #
+# NOTE: Use 'superadmin' profile for initial infrastructure setup.
+# After SSO is configured and IAM roles are deployed (via identity layer),
+# update this to 'managers' for day-to-day operations.
 workflows:
   all:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Deploy complete accounts layer
     steps:
+      - command: workflow initial-setup -f quickstart/foundation/accounts
       - command: workflow vendor -f quickstart/foundation/accounts
       - command: workflow init/tfstate -f quickstart/foundation/accounts
       - command: workflow deploy/tfstate -f quickstart/foundation/accounts
@@ -37,7 +43,37 @@ workflows:
       - command: workflow deploy/cloudtrail -f quickstart/foundation/accounts
       - command: workflow deploy/ecr -f quickstart/foundation/accounts
 
+  initial-setup:
+    description: Initial commands to run before deploying the accounts layer.
+    env:
+      ATMOS_PROFILE: superadmin
+      ATMOS_IDENTITY: core-root/terraform
+    steps:
+      - command: auth login
+      - command: auth whoami
+      # Request increase for IAM service quota (This is always in us-east-1)
+      - command: |
+          QUOTA_VALUE=$(atmos auth exec --identity core-root/terraform -- \
+            aws service-quotas get-service-quota \
+            --service-code iam \
+            --quota-code L-C07B4B0D \
+            --region us-east-1 | jq '.Quota.Value')
+
+          if [[ "$QUOTA_VALUE" != "4096.0" ]]; then
+            atmos auth exec --identity core-root/terraform -- \
+              aws service-quotas request-service-quota-increase \
+              --service-code iam \
+              --quota-code L-C07B4B0D \
+              --desired-value 4096 \
+              --region us-east-1
+          else
+            echo "IAM service quota is already at 4096.0"
+          fi
+        type: shell
+
   vendor:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Vendor accounts layer components.
     steps:
       - command: vendor pull --component aws-organization
@@ -53,33 +89,44 @@ workflows:
       - command: vendor pull --component tfstate-backend
 
   init/tfstate:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Provision Terraform State Backend for initial deployment.
     steps:
+      - command: terraform clean tfstate-backend --stack core-use1-root -f
       - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --auto-generate-backend-file=false
-      - command: until aws s3 ls acme-core-use1-root-tfstate; do sleep 5; done
+      - command: until atmos auth exec --identity core-root/terraform -- aws s3 ls acme-core-use1-root-tfstate; do sleep 5; done
         type: shell
       - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --init-run-reconfigure=false
 
   deploy/tfstate:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Deploy Terraform State Backend.
     steps:
       - command: terraform deploy tfstate-backend --stack core-use1-root
 
   deploy/organization:
+    env:
+      ATMOS_PROFILE: superadmin
     description: |
       Deploy the AWS Organization. This is required before finishing the root account requirements.
     steps:
       - command: terraform deploy aws-organization -s core-gbl-root
-      - command: aws ram enable-sharing-with-aws-organization
+      - command: atmos auth exec --identity core-root/terraform -- aws ram enable-sharing-with-aws-organization
         type: shell
 
   deploy/organizational-units:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Deploy Organizational Units
     steps:
       - command: terraform deploy aws-organizational-unit/core -s core-gbl-root
       - command: terraform deploy aws-organizational-unit/plat -s core-gbl-root
 
   deploy/accounts:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Deploys all AWS Organization accounts
     steps:
       - command: terraform deploy aws-account/core-artifacts -s core-gbl-root
@@ -93,11 +140,16 @@ workflows:
       - command: terraform deploy aws-account/plat-prod -s core-gbl-root
 
   deploy/scps:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Deploy Service Control Policies
     steps:
       - command: terraform deploy aws-scp/deny-leaving-organization -s core-gbl-root
+      - command: terraform deploy aws-scp/deny-creating-users -s core-gbl-root
 
   deploy/aws-account-settings:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Apply AWS Account settings for best practices.
     steps:
       - command: terraform deploy aws-account-settings -s core-gbl-artifacts
@@ -112,6 +164,8 @@ workflows:
       - command: terraform deploy aws-account-settings -s plat-gbl-staging
 
   deploy/budgets:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Deploy budgets to all accounts
     steps:
       - command: terraform deploy aws-budget -s core-gbl-root
@@ -126,12 +180,16 @@ workflows:
       - command: terraform deploy aws-budget -s plat-gbl-prod
 
   deploy/cloudtrail:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Start AWS Cloudtrail in audit and root accounts to track changes across the org.
     steps:
       - command: terraform deploy cloudtrail-bucket -s core-use1-audit
       - command: terraform deploy cloudtrail -s core-gbl-root
 
   deploy/ecr:
+    env:
+      ATMOS_PROFILE: superadmin
     description: Deploy ECR in the artifacts account to use as our container registry
     steps:
       - command: terraform deploy ecr -s core-use1-artifacts

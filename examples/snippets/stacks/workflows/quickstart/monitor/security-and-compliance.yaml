@@ -17,7 +17,13 @@
 #   - deploy/security-hub/step1-3: Deploy Security Hub (3 steps)
 #   - deploy/guardduty/step1-3: Deploy GuardDuty (3 steps)
 #   - deploy/aws-inspector2/step1-2: Deploy AWS Inspector (2 steps)
-#workflows:
+## NOTE: Use 'superadmin' profile for initial infrastructure setup.
+# After SSO is configured and IAM roles are deployed (via identity layer),
+# update this to 'managers' for day-to-day operations.
+env:
+  ATMOS_PROFILE: superadmin
+
+workflows:
   vendor:
     description: Vendor compliance layer components and scripts.
     steps:

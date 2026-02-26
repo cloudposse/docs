@@ -1,0 +1,43 @@
+# Cold-Start Workflow - Complete Infrastructure Bootstrap
+#
+# This workflow orchestrates the complete infrastructure deployment from scratch,
+# following the proper dependency order:
+#   1. Terraform state backend
+#   2. AWS Organization and accounts
+#   3. IAM Identity Center (SSO) and execution roles
+#   4. Network layer (VPCs, Transit Gateway, DNS)
+#
+# Usage:
+#   # Complete cold-start deployment:
+#   atmos workflow all -f quickstart/cold-start
+#
+#   # Individual layers:
+#   atmos workflow deploy/foundation -f quickstart/cold-start
+#   atmos workflow deploy/network -f quickstart/cold-start
+#
+#   # Step-by-step validation:
+#   atmos workflow deploy/tfstate -f quickstart/cold-start
+#   atmos workflow deploy/accounts -f quickstart/cold-start
+#   atmos workflow deploy/identity -f quickstart/cold-start
+#   atmos workflow deploy/network -f quickstart/cold-start
+#
+# Available workflows:
+#   - all: Complete cold-start deployment (tfstate → network)
+#   - deploy/foundation: Deploy foundation layer (accounts + identity)
+#   - deploy/tfstate: Initialize Terraform state backend
+#   - deploy/accounts: Deploy accounts layer
+#   - deploy/identity: Deploy identity layer
+#   - deploy/network: Deploy network layer
+#
+
+# NOTE: Use 'superadmin' profile for initial infrastructure setup.
+# After SSO is configured and IAM roles are deployed (via identity layer),
+# update this to 'managers' for day-to-day operations.
+
+workflows:
+  all:
+    env:
+      ATMOS_PROFILE: superadmin
+    description: Complete cold-start deployment from tfstate to network
+    steps:
+      - command: workflow all -f quickstart/foundation/accounts
