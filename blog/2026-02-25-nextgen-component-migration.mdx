@@ -14,6 +14,15 @@ Over the past couple of months, we've shipped two changes that fundamentally sim
 
 <!--truncate-->
 
+## Which Guide Do You Need?
+
+| Your situation | Guide |
+|----------------|-------|
+| You're on legacy infrastructure (account-map, team roles) and want to move to Atmos Auth | [Migration Guide 1: Upgrading to Next-Gen](#migration-guide-1-upgrading-your-infrastructure-to-next-gen) |
+| You're on legacy infrastructure but want to use a newer component version that ships with next-gen providers | [Migration Guide 2: New Components on Legacy Infrastructure](#migration-guide-2-using-new-component-versions-on-legacy-infrastructure) |
+
+Not sure which you are? Read the [How to Tell Which Generation You're On](#how-to-tell-which-generation-youre-on) section first.
+
 ## Why We Made These Changes
 
 The driving force behind these changes is **testability**. The legacy `account-map` component was a globally required dependency — every component's `providers.tf` referenced it to resolve IAM roles. That tight coupling meant you couldn't test a single component in isolation without first deploying `account-map` and its entire dependency chain. By removing `account-map` from the default `providers.tf`, components become self-contained and significantly simpler to test.
@@ -36,6 +45,15 @@ Two major improvements landed recently:
 | **Account-Map Deprecation** | Replaces the `account-map` Terraform component with a static YAML variable, eliminating a critical deploy-time dependency |
 
 Together, these remove the need for `account-map`, `aws-teams`, and `aws-team-roles`. If you missed the announcement, see [Reference Architecture v2: Deprecating Account-Map](/blog/deprecate-account-map/).
+
+## What "Generation" Means
+
+The generation is determined entirely by **how `providers.tf` authenticates** — not by component version numbers, module logic, or Terraform state format. A component's business logic (resources, variables, outputs) is unaffected by this change. The only thing that changes is the provider configuration and how credentials are resolved.
+
+<Steps>
+1. **Legacy** — `providers.tf` uses `module.iam_roles` to dynamically look up and assume an IAM role via `account-map` remote state
+1. **Next-Gen** — `providers.tf` uses `region = var.region` with no role assumption; Atmos Auth has already set the correct credentials before Terraform runs
+</Steps>
 
 ## How to Tell Which Generation You're On
 
@@ -121,6 +139,21 @@ module "iam_roles" {
 }
 ```
 
+#### Why the Dummy `iam_roles` Module?
+
+Many components reference `module.iam_roles` in their code — for example, to pass `module.iam_roles.terraform_role_arn` to sub-providers. The dummy module (sourced from `cloudposse/label/null`) satisfies Terraform's module reference validation so these components don't error during `terraform init`. It outputs empty/null values, which means any `dynamic "assume_role"` blocks that iterate over `compact([module.iam_roles.terraform_role_arn])` simply produce zero iterations — no role is assumed, and Atmos Auth's pre-configured credentials are used instead.
+
+## Atmos Auth Prerequisites
+
+Before using Atmos Auth, ensure you have:
+
+<Steps>
+1. **Atmos >= v1.155.0** — Atmos Auth requires a recent version of the Atmos CLI. Run `atmos version` to check.
+1. **AWS IAM Identity Center (SSO)** — For human users, Atmos Auth profiles authenticate via AWS SSO. You need IAM Identity Center configured in your `core-root` account with Permission Sets for Terraform access.
+1. **IAM roles for CI/CD** — For machine users, deploy the `iam-role` component with GitHub OIDC (or your CI provider's equivalent) in each target account.
+1. **Atmos Auth profiles configured** — Define profiles in your `atmos.yaml` that map to SSO Permission Sets or IAM roles. See [Atmos Auth](https://atmos.tools/cli/auth) for the configuration reference.
+</Steps>
+
 ## The Mixins
 
 Before diving into the migration guides, it helps to understand the two Atmos mixins that make all of this work. Both guides below use them — they just apply them in opposite directions.
@@ -137,7 +170,15 @@ This replaces whatever `providers.tf` a component ships with. It:
 
 **`account-verification.mixin.tf`**
 
-This is a safety net. It verifies that the AWS account you're deploying to is the one you _intend_ to deploy to. If Atmos Auth is misconfigured and you're authenticated to the wrong account, this mixin will catch it before Terraform makes any changes.
+This mixin uses an `aws_caller_identity` data source to check the account ID of the credentials Terraform is running with, then compares it against the expected account from the `account_map` variable. The check runs during `terraform plan` — if there's a mismatch, Terraform fails before making any changes. This catches misconfigured Atmos Auth profiles, stale SSO sessions, or wrong environment targets.
+
+Example failure output:
+
+```
+Error: Account verification failed
+  Expected account "567890123456" (plat-dev) but authenticated to "789012345678" (plat-prod).
+  Check your Atmos Auth profile configuration.
+```
 
 ---
 
@@ -156,7 +197,7 @@ Configure Atmos Auth profiles in your `atmos.yaml`. This tells Atmos how to auth
 atmos auth login
 ```
 
-See [Atmos Auth](https://atmos.tools/cli/auth) for configuration details.
+See [Atmos Auth](https://atmos.tools/cli/auth) for configuration details and the [prerequisites](#atmos-auth-prerequisites) section above.
 
 ### 2. Add the Static Account Map
 
@@ -214,13 +255,20 @@ atmos vendor pull -c <component-name>
 
 ### 4. Verify
 
-Run a plan against a non-production environment to confirm everything works:
+Run a plan against a non-production environment:
 
 ```bash
 atmos terraform plan <component-name> -s plat-ue1-dev
 ```
 
-The plan should succeed without any `account-map` remote state lookups.
+Confirm the following:
+
+<Steps>
+1. **No `account-map` remote state reads** — The plan output should not show any data source reads for `account-map` state
+1. **No `assume_role` in provider config** — Run `grep -r "assume_role" components/terraform/<component-name>/providers.tf` and confirm no matches
+1. **Account verification passes** — If you have the account-verification mixin, the plan should complete without an account mismatch error
+1. **No unexpected drift** — The plan should show no changes (or only expected changes) since only the provider authentication path changed, not the resources themselves
+</Steps>
 
 ### 5. Migrate Incrementally
 
@@ -292,6 +340,74 @@ This is a **bridge strategy** — it lets you upgrade components now and migrate
 :::caution Keep Track of Overrides
 When you override `providers.tf` this way, remember that you've pinned the provider behavior. Once you do migrate your infrastructure to Atmos Auth, come back and switch the mixin to `provider-without-account-map.tf` (or remove the override entirely if the upstream component already ships with the next-gen version).
 :::
+
+---
+
+## What Breaks and Common Errors
+
+### Next-Gen Providers on Legacy Infrastructure
+
+If you vendor a component with the next-gen `providers.tf` but your infrastructure still uses `account-map` and team roles, Terraform will authenticate with whatever credentials are in your environment (or none at all) instead of assuming the correct role. Common symptoms:
+
+```
+Error: error configuring Terraform AWS Provider: no valid credential sources found
+```
+
+```
+Error: AccessDenied: User: arn:aws:iam::123456789012:user/deploy is not authorized to perform: ...
+```
+
+**Fix:** Use [Migration Guide 2](#migration-guide-2-using-new-component-versions-on-legacy-infrastructure) to vendor in the legacy-compatible `providers.tf`.
+
+### Legacy Providers on Next-Gen Infrastructure
+
+If you still have the legacy `providers.tf` with `module.iam_roles` sourced from `../account-map/modules/iam-roles`, but you've already removed the `account-map` component:
+
+```
+Error: Module not found: module.iam_roles
+  The module at "../account-map/modules/iam-roles" could not be found.
+```
+
+**Fix:** Use [Migration Guide 1](#migration-guide-1-upgrading-your-infrastructure-to-next-gen) to vendor in the next-gen `providers.tf`.
+
+### Account Verification Mismatch
+
+If Atmos Auth is configured but pointing to the wrong account:
+
+```
+Error: Account verification failed
+  Expected account "567890123456" (plat-dev) but authenticated to "789012345678" (plat-prod).
+```
+
+**Fix:** Check your Atmos Auth profile mapping in `atmos.yaml` and run `atmos auth login` to refresh credentials.
+
+## Terraform State Impact
+
+Switching `providers.tf` **does not require a state migration**. The provider configuration change only affects how Terraform authenticates — it doesn't change resource addresses, module paths, or state structure. When you run `terraform plan` after the migration, you should see **no drift** related to the provider change itself.
+
+The `module.iam_roles` is replaced by a dummy module, but since `iam_roles` only produces outputs consumed within `providers.tf` (not resources in state), there are no state entries to migrate or remove.
+
+If you do see unexpected drift, it's likely caused by a different component version (new resource defaults, renamed attributes) rather than the provider change. Roll back the component version to isolate whether the drift comes from the provider switch or the component upgrade.
+
+## CI/CD Implications
+
+Atmos Auth changes how your CI/CD pipelines authenticate. The specifics depend on your runner.
+
+### GitHub Actions
+
+GitHub Actions workflows use OIDC to assume IAM roles directly. Deploy the `iam-role` component with GitHub OIDC trust policies in each target account. Your workflow authenticates via the standard `aws-actions/configure-aws-credentials` action before invoking `atmos terraform`.
+
+### Spacelift
+
+Spacelift manages its own AWS credentials via cloud integrations. If you're using Spacelift, it already authenticates before Terraform runs — the next-gen `providers.tf` (with just `region = var.region`) aligns naturally with this model. Ensure your Spacelift stacks have the correct AWS integration attached.
+
+### Atlantis
+
+Atlantis authenticates via IAM roles configured on the server or via OIDC. Configure your Atlantis server's assumed role to target each account, then use the next-gen `providers.tf` as-is.
+
+### General Pattern
+
+Regardless of runner, the pattern is the same: **authenticate before Terraform runs**, not inside `providers.tf`. If your CI system already handles AWS credential setup before executing Terraform commands, it's compatible with next-gen providers.
 
 ## Summary
 
