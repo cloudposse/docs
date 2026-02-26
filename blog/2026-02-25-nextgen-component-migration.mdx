@@ -14,6 +14,18 @@ Over the past couple of months, we've shipped two changes that fundamentally sim
 
 <!--truncate-->
 
+## Why We Made These Changes
+
+The driving force behind these changes is **testability**. The legacy `account-map` component was a globally required dependency — every component's `providers.tf` referenced it to resolve IAM roles. That tight coupling meant you couldn't test a single component in isolation without first deploying `account-map` and its entire dependency chain. By removing `account-map` from the default `providers.tf`, components become self-contained and significantly simpler to test.
+
+Atmos Auth reinforces this by moving authentication out of the Terraform layer entirely. Instead of chained role assumptions wired through provider configuration, Atmos Auth resolves credentials _before_ Terraform ever runs. The result is a provider block with nothing but `region = var.region` — no dynamic lookups, no remote state, no implicit dependencies on other components.
+
+The trade-off is that **this is a breaking change**. Components that ship with the new `providers.tf` are not backwards compatible with environments still relying on `account-map` and team roles. That's exactly why we built the mixins approach described below — it lets you adopt the new authentication model at your own pace, on any component version, without waiting for upstream releases.
+
+:::info All Cloud Posse Components Are Still Usable
+Every component we publish remains fully usable during this transition. The key thing to understand is that **`providers.tf` is what dictates which generation you're on** — not the component version itself. As we upgrade components to ship with the next-gen `providers.tf`, you'll want to check the `providers.tf` of each component when you vendor a new version. If the upstream `providers.tf` has changed to the next-gen format and your infrastructure isn't ready for that yet, you can always override it in your `component.yaml` by vendoring in a `providers.tf` mixin that matches your current setup.
+:::
+
 ## What Changed
 
 Two major improvements landed recently:
