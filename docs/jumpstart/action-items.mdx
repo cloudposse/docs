@@ -203,23 +203,6 @@ If your engagement with Cloud Posse includes Release Engineering, we will also n
       </TaskList>
     </Step>
 
-    <Step>
-      ### <StepNumber/> PATs for ECS with `ecspresso`
-      <Steps>
-        - Create one fine-grained PAT with the following permission.
-          Please see [Creating a fine-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
-
-          This PAT needs read access to your `infrastructure` repository:
-
-          ```diff
-          Repository
-          + Contents: Read-only
-          + Metadata: Read-only
-          ```
-        - Save the new fine-grained PAT as a GitHub environment secret in the new `example-app` private repository in your Organization.
-      </Steps>
-  </Step>
-
   <Step>
     ### <StepNumber/> PATs for EKS with ArgoCD
 
