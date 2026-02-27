@@ -57,7 +57,7 @@ The generation is determined entirely by **how `providers.tf` authenticates** �
 
 ## How to Tell Which Generation You're On
 
-The quickest way to tell is to look at your component's `providers.tf`.
+The quickest way to tell is to look at your component's `providers.tf`. The majority of components use the `module.iam_roles` pattern described below. However, some **cold start components** (like `account`, `account-map`, `account-settings`, `tfstate-backend`) have always used a simple `provider "aws" { region = var.region }` — that's by design, because they run under your super admin profile before IAM roles infrastructure exists. Don't confuse a cold start component's simple provider with the next-gen pattern.
 
 ### Legacy (Account-Map + Team Roles)
 
@@ -89,17 +89,7 @@ This pattern depends on `account-map`, `aws-teams`, and `aws-team-roles` being d
 
 ### Next-Gen (Atmos Auth)
 
-With Atmos Auth, authentication happens _before_ Terraform runs. The provider is simply:
-
-```hcl
-provider "aws" {
-  region = var.region
-}
-```
-
-That's it. Whatever AWS credentials Atmos Auth has configured for the target account are already active. No dynamic role assumptions, no remote state lookups, no `account-map` dependency.
-
-The full next-gen `providers.tf` also includes the `account_map` variable (a static map of account names to IDs) and a dummy `iam_roles` module for backward compatibility:
+With Atmos Auth, authentication happens _before_ Terraform runs — no dynamic role assumptions, no remote state lookups, no `account-map` dependency. The next-gen `providers.tf` includes the `account_map` variable (a static map of account names to IDs) and a dummy `iam_roles` module for backward compatibility:
 
 ```hcl
 variable "account_map_enabled" {
@@ -218,7 +208,17 @@ vars:
       plat-prod: "789012345678"
     root_account_account_name: core-root
     audit_account_account_name: core-audit
+    iam_role_arn_templates:
+      core-root: "arn:aws:iam::123456789012:role/acme-core-gbl-root-%s"
+      core-artifacts: "arn:aws:iam::234567890123:role/acme-core-gbl-artifacts-%s"
+      core-audit: "arn:aws:iam::345678901234:role/acme-core-gbl-audit-%s"
+      core-auto: "arn:aws:iam::456789012345:role/acme-core-gbl-auto-%s"
+      plat-dev: "arn:aws:iam::567890123456:role/acme-plat-gbl-dev-%s"
+      plat-staging: "arn:aws:iam::678901234567:role/acme-plat-gbl-staging-%s"
+      plat-prod: "arn:aws:iam::789012345678:role/acme-plat-gbl-prod-%s"
 ```
+
+The `iam_role_arn_templates` map provides ARN templates for each account. The `%s` placeholder is replaced with the role name (e.g., `terraform`, `planner`) at runtime by components that need to assume cross-account roles.
 
 ### 3. Update component.yaml for Each Component
 
