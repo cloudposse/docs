@@ -253,6 +253,75 @@ Then re-vendor:
 atmos vendor pull -c <component-name>
 ```
 
+#### Alternative: Use `atmos generate` Instead of Mixins
+
+Instead of adding mixins to every `component.yaml`, you can use Atmos's `generate` feature to generate `providers.tf` from your stack configuration. This is a stack-driven approach — define it once and it applies to all components that inherit from that config level:
+
+```yaml
+# stacks/orgs/acme/_defaults.yaml (or any inherited stack config)
+terraform:
+  generate:
+    "providers.tf": |
+      variable "account_map_enabled" {
+        type        = bool
+        description = "Enable the account map component"
+        default     = false
+      }
+
+      variable "account_map" {
+        type = object({
+          full_account_map              = map(string)
+          audit_account_account_name    = optional(string, "")
+          root_account_account_name     = optional(string, "")
+          identity_account_account_name = optional(string, "")
+          aws_partition                 = optional(string, "aws")
+          iam_role_arn_templates        = optional(map(string), {})
+        })
+        description = "Static account map for components when account_map_enabled is false."
+        default = {
+          full_account_map              = {}
+          audit_account_account_name    = ""
+          root_account_account_name     = ""
+          identity_account_account_name = ""
+          aws_partition                 = "aws"
+          iam_role_arn_templates        = {}
+        }
+      }
+
+      provider "aws" {
+        region = var.region
+      }
+
+      # Stub module that satisfies references to module.iam_roles in
+      # upstream components. With Atmos Auth this is no longer needed,
+      # so we replace it with a no-op label module.
+      module "iam_roles" {
+        source  = "cloudposse/label/null"
+        context = module.this.context
+      }
+
+    # TEMPORARY: Override file to declare stale providers so OpenTofu can
+    # load existing state that still references module.iam_roles from
+    # account-map/modules/iam-roles. Override files merge with existing
+    # required_providers blocks instead of conflicting.
+    # Remove this after all components have been migrated and state is clean.
+    "versions_override.tf": |
+      terraform {
+        required_providers {
+          awsutils = {
+            source  = "cloudposse/awsutils"
+            version = ">= 0.1.0"
+          }
+          utils = {
+            source  = "cloudposse/utils"
+            version = ">= 0.1.0"
+          }
+        }
+      }
+```
+
+With this approach, components still need to exclude `providers.tf` from vendoring (via `excluded_paths`) to avoid conflicts with the generated file. The advantage is that the provider configuration lives in your stack config and is inherited at any level — org, tenant, stage — giving you a single place to manage it across all components.
+
 ### 4. Verify
 
 Run a plan against a non-production environment:
