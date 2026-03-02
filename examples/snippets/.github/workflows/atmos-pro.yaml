@@ -48,7 +48,7 @@ jobs:
         # For merged PRs, we will need to checkout the base branch to get the correct base branch SHA.
         # This isn't necessary for other events.
         if: github.event.action == 'closed'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags
 
@@ -71,7 +71,7 @@ jobs:
           echo "parent_commit=$PARENT" >> "$GITHUB_OUTPUT"
 
       - name: Assume Planner Role
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: "us-east-1"
           role-to-assume: "arn:aws:iam::333333333333:role/acme-core-gbl-auto-planner"

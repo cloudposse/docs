@@ -194,7 +194,7 @@ components:
 
 Stack files in `stacks/orgs/acme/` mirror the AWS account structure:
 
-- `orgs/acme/core/` - Core accounts (root, audit, security, identity, network, dns, auto, artifacts)
+- `orgs/acme/core/` - Core accounts (root, audit, security, network, auto, artifacts)
 - `orgs/acme/plat/` - Platform accounts (sandbox, dev, staging, prod)
 
 Within each stage, organized by region:

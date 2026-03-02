@@ -30,8 +30,7 @@ stacks/
 │   │   ├── auto/                     # Automation account
 │   │   ├── artifacts/                # Artifacts account (ECR, S3)
 │   │   ├── audit/                    # Audit/logging account
-│   │   ├── dns/                      # DNS account
-│   │   ├── network/                  # Network account (TGW, VPN)
+│   │   ├── network/                  # Network account (TGW, VPN, DNS)
 │   │   └── security/                 # Security account
 │   └── plat/                         # Platform tenant (workloads)
 │       ├── _defaults.yaml            # Tenant defaults (tenant: plat)
