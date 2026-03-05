@@ -55,7 +55,15 @@ These new components are part of the broader Reference Architecture V2 changes, 
 ## Adopting with Legacy Infrastructure
 
 :::warning Important for Existing Deployments
-The new components ship with a **blank `providers.tf`** designed for the next-gen provider pattern. If you're adopting these components into an existing infrastructure that still uses `account-map` for provider configuration, you'll need to vendor in an overriding `providers.tf`.
+The new components ship with a **next-gen `providers.tf`** that contains only a simple AWS provider declaration:
+
+```hcl
+provider "aws" {
+  region = var.region
+}
+```
+
+This assumes [Atmos Auth](https://atmos.tools/core-concepts/components/authentication/) is in place — role assumption happens *before* Terraform begins, so the provider doesn't need to handle it. If you're adopting these components into an existing infrastructure that still uses `account-map` for provider configuration, you'll need to vendor in an overriding `providers.tf`.
 :::
 
 Exclude the upstream `providers.tf` and use the legacy mixin instead:
