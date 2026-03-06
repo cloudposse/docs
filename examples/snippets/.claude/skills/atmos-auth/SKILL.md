@@ -63,7 +63,9 @@ Profiles are defined in `profiles/<profile-name>/atmos.yaml`. Each maps identiti
 | ------------ | -------------------- | -------------------- | --------------------- |
 | `devops`     | TerraformApplyAccess | TerraformApplyAccess | TerraformApplyAccess  |
 | `developers` | TerraformStateAccess | TerraformApplyAccess | TerraformPlanAccess   |
-| `managers`   | TerraformStateAccess | TerraformPlanAccess  | TerraformPlanAccess   |
+| `managers`   | TerraformApplyAccess | TerraformApplyAccess | TerraformApplyAccess  |
+
+Managers also have a `RootAccess` Permission Set for centralized root access to member accounts.
 
 **Permission Set capabilities:**
 
@@ -83,7 +85,9 @@ Examples:
 
 ## Special Cases
 
-**superadmin profile**: IAM user with MFA for breakglass access. Avoid unless SSO is unavailable.
+**superadmin profile**: IAM user (`kind: aws/user`) with MFA in the root account. Used for coldstart/bootstrap
+before SSO is deployed, or as breakglass access. Assumes `OrganizationAccountAccessRole` into member accounts
+via identity chaining. Switch to your assigned SSO profile once the identity layer is deployed.
 
 **github-plan profile**: OIDC-based authentication for CI/CD plan operations. Uses planner roles with read-only access.
 

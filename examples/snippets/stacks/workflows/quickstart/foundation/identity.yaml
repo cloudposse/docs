@@ -19,32 +19,11 @@
 #   - deploy/iam-role: Deploy Terraform execution roles
 #   - deploy/github-oidc-provider: Deploy GitHub OIDC Provider to all accounts
 #
-workflows:
-  check-setup:
-    description: Verify that the environment is setup correctly to run these workflows.
-    steps:
-    - name: check-setup
-      type: shell
-      command : |-
-        if [[ "$GEODESIC_SHELL" != "true" ]]; then
-          echo "This workflow must be run from a Geodesic shell." >&2
-          exit 1
-        elif [[ -z $ATMOS_BASE_PATH ]] || [[ ! -d "$ATMOS_BASE_PATH/.git" ]]; then
-          echo "ATMOS_BASE_PATH must be set to the root of the git repository." >&2
-          echo "This is usually set automatically by Geodesic." >&2
-          echo "To fix: run the Geodesic shell from the root of the git repository." >&2
-          echo "  ATMOS_BASE_PATH: \"$ATMOS_BASE_PATH\"" >&2
-          echo "  Current directory: \"$(pwd -P)\"" >&2
-          exit 1
-        elif [[ ! -d "$ATMOS_BASE_PATH/rootfs/usr/local/bin" ]]; then
-          printf "No such directory: %s\n" "$ATMOS_BASE_PATH/rootfs/usr/local/bin" >&2
-          exit 2
-        fi
 
+workflows:
   all:
     description: Run all workflows
     steps:
-      - command: workflow check-setup -f quickstart/foundation/identity
       - command: workflow vendor -f quickstart/foundation/identity
       - command: workflow deploy/all -f quickstart/foundation/identity
 
@@ -55,17 +34,32 @@ workflows:
       - command: vendor pull --component iam-role
       - command: vendor pull --component github-oidc-provider
 
+  auth:
+    description: Authenticate to core-root/terraform identity.
+    env:
+      ATMOS_PROFILE: managers
+      ATMOS_IDENTITY: core-root/terraform
+    steps:
+      - command: auth login
+
   deploy/all:
     description: Deploy all identity components.
     steps:
       - command: workflow deploy/sso -f quickstart/foundation/identity
+      - command: workflow auth -f quickstart/foundation/identity
       - command: workflow deploy/iam-role -f quickstart/foundation/identity
       - command: workflow deploy/github-oidc-provider -f quickstart/foundation/identity
 
   deploy/sso:
     description: Update aws-sso configuration.
+    # NOTE: Use 'superadmin' profile for initial infrastructure setup.
+    # After SSO is configured and IAM roles are deployed (via identity layer),
+    # update this to 'managers' for day-to-day operations.
+    env:
+      ATMOS_PROFILE: superadmin
     steps:
       - command: terraform deploy aws-sso -s core-gbl-root
+      - command: workflow deploy/tfstate -f quickstart/foundation/accounts
 
   deploy/iam-role:
     description: |
