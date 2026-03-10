@@ -74,7 +74,7 @@ If you opt to deploy RunsOn into a separate VPC, you will need to connect that V
 
   Non-profit organizations qualify for free non-commercial licenses.
 
-  Once you have your license key, add it to your Atmos stack catalog at `stacks/catalog/runs-on/defaults.yaml` in the `LicenseKey` parameter.
+  Once you have your license key, add it to your Atmos stack catalog at `stacks/catalog/runs-on/defaults.yaml` in the `license_key` variable.
 
   <Note title="Working with Cloud Posse?">
   Share your RunsOn license key via 1Password and we'll add it to your stack catalog for you.
@@ -108,7 +108,7 @@ If you opt to deploy RunsOn into a separate VPC, you will need to connect that V
   After deployment, follow these steps to install the GitHub App:
 
   <Steps>
-    1. Check the Terraform outputs for `RunsOnEntryPoint`
+    1. Check the Terraform outputs for `apprunner_service_url`
     1. Use the provided URL to install the GitHub App
     1. Follow the prompts to complete the installation in your GitHub Organization
     1. Ensure you have the necessary permissions in GitHub to install the app
