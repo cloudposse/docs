@@ -1,0 +1,53 @@
+# Cold-Start Workflow - Complete Infrastructure Bootstrap
+#
+# This workflow orchestrates the complete infrastructure deployment from scratch,
+# following the proper dependency order:
+#   1. Terraform state backend
+#   2. AWS Organization and accounts
+#   3. IAM Identity Center (SSO) and execution roles
+#   4. Network layer (VPCs, Transit Gateway, DNS)
+#
+# Usage:
+#   # Complete cold-start deployment:
+#   atmos workflow all -f quickstart/cold-start
+#
+#   # Individual layers:
+#   atmos workflow deploy/foundation -f quickstart/cold-start
+#   atmos workflow deploy/network -f quickstart/cold-start
+#
+#   # Step-by-step validation:
+#   atmos workflow deploy/tfstate -f quickstart/cold-start
+#   atmos workflow deploy/accounts -f quickstart/cold-start
+#   atmos workflow deploy/identity -f quickstart/cold-start
+#   atmos workflow deploy/network -f quickstart/cold-start
+#
+# Available workflows:
+#   - all: Complete cold-start deployment (tfstate → network)
+#   - deploy/foundation: Deploy foundation layer (accounts + identity)
+#   - deploy/tfstate: Initialize Terraform state backend
+#   - deploy/accounts: Deploy accounts layer
+#   - deploy/identity: Deploy identity layer
+#   - deploy/network: Deploy network layer
+#
+
+workflows:
+  all:
+    description: Complete cold-start deployment from tfstate to network
+    steps:
+      - command: workflow all -f quickstart/foundation/accounts
+      - command: workflow vendor -f quickstart/foundation/identity
+      - command: workflow deploy/sso -f quickstart/foundation/identity
+      - command: workflow login/managers -f quickstart/cold-start
+      - command: workflow all -f quickstart/foundation/identity
+
+  login/managers:
+    description: Login as managers profile - used to force a login before deploying the identity layer (which is the first to use SSO)
+    env:
+      ATMOS_PROFILE: managers
+      ATMOS_IDENTITY: core-root/terraform
+    retry:
+      initial_delay: 15s
+      backoff_strategy: constant
+      max_retries: 3
+    steps:
+      - command: auth login
