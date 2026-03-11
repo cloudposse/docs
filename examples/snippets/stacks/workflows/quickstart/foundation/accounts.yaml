@@ -14,6 +14,7 @@
 #   - all: Deploy complete accounts layer
 #   - vendor: Pull required components
 #   - init/tfstate: Initialize Terraform state backend (first-time only)
+#   - deploy/iam-quota: Request IAM role trust policy size quota increase
 #   - deploy/tfstate: Deploy Terraform state backend
 #   - deploy/organization: Create AWS Organization
 #   - deploy/accounts: Provision AWS accounts
@@ -26,6 +27,7 @@ workflows:
     description: Deploy complete accounts layer
     steps:
       - command: workflow vendor -f quickstart/foundation/accounts
+      - command: workflow deploy/iam-quota -f quickstart/foundation/accounts
       - command: workflow init/tfstate -f quickstart/foundation/accounts
       - command: workflow deploy/tfstate -f quickstart/foundation/accounts
       - command: workflow deploy/organization -f quickstart/foundation/accounts
@@ -59,6 +61,23 @@ workflows:
       - command: until aws s3 ls acme-core-use1-root-tfstate; do sleep 5; done
         type: shell
       - command: terraform deploy tfstate-backend -var="access_roles_enabled=false" --stack core-use1-root --init-run-reconfigure=false
+
+  deploy/iam-quota:
+    description: |
+      Request an increase to the IAM role trust policy size limit.
+      The default limit is 2048 characters, max is 4096. Requests within this
+      limit are auto-approved instantly. Listing explicit ARNs in the
+      tfstate-backend trust policies follows the principle of least privilege
+      but produces larger policies that may exceed the default limit.
+    steps:
+      - command: |
+          atmos auth exec --identity core-root/terraform -- \
+            aws service-quotas request-service-quota-increase \
+              --service-code iam \
+              --quota-code L-C07B4B0D \
+              --desired-value 4096 \
+              --region us-east-1
+        type: shell
 
   deploy/tfstate:
     description: Deploy Terraform State Backend.
