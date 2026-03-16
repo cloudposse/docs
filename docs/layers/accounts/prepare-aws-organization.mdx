@@ -87,11 +87,22 @@ From the root account:
    After cold start is complete and Identity Center is configured, you'll switch to a different profile (e.g., `devops` or `managers`) as described in [Configure Atmos Auth](/layers/identity/atmos-auth/).
    :::
 1. ### Enable IAM Access for Billing
-   For billing users, you need to enable IAM access to billing information.
+   By default, only the root user can view billing information. To allow IAM users and SSO roles (e.g., `BillingAdmin` permission set) to access billing, you must activate IAM billing access. This setting can only be changed by the root user.
+
+   :::warning Root User Sign-In Required
+   You must sign in using the **root user** of the management account (the email and password for the AWS account itself). IAM users and SSO permission sets **cannot** change this setting.
+
+   To sign in as the root user:
+   1. Go to [https://console.aws.amazon.com/](https://console.aws.amazon.com/)
+   1. Select **Root user**, enter the management account's **root email address**, and sign in with the root password
+   :::
+
    <Steps>
-   1. As the root user, open [AWS Billing Account Settings](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account)
-   1. Scroll to "IAM user and role access to Billing information"
-   1. Enable IAM access
+   1. Sign in to the AWS Console as the **root user** of the management account
+   1. Open [Account Settings](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/Account)
+   1. Scroll down to **"IAM user and role access to Billing information"**
+   1. Click **Edit**, then select **Activate IAM Access**
+   1. Click **Update**
    </Steps>
 1. ### Enable Centralized Root Access
    Enable centralized root access management to eliminate the need for per-account root credentials. This allows the management account to perform privileged root operations on member accounts without maintaining separate root passwords or MFA devices.

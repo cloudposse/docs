@@ -1,0 +1,99 @@
+---
+title: "Modular AWS Account Components: A More Granular Approach to Organization Management"
+slug: new-account-components
+authors: [Benbentwo]
+tags: [reference-architecture, aws, components, accounts]
+date: 2026-03-04
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+
+<Intro>
+We've replaced the monolithic `account` and `account-settings` components with six modular, single-responsibility components that give you a more granular approach to managing your AWS Organization.
+</Intro>
+
+<!--truncate-->
+
+## What's Changing
+
+The old `account` component handled everything: the AWS Organization, organizational units, individual accounts, and service control policies — all in one. Similarly, `account-settings` bundled account configuration with budget management. We've broken these apart into focused components that each do one thing well.
+
+| Old Component | Old Version | New Components | New Version |
+|---------------|-------------|----------------|-------------|
+| `account` | v1.538.0 | `aws-account` | V2 |
+| | | `aws-organization` | v0 |
+| | | `aws-organizational-unit` | v0 |
+| | | `aws-scp` | v0/v1 |
+| `account-settings` | v1.535.5 | `aws-account-settings` | V2 |
+| | | `aws-budget` | V1 |
+
+## Why Modular Components
+
+<Steps>
+  1. **Single responsibility** — Each component manages one concern. Update an SCP without touching your accounts. Adjust a budget without redeploying account settings.
+  1. **Independent versioning** — Components evolve on their own release cadence. Upgrade `aws-scp` to a new version without waiting for or affecting `aws-account`.
+  1. **Smaller blast radius** — A change to organizational units doesn't risk impacting account creation or service control policies.
+  1. **Easier brownfield adoption** — Need just budget management? Vendor `aws-budget` alone. You don't have to adopt the entire suite.
+  1. **Instance-based deployment** — Components like `aws-account` and `aws-organizational-unit` are deployed as instances (e.g., `aws-account/plat-dev`, `aws-organizational-unit/core`), making configuration explicit and auditable.
+</Steps>
+
+## The New Components
+
+| Component | Purpose |
+|-----------|---------|
+| [`aws-organization`](https://github.com/cloudposse-terraform-components/aws-organization) | Manages the AWS Organization itself |
+| [`aws-organizational-unit`](https://github.com/cloudposse-terraform-components/aws-organizational-unit) | Manages individual OUs (deployed as instances like `aws-organizational-unit/core`, `aws-organizational-unit/plat`) |
+| [`aws-account`](https://github.com/cloudposse-terraform-components/aws-account) | Creates and manages individual AWS accounts (deployed as instances like `aws-account/plat-dev`, `aws-account/core-artifacts`) |
+| [`aws-scp`](https://github.com/cloudposse-terraform-components/aws-scp) | Manages Service Control Policies (deployed as instances per policy, e.g., `aws-scp/deny-leaving-organization`) |
+| [`aws-account-settings`](https://github.com/cloudposse-terraform-components/aws-account-settings) | Account-level settings: IAM password policy, AWS Account Alias, EBS encryption, Service Quotas |
+| [`aws-budget`](https://github.com/cloudposse-terraform-components/aws-budget) | AWS budgets for cost management and alerting |
+
+## Part of Reference Architecture V2
+
+These new components are part of the broader Reference Architecture V2 changes, which also include the [deprecation of `account-map`](/blog/deprecate-account-map) in favor of static configuration and Atmos Auth profiles. Together, these changes reduce Terraform dependencies, simplify cold starts, and better support brownfield deployments.
+
+## Adopting with Legacy Infrastructure
+
+:::warning Important for Existing Deployments
+The new components ship with a **next-gen `providers.tf`** that contains only a simple AWS provider declaration:
+
+```hcl
+provider "aws" {
+  region = var.region
+}
+```
+
+This assumes [Atmos Auth](https://atmos.tools/core-concepts/components/authentication/) is in place — role assumption happens *before* Terraform begins, so the provider doesn't need to handle it. If you're adopting these components into an existing infrastructure that still uses `account-map` for provider configuration, you'll need to vendor in an overriding `providers.tf`.
+:::
+
+Exclude the upstream `providers.tf` and use the legacy mixin instead:
+
+```yaml title="components/terraform/<component-name>/component.yaml"
+apiVersion: atmos/v1
+kind: ComponentVendorConfig
+spec:
+  source:
+    uri: github.com/cloudposse-terraform-components/aws-<component>.git//src?ref={{ .Version }}
+    version: vX.x.x  # The new version with next-gen providers
+    included_paths:
+      - "**/**"
+    excluded_paths:
+      - "providers.tf"  # Exclude the next-gen providers.tf
+  mixins:
+    # Vendor in the legacy providers.tf that works with account-map
+    - uri: https://raw.githubusercontent.com/cloudposse-terraform-components/mixins/{{ .Version }}/src/mixins/provider-with-account-map.tf
+      version: v0.3.2
+      filename: providers.tf
+```
+
+This gives you the new modular component logic while keeping your existing provider configuration intact.
+
+## Questions?
+
+If you have questions about adopting the new account components:
+
+<Steps>
+  1. Join the [SweetOps Slack](https://cloudposse.com/slack) community
+  1. Open a [GitHub Discussion](https://github.com/orgs/cloudposse/discussions)
+  1. Contact Cloud Posse [support](/support/)
+</Steps>
