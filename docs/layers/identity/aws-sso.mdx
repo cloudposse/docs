@@ -232,69 +232,163 @@ For providers not included in the following section, please [follow the AWS docu
 
   </TabItem>
 
-  <TabItem value="gsuite" label="GSuite and Other External IdPs">
+  <TabItem value="gsuite" label="Google Workspace">
     <Intro>
-      For non-explicitly supported Identity Providers, such as GSuite, set up the app integration with a custom external
-      identity provider. The steps may be different for each IdP, but the goal is ultimately the same.
+      Google Workspace (formerly GSuite) can be used as an identity provider for AWS IAM Identity Center using SAML
+      authentication and SCIM provisioning. This setup requires a Google Workspace super administrator account.
     </Intro>
 
-    :::tip aws-ssosync
+    :::caution Google Workspace SCIM Limitation
 
-    GSuite does not automatically sync _both_ Users and Groups with AWS Identity Center without additional configuration! If using
-    GSuite as an IdP, considering deploying the [ssosync](https://github.com/awslabs/ssosync) tool.
+    Google Workspace's SCIM automatic provisioning only syncs **users**, not groups. Groups must be created manually in
+    AWS Identity Center or synced using the [`ssosync`](https://github.com/awslabs/ssosync) tool.
 
-    Please see our [aws-ssosync component](/components/library/aws/aws-ssosync/) for details!
+    Please see our [aws-ssosync component](/components/library/aws/aws-ssosync/) for details.
 
     :::
 
+    #### Setup Google Workspace SAML Application
+
     <Steps>
       <Step>
-        <StepNumber/> Open the Identity account in the AWS Console
-      </Step>
-      <Step>
-        <StepNumber/> On the Dashboard page of the IAM Identity Center console, select Choose your identity source
-      </Step>
-      <Step>
-        <StepNumber/> In the Settings, choose the Identity source tab, select the Actions dropdown in the top right, and then select Change identity source
-      </Step>
-      <Step>
-        <StepNumber/> By default, IAM Identity Center uses its own directory as the IdP. To use another IdP, you have to switch to an external identity provider. Select External identity provider from the available identity sources
-      </Step>
-      <Step>
-        <StepNumber/> Configure the custom SAML application with the Service provider metadata generated from your IdP. Follow the next steps from your IdP, and then complete this AWS configuration afterwards
-      </Step>
-      <Step>
-        <StepNumber/> Open your chosen IdP
-      </Step>
-      <Step>
-        <StepNumber/> Create a new SSO application
-      </Step>
-      <Step>
-        <StepNumber/> Download the new app's IdP metadata and use this to complete step 5 above
-      </Step>
-      <Step>
-        <StepNumber/> Fill in the Service provider details using the data from IAM Identity Center, and then choose Continue. The mapping for the data is as follows:
+        #### <StepNumber/> Create the SAML Application in Google
 
-```
-For ACS URL, enter the IAM Identity Center Assertion Consumer Service (ACS) URL.
-For Entity ID, enter the IAM Identity Center issuer URL.
-Leave the Start URL field empty.
-For Name ID format, select EMAIL.
-```
+        Sign in to the [Google Admin console](https://admin.google.com) with super administrator privileges. Navigate
+        to **Apps** > **Web and Mobile Apps**, select **Add app** > **Search for apps**, and search for **Amazon Web
+        Services**. Select the SAML app.
+
+        On the **Google Identity Provider details** page, download the IdP metadata file. Keep this page open.
       </Step>
       <Step>
-        <StepNumber/> If required for the IdP, enable the application for all users
+        #### <StepNumber/> Change the Identity Source in AWS
+
+        Sign in to the [IAM Identity Center console](https://console.aws.amazon.com/singlesignon) in the `core-root` account.
+        Go to **Settings** > **Actions** > **Change identity source**. Select **External identity provider** and click **Next**.
+
+        Upload the Google IdP metadata file you downloaded in the previous step.
+
+        Copy these two values from IAM Identity Center (you will need them in the next step):
+        - **Assertion Consumer Service (ACS) URL**
+        - **IAM Identity Center issuer URL**
       </Step>
       <Step>
-        <StepNumber/> Finally, define specific Groups to match the given Group names by the `aws-sso` component (`stacks/catalog/aws-sso.yaml`). In the default catalog, we define four Groups: `DevOps`, `Developers`, `BillingAdmin`, and `Everyone`
+        #### <StepNumber/> Configure Service Provider Details in Google
+
+        Return to the Google Admin console. On the **Service provider details** page, enter:
+        - **ACS URL**: Paste the IAM Identity Center ACS URL
+        - **Entity ID**: Paste the IAM Identity Center issuer URL
+        - **Start URL**: Leave empty
+        - **Name ID format**: Select `EMAIL`
+        - **Name ID**: Select `Basic Information > Primary email`
+
+        Click **Continue**.
+      </Step>
+      <Step>
+        #### <StepNumber/> Configure Attribute Mapping in Google
+
+        On the **Attribute Mapping** page, click **ADD MAPPING** and configure:
+
+        | Google Directory Attribute | App Attribute |
+        |---|---|
+        | Basic Information > Primary Email | `https://aws.amazon.com/SAML/Attributes/RoleSessionName` |
+
+        Click **Finish**. Then return to the IAM Identity Center console, review the configuration, type `ACCEPT`, and click **Change identity source**.
+      </Step>
+      <Step>
+        #### <StepNumber/> Enable the Application in Google Workspace
+
+        Return to the Google Admin Console. Navigate to **Apps** > **Web and Mobile Apps** and open the **AWS IAM
+        Identity Center** application. Expand **User access**, set the **Service status** to **ON for everyone**, and
+        click **Save**.
       </Step>
     </Steps>
 
-    If set up properly, Users and Groups added to your IdP will automatically populate and update in AWS.
+    #### Enable Automatic User Provisioning (SCIM)
 
-    Additional IdP specific setup reference can be found here:
+    <Steps>
+      <Step>
+        #### <StepNumber/> Generate SCIM Credentials in AWS
 
-    - [How to use Google Workspace as an external identity provider for AWS IAM Identity Center](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/)
+        In IAM Identity Center, go to **Settings** and locate **Automatic provisioning**. Click **Enable**. Copy both the
+        **SCIM endpoint** URL and the **Access token**. These values are only shown once.
+      </Step>
+      <Step>
+        #### <StepNumber/> Configure Auto Provisioning in Google
+
+        Return to the Google Admin Console and open the **AWS IAM Identity Center** application. In the **Auto
+        provisioning** section, click **Configure auto provisioning**.
+
+        Paste the **Access token** and **SCIM endpoint** URL from the previous step. Verify the attribute mappings, optionally
+        select a provisioning scope (Google Workspace group), and configure deprovisioning settings. Click **Finish**.
+
+        Toggle auto provisioning from **Inactive** to **Active**.
+      </Step>
+      <Step>
+        #### <StepNumber/> Verify User Sync
+
+        Return to IAM Identity Center and check the **Users** page. Users from Google Workspace should appear within a
+        few minutes, though provisioning can take up to 24 hours.
+      </Step>
+    </Steps>
+
+    :::info Additional References
+
+    - [AWS: Configure Google Workspace as an IdP](https://docs.aws.amazon.com/singlesignon/latest/userguide/gs-gwp.html)
+      — Official AWS guide including SAML setup ([Step 1](https://docs.aws.amazon.com/singlesignon/latest/userguide/gs-gwp.html#gs-gwp-step1)) and user provisioning ([Step 3](https://docs.aws.amazon.com/singlesignon/latest/userguide/gs-gwp.html#gs-gwp-step3))
+    - [AWS Blog: How to use Google Workspace as an external identity provider for AWS IAM Identity Center](https://aws.amazon.com/blogs/security/how-to-use-g-suite-as-external-identity-provider-aws-sso/)
+
+    :::
+
+  </TabItem>
+
+  <TabItem value="other" label="Other External IdPs">
+    <Intro>
+      For identity providers not explicitly listed above, set up the integration with a custom external
+      identity provider. The steps may differ for each IdP, but the goal is ultimately the same: configure SAML
+      authentication and user provisioning between your IdP and AWS IAM Identity Center.
+    </Intro>
+
+    For providers not included in this guide, refer to the [AWS documentation for supported IdP integrations](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html), which includes CyberArk, OneLogin, Ping Identity, and others.
+
+    <Steps>
+      <Step>
+        <StepNumber/> Open the Identity account (`core-root`) in the AWS Console
+      </Step>
+      <Step>
+        <StepNumber/> On the Dashboard page of the IAM Identity Center console, select **Choose your identity source**
+      </Step>
+      <Step>
+        <StepNumber/> In the Settings, choose the **Identity source** tab, select the **Actions** dropdown, and then select **Change identity source**
+      </Step>
+      <Step>
+        <StepNumber/> Select **External identity provider** from the available identity sources. Download the **Service provider metadata** from AWS — you will need this for your IdP
+      </Step>
+      <Step>
+        <StepNumber/> Open your chosen IdP and create a new SAML/SSO application
+      </Step>
+      <Step>
+        <StepNumber/> Download the new app's IdP metadata and upload it to AWS IAM Identity Center
+      </Step>
+      <Step>
+        <StepNumber/> Fill in the Service provider details in your IdP using the data from IAM Identity Center:
+
+        - **ACS URL**: The IAM Identity Center Assertion Consumer Service (ACS) URL
+        - **Entity ID**: The IAM Identity Center issuer URL
+        - **Start URL**: Leave empty
+        - **Name ID format**: Select `EMAIL`
+      </Step>
+      <Step>
+        <StepNumber/> Enable the application for the appropriate users or groups in your IdP
+      </Step>
+      <Step>
+        <StepNumber/> Configure automatic provisioning (SCIM) if supported by your IdP, or manually create users and groups in AWS Identity Center
+      </Step>
+      <Step>
+        <StepNumber/> Create groups in your IdP (or AWS Identity Center) to match the groups expected by the `aws-sso` component. See the [Required Groups](#required-groups) section below
+      </Step>
+    </Steps>
+
+    If set up properly, users added to your IdP will automatically populate in AWS Identity Center.
 
   </TabItem>
 </Tabs>
