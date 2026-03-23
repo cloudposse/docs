@@ -19,13 +19,16 @@ import PrimaryCTA from '@site/src/components/PrimaryCTA';
 This guide walks through deploying AWS accounts using `atmos` workflows. Before starting, ensure you have completed the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide, which creates the AWS Organization, enables AWS RAM sharing, and raises account limits.
 </Intro>
 
-| Steps                        | Actions                                                                     |
-| ---------------------------- | --------------------------------------------------------------------------- |
-| Validate prerequisites       | Review account configuration                                                |
-| Import AWS Organization      | `atmos terraform import account -s core-gbl-root ...`                       |
-| Deploy accounts              | `atmos workflow deploy/accounts -f quickstart/foundation/accounts`          |
-| Deploy accounts settings     | `atmos workflow deploy/account-settings -f quickstart/foundation/accounts`  |
-| Finalize account setup       | Click Ops (optional)                                                        |
+| Steps                             | Actions                                                                          |
+| --------------------------------- | -------------------------------------------------------------------------------- |
+| Validate prerequisites            | Review account configuration                                                     |
+| Deploy Organization               | `atmos workflow deploy/organization -f quickstart/foundation/accounts`            |
+| Deploy Organizational Units       | `atmos workflow deploy/organizational-units -f quickstart/foundation/accounts`    |
+| Deploy accounts                   | `atmos workflow deploy/accounts -f quickstart/foundation/accounts`                |
+| Deploy Service Control Policies   | `atmos workflow deploy/scps -f quickstart/foundation/accounts`                    |
+| Update Account ID Placeholders    | Update `_defaults.yaml` with real account IDs                                    |
+| Deploy account settings           | `atmos workflow deploy/aws-account-settings -f quickstart/foundation/accounts`   |
+| Finalize account setup            | Click Ops (optional)                                                             |
 
 <Steps>
   <Step>
@@ -40,57 +43,63 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
     - Terraform state backend has been initialized
     </TaskList>
 
-    Next, review the "account" configuration in the stack catalog. **This is the hardest part to change/fix once the accounts are provisioned**. If you aren't confident about the email configuration, account names, or anything else, now is the time to make changes or ask for help.
+    Next, review the account configuration in the stack catalog. The reference architecture uses individual **instanced components** for each account (`aws-account/core-artifacts`, `aws-account/plat-dev`, etc.) rather than a single monolithic component. Each account is defined as a separate component instance, inheriting shared defaults from `stacks/catalog/aws-account/defaults.yaml`.
+
+    **This is the hardest part to change/fix once the accounts are provisioned**. If you aren't confident about the email configuration, account names, or anything else, now is the time to make changes or ask for help.
 
     You should double-check the following:
 
     <TaskList>
-    - Check that `stacks/catalog/account.yaml` has the values you expect, especially account email format
-    - Run `atmos describe component account -s core-gbl-root` to inspect the final component configuration (e.g. _after_ all the mixins have been imported)
-    - Plan the run with `atmos terraform plan account -s core-gbl-root`
+    - Check that `stacks/catalog/aws-account/defaults.yaml` has the values you expect, especially account email format
+    - Run `atmos describe component aws-account/core-artifacts -s core-gbl-root` to inspect the final component configuration (e.g. _after_ all the mixins have been imported)
+    - Plan the run with `atmos terraform plan aws-account/core-artifacts -s core-gbl-root`
     </TaskList>
   </Step>
 
   <Step>
-    ## <StepNumber/> Import the AWS Organization
+    ## <StepNumber/> Deploy the AWS Organization
 
-    The AWS Organization was created manually as part of the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide. Now we need to import this existing organization into Terraform so it can be managed as infrastructure-as-code.
+    The AWS Organization was created manually as part of the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide. The `aws-organization` component adopts the existing organization and manages it as infrastructure-as-code — no manual `terraform import` is needed.
 
-    Import the existing AWS Organization into Terraform state using the following command. Replace `ORG_ID` with your AWS Organization ID (e.g., `o-abc123def4`):
+    This workflow also enables RAM sharing with the AWS Organization.
 
+    <AtmosWorkflow workflow="deploy/organization" fileName="quickstart/foundation/accounts" />
+
+    :::tip Verify Deployment
+    After the workflow completes, verify the organization is under management with no drift:
     ```bash
-    atmos terraform import account -s core-gbl-root "aws_organizations_organization.this[0]" ORG_ID
+    atmos terraform plan aws-organization -s core-gbl-root
     ```
-
-    :::info Finding Your Organization ID
-    You can find your Organization ID in the AWS Console under **AWS Organizations** → **Settings**, or by running:
-    ```bash
-    aws organizations describe-organization --query 'Organization.Id' --output text
-    ```
+    The plan should show no changes, indicating the organization was adopted correctly.
     :::
+  </Step>
 
-    This command runs `terraform import` to bring the existing AWS Organization under Terraform management. After this step, all organization-level changes will be managed through Atmos and Terraform.
+  <Step>
+    ## <StepNumber/> Deploy Organizational Units
 
-    :::tip Verify Import
-    After the import completes, verify the organization was imported successfully:
-    ```bash
-    atmos terraform plan account -s core-gbl-root
-    ```
-    The plan should show no changes for the organization resource, indicating it was imported correctly.
-    :::
+    Organizational Units (OUs) group your accounts by function. The reference architecture uses separate `aws-organizational-unit/*` instanced components for each OU (e.g. `core` and `plat`). The OU IDs are consumed by the account components via `!terraform.state`.
+
+    <AtmosWorkflow workflow="deploy/organizational-units" fileName="quickstart/foundation/accounts" />
   </Step>
 
   <Step>
     ## <StepNumber/> Deploy Accounts
 
-    Again review the "account" configuration in `stacks/catalog/account.yaml`. In particular, check the email address and account names. In the next step, we will create and configure all accounts in the AWS Organization using the configuration in that stack file.
+    Review the account configuration one final time before creating accounts. Each account is provisioned as a separate instanced component (e.g. `aws-account/core-artifacts`, `aws-account/plat-dev`). In particular, check the email addresses and account names.
 
     Once confident, begin the accounts deployment:
 
     <AtmosWorkflow workflow="deploy/accounts" fileName="quickstart/foundation/accounts" />
 
     This workflow creates all AWS member accounts in the AWS Organization using the configuration in your stack files.
+  </Step>
 
+  <Step>
+    ## <StepNumber/> Deploy Service Control Policies
+
+    Service Control Policies (SCPs) set permission guardrails across your organization. This workflow deploys policies that prevent accounts from leaving the organization and restrict IAM user creation.
+
+    <AtmosWorkflow workflow="deploy/scps" fileName="quickstart/foundation/accounts" />
   </Step>
 
   <Step>
@@ -98,12 +107,13 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
 
     Now that accounts are created, you have real account IDs to work with. The reference architecture contains placeholder account IDs that need to be replaced with your actual values.
 
-    To get your account IDs, run:
+    To get your account IDs, run the output command for any account component:
 
     ```bash
-    atmos terraform output account -s core-gbl-root
-    ## or if on the latest version with instanced components:
     atmos terraform output aws-account/core-artifacts -s core-gbl-root
+    atmos terraform output aws-account/core-audit -s core-gbl-root
+    atmos terraform output aws-account/plat-dev -s core-gbl-root
+    # ... repeat for each account
     ```
 
     **Update the Static Account Map**
@@ -167,16 +177,16 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
   </Step>
 
   <Step>
-    ## <StepNumber/> Deploy Accounts Settings
+    ## <StepNumber/> Deploy Account Settings
 
     Once you've created the accounts, you'll need to provision the baseline configuration within the accounts themselves. Run the following:
 
-    <AtmosWorkflow workflow="deploy/account-settings" fileName="quickstart/foundation/accounts" />
+    <AtmosWorkflow workflow="deploy/aws-account-settings" fileName="quickstart/foundation/accounts" />
 
     The workflows will kick off several sequential Terraform runs to provision all the AWS member account settings for
     member accounts in the Organization.
   </Step>
- 
+
   <Step>
     ## <StepNumber/> Unsubscribe from Marketing Emails (Optional)
 
