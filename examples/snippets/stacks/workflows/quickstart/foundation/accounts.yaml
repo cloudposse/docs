@@ -96,6 +96,7 @@ workflows:
     description: Deploy Service Control Policies
     steps:
       - command: terraform deploy aws-scp/deny-leaving-organization -s core-gbl-root
+      - command: terraform deploy aws-scp/deny-creating-users -s core-gbl-root
 
   deploy/aws-account-settings:
     description: Apply AWS Account settings for best practices.
