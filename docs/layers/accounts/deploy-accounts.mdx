@@ -59,7 +59,13 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
   <Step>
     ## <StepNumber/> Deploy the AWS Organization
 
-    The AWS Organization was created manually as part of the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide. The `aws-organization` component adopts the existing organization and manages it as infrastructure-as-code — no manual `terraform import` is needed.
+    The AWS Organization was created manually as part of the [Prepare AWS Organization](/layers/accounts/prepare-aws-organization/) guide. The `aws-organization` component uses the `import_resource_id` variable to import the existing organization into Terraform state on the first apply — no manual `terraform import` command is needed.
+
+    Before running this workflow, ensure `import_resource_id` is set to your AWS Organization ID in the stack configuration. You can find your Organization ID in the AWS Console under **AWS Organizations** → **Settings**, or by running:
+
+    ```bash
+    aws organizations describe-organization --query 'Organization.Id' --output text
+    ```
 
     This workflow also enables RAM sharing with the AWS Organization.
 
@@ -70,7 +76,7 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
     ```bash
     atmos terraform plan aws-organization -s core-gbl-root
     ```
-    The plan should show no changes, indicating the organization was adopted correctly.
+    The plan should show no changes, indicating the organization was imported and configured correctly.
     :::
   </Step>
 
@@ -79,6 +85,8 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
 
     Organizational Units (OUs) group your accounts by function. The reference architecture uses separate `aws-organizational-unit/*` instanced components for each OU (e.g. `core` and `plat`). The OU IDs are consumed by the account components via `!terraform.state`.
 
+    Like the organization component, each `aws-organizational-unit/*` component supports `import_resource_id` if you need to adopt existing OUs into Terraform management.
+
     <AtmosWorkflow workflow="deploy/organizational-units" fileName="quickstart/foundation/accounts" />
   </Step>
 
@@ -86,6 +94,8 @@ This guide walks through deploying AWS accounts using `atmos` workflows. Before 
     ## <StepNumber/> Deploy Accounts
 
     Review the account configuration one final time before creating accounts. Each account is provisioned as a separate instanced component (e.g. `aws-account/core-artifacts`, `aws-account/plat-dev`). In particular, check the email addresses and account names.
+
+    Each `aws-account/*` component also supports `import_resource_id` if you need to adopt existing accounts into Terraform management.
 
     Once confident, begin the accounts deployment:
 
