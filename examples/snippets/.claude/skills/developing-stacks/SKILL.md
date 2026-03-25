@@ -152,12 +152,12 @@ Components can inherit from multiple bases. Order matters - later items override
 ```yaml
 components:
   terraform:
-    my-ecs-service:
+    my-s3-bucket:
       metadata:
-        component: ecs-service
+        component: s3-bucket
         inherits:
-          - ecs-service/defaults # Base defaults
-          - ecs-service/web # Web-specific settings (overrides defaults)
+          - s3-bucket/defaults # Base defaults
+          - s3-bucket/web # Web-specific settings (overrides defaults)
       vars:
         service_name: my-app # Final override
 ```
@@ -258,7 +258,7 @@ Stack files are organized by layer:
 | ----------------- | ---------------------------------------- | --------------------------- |
 | `foundation.yaml` | Core infrastructure (VPC, DNS, TGW)      | vpc, dns-delegated, bastion |
 | `platform.yaml`   | Platform services (ECS, RDS, monitoring) | ecs, aurora-postgres, alb   |
-| `app.yaml`        | Application-specific resources           | ecs-service, s3-bucket      |
+| `app.yaml`        | Application-specific resources           | s3-bucket                   |
 | `network.yaml`    | Network-specific (routes, peering)       | vpc-routes, tgw-attachment  |
 | `monitor.yaml`    | Observability (CloudWatch, Grafana)      | managed-grafana, alarms     |
 
