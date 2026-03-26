@@ -41,7 +41,7 @@ jobs:
           echo "ATMOS_CLI_CONFIG_PATH=$(realpath ${{ vars.ATMOS_CONFIG_PATH }})" >> $GITHUB_ENV
 
       - name: Install Atmos
-        uses: cloudposse/github-action-setup-atmos@v2
+        uses: cloudposse/github-action-setup-atmos@v3
         with:
           atmos-version: ${{ vars.ATMOS_VERSION }}
           token: ${{ github.token }}
