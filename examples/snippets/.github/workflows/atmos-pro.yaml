@@ -1,11 +1,11 @@
-name: 👽 Atmos Pro Determine Affected Stacks
-run-name: 👽 Atmos Pro Determine Affected Stacks
+name: Atmos Pro
+run-name: Atmos Pro
 
 # Atmos Pro reacts to events defined in the Atmos stack settings
 # and will trigger the appropriate workflows for the given event.
 #
 # For example, pull requests opened, synchronize, and reopened will trigger plan workflows.
-# Whereas pull requests merged will trigger apply workflows
+# Whereas pull requests merged will trigger apply workflows.
 on:
   pull_request:
     types:
@@ -17,14 +17,14 @@ on:
       - main
 
 # Avoid conflicting workflow triggers.
-# For example, wait to trigger apply until plan has been triggered
+# For example, wait to trigger apply until plan has been triggered.
 concurrency:
   group: "${{ github.ref }}"
   cancel-in-progress: false
 
 permissions:
-  id-token: write # This is required for requesting the JWT (OIDC) token
-  contents: read # This is required for actions/checkout
+  id-token: write # Required for requesting the JWT (OIDC) token
+  contents: read  # Required for actions/checkout
 
 jobs:
   affected:
@@ -36,39 +36,41 @@ jobs:
       - "tag=affected-stacks"
       - "private=false"
 
-    # Trigger Atmos Pro for Pull Request plan events and specifically closed PRs that have been merged (not just closed)
-    # Skip if the PR has the "no-apply" label
+    # Trigger for PR plan events and specifically closed PRs that have been merged (not just closed).
+    # Skip if the PR has the "no-apply" label.
     if: |
       !contains(github.event.pull_request.labels.*.name, 'no-apply') &&
       (github.event.action != 'closed' || (github.event.action == 'closed' && github.event.pull_request.merged == true))
 
     steps:
-      - uses: runs-on/action@v1
+      - uses: runs-on/action@v2
+
+      # Checkout the PR head SHA so the uploaded HeadSHA matches the webhook trigger event.
       - name: Checkout
-        # For merged PRs, we will need to checkout the base branch to get the correct base branch SHA.
-        # This isn't necessary for other events.
-        if: github.event.action == 'closed'
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0 # Fetch all history for all branches and tags
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
 
-      # For merged PRs, we want to use 1 previous commit from the base branch SHA
-      # This is because by the time this workflow runs, the PR branch has already been merged.
-      # It's critical to use the base branch SHA to get the correct changes, not the previous commit from the PR branch.
-      - name: Determine previous commit on base branch
-        id: get_parent
-        if: github.event.action == 'closed'
+      - name: Install Atmos
+        uses: cloudposse/github-action-setup-atmos@v3
+        with:
+          install-wrapper: false
+          atmos-version: ${{ vars.ATMOS_VERSION }}
+
+      # For merged PRs, use HEAD~1 to get the commit before the merge.
+      # For open PRs, use the PR base SHA directly.
+      - name: Determine base ref
+        id: refs
         shell: bash
         run: |
-          # For squash merges, github.event.pull_request.base.sha represents the state of the base branch
-          # when the PR was created (or last updated). This may be stale compared to the actual commit
-          # on the main branch at the time of the merge. Using 'HEAD~1' after the merge ensures we get
-          # the commit that was the tip of main immediately before the squash merge commit was added.
-          echo "Merge commit: $(git rev-parse HEAD)"
-          PARENT=$(git rev-parse HEAD~1)
-          echo "Parent (base) commit: $PARENT"
-          echo "merge_commit=$MERGE_COMMIT" >> "$GITHUB_OUTPUT"
-          echo "parent_commit=$PARENT" >> "$GITHUB_OUTPUT"
+          if [[ "${{ github.event.action }}" == "closed" ]]; then
+            PARENT=$(git rev-parse HEAD~1)
+            echo "base_ref=$PARENT" >> "$GITHUB_OUTPUT"
+          else
+            echo "base_ref=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+          fi
+          echo "head_ref=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
 
       - name: Assume Planner Role
         uses: aws-actions/configure-aws-credentials@v6
@@ -79,16 +81,13 @@ jobs:
           mask-aws-account-id: "no"
 
       - name: Determine Affected Stacks
-        id: affected
-        uses: cloudposse/github-action-atmos-affected-stacks@v6
+        shell: bash
         env:
           ATMOS_PRO_WORKSPACE_ID: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
           ATMOS_PROFILE: "github-plan"
-        with:
-          atmos-version: ${{ vars.ATMOS_VERSION }}
-          atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
-          atmos-pro-upload: true
-          # Compare the head of the PR to the base of the PR if the PR is not merged.
-          # If the PR is merged, compare the head of the PR to 1 previous commit on the base branch.
-          head-ref: ${{ github.event.pull_request.head.sha }}
-          base-ref: ${{ github.event.action == 'closed' && steps.get_parent.outputs.parent_commit || github.event.pull_request.base.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          atmos describe affected \
+            --ref ${{ steps.refs.outputs.head_ref }} \
+            --sha ${{ steps.refs.outputs.base_ref }} \
+            --upload
