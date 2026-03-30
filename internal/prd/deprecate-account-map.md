@@ -509,4 +509,4 @@ Note: GitOps pages remain accessible via direct URL but are removed from the sid
 
 - [refarch-scaffold PR #818](https://github.com/cloudposse/refarch-scaffold/pull/818) - Implementation PR
 - [refarch-scaffold PRD](https://github.com/cloudposse/refarch-scaffold/blob/upstream-account-map-less/docs/prd/remove-account-map.md) - Original PRD
-- [Atmos Auth Documentation](https://atmos.tools/cli/auth/) - Atmos auth reference
+- [Atmos Auth Documentation](https://atmos.tools/cli/configuration/auth/) - Atmos auth reference

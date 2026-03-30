@@ -141,7 +141,7 @@ Before using Atmos Auth, ensure you have:
 1. **Atmos >= v1.155.0** — Atmos Auth requires a recent version of the Atmos CLI. Run `atmos version` to check.
 1. **AWS IAM Identity Center (SSO)** — For human users, Atmos Auth profiles authenticate via AWS SSO. You need IAM Identity Center configured in your `core-root` account with Permission Sets for Terraform access.
 1. **IAM roles for CI/CD** — For machine users, deploy the `iam-role` component with GitHub OIDC (or your CI provider's equivalent) in each target account.
-1. **Atmos Auth profiles configured** — Define profiles in your `atmos.yaml` that map to SSO Permission Sets or IAM roles. See [Atmos Auth](https://atmos.tools/cli/auth) for the configuration reference.
+1. **Atmos Auth profiles configured** — Define profiles in your `atmos.yaml` that map to SSO Permission Sets or IAM roles. See [Atmos Auth](https://atmos.tools/cli/configuration/auth) for the configuration reference.
 </Steps>
 
 ## How Provider Overrides Work
@@ -189,7 +189,7 @@ Configure Atmos Auth profiles in your `atmos.yaml`. This tells Atmos how to auth
 atmos auth login
 ```
 
-See [Atmos Auth](https://atmos.tools/cli/auth) for configuration details and the [prerequisites](#atmos-auth-prerequisites) section above.
+See [Atmos Auth](https://atmos.tools/cli/configuration/auth) for configuration details and the [prerequisites](#atmos-auth-prerequisites) section above.
 
 ### 2. Add the Static Account Map
 
@@ -503,7 +503,7 @@ The net result: fewer components to manage, simpler authentication, no deploy or
 <Steps>
 1. [Deprecating Account-Map](/blog/deprecate-account-map/) — The full deprecation announcement
 1. [Migrate from Account-Map](/layers/project/tutorials/migrate-from-account-map/) — Detailed step-by-step migration guide
-1. [Atmos Auth](https://atmos.tools/cli/auth) — Authentication configuration reference
+1. [Atmos Auth](https://atmos.tools/cli/configuration/auth) — Authentication configuration reference
 1. [How to Log into AWS](/layers/identity/how-to-log-into-aws/) — Authentication workflows for human users
 </Steps>
 
