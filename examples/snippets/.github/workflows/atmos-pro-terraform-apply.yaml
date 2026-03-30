@@ -55,6 +55,7 @@ jobs:
         uses: cloudposse/github-action-atmos-terraform-apply@v7
         env:
           ATMOS_PROFILE: "github-apply"
+          ATMOS_PRO_WORKSPACE_ID: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
         with:
           # Atmos Pro args
           component: ${{ inputs.component }}
