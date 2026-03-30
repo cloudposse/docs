@@ -1,5 +1,5 @@
-name: 👽 Atmos Pro Terraform Apply
-run-name: apply ${{ inputs.component }}/${{ inputs.stack }}/${{ inputs.atmos_pro_run_id}}
+name: Atmos Pro Terraform Apply
+run-name: apply ${{ inputs.component }}/${{ inputs.stack }}/${{ inputs.atmos_pro_run_id }}
 
 on:
   workflow_dispatch:
@@ -23,22 +23,23 @@ on:
         required: true
         type: string
 
-# Avoid running the same stack in parallel mode (from different workflows)
-# This applied to across workflows to both plan and apply
+# Avoid running the same stack in parallel mode (from different workflows).
+# This applies across workflows to both plan and apply.
 concurrency:
   group: "${{ inputs.stack }}-${{ inputs.component }}"
   cancel-in-progress: false
 
 permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
+  id-token: write  # Required for requesting the JWT (OIDC) token
+  contents: read   # Required for actions/checkout
+  statuses: write  # Required for CI commit status checks
 
 jobs:
   atmos-apply:
     name: ${{ inputs.component }}-${{ inputs.stack }}
 
     # The GitHub environment is defined in Atmos Pro settings.
-    # Typically this is <tenant>-<stage>
+    # Typically this is <tenant>-<stage>.
     environment: ${{ inputs.github_environment }}
 
     runs-on:
@@ -48,18 +49,26 @@ jobs:
       - "private=true"
 
     steps:
-      - uses: runs-on/action@v1
-      - uses: unfor19/install-aws-cli-action@v1
+      - uses: runs-on/action@v2
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.sha }}
+
+      - name: Install Atmos
+        uses: cloudposse/github-action-setup-atmos@v3
+        with:
+          install-wrapper: false
+          atmos-version: ${{ vars.ATMOS_VERSION }}
 
       - name: Apply Atmos Component
-        uses: cloudposse/github-action-atmos-terraform-apply@v7
+        shell: bash
         env:
-          ATMOS_PROFILE: "github-apply"
-        with:
-          # Atmos Pro args
-          component: ${{ inputs.component }}
-          stack: ${{ inputs.stack }}
-          sha: ${{ inputs.sha }}
-          # Atmos required configuration
-          atmos-version: ${{ vars.ATMOS_VERSION }}
-          atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
+          ATMOS_PROFILE: github-apply
+          ATMOS_PRO_WORKSPACE_ID: ${{ vars.ATMOS_PRO_WORKSPACE_ID }}
+          ATMOS_PRO_RUN_ID: ${{ inputs.atmos_pro_run_id }}
+          GITHUB_SHA: ${{ inputs.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          atmos terraform deploy ${{ inputs.component }} -s ${{ inputs.stack }} --upload-status
