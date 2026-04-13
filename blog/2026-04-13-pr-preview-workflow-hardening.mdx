@@ -1,0 +1,51 @@
+---
+title: "Security Update: Hardening Pull Request Preview Workflows"
+slug: pr-preview-workflow-hardening
+description: "We removed a pull_request_target-based preview workflow from our documentation repository after a responsible disclosure highlighting the risk of executing code influenced by an untrusted pull request in the base repository context."
+authors: [cloudposse]
+tags: [security, github-actions, ci-cd, docs]
+date: 2026-04-13
+---
+import Intro from '@site/src/components/Intro';
+
+<Intro>
+We removed a <code>pull_request_target</code>-based preview workflow from our documentation repository after a responsible disclosure from security researcher Aviv Donenfeld. This was the last remaining instance of this pattern in our GitHub organization. The issue was limited to pull request preview environments for this repository, there is no indication it was ever exploited, and the overall impact was minimal.
+</Intro>
+
+<!--truncate-->
+
+One of our long-standing best practices is requiring maintainer approval before running workflows triggered by pull requests. That eliminates an entire class of CI/CD attack vectors involving untrusted code execution.
+
+It is easy to assume that protection applies universally, including to workflows triggered by `pull_request_target`. That assumption breaks down when those workflows execute code, scripts, or artifacts influenced by an untrusted pull request.
+
+Workflows triggered by `pull_request_target` run in the context of the base repository. That is not inherently unsafe if all executed code comes strictly from a trusted and protected branch. The problem is when such workflows execute code influenced by an untrusted pull request, or publish pull request content into a trusted location or environment. In that case, they can bypass the assumptions many teams make about pull request approval gates and create an avoidable CI/CD exposure.
+
+## What we changed
+
+Following Aviv's report, we removed the affected pattern from this repository's pull request preview workflow.
+
+This was the last remaining instance of this pattern in our GitHub organization. We had already phased it out elsewhere some time ago, and it has now been fully removed here as well.
+
+## Scope and impact
+
+The issue was limited to preview environments for this documentation repository.
+
+- There is no indication the issue was ever exploited
+- We do not believe this had broader production impact
+- The overall severity was low, but the pattern itself was still worth eliminating
+
+## Why this matters
+
+This is one of those edge cases that is easy to miss because the workflow may still look "approved" or "maintainer-controlled" at first glance. The security boundary is different for `pull_request_target`, and that difference matters when the workflow executes anything influenced by untrusted pull request content.
+
+The practical takeaway is simple: `pull_request_target` can be a convenient choice for labeling pull requests. Beyond that, it should be used only when all executed code is strictly from a trusted and protected branch. Do not use it to execute code influenced by an untrusted pull request, or to publish pull request content into a trusted location or environment.
+
+## Guidance for customers and the community
+
+Because this repository is our documentation site, we are also using this as an opportunity to point customers and the community to the upstream guidance we recommend reviewing:
+
+- [GitHub Actions: `pull_request_target` event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target)
+- [GitHub Actions security hardening](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
+- [GitHub Security Lab: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/)
+
+We appreciate researchers like Aviv who take the time to surface issues like this clearly and responsibly. In this case, the report was thorough, accurate, and directly actionable.
