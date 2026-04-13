@@ -13,10 +13,7 @@ import CodeBlock from '@theme/CodeBlock';
 :::warning Deprecated
 This documentation describes the legacy GitHub Actions GitOps approach for Terraform automation.
 
-**The recommended approach now uses [Atmos Pro](/layers/atmos-pro/)**, which provides:
-- Integrated plan/apply workflows with no custom configuration
-- Built-in drift detection and remediation
-- Seamless integration with AWS SSO via `iam-role` component
+For current examples using Atmos Native CI, see [`cloudposse-examples/atmos-native-ci`](https://github.com/cloudposse-examples/atmos-native-ci) and the [Atmos CI documentation](https://atmos.tools/ci).
 
 This content is preserved for users with existing GitHub Actions GitOps deployments.
 :::
@@ -65,6 +62,8 @@ Once the required S3 Bucket, DynamoDB table, and two separate roles to access Te
 ## References
 
 - [Setup Documentation](/layers/gitops/setup)
+- [Atmos CI documentation](https://atmos.tools/ci)
+- [`cloudposse-examples/atmos-native-ci`](https://github.com/cloudposse-examples/atmos-native-ci)
 - [Atmos integration documentation](https://atmos.tools/category/integrations/github-actions).
 - [GitHub OIDC Integration with AWS](/layers/github-actions/github-oidc-with-aws)
 - [`cloudposse/github-action-atmos-terraform-plan`](https://github.com/cloudposse/github-action-atmos-terraform-plan)
@@ -74,4 +73,3 @@ Once the required S3 Bucket, DynamoDB table, and two separate roles to access Te
 - [`gitops/s3-bucket`](/components/library/aws/s3-bucket/): Deploy a S3 Bucket using the `s3-bucket` component. This bucket holds Terraform planfiles.
 - [`gitops/dynamodb`](/components/library/aws/dynamodb/): Deploy a DynamoDB table using the `dynamodb` component. This table is used to hold metadata for Terraform Plans
 - [`github-oidc-role`](/components/library/aws/github-oidc-role/): Deploys an IAM Role that GitHub is able to assume via GitHub OIDC. This role has access to the bucket and table for planfiles.
-
