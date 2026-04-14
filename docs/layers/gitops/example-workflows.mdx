@@ -6,6 +6,7 @@ sidebar_position: 2
 import Intro from '@site/src/components/Intro';
 import CodeBlock from '@theme/CodeBlock';
 import CollapsibleText from '@site/src/components/CollapsibleText';
+import PartialAtmosTerraformPlan from '@site/examples/legacy/snippets/.github/workflows/atmos-terraform-plan.yaml';
 import PartialAtmosTerraformApply from '@site/examples/legacy/snippets/.github/workflows/atmos-terraform-apply.yaml';
 import PartialAtmosTerraformDispatch from '@site/examples/legacy/snippets/.github/workflows/atmos-terraform-dispatch.yaml';
 import PartialAtmosTerraformDriftDetection from '@site/examples/legacy/snippets/.github/workflows/atmos-terraform-drift-detection.yaml';
@@ -26,6 +27,22 @@ This content is preserved for users with existing GitHub Actions GitOps deployme
 </Intro>
 
 The following GitHub Workflows should be used as examples. These are created in a given Infrastructure repository and can be modified however best suites your needs. For example, the labels we've chosen for triggering or skipping workflows are noted here as "Conventions" but can be changed however you would prefer.
+
+### Atmos Terraform Plan
+
+:::info Conventions
+
+Use the `no-plan` label on a Pull Request to skip this workflow.
+
+:::
+
+The Atmos Terraform Plan workflow is triggered for every affected component from the Atmos Describe Affected workflow. This workflow takes a matrix of components and stacks and creates a plan for each, using the [Atmos Terraform Plan composite action](https://github.com/cloudposse/github-action-atmos-terraform-plan). For more on the Atmos Terraform Plan composite action, see [the official atmos.tools documentation](https://atmos.tools/integrations/github-actions/atmos-terraform-plan).
+
+If an affected component is disabled with `terraform.settings.github.actions_enabled`, the component will show up as affected but all Terraform steps will be skipped. See [Enabling or disabling components](#enabling-or-disabling-components).
+
+<CollapsibleText type="medium">
+  <CodeBlock language="yaml" title=".github/workflows/atmos-terraform-plan.yaml">{PartialAtmosTerraformPlan}</CodeBlock>
+</CollapsibleText>
 
 ### Atmos Terraform Apply
 
