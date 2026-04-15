@@ -14,15 +14,13 @@ workflows:
       - command: vendor pull --component eks/cluster
       - command: vendor pull --component efs
       - command: vendor pull --component eks/storage-class
-      - command: vendor pull --component eks/karpenter
+      - command: vendor pull --component eks/ingress-class
       - command: vendor pull --component eks/karpenter-node-pool
       - command: vendor pull --component eks/external-secrets-operator
       - command: vendor pull --component eks/external-dns
       - command: vendor pull --component eks/reloader
       - command: vendor pull --component eks/metrics-server
       - command: vendor pull --component eks/cert-manager
-      - command: vendor pull --component eks/alb-controller
-      - command: vendor pull --component eks/alb-controller-ingress-group
       - command: vendor pull --component eks/echo-server
       - command: vendor pull --component eks/idp-roles
 
@@ -57,6 +55,7 @@ workflows:
       - command: terraform deploy eks/cluster
       - command: terraform deploy efs
       - command: terraform deploy eks/storage-class
+      - command: terraform deploy eks/ingress-class
 
   deploy/resources:
     description: |
@@ -67,7 +66,6 @@ workflows:
       This is stack agnostic, ensure you pass in the `-s ${tenant}-${region}-${stage}`
       argument.
     steps:
-      - command: terraform deploy eks/karpenter
       - command: terraform deploy eks/karpenter-node-pool
       - command: terraform deploy eks/external-secrets-operator
       - command: terraform deploy eks/idp-roles
@@ -75,9 +73,6 @@ workflows:
       - command: terraform deploy eks/reloader
       - command: terraform deploy eks/metrics-server
       - command: terraform deploy eks/cert-manager
-      - command: terraform deploy eks/alb-controller
-      - command: terraform deploy eks/alb-controller-ingress-group
-      - command: terraform deploy eks/alb-controller-ingress-group/internal
       - command: terraform deploy eks/echo-server
 
   destroy/cluster:
@@ -102,9 +97,6 @@ workflows:
           echo "Continuing with EKS destruction..."
 
       - command: terraform destroy eks/echo-server -auto-approve
-      - command: terraform destroy eks/alb-controller-ingress-group -auto-approve
-      - command: terraform destroy eks/alb-controller-ingress-group/internal -auto-approve
-      - command: terraform destroy eks/alb-controller -auto-approve
       - command: terraform destroy eks/cert-manager -auto-approve
       - command: terraform destroy eks/metrics-server -auto-approve
       - command: terraform destroy eks/reloader -auto-approve
@@ -112,6 +104,6 @@ workflows:
       - command: terraform destroy eks/idp-roles -auto-approve
       - command: terraform destroy eks/external-secrets-operator -auto-approve
       - command: terraform destroy eks/karpenter-node-pool -auto-approve
-      - command: terraform destroy eks/karpenter -auto-approve
+      - command: terraform destroy eks/ingress-class
       - command: terraform destroy eks/storage-class
       - command: terraform destroy eks/cluster -auto-approve
