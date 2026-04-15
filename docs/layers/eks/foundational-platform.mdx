@@ -12,20 +12,27 @@ import KeyPoints from '@site/src/components/KeyPoints';
 />
 <br />
 
-We first deploy the foundation for the cluster. The `eks/cluster` component deploys the initial EKS resources to AWS,
-including Auth Config mapping. We do not deploy any nodes with the cluster initially. Then once EKS is available, we
-connect to the cluster and start deploying resources. First is Karpenter. We deploy the Karpenter chart on a Fargate
-node and the IAM service role to allow Karpenter to purchase Spot Instances. Karpenter is the only resources that will
-be deployed to Fargate. Then we deploy Karpenter Node Pools using the CRD created by the initial Karpenter component.
-These provisioners will automatically launch and scale the cluster to meet our demands. Next we deploy `idp-roles` to
-manage custom roles for the cluster, and deploy `metrics-server` to provide access to resource metrics.
+We first deploy the foundation for the cluster. The `eks/cluster` component deploys the EKS cluster with
+[EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html) enabled. Auto Mode delegates compute,
+networking, and storage management to AWS — node provisioning, load balancer management, and core addon lifecycle are
+all handled automatically. We then deploy Karpenter Node Pools for any additional compute requirements beyond the
+Auto Mode defaults. Next we deploy `idp-roles` to manage custom roles for the cluster, and deploy `metrics-server`
+to provide access to resource metrics.
 
 Then we connect the cluster to our network. First we must deploy the `cert-manager` component to provision X.509
-certificates on the cluster. Then we deploy the `alb-controller` component to provision and associate ALBs or NLBs based
-on `Ingress` annotations that route traffic to the cluster. Then we deploy the `alb-controller-ingress-group` to
-actually create that ALB. Next, we deploy `external-dns` which will look for annotations to make services discoverable,
+certificates on the cluster. Then we deploy the `eks/ingress-class` component to configure the default Ingress class
+for ALB-based routing. Next, we deploy `external-dns` which will look for annotations to make services discoverable,
 and then create records in our Route 53 Hosted Zones mapping to the cluster. Finally we deploy `echo-server` to validate
 the complete setup.
+
+:::info EKS Auto Mode Addons
+
+With [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html) enabled, AWS automatically
+manages the following addons: `vpc-cni`, `kube-proxy`, `coredns`, and `aws-ebs-csi-driver`. These do not need to be
+deployed or upgraded manually. The `aws-efs-csi-driver` is **not** managed by Auto Mode and remains self-managed
+via the `eks/storage-class` component.
+
+:::
 
 :::info
 
@@ -46,14 +53,14 @@ those implementations in follow up topics. For details, see the
 #### Foundation
 
 - [`eks/cluster`](/components/library/aws/eks/cluster/): This component is responsible for provisioning an end-to-end
-  EKS Cluster, including IAM role to Kubernetes Auth Config mapping.
-- [`eks/karpenter`](/components/library/aws/eks/karpenter-controller/): Installs the Karpenter chart on the EKS cluster and
-  prepares the environment for provisioners.
-  - [`eks/karpenter-provisioner`](/components/library/aws/eks/karpenter-node-pool/): Deploys Karpenter Node Pools
-    using CRDs made available by `eks/karpenter`
-  - [`iam-service-linked-roles`](/components/library/aws/iam-service-linked-roles/): Provisions
-    [IAM Service-Linked](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html) roles. These
-    are required for Karpenter to purchase Spot instances.
+  EKS Cluster with [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html) enabled. Auto Mode
+  automatically manages compute (node provisioning), networking (ELB), and storage (EBS CSI) — replacing the need for
+  self-managed Karpenter controller and ALB controller components.
+- [`eks/karpenter-node-pool`](/components/library/aws/eks/karpenter-node-pool/): Deploys additional Karpenter Node Pools
+  for workloads that require custom compute configurations beyond the Auto Mode defaults (e.g., GPU instances,
+  specific instance families).
+- [`iam-service-linked-roles`](/components/library/aws/iam-service-linked-roles/): Provisions
+  [IAM Service-Linked](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html) roles.
 - [`idp-roles`](/components/library/aws/eks/idp-roles): These identity provider roles specify several pre-determined
   permission levels for cluster users and come with bindings that make them easy to assign to Users and Groups. Use this
   component to define custom permission within EKS.
@@ -68,17 +75,38 @@ those implementations in follow up topics. For details, see the
 #### Network
 
 - [`cert-manager`](/components/library/aws/eks/cert-manager): A Kubernetes addon that provisions X.509 certificates.
-- [`alb-controller`](/components/library/aws/eks/alb-controller): A Kubernetes addon that, in the context of AWS,
-  provisions and manages ALBs and NLBs based on `Service` and `Ingress` annotations. This module is also provision a
-  default `IngressClass`.
-  - [`alb-controller-ingress-group`](/components/library/aws/eks/alb-controller-ingress-group): A Kubernetes Service
-    that creates an ALB for a specific `IngressGroup`. An `IngressGroup` is a feature of the `alb-controller` which
-    allows multiple Kubernetes Ingresses to share the same Application Load Balancer.
+- [`eks/ingress-class`](/components/library/aws/eks/alb-controller-ingress-class): Configures the default Kubernetes
+  `IngressClass` for ALB-based routing. With EKS Auto Mode, AWS manages the ALB controller natively — this component
+  only needs to define the ingress class and group configuration. It automatically detects whether Auto Mode is enabled
+  via the `eks/cluster` component state.
 - [`external-dns`](/components/library/aws/eks/external-dns): A Kubernetes addon that configures public DNS servers with
   information about exposed Kubernetes services to make them discoverable. This component is responsible for adding DNS
   records to your Route 53 Hosted Zones.
 - [`echo-server`](/components/library/aws/eks/echo-server): The echo server is a server that sends it back to the client
   a JSON representation of all the data the server received. We use this component is validate a cluster deployment.
+
+#### EKS Capabilities
+
+EKS Capabilities are AWS-managed cluster features that replace self-managed Helm chart deployments. Capabilities are
+configured via catalog mixins and deployed as part of the `eks/cluster` component.
+
+| Capability | Type | Description |
+|------------|------|-------------|
+| **Argo CD** | `ARGOCD` | Managed GitOps continuous deployment. Replaces self-managed Argo CD Helm chart. Integrates with AWS Identity Center for RBAC. |
+| **ACK** | `ACK` | AWS Controllers for Kubernetes. Manage AWS resources (RDS, S3, DynamoDB, etc.) directly via Kubernetes CRDs. |
+| **KRO** | `KRO` | Kube Resource Orchestrator. Provides resource composition and abstraction for Kubernetes. |
+
+Capabilities are assigned per stage using catalog mixins:
+
+| Stage | Mixin | Capabilities |
+|-------|-------|-------------|
+| `plat-dev` | `capabilities-all` | Argo CD + ACK + KRO |
+| `plat-staging` | `capabilities-argocd` | Argo CD only |
+| `plat-prod` | `capabilities-argocd` | Argo CD only |
+| `core-auto` | _(none)_ | No capabilities |
+
+The Argo CD capability uses AWS Identity Center (IDC) for RBAC, with group mappings resolved dynamically from the
+`aws-sso` component via `!terraform.state`. No manual ARN configuration is needed.
 
 #### Storage
 
@@ -95,3 +123,22 @@ those implementations in follow up topics. For details, see the
 - [`external-secrets-operator`](/components/library/aws/eks/external-secrets-operator/): This component (ESO) is used to
   create an external `SecretStore` configured to synchronize secrets from AWS SSM Parameter store as Kubernetes Secrets
   within the cluster.
+
+:::caution Migrating from Pre-Auto Mode Deployments
+
+If you have an existing deployment that uses the self-managed Karpenter controller, ALB controller, or ALB ingress
+group components, the following changes apply:
+
+| Old Component | Status | Replacement |
+|---------------|--------|-------------|
+| `eks/karpenter` (controller) | Removed | EKS Auto Mode manages node provisioning |
+| `eks/alb-controller` | Removed | EKS Auto Mode manages ELB |
+| `eks/alb-controller-ingress-group` | Renamed | [`eks/ingress-class`](/components/library/aws/eks/alb-controller-ingress-class) |
+| `eks/karpenter-node-pool` | Updated to v3 | Still required for additional node pools |
+
+For component upgrade details, see the UPGRADING.md in the
+[karpenter-node-pool](https://github.com/cloudposse-terraform-components/aws-eks-karpenter-node-pool) and
+[ingress-class](https://github.com/cloudposse-terraform-components/aws-eks-alb-controller-ingress-class) component
+repositories.
+
+:::

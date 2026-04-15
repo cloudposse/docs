@@ -20,6 +20,15 @@ Kubernetes Secrets within the cluster. Per the operator pattern, the `external-s
 
 ## How does the `alb-controller-ingress-group` determine the name of the ALB?
 
+:::caution Legacy
+
+This FAQ entry applies to deployments using the self-managed `alb-controller` and `alb-controller-ingress-group`
+components. For new deployments, [EKS Auto Mode](/layers/eks/foundational-platform/) manages load balancers
+automatically, and the [`eks/ingress-class`](/components/library/aws/eks/alb-controller-ingress-class) component
+replaces `alb-controller-ingress-group`.
+
+:::
+
 <Steps>
   1. First the component uses the [null-label](/modules/library/null/label) module to generate our intended name. We do this to meet the character length restrictions on ALB names. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L75-L83)
   1. Then we pass that output to the Kubernetes Ingress resource with an annotation intended to define the ALB's name. [ref](https://github.com/cloudposse/terraform-aws-components/blob/master/modules/eks/alb-controller-ingress-group/main.tf#L98)

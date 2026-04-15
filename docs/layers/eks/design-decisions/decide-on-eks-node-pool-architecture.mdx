@@ -55,6 +55,13 @@ We have a few ways that we can provision node pools.
    [https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool](https://github.com/cloudposse/terraform-aws-eks-spotinst-ocean-nodepool)
    ([Spot.io](http://Spot.io) managed node pools - most cost-effective)
 
+5. Use [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html) (Recommended for new deployments)
+
+   EKS Auto Mode delegates compute management to AWS. Node provisioning, scaling, and lifecycle are handled
+   automatically. This is the default for new Cloud Posse reference architecture deployments. Use
+   [`eks/karpenter-node-pool`](/components/library/aws/eks/karpenter-node-pool/) for additional node pools with custom
+   configurations (e.g., GPU instances) beyond the Auto Mode defaults.
+
 ## Fargate Node Limitations
 
 Currently, EKS Fargate has a lot of limitations
