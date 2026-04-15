@@ -6,7 +6,7 @@ sidebar_class_name: hidden
 import Intro from '@site/src/components/Intro';
 import KeyPoints from '@site/src/components/KeyPoints';
 
-Amazon EKS is a managed Kubernetes service that allows you to run Kubernetes in AWS cloud and on-premises data centers. AWS handles the availability and scalability of the Kubernetes control plane, which oversees tasks such as scheduling containers, managing application availability, and storing cluster data. While AWS manages control plane upgrades, users are responsible for the worker nodes and the workloads running on them, including operators, controllers, and applications. We use Karpenter for managing node pools and support spot instances to optimize costs. Be aware that you'll need to upgrade the cluster quarterly due to the significant pace of Kubernetes innovation. Although EKS has a steeper learning curve compared to ECS, it offers greater flexibility and control, making it ideal for organizations already utilizing Kubernetes.
+Amazon EKS is a managed Kubernetes service that allows you to run Kubernetes in AWS cloud and on-premises data centers. AWS handles the availability and scalability of the Kubernetes control plane, which oversees tasks such as scheduling containers, managing application availability, and storing cluster data. With [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html), AWS also manages compute (node provisioning), networking (load balancers), and storage (EBS CSI), significantly reducing operational overhead. We use Karpenter Node Pools for additional compute configurations and EKS Capabilities for managed Argo CD, ACK, and KRO. Be aware that you'll need to upgrade the cluster quarterly due to the significant pace of Kubernetes innovation. Although EKS has a steeper learning curve compared to ECS, it offers greater flexibility and control, making it ideal for organizations already utilizing Kubernetes.
 
 
 ## The Problem
@@ -23,15 +23,15 @@ resources. And finally, we need a place to storage application data.
 ## Our Solution
 
 Cloud Posse deploys EKS through a number of components. Each component has a specific responsibility and works in
-harmony with the rest. We first deploy a nodeless EKS cluster and create an AWS Auth config mapping. This `ConfigMap`
-connects our existing AWS Teams architecture to the cluster and allows us to assign Kubernetes roles to a given Team
-Role. Next we use Karpenter to manage nodes on the cluster. Karpenter automatically launches compute resources to handle
-cluster applications and provides fast and simple compute provisioning for Kubernetes clusters. We then deploy a set of
-controllers and operators for the cluster. These controllers will automatically connect the cluster to our network and
-DNS architecture by annotations and manage storage within the cluster. Simply adding the relevant annotation to a given
-resources triggers the creation and management of Load Balancers in AWS, adds routing to the relevant Route 53 Hosted
-Zone, provisions certificates, and more. These resources set the foundation for any application platform. From this
-foundation, your application will be fully secure, scalable, and resilient.
+harmony with the rest. We deploy an EKS cluster with
+[EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html) enabled, which delegates compute,
+networking, and storage management to AWS. Auto Mode automatically provisions nodes, manages load balancers, and handles
+core addon lifecycle. We configure [EKS Capabilities](/layers/eks/foundational-platform/) — such as managed Argo CD,
+ACK, and KRO — directly through the cluster component. We then deploy a set of operators for the cluster that connect
+it to our network and DNS architecture. Simply adding the relevant annotation to a given resource triggers the creation
+and management of Load Balancers in AWS, adds routing to the relevant Route 53 Hosted Zone, provisions certificates,
+and more. These resources set the foundation for any application platform. From this foundation, your application will
+be fully secure, scalable, and resilient.
 
 ## References
 

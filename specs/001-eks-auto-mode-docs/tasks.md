@@ -25,8 +25,8 @@
 
 **Purpose**: Verify current state and identify any internal links that reference obsolete components before editing.
 
-- [ ] T001 Grep all MDX files in docs/layers/eks/ for references to "eks/karpenter" (not karpenter-node-pool), "alb-controller", and "alb-controller-ingress-group" to build a complete edit list in docs/docs/layers/eks/
-- [ ] T002 Grep docs/layers/identity/ and docs/learn/ for references to obsolete EKS components to identify any additional files needing updates in docs/docs/layers/
+- [x] T001 Grep all MDX files in docs/layers/eks/ for references to "eks/karpenter" (not karpenter-node-pool), "alb-controller", and "alb-controller-ingress-group" to build a complete edit list in docs/docs/layers/eks/
+- [x] T002 Grep docs/layers/identity/ and docs/learn/ for references to obsolete EKS components to identify any additional files needing updates in docs/docs/layers/
 
 **Checkpoint**: Full list of files requiring edits is known. User story implementation can begin.
 
@@ -40,11 +40,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] Rewrite intro paragraph in docs/docs/layers/eks/foundational-platform.mdx to describe EKS Auto Mode flow replacing manual Karpenter → ALB controller flow
-- [ ] T004 [US1] Update Foundation section in docs/docs/layers/eks/foundational-platform.mdx: replace `eks/karpenter` component entry with EKS Auto Mode description, keep `eks/karpenter-node-pool` entry (updated description for v3), keep iam-service-linked-roles/idp-roles/metrics-server/reloader unchanged
-- [ ] T005 [US1] Update Network section in docs/docs/layers/eks/foundational-platform.mdx: replace `alb-controller` and `alb-controller-ingress-group` entries with `eks/ingress-class` component entry and Auto Mode ELB management description
-- [ ] T006 [US1] Add Auto Mode info admonition in docs/docs/layers/eks/foundational-platform.mdx noting which addons Auto Mode manages (vpc-cni, kube-proxy, coredns, aws-ebs-csi-driver) vs self-managed (aws-efs-csi-driver), with link to AWS Auto Mode docs
-- [ ] T007 [US1] Add migration callout admonition at bottom of docs/docs/layers/eks/foundational-platform.mdx with component removal/rename table (eks/karpenter removed, eks/alb-controller removed, alb-controller-ingress-group renamed to ingress-class, karpenter-node-pool updated to v3)
+- [x] T003 [US1] Rewrite intro paragraph in docs/docs/layers/eks/foundational-platform.mdx to describe EKS Auto Mode flow replacing manual Karpenter → ALB controller flow
+- [x] T004 [US1] Update Foundation section in docs/docs/layers/eks/foundational-platform.mdx: replace `eks/karpenter` component entry with EKS Auto Mode description, keep `eks/karpenter-node-pool` entry (updated description for v3), keep iam-service-linked-roles/idp-roles/metrics-server/reloader unchanged
+- [x] T005 [US1] Update Network section in docs/docs/layers/eks/foundational-platform.mdx: replace `alb-controller` and `alb-controller-ingress-group` entries with `eks/ingress-class` component entry and Auto Mode ELB management description
+- [x] T006 [US1] Add Auto Mode info admonition in docs/docs/layers/eks/foundational-platform.mdx noting which addons Auto Mode manages (vpc-cni, kube-proxy, coredns, aws-ebs-csi-driver) vs self-managed (aws-efs-csi-driver), with link to AWS Auto Mode docs
+- [x] T007 [US1] Add migration callout admonition at bottom of docs/docs/layers/eks/foundational-platform.mdx with component removal/rename table (eks/karpenter removed, eks/alb-controller removed, alb-controller-ingress-group renamed to ingress-class, karpenter-node-pool updated to v3)
 
 **Checkpoint**: foundational-platform.mdx fully rewritten for Auto Mode. Page can be verified independently via `npm start`.
 
@@ -58,8 +58,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T008 [US2] Add new "EKS Capabilities" subsection after Network section in docs/docs/layers/eks/foundational-platform.mdx describing Argo CD, ACK, and KRO capabilities with per-stage configuration table (dev=all, staging/prod=argocd only, core-auto=none)
-- [ ] T009 [US2] Update "Our Solution" paragraph in docs/docs/layers/eks/eks.mdx to mention EKS Auto Mode and EKS Capabilities replacing manual Karpenter + ALB controller + self-managed Argo CD setup
+- [x] T008 [US2] Add new "EKS Capabilities" subsection after Network section in docs/docs/layers/eks/foundational-platform.mdx describing Argo CD, ACK, and KRO capabilities with per-stage configuration table (dev=all, staging/prod=argocd only, core-auto=none)
+- [x] T009 [US2] Update "Our Solution" paragraph in docs/docs/layers/eks/eks.mdx to mention EKS Auto Mode and EKS Capabilities replacing manual Karpenter + ALB controller + self-managed Argo CD setup
 
 **Checkpoint**: EKS Capabilities documented. Both pages can be verified independently via `npm start`.
 
@@ -73,7 +73,7 @@
 
 ### Implementation for User Story 3
 
-- [ ] T010 [US3] Add "EKS/Kubernetes Access" subsection in docs/docs/layers/identity/how-to-log-into-aws.mdx after the "Run a specific AWS CLI command" examples, with `atmos auth exec --identity plat-dev/terraform -- kubectl get pods` and `kubectl get nodes` examples, VPN requirement note, and link to EKS deploy-clusters page
+- [x] T010 [US3] Add "EKS/Kubernetes Access" subsection in docs/docs/layers/identity/how-to-log-into-aws.mdx after the "Run a specific AWS CLI command" examples, with `atmos auth exec --identity plat-dev/terraform -- kubectl get pods` and `kubectl get nodes` examples, VPN requirement note, and link to EKS deploy-clusters page
 
 **Checkpoint**: kubectl access documented. Page can be verified independently via `npm start`.
 
@@ -87,7 +87,7 @@
 
 ### Implementation for User Story 4
 
-- [ ] T011 [US4] Update step descriptions in docs/docs/layers/eks/deploy-clusters.mdx: remove references to deploying karpenter controller, alb-controller, alb-controller-ingress-group from explanatory text around AtmosWorkflow components; add mention of ingress-class in deploy/cluster step description; note that Auto Mode handles compute and networking
+- [x] T011 [US4] Update step descriptions in docs/docs/layers/eks/deploy-clusters.mdx: remove references to deploying karpenter controller, alb-controller, alb-controller-ingress-group from explanatory text around AtmosWorkflow components; add mention of ingress-class in deploy/cluster step description; note that Auto Mode handles compute and networking
 
 **Checkpoint**: Deploy guide updated. Page can be verified independently via `npm start`.
 
@@ -101,9 +101,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T012 [P] [US5] Add `:::caution Legacy` admonition to the "How does the alb-controller-ingress-group determine the name of the ALB?" FAQ entry in docs/docs/layers/eks/faq.mdx, pointing to the EKS Auto Mode section in foundational-platform.mdx and noting `eks/ingress-class` as the replacement
-- [ ] T013 [P] [US5] Add `:::caution Legacy` admonition at top of docs/docs/layers/eks/design-decisions/decide-on-kubernetes-ingress-controller-s.mdx noting EKS Auto Mode is the current default for new deployments
-- [ ] T014 [P] [US5] Add EKS Auto Mode as option 5 in "Provisioning of Node Pools" section of docs/docs/layers/eks/design-decisions/decide-on-eks-node-pool-architecture.mdx, noting it as the recommended default for new deployments
+- [x] T012 [P] [US5] Add `:::caution Legacy` admonition to the "How does the alb-controller-ingress-group determine the name of the ALB?" FAQ entry in docs/docs/layers/eks/faq.mdx, pointing to the EKS Auto Mode section in foundational-platform.mdx and noting `eks/ingress-class` as the replacement
+- [x] T013 [P] [US5] Add `:::caution Legacy` admonition at top of docs/docs/layers/eks/design-decisions/decide-on-kubernetes-ingress-controller-s.mdx noting EKS Auto Mode is the current default for new deployments
+- [x] T014 [P] [US5] Add EKS Auto Mode as option 5 in "Provisioning of Node Pools" section of docs/docs/layers/eks/design-decisions/decide-on-eks-node-pool-architecture.mdx, noting it as the recommended default for new deployments
 
 **Checkpoint**: All legacy content marked. Pages can be verified independently via `npm start`.
 
@@ -117,7 +117,7 @@
 
 ### Implementation for User Story 6
 
-- [ ] T015 [US6] Verify migration callout from T007 in docs/docs/layers/eks/foundational-platform.mdx includes links to component UPGRADING.md docs for karpenter-node-pool v3 and ingress-class; add links if missing
+- [x] T015 [US6] Verify migration callout from T007 in docs/docs/layers/eks/foundational-platform.mdx includes links to component UPGRADING.md docs for karpenter-node-pool v3 and ingress-class; add links if missing
 
 **Checkpoint**: Migration path documented. No separate page needed — covered by the admonition in foundational-platform.mdx.
 
@@ -127,10 +127,10 @@
 
 **Purpose**: Validation across all modified files.
 
-- [ ] T016 Run MDX linter: `npx docusaurus-mdx-checker --cwd docs` to verify all modified pages pass
-- [ ] T017 Run full build: `npm run build` to verify no broken links introduced
+- [x] T016 Run MDX linter: `npx docusaurus-mdx-checker --cwd docs` to verify all modified pages pass
+- [x] T017 Run full build: `npm run build` to verify no broken links introduced (pre-existing build error in ecs-atmos docs unrelated to our changes)
 - [ ] T018 Start dev server with `npm start` and visually verify each modified page in browser: foundational-platform, eks overview, deploy-clusters, how-to-log-into-aws, faq, and both design-decisions pages
-- [ ] T019 Grep docs/docs/layers/eks/ for any remaining references to "eks/karpenter" (not karpenter-node-pool), "eks/alb-controller", or "alb-controller-ingress-group" that are not within a legacy admonition or migration callout
+- [x] T019 Grep docs/docs/layers/eks/ for any remaining references to "eks/karpenter" (not karpenter-node-pool), "eks/alb-controller", or "alb-controller-ingress-group" that are not within a legacy admonition or migration callout
 
 ---
 

@@ -10,19 +10,38 @@ tags:
 import Intro from "@site/src/components/Intro";
 import KeyPoints from "@site/src/components/KeyPoints";
 
+## Recommendation
+
+With [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html), AWS natively manages the
+load balancer controller as part of the cluster. There is no need to deploy a separate ingress controller — Auto Mode
+handles ALB and NLB provisioning automatically based on `Ingress` and `Service` annotations.
+
+The [`eks/ingress-class`](/components/library/aws/eks/alb-controller-ingress-class) component configures the default
+Kubernetes `IngressClass` for ALB-based routing. It automatically detects whether Auto Mode is enabled via the
+`eks/cluster` component state and adjusts its behavior accordingly.
+
 ## Considerations
 
-Kubernetes supports any number of ingress controllers deployed multiple times. The choice of Ingress controller will
-determine which AWS features we can natively support (e.g. WAF requires an ALB).
+Kubernetes supports any number of ingress controllers deployed multiple times. With EKS Auto Mode, the AWS load
+balancer controller is built-in and requires no manual deployment or lifecycle management.
 
-Our recommendation is to use the `aws-loadbalancer-controller` (aka `aws-alb-ingress-controller` v2) with ACM
-certificates provisioned by terraform.
+Key benefits of the Auto Mode approach:
 
-:::caution TLS terminates at the ALB. It’s then _optionally_ unencrypted if the downstream services support it, such as
-with self-signed certificates and a TLS sidecar like Envoy or Nginx. Without this, traffic is in clear-text between the
-ALB and the downstream service or pod.
+- **No Helm chart to manage** — the controller is provisioned and upgraded by AWS as part of the cluster
+- **Native ALB/NLB support** — ALBs and NLBs are provisioned based on standard Kubernetes `Ingress` and `Service`
+  annotations, including WAF integration
+- **ACM certificates** — TLS certificates from AWS Certificate Manager are supported natively via annotations
+- **Simplified operations** — no controller pods to monitor, scale, or troubleshoot
+
+:::caution TLS terminates at the ALB. It's then _optionally_ re-encrypted if the downstream services support it, such
+as with self-signed certificates and a TLS sidecar like Envoy or Nginx. Without this, traffic is in clear-text between
+the ALB and the downstream service or pod.
 
 :::
 
-Historically, we’ve recommended `ingress-nginx` (formerly `nginx-ingress`), but prefer to use the AWS load balancer
-controller due to it’s native support by AWS.
+## Legacy Approach
+
+Prior to EKS Auto Mode, the reference architecture deployed the `aws-loadbalancer-controller` (aka
+`aws-alb-ingress-controller` v2) as a self-managed Helm chart via the `eks/alb-controller` component, with
+`eks/alb-controller-ingress-group` to create shared ALBs. These components have been removed from the scaffold in
+favor of Auto Mode. See the [migration notes](/layers/eks/foundational-platform/) for details.

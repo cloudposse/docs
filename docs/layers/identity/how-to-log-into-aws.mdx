@@ -137,6 +137,24 @@ atmos auth exec --identity plat-dev/ReadOnlyAccess -- aws sts get-caller-identit
 atmos auth exec --identity plat-prod/AdministratorAccess -- aws s3 ls
 ```
 
+**Access EKS clusters with kubectl:**
+
+```bash
+# List pods in the dev EKS cluster
+atmos auth exec --identity plat-dev/terraform -- kubectl get pods -A
+
+# Check node status
+atmos auth exec --identity plat-dev/terraform -- kubectl get nodes
+
+# View cluster info for staging
+atmos auth exec --identity plat-staging/terraform -- kubectl cluster-info
+```
+
+:::note
+EKS cluster access requires a VPN connection to the target account. See the
+[EKS deployment guide](/layers/eks/deploy-clusters/) for details.
+:::
+
 **Start an interactive shell with a specific identity:**
 
 ```bash

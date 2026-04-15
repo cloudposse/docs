@@ -27,6 +27,7 @@ import TaskList from '@site/src/components/TaskList';
   - [Understand the differences between Vanity Domains and Service Discovery Domains](/resources/legacy/learning-resources/#the-difference-between-vanity-domains-and-service-discovery-domains)
   - Assumes our standard [Network Architecture](/layers/network/)
   - Requires `dns-primary` & `dns-delegated` are already deployed.
+  - EKS cluster deployed with [EKS Auto Mode](/layers/eks/foundational-platform/) and [`eks/ingress-class`](/components/library/aws/eks/alb-controller-ingress-class) component
 </TaskList>
 
 ## Context
@@ -43,6 +44,14 @@ We also should've deployed applications to your EKS cluster and have an ALB for 
 Now we want to set up a vanity subdomain for `dev-acme.com` that will point to the ALB used for service discovery. This
 saves us money by not requiring a new ALB for each vanity domain.
 
+:::info EKS Auto Mode
+
+With [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html), AWS manages the ALB controller
+natively. Use `ingressClassName: alb` in your Ingress spec instead of the `kubernetes.io/ingress.class` annotation.
+The standard `alb.ingress.kubernetes.io/*` annotations are fully supported.
+
+:::
+
 ## Implementation
 
 This is fairly simple to implement. All we need to do is set up our Kubernetes ingresses and ensure ACM doesn't have
@@ -54,7 +63,7 @@ duplicate certs for domains.
     ## <StepNumber/> Setup Ingresses
 
     Ingresses for your applications can use several different `.spec.rules` to provide access to the application via many
-    different URLs.
+    different URLs. With EKS Auto Mode, the ALB controller is managed by AWS and supports all standard ALB annotations.
 
     #### Example
 
@@ -67,17 +76,16 @@ duplicate certs for domains.
     metadata:
       annotations:
         alb.ingress.kubernetes.io/backend-protocol: HTTP
-        alb.ingress.kubernetes.io/group.name: alb-controller-ingress-group
+        alb.ingress.kubernetes.io/group.name: ingress-group
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS":443}]'
         alb.ingress.kubernetes.io/scheme: internet-facing
         alb.ingress.kubernetes.io/ssl-redirect: "443"
         alb.ingress.kubernetes.io/target-type: ip
         external-dns.alpha.kubernetes.io/hostname: my-app-api.dev.plat.acme-svc.com
-        kubernetes.io/ingress.class: alb
-        outputs.platform.cloudposse.com/webapp-url: https://my-app-api.dev.plat.acme-svc.com
       name: my-app-api
       namespace: dev
     spec:
+      ingressClassName: alb
       rules:
         # new Vanity Domain
         - host: api.dev-acme.com
@@ -88,8 +96,8 @@ duplicate certs for domains.
                     name: my-app-api
                     port:
                       number: 8081
-                path: /api/*
-                pathType: ImplementationSpecific
+                path: /api
+                pathType: Prefix
         # Existing Service discovery domain
         - host: my-app-api.dev.plat.acme-svc.com
           http:
@@ -99,9 +107,26 @@ duplicate certs for domains.
                     name: my-app-api
                     port:
                       number: 8081
-                path: /*
-                pathType: ImplementationSpecific
+                path: /
+                pathType: Prefix
     ```
+
+    **Key annotations:**
+
+    | Annotation | Purpose |
+    |-----------|---------|
+    | `alb.ingress.kubernetes.io/scheme` | `internet-facing` for public ALBs, `internal` for private |
+    | `alb.ingress.kubernetes.io/target-type` | `ip` routes traffic directly to pod IPs (required for Auto Mode) |
+    | `alb.ingress.kubernetes.io/group.name` | Groups multiple Ingresses to share a single ALB |
+    | `alb.ingress.kubernetes.io/listen-ports` | Configure HTTP/HTTPS listeners |
+    | `alb.ingress.kubernetes.io/ssl-redirect` | Redirect HTTP to HTTPS on the specified port |
+    | `alb.ingress.kubernetes.io/backend-protocol` | Protocol for communicating with pods (`HTTP` or `HTTPS`) |
+    | `external-dns.alpha.kubernetes.io/hostname` | Tells `external-dns` to create DNS records for this host |
+
+    :::tip
+    Use `spec.ingressClassName: alb` instead of the deprecated `kubernetes.io/ingress.class` annotation.
+    The `eks/ingress-class` component sets up the `alb` IngressClass automatically.
+    :::
 
     </TabItem>
 
@@ -198,8 +223,7 @@ duplicate certs for domains.
         cert-manager.io/cluster-issuer: {{ .Values.ingress.nginx.tls_certificate_cluster_issuer }}
           {{- end }}
         {{- else if eq (printf "%v" .Values.ingress.alb.enabled) "true" }}
-        kubernetes.io/ingress.class: {{ .Values.ingress.alb.class }}
-        alb.ingress.kubernetes.io/group.name: {{ .Values.default_alb_ingress_group | default "alb-controller-ingress-group" }}
+        alb.ingress.kubernetes.io/group.name: {{ .Values.ingress.alb.group_name | default "ingress-group" }}
         alb.ingress.kubernetes.io/scheme: internet-facing
           {{- if .Values.ingress.alb.access_logs.enabled }}
         alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket={{.Values.ingress.alb.access_logs.s3_bucket_name}},access_logs.s3.prefix={{.Values.ingress.alb.access_logs.s3_bucket_prefix}}
@@ -227,6 +251,9 @@ duplicate certs for domains.
       labels:
         {{- include "this.labels" . | nindent 4 }}
     spec:
+      {{- if eq (printf "%v" .Values.ingress.alb.enabled) "true" }}
+      ingressClassName: alb
+      {{- end }}
       {{- if $nginxTlsEnabled }}
       tls: # < placing a host in the TLS config will indicate a certificate should be created
         - hosts:
@@ -286,13 +313,8 @@ duplicate certs for domains.
         tls_certificate_cluster_issuer: "letsencrypt-prod"
       alb:
         enabled: true
-        # annotation values
-        ## kubernetes.io/ingress.class:
-        class: "alb"
-        ## alb.ingress.kubernetes.io/load-balancer-name:
-        ### load_balancer_name: "k8s-common"
         ## alb.ingress.kubernetes.io/group.name:
-        ### group_name: "common"
+        group_name: "ingress-group"
         ssl_redirect:
           enabled: true
           ## alb.ingress.kubernetes.io/ssl-redirect:
@@ -326,10 +348,10 @@ duplicate certs for domains.
   </Step>
 </Steps>
 
-## How it works:
+## How it works
 
-With a single valid ACM cert for your domains, the `alb-controller` is able to register your domain to the ALB. The ALB
-is able to do this by recognizing the valid certificate in ACM. This is why we need to ensure we have a valid
+With a single valid ACM cert for your domains, the ALB controller (managed by EKS Auto Mode) registers your domain to
+the ALB. The ALB recognizes the valid certificate in ACM automatically. This is why we need to ensure we have a valid
 certificate for our domains.
 
 You can validate your cert is picked up by the ALB by checking the ALB's target group. You should see the certificate
