@@ -159,3 +159,10 @@ See `.claude/skills/` for specialized documentation tasks:
 - `docs-conventions` - Writing standards, React components, MDX patterns
 - `docs-build` - Building, rendering library docs, deployment
 - `docs-styles` - CSS styles, color themes, mermaid diagram colors
+
+## Active Technologies
+- MDX (Markdown + JSX), Docusaurus v2 + Docusaurus, React components from `src/components/` (001-eks-auto-mode-docs)
+- N/A (static site) (001-eks-auto-mode-docs)
+
+## Recent Changes
+- 001-eks-auto-mode-docs: Added MDX (Markdown + JSX), Docusaurus v2 + Docusaurus, React components from `src/components/`

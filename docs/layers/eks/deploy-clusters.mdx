@@ -44,7 +44,8 @@ All deployment steps below assume that the environment has been successfully set
   <Step>
     ## <StepNumber/> Vendor Components
 
-    EKS adds many components required to set up a cluster. Generally, all these components are contained in the EKS
+    EKS adds many components required to set up a cluster. With EKS Auto Mode, AWS manages compute, networking, and
+    storage automatically, reducing the number of components to deploy. Components are contained in the EKS
     components and catalog folders, under `components/terraform/eks` and `catalog/stacks/eks` respectively.
 
     Vendor these components with the included Atmos Workflows.
@@ -69,8 +70,8 @@ All deployment steps below assume that the environment has been successfully set
   <Step>
     ## <StepNumber/> Deploy IAM Service Linked Roles
 
-    In order for Karpenter to reserve Spot Instances, the cluster needs to have a Service-Linked Role. Deploy these to all
-    cluster accounts with `iam-service-linked-roles`
+    The cluster needs IAM Service-Linked Roles for various AWS services. Deploy these to all cluster accounts with
+    `iam-service-linked-roles`
 
     <AtmosWorkflow workflow="deploy/iam-service-linked-roles" fileName="quickstart/platform/eks" />
   </Step>
@@ -78,8 +79,8 @@ All deployment steps below assume that the environment has been successfully set
   <Step>
     ## <StepNumber/> Deploy Initial Platform Dev Cluster
 
-    First deploy the cluster and AWS EFS. Since Karpenter will be used in the following steps, the initial cluster is
-    deployed without Nodes.
+    First deploy the cluster and AWS EFS. With EKS Auto Mode enabled, the cluster automatically provisions nodes as
+    needed. The cluster deployment also includes the `eks/ingress-class` component for ALB-based routing.
 
     <Note title="Tip">
     Change `use1` to your cluster's environment!
@@ -91,9 +92,10 @@ All deployment steps below assume that the environment has been successfully set
   <Step>
     ## <StepNumber/> Deploy Platform Dev Cluster Resources
 
-    Once the cluster is up and running, continue with the EKS `plat` resources deployment. These need to be deployed in the
-    given order by the include Atmos Workflow. For additional details on each component, see the included `README.md` for
-    the individual component.
+    Once the cluster is up and running, continue with the EKS `plat` resources deployment. With EKS Auto Mode,
+    compute and networking are managed by AWS automatically. The resources workflow deploys additional node pools,
+    DNS, certificate management, and other shared addons. For additional details on each component, see the included
+    `README.md` for the individual component.
 
     Run the Atmos Workflow to deploy all required `plat` components.
 
@@ -133,4 +135,5 @@ All deployment steps below assume that the environment has been successfully set
 # Related Topics
 
 - [eks/cluster](/components/library/aws/eks/cluster/)
-- [Karpenter Documentation](https://karpenter.sh/)
+- [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html)
+- [EKS Foundational Platform](/layers/eks/foundational-platform/)
