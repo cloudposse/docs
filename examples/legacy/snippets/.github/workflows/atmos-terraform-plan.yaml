@@ -2,7 +2,7 @@ name: 👽 Atmos Terraform Plan
 run-name: 👽 Atmos Terraform Plan
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - synchronize
@@ -18,7 +18,8 @@ jobs:
   atmos-affected:
     if: ${{ !contains( github.event.pull_request.labels.*.name, 'no-plan') }}
     name: Determine Affected Stacks
-    runs-on: 
+    environment: plan
+    runs-on:
       - runs-on=${{ github.run_id }}
       - runner=terraform
       - extras=s3-cache
@@ -30,7 +31,7 @@ jobs:
           atmos-version: ${{ vars.ATMOS_VERSION }}
           atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
           base-ref: ${{ github.event.pull_request.base.sha }}
-          head-ref: ${{ github.event.pull_request.head.sha }}
+          head-ref: ${{ github.sha }}
     outputs:
       stacks: ${{ steps.affected.outputs.matrix }}
       has-affected-stacks: ${{ steps.affected.outputs.has-affected-stacks }}
@@ -48,6 +49,5 @@ jobs:
       stacks: ${{ matrix.items }}
       atmos-version: ${{ vars.ATMOS_VERSION }}
       atmos-config-path: ${{ vars.ATMOS_CONFIG_PATH }}
-      sha: ${{ github.event.pull_request.head.sha }}
+      sha: ${{ github.sha }}
     secrets: inherit
-
