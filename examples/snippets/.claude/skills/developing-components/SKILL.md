@@ -32,7 +32,7 @@ Many use cases can be solved by configuring existing generic components via cata
 
 Browse https://docs.cloudposse.com/components/library/ for pre-built components. Common ones:
 
-- `eks/cluster`, `eks/alb-controller` - Kubernetes
+- `eks/cluster` - Kubernetes
 - `aurora-postgres`, `rds` - Databases
 - `elasticache-redis` - Caching
 - `ecs`, `ecs-service` - Container workloads

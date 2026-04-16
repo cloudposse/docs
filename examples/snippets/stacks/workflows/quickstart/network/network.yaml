@@ -109,10 +109,9 @@ workflows:
     steps:
       - type: shell
         command: |
-          cd components/terraform/dns-primary
           function output-dns(){
-            terraform workspace select $1 > /dev/null
-            terraform output -json zones
+            atmos terraform init dns-primary -s $1 &> /dev/null
+            atmos terraform output --skip-init dns-primary -s $1 -- -json -no-color  | jq '.zones.value'
           }
           for s in core-gbl-network plat-gbl-{dev,staging,prod,sandbox} ; do
             output-dns $s
@@ -132,7 +131,9 @@ workflows:
     steps:
       - command: terraform deploy ec2-client-vpn -s core-use1-network
       - type: shell
-        command: cd components/terraform/ec2-client-vpn && terraform output client_configuration | sed '1d;$d;$d' > ../../../rootfs/etc/aws-config/acme-core.ovpn
+        command: |-
+          mkdir -p ./rootfs/etc/aws-config/
+          atmos terraform output --skip-init ec2-client-vpn -s core-use1-network client_configuration | sed '1d;$d;$d' > ./rootfs/etc/aws-config/acme-core.ovpn      
 
   deploy/bastion:
     description: |
