@@ -1,0 +1,13 @@
+# Upstream changes from _extends are only recognized when modifications are made to this file in the default branch.
+_extends: .github
+repository:
+  name: docs
+  description: Terraform Reference Architecture for AWS, Datadog and GitHub Actions
+  homepage: docs.cloudposse.com
+  topics: kubernetes, markdown, aws, terraform, helm, k8s, helm-charts, kubectl, developer-portal, developer-documentation, cloud-architecture, helmfile
+
+environments:
+  - name: generate
+    deployment_branch_policy:
+      custom_branches:
+        - master
