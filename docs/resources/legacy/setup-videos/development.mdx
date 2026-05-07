@@ -1,0 +1,38 @@
+---
+title: "Development Videos"
+sidebar_label: "Development"
+description: "Overview videos for component development"
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import ReactPlayer from 'react-player';
+
+:::warning Legacy Content
+These videos are preserved for reference but may not reflect current implementation details.
+See the [Component Development](/learn/component-development) documentation for up-to-date information.
+:::
+
+<Intro>
+This video covers how to develop custom Terraform components using Cloud Posse's
+conventions and integrate them with the reference architecture.
+</Intro>
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Component Development
+
+    Learn how to build custom Terraform components that integrate with the Cloud Posse
+    reference architecture. This covers component structure, using Cloud Posse modules,
+    integrating with Atmos stacks, and following conventions for consistent infrastructure.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/component-development.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/learn/component-development">View Current Documentation</PrimaryCTA>
+  </Step>
+</Steps>

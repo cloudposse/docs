@@ -1,0 +1,87 @@
+---
+title: "Foundation Setup Videos"
+sidebar_label: "Foundation Setup"
+description: "Overview videos for setting up your AWS foundation"
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import ReactPlayer from 'react-player';
+
+:::warning Legacy Content
+These videos are preserved for reference but may not reflect current implementation details.
+See the [Foundation Layer](/layers/foundation) for up-to-date documentation.
+:::
+
+<Intro>
+These videos cover the foundational elements of the Cloud Posse Reference Architecture,
+including project setup, account management, identity configuration, and network architecture.
+</Intro>
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Introduction to Toolchain
+
+    Learn about the essential tools Cloud Posse uses to manage infrastructure as code.
+    This guide covers the Geodesic Toolbox Container for standardizing development environments,
+    the Atmos framework for implementing conventions and workflows, Terraform for managing
+    cloud infrastructure, and GitHub Actions for CI/CD automation.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/introduction-to-toolchain.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/project">View Current Documentation</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Account Management
+
+    Review how Cloud Posse designs and manages AWS Account architectures using Atmos and Terraform,
+    aligning with the AWS Well-Architected Framework. This covers provisioning the Terraform state
+    backend, organizing accounts into Organizational Units (OUs), applying Service Control Policies
+    (SCPs), and configuring account-level settings.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/account-management.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/accounts">View Current Documentation</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Identity and Authentication
+
+    Learn how Cloud Posse sets up fine-grained access control for an entire organization using
+    Permission Sets, IAM roles, and AWS IAM Identity Center (SSO). This addresses the challenges
+    of managing access across multiple AWS accounts with a solution that ensures precise control,
+    easy role switching, and compatibility with different identity providers.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/identity-and-authentication.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/identity">View Current Documentation</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Network and DNS
+
+    Understand Cloud Posse's approach to designing robust and scalable Network and DNS architectures
+    on AWS, with a focus on symmetry, account-level isolation, security, and reusability. Covers
+    account isolation, connecting multiple accounts using Transit Gateways, deploying AWS Client VPN
+    for remote network access, and differentiating between DNS service discovery and branded vanity domains.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/network-and-dns.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/network">View Current Documentation</PrimaryCTA>
+  </Step>
+</Steps>

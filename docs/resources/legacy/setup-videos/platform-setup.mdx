@@ -1,0 +1,83 @@
+---
+title: "Platform Setup Videos"
+sidebar_label: "Platform Setup"
+description: "Overview videos for setting up your AWS platform"
+---
+import Intro from '@site/src/components/Intro';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import StepNumber from '@site/src/components/StepNumber';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import ReactPlayer from 'react-player';
+
+:::warning Legacy Content
+These videos are preserved for reference but may not reflect current implementation details.
+See the [Platform Layer](/layers/platform) for up-to-date documentation.
+:::
+
+<Intro>
+These videos cover the platform elements of the Cloud Posse Reference Architecture,
+including software delivery, GitOps automation, container orchestration, and monitoring.
+</Intro>
+
+<Steps>
+  <Step>
+    ## <StepNumber/> Software Delivery / Release Engineering
+
+    Learn about Cloud Posse's approach to CI/CD and release engineering. This covers the
+    philosophy behind treating pipelines as software, using GitHub Actions for automation,
+    and implementing consistent deployment patterns across environments.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/release-engineering.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/software-delivery">View Current Documentation</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> GitOps with Terraform
+
+    Understand how to implement GitOps for Terraform using GitHub Actions. This covers
+    plan/apply workflows, drift detection, and the integration with Atmos for managing
+    infrastructure deployments through pull requests.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/gitops.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/gitops">View Current Documentation</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> ECS Platform
+
+    Learn about Amazon ECS (Elastic Container Service) as a container orchestration solution.
+    This covers the benefits of ECS over Kubernetes for simpler deployments, cluster configuration,
+    service deployment, and integration with the reference architecture.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/ecs.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/ecs">View Current Documentation</PrimaryCTA>
+  </Step>
+
+  <Step>
+    ## <StepNumber/> Monitoring and SRE
+
+    Understand Cloud Posse's approach to monitoring and observability. This covers integrating
+    with Datadog, setting up monitors, implementing SLIs/SLOs, and building a monitoring-as-code
+    approach using Terraform.
+
+    <figure>
+      <ReactPlayer controls url="https://docs.cloudposse.com/assets/refarch/handoffs/monitoring.mp4" />
+      <figcaption>AI generated voice</figcaption>
+    </figure>
+
+    <PrimaryCTA to="/layers/monitoring">View Current Documentation</PrimaryCTA>
+  </Step>
+</Steps>
