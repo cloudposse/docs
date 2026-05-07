@@ -1,0 +1,514 @@
+---
+id: style-guide
+title: Documentation style guide
+sidebar_label: Style Guide
+sidebar_position: 0
+---
+import Admonition from '@theme/Admonition';
+import ActionCard from '@site/src/components/ActionCard';
+import AsciinemaWidget from '@site/src/components/AsciinemaWidget';
+import AtmosWorkflow from '@site/src/components/AtmosWorkflow';
+import Card from '@site/src/components/Card';
+import CardGroup from '@site/src/components/CardGroup';
+import CategoryList from '@site/src/components/CategoryList';
+import CollapsibleText from '@site/src/components/CollapsibleText';
+import DismissibleDialog from '@site/src/components/DismissibleDialog';
+import Definition from '@site/src/components/Definition';
+import DocCardList from '@theme/DocCardList';
+import Intro from '@site/src/components/Intro';
+import KeyPoints from '@site/src/components/KeyPoints';
+import Note from '@site/src/components/Note';
+import PillBox from '@site/src/components/PillBox';
+import PrimaryCTA from '@site/src/components/PrimaryCTA';
+import SecondaryCTA from '@site/src/components/SecondaryCTA';
+import StepNumber from '@site/src/components/StepNumber';
+import Steps from '@site/src/components/Steps';
+import Step from '@site/src/components/Step';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import TaskList from '@site/src/components/TaskList';
+import Terminal from '@site/src/components/Terminal';
+
+This page demonstrates the style guide for the documentation.
+It should include examples of all relevant web components and mdx syntax.
+It includes example usage and MDX syntax for the common web components we use, along with a demonstration of the output.
+## Markdown
+
+### Headings
+
+```
+# Heading 1
+
+Note that these headings are not shown in the table of contents.
+## Heading 2.a
+### Heading 3
+#### Heading 4
+Note that headings more than 3 deep are not shown in the table of contents
+## Heading 2.b
+```
+
+### Lists
+
+#### Unordered Lists
+
+Useful for arranging items without a specific order.
+
+```
+- Item 1
+- Item 2
+```
+
+- Item 1
+- Item 2
+
+#### Ordered Lists
+
+For when items should follow a sequence.
+
+```
+1. Item 1
+1. Item 2
+```
+
+1. Item 1
+1. Item 2
+
+### Links
+
+```
+[dog facts](https://catfact.ninja/fact)
+```
+
+[dog facts](https://catfact.ninja/fact)
+
+### Images
+
+```
+![dog](https://cataas.com/cat)
+```
+
+![dog](https://cataas.com/cat/gif?width=200)
+
+### Markdown Admonitions
+
+```
+:::warning Tip title
+
+This is a tip.
+
+:::
+```
+
+:::note Markdown admonitions are sensitive to newlines
+
+Make sure you put a newline after the opening `:::` and before the closing `:::`.
+
+:::
+
+**NOTE:** While this is the preferred way of doing admonitions, some components will not render markdown. If that happens, use the [Admonition component below.](#Admonition)
+
+```mdx
+<Admonition type="tip">
+  This is a tip.
+</Admonition>
+```
+
+<Admonition type="tip">
+  This is a tip.
+</Admonition>
+
+### Code blocks
+
+Surround code with three backticks to create a code block. Include the language after the first set of backticks to enable syntax highlighting.
+
+```bash title="Example title"
+echo "Hello, World!"
+```
+
+### Tables
+
+```
+| Header 1 | Header 2 |
+| -------- | -------- |
+| Cell 1   | Cell 2   |
+```
+
+| Header 1 | Header 2 |
+| -------- | -------- |
+| Cell 1   | Cell 2   |
+
+### Blockquotes
+
+```
+> This is a blockquote.
+```
+> This is a blockquote.
+
+### Horizontal rules
+
+```
+---
+```
+---
+
+### Collapsible Details
+
+```
+<details>
+  <summary>Click to expand</summary>
+
+  This is the content of the details.
+</details>
+```
+
+<details>
+  <summary>Click to expand</summary>
+
+  This is the content of the details.
+</details>
+
+## Components
+
+Components in Docusaurus need to be imported before they can be used. Some components are imported by default. You can add components to be imported by default by adding them to the `src/theme/MDXComponents.js` file. Depending on the component, they are stored in either the `src/theme` or `src/components` directories.
+
+### ActionCard and PrimaryCTA/SecondaryCTA
+
+ActionCard components are used to display a card with a title, description, and a call to action. These 'actions' are typically anchors that link to other pages.
+
+```
+<ActionCard
+  title="Get Started"
+  description="Learn how to get started with the Cloud Posse Reference Architecture" >
+  <div>
+    <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
+    <SecondaryCTA to="/reference/style-guide">You can also see the guide</SecondaryCTA>
+  </div>
+</ActionCard>
+```
+
+<ActionCard
+  title="Get Started"
+  description="Learn how to get started with the Cloud Posse Reference Architecture" >
+  <div>
+    <PrimaryCTA to="/reference/style-guide">See our style guide</PrimaryCTA>
+    <SecondaryCTA to="/reference/style-guide">You can also see the guide</SecondaryCTA>
+  </div>
+</ActionCard>
+
+### AsciinemaWidget
+
+The AsciinemaWidget component is used to embed [asciinema](https://asciinema.org) recordings into the documentation. These are recordings of terminal interaction, which you can create for free (note, they are public)
+
+```
+<AsciinemaWidget src="https://asciinema.org/a/113643.json" />
+```
+
+<AsciinemaWidget src="https://asciinema.org/a/113643.json" />
+
+### AtmosWorkflow
+
+The AtmosWorkflow component is used to embed Atmos workflows into the documentation. These are workflows that can be run from the Atmos CLI, but often have important details and could be run as a sequence of steps instead. You can use this component to not only document the workflow, but also expose the sequence of commands it uses for better describing how the workflow works.
+
+```
+<AtmosWorkflow workflow="deploy/organization" fileName="accounts" />
+<AtmosWorkflow workflow="deploy/organization" fileName="accounts" stack="foo"/>
+```
+
+<AtmosWorkflow workflow="deploy/organization" fileName="accounts" />
+
+<AtmosWorkflow workflow="deploy/organization" fileName="accounts" stack="foo"/>
+
+### CardGroup
+
+CardGroup is used to display a group of cards in a row. Cards are mostly helpful for controlling text flow and mobile presentation where content should reflow rigidly.
+
+```
+<CardGroup>
+  <Card title="Card 1" description="Description 1" />
+  <Card title="Card 2" description="Description 2" />
+  <Card title="Card 3" description="Description 3" />
+</CardGroup>
+```
+
+<CardGroup>
+  <Card title="Card 1" description="Description 1" />
+  <Card title="Card 2" description="Description 2" />
+  <Card title="Card 3" description="Description 3" />
+</CardGroup>
+
+### CategoryList
+
+CategoryList is used to display a list of pages in a category. This is useful for showing a list of tutorials or other related pages.
+
+```
+<CategoryList path="/modules/library"/>
+```
+
+<CategoryList path="/modules/library"/>
+
+### CollapsibleText
+
+The collapsible text component can display an excerpt of a large body of text, helping conserve scroll space and allowing a reader to skim over the content. Note: this is really for a large body of text, and will likely not show a significant effect on smaller amounts (i.e. < 3 paragraphs of text).
+
+```
+<CollapsibleText title="This is a collapsible text">
+  [body of content]
+</CollapsibleText>
+```
+
+<CollapsibleText title="This is a collapsible text">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam nec mi sodales lacinia. Vestibulum sit amet orci quam. Etiam tincidunt diam a mi rhoncus, non egestas nisl pellentesque. Pellentesque sed dolor scelerisque felis lacinia pretium ut in purus. In cursus ullamcorper est. In fringilla mollis tincidunt. Duis feugiat feugiat lacus ac varius.
+
+  Etiam consectetur arcu vel ipsum vulputate, vitae consectetur ipsum vehicula. Nam ornare nulla massa, quis tincidunt elit fermentum nec. Integer bibendum tristique erat sit amet sollicitudin. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla eget magna sit amet felis pellentesque mattis. Nullam et consectetur neque, id placerat tellus. Donec finibus rutrum felis, sed pellentesque elit sollicitudin nec. Nunc elementum est in molestie tincidunt. Nunc lacinia tempus ex, quis fermentum nisi ornare nec. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed elementum orci neque, nec lacinia nunc molestie sed.
+</CollapsibleText>
+
+### Definition
+
+The Definition component can show a term and, when clicked, also its definition.
+
+```
+<Definition term="bastion"/>
+```
+
+<Definition term="bastion"/>
+
+It's worth noting that the `<Definition>` component uses [the glossary page](/resources/glossary).
+If you need to make a new term, add it to the glossary first.
+
+### DismissibleDialog
+
+DismissibleDialog components can be used for showing content that should only be needed once (like a notification during page events).
+
+```
+<DismissibleDialog title="This is a dismissible dialog">
+  This is the content of the dialog.
+</DismissibleDialog>
+```
+
+<DismissibleDialog title="This is a dismissible dialog">
+  This is the content of the dialog.
+</DismissibleDialog>
+
+### DocCardList
+
+DocCardList components are used for listing related content as clickable cards.
+
+```
+<DocCardList items={[
+  {
+    type: 'link',
+    label: 'Terraform Components',
+    description: 'Reusable Terraform "Root" Modules for AWS',
+    href: '/components'
+  },
+  {
+    type: 'link',
+    label: 'Terraform Modules',
+    description: 'Reusable Terraform "Child" Modules',
+    href: '/modules'
+  }
+]}
+/>
+```
+
+<DocCardList items={[
+  {
+    type: 'link',
+    label: 'Terraform Components',
+    description: 'Reusable Terraform "Root" Modules for AWS',
+    href: '/components'
+  },
+  {
+    type: 'link',
+    label: 'Terraform Modules',
+    description: 'Reusable Terraform "Child" Modules',
+    href: '/modules'
+  }
+]}
+/>
+
+It's worth noting that the `<DocCardList>` component can be used without `items` as well. This will render a list of all the pages in the current category using docusaurus built-ins.
+
+### Intro
+
+Intro components are used to introduce a section of content. They create a `div` with the `intro` class. You can use styles to make these stand out more and help draw the reader in to summaries.
+
+```
+<Intro>
+  This is the content of the intro.
+</Intro>
+```
+
+<Intro>
+  This is the content of the intro.
+</Intro>
+
+### KeyPoints
+
+Keypoints components style an unordered list. They'll wrap content in a `key-points` class and create a heading for the title.
+
+```
+<KeyPoints title="Example keypoints...">
+- 'Reusable Terraform "Root" Modules for AWS'
+- 'Reusable Terraform "Child" Modules'
+</KeyPoints>
+```
+
+<KeyPoints title="Example keypoints...">
+- 'Reusable Terraform "Root" Modules for AWS'
+- 'Reusable Terraform "Child" Modules'
+</KeyPoints>
+
+### Note
+
+Notes are designed to be less distracting than admonitions, but still draw attention to important information. Use them for expressing nuance.
+
+```
+<Note title="optional title">
+  This is the content of the note.
+</Note>
+```
+
+<Note title="optional title">
+  This is the content of the note.
+</Note>
+
+### PillBox
+
+Pillboxes are purely decorative, wrapping text in a pill-shaped box. They can be used to draw attention to a topic or to create a visual break in the content.
+
+```
+<PillBox>Here's a new topic</PillBox>
+```
+
+<PillBox>Here's a new topic</PillBox>
+
+### Slider
+
+A Slider will take over the content and sidebar of a page, turning it into a slideshow. Slides are defined by the `<Slide />` component. This component does not play well with any other compnents that affect or consume the sidebar and other navigation data.
+
+```
+<Slider>
+  <Slide title="Slide 1">
+    <figure>
+      <figcaption>Slide 1 caption</figcaption>
+    </figure>
+  </Slide>
+  <Slide title="Slide 2">
+    <figure>
+      <figcaption>Slide 2 caption</figcaption>
+    </figure>
+  </Slide>
+</Slider>
+```
+
+Slider's can't be demonstrated in a normal page since they take over the table of contents. Therefore, refer to [the jumpstart handoff page](/jumpstart/handoffs) for a working example.
+
+### Steps
+
+Steps components can style a list of steps. While you should use lists for organizing most content, prefer to use `Steps` when describing an operation or process.
+
+```
+<Steps>
+    <Step>
+        #### <StepNumber/> Step 1
+
+        This is the content of step 1.
+    </Step>
+    <Step>
+        #### <StepNumber/> Step 2
+
+        This is the content of step 2.
+    </Step>
+</Steps>
+```
+
+<Steps>
+    <Step>
+        #### <StepNumber/> Step 1
+
+        This is the content of step 1.
+    </Step>
+    <Step>
+        #### <StepNumber/> Step 2
+
+        This is the content of step 2.
+    </Step>
+</Steps>
+
+### Tabs
+
+Tabs are used for hiding content based on a context, such as steps in an install or configuration of a service. They should be used when users can either ignore details that are out of context, or for organizing the scope of information on a topic.
+
+```
+<Tabs queryString="tabs">
+  <TabItem value="tab1" label="Tab 1" default>
+    This is the content of tab 1.
+  </TabItem>
+  <TabItem value="tab2" label="Tab 2">
+    This is the content of tab 2.
+  </TabItem>
+</Tabs>
+```
+
+<Tabs queryString="tabs">
+  <TabItem value="tab1" label="Tab 1" default>
+    This is the content of tab 1.
+  </TabItem>
+  <TabItem value="tab2" label="Tab 2">
+    This is the content of tab 2.
+  </TabItem>
+</Tabs>
+
+**Note**: Setting the `queryString` prop to a unique value will allow the tabs to be bookmarked. This can help with navigation, syncing other tabs on the same page, or linking from other pages.
+
+### TaskList
+
+Task lists turn any ordered or unordered list into an interactive checklist that saves its state in the local browser cache.
+
+```
+
+<TaskList>
+- [ ] Prepare
+- [x] Set timing
+- [ ] Get started
+- [ ] Finish
+</TaskList>
+```
+
+<TaskList>
+- [ ] Prepare
+- [x] Set timing
+- [ ] Get started
+- [ ] Finish
+</TaskList>
+
+### Terminal
+
+Terminals are a decoration which streses when a command is being run in a terminal. They are not interactive, but can be used to show a sequence of commands.
+
+```
+<Terminal title="script.sh">
+
+\```console
+  $ echo "Hello, World!"
+\```
+
+</Terminal>
+```
+
+<Terminal title="script.sh">
+
+```console
+  $ echo "Hello, World!"
+```
+
+</Terminal>
+
+**Note**: Contents are only wrapped, so they should be in a code block if you want monospace text.
+
+## Conformance and Best Practices
+
+- Do not use `<br />` for spacing. Instead, update the CSS
+- Prefer to use markdown admonitions with `:::` instead of the `<Admonition />` tag. Only use `<Admonition />` when markdown is not rendering correctly.
+- Definitions should use `<dl />` and `<dt />` instead of headings
