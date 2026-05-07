@@ -6,6 +6,10 @@
 #
 # Documentation: https://docs.cloudposse.com/layers/identity/
 #
+# For Google Workspace IdP setup, see AWS documentation:
+#   - Enable IAM Identity Center: https://docs.aws.amazon.com/singlesignon/latest/userguide/gs-gwp.html#gs-gwp-step1
+#   - Configure Google Workspace: https://docs.aws.amazon.com/singlesignon/latest/userguide/gs-gwp.html#gs-gwp-step3
+#
 # Usage:
 #   atmos workflow all -f quickstart/foundation/identity
 #   atmos workflow deploy/sso -f quickstart/foundation/identity
