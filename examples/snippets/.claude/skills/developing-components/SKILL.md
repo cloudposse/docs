@@ -35,7 +35,7 @@ Browse https://docs.cloudposse.com/components/library/ for pre-built components.
 - `eks/cluster` - Kubernetes
 - `aurora-postgres`, `rds` - Databases
 - `elasticache-redis` - Caching
-- `ecs`, `ecs-service` - Container workloads
+- `ecs` - Container workloads
 - `s3-bucket`, `dynamodb`, `sqs-queue` - Storage and messaging
 - `cloudwatch-logs`, `sns-topic` - Monitoring and notifications
 

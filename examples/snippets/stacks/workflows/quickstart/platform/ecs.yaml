@@ -13,7 +13,6 @@ workflows:
       This workflow vendors all EKS related components to the latest provided version
     steps:
       - command: vendor pull --component ecs
-      - command: vendor pull --component ecs-service
 
   deploy/ecs-acm:
     description: |
