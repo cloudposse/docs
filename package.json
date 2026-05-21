@@ -51,7 +51,7 @@
     "docusaurus-plugin-sentry": "^2.0.0",
     "html-loader": "^5.0.0",
     "iconify-icon": "^2.1.0",
-    "js-cookie": "^3.0.5",
+    "js-cookie": "^3.0.7",
     "js-yaml": "^4.1.1",
     "marked": "^13.0.2",
     "node-fetch": "^3.3.2",
