@@ -78,7 +78,7 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.9.2",
     "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.23",
     "tailwindcss": "^4.0.14"
   },
   "browserslist": {
