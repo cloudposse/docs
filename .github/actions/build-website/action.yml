@@ -27,14 +27,14 @@ runs:
   steps:
     # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
       with:
         aws-region: ${{ inputs.aws_region }}
         role-to-assume: ${{ inputs.iam_role_arn }}
         role-session-name: ${{ inputs.iam_role_session_name }}
 
     - name: Setup Node
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
       with:
         node-version-file: ".nvmrc"
         cache: 'npm'
@@ -51,7 +51,7 @@ runs:
 
     - name: Cache rendered content
       if: ${{ !contains(github.event.*.labels.*.name, 'no-cache') }}
-      uses: actions/cache@v4
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: |
           .build-harness
