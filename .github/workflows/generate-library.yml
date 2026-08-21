@@ -79,6 +79,8 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: cloudposse
+          permission-contents: read
+          permission-metadata: read
 
       - name: Render Documentation for Terraform Components
         env:
@@ -136,7 +138,9 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: cloudposse          
+          owner: cloudposse
+          permission-contents: read
+          permission-metadata: read          
 
       - name: Render Documentation for Terraform Modules
         env:
@@ -194,7 +198,9 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: cloudposse          
+          owner: cloudposse
+          permission-contents: read
+          permission-metadata: read          
 
       - name: Render Documentation for GitHub Actions
         env:
