@@ -25,7 +25,9 @@ to look uniform. This is also inline with the [HashiCorp naming conventions](htt
 ### Use positive variable names to avoid double negatives
 
 All `variable` inputs that enable/disable a setting should be formatted `...._enabled` (e.g. `encryption_enabled`). It is acceptable for
-default values to be either `false` or `true`.
+default values to be either `false` or `true`. Set `nullable = false` on these inputs.
+
+Do not use `enable_*`, `create_*` or `use_*`. Exception: when the input passes straight to a provider argument, keep the provider name, for example `multi_az` or `force_destroy`.
 
 ### Use description field for all inputs
 
@@ -224,6 +226,63 @@ The exception to this is if the secret is optional and will be generated for the
 
 Use `sensitive = true` to mark all secret variables as sensitive. This ensures that the value is not printed to the console.
 
+### Use plural names for collections
+
+Name `list`, `set` and `map` inputs in the plural, for example `subnet_ids`, `policy_arns`, `allowed_cidr_blocks`.
+Name scalar inputs in the singular, for example `vpc_id`, `kms_key_arn`.
+
+Exception: an optional input that uses the list pattern (see below) keeps the singular name, for example `igw_id`.
+
+### Do not add the type to the name
+
+Do not use suffixes such as `_map`, `_list` or `_object`. The `type` already states the type.
+Use `policy_arns`, not `policy_arns_map`.
+
+### Use the provider argument to choose between `_arn` and `_id`
+
+When an input maps to a provider argument, use the name of that argument. If the argument takes an ARN, name the input `*_arn`. If it takes an ID, name the input `*_id`.
+For IAM policies, use `*_policy` for a JSON string and `*_policy_documents` for a list of policy documents.
+
+### Prefix related inputs with the feature name
+
+Group inputs for one feature with the same prefix, for example `logging_enabled`, `logging_bucket_name`, `logging_prefix`.
+
+### Use the standard security group input names
+
+Modules that create a security group use these inputs:
+
+- `security_group_enabled`
+- `security_group_name`
+- `security_group_description`
+- `associated_security_group_ids`
+- `allowed_security_group_ids`
+- `allow_all_egress`
+- `additional_security_group_rules`
+
+See the [terraform-aws-security-group wiki](https://github.com/cloudposse/terraform-aws-security-group/wiki/Naming-Conventions,-Deprecating-Inputs,-Optional-Inputs) for details.
+
+### Deprecate inputs. Do not rename or remove them
+
+Renaming or removing an input is a breaking change. To replace an input:
+
+1. Move the old variable to `variables-deprecated.tf`.
+2. Set its `default` to `null`.
+3. Start its description with ``DEPRECATED: Use `<new_name>` instead.``
+4. Add the new variable to `variables.tf`.
+5. Use the old value only when the caller sets it:
+
+```hcl
+locals {
+  bucket_name = var.old_bucket_name != null ? var.old_bucket_name : var.bucket_name
+}
+```
+
+Remove deprecated variables only in a `major` release.
+
+### Write short descriptions in sentence case
+
+Start a one-line `description` with a capital letter. Do not end it with a period. Use `<<-EOT` for descriptions that need more than one line.
+
 ## Outputs
 
 ### Use description field for all outputs
@@ -266,6 +325,12 @@ the secret outside of Terraform. This is a limitation of Terraform that [has
 been discussed](https://github.com/hashicorp/terraform/issues/516)
 practically since Terraform's inception, so a near-term solution is unlikely.
 :::
+
+### Prefix outputs with the resource name
+
+Name outputs `<noun>_<attribute>`, for example `bucket_arn`, `eks_cluster_id`, `security_group_ids`. Do not output a bare `id`, `arn` or `name`.
+Use the plural for outputs that return a list.
+In components, prefix outputs with the component name, for example `rds_*` or `eks_cluster_*`.
 
 ### Use symmetrical names
 
@@ -469,6 +534,86 @@ invoke other modules without colliding on resource names.
 To enforce consistency, we require that all modules use the [`terraform-null-label`](https://github.com/cloudposse/terraform-null-label) module.
 With this module, users have the ability to change the way resource names are generated such as by changing the order of parameters or the delimiter.
 While the module is opinionated on the parameters, it's proved invaluable as a mechanism for generating consistent resource names.
+
+## Resources and Data Sources
+
+### Name the only resource of a type `default`
+
+When a module has one resource of a type, name it `default`, for example `aws_s3_bucket.default`.
+When a module has more than one resource of a type, give each a descriptive name, for example `aws_subnet.public` and `aws_subnet.private`.
+Do not use `this`. The name `this` is reserved for the `module "this"` label in `context.tf`.
+
+### Name account and region data sources `current`
+
+Use `current` for `aws_partition`, `aws_region` and `aws_caller_identity`, for example `data.aws_partition.current`.
+
+### Name child label modules `<purpose>_label`
+
+When a module needs more than the default label, add a `cloudposse/label/null` module named for its purpose, for example `module "bucket_label"`, and pass `context = module.this.context`.
+
+### Gate every resource on `enabled`
+
+Use the `enabled` input from `context.tf`:
+
+```hcl
+locals {
+  enabled         = module.this.enabled
+  logging_enabled = local.enabled && var.logging_enabled
+}
+
+resource "aws_s3_bucket" "default" {
+  count = local.enabled ? 1 : 0
+  # ...
+}
+```
+
+Gate data sources the same way. On Cloud Posse child modules, pass `context = module.this.context` (or `enabled = local.enabled`) instead of adding `count`.
+
+### Tag every taggable resource
+
+Set `tags = module.this.tags`, or the `tags` output of a child label module.
+
+## Files
+
+### Use the standard file layout
+
+Every module has these files:
+
+- `main.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, `context.tf`
+- `README.yaml` (the source of the generated `README.md`)
+- `examples/complete/` with `fixtures.us-east-2.tfvars`
+- `test/src/examples_complete_test.go`
+
+Move a large feature into its own file. Use hyphens in file names, for example `security-group.tf`, `remote-state.tf`, `variables-deprecated.tf`.
+
+## OpenTofu and Terraform Compatibility
+
+### Support both OpenTofu and Terraform
+
+Modules and components must work with both OpenTofu and Terraform. Use only the language features that both tools support.
+
+Do not use OpenTofu-only features:
+
+- The `enabled` meta-argument
+- `.tofu` and `.tofutest.hcl` files
+- `for_each` on `provider` blocks
+- Variables or locals in module `source`, module `version` or `backend` blocks
+- State encryption blocks
+
+Do not use Terraform-only features:
+
+- `cloud {}` blocks
+- Stacks (`.tfcomponent.hcl`, `.tfdeploy.hcl`)
+
+### Check both tools before you use a new language feature
+
+Before you use a language feature that is newer than Terraform 1.5, make sure that OpenTofu supports it. Set `required_version` to the lowest version that both tools support. For example, ephemeral resources and write-only attributes need version `1.11` or later in both tools.
+
+`required_version` is checked against the version of the tool that runs. Do not set it higher than the latest OpenTofu release. Use the three-part form, for example `>= 1.3.0`.
+
+### Use providers that are in both registries
+
+Use providers that are published to both the OpenTofu and the Terraform registries. The `hashicorp/*` providers are in both.
 
 ## Module Design
 
