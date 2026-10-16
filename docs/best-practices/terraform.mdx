@@ -208,6 +208,28 @@ There are a few ways to mitigate this problem besides using separate inputs:
   check for that value in the validation code.
 
 
+### Choose between an object and scalar inputs
+
+Use an object when its fields only make sense together, for example the settings of one feature, timeouts, or scaling limits. Use one object per feature, with `optional()` fields, `default = {}` and `nullable = false`.
+
+Keep scalar inputs for:
+
+- Required inputs.
+- Settings that do not depend on each other.
+- Flags that decide `count` or `for_each`. These must be simple values that are known at plan time.
+
+When a setting can grow more modes later, use a string or an object, not a boolean. For example, prefer `on_failure = "rollback"` to `rollback_on_failure = true`.
+
+Keep objects shallow: one level, two at most. Terraform ignores misspelled fields without a warning, and deep objects make that harder to see.
+
+For an input that passes straight to a provider block, use the provider's field names. Do not rename them in a wrapper object.
+
+Changing scalar inputs into an object is a breaking change. Do it in a `major` release and keep the old inputs as deprecated fallbacks.
+
+### Key collections by a stable name
+
+Use `map(object({...}))` keyed by a name the caller chooses, not `list(object({...}))`, for collections of items. With `for_each` over a map, adding or removing one item does not change the address of the others. Atmos also deep-merges maps across stacks but replaces lists.
+
 ### Use custom validators to enforce custom constraints
 
 Use the `validation` block to enforce custom constraints on input variables.
@@ -684,6 +706,18 @@ Use providers that are published to both the OpenTofu and the Terraform registri
 We believe that modules should do one thing very well. But in order to do that, it requires being opinionated on the design.
 Simply wrapping terraform resources for the purposes of modularizing code is not that helpful. Implementing a specific use-case
 of those resource is more helpful.
+
+### Let Atmos create many instances, not the module
+
+A module manages one instance of the thing it is named for. When a caller needs many buckets, clusters or VPCs, they create many component instances in Atmos, or use `for_each` on the module. Do not add a map of top-level resources to a module.
+
+A module can use a map for child resources that belong to one parent and have no life of their own, for example security group rules, lifecycle rules, policy statements, the records of one zone, or the indexes of one table.
+
+Exception: catalog modules where each item is data, not infrastructure, for example Datadog monitors in `terraform-datadog-platform`. Use this only when one module instance per item would be absurd.
+
+### Keep the HCL simple
+
+If you need nested `for` expressions, `flatten()`, merged layers of defaults, or nested `dynamic` blocks to read one input, the interface is too complex. Make the input simpler, or move the variation into Atmos stack configuration.
 
 ### Composable Modules
 
