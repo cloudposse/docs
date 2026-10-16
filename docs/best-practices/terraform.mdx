@@ -226,7 +226,7 @@ Keep objects shallow: one level, two at most. Terraform ignores misspelled field
 
 For an input that passes straight to a provider block, use the provider's field names. Do not rename them in a wrapper object.
 
-Changing scalar inputs into an object is a breaking change. Do it in a `major` release and keep the old inputs as deprecated fallbacks.
+When you move existing scalar inputs into an object, keep the old inputs as deprecated fallbacks (see [Deprecate inputs](#deprecate-inputs-do-not-rename-or-remove-them)). Removing them is a breaking change and needs a `major` release.
 
 ### Key collections by a stable name
 
@@ -742,7 +742,7 @@ The reason to pin to an explicit version rather than a range like `>= 0.25.
 
 :::info
 
-Prior to Terraform v0.13, our convention was to use the pure git url:
+Prior to Terraform version 0.13, our convention was to use the pure git url:
 
 ```hcl
 source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
