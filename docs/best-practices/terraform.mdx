@@ -37,6 +37,28 @@ All `variable` inputs need a `description` field. When the field is provided by 
 
 Modules should be as turnkey as possible. The `default` value should ensure the most secure configuration (E.g. with encryption enabled).
 
+### Make new inputs and resources secure by default
+
+When you add an input or a resource, its default must be the secure setting:
+
+- Encryption at rest is on. Use the AWS-managed key unless the caller gives a customer managed key.
+- Public access is blocked, for example S3 Block Public Access on and `publicly_accessible = false`.
+- TLS 1.2 or later is required.
+- IMDSv2 is required (`http_tokens = "required"`).
+- Security groups do not allow `0.0.0.0/0` ingress.
+- Stateful resources have deletion protection, final snapshots and backups on.
+- IAM policies use least privilege. Do not add `*` actions or resources without a reason.
+
+Do not turn on paid features by default without a reason, for example customer managed KMS keys, extra trails, NAT gateways or Enhanced Monitoring. Free protections stay on.
+
+The `examples/complete` fixtures use the secure defaults. Do not override them with permissive values.
+
+### Never make a default less secure
+
+Insecure behavior must be an explicit opt-in, and the input name must say what it does, for example `public_access_enabled = true`.
+
+Making an existing default more secure changes the plan for existing callers, so it is a `major` change for modules at `1.0` or higher. Add a migration note that tells callers how to keep the old behavior. Where possible, adopt all pending secure defaults of a module in one `major` release.
+
 ### Use `nullable = false` where appropriate
 
 When passing an argument to a resource, passing `null` means to use the default
