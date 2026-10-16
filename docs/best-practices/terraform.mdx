@@ -145,16 +145,16 @@ attempting to maintain a type definition would not only be overly complex,
 it would slow the adoption of future additions to the interface, and so
 `type = any` is appropriate.
 
-### Prefer a single object over multiple simple inputs for related configuration
+### Use a single object for settings that have no meaning alone
 
 When reviewing Cloud Posse modules as examples, you may notice that they
 often use a large number of input variables of simple types. This is because
 in the early development of Terraform, there was no good way to define
 complex objects with defaults. However, now that Terraform supports complex
 objects with field-level defaults, we recommend using a single object input
-variable with such defaults to group related configuration, taking into consideration
+variable with such defaults for small groups of settings that have no meaning alone, such as timeouts, taking into consideration
 the trade-offs listed in the [above caution](#use-objects-with-optional-fields-for-complex-inputs).
-This makes the interface easier to understand and use.
+This makes the interface easier to understand and use. For other settings, prefer scalar inputs (see [below](#choose-between-an-object-and-scalar-inputs)).
 
 For example, prefer:
 
@@ -210,9 +210,11 @@ There are a few ways to mitigate this problem besides using separate inputs:
 
 ### Choose between an object and scalar inputs
 
-Use an object when its fields only make sense together, for example the settings of one feature, timeouts, or scaling limits. Use one object per feature, with `optional()` fields, `default = {}` and `nullable = false`.
+Prefer scalar inputs. Each scalar gets its own row in the generated README, its own `validation` with a clear error message, and a simple override in Atmos stacks. Object fields are hidden inside one type definition and one description.
 
-Keep scalar inputs for:
+Use an object only when its fields have no meaning alone, for example timeouts or scaling limits. Use one small object per feature, with `optional()` fields, `default = {}` and `nullable = false`.
+
+Always keep scalar inputs for:
 
 - Required inputs.
 - Settings that do not depend on each other.
