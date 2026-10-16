@@ -25,7 +25,9 @@ to look uniform. This is also inline with the [HashiCorp naming conventions](htt
 ### Use positive variable names to avoid double negatives
 
 All `variable` inputs that enable/disable a setting should be formatted `...._enabled` (e.g. `encryption_enabled`). It is acceptable for
-default values to be either `false` or `true`.
+default values to be either `false` or `true`. Set `nullable = false` on these inputs.
+
+Do not use `enable_*`, `create_*` or `use_*`. Exception: when the input passes straight to a provider argument, keep the provider name, for example `multi_az` or `force_destroy`.
 
 ### Use description field for all inputs
 
@@ -34,6 +36,28 @@ All `variable` inputs need a `description` field. When the field is provided by 
 ### Use sane defaults where applicable
 
 Modules should be as turnkey as possible. The `default` value should ensure the most secure configuration (E.g. with encryption enabled).
+
+### Make new inputs and resources secure by default
+
+When you add an input or a resource, its default must be the secure setting:
+
+- Encryption at rest is on. Use the AWS-managed key unless the caller gives a customer managed key.
+- Public access is blocked, for example S3 Block Public Access on and `publicly_accessible = false`.
+- TLS 1.2 or later is required.
+- IMDSv2 is required (`http_tokens = "required"`).
+- Security groups do not allow `0.0.0.0/0` ingress.
+- Stateful resources have deletion protection, final snapshots and backups on.
+- IAM policies use least privilege. Do not add `*` actions or resources without a reason.
+
+Do not turn on paid features by default without a reason, for example customer managed KMS keys, extra trails, NAT gateways or Enhanced Monitoring. Free protections stay on.
+
+The `examples/complete` fixtures use the secure defaults. Do not override them with permissive values.
+
+### Never make a default less secure
+
+Insecure behavior must be an explicit opt-in, and the input name must say what it does, for example `public_access_enabled = true`.
+
+Making an existing default more secure changes the plan for existing callers, so it is a `major` change for modules at `1.0` or higher. Add a migration note that tells callers how to keep the old behavior. Where possible, adopt all pending secure defaults of a module in one `major` release.
 
 ### Use `nullable = false` where appropriate
 
@@ -121,16 +145,16 @@ attempting to maintain a type definition would not only be overly complex,
 it would slow the adoption of future additions to the interface, and so
 `type = any` is appropriate.
 
-### Prefer a single object over multiple simple inputs for related configuration
+### Use a single object for settings that have no meaning alone
 
 When reviewing Cloud Posse modules as examples, you may notice that they
 often use a large number of input variables of simple types. This is because
 in the early development of Terraform, there was no good way to define
 complex objects with defaults. However, now that Terraform supports complex
 objects with field-level defaults, we recommend using a single object input
-variable with such defaults to group related configuration, taking into consideration
+variable with such defaults for small groups of settings that have no meaning alone, such as timeouts, taking into consideration
 the trade-offs listed in the [above caution](#use-objects-with-optional-fields-for-complex-inputs).
-This makes the interface easier to understand and use.
+This makes the interface easier to understand and use. For other settings, prefer scalar inputs (see [below](#choose-between-an-object-and-scalar-inputs)).
 
 For example, prefer:
 
@@ -184,6 +208,30 @@ There are a few ways to mitigate this problem besides using separate inputs:
   check for that value in the validation code.
 
 
+### Choose between an object and scalar inputs
+
+Prefer scalar inputs. Each scalar gets its own row in the generated README, its own `validation` with a clear error message, and a simple override in Atmos stacks. Object fields are hidden inside one type definition and one description.
+
+Use an object only when its fields have no meaning alone, for example timeouts or scaling limits. Use one small object per feature, with `optional()` fields, `default = {}` and `nullable = false`.
+
+Always keep scalar inputs for:
+
+- Required inputs.
+- Settings that do not depend on each other.
+- Flags that decide `count` or `for_each`. These must be simple values that are known at plan time.
+
+When a setting can grow more modes later, use a string or an object, not a boolean. For example, prefer `on_failure = "rollback"` to `rollback_on_failure = true`.
+
+Keep objects shallow: one level, two at most. Terraform ignores misspelled fields without a warning, and deep objects make that harder to see.
+
+For an input that passes straight to a provider block, use the provider's field names. Do not rename them in a wrapper object.
+
+When you move existing scalar inputs into an object, keep the old inputs as deprecated fallbacks (see [Deprecate inputs](#deprecate-inputs-do-not-rename-or-remove-them)). Removing them is a breaking change and needs a `major` release.
+
+### Key collections by a stable name
+
+Use `map(object({...}))` keyed by a name the caller chooses, not `list(object({...}))`, for collections of items. With `for_each` over a map, adding or removing one item does not change the address of the others. Atmos also deep-merges maps across stacks but replaces lists.
+
 ### Use custom validators to enforce custom constraints
 
 Use the `validation` block to enforce custom constraints on input variables.
@@ -223,6 +271,86 @@ All `variable` inputs for secrets must never define a `default` value. This ensu
 The exception to this is if the secret is optional and will be generated for the user automatically when left `null` or `""` (empty).
 
 Use `sensitive = true` to mark all secret variables as sensitive. This ensures that the value is not printed to the console.
+
+### Use plural names for collections
+
+Name `list`, `set` and `map` inputs in the plural, for example `subnet_ids`, `policy_arns`, `allowed_cidr_blocks`.
+Name scalar inputs in the singular, for example `vpc_id`, `kms_key_arn`.
+
+Exception: an optional input that uses the list pattern (see below) keeps the singular name, for example `igw_id`.
+
+### Do not add the type to the name
+
+Do not use suffixes such as `_map`, `_list` or `_object`. The `type` already states the type.
+Use `policy_arns`, not `policy_arns_map`.
+
+### Use the provider argument to choose between `_arn` and `_id`
+
+When an input maps to a provider argument, use the name of that argument. If the argument takes an ARN, name the input `*_arn`. If it takes an ID, name the input `*_id`.
+For IAM policies, use `*_policy` for a JSON string and `*_policy_documents` for a list of policy documents.
+
+### Prefix related inputs with the feature name
+
+Group inputs for one feature with the same prefix, for example `logging_enabled`, `logging_bucket_name`, `logging_prefix`.
+
+### Use the standard security group input names
+
+Modules that create a security group use these inputs:
+
+- `security_group_enabled`
+- `security_group_name`
+- `security_group_description`
+- `associated_security_group_ids`
+- `allowed_security_group_ids`
+- `allow_all_egress`
+- `additional_security_group_rules`
+
+See the [terraform-aws-security-group wiki](https://github.com/cloudposse/terraform-aws-security-group/wiki/Naming-Conventions,-Deprecating-Inputs,-Optional-Inputs) for details.
+
+### Deprecate inputs. Do not rename or remove them
+
+Renaming or removing an input is a breaking change. To replace an input:
+
+1. Move the old variable to `variables-deprecated.tf`.
+2. Set its `default` to `null`.
+3. Start its description with ``DEPRECATED: Use `<new_name>` instead.``
+4. Add the new variable to `variables.tf`.
+5. Use the old value only when the caller sets it:
+
+```hcl
+locals {
+  bucket_name = var.old_bucket_name != null ? var.old_bucket_name : var.bucket_name
+}
+```
+
+Remove deprecated variables only in a `major` release.
+
+### Write descriptions that tell the caller how to use the input
+
+Every `description` must tell the caller:
+
+- What the input controls. Do not repeat the variable name.
+- The unit, for example seconds, days or GiB, when the value is a number.
+- The accepted values, when the set is small.
+- What `null`, `""` or `[]` means, when it does something different from the default.
+- Which other inputs it needs or conflicts with.
+
+For a boolean, start with ``If `true`, ...``. For an input that passes straight to a provider argument, use the provider's wording and link to the provider docs. For an `object`, describe each field.
+
+Start a one-line description with a capital letter, and do not end it with a period. Use `<<-EOT` for a description of more than one line. Put names of inputs, values and resources in backticks.
+
+```hcl
+variable "logs_retention_in_days" {
+  type        = number
+  description = "Number of days to keep log events. Set to `0` to keep them forever"
+  default     = 30
+  nullable    = false
+}
+```
+
+### Declare variable attributes in a fixed order
+
+Declare the attributes of a `variable` block in this order: `type`, `description`, `default`, `nullable`, `sensitive`, `validation`. Always set `type`. Do not use `type = any` except in the cases listed above.
 
 ## Outputs
 
@@ -266,6 +394,29 @@ the secret outside of Terraform. This is a limitation of Terraform that [has
 been discussed](https://github.com/hashicorp/terraform/issues/516)
 practically since Terraform's inception, so a near-term solution is unlikely.
 :::
+
+### Prefix outputs with the resource name
+
+Name outputs `<noun>_<attribute>`, for example `bucket_arn`, `eks_cluster_id`, `security_group_ids`. Do not output a bare `id`, `arn` or `name`.
+Use the plural for outputs that return a list.
+In components, prefix outputs with the component name, for example `rds_*` or `eks_cluster_*`.
+
+### Write output descriptions that say when the value is empty
+
+Every output `description` says what the value is and what it returns when the resource is not created, for example `null` when `enabled` is `false`. Declare the attributes in this order: `value`, `description`, `sensitive`. Set `sensitive = true` on any output that can expose a credential or a token.
+
+### Use `one()` to output attributes of conditional resources
+
+When a resource uses `count = local.enabled ? 1 : 0`, use `one()` to read its attributes. `one()` returns `null` when the module is disabled.
+
+```hcl
+output "bucket_arn" {
+  value       = one(aws_s3_bucket.default[*].arn)
+  description = "Bucket ARN"
+}
+```
+
+Do not use `join("", ...)`. It returns `""` instead of `null`, and it works only for strings.
 
 ### Use symmetrical names
 
@@ -470,6 +621,86 @@ To enforce consistency, we require that all modules use the [`terraform-null-lab
 With this module, users have the ability to change the way resource names are generated such as by changing the order of parameters or the delimiter.
 While the module is opinionated on the parameters, it's proved invaluable as a mechanism for generating consistent resource names.
 
+## Resources and Data Sources
+
+### Name the only resource of a type `default`
+
+When a module has one resource of a type, name it `default`, for example `aws_s3_bucket.default`.
+When a module has more than one resource of a type, give each a descriptive name, for example `aws_subnet.public` and `aws_subnet.private`.
+Do not use `this`. The name `this` is reserved for the `module "this"` label in `context.tf`.
+
+### Name account and region data sources `current`
+
+Use `current` for `aws_partition`, `aws_region` and `aws_caller_identity`, for example `data.aws_partition.current`.
+
+### Name child label modules `<purpose>_label`
+
+When a module needs more than the default label, add a `cloudposse/label/null` module named for its purpose, for example `module "bucket_label"`, and pass `context = module.this.context`.
+
+### Gate every resource on `enabled`
+
+Use the `enabled` input from `context.tf`:
+
+```hcl
+locals {
+  enabled         = module.this.enabled
+  logging_enabled = local.enabled && var.logging_enabled
+}
+
+resource "aws_s3_bucket" "default" {
+  count = local.enabled ? 1 : 0
+  # ...
+}
+```
+
+Gate data sources the same way. On Cloud Posse child modules, pass `context = module.this.context` (or `enabled = local.enabled`) instead of adding `count`.
+
+### Tag every taggable resource
+
+Set `tags = module.this.tags`, or the `tags` output of a child label module.
+
+## Files
+
+### Use the standard file layout
+
+Every module has these files:
+
+- `main.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, `context.tf`
+- `README.yaml` (the source of the generated `README.md`)
+- `examples/complete/` with `fixtures.us-east-2.tfvars`
+- `test/src/examples_complete_test.go`
+
+Move a large feature into its own file. Use hyphens in file names, for example `security-group.tf`, `remote-state.tf`, `variables-deprecated.tf`.
+
+## OpenTofu and Terraform Compatibility
+
+### Support both OpenTofu and Terraform
+
+Modules and components must work with both OpenTofu and Terraform. Use only the language features that both tools support.
+
+Do not use OpenTofu-only features:
+
+- The `enabled` meta-argument
+- `.tofu` and `.tofutest.hcl` files
+- `for_each` on `provider` blocks
+- Variables or locals in module `source`, module `version` or `backend` blocks
+- State encryption blocks
+
+Do not use Terraform-only features:
+
+- `cloud {}` blocks
+- Stacks (`.tfcomponent.hcl`, `.tfdeploy.hcl`)
+
+### Check both tools before you use a new language feature
+
+Before you use a language feature that is newer than Terraform 1.5, make sure that OpenTofu supports it. Set `required_version` to the lowest version that both tools support. For example, ephemeral resources and write-only attributes need version `1.11` or later in both tools.
+
+`required_version` is checked against the version of the tool that runs. Do not set it higher than the latest OpenTofu release. Use the three-part form, for example `>= 1.3.0`.
+
+### Use providers that are in both registries
+
+Use providers that are published to both the OpenTofu and the Terraform registries. The `hashicorp/*` providers are in both.
+
 ## Module Design
 
 ### Small Opinionated Modules
@@ -477,6 +708,18 @@ While the module is opinionated on the parameters, it's proved invaluable as a m
 We believe that modules should do one thing very well. But in order to do that, it requires being opinionated on the design.
 Simply wrapping terraform resources for the purposes of modularizing code is not that helpful. Implementing a specific use-case
 of those resource is more helpful.
+
+### Let Atmos create many instances, not the module
+
+A module manages one instance of the thing it is named for. When a caller needs many buckets, clusters or VPCs, they create many component instances in Atmos, or use `for_each` on the module. Do not add a map of top-level resources to a module.
+
+A module can use a map for child resources that belong to one parent and have no life of their own, for example security group rules, lifecycle rules, policy statements, the records of one zone, or the indexes of one table.
+
+Exception: catalog modules where each item is data, not infrastructure, for example Datadog monitors in `terraform-datadog-platform`. Use this only when one module instance per item would be absurd.
+
+### Keep the HCL simple
+
+If you need nested `for` expressions, `flatten()`, merged layers of defaults, or nested `dynamic` blocks to read one input, the interface is too complex. Make the input simpler, or move the variation into Atmos stack configuration.
 
 ### Composable Modules
 
