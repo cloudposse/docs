@@ -301,9 +301,32 @@ locals {
 
 Remove deprecated variables only in a `major` release.
 
-### Write short descriptions in sentence case
+### Write descriptions that tell the caller how to use the input
 
-Start a one-line `description` with a capital letter. Do not end it with a period. Use `<<-EOT` for descriptions that need more than one line.
+Every `description` must tell the caller:
+
+- What the input controls. Do not repeat the variable name.
+- The unit, for example seconds, days or GiB, when the value is a number.
+- The accepted values, when the set is small.
+- What `null`, `""` or `[]` means, when it does something different from the default.
+- Which other inputs it needs or conflicts with.
+
+For a boolean, start with ``If `true`, ...``. For an input that passes straight to a provider argument, use the provider's wording and link to the provider docs. For an `object`, describe each field.
+
+Start a one-line description with a capital letter, and do not end it with a period. Use `<<-EOT` for a description of more than one line. Put names of inputs, values and resources in backticks.
+
+```hcl
+variable "logs_retention_in_days" {
+  type        = number
+  description = "Number of days to keep log events. Set to `0` to keep them forever"
+  default     = 30
+  nullable    = false
+}
+```
+
+### Declare variable attributes in a fixed order
+
+Declare the attributes of a `variable` block in this order: `type`, `description`, `default`, `nullable`, `sensitive`, `validation`. Always set `type`. Do not use `type = any` except in the cases listed above.
 
 ## Outputs
 
@@ -353,6 +376,10 @@ practically since Terraform's inception, so a near-term solution is unlikely.
 Name outputs `<noun>_<attribute>`, for example `bucket_arn`, `eks_cluster_id`, `security_group_ids`. Do not output a bare `id`, `arn` or `name`.
 Use the plural for outputs that return a list.
 In components, prefix outputs with the component name, for example `rds_*` or `eks_cluster_*`.
+
+### Write output descriptions that say when the value is empty
+
+Every output `description` says what the value is and what it returns when the resource is not created, for example `null` when `enabled` is `false`. Declare the attributes in this order: `value`, `description`, `sensitive`. Set `sensitive = true` on any output that can expose a credential or a token.
 
 ### Use `one()` to output attributes of conditional resources
 
