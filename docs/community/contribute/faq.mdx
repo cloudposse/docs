@@ -98,6 +98,14 @@ When in doubt between `minor` and `patch`, use `minor`. When in doubt between `m
 
 Users must pin module versions. Never use the default branch directly.
 
+## Why do we release this way?
+
+We are a small organization that maintains *hundreds* of projects. A formal release schedule for each project is not possible. So we release on every merge. This lets the most users get fixes and features quickly. The version number still tells users what kind of change happened.
+
+Users pin versions for stability. If a release breaks something for you, pin to the previous release and open an issue.
+
+Every change is breaking for somebody. For example, if a project has a bug, someone probably has a workaround for it. A fix for that bug can break their workaround. The rules below cover the breaking changes that a reviewer can find. They cannot promise that a `minor` or `patch` release breaks nobody.
+
 ## What is a breaking change?
 
 For modules at `1.0` or higher, apply `major` if any of these is true:
@@ -121,6 +129,8 @@ A Pull Request with the `major` label must state what breaks and how callers mig
 ## How do we version modules that are still `0.x`?
 
 Modules that are still `0.x` use `minor` for new features and for breaking changes. This is the [semver convention](https://semver.org/#spec-item-4) for `0.x.y` releases. The breaking change rules above do not apply.
+
+We keep a module at `0.x` until its interface is stable after a long burn-in period. For comparison, Terraform itself was `0.x` from its first release on July 28, 2014 until `1.0` on June 8, 2021.
 
 Only Cloud Posse engineers move a module from `0.x` to `1.0`. Usually `1.0` is the current release with a new version number, and it is not a breaking change.
 
