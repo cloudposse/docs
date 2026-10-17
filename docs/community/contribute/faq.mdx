@@ -179,6 +179,18 @@ We recommend users version pin to releases for stability and never pin to master
 
 The release automation cuts a release for every merge to `master`. The label on the Pull Request selects the version increment. See [What is our versioning strategy?](#what-is-our-versioning-strategy).
 
+## How do modules and components merge differently?
+
+Contributors rebase only when a Pull Request has merge conflicts. A Pull Request that is only behind the default branch does not need a rebase.
+
+**Components** (`cloudposse-terraform-components/*`) use a GitHub merge queue. The queue tests each Pull Request against the latest default branch, so a Pull Request that is behind needs no update.
+
+**Modules** (`cloudposse/terraform-*`) do not use a merge queue. The branch must be up to date with the default branch, and the required checks, including `test/terratest`, must pass on the updated branch. To merge a module Pull Request that is behind:
+
+1. Click **Update branch**.
+2. Comment `/terratest` to run the tests again.
+3. Approve again if the update dismissed the earlier approval.
+
 ## What are the merge constraints?
 
 All of our GitHub repositories implement the following convention with branch protections:
